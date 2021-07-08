@@ -56,13 +56,6 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.WorkspaceProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.RetentionInDays", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.WorkspaceProperties.RetentionInDays", Name: validation.InclusiveMaximum, Rule: int64(730), Chain: nil},
-						{Target: "parameters.WorkspaceProperties.RetentionInDays", Name: validation.InclusiveMinimum, Rule: int64(30), Chain: nil},
-					}},
-				}}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "CreateOrUpdate", err.Error())

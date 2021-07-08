@@ -15,31 +15,31 @@ import (
 	"net/http"
 )
 
-// DataExportsClient is the operational Insights Client
-type DataExportsClient struct {
+// SavedSearchesClient is the operational Insights Client
+type SavedSearchesClient struct {
 	BaseClient
 }
 
-// NewDataExportsClient creates an instance of the DataExportsClient client.
-func NewDataExportsClient(subscriptionID string) DataExportsClient {
-	return NewDataExportsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSavedSearchesClient creates an instance of the SavedSearchesClient client.
+func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
+	return NewSavedSearchesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataExportsClientWithBaseURI creates an instance of the DataExportsClient client using a custom endpoint.  Use
-// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewDataExportsClientWithBaseURI(baseURI string, subscriptionID string) DataExportsClient {
-	return DataExportsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewSavedSearchesClientWithBaseURI creates an instance of the SavedSearchesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) SavedSearchesClient {
+	return SavedSearchesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a data export.
+// CreateOrUpdate creates or updates a saved search for a given workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-// parameters - the parameters required to create or update a data export.
-func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (result DataExport, err error) {
+// savedSearchID - the id of the saved search.
+// parameters - the parameters required to save a search.
+func (client SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, parameters SavedSearch) (result SavedSearch, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SavedSearchesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -59,35 +59,31 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
-		{TargetValue: dataExportName,
-			Constraints: []validation.Constraint{{Target: "dataExportName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "dataExportName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "dataExportName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DataExportProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.TableNames", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.DataExportProperties.Destination", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.Destination.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.SavedSearchProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.SavedSearchProperties.Category", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.SavedSearchProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.SavedSearchProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("operationalinsights.SavedSearchesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, dataExportName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, savedSearchID, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
@@ -95,10 +91,10 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (*http.Request, error) {
+func (client SavedSearchesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, parameters SavedSearch) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"savedSearchId":     autorest.Encode("path", savedSearchID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
@@ -112,7 +108,7 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -120,30 +116,30 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client SavedSearchesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) CreateOrUpdateResponder(resp *http.Response) (result DataExport, err error) {
+func (client SavedSearchesClient) CreateOrUpdateResponder(resp *http.Response) (result SavedSearch, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete deletes the specified data export in a given workspace..
+// Delete deletes the specified saved search in a given workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result autorest.Response, err error) {
+// savedSearchID - the id of the saved search.
+func (client SavedSearchesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SavedSearchesClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -163,25 +159,25 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "Delete", err.Error())
+		return result, validation.NewError("operationalinsights.SavedSearchesClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, dataExportName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, savedSearchID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -189,10 +185,10 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataExportsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (*http.Request, error) {
+func (client SavedSearchesClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"savedSearchId":     autorest.Encode("path", savedSearchID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
@@ -205,36 +201,36 @@ func (client DataExportsClient) DeletePreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client SavedSearchesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SavedSearchesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Get gets a data export instance.
+// Get gets the specified saved search for a given workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-func (client DataExportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result DataExport, err error) {
+// savedSearchID - the id of the saved search.
+func (client SavedSearchesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string) (result SavedSearch, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SavedSearchesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -254,25 +250,25 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "Get", err.Error())
+		return result, validation.NewError("operationalinsights.SavedSearchesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, dataExportName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, savedSearchID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -280,10 +276,10 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client DataExportsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (*http.Request, error) {
+func (client SavedSearchesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"savedSearchId":     autorest.Encode("path", savedSearchID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
@@ -296,20 +292,20 @@ func (client DataExportsClient) GetPreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SavedSearchesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) GetResponder(resp *http.Response) (result DataExport, err error) {
+func (client SavedSearchesClient) GetResponder(resp *http.Response) (result SavedSearch, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -319,13 +315,13 @@ func (client DataExportsClient) GetResponder(resp *http.Response) (result DataEx
 	return
 }
 
-// ListByWorkspace lists the data export instances within a workspace.
+// ListByWorkspace gets the saved searches for a given Log Analytics Workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result DataExportListResult, err error) {
+func (client SavedSearchesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result SavedSearchesListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.ListByWorkspace")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SavedSearchesClient.ListByWorkspace")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -335,8 +331,6 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -344,26 +338,28 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "ListByWorkspace", err.Error())
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.SavedSearchesClient", "ListByWorkspace", err.Error())
 	}
 
 	req, err := client.ListByWorkspacePreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "ListByWorkspace", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "ListByWorkspace", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.SavedSearchesClient", "ListByWorkspace", resp, "Failure responding to request")
 		return
 	}
 
@@ -371,7 +367,7 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 }
 
 // ListByWorkspacePreparer prepares the ListByWorkspace request.
-func (client DataExportsClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client SavedSearchesClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -386,20 +382,20 @@ func (client DataExportsClient) ListByWorkspacePreparer(ctx context.Context, res
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
+func (client SavedSearchesClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) ListByWorkspaceResponder(resp *http.Response) (result DataExportListResult, err error) {
+func (client SavedSearchesClient) ListByWorkspaceResponder(resp *http.Response) (result SavedSearchesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

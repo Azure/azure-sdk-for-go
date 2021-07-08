@@ -15,42 +15,40 @@ import (
 	"net/http"
 )
 
-// DataExportsClient is the operational Insights Client
-type DataExportsClient struct {
+// LinkedServicesClient is the operational Insights Client
+type LinkedServicesClient struct {
 	BaseClient
 }
 
-// NewDataExportsClient creates an instance of the DataExportsClient client.
-func NewDataExportsClient(subscriptionID string) DataExportsClient {
-	return NewDataExportsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLinkedServicesClient creates an instance of the LinkedServicesClient client.
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return NewLinkedServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataExportsClientWithBaseURI creates an instance of the DataExportsClient client using a custom endpoint.  Use
-// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewDataExportsClientWithBaseURI(baseURI string, subscriptionID string) DataExportsClient {
-	return DataExportsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLinkedServicesClientWithBaseURI creates an instance of the LinkedServicesClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return LinkedServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a data export.
+// CreateOrUpdate create or update a linked service.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-// parameters - the parameters required to create or update a data export.
-func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (result DataExport, err error) {
+// linkedServiceName - name of the linkedServices resource
+// parameters - the parameters required to create or update a linked service.
+func (client LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService) (result LinkedServicesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServicesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -59,35 +57,22 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
-		{TargetValue: dataExportName,
-			Constraints: []validation.Constraint{{Target: "dataExportName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "dataExportName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "dataExportName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DataExportProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.TableNames", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.DataExportProperties.Destination", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.Destination.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "CreateOrUpdate", err.Error())
+			Constraints: []validation.Constraint{{Target: "parameters.LinkedServiceProperties", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedServicesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, dataExportName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -95,9 +80,9 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (*http.Request, error) {
+func (client LinkedServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
+		"linkedServiceName": autorest.Encode("path", linkedServiceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
@@ -112,7 +97,7 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -120,13 +105,22 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client LinkedServicesClient) CreateOrUpdateSender(req *http.Request) (future LinkedServicesCreateOrUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) CreateOrUpdateResponder(resp *http.Response) (result DataExport, err error) {
+func (client LinkedServicesClient) CreateOrUpdateResponder(resp *http.Response) (result LinkedService, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -136,25 +130,23 @@ func (client DataExportsClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete deletes the specified data export in a given workspace..
+// Delete deletes a linked service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result autorest.Response, err error) {
+// linkedServiceName - name of the linked service.
+func (client LinkedServicesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string) (result LinkedServicesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServicesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -162,26 +154,21 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "Delete", err.Error())
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedServicesClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, dataExportName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, linkedServiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -189,9 +176,9 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataExportsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (*http.Request, error) {
+func (client LinkedServicesClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
+		"linkedServiceName": autorest.Encode("path", linkedServiceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
@@ -205,36 +192,46 @@ func (client DataExportsClient) DeletePreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client LinkedServicesClient) DeleteSender(req *http.Request) (future LinkedServicesDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LinkedServicesClient) DeleteResponder(resp *http.Response) (result LinkedService, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Get gets a data export instance.
+// Get gets a linked service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-func (client DataExportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result DataExport, err error) {
+// linkedServiceName - name of the linked service.
+func (client LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string) (result LinkedService, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServicesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -244,8 +241,6 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -253,26 +248,28 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "Get", err.Error())
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedServicesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, dataExportName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, linkedServiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -280,9 +277,9 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client DataExportsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (*http.Request, error) {
+func (client LinkedServicesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
+		"linkedServiceName": autorest.Encode("path", linkedServiceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
@@ -296,20 +293,20 @@ func (client DataExportsClient) GetPreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client LinkedServicesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) GetResponder(resp *http.Response) (result DataExport, err error) {
+func (client LinkedServicesClient) GetResponder(resp *http.Response) (result LinkedService, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -319,13 +316,13 @@ func (client DataExportsClient) GetResponder(resp *http.Response) (result DataEx
 	return
 }
 
-// ListByWorkspace lists the data export instances within a workspace.
+// ListByWorkspace gets the linked services instances in a workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result DataExportListResult, err error) {
+func (client LinkedServicesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result LinkedServiceListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.ListByWorkspace")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServicesClient.ListByWorkspace")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -335,8 +332,6 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -344,26 +339,28 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "ListByWorkspace", err.Error())
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedServicesClient", "ListByWorkspace", err.Error())
 	}
 
 	req, err := client.ListByWorkspacePreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", resp, "Failure responding to request")
 		return
 	}
 
@@ -371,7 +368,7 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 }
 
 // ListByWorkspacePreparer prepares the ListByWorkspace request.
-func (client DataExportsClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client LinkedServicesClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -386,20 +383,20 @@ func (client DataExportsClient) ListByWorkspacePreparer(ctx context.Context, res
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
+func (client LinkedServicesClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) ListByWorkspaceResponder(resp *http.Response) (result DataExportListResult, err error) {
+func (client LinkedServicesClient) ListByWorkspaceResponder(resp *http.Response) (result LinkedServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

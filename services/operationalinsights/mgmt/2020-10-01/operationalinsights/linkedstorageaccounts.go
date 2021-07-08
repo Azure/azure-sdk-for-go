@@ -15,31 +15,33 @@ import (
 	"net/http"
 )
 
-// DataExportsClient is the operational Insights Client
-type DataExportsClient struct {
+// LinkedStorageAccountsClient is the operational Insights Client
+type LinkedStorageAccountsClient struct {
 	BaseClient
 }
 
-// NewDataExportsClient creates an instance of the DataExportsClient client.
-func NewDataExportsClient(subscriptionID string) DataExportsClient {
-	return NewDataExportsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLinkedStorageAccountsClient creates an instance of the LinkedStorageAccountsClient client.
+func NewLinkedStorageAccountsClient(subscriptionID string) LinkedStorageAccountsClient {
+	return NewLinkedStorageAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataExportsClientWithBaseURI creates an instance of the DataExportsClient client using a custom endpoint.  Use
-// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewDataExportsClientWithBaseURI(baseURI string, subscriptionID string) DataExportsClient {
-	return DataExportsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLinkedStorageAccountsClientWithBaseURI creates an instance of the LinkedStorageAccountsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
+func NewLinkedStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) LinkedStorageAccountsClient {
+	return LinkedStorageAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a data export.
+// CreateOrUpdate create or Update a link relation between current workspace and a group of storage accounts of a
+// specific data source type.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-// parameters - the parameters required to create or update a data export.
-func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (result DataExport, err error) {
+// dataSourceType - linked storage accounts type.
+// parameters - the parameters required to create or update linked storage accounts.
+func (client LinkedStorageAccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, parameters LinkedStorageAccountsResource) (result LinkedStorageAccountsResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedStorageAccountsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -49,8 +51,6 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -59,35 +59,29 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
-		{TargetValue: dataExportName,
-			Constraints: []validation.Constraint{{Target: "dataExportName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "dataExportName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "dataExportName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DataExportProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.TableNames", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.DataExportProperties.Destination", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.DataExportProperties.Destination.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "CreateOrUpdate", err.Error())
+			Constraints: []validation.Constraint{{Target: "parameters.LinkedStorageAccountsProperties", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedStorageAccountsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, dataExportName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, dataSourceType, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
@@ -95,9 +89,9 @@ func (client DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport) (*http.Request, error) {
+func (client LinkedStorageAccountsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, parameters LinkedStorageAccountsResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
+		"dataSourceType":    autorest.Encode("path", dataSourceType),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
@@ -112,7 +106,7 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -120,30 +114,30 @@ func (client DataExportsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client LinkedStorageAccountsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) CreateOrUpdateResponder(resp *http.Response) (result DataExport, err error) {
+func (client LinkedStorageAccountsClient) CreateOrUpdateResponder(resp *http.Response) (result LinkedStorageAccountsResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete deletes the specified data export in a given workspace..
+// Delete deletes all linked storage accounts of a specific data source type associated with the specified workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result autorest.Response, err error) {
+// dataSourceType - linked storage accounts type.
+func (client LinkedStorageAccountsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedStorageAccountsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -153,8 +147,6 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -162,26 +154,28 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "Delete", err.Error())
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedStorageAccountsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, dataExportName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, dataSourceType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -189,9 +183,9 @@ func (client DataExportsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataExportsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (*http.Request, error) {
+func (client LinkedStorageAccountsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
+		"dataSourceType":    autorest.Encode("path", dataSourceType),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
@@ -205,36 +199,36 @@ func (client DataExportsClient) DeletePreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client LinkedStorageAccountsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LinkedStorageAccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Get gets a data export instance.
+// Get gets all linked storage account of a specific data source type associated with the specified workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-// dataExportName - the data export rule name.
-func (client DataExportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (result DataExport, err error) {
+// dataSourceType - linked storage accounts type.
+func (client LinkedStorageAccountsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType) (result LinkedStorageAccountsResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedStorageAccountsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -244,8 +238,6 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -253,26 +245,28 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
-				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "Get", err.Error())
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.LinkedStorageAccountsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, dataExportName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, dataSourceType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -280,9 +274,9 @@ func (client DataExportsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client DataExportsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string) (*http.Request, error) {
+func (client LinkedStorageAccountsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataExportName":    autorest.Encode("path", dataExportName),
+		"dataSourceType":    autorest.Encode("path", dataSourceType),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
@@ -296,20 +290,20 @@ func (client DataExportsClient) GetPreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client LinkedStorageAccountsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) GetResponder(resp *http.Response) (result DataExport, err error) {
+func (client LinkedStorageAccountsClient) GetResponder(resp *http.Response) (result LinkedStorageAccountsResource, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -319,13 +313,14 @@ func (client DataExportsClient) GetResponder(resp *http.Response) (result DataEx
 	return
 }
 
-// ListByWorkspace lists the data export instances within a workspace.
+// ListByWorkspace gets all linked storage accounts associated with the specified workspace, storage accounts will be
+// sorted by their data source type.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace.
-func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result DataExportListResult, err error) {
+func (client LinkedStorageAccountsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result LinkedStorageAccountsListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataExportsClient.ListByWorkspace")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedStorageAccountsClient.ListByWorkspace")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -345,25 +340,25 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
 				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.DataExportsClient", "ListByWorkspace", err.Error())
+		return result, validation.NewError("operationalinsights.LinkedStorageAccountsClient", "ListByWorkspace", err.Error())
 	}
 
 	req, err := client.ListByWorkspacePreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "ListByWorkspace", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "ListByWorkspace", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.DataExportsClient", "ListByWorkspace", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedStorageAccountsClient", "ListByWorkspace", resp, "Failure responding to request")
 		return
 	}
 
@@ -371,7 +366,7 @@ func (client DataExportsClient) ListByWorkspace(ctx context.Context, resourceGro
 }
 
 // ListByWorkspacePreparer prepares the ListByWorkspace request.
-func (client DataExportsClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client LinkedStorageAccountsClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -386,20 +381,20 @@ func (client DataExportsClient) ListByWorkspacePreparer(ctx context.Context, res
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataExportsClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
+func (client LinkedStorageAccountsClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
 // closes the http.Response Body.
-func (client DataExportsClient) ListByWorkspaceResponder(resp *http.Response) (result DataExportListResult, err error) {
+func (client LinkedStorageAccountsClient) ListByWorkspaceResponder(resp *http.Response) (result LinkedStorageAccountsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

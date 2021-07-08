@@ -51,8 +51,7 @@ func (client OrchestratorInstanceServiceClient) Create(ctx context.Context, reso
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -134,7 +133,8 @@ func (client OrchestratorInstanceServiceClient) CreateResponder(resp *http.Respo
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result OrchestratorInstanceServiceDeleteFuture, err error) {
+// forceDelete - force delete resource
+func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, forceDelete *bool) (result OrchestratorInstanceServiceDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OrchestratorInstanceServiceClient.Delete")
 		defer func() {
@@ -148,8 +148,7 @@ func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, reso
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -159,7 +158,7 @@ func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, reso
 		return result, validation.NewError("delegatednetwork.OrchestratorInstanceServiceClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName, forceDelete)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Delete", nil, "Failure preparing request")
 		return
@@ -175,7 +174,7 @@ func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, reso
 }
 
 // DeletePreparer prepares the Delete request.
-func (client OrchestratorInstanceServiceClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client OrchestratorInstanceServiceClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string, forceDelete *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -185,6 +184,9 @@ func (client OrchestratorInstanceServiceClient) DeletePreparer(ctx context.Conte
 	const APIVersion = "2021-03-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if forceDelete != nil {
+		queryParameters["forceDelete"] = autorest.Encode("query", *forceDelete)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -239,8 +241,7 @@ func (client OrchestratorInstanceServiceClient) GetDetails(ctx context.Context, 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -328,8 +329,7 @@ func (client OrchestratorInstanceServiceClient) ListByResourceGroup(ctx context.
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.OrchestratorInstanceServiceClient", "ListByResourceGroup", err.Error())
@@ -575,8 +575,7 @@ func (client OrchestratorInstanceServiceClient) Patch(ctx context.Context, resou
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},

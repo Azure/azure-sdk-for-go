@@ -34,7 +34,7 @@ var _ ClientAPI = (*delegatednetwork.Client)(nil)
 // OrchestratorInstanceServiceClientAPI contains the set of methods on the OrchestratorInstanceServiceClient type.
 type OrchestratorInstanceServiceClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, resourceName string, parameters delegatednetwork.Orchestrator) (result delegatednetwork.OrchestratorInstanceServiceCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result delegatednetwork.OrchestratorInstanceServiceDeleteFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, resourceName string, forceDelete *bool) (result delegatednetwork.OrchestratorInstanceServiceDeleteFuture, err error)
 	GetDetails(ctx context.Context, resourceGroupName string, resourceName string) (result delegatednetwork.Orchestrator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result delegatednetwork.OrchestratorsPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result delegatednetwork.OrchestratorsIterator, err error)

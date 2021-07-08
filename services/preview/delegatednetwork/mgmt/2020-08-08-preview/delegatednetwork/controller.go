@@ -33,8 +33,7 @@ func NewControllerClientWithBaseURI(baseURI string, subscriptionID string) Contr
 
 // Create create a dnc controller
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 // parameters - controller type parameters
 func (client ControllerClient) Create(ctx context.Context, resourceGroupName string, resourceName string, parameters DelegatedController) (result ControllerCreateFuture, err error) {
@@ -51,12 +50,13 @@ func (client ControllerClient) Create(ctx context.Context, resourceGroupName str
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.ControllerClient", "Create", err.Error())
 	}
 
@@ -128,8 +128,7 @@ func (client ControllerClient) CreateResponder(resp *http.Response) (result Dele
 
 // Delete deletes the DNC controller
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 func (client ControllerClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result ControllerDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -145,12 +144,13 @@ func (client ControllerClient) Delete(ctx context.Context, resourceGroupName str
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.ControllerClient", "Delete", err.Error())
 	}
 
@@ -218,8 +218,7 @@ func (client ControllerClient) DeleteResponder(resp *http.Response) (result auto
 
 // GetDetails gets details about the specified dnc controller.
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 func (client ControllerClient) GetDetails(ctx context.Context, resourceGroupName string, resourceName string) (result DelegatedController, err error) {
 	if tracing.IsEnabled() {
@@ -235,12 +234,13 @@ func (client ControllerClient) GetDetails(ctx context.Context, resourceGroupName
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.ControllerClient", "GetDetails", err.Error())
 	}
 
@@ -307,8 +307,7 @@ func (client ControllerClient) GetDetailsResponder(resp *http.Response) (result 
 
 // Patch update dnc controller
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 // parameters - controller type parameters
 func (client ControllerClient) Patch(ctx context.Context, resourceGroupName string, resourceName string, parameters ControllerResourceUpdateParameters) (result DelegatedController, err error) {
@@ -325,12 +324,13 @@ func (client ControllerClient) Patch(ctx context.Context, resourceGroupName stri
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.ControllerClient", "Patch", err.Error())
 	}
 

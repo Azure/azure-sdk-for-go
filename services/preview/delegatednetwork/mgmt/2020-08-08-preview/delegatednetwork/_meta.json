@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "43976e106c90a90ae7f1e354c1db5eef0bce0d24",
   "readme": "/_/azure-rest-api-specs/specification/dnc/resource-manager/readme.md",
   "tag": "package-2020-08-08-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

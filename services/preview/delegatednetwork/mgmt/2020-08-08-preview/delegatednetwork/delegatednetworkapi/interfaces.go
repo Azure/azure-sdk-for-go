@@ -47,7 +47,7 @@ var _ OrchestratorInstanceServiceClientAPI = (*delegatednetwork.OrchestratorInst
 
 // DelegatedSubnetServiceClientAPI contains the set of methods on the DelegatedSubnetServiceClient type.
 type DelegatedSubnetServiceClientAPI interface {
-	DeleteDetails(ctx context.Context, resourceGroupName string, resourceName string) (result delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture, err error)
+	DeleteDetails(ctx context.Context, resourceGroupName string, resourceName string, forceDelete *bool) (result delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture, err error)
 	GetDetails(ctx context.Context, resourceGroupName string, resourceName string) (result delegatednetwork.DelegatedSubnet, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result delegatednetwork.DelegatedSubnetsPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result delegatednetwork.DelegatedSubnetsIterator, err error)

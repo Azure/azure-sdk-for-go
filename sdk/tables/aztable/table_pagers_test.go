@@ -118,11 +118,10 @@ func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
 func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntityMap()
 	for i := 0; i < b.N; i++ {
-		toOdataAnnotatedDictionary(&ent)
-		_, err := json.Marshal(ent)
-		if err != nil {
-			panic(err)
-		}
+		err := toOdataAnnotatedDictionary(&ent)
+		check(err)
+		_, err = json.Marshal(ent)
+		check(err)
 	}
 }
 

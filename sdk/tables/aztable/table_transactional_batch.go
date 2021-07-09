@@ -142,7 +142,10 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 	batchWriter.Write(changeSetBody.Bytes())
 	writer.Close()
 
-	req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
+	err = req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 
 	resp, err := t.client.con.Pipeline().Do(req)
 	if err != nil {

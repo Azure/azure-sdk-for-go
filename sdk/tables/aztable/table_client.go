@@ -74,7 +74,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	if err != nil {
 		return resp, err
 	}
-	castAndRemoveAnnotations(&resp.Value)
+	err = castAndRemoveAnnotations(&resp.Value)
 	return resp, err
 }
 

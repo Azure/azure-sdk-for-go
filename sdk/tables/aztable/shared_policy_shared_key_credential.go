@@ -75,6 +75,7 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	return stringToSign, nil
 }
 
+//nolint
 func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
 	cm := map[string][]string{}
 	for k, v := range headers {

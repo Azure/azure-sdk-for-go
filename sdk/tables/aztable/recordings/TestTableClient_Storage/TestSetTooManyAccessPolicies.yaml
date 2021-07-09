@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotablek44he1q6rgunh"}'
+    body: '{"TableName":"gotableal7ltzl6kugfg"}'
     form: {}
     headers:
       Accept:
@@ -19,28 +19,28 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 02 Jul 2021 17:02:53 GMT
+      - Fri, 09 Jul 2021 16:49:48 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablek44he1q6rgunh"}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotableal7ltzl6kugfg"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Fri, 02 Jul 2021 17:02:53 GMT
+      - Fri, 09 Jul 2021 16:49:48 GMT
       Location:
-      - https://seankaneprim.table.core.windows.net/Tables('gotablek44he1q6rgunh')
+      - https://seankaneprim.table.core.windows.net/Tables('gotableal7ltzl6kugfg')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 6ae78084-4002-006b-1564-6f6f81000000
+      - 86dd59fb-e002-0086-56e2-7424cc000000
       X-Ms-Version:
       - "2019-02-02"
     status: 201 Created
@@ -62,29 +62,29 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 02 Jul 2021 17:02:54 GMT
+      - Fri, 09 Jul 2021 16:49:49 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/gotablek44he1q6rgunh?comp=acl
+    url: https://seankaneprim.table.core.windows.net/gotableal7ltzl6kugfg?comp=acl
     method: PUT
   response:
     body: |-
       <?xml version="1.0" encoding="utf-8"?><m:error xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><m:code>InvalidXmlDocument</m:code><m:message xml:lang="en-US">XML specified is not syntactically valid.
-      RequestId:6ae780ae-4002-006b-3864-6f6f81000000
-      Time:2021-07-02T17:02:54.4477447Z</m:message></m:error>
+      RequestId:86dd5a4e-e002-0086-23e2-7424cc000000
+      Time:2021-07-09T16:49:48.6605382Z</m:message></m:error>
     headers:
       Content-Length:
       - "327"
       Content-Type:
       - application/xml
       Date:
-      - Fri, 02 Jul 2021 17:02:53 GMT
+      - Fri, 09 Jul 2021 16:49:48 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - InvalidXmlDocument
       X-Ms-Request-Id:
-      - 6ae780ae-4002-006b-3864-6f6f81000000
+      - 86dd5a4e-e002-0086-23e2-7424cc000000
       X-Ms-Version:
       - "2019-02-02"
     status: 400 XML specified is not syntactically valid.
@@ -102,10 +102,10 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 02 Jul 2021 17:02:54 GMT
+      - Fri, 09 Jul 2021 16:49:49 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/Tables('gotablek44he1q6rgunh')
+    url: https://seankaneprim.table.core.windows.net/Tables('gotableal7ltzl6kugfg')
     method: DELETE
   response:
     body: ""
@@ -115,13 +115,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 02 Jul 2021 17:02:53 GMT
+      - Fri, 09 Jul 2021 16:49:48 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 6ae780d7-4002-006b-5f64-6f6f81000000
+      - 86dd5a85-e002-0086-57e2-7424cc000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content

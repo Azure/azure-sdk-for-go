@@ -10,21 +10,25 @@ package render
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // RenderV2Client contains the methods for the RenderV2 group.
 // Don't use this type directly, use NewRenderV2Client() instead.
 type RenderV2Client struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewRenderV2Client creates a new instance of RenderV2Client with the specified values.
 func NewRenderV2Client(con *Connection, xmsClientID *string) *RenderV2Client {
-	return &RenderV2Client{con: con, xmsClientID: xmsClientID}
+	return &RenderV2Client{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetMapTilePreview - Applies to: S0 and S1 pricing tiers.
@@ -99,10 +103,9 @@ func (client *RenderV2Client) getMapTilePreviewHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

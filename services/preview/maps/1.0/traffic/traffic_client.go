@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // TrafficClient contains the methods for the Traffic group.
 // Don't use this type directly, use NewTrafficClient() instead.
 type TrafficClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewTrafficClient creates a new instance of TrafficClient with the specified values.
 func NewTrafficClient(con *Connection, xmsClientID *string) *TrafficClient {
-	return &TrafficClient{con: con, xmsClientID: xmsClientID}
+	return &TrafficClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, *xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetTrafficFlowSegment - Traffic Flow Segment
@@ -92,7 +96,7 @@ func (client *TrafficClient) getTrafficFlowSegmentHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TrafficFlowSegmentResultResponse{}, err
 	}
-return TrafficFlowSegmentResultResponse{RawResponse: resp.Response, TrafficFlowSegmentResult: val}, nil
+	return TrafficFlowSegmentResultResponse{RawResponse: resp.Response, TrafficFlowSegmentResult: val}, nil
 }
 
 // getTrafficFlowSegmentHandleError handles the GetTrafficFlowSegment error response.
@@ -101,7 +105,7 @@ func (client *TrafficClient) getTrafficFlowSegmentHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -176,7 +180,7 @@ func (client *TrafficClient) getTrafficFlowTileHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -254,7 +258,7 @@ func (client *TrafficClient) getTrafficIncidentDetailHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TrafficIncidentDetailResultResponse{}, err
 	}
-return TrafficIncidentDetailResultResponse{RawResponse: resp.Response, TrafficIncidentDetailResult: val}, nil
+	return TrafficIncidentDetailResultResponse{RawResponse: resp.Response, TrafficIncidentDetailResult: val}, nil
 }
 
 // getTrafficIncidentDetailHandleError handles the GetTrafficIncidentDetail error response.
@@ -263,7 +267,7 @@ func (client *TrafficClient) getTrafficIncidentDetailHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -336,7 +340,7 @@ func (client *TrafficClient) getTrafficIncidentTileHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -403,7 +407,7 @@ func (client *TrafficClient) getTrafficIncidentViewportHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TrafficIncidentViewportResultResponse{}, err
 	}
-return TrafficIncidentViewportResultResponse{RawResponse: resp.Response, TrafficIncidentViewportResult: val}, nil
+	return TrafficIncidentViewportResultResponse{RawResponse: resp.Response, TrafficIncidentViewportResult: val}, nil
 }
 
 // getTrafficIncidentViewportHandleError handles the GetTrafficIncidentViewport error response.
@@ -412,10 +416,9 @@ func (client *TrafficClient) getTrafficIncidentViewportHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

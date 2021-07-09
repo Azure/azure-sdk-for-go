@@ -45,10 +45,18 @@ func (c *ConnectionOptions) telemetryOptions() *azcore.TelemetryOptions {
 	return &to
 }
 
-// Connection - The Azure Maps Elevation API provides an HTTP interface to query elevation data on the  surface of the Earth. Elevation data can be retrieved at specific locations by sending  lat/lon coordinates, by defining an ordered set of vertices that form a Polyline and a  number of sample points along the length of a Polyline, or by defining a bounding box  that consists of equally spaced vertices as rows and columns. The vertical datum is EPSG:3855.  This datum uses the EGM2008 geoid model applied to the WGS84 ellipsoid as its zero height  reference surface. The vertical unit is measured in meters, the spatial resolution of the  elevation data is 0.8 arc-second for global coverage (~24 meters).
+// preserve the create params to recreate the connection to hotfix the AD Azure Maps auth in LRO GET requests
+type CreateParams struct {
+	geography *Geography
+	cred      azcore.Credential
+	options   *ConnectionOptions
+}
+
+// Connection - APIs for managing aliases in Azure Maps.
 type Connection struct {
-	u string
-	p azcore.Pipeline
+	u  string
+	p  azcore.Pipeline
+	cp CreateParams
 }
 
 // NewConnection creates an instance of the Connection type with the specified endpoint.
@@ -71,7 +79,7 @@ func NewConnection(geography *Geography, cred azcore.Credential, options *Connec
 		geography = ((*Geography)(&defaultValue))
 	}
 	hostURL = strings.ReplaceAll(hostURL, "{geography}", (string)(*geography))
-	return &Connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...)}
+	return &Connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...), cp: CreateParams{geography, cred, options}}
 }
 
 // Endpoint returns the connection's endpoint.

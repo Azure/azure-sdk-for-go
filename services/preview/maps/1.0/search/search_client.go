@@ -11,24 +11,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // SearchClient contains the methods for the Search group.
 // Don't use this type directly, use NewSearchClient() instead.
 type SearchClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewSearchClient creates a new instance of SearchClient with the specified values.
 func NewSearchClient(con *Connection, xmsClientID *string) *SearchClient {
-	return &SearchClient{con: con, xmsClientID: xmsClientID}
+	return &SearchClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetSearchAddress - Address Geocoding
@@ -121,7 +125,7 @@ func (client *SearchClient) getSearchAddressHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // getSearchAddressHandleError handles the GetSearchAddress error response.
@@ -130,7 +134,7 @@ func (client *SearchClient) getSearchAddressHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -238,7 +242,7 @@ func (client *SearchClient) BeginGetSearchAddressBatch(ctx context.Context, form
 	result := SearchAddressBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("SearchClient.GetSearchAddressBatch",resp, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.GetSearchAddressBatch", resp, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -255,7 +259,7 @@ func (client *SearchClient) BeginGetSearchAddressBatch(ctx context.Context, form
 // ResumeGetSearchAddressBatch creates a new SearchAddressBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressBatchResponsePoller.ResumeToken().
 func (client *SearchClient) ResumeGetSearchAddressBatch(ctx context.Context, token string) (SearchAddressBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchAddressBatch",token, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchAddressBatch", token, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -381,7 +385,7 @@ func (client *SearchClient) getSearchAddressBatch(ctx context.Context, formatPar
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getSearchAddressBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getSearchAddressBatchCreateRequest creates the GetSearchAddressBatch request.
@@ -412,7 +416,7 @@ func (client *SearchClient) getSearchAddressBatchHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -503,7 +507,7 @@ func (client *SearchClient) getSearchAddressReverseHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressReverseResponseResponse{}, err
 	}
-return SearchAddressReverseResponseResponse{RawResponse: resp.Response, SearchAddressReverseResponse: val}, nil
+	return SearchAddressReverseResponseResponse{RawResponse: resp.Response, SearchAddressReverseResponse: val}, nil
 }
 
 // getSearchAddressReverseHandleError handles the GetSearchAddressReverse error response.
@@ -512,7 +516,7 @@ func (client *SearchClient) getSearchAddressReverseHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -620,7 +624,7 @@ func (client *SearchClient) BeginGetSearchAddressReverseBatch(ctx context.Contex
 	result := SearchAddressReverseBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("SearchClient.GetSearchAddressReverseBatch",resp, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.GetSearchAddressReverseBatch", resp, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -637,7 +641,7 @@ func (client *SearchClient) BeginGetSearchAddressReverseBatch(ctx context.Contex
 // ResumeGetSearchAddressReverseBatch creates a new SearchAddressReverseBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressReverseBatchResponsePoller.ResumeToken().
 func (client *SearchClient) ResumeGetSearchAddressReverseBatch(ctx context.Context, token string) (SearchAddressReverseBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchAddressReverseBatch",token, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchAddressReverseBatch", token, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -763,7 +767,7 @@ func (client *SearchClient) getSearchAddressReverseBatch(ctx context.Context, fo
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getSearchAddressReverseBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getSearchAddressReverseBatchCreateRequest creates the GetSearchAddressReverseBatch request.
@@ -794,7 +798,7 @@ func (client *SearchClient) getSearchAddressReverseBatchHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -867,7 +871,7 @@ func (client *SearchClient) getSearchAddressReverseCrossStreetHandleResponse(res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressReverseCrossStreetResponseResponse{}, err
 	}
-return SearchAddressReverseCrossStreetResponseResponse{RawResponse: resp.Response, SearchAddressReverseCrossStreetResponse: val}, nil
+	return SearchAddressReverseCrossStreetResponseResponse{RawResponse: resp.Response, SearchAddressReverseCrossStreetResponse: val}, nil
 }
 
 // getSearchAddressReverseCrossStreetHandleError handles the GetSearchAddressReverseCrossStreet error response.
@@ -876,7 +880,7 @@ func (client *SearchClient) getSearchAddressReverseCrossStreetHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -979,7 +983,7 @@ func (client *SearchClient) getSearchAddressStructuredHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // getSearchAddressStructuredHandleError handles the GetSearchAddressStructured error response.
@@ -988,7 +992,7 @@ func (client *SearchClient) getSearchAddressStructuredHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1112,7 +1116,7 @@ func (client *SearchClient) getSearchFuzzyHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // getSearchFuzzyHandleError handles the GetSearchFuzzy error response.
@@ -1121,7 +1125,7 @@ func (client *SearchClient) getSearchFuzzyHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1228,7 +1232,7 @@ func (client *SearchClient) BeginGetSearchFuzzyBatch(ctx context.Context, format
 	result := SearchFuzzyBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("SearchClient.GetSearchFuzzyBatch",resp, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.GetSearchFuzzyBatch", resp, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -1245,7 +1249,7 @@ func (client *SearchClient) BeginGetSearchFuzzyBatch(ctx context.Context, format
 // ResumeGetSearchFuzzyBatch creates a new SearchFuzzyBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchFuzzyBatchResponsePoller.ResumeToken().
 func (client *SearchClient) ResumeGetSearchFuzzyBatch(ctx context.Context, token string) (SearchFuzzyBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchFuzzyBatch",token, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchFuzzyBatch", token, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -1370,7 +1374,7 @@ func (client *SearchClient) getSearchFuzzyBatch(ctx context.Context, formatParam
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getSearchFuzzyBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getSearchFuzzyBatchCreateRequest creates the GetSearchFuzzyBatch request.
@@ -1401,7 +1405,7 @@ func (client *SearchClient) getSearchFuzzyBatchHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1489,7 +1493,7 @@ func (client *SearchClient) getSearchNearbyHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // getSearchNearbyHandleError handles the GetSearchNearby error response.
@@ -1498,7 +1502,7 @@ func (client *SearchClient) getSearchNearbyHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1604,7 +1608,7 @@ func (client *SearchClient) getSearchPOIHandleResponse(resp *azcore.Response) (S
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // getSearchPOIHandleError handles the GetSearchPOI error response.
@@ -1613,7 +1617,7 @@ func (client *SearchClient) getSearchPOIHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1718,7 +1722,7 @@ func (client *SearchClient) getSearchPOICategoryHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // getSearchPOICategoryHandleError handles the GetSearchPOICategory error response.
@@ -1727,7 +1731,7 @@ func (client *SearchClient) getSearchPOICategoryHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1786,7 +1790,7 @@ func (client *SearchClient) getSearchPOICategoryTreePreviewHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchPoiCategoryTreeResponseResponse{}, err
 	}
-return SearchPoiCategoryTreeResponseResponse{RawResponse: resp.Response, SearchPoiCategoryTreeResponse: val}, nil
+	return SearchPoiCategoryTreeResponseResponse{RawResponse: resp.Response, SearchPoiCategoryTreeResponse: val}, nil
 }
 
 // getSearchPOICategoryTreePreviewHandleError handles the GetSearchPOICategoryTreePreview error response.
@@ -1795,7 +1799,7 @@ func (client *SearchClient) getSearchPOICategoryTreePreviewHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1857,7 +1861,7 @@ func (client *SearchClient) getSearchPolygonHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchPolygonResponseResponse{}, err
 	}
-return SearchPolygonResponseResponse{RawResponse: resp.Response, SearchPolygonResponse: val}, nil
+	return SearchPolygonResponseResponse{RawResponse: resp.Response, SearchPolygonResponse: val}, nil
 }
 
 // getSearchPolygonHandleError handles the GetSearchPolygon error response.
@@ -1866,7 +1870,7 @@ func (client *SearchClient) getSearchPolygonHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1974,7 +1978,7 @@ func (client *SearchClient) BeginPostSearchAddressBatch(ctx context.Context, for
 	result := SearchAddressBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("SearchClient.PostSearchAddressBatch",resp, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.PostSearchAddressBatch", resp, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -1991,7 +1995,7 @@ func (client *SearchClient) BeginPostSearchAddressBatch(ctx context.Context, for
 // ResumePostSearchAddressBatch creates a new SearchAddressBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressBatchResponsePoller.ResumeToken().
 func (client *SearchClient) ResumePostSearchAddressBatch(ctx context.Context, token string) (SearchAddressBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchAddressBatch",token, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchAddressBatch", token, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -2117,7 +2121,7 @@ func (client *SearchClient) postSearchAddressBatch(ctx context.Context, formatPa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.postSearchAddressBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // postSearchAddressBatchCreateRequest creates the PostSearchAddressBatch request.
@@ -2148,7 +2152,7 @@ func (client *SearchClient) postSearchAddressBatchHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -2292,7 +2296,7 @@ func (client *SearchClient) postSearchAddressBatchSyncHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressBatchResponseResponse{}, err
 	}
-return SearchAddressBatchResponseResponse{RawResponse: resp.Response, SearchAddressBatchResponse: val}, nil
+	return SearchAddressBatchResponseResponse{RawResponse: resp.Response, SearchAddressBatchResponse: val}, nil
 }
 
 // postSearchAddressBatchSyncHandleError handles the PostSearchAddressBatchSync error response.
@@ -2301,7 +2305,7 @@ func (client *SearchClient) postSearchAddressBatchSyncHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -2409,7 +2413,7 @@ func (client *SearchClient) BeginPostSearchAddressReverseBatch(ctx context.Conte
 	result := SearchAddressReverseBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("SearchClient.PostSearchAddressReverseBatch",resp, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.PostSearchAddressReverseBatch", resp, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -2426,7 +2430,7 @@ func (client *SearchClient) BeginPostSearchAddressReverseBatch(ctx context.Conte
 // ResumePostSearchAddressReverseBatch creates a new SearchAddressReverseBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressReverseBatchResponsePoller.ResumeToken().
 func (client *SearchClient) ResumePostSearchAddressReverseBatch(ctx context.Context, token string) (SearchAddressReverseBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchAddressReverseBatch",token, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchAddressReverseBatch", token, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -2552,7 +2556,7 @@ func (client *SearchClient) postSearchAddressReverseBatch(ctx context.Context, f
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.postSearchAddressReverseBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // postSearchAddressReverseBatchCreateRequest creates the PostSearchAddressReverseBatch request.
@@ -2583,7 +2587,7 @@ func (client *SearchClient) postSearchAddressReverseBatchHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -2727,7 +2731,7 @@ func (client *SearchClient) postSearchAddressReverseBatchSyncHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressReverseBatchResponseResponse{}, err
 	}
-return SearchAddressReverseBatchResponseResponse{RawResponse: resp.Response, SearchAddressReverseBatchResponse: val}, nil
+	return SearchAddressReverseBatchResponseResponse{RawResponse: resp.Response, SearchAddressReverseBatchResponse: val}, nil
 }
 
 // postSearchAddressReverseBatchSyncHandleError handles the PostSearchAddressReverseBatchSync error response.
@@ -2736,7 +2740,7 @@ func (client *SearchClient) postSearchAddressReverseBatchSyncHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -2818,7 +2822,7 @@ func (client *SearchClient) postSearchAlongRouteHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // postSearchAlongRouteHandleError handles the PostSearchAlongRoute error response.
@@ -2827,7 +2831,7 @@ func (client *SearchClient) postSearchAlongRouteHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -2934,7 +2938,7 @@ func (client *SearchClient) BeginPostSearchFuzzyBatch(ctx context.Context, forma
 	result := SearchFuzzyBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("SearchClient.PostSearchFuzzyBatch",resp, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.PostSearchFuzzyBatch", resp, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -2951,7 +2955,7 @@ func (client *SearchClient) BeginPostSearchFuzzyBatch(ctx context.Context, forma
 // ResumePostSearchFuzzyBatch creates a new SearchFuzzyBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchFuzzyBatchResponsePoller.ResumeToken().
 func (client *SearchClient) ResumePostSearchFuzzyBatch(ctx context.Context, token string) (SearchFuzzyBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchFuzzyBatch",token, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchFuzzyBatch", token, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -3076,7 +3080,7 @@ func (client *SearchClient) postSearchFuzzyBatch(ctx context.Context, formatPara
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.postSearchFuzzyBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // postSearchFuzzyBatchCreateRequest creates the PostSearchFuzzyBatch request.
@@ -3107,7 +3111,7 @@ func (client *SearchClient) postSearchFuzzyBatchHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -3250,7 +3254,7 @@ func (client *SearchClient) postSearchFuzzyBatchSyncHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchFuzzyBatchResponseResponse{}, err
 	}
-return SearchFuzzyBatchResponseResponse{RawResponse: resp.Response, SearchFuzzyBatchResponse: val}, nil
+	return SearchFuzzyBatchResponseResponse{RawResponse: resp.Response, SearchFuzzyBatchResponse: val}, nil
 }
 
 // postSearchFuzzyBatchSyncHandleError handles the PostSearchFuzzyBatchSync error response.
@@ -3259,7 +3263,7 @@ func (client *SearchClient) postSearchFuzzyBatchSyncHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -3360,7 +3364,7 @@ func (client *SearchClient) postSearchInsideGeometryHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
 	}
-return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
+	return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResponse: val}, nil
 }
 
 // postSearchInsideGeometryHandleError handles the PostSearchInsideGeometry error response.
@@ -3369,10 +3373,9 @@ func (client *SearchClient) postSearchInsideGeometryHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

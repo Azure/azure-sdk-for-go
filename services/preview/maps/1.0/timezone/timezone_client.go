@@ -11,24 +11,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // TimezoneClient contains the methods for the Timezone group.
 // Don't use this type directly, use NewTimezoneClient() instead.
 type TimezoneClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewTimezoneClient creates a new instance of TimezoneClient with the specified values.
 func NewTimezoneClient(con *Connection, xmsClientID *string) *TimezoneClient {
-	return &TimezoneClient{con: con, xmsClientID: xmsClientID}
+	return &TimezoneClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetTimezoneByCoordinates - Time Zone by Coordinates
@@ -95,7 +99,7 @@ func (client *TimezoneClient) getTimezoneByCoordinatesHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneByCoordinatesResultResponse{}, err
 	}
-return TimezoneByCoordinatesResultResponse{RawResponse: resp.Response, TimezoneByCoordinatesResult: val}, nil
+	return TimezoneByCoordinatesResultResponse{RawResponse: resp.Response, TimezoneByCoordinatesResult: val}, nil
 }
 
 // getTimezoneByCoordinatesHandleError handles the GetTimezoneByCoordinates error response.
@@ -104,7 +108,7 @@ func (client *TimezoneClient) getTimezoneByCoordinatesHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -174,7 +178,7 @@ func (client *TimezoneClient) getTimezoneByIDHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneByIDResultResponse{}, err
 	}
-return TimezoneByIDResultResponse{RawResponse: resp.Response, TimezoneByIDResult: val}, nil
+	return TimezoneByIDResultResponse{RawResponse: resp.Response, TimezoneByIDResult: val}, nil
 }
 
 // getTimezoneByIDHandleError handles the GetTimezoneByID error response.
@@ -183,7 +187,7 @@ func (client *TimezoneClient) getTimezoneByIDHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -237,7 +241,7 @@ func (client *TimezoneClient) getTimezoneEnumIANAHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IanaIDArrayResponse{}, err
 	}
-return IanaIDArrayResponse{RawResponse: resp.Response, IanaIDArray: val}, nil
+	return IanaIDArrayResponse{RawResponse: resp.Response, IanaIDArray: val}, nil
 }
 
 // getTimezoneEnumIANAHandleError handles the GetTimezoneEnumIANA error response.
@@ -246,7 +250,7 @@ func (client *TimezoneClient) getTimezoneEnumIANAHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -300,7 +304,7 @@ func (client *TimezoneClient) getTimezoneEnumWindowsHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneEnumWindowArrayResponse{}, err
 	}
-return TimezoneEnumWindowArrayResponse{RawResponse: resp.Response, TimezoneEnumWindowArray: val}, nil
+	return TimezoneEnumWindowArrayResponse{RawResponse: resp.Response, TimezoneEnumWindowArray: val}, nil
 }
 
 // getTimezoneEnumWindowsHandleError handles the GetTimezoneEnumWindows error response.
@@ -309,7 +313,7 @@ func (client *TimezoneClient) getTimezoneEnumWindowsHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -363,7 +367,7 @@ func (client *TimezoneClient) getTimezoneIANAVersionHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneIanaVersionResultResponse{}, err
 	}
-return TimezoneIanaVersionResultResponse{RawResponse: resp.Response, TimezoneIanaVersionResult: val}, nil
+	return TimezoneIanaVersionResultResponse{RawResponse: resp.Response, TimezoneIanaVersionResult: val}, nil
 }
 
 // getTimezoneIANAVersionHandleError handles the GetTimezoneIANAVersion error response.
@@ -372,7 +376,7 @@ func (client *TimezoneClient) getTimezoneIANAVersionHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -432,7 +436,7 @@ func (client *TimezoneClient) getTimezoneWindowsToIANAHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IanaIDArrayResponse{}, err
 	}
-return IanaIDArrayResponse{RawResponse: resp.Response, IanaIDArray: val}, nil
+	return IanaIDArrayResponse{RawResponse: resp.Response, IanaIDArray: val}, nil
 }
 
 // getTimezoneWindowsToIANAHandleError handles the GetTimezoneWindowsToIANA error response.
@@ -441,10 +445,9 @@ func (client *TimezoneClient) getTimezoneWindowsToIANAHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

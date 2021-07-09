@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // DataClient contains the methods for the Data group.
 // Don't use this type directly, use NewDataClient() instead.
 type DataClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewDataClient creates a new instance of DataClient with the specified values.
 func NewDataClient(con *Connection, xmsClientID *string) *DataClient {
-	return &DataClient{con: con, xmsClientID: xmsClientID}
+	return &DataClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // DeletePreview - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -85,7 +89,7 @@ func (client *DataClient) deletePreviewHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -164,7 +168,7 @@ func (client *DataClient) downloadPreviewHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -227,7 +231,7 @@ func (client *DataClient) getOperationPreviewHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -287,7 +291,7 @@ func (client *DataClient) listPreviewHandleResponse(resp *azcore.Response) (MapD
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MapDataListResponseResponse{}, err
 	}
-return MapDataListResponseResponse{RawResponse: resp.Response, MapDataListResponse: val}, nil
+	return MapDataListResponseResponse{RawResponse: resp.Response, MapDataListResponse: val}, nil
 }
 
 // listPreviewHandleError handles the ListPreview error response.
@@ -296,7 +300,7 @@ func (client *DataClient) listPreviewHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -340,7 +344,7 @@ func (client *DataClient) BeginUpdatePreview(ctx context.Context, uniqueDataID s
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("DataClient.UpdatePreview",resp, client.con.Pipeline(), client.updatePreviewHandleError)
+	pt, err := azcore.NewLROPoller("DataClient.UpdatePreview", resp, client.con.Pipeline(), client.updatePreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -357,7 +361,7 @@ func (client *DataClient) BeginUpdatePreview(ctx context.Context, uniqueDataID s
 // ResumeUpdatePreview creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
 func (client *DataClient) ResumeUpdatePreview(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UpdatePreview",token, client.con.Pipeline(), client.updatePreviewHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UpdatePreview", token, client.con.Pipeline(), client.updatePreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -419,7 +423,7 @@ func (client *DataClient) updatePreview(ctx context.Context, uniqueDataID string
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updatePreviewHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updatePreviewCreateRequest creates the UpdatePreview request.
@@ -453,7 +457,7 @@ func (client *DataClient) updatePreviewHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -494,7 +498,7 @@ func (client *DataClient) BeginUploadPreview(ctx context.Context, uploadDataForm
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("DataClient.UploadPreview",resp, client.con.Pipeline(), client.uploadPreviewHandleError)
+	pt, err := azcore.NewLROPoller("DataClient.UploadPreview", resp, client.con.Pipeline(), client.uploadPreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -511,7 +515,7 @@ func (client *DataClient) BeginUploadPreview(ctx context.Context, uploadDataForm
 // ResumeUploadPreview creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
 func (client *DataClient) ResumeUploadPreview(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UploadPreview",token, client.con.Pipeline(), client.uploadPreviewHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UploadPreview", token, client.con.Pipeline(), client.uploadPreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -570,7 +574,7 @@ func (client *DataClient) uploadPreview(ctx context.Context, uploadDataFormat Up
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.uploadPreviewHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // uploadPreviewCreateRequest creates the UploadPreview request.
@@ -601,7 +605,7 @@ func (client *DataClient) uploadPreviewHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -642,7 +646,7 @@ func (client *DataClient) BeginUploadPreviewWithAnyObject(ctx context.Context, u
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("DataClient.UploadPreviewWithAnyObject",resp, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
+	pt, err := azcore.NewLROPoller("DataClient.UploadPreviewWithAnyObject", resp, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -659,7 +663,7 @@ func (client *DataClient) BeginUploadPreviewWithAnyObject(ctx context.Context, u
 // ResumeUploadPreviewWithAnyObject creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
 func (client *DataClient) ResumeUploadPreviewWithAnyObject(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UploadPreviewWithAnyObject",token, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UploadPreviewWithAnyObject", token, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -718,7 +722,7 @@ func (client *DataClient) uploadPreviewWithAnyObject(ctx context.Context, upload
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.uploadPreviewWithAnyObjectHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // uploadPreviewWithAnyObjectCreateRequest creates the UploadPreviewWithAnyObject request.
@@ -749,10 +753,9 @@ func (client *DataClient) uploadPreviewWithAnyObjectHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

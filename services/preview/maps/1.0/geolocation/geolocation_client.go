@@ -11,22 +11,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // GeolocationClient contains the methods for the Geolocation group.
 // Don't use this type directly, use NewGeolocationClient() instead.
 type GeolocationClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewGeolocationClient creates a new instance of GeolocationClient with the specified values.
 func NewGeolocationClient(con *Connection, xmsClientID *string) *GeolocationClient {
-	return &GeolocationClient{con: con, xmsClientID: xmsClientID}
+	return &GeolocationClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetIPToLocationPreview - Applies to: S0 and S1 pricing tiers.
@@ -79,7 +83,7 @@ func (client *GeolocationClient) getIPToLocationPreviewHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAddressToLocationResultResponse{}, err
 	}
-return IPAddressToLocationResultResponse{RawResponse: resp.Response, IPAddressToLocationResult: val}, nil
+	return IPAddressToLocationResultResponse{RawResponse: resp.Response, IPAddressToLocationResult: val}, nil
 }
 
 // getIPToLocationPreviewHandleError handles the GetIPToLocationPreview error response.
@@ -88,10 +92,9 @@ func (client *GeolocationClient) getIPToLocationPreviewHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

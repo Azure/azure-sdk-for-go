@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // RenderClient contains the methods for the Render group.
 // Don't use this type directly, use NewRenderClient() instead.
 type RenderClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewRenderClient creates a new instance of RenderClient with the specified values.
 func NewRenderClient(con *Connection, xmsClientID *string) *RenderClient {
-	return &RenderClient{con: con, xmsClientID: xmsClientID}
+	return &RenderClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetCopyrightCaption - Applies to: S0 and S1 pricing tiers.
@@ -78,7 +82,7 @@ func (client *RenderClient) getCopyrightCaptionHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightCaptionResultResponse{}, err
 	}
-return GetCopyrightCaptionResultResponse{RawResponse: resp.Response, GetCopyrightCaptionResult: val}, nil
+	return GetCopyrightCaptionResultResponse{RawResponse: resp.Response, GetCopyrightCaptionResult: val}, nil
 }
 
 // getCopyrightCaptionHandleError handles the GetCopyrightCaption error response.
@@ -87,7 +91,7 @@ func (client *RenderClient) getCopyrightCaptionHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -150,7 +154,7 @@ func (client *RenderClient) getCopyrightForTileHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightForTileResultResponse{}, err
 	}
-return GetCopyrightForTileResultResponse{RawResponse: resp.Response, GetCopyrightForTileResult: val}, nil
+	return GetCopyrightForTileResultResponse{RawResponse: resp.Response, GetCopyrightForTileResult: val}, nil
 }
 
 // getCopyrightForTileHandleError handles the GetCopyrightForTile error response.
@@ -159,7 +163,7 @@ func (client *RenderClient) getCopyrightForTileHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -217,7 +221,7 @@ func (client *RenderClient) getCopyrightForWorldHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightForWorldResultResponse{}, err
 	}
-return GetCopyrightForWorldResultResponse{RawResponse: resp.Response, GetCopyrightForWorldResult: val}, nil
+	return GetCopyrightForWorldResultResponse{RawResponse: resp.Response, GetCopyrightForWorldResult: val}, nil
 }
 
 // getCopyrightForWorldHandleError handles the GetCopyrightForWorld error response.
@@ -226,7 +230,7 @@ func (client *RenderClient) getCopyrightForWorldHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -285,7 +289,7 @@ func (client *RenderClient) getCopyrightFromBoundingBoxHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightFromBoundingBoxResultResponse{}, err
 	}
-return GetCopyrightFromBoundingBoxResultResponse{RawResponse: resp.Response, GetCopyrightFromBoundingBoxResult: val}, nil
+	return GetCopyrightFromBoundingBoxResultResponse{RawResponse: resp.Response, GetCopyrightFromBoundingBoxResult: val}, nil
 }
 
 // getCopyrightFromBoundingBoxHandleError handles the GetCopyrightFromBoundingBox error response.
@@ -294,7 +298,7 @@ func (client *RenderClient) getCopyrightFromBoundingBoxHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -364,7 +368,7 @@ func (client *RenderClient) getMapImageryTileHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -429,7 +433,7 @@ func (client *RenderClient) getMapStateTilePreviewHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -539,14 +543,14 @@ func (client *RenderClient) getMapStaticImageCreateRequest(ctx context.Context, 
 		reqQP.Set("view", *options.View)
 	}
 	if options != nil && options.Pins != nil {
-			for _, qv := range options.Pins {
-		reqQP.Add("pins", qv)
-	}
+		for _, qv := range options.Pins {
+			reqQP.Add("pins", qv)
+		}
 	}
 	if options != nil && options.Path != nil {
-			for _, qv := range options.Path {
-		reqQP.Add("path", qv)
-	}
+		for _, qv := range options.Path {
+			reqQP.Add("path", qv)
+		}
 	}
 	req.URL.RawQuery = reqQP.Encode()
 	req.SkipBodyDownload()
@@ -572,7 +576,7 @@ func (client *RenderClient) getMapStaticImageHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -653,10 +657,9 @@ func (client *RenderClient) getMapTileHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

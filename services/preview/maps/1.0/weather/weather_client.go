@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // WeatherClient contains the methods for the Weather group.
 // Don't use this type directly, use NewWeatherClient() instead.
 type WeatherClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewWeatherClient creates a new instance of WeatherClient with the specified values.
 func NewWeatherClient(con *Connection, xmsClientID *string) *WeatherClient {
-	return &WeatherClient{con: con, xmsClientID: xmsClientID}
+	return &WeatherClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetCurrentConditions - Get Current Conditions
@@ -94,7 +98,7 @@ func (client *WeatherClient) getCurrentConditionsHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CurrentConditionsResponseResponse{}, err
 	}
-return CurrentConditionsResponseResponse{RawResponse: resp.Response, CurrentConditionsResponse: val}, nil
+	return CurrentConditionsResponseResponse{RawResponse: resp.Response, CurrentConditionsResponse: val}, nil
 }
 
 // getCurrentConditionsHandleError handles the GetCurrentConditions error response.
@@ -103,7 +107,7 @@ func (client *WeatherClient) getCurrentConditionsHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -170,7 +174,7 @@ func (client *WeatherClient) getDailyForecastHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DailyForecastResponseResponse{}, err
 	}
-return DailyForecastResponseResponse{RawResponse: resp.Response, DailyForecastResponse: val}, nil
+	return DailyForecastResponseResponse{RawResponse: resp.Response, DailyForecastResponse: val}, nil
 }
 
 // getDailyForecastHandleError handles the GetDailyForecast error response.
@@ -179,7 +183,7 @@ func (client *WeatherClient) getDailyForecastHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -252,7 +256,7 @@ func (client *WeatherClient) getDailyIndicesHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DailyIndicesResponseResponse{}, err
 	}
-return DailyIndicesResponseResponse{RawResponse: resp.Response, DailyIndicesResponse: val}, nil
+	return DailyIndicesResponseResponse{RawResponse: resp.Response, DailyIndicesResponse: val}, nil
 }
 
 // getDailyIndicesHandleError handles the GetDailyIndices error response.
@@ -261,7 +265,7 @@ func (client *WeatherClient) getDailyIndicesHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -329,7 +333,7 @@ func (client *WeatherClient) getHourlyForecastHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return HourlyForecastResponseResponse{}, err
 	}
-return HourlyForecastResponseResponse{RawResponse: resp.Response, HourlyForecastResponse: val}, nil
+	return HourlyForecastResponseResponse{RawResponse: resp.Response, HourlyForecastResponse: val}, nil
 }
 
 // getHourlyForecastHandleError handles the GetHourlyForecast error response.
@@ -338,7 +342,7 @@ func (client *WeatherClient) getHourlyForecastHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -401,7 +405,7 @@ func (client *WeatherClient) getMinuteForecastHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MinuteForecastResponseResponse{}, err
 	}
-return MinuteForecastResponseResponse{RawResponse: resp.Response, MinuteForecastResponse: val}, nil
+	return MinuteForecastResponseResponse{RawResponse: resp.Response, MinuteForecastResponse: val}, nil
 }
 
 // getMinuteForecastHandleError handles the GetMinuteForecast error response.
@@ -410,7 +414,7 @@ func (client *WeatherClient) getMinuteForecastHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -476,7 +480,7 @@ func (client *WeatherClient) getQuarterDayForecastHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return QuarterDayForecastResponseResponse{}, err
 	}
-return QuarterDayForecastResponseResponse{RawResponse: resp.Response, QuarterDayForecastResponse: val}, nil
+	return QuarterDayForecastResponseResponse{RawResponse: resp.Response, QuarterDayForecastResponse: val}, nil
 }
 
 // getQuarterDayForecastHandleError handles the GetQuarterDayForecast error response.
@@ -485,7 +489,7 @@ func (client *WeatherClient) getQuarterDayForecastHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -553,7 +557,7 @@ func (client *WeatherClient) getSevereWeatherAlertsHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SevereWeatherAlertsResponseResponse{}, err
 	}
-return SevereWeatherAlertsResponseResponse{RawResponse: resp.Response, SevereWeatherAlertsResponse: val}, nil
+	return SevereWeatherAlertsResponseResponse{RawResponse: resp.Response, SevereWeatherAlertsResponse: val}, nil
 }
 
 // getSevereWeatherAlertsHandleError handles the GetSevereWeatherAlerts error response.
@@ -562,7 +566,7 @@ func (client *WeatherClient) getSevereWeatherAlertsHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -636,7 +640,7 @@ func (client *WeatherClient) getWeatherAlongRouteHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return WeatherAlongRouteResponseResponse{}, err
 	}
-return WeatherAlongRouteResponseResponse{RawResponse: resp.Response, WeatherAlongRouteResponse: val}, nil
+	return WeatherAlongRouteResponseResponse{RawResponse: resp.Response, WeatherAlongRouteResponse: val}, nil
 }
 
 // getWeatherAlongRouteHandleError handles the GetWeatherAlongRoute error response.
@@ -645,10 +649,9 @@ func (client *WeatherClient) getWeatherAlongRouteHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

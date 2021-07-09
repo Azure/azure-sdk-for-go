@@ -11,24 +11,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // SpatialClient contains the methods for the Spatial group.
 // Don't use this type directly, use NewSpatialClient() instead.
 type SpatialClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewSpatialClient creates a new instance of SpatialClient with the specified values.
 func NewSpatialClient(con *Connection, xmsClientID *string) *SpatialClient {
-	return &SpatialClient{con: con, xmsClientID: xmsClientID}
+	return &SpatialClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetBuffer - Applies to: S1 pricing tier.
@@ -93,7 +97,7 @@ func (client *SpatialClient) getBufferHandleResponse(resp *azcore.Response) (Buf
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BufferResponseResponse{}, err
 	}
-return BufferResponseResponse{RawResponse: resp.Response, BufferResponse: val}, nil
+	return BufferResponseResponse{RawResponse: resp.Response, BufferResponse: val}, nil
 }
 
 // getBufferHandleError handles the GetBuffer error response.
@@ -102,7 +106,7 @@ func (client *SpatialClient) getBufferHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -171,7 +175,7 @@ func (client *SpatialClient) getClosestPointHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ClosestPointResponseResponse{}, err
 	}
-return ClosestPointResponseResponse{RawResponse: resp.Response, ClosestPointResponse: val}, nil
+	return ClosestPointResponseResponse{RawResponse: resp.Response, ClosestPointResponse: val}, nil
 }
 
 // getClosestPointHandleError handles the GetClosestPoint error response.
@@ -180,7 +184,7 @@ func (client *SpatialClient) getClosestPointHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -298,7 +302,7 @@ func (client *SpatialClient) getGeofenceHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -354,7 +358,7 @@ func (client *SpatialClient) getGreatCircleDistanceHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GreatCircleDistanceResponseResponse{}, err
 	}
-return GreatCircleDistanceResponseResponse{RawResponse: resp.Response, GreatCircleDistanceResponse: val}, nil
+	return GreatCircleDistanceResponseResponse{RawResponse: resp.Response, GreatCircleDistanceResponse: val}, nil
 }
 
 // getGreatCircleDistanceHandleError handles the GetGreatCircleDistance error response.
@@ -363,7 +367,7 @@ func (client *SpatialClient) getGreatCircleDistanceHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -430,7 +434,7 @@ func (client *SpatialClient) getPointInPolygonHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointInPolygonResponseResponse{}, err
 	}
-return PointInPolygonResponseResponse{RawResponse: resp.Response, PointInPolygonResponse: val}, nil
+	return PointInPolygonResponseResponse{RawResponse: resp.Response, PointInPolygonResponse: val}, nil
 }
 
 // getPointInPolygonHandleError handles the GetPointInPolygon error response.
@@ -439,7 +443,7 @@ func (client *SpatialClient) getPointInPolygonHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -500,7 +504,7 @@ func (client *SpatialClient) postBufferHandleResponse(resp *azcore.Response) (Bu
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BufferResponseResponse{}, err
 	}
-return BufferResponseResponse{RawResponse: resp.Response, BufferResponse: val}, nil
+	return BufferResponseResponse{RawResponse: resp.Response, BufferResponse: val}, nil
 }
 
 // postBufferHandleError handles the PostBuffer error response.
@@ -509,7 +513,7 @@ func (client *SpatialClient) postBufferHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -571,7 +575,7 @@ func (client *SpatialClient) postClosestPointHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ClosestPointResponseResponse{}, err
 	}
-return ClosestPointResponseResponse{RawResponse: resp.Response, ClosestPointResponse: val}, nil
+	return ClosestPointResponseResponse{RawResponse: resp.Response, ClosestPointResponse: val}, nil
 }
 
 // postClosestPointHandleError handles the PostClosestPoint error response.
@@ -580,7 +584,7 @@ func (client *SpatialClient) postClosestPointHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -673,7 +677,7 @@ func (client *SpatialClient) postGeofenceHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -733,7 +737,7 @@ func (client *SpatialClient) postPointInPolygonHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointInPolygonResponseResponse{}, err
 	}
-return PointInPolygonResponseResponse{RawResponse: resp.Response, PointInPolygonResponse: val}, nil
+	return PointInPolygonResponseResponse{RawResponse: resp.Response, PointInPolygonResponse: val}, nil
 }
 
 // postPointInPolygonHandleError handles the PostPointInPolygon error response.
@@ -742,10 +746,9 @@ func (client *SpatialClient) postPointInPolygonHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

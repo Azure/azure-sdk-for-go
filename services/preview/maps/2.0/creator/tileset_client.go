@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // TilesetClient contains the methods for the Tileset group.
 // Don't use this type directly, use NewTilesetClient() instead.
 type TilesetClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewTilesetClient creates a new instance of TilesetClient with the specified values.
 func NewTilesetClient(con *Connection, xmsClientID *string) *TilesetClient {
-	return &TilesetClient{con: con, xmsClientID: xmsClientID}
+	return &TilesetClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // BeginCreate - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -50,7 +54,7 @@ func (client *TilesetClient) BeginCreate(ctx context.Context, datasetID string, 
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("TilesetClient.Create",resp, client.con.Pipeline(), client.createHandleError)
+	pt, err := azcore.NewLROPoller("TilesetClient.Create", resp, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -67,7 +71,7 @@ func (client *TilesetClient) BeginCreate(ctx context.Context, datasetID string, 
 // ResumeCreate creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
 func (client *TilesetClient) ResumeCreate(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("TilesetClient.Create",token, client.con.Pipeline(), client.createHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("TilesetClient.Create", token, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -112,7 +116,7 @@ func (client *TilesetClient) create(ctx context.Context, datasetID string, optio
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
@@ -143,7 +147,7 @@ func (client *TilesetClient) createHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -205,7 +209,7 @@ func (client *TilesetClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -261,7 +265,7 @@ func (client *TilesetClient) getHandleResponse(resp *azcore.Response) (TilesetDe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TilesetDetailInfoResponse{}, err
 	}
-return TilesetDetailInfoResponse{RawResponse: resp.Response, TilesetDetailInfo: val}, nil
+	return TilesetDetailInfoResponse{RawResponse: resp.Response, TilesetDetailInfo: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -270,7 +274,7 @@ func (client *TilesetClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -334,7 +338,7 @@ func (client *TilesetClient) getOperationHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -347,7 +351,7 @@ func (client *TilesetClient) getOperationHandleError(resp *azcore.Response) erro
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API allows the caller to fetch a list of all tilesets created.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TilesetClient) List(options *TilesetListOptions) (TilesetListResponsePager) {
+func (client *TilesetClient) List(options *TilesetListOptions) TilesetListResponsePager {
 	return &tilesetListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -386,7 +390,7 @@ func (client *TilesetClient) listHandleResponse(resp *azcore.Response) (TilesetL
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TilesetListResponseResponse{}, err
 	}
-return TilesetListResponseResponse{RawResponse: resp.Response, TilesetListResponse: val}, nil
+	return TilesetListResponseResponse{RawResponse: resp.Response, TilesetListResponse: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -395,10 +399,9 @@ func (client *TilesetClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

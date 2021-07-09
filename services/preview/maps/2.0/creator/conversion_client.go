@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ConversionClient contains the methods for the Conversion group.
 // Don't use this type directly, use NewConversionClient() instead.
 type ConversionClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewConversionClient creates a new instance of ConversionClient with the specified values.
 func NewConversionClient(con *Connection, xmsClientID *string) *ConversionClient {
-	return &ConversionClient{con: con, xmsClientID: xmsClientID}
+	return &ConversionClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // BeginConvert - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -63,7 +67,7 @@ func (client *ConversionClient) BeginConvert(ctx context.Context, udid string, o
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("ConversionClient.Convert",resp, client.con.Pipeline(), client.convertHandleError)
+	pt, err := azcore.NewLROPoller("ConversionClient.Convert", resp, client.con.Pipeline(), client.convertHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -80,7 +84,7 @@ func (client *ConversionClient) BeginConvert(ctx context.Context, udid string, o
 // ResumeConvert creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
 func (client *ConversionClient) ResumeConvert(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("ConversionClient.Convert",token, client.con.Pipeline(), client.convertHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("ConversionClient.Convert", token, client.con.Pipeline(), client.convertHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -138,7 +142,7 @@ func (client *ConversionClient) convert(ctx context.Context, udid string, output
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.convertHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // convertCreateRequest creates the Convert request.
@@ -170,7 +174,7 @@ func (client *ConversionClient) convertHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -230,7 +234,7 @@ func (client *ConversionClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -286,7 +290,7 @@ func (client *ConversionClient) getHandleResponse(resp *azcore.Response) (Conver
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConversionListDetailInfoResponse{}, err
 	}
-return ConversionListDetailInfoResponse{RawResponse: resp.Response, ConversionListDetailInfo: val}, nil
+	return ConversionListDetailInfoResponse{RawResponse: resp.Response, ConversionListDetailInfo: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -295,7 +299,7 @@ func (client *ConversionClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -359,7 +363,7 @@ func (client *ConversionClient) getOperationHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -382,7 +386,7 @@ func (client *ConversionClient) getOperationHandleError(resp *azcore.Response) e
 // 1, "LVL": 3, "FCL": 1, "UNIT": 150, "CTG": 8,
 // "AEL": 0, "OPN": 10 } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ConversionClient) List(options *ConversionListOptions) (ConversionListResponsePager) {
+func (client *ConversionClient) List(options *ConversionListOptions) ConversionListResponsePager {
 	return &conversionListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -421,7 +425,7 @@ func (client *ConversionClient) listHandleResponse(resp *azcore.Response) (Conve
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConversionListResponseResponse{}, err
 	}
-return ConversionListResponseResponse{RawResponse: resp.Response, ConversionListResponse: val}, nil
+	return ConversionListResponseResponse{RawResponse: resp.Response, ConversionListResponse: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -430,10 +434,9 @@ func (client *ConversionClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

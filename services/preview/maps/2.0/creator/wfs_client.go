@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // WFSClient contains the methods for the WFS group.
 // Don't use this type directly, use NewWFSClient() instead.
 type WFSClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewWFSClient creates a new instance of WFSClient with the specified values.
 func NewWFSClient(con *Connection, xmsClientID *string) *WFSClient {
-	return &WFSClient{con: con, xmsClientID: xmsClientID}
+	return &WFSClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // DeleteFeature - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -90,7 +94,7 @@ func (client *WFSClient) deleteFeatureHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -155,7 +159,7 @@ func (client *WFSClient) getCollectionHandleResponse(resp *azcore.Response) (Col
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CollectionInfoResponse{}, err
 	}
-return CollectionInfoResponse{RawResponse: resp.Response, CollectionInfo: val}, nil
+	return CollectionInfoResponse{RawResponse: resp.Response, CollectionInfo: val}, nil
 }
 
 // getCollectionHandleError handles the GetCollection error response.
@@ -164,7 +168,7 @@ func (client *WFSClient) getCollectionHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -229,7 +233,7 @@ func (client *WFSClient) getCollectionDefinitionHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CollectionDefinitionResponseResponse{}, err
 	}
-return CollectionDefinitionResponseResponse{RawResponse: resp.Response, CollectionDefinitionResponse: val}, nil
+	return CollectionDefinitionResponseResponse{RawResponse: resp.Response, CollectionDefinitionResponse: val}, nil
 }
 
 // getCollectionDefinitionHandleError handles the GetCollectionDefinition error response.
@@ -238,7 +242,7 @@ func (client *WFSClient) getCollectionDefinitionHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -298,7 +302,7 @@ func (client *WFSClient) getCollectionsHandleResponse(resp *azcore.Response) (Co
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CollectionsResponseResponse{}, err
 	}
-return CollectionsResponseResponse{RawResponse: resp.Response, CollectionsResponse: val}, nil
+	return CollectionsResponseResponse{RawResponse: resp.Response, CollectionsResponse: val}, nil
 }
 
 // getCollectionsHandleError handles the GetCollections error response.
@@ -307,7 +311,7 @@ func (client *WFSClient) getCollectionsHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -367,7 +371,7 @@ func (client *WFSClient) getConformanceHandleResponse(resp *azcore.Response) (Co
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConformanceResponseResponse{}, err
 	}
-return ConformanceResponseResponse{RawResponse: resp.Response, ConformanceResponse: val}, nil
+	return ConformanceResponseResponse{RawResponse: resp.Response, ConformanceResponse: val}, nil
 }
 
 // getConformanceHandleError handles the GetConformance error response.
@@ -376,7 +380,7 @@ func (client *WFSClient) getConformanceHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -441,7 +445,7 @@ func (client *WFSClient) getFeatureHandleResponse(resp *azcore.Response) (Featur
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FeatureResponseResponse{}, err
 	}
-return FeatureResponseResponse{RawResponse: resp.Response, FeatureResponse: val}, nil
+	return FeatureResponseResponse{RawResponse: resp.Response, FeatureResponse: val}, nil
 }
 
 // getFeatureHandleError handles the GetFeature error response.
@@ -450,7 +454,7 @@ func (client *WFSClient) getFeatureHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -523,7 +527,7 @@ func (client *WFSClient) getFeaturesHandleResponse(resp *azcore.Response) (Exten
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExtendedGeoJSONFeatureCollectionResponse{}, err
 	}
-return ExtendedGeoJSONFeatureCollectionResponse{RawResponse: resp.Response, ExtendedGeoJSONFeatureCollection: val}, nil
+	return ExtendedGeoJSONFeatureCollectionResponse{RawResponse: resp.Response, ExtendedGeoJSONFeatureCollection: val}, nil
 }
 
 // getFeaturesHandleError handles the GetFeatures error response.
@@ -532,7 +536,7 @@ func (client *WFSClient) getFeaturesHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -593,7 +597,7 @@ func (client *WFSClient) getLandingPageHandleResponse(resp *azcore.Response) (La
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LandingPageResponseResponse{}, err
 	}
-return LandingPageResponseResponse{RawResponse: resp.Response, LandingPageResponse: val}, nil
+	return LandingPageResponseResponse{RawResponse: resp.Response, LandingPageResponse: val}, nil
 }
 
 // getLandingPageHandleError handles the GetLandingPage error response.
@@ -602,10 +606,9 @@ func (client *WFSClient) getLandingPageHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -45,10 +45,18 @@ func (c *ConnectionOptions) telemetryOptions() *azcore.TelemetryOptions {
 	return &to
 }
 
-// Connection - Azure Maps Time Zone REST APIs
+// preserve the create params to recreate the connection to hotfix the AD Azure Maps auth in LRO GET requests
+type CreateParams struct {
+	geography *Geography
+	cred      azcore.Credential
+	options   *ConnectionOptions
+}
+
+// Connection - APIs for managing aliases in Azure Maps.
 type Connection struct {
-	u string
-	p azcore.Pipeline
+	u  string
+	p  azcore.Pipeline
+	cp CreateParams
 }
 
 // NewConnection creates an instance of the Connection type with the specified endpoint.
@@ -68,9 +76,10 @@ func NewConnection(geography *Geography, cred azcore.Credential, options *Connec
 	hostURL := "https://{geography}.atlas.microsoft.com"
 	if geography == nil {
 		defaultValue := "us"
-		geography = ((*Geography)(&defaultValue))	}
+		geography = ((*Geography)(&defaultValue))
+	}
 	hostURL = strings.ReplaceAll(hostURL, "{geography}", (string)(*geography))
-	return &Connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...)}
+	return &Connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...), cp: CreateParams{geography, cred, options}}
 }
 
 // Endpoint returns the connection's endpoint.

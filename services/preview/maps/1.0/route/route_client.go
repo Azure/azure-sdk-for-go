@@ -29,7 +29,10 @@ type RouteClient struct {
 
 // NewRouteClient creates a new instance of RouteClient with the specified values.
 func NewRouteClient(con *Connection, xmsClientID *string) *RouteClient {
-	return &RouteClient{con: con, xmsClientID: xmsClientID}
+	return &RouteClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetRouteDirections - Applies to: S0 and S1 pricing tiers.

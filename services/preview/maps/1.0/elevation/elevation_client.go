@@ -11,23 +11,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ElevationClient contains the methods for the Elevation group.
 // Don't use this type directly, use NewElevationClient() instead.
 type ElevationClient struct {
-	con *Connection
+	con         *Connection
 	xmsClientID *string
 }
 
 // NewElevationClient creates a new instance of ElevationClient with the specified values.
 func NewElevationClient(con *Connection, xmsClientID *string) *ElevationClient {
-	return &ElevationClient{con: con, xmsClientID: xmsClientID}
+	return &ElevationClient{
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+		xmsClientID: xmsClientID,
+	}
 }
 
 // GetDataForBoundingBox - Applies to: S1 pricing tier.
@@ -85,7 +89,7 @@ func (client *ElevationClient) getDataForBoundingBoxHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BoundingBoxResultResponse{}, err
 	}
-return BoundingBoxResultResponse{RawResponse: resp.Response, BoundingBoxResult: val}, nil
+	return BoundingBoxResultResponse{RawResponse: resp.Response, BoundingBoxResult: val}, nil
 }
 
 // getDataForBoundingBoxHandleError handles the GetDataForBoundingBox error response.
@@ -94,7 +98,7 @@ func (client *ElevationClient) getDataForBoundingBoxHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -153,7 +157,7 @@ func (client *ElevationClient) getDataForPointsHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointsResultResponse{}, err
 	}
-return PointsResultResponse{RawResponse: resp.Response, PointsResult: val}, nil
+	return PointsResultResponse{RawResponse: resp.Response, PointsResult: val}, nil
 }
 
 // getDataForPointsHandleError handles the GetDataForPoints error response.
@@ -162,7 +166,7 @@ func (client *ElevationClient) getDataForPointsHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -228,7 +232,7 @@ func (client *ElevationClient) getDataForPolylineHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LinesResultResponse{}, err
 	}
-return LinesResultResponse{RawResponse: resp.Response, LinesResult: val}, nil
+	return LinesResultResponse{RawResponse: resp.Response, LinesResult: val}, nil
 }
 
 // getDataForPolylineHandleError handles the GetDataForPolyline error response.
@@ -237,7 +241,7 @@ func (client *ElevationClient) getDataForPolylineHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -292,7 +296,7 @@ func (client *ElevationClient) postDataForPointsHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointsResultResponse{}, err
 	}
-return PointsResultResponse{RawResponse: resp.Response, PointsResult: val}, nil
+	return PointsResultResponse{RawResponse: resp.Response, PointsResult: val}, nil
 }
 
 // postDataForPointsHandleError handles the PostDataForPoints error response.
@@ -301,7 +305,7 @@ func (client *ElevationClient) postDataForPointsHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -364,7 +368,7 @@ func (client *ElevationClient) postDataForPolylineHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LinesResultResponse{}, err
 	}
-return LinesResultResponse{RawResponse: resp.Response, LinesResult: val}, nil
+	return LinesResultResponse{RawResponse: resp.Response, LinesResult: val}, nil
 }
 
 // postDataForPolylineHandleError handles the PostDataForPolyline error response.
@@ -373,10 +377,9 @@ func (client *ElevationClient) postDataForPolylineHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

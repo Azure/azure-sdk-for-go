@@ -1,16 +1,76 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Removed Funcs
+
+1. *AccountUpdateParameters.UnmarshalJSON([]byte) error
+1. *DeletedAccount.UnmarshalJSON([]byte) error
+1. *PrivateLinkResource.UnmarshalJSON([]byte) error
+1. DeletedAccount.MarshalJSON() ([]byte, error)
+1. DeletedAccountProperties.MarshalJSON() ([]byte, error)
+1. DeletedAccountPropertiesModel.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### Removed Structs
+
+1. DeletedAccount
+1. DeletedAccountList
+1. DeletedAccountProperties
+1. DeletedAccountPropertiesModel
+
+#### Removed Struct Fields
+
+1. AccountUpdateParameters.*AccountProperties
+1. PrivateLinkResource.*PrivateLinkResourceProperties
+
+### Signature Changes
+
+#### Funcs
+
+1. PrivateEndpointConnectionsClient.CreateOrUpdate
+	- Returns
+		- From: PrivateEndpointConnection, error
+		- To: PrivateEndpointConnectionsCreateOrUpdateFuture, error
+1. PrivateEndpointConnectionsClient.CreateOrUpdateSender
+	- Returns
+		- From: *http.Response, error
+		- To: PrivateEndpointConnectionsCreateOrUpdateFuture, error
 
 ## Additive Changes
 
+### New Constants
+
+1. CreatedByType.Application
+1. CreatedByType.Key
+1. CreatedByType.ManagedIdentity
+1. CreatedByType.User
+1. LastModifiedByType.LastModifiedByTypeApplication
+1. LastModifiedByType.LastModifiedByTypeKey
+1. LastModifiedByType.LastModifiedByTypeManagedIdentity
+1. LastModifiedByType.LastModifiedByTypeUser
+1. ProvisioningState.Canceled
+
 ### New Funcs
 
-1. AccountEndpoints.MarshalJSON() ([]byte, error)
-1. AccountPropertiesEndpoints.MarshalJSON() ([]byte, error)
-1. AccountPropertiesManagedResources.MarshalJSON() ([]byte, error)
-1. CloudConnectors.MarshalJSON() ([]byte, error)
-1. ErrorModel.MarshalJSON() ([]byte, error)
-1. ErrorResponseModel.MarshalJSON() ([]byte, error)
-1. ErrorResponseModelError.MarshalJSON() ([]byte, error)
-1. ManagedResources.MarshalJSON() ([]byte, error)
-1. PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
+1. *PrivateEndpointConnectionsCreateOrUpdateFuture.UnmarshalJSON([]byte) error
+1. AccountPropertiesSystemData.MarshalJSON() ([]byte, error)
+1. PossibleCreatedByTypeValues() []CreatedByType
+1. PossibleLastModifiedByTypeValues() []LastModifiedByType
+1. SystemData.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. AccountPropertiesSystemData
+1. PrivateEndpointConnectionsCreateOrUpdateFuture
+1. SystemData
+
+#### New Struct Fields
+
+1. AccountProperties.ManagedResourceGroupName
+1. AccountProperties.SystemData
+1. AccountUpdateParameters.Properties
+1. PrivateLinkResource.Properties

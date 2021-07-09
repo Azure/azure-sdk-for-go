@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/purview/mgmt/2021-07-01/purview"
 
 // AccessKeys the Account access keys.
 type AccessKeys struct {
@@ -44,6 +44,8 @@ type Account struct {
 	Location *string `json:"location,omitempty"`
 	// Name - READ-ONLY; Gets or sets the name.
 	Name *string `json:"name,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *TrackedResourceSystemData `json:"systemData,omitempty"`
 	// Tags - Tags on the azure resource.
 	Tags map[string]*string `json:"tags"`
 	// Type - READ-ONLY; Gets or sets the type.
@@ -133,6 +135,15 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Name = &name
+			}
+		case "systemData":
+			if v != nil {
+				var systemData TrackedResourceSystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				a.SystemData = &systemData
 			}
 		case "tags":
 			if v != nil {
@@ -360,8 +371,6 @@ type AccountProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PublicNetworkAccess - Gets or sets the public network access. Possible values include: 'NotSpecified', 'Enabled', 'Disabled'
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *AccountPropertiesSystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountProperties.
@@ -407,28 +416,6 @@ type AccountPropertiesManagedResources struct {
 
 // MarshalJSON is the custom marshaler for AccountPropertiesManagedResources.
 func (apR AccountPropertiesManagedResources) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// AccountPropertiesSystemData metadata pertaining to creation and last modification of the resource.
-type AccountPropertiesSystemData struct {
-	// CreatedAt - READ-ONLY; The timestamp of resource creation (UTC).
-	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// CreatedBy - READ-ONLY; The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - READ-ONLY; The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
-	CreatedByType CreatedByType `json:"createdByType,omitempty"`
-	// LastModifiedAt - READ-ONLY; The timestamp of the last modification the resource (UTC).
-	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
-	// LastModifiedBy - READ-ONLY; The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - READ-ONLY; The type of identity that last modified the resource. Possible values include: 'LastModifiedByTypeUser', 'LastModifiedByTypeApplication', 'LastModifiedByTypeManagedIdentity', 'LastModifiedByTypeKey'
-	LastModifiedByType LastModifiedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccountPropertiesSystemData.
-func (apD AccountPropertiesSystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -614,6 +601,12 @@ type CloudConnectors struct {
 func (cc CloudConnectors) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// CollectionAdminUpdate collection administrator update.
+type CollectionAdminUpdate struct {
+	// ObjectID - Gets or sets the object identifier of the admin.
+	ObjectID *string `json:"objectId,omitempty"`
 }
 
 // DefaultAccountPayload payload to get and set the default account in the given scope
@@ -1645,6 +1638,8 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Name - READ-ONLY; Gets or sets the name.
 	Name *string `json:"name,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *TrackedResourceSystemData `json:"systemData,omitempty"`
 	// Tags - Tags on the azure resource.
 	Tags map[string]*string `json:"tags"`
 	// Type - READ-ONLY; Gets or sets the type.
@@ -1663,5 +1658,27 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
+	return json.Marshal(objectMap)
+}
+
+// TrackedResourceSystemData metadata pertaining to creation and last modification of the resource.
+type TrackedResourceSystemData struct {
+	// CreatedAt - READ-ONLY; The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// CreatedBy - READ-ONLY; The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - READ-ONLY; The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// LastModifiedAt - READ-ONLY; The timestamp of the last modification the resource (UTC).
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+	// LastModifiedBy - READ-ONLY; The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - READ-ONLY; The type of identity that last modified the resource. Possible values include: 'LastModifiedByTypeUser', 'LastModifiedByTypeApplication', 'LastModifiedByTypeManagedIdentity', 'LastModifiedByTypeKey'
+	LastModifiedByType LastModifiedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResourceSystemData.
+func (trD TrackedResourceSystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

@@ -8,13 +8,14 @@ package purviewapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview"
+	"github.com/Azure/azure-sdk-for-go/services/purview/mgmt/2021-07-01/purview"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/gofrs/uuid"
 )
 
 // AccountsClientAPI contains the set of methods on the AccountsClient type.
 type AccountsClientAPI interface {
+	AddRootCollectionAdmin(ctx context.Context, resourceGroupName string, accountName string, collectionAdminUpdate purview.CollectionAdminUpdate) (result autorest.Response, err error)
 	CheckNameAvailability(ctx context.Context, checkNameAvailabilityRequest purview.CheckNameAvailabilityRequest) (result purview.CheckNameAvailabilityResult, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, account purview.Account) (result purview.AccountsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result purview.AccountsDeleteFuture, err error)

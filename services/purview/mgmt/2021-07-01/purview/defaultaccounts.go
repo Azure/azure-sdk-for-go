@@ -72,7 +72,7 @@ func (client DefaultAccountsClient) Get(ctx context.Context, scopeTenantID uuid.
 
 // GetPreparer prepares the Get request.
 func (client DefaultAccountsClient) GetPreparer(ctx context.Context, scopeTenantID uuid.UUID, scopeType ScopeType, scope string) (*http.Request, error) {
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version":   APIVersion,
 		"scopeTenantId": autorest.Encode("query", scopeTenantID),
@@ -149,7 +149,7 @@ func (client DefaultAccountsClient) Remove(ctx context.Context, scopeTenantID uu
 
 // RemovePreparer prepares the Remove request.
 func (client DefaultAccountsClient) RemovePreparer(ctx context.Context, scopeTenantID uuid.UUID, scopeType ScopeType, scope string) (*http.Request, error) {
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version":   APIVersion,
 		"scopeTenantId": autorest.Encode("query", scopeTenantID),
@@ -222,7 +222,7 @@ func (client DefaultAccountsClient) Set(ctx context.Context, defaultAccountPaylo
 
 // SetPreparer prepares the Set request.
 func (client DefaultAccountsClient) SetPreparer(ctx context.Context, defaultAccountPayload DefaultAccountPayload) (*http.Request, error) {
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

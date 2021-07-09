@@ -105,7 +105,7 @@ func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) stri
 		ch.WriteRune(':')
 		ch.WriteString(strings.Join(cm[key], ","))
 	}
-	return string(ch.Bytes())
+	return ch.String()
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
@@ -133,7 +133,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 		//do something here
 		cr.WriteString("?" + "comp=" + compVal[0])
 	}
-	return string(cr.Bytes()), nil
+	return cr.String(), nil
 }
 
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.

@@ -515,7 +515,7 @@ func getStringFromBody(e *runtime.ResponseError) string {
 		if err != nil {
 			return "<emtpy body>"
 		}
-		b = ioutil.NopCloser(&body)
+		_ = ioutil.NopCloser(&body)
 	}
 	return body.String()
 }

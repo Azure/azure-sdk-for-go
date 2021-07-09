@@ -423,24 +423,25 @@ const (
 type KindEnum = original.KindEnum
 
 const (
-	KindDataExportSettings KindEnum = original.KindDataExportSettings
-	KindSetting            KindEnum = original.KindSetting
+	KindAAD                      KindEnum = original.KindAAD
+	KindATA                      KindEnum = original.KindATA
+	KindCEF                      KindEnum = original.KindCEF
+	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
 )
 
 type KindEnum1 = original.KindEnum1
 
 const (
-	KindAAD                      KindEnum1 = original.KindAAD
-	KindATA                      KindEnum1 = original.KindATA
-	KindCEF                      KindEnum1 = original.KindCEF
-	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
+	KindAlertSimulatorRequestProperties KindEnum1 = original.KindAlertSimulatorRequestProperties
+	KindBundles                         KindEnum1 = original.KindBundles
 )
 
 type KindEnum2 = original.KindEnum2
 
 const (
-	KindAlertSimulatorRequestProperties KindEnum2 = original.KindAlertSimulatorRequestProperties
-	KindBundles                         KindEnum2 = original.KindBundles
+	KindAlertSyncSettings  KindEnum2 = original.KindAlertSyncSettings
+	KindDataExportSettings KindEnum2 = original.KindDataExportSettings
+	KindSetting            KindEnum2 = original.KindSetting
 )
 
 type MacSignificance = original.MacSignificance
@@ -469,7 +470,9 @@ type OnboardingKind = original.OnboardingKind
 
 const (
 	Default         OnboardingKind = original.Default
+	Evaluation      OnboardingKind = original.Evaluation
 	MigratedToAzure OnboardingKind = original.MigratedToAzure
+	Purchased       OnboardingKind = original.Purchased
 )
 
 type Operator = original.Operator
@@ -939,6 +942,8 @@ type AlertProperties = original.AlertProperties
 type AlertSimulatorBundlesRequestProperties = original.AlertSimulatorBundlesRequestProperties
 type AlertSimulatorRequestBody = original.AlertSimulatorRequestBody
 type AlertSimulatorRequestProperties = original.AlertSimulatorRequestProperties
+type AlertSyncSettingProperties = original.AlertSyncSettingProperties
+type AlertSyncSettings = original.AlertSyncSettings
 type AlertsClient = original.AlertsClient
 type AlertsSimulateFuture = original.AlertsSimulateFuture
 type AlertsSuppressionRule = original.AlertsSuppressionRule

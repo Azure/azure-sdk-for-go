@@ -21,8 +21,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type pagerTests struct{}
-
 func TestCastAndRemoveAnnotations(t *testing.T) {
 	assert := assert.New(t)
 
@@ -75,8 +73,10 @@ func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
 	bt := []byte(complexPayload)
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
-		json.Unmarshal(bt, &val)
-		castAndRemoveAnnotations(&val)
+		err := json.Unmarshal(bt, &val)
+		assert.Nil(err)
+		err = castAndRemoveAnnotations(&val)
+		assert.Nil(err)
 		assert.Equal("somePartition", val["PartitionKey"])
 	}
 }
@@ -87,11 +87,20 @@ func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	bt := []byte(complexPayload)
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
-		json.Unmarshal(bt, &val)
+		err := json.Unmarshal(bt, &val)
+		if err != nil {
+			panic(err)
+		}
 		result := complexEntity{}
-		err := EntityMapAsModel(val, &result)
+		err = EntityMapAsModel(val, &result)
 		assert.Nil(err)
 		assert.Equal("somePartition", result.PartitionKey)
+	}
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
 	}
 }
 
@@ -99,16 +108,20 @@ func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntity()
 	for i := 0; i < b.N; i++ {
 		m, _ := toMap(ent)
-		toOdataAnnotatedDictionary(m)
-		json.Marshal(m)
+		err := toOdataAnnotatedDictionary(m)
+		check(err)
+		_, err = json.Marshal(m)
+		check(err)
 	}
 }
 
 func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntityMap()
 	for i := 0; i < b.N; i++ {
-		toOdataAnnotatedDictionary(&ent)
-		json.Marshal(ent)
+		err := toOdataAnnotatedDictionary(&ent)
+		check(err)
+		_, err = json.Marshal(ent)
+		check(err)
 	}
 }
 
@@ -180,11 +193,12 @@ func TestDeserializeFromMap(t *testing.T) {
 	expected := createComplexEntity()
 	bt := []byte(complexPayload)
 	var val = make(map[string]interface{})
-	json.Unmarshal(bt, &val)
+	err := json.Unmarshal(bt, &val)
+	assert.Nil(err)
 	result := complexEntity{}
 	// tt := reflect.TypeOf(complexEntity{})
 	// err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
-	err := EntityMapAsModel(val, &result)
+	err = EntityMapAsModel(val, &result)
 	assert.Nil(err)
 	assert.EqualValues(expected, result)
 }

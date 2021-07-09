@@ -53,19 +53,15 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
+func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
-	h.Write([]byte(message))
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+	_, err := h.Write([]byte(message))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
 }
 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
-	contentLength := headers.Get(azcore.HeaderContentLength)
-	if contentLength == "0" {
-		contentLength = ""
-	}
 
 	canonicalizedResource, err := c.buildCanonicalizedResource(req.URL)
 	if err != nil {
@@ -79,6 +75,7 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	return stringToSign, nil
 }
 
+//nolint
 func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
 	cm := map[string][]string{}
 	for k, v := range headers {
@@ -105,7 +102,7 @@ func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) stri
 		ch.WriteRune(':')
 		ch.WriteString(strings.Join(cm[key], ","))
 	}
-	return string(ch.Bytes())
+	return ch.String()
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
@@ -133,7 +130,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 		//do something here
 		cr.WriteString("?" + "comp=" + compVal[0])
 	}
-	return string(cr.Bytes()), nil
+	return cr.String(), nil
 }
 
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
@@ -147,7 +144,10 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 		if err != nil {
 			return nil, err
 		}
-		signature := c.ComputeHMACSHA256(stringToSign)
+		signature, err := c.ComputeHMACSHA256(stringToSign)
+		if err != nil {
+			return nil, err
+		}
 		authHeader := strings.Join([]string{"SharedKeyLite ", c.AccountName(), ":", signature}, "")
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 

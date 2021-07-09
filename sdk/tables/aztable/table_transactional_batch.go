@@ -132,14 +132,20 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
-	writer.SetBoundary(boundary)
+	err = writer.SetBoundary(boundary)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
 	batchWriter, err := writer.CreatePart(h)
 	if err != nil {
 		return TableTransactionResponse{}, err
 	}
-	batchWriter.Write(changeSetBody.Bytes())
+	_, err = batchWriter.Write(changeSetBody.Bytes())
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 	writer.Close()
 
 	err = req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
@@ -262,7 +268,10 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
-	writer.SetBoundary(changesetBoundary)
+	err := writer.SetBoundary(changesetBoundary)
+	if err != nil {
+		return nil, err
+	}
 
 	for _, be := range *transactionActions {
 		err := t.generateEntitySubset(&be, writer)

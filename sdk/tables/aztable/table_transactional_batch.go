@@ -324,7 +324,10 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
 	operationWriter.Write([]byte(urlAndVerb))
-	writeHeaders(req.Header, &operationWriter)
+	err = writeHeaders(req.Header, &operationWriter)
+	if err != nil {
+		return err
+	}
 	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
 	if req.Body != nil {
 		io.Copy(operationWriter, req.Body)
@@ -333,14 +336,17 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	return nil
 }
 
-func writeHeaders(h http.Header, writer *io.Writer) {
+func writeHeaders(h http.Header, writer *io.Writer) error {
 	// This way it is guaranteed the headers will be written in a sorted order
 	var keys []string
 	for k := range h {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+	var err error
 	for _, k := range keys {
-		(*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
+		_, err = (*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
+
 	}
+	return err
 }

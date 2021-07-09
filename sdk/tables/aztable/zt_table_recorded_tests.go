@@ -105,7 +105,10 @@ func cleanupTables(context *testContext, tables *[]string) {
 		}
 	} else {
 		for _, t := range *tables {
-			c.Delete(ctx, t)
+			_, err := c.Delete(ctx, t)
+			if err != nil {
+				fmt.Printf("There was an error cleaning up tests. %v\n", err.Error())
+			}
 		}
 	}
 }

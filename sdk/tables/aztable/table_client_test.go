@@ -6,6 +6,7 @@ package aztable
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -500,7 +501,10 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 		}
 	}
 	return client, func() {
-		client.Delete(ctx)
+		_, err := client.Delete(ctx)
+		if err != nil {
+			fmt.Printf("Error deleting table. %v\n", err.Error())
+		}
 	}
 }
 

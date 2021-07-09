@@ -74,10 +74,9 @@ func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
 		err := json.Unmarshal(bt, &val)
-		if err != nil {
-			panic(err)
-		}
-		castAndRemoveAnnotations(&val)
+		assert.Nil(err)
+		err = castAndRemoveAnnotations(&val)
+		assert.Nil(err)
 		assert.Equal("somePartition", val["PartitionKey"])
 	}
 }

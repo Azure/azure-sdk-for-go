@@ -6,6 +6,7 @@ This guide describes how to take an OpenAPI (or Swagger) spec located in the azu
 * [Install AutoRest](#install-autorest)
     * [Generating Code](#generating-code)
 * [Create a Client](#create-a-client)
+	* [Documenting Code](#documenting-code)
     * [Constructors](#constructors)
 	* [Defining Methods](#defining-methods)
 * [Write Tests](#write-tests)
@@ -26,6 +27,9 @@ The Azure-sdk-for-go team supports Go versions 1.14 and greater, with our CI pip
 After you have the generated code from Autorest, the next step is to wrap this generated code in a "convenience layer" that the customers will use directly to interact with the service. Go is not an object-oriented language like C#, Java, or Python. There is no type hierarchy in Go. Clients and models will be defined as `struct`s and methods will be defined on these structs to interact with the service.
 
 In other languages, types can be specifically marked "public" or "private", in Go exported types and methods are defined by starting with a capital letter. The methods on structs also follow this rule, if it is for use outside the model it must start with a capital letter.
+
+### Documenting Code
+Code is documented directly in line and can be created directly using the Go toolchain.
 
 ### Constructors
 All clients should be able to be initialized directly from the user and should begin with `New`. For example to define a constructor for a new client for the Tables service we start with defining the struct `TableServiceClient`:
@@ -56,8 +60,32 @@ In `Go`, the parameters are surrounded in parenthesis immediately following the 
 
 This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`](https://gobyexample.com/interfaces) which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.Credential` the `AuthenticationPolicy(options AuthenticationPolicyOptions) Policy` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change. The `Options` type should have a name that is intuitive to what the customer is trying to do, in this case `TableClientOptions`.
 
-
 ### Defining Methods
+Defining a method follows the format:
+```golang
+func (m *<MyStruct>) MethodName(param1 param1Type, param2 param2Type) (ReturnType, ReturnType2) {
+
+}
+```
+The `(m *<MyStruct>)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will avoid copying types on method calls and allow the method to mutate the receiving struct. You should use pointer receivers wherever possible to limit memory copies.
+
+
+Both public and private methods can be declared on clients. Below is an example in the `aztables` package for a `Create` method on the `TableServiceClient`:
+```golang
+// Create creates a table with the specified name.
+func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
+	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
+	if err == nil {
+		tableResp := resp.(TableResponseResponse)
+		return tableResp, nil
+	}
+	return TableResponseResponse{}, err
+}
+```
+
+All methods that make a call to service must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to do SOMETHING TO BE FILLED IN LATER. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
+
+
 
 ## Write Tests
 
@@ -65,3 +93,4 @@ This client takes three parameters, the first is the service URL for the specifi
 
 <!-- LINKS -->
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
+[golang_context]: https://golang.org/pkg/context/#Context

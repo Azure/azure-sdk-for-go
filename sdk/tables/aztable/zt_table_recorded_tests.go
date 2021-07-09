@@ -42,6 +42,7 @@ const (
 
 var ctx = context.Background()
 var clientsMap map[string]*testContext = make(map[string]*testContext)
+var cosmosTestsMap map[string]bool = make(map[string]bool)
 
 func storageURI(accountName string, endpointSuffix string) string {
 	return "https://" + accountName + ".table." + endpointSuffix
@@ -89,6 +90,7 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 		cred, err = NewSharedKeyCredential(accountName, secret)
 		failIfNotNil(assert, err)
 		uri = cosmosURI(accountName, suffix)
+		cosmosTestsMap[testName] = true
 	}
 
 	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: r, Retry: azcore.RetryOptions{MaxRetries: -1}})

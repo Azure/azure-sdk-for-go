@@ -98,15 +98,20 @@ func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	}
 }
 
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
 func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntity()
 	for i := 0; i < b.N; i++ {
 		m, _ := toMap(ent)
-		toOdataAnnotatedDictionary(m)
-		_, err := json.Marshal(m)
-		if err != nil {
-			panic(err)
-		}
+		err := toOdataAnnotatedDictionary(m)
+		check(err)
+		_, err = json.Marshal(m)
+		check(err)
 	}
 }
 

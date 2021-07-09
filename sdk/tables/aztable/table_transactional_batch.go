@@ -96,6 +96,7 @@ type TableSubmitTransactionOptions struct {
 	RequestID *string
 }
 
+//nolint
 var defaultChangesetHeaders = map[string]string{
 	"Accept":       "application/json;odata=minimalmetadata",
 	"Content-Type": "application/json",

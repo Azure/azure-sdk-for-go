@@ -75,7 +75,10 @@ func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
 	bt := []byte(complexPayload)
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
-		json.Unmarshal(bt, &val)
+		err := json.Unmarshal(bt, &val)
+		if err != nil {
+			panic(err)
+		}
 		castAndRemoveAnnotations(&val)
 		assert.Equal("somePartition", val["PartitionKey"])
 	}
@@ -87,9 +90,12 @@ func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	bt := []byte(complexPayload)
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
-		json.Unmarshal(bt, &val)
+		err := json.Unmarshal(bt, &val)
+		if err != nil {
+			panic(err)
+		}
 		result := complexEntity{}
-		err := EntityMapAsModel(val, &result)
+		err = EntityMapAsModel(val, &result)
 		assert.Nil(err)
 		assert.Equal("somePartition", result.PartitionKey)
 	}
@@ -100,7 +106,10 @@ func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		m, _ := toMap(ent)
 		toOdataAnnotatedDictionary(m)
-		json.Marshal(m)
+		_, err := json.Marshal(m)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -108,7 +117,10 @@ func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntityMap()
 	for i := 0; i < b.N; i++ {
 		toOdataAnnotatedDictionary(&ent)
-		json.Marshal(ent)
+		_, err := json.Marshal(ent)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -180,11 +192,12 @@ func TestDeserializeFromMap(t *testing.T) {
 	expected := createComplexEntity()
 	bt := []byte(complexPayload)
 	var val = make(map[string]interface{})
-	json.Unmarshal(bt, &val)
+	err := json.Unmarshal(bt, &val)
+	assert.Nil(err)
 	result := complexEntity{}
 	// tt := reflect.TypeOf(complexEntity{})
 	// err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
-	err := EntityMapAsModel(val, &result)
+	err = EntityMapAsModel(val, &result)
 	assert.Nil(err)
 	assert.EqualValues(expected, result)
 }

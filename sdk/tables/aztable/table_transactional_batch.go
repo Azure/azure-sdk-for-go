@@ -300,9 +300,15 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	switch transactionAction.ActionType {
 	case Delete:
 		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
+		if err != nil {
+			return err
+		}
 	case Add:
 		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
+		if err != nil {
+			return err
+		}
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
@@ -312,6 +318,9 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 			opts.IfMatch = &transactionAction.ETag
 		}
 		req, err = t.client.mergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
+		if err != nil {
+			return err
+		}
 		if isCosmosEndpoint(t.client.con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
@@ -320,6 +329,9 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpsertReplace:
 		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		if err != nil {
+			return err
+		}
 	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)

@@ -53,10 +53,10 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
+func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
-	h.Write([]byte(message))
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+	_, err := h.Write([]byte(message))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
 }
 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
@@ -144,7 +144,10 @@ func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOp
 		if err != nil {
 			return nil, err
 		}
-		signature := c.ComputeHMACSHA256(stringToSign)
+		signature, err := c.ComputeHMACSHA256(stringToSign)
+		if err != nil {
+			return nil, err
+		}
 		authHeader := strings.Join([]string{"SharedKeyLite ", c.AccountName(), ":", signature}, "")
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 

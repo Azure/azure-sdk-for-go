@@ -180,7 +180,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
 
-func (s *tableClientLiveTests) _TestGetEntity() {
+func (s *tableClientLiveTests) TestGetEntity() {
 	assert := assert.New(s.T())
 	require := require.New(s.T())
 	client, delete := s.init(true)
@@ -233,7 +233,8 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
-		resp.TableEntityQueryResponse.AsModels(&models)
+		err := resp.TableEntityQueryResponse.AsModels(&models)
+		assert.Nil(err)
 		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
 	}
 	resp = pager.PageResponse()
@@ -442,7 +443,8 @@ func (s *tableClientLiveTests) TestBatchError() {
 	assert.Equal(error_empty_transaction, err.Error())
 
 	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-	client.AddEntity(ctx, (*entitiesToCreate)[2])
+	_, err = client.AddEntity(ctx, (*entitiesToCreate)[2])
+	assert.Nil(err)
 
 	// Add the entities to the batch
 	for i := 0; i < cap(batch); i++ {

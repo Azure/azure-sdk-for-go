@@ -87,7 +87,10 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 func recordedTestTeardown(key string) {
 	context, ok := clientsMap[key]
 	if ok && !(*context.context).IsFailed() {
-		context.recording.Stop()
+		err := context.recording.Stop()
+		if err != nil {
+			fmt.Printf("Error tearing down tests. %v\n", err.Error())
+		}
 	}
 }
 
@@ -98,7 +101,10 @@ func cleanupTables(context *testContext, tables *[]string) {
 		pager := c.Query(nil)
 		for pager.NextPage(ctx) {
 			for _, t := range pager.PageResponse().TableQueryResponse.Value {
-				c.Delete(ctx, *t.TableName)
+				_, err := c.Delete(ctx, *t.TableName)
+				if err != nil {
+					fmt.Printf("Error cleaning up tables. %v\n", err.Error())
+				}
 			}
 		}
 	} else {

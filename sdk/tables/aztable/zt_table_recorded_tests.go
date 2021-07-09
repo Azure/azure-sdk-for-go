@@ -51,6 +51,12 @@ func cosmosURI(accountName string, endpointSuffix string) string {
 	return "https://" + accountName + ".table." + endpointSuffix
 }
 
+func failIfNotNil(a *assert.Assertions, e error) {
+	if e != nil {
+		a.FailNow(e.Error())
+	}
+}
+
 // create the test specific TableClient and wire it up to recordings
 func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode recording.RecordMode) {
 	var accountName string
@@ -67,15 +73,21 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 
 	if endpointType == StorageEndpoint {
 		accountName, err = r.GetRecordedVariable(storageAccountNameEnvVar, recording.Default)
+		failIfNotNil(assert, err)
 		suffix = r.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.Default)
 		secret, err = r.GetRecordedVariable(storageAccountKeyEnvVar, recording.Secret_Base64String)
-		cred, _ = NewSharedKeyCredential(accountName, secret)
+		failIfNotNil(assert, err)
+		cred, err = NewSharedKeyCredential(accountName, secret)
+		failIfNotNil(assert, err)
 		uri = storageURI(accountName, suffix)
 	} else {
 		accountName, err = r.GetRecordedVariable(cosmosAccountNameEnnVar, recording.Default)
+		failIfNotNil(assert, err)
 		suffix = r.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, recording.Default)
 		secret, err = r.GetRecordedVariable(cosmosAccountKeyEnvVar, recording.Secret_Base64String)
-		cred, _ = NewSharedKeyCredential(accountName, secret)
+		failIfNotNil(assert, err)
+		cred, err = NewSharedKeyCredential(accountName, secret)
+		failIfNotNil(assert, err)
 		uri = cosmosURI(accountName, suffix)
 	}
 

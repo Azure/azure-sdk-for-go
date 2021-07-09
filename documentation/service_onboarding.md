@@ -10,6 +10,8 @@ This guide describes how to take an OpenAPI (or Swagger) spec located in the azu
 
 ## Install Go
 
+The Azure-sdk-for-go team supports Go versions 1.14 and greater, with our CI pipelines testing against versions 1.14 and 1.15 on 
+
 ## Install Autorest
 
 * swagger.md file

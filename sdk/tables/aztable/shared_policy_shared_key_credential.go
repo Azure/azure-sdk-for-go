@@ -62,10 +62,6 @@ func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String st
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
-	contentLength := headers.Get(azcore.HeaderContentLength)
-	if contentLength == "0" {
-		contentLength = ""
-	}
 
 	canonicalizedResource, err := c.buildCanonicalizedResource(req.URL)
 	if err != nil {

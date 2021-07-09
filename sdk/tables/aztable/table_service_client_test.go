@@ -37,10 +37,11 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
+	failIfNotNil(assert, err)
 
 	_, err = context.client.Create(ctx, tableName)
 	defer context.client.Delete(ctx, tableName)
-	assert.Nil(err)
+	failIfNotNil(assert, err)
 
 	// Create a duplicate table to produce an error
 	_, err = context.client.Create(ctx, tableName)
@@ -53,11 +54,12 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
+	failIfNotNil(assert, err)
 
 	resp, err := context.client.Create(ctx, tableName)
 	defer context.client.Delete(ctx, tableName)
 
-	assert.Nil(err)
+	failIfNotNil(assert, err)
 	assert.Equal(*resp.TableResponse.TableName, tableName)
 }
 

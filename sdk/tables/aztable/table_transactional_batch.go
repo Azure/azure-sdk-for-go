@@ -198,8 +198,8 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 	}
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
-	outerPart, err := mpReader.NextPart()
-	innerBytes, err := ioutil.ReadAll(outerPart)
+	outerPart, err := mpReader.NextPart()        //nolint There is an error here
+	innerBytes, err := ioutil.ReadAll(outerPart) //nolint There is an error here
 	innerBoundary := getBoundaryName(innerBytes)
 	reader = bytes.NewReader(innerBytes)
 	mpReader = multipart.NewReader(reader, innerBoundary)
@@ -335,17 +335,24 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
-	operationWriter.Write([]byte(urlAndVerb))
+	_, err = operationWriter.Write([]byte(urlAndVerb))
+	if err != nil {
+		return err
+	}
 	err = writeHeaders(req.Header, &operationWriter)
 	if err != nil {
 		return err
 	}
-	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
+	_, err = operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
+	if err != nil {
+		return err
+	}
 	if req.Body != nil {
-		io.Copy(operationWriter, req.Body)
+		_, err = io.Copy(operationWriter, req.Body)
+
 	}
 
-	return nil
+	return err
 }
 
 func writeHeaders(h http.Header, writer *io.Writer) error {

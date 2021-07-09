@@ -350,6 +350,8 @@ type AccountProperties struct {
 	Endpoints *AccountPropertiesEndpoints `json:"endpoints,omitempty"`
 	// FriendlyName - READ-ONLY; Gets or sets the friendly name.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+	// ManagedResourceGroupName - Gets or sets the managed resource group name
+	ManagedResourceGroupName *string `json:"managedResourceGroupName,omitempty"`
 	// ManagedResources - READ-ONLY; Gets the resource identifiers of the managed resources.
 	ManagedResources *AccountPropertiesManagedResources `json:"managedResources,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; Gets the private endpoint connections information.
@@ -358,6 +360,8 @@ type AccountProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PublicNetworkAccess - Gets or sets the public network access. Possible values include: 'NotSpecified', 'Enabled', 'Disabled'
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *AccountPropertiesSystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountProperties.
@@ -365,6 +369,9 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ap.CloudConnectors != nil {
 		objectMap["cloudConnectors"] = ap.CloudConnectors
+	}
+	if ap.ManagedResourceGroupName != nil {
+		objectMap["managedResourceGroupName"] = ap.ManagedResourceGroupName
 	}
 	if ap.PublicNetworkAccess != "" {
 		objectMap["publicNetworkAccess"] = ap.PublicNetworkAccess
@@ -400,6 +407,28 @@ type AccountPropertiesManagedResources struct {
 
 // MarshalJSON is the custom marshaler for AccountPropertiesManagedResources.
 func (apR AccountPropertiesManagedResources) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// AccountPropertiesSystemData metadata pertaining to creation and last modification of the resource.
+type AccountPropertiesSystemData struct {
+	// CreatedAt - READ-ONLY; The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// CreatedBy - READ-ONLY; The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - READ-ONLY; The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// LastModifiedAt - READ-ONLY; The timestamp of the last modification the resource (UTC).
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+	// LastModifiedBy - READ-ONLY; The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - READ-ONLY; The type of identity that last modified the resource. Possible values include: 'LastModifiedByTypeUser', 'LastModifiedByTypeApplication', 'LastModifiedByTypeManagedIdentity', 'LastModifiedByTypeKey'
+	LastModifiedByType LastModifiedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountPropertiesSystemData.
+func (apD AccountPropertiesSystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -537,8 +566,8 @@ func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, er
 
 // AccountUpdateParameters the account update properties.
 type AccountUpdateParameters struct {
-	// AccountProperties - The account properties.
-	*AccountProperties `json:"properties,omitempty"`
+	// Properties - The account properties.
+	Properties *AccountProperties `json:"properties,omitempty"`
 	// Tags - Tags on the azure resource.
 	Tags map[string]*string `json:"tags"`
 }
@@ -546,46 +575,13 @@ type AccountUpdateParameters struct {
 // MarshalJSON is the custom marshaler for AccountUpdateParameters.
 func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if aup.AccountProperties != nil {
-		objectMap["properties"] = aup.AccountProperties
+	if aup.Properties != nil {
+		objectMap["properties"] = aup.Properties
 	}
 	if aup.Tags != nil {
 		objectMap["tags"] = aup.Tags
 	}
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
-func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var accountProperties AccountProperties
-				err = json.Unmarshal(*v, &accountProperties)
-				if err != nil {
-					return err
-				}
-				aup.AccountProperties = &accountProperties
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				aup.Tags = tags
-			}
-		}
-	}
-
-	return nil
 }
 
 // CheckNameAvailabilityRequest the request payload for CheckNameAvailability API
@@ -607,7 +603,7 @@ type CheckNameAvailabilityResult struct {
 	Reason Reason `json:"reason,omitempty"`
 }
 
-// CloudConnectors properties for configuring third party cloud connections.
+// CloudConnectors ...
 type CloudConnectors struct {
 	// AwsExternalID - READ-ONLY; AWS external identifier.
 	// Configured in AWS to allow use of the role arn used for scanning
@@ -635,129 +631,6 @@ type DefaultAccountPayload struct {
 	ScopeType ScopeType `json:"scopeType,omitempty"`
 	// SubscriptionID - The subscription ID of the account that is set as the default.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-}
-
-// DeletedAccount soft Deleted Account resource
-type DeletedAccount struct {
-	// DeletedAccountProperties - READ-ONLY; Gets or sets the properties.
-	*DeletedAccountProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Gets or sets the identifier.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Gets or sets the name.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Gets or sets the type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for DeletedAccount.
-func (da DeletedAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for DeletedAccount struct.
-func (da *DeletedAccount) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var deletedAccountProperties DeletedAccountProperties
-				err = json.Unmarshal(*v, &deletedAccountProperties)
-				if err != nil {
-					return err
-				}
-				da.DeletedAccountProperties = &deletedAccountProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				da.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				da.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				da.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// DeletedAccountList paged list of soft deleted account resources
-type DeletedAccountList struct {
-	// Count - Total item count.
-	Count *int64 `json:"count,omitempty"`
-	// NextLink - The Url of next result page.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Collection of items of type results.
-	Value *[]DeletedAccount `json:"value,omitempty"`
-}
-
-// DeletedAccountProperties gets or sets the properties.
-type DeletedAccountProperties struct {
-	// AccountID - READ-ONLY; Gets the account identifier associated with resource.
-	AccountID *string `json:"accountId,omitempty"`
-	// DeletedBy - READ-ONLY; Gets the user identifier that deleted resource.
-	DeletedBy *string `json:"deletedBy,omitempty"`
-	// DeletionDate - READ-ONLY; Gets the time at which the resource was soft deleted.
-	DeletionDate *date.Time `json:"deletionDate,omitempty"`
-	// Location - READ-ONLY; Gets the resource location.
-	Location *string `json:"location,omitempty"`
-	// ScheduledPurgeDate - READ-ONLY; Gets the scheduled purge datetime.
-	ScheduledPurgeDate *date.Time `json:"scheduledPurgeDate,omitempty"`
-	// Tags - READ-ONLY; Gets the account tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for DeletedAccountProperties.
-func (da DeletedAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// DeletedAccountPropertiesModel the soft deleted account properties
-type DeletedAccountPropertiesModel struct {
-	// AccountID - READ-ONLY; Gets the account identifier associated with resource.
-	AccountID *string `json:"accountId,omitempty"`
-	// DeletedBy - READ-ONLY; Gets the user identifier that deleted resource.
-	DeletedBy *string `json:"deletedBy,omitempty"`
-	// DeletionDate - READ-ONLY; Gets the time at which the resource was soft deleted.
-	DeletionDate *date.Time `json:"deletionDate,omitempty"`
-	// Location - READ-ONLY; Gets the resource location.
-	Location *string `json:"location,omitempty"`
-	// ScheduledPurgeDate - READ-ONLY; Gets the scheduled purge datetime.
-	ScheduledPurgeDate *date.Time `json:"scheduledPurgeDate,omitempty"`
-	// Tags - READ-ONLY; Gets the account tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for DeletedAccountPropertiesModel.
-func (dapm DeletedAccountPropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // DimensionProperties properties for dimension
@@ -1478,13 +1351,13 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 // PrivateLinkResource a privately linkable resource.
 type PrivateLinkResource struct {
 	autorest.Response `json:"-"`
-	// PrivateLinkResourceProperties - READ-ONLY; The private link resource properties.
-	*PrivateLinkResourceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Gets or sets the identifier.
+	// ID - READ-ONLY; The private link resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Gets or sets the name.
+	// Name - READ-ONLY; The private link resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Gets or sets the type.
+	// Properties - READ-ONLY; The private link resource properties.
+	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	// Type - READ-ONLY; The private link resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1492,57 +1365,6 @@ type PrivateLinkResource struct {
 func (plr PrivateLinkResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for PrivateLinkResource struct.
-func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var privateLinkResourceProperties PrivateLinkResourceProperties
-				err = json.Unmarshal(*v, &privateLinkResourceProperties)
-				if err != nil {
-					return err
-				}
-				plr.PrivateLinkResourceProperties = &privateLinkResourceProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				plr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				plr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				plr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
 }
 
 // PrivateLinkResourceList paged list of private link resources
@@ -1744,6 +1566,28 @@ type ProxyResource struct {
 
 // MarshalJSON is the custom marshaler for ProxyResource.
 func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedAt - READ-ONLY; The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// CreatedBy - READ-ONLY; The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - READ-ONLY; The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// LastModifiedAt - READ-ONLY; The timestamp of the last modification the resource (UTC).
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+	// LastModifiedBy - READ-ONLY; The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - READ-ONLY; The type of identity that last modified the resource. Possible values include: 'LastModifiedByTypeUser', 'LastModifiedByTypeApplication', 'LastModifiedByTypeManagedIdentity', 'LastModifiedByTypeKey'
+	LastModifiedByType LastModifiedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemData.
+func (sd SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

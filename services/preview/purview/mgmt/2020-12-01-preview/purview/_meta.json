@@ -1,5 +1,5 @@
 {
-  "commit": "138759b8a5987252fd66658078907e1d93969c85",
+  "commit": "654c237832960c2753b7a4a4459a434af6d57a4a",
   "readme": "/_/azure-rest-api-specs/specification/purview/resource-manager/readme.md",
   "tag": "package-2020-12-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

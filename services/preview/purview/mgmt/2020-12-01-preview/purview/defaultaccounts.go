@@ -108,7 +108,7 @@ func (client DefaultAccountsClient) GetResponder(resp *http.Response) (result De
 	return
 }
 
-// Remove remove the default account from the scope.
+// Remove removes the default account from the scope.
 // Parameters:
 // scopeTenantID - the tenant ID.
 // scopeType - the scope for the default account.
@@ -184,7 +184,7 @@ func (client DefaultAccountsClient) RemoveResponder(resp *http.Response) (result
 	return
 }
 
-// Set set the default account for the scope.
+// Set sets the default account for the scope.
 // Parameters:
 // defaultAccountPayload - the payload containing the default account information and the scope.
 func (client DefaultAccountsClient) Set(ctx context.Context, defaultAccountPayload DefaultAccountPayload) (result DefaultAccountPayload, err error) {

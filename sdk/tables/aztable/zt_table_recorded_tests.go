@@ -15,8 +15,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type tablesRecordedTests struct{}
-
 type testContext struct {
 	recording *recording.Recording
 	client    *TableServiceClient

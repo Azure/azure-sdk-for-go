@@ -176,7 +176,7 @@ func (p *tableQueryResponsePager) Err() error {
 
 func castAndRemoveAnnotationsSlice(entities *[]map[string]interface{}) {
 	for _, e := range *entities {
-		castAndRemoveAnnotations(&e)
+		castAndRemoveAnnotations(&e) //nolint:errcheck
 	}
 }
 

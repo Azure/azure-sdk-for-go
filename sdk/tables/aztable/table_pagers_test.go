@@ -21,8 +21,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type pagerTests struct{}
-
 func TestCastAndRemoveAnnotations(t *testing.T) {
 	assert := assert.New(t)
 

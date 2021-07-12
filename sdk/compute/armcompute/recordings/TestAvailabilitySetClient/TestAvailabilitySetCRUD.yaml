@@ -1,0 +1,125 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"location":"westus"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Content-Length:
+      - "21"
+      Content-Type:
+      - application/json
+      User-Agent:
+      - azsdk-go-armcompute/v0.2.0 armcore/v0.8.0 azcore/v0.16.2 (go1.16; Windows_NT)
+    url: https://localhost:8441/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgMockfta3/providers/Microsoft.Compute/availabilitySets/setMockbsy?api-version=2021-03-01
+    method: PUT
+  response:
+    body: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgMockfta3/providers/Microsoft.Compute/availabilitySets/setMockbsy","name":"setMockbsy","type":"aaaaaaaaaaaaaaaaaa","location":"aaaaaaaaaaaaaaaaaaaaa","tags":{"key732":"aaaaaaaa"},"properties":{"platformUpdateDomainCount":18,"platformFaultDomainCount":25,"virtualMachines":[{"id":"/subscriptions/a9cbceed-cd54-47f1-b7a2-bad149218603/resourceGroups/mockRg/providers/Microsoft.Resources/mockResource/mockName"}],"proximityPlacementGroup":{"id":"/subscriptions/a9cbceed-cd54-47f1-b7a2-bad149218603/resourceGroups/mockRg/providers/Microsoft.Resources/mockResource/mockName"},"statuses":[{"code":"aaaaaaaaaaaaaaaaaaaaaaa","level":"Info","displayStatus":"aaa","message":"aaaaaaaaaaaaaaaaaaaaaaaaaaaa","time":"2021-07-05T07:05:22.265Z"}]},"sku":{"name":"setMockbsy","tier":"aaaaaaaaa","capacity":7}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "866"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 06 Jul 2021 07:29:44 GMT
+      Etag:
+      - W/"362-LHHY01AXB74w2ZqXyfehqHFB6xw"
+      Keep-Alive:
+      - timeout=5
+      X-Powered-By:
+      - Express
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - azsdk-go-armcompute/v0.2.0 armcore/v0.8.0 azcore/v0.16.2 (go1.16; Windows_NT)
+    url: https://localhost:8441/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgMockfta3/providers/Microsoft.Compute/availabilitySets/setMockbsy?api-version=2021-03-01
+    method: GET
+  response:
+    body: '{"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgMockfta3/providers/Microsoft.Compute/availabilitySets/setMockbsy","name":"setMockbsy","type":"aaaaaaaaaaaaaaaaaa","location":"aaaaaaaaaaaaaaaaaaaaa","tags":{"key732":"aaaaaaaa"},"properties":{"platformUpdateDomainCount":18,"platformFaultDomainCount":25,"virtualMachines":[{"id":"/subscriptions/a9cbceed-cd54-47f1-b7a2-bad149218603/resourceGroups/mockRg/providers/Microsoft.Resources/mockResource/mockName"}],"proximityPlacementGroup":{"id":"/subscriptions/a9cbceed-cd54-47f1-b7a2-bad149218603/resourceGroups/mockRg/providers/Microsoft.Resources/mockResource/mockName"},"statuses":[{"code":"aaaaaaaaaaaaaaaaaaaaaaa","level":"Info","displayStatus":"aaa","message":"aaaaaaaaaaaaaaaaaaaaaaaaaaaa","time":"2021-07-05T07:05:22.265Z"}]},"sku":{"name":"setMockbsy","tier":"aaaaaaaaa","capacity":7}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "866"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 06 Jul 2021 07:29:44 GMT
+      Etag:
+      - W/"362-LHHY01AXB74w2ZqXyfehqHFB6xw"
+      Keep-Alive:
+      - timeout=5
+      X-Powered-By:
+      - Express
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - azsdk-go-armcompute/v0.2.0 armcore/v0.8.0 azcore/v0.16.2 (go1.16; Windows_NT)
+    url: https://localhost:8441/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgMockfta3/providers/Microsoft.Compute/availabilitySets/setMockbsy?api-version=2021-03-01
+    method: DELETE
+  response:
+    body: '{}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "2"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 06 Jul 2021 07:29:44 GMT
+      Etag:
+      - W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
+      Keep-Alive:
+      - timeout=5
+      X-Powered-By:
+      - Express
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - azsdk-go-armcompute/v0.2.0 armcore/v0.8.0 azcore/v0.16.2 (go1.16; Windows_NT)
+    url: https://localhost:8441/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgMockfta3/providers/Microsoft.Compute/availabilitySets/setMockbsy?api-version=2021-03-01
+    method: GET
+  response:
+    body: '{"error":{"code":"404","message":"Resource Not Found"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - "55"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 06 Jul 2021 07:29:44 GMT
+      Etag:
+      - W/"37-e67/RE5D5J2efnge4rs+kf1VAAo"
+      Keep-Alive:
+      - timeout=5
+      X-Powered-By:
+      - Express
+    status: 404 Not Found
+    code: 404
+    duration: ""

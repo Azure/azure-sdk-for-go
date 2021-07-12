@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 1)
+param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild)
 
 $startingDirectory = Get-Location
 $root = Resolve-Path ($PSScriptRoot + "/../..")
@@ -24,7 +24,7 @@ if (![string]::IsNullOrWhiteSpace($filter)) {
     $keys = $keys.Where( { $_ -match $filter }) 
 }
 
-$keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
+$keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
     Push-Location $_.path
 
     if ($_.clean) {
@@ -51,6 +51,6 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
         go vet ./...
     }
     Pop-Location
-} -ThrottleLimit $parallel
+}
 
 Set-Location $startingDirectory

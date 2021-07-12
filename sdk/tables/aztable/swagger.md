@@ -18,6 +18,7 @@ openapi-type: "data-plane"
 credential_scope: none
 tag: package-2019-02
 credential-scope: none
+use: "@autorest/go@4.0.0-preview.20"
 ```
 
 <!-- ``` yaml

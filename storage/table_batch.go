@@ -102,7 +102,7 @@ func (t *TableBatch) DeleteEntity(entity *Entity, force bool) {
 }
 
 // DeleteEntityByForce adds an entity in preparation for a batch delete. Forces regardless of ETag
-func (t *TableBatch) DeleteEntityByForce(entity *Entity, force bool) {
+func (t *TableBatch) DeleteEntityByForce(entity *Entity) {
 	t.DeleteEntity(entity, true)
 }
 

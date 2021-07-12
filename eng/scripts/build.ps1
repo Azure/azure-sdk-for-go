@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param($filter, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 5)
+param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 5)
 
 $startingDirectory = Get-Location
 $root = Resolve-Path ($PSScriptRoot + "/../..")
@@ -10,6 +10,7 @@ foreach ($sdk in (./eng/scripts/get_module_dirs.ps1 -serviceDir 'sdk/...')) {
     $name = $sdk | split-path -leaf
     $sdks[$name] = @{
         'path'      = $sdk;
+        'clean'     = $clean;
         'vet'       = $vet;
         'generate'  = $generate;
         'skipBuild' = $skipBuild;
@@ -25,6 +26,11 @@ if (![string]::IsNullOrWhiteSpace($filter)) {
 
 $keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
     Push-Location $_.path
+
+    if ($_.clean) {
+        Write-Host "##[command]Executing go clean -v ./... in " $_.path
+        go clean -v ./...
+    }
 
     if ($_.generate) {
         Write-Host "##[command]Executing autorest.go in " $_.path

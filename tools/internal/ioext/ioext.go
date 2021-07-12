@@ -6,10 +6,12 @@ package ioext
 import (
 	"errors"
 	"fmt"
+	"github.com/ahmetb/go-linq/v3"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // CopyDir recursively copies the specified source directory tree to the
@@ -120,4 +122,16 @@ func CopyFile(src, dst string, overwrite bool) error {
 	}
 
 	return nil
+}
+
+func GetLines(file io.Reader) ([]string, error) {
+	b, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+	var result []string
+	linq.From(strings.Split(string(b), "\n")).SelectT(func(line string) string {
+		return strings.TrimSpace(line)
+	}).ToSlice(&result)
+	return result, nil
 }

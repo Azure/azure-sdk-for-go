@@ -1,10 +1,10 @@
-# Azure Compute Module for Go
+# Azure Monitor Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/monitor/armmonitor)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/armmonitor)
 
-The `armcompute` module provides operations for working with Azure compute.
+The `armmonitor` module provides operations for working with Azure Monitor.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/compute/armcompute)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/armmonitor)
 
 # Getting started
 
@@ -17,15 +17,15 @@ The `armcompute` module provides operations for working with Azure compute.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Compute module:
+Install the Azure Monitor module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
+go get github.com/Azure/azure-sdk-for-go/sdk/monitor/armmonitor
 ```
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Compute.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Monitor.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Compute
+## Connecting to Azure Monitor
 
 Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
@@ -45,16 +45,16 @@ For more information on ARM connections, please see the documentation for `armco
 
 ## Clients
 
-Azure Compute modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure Monitor modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armcompute.NewVirtualMachinesClient(con, "<subscription ID>")
+client := armmonitor.NewAlertRulesClient(con, "<subscription ID>")
 ```
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Compute` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Monitor` label.
 
 # Contributing
 

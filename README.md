@@ -64,11 +64,6 @@ $ go get -u github.com/Azure/azure-sdk-for-go/...
 
 and you should also make sure to include the minimum version of [`go-autorest`](https://github.com/Azure/go-autorest) that is specified in `Gopkg.toml` file.
 
-Or if you use dep, within your repo run:
-
-```sh
-$ dep ensure -add github.com/Azure/azure-sdk-for-go
-```
 
 If you need to install Go, follow [the official instructions](https://golang.org/dl/).
 
@@ -379,22 +374,6 @@ or `Profile` version (`2017-03-09`):
 
 ```go
 import "github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/compute/mgmt/compute"
-```
-
-As well as, for dep, a `Gopkg.toml` file with:
-
-```toml
-[[constraint]]
-  name = "github.com/Azure/azure-sdk-for-go"
-  version = "21.0.0"
-```
-
-Combined, these techniques will ensure that breaking changes should not occur. If you are extra sensitive to changes, adding an additional [version pin](https://golang.github.io/dep/docs/Gopkg.toml.html#version-rules) in your SDK Version should satisfy your needs:
-
-```toml
-[[constraint]]
-  name = "github.com/Azure/azure-sdk-for-go"
-  version = "=21.3.0"
 ```
 
 ## Inspecting and Debugging

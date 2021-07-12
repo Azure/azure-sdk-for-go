@@ -12,12 +12,12 @@ For bugs or feature requests you can submit them using the [Github issues page][
 
 ## Building
 
-SDKs are either "track 1" or "track 2":
+SDKs are either old (track 1) or new (track 2):
 
-- Track 1 SDKs are found in the services/ and profiles/ top level folders. 
-    - CI is in \azure-pipelines.yml
-- Track 2 SDK are foudn in the sdk/ top level folder.
-    - CI is in \eng\pipelines\templates\steps\build.yml
+- Old (Track 1) SDKs are found in the services/ and profiles/ top level folders. 
+    - CI is in /azure-pipelines.yml
+- New (Track 2) SDKs are found in the sdk/ top level folder.
+    - CI is in /eng/pipelines/templates/steps/build.yml
 
 To build, run `go build` from the respective SDK directory.
 

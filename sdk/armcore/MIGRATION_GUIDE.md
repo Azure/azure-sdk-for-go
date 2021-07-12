@@ -12,6 +12,7 @@ This document is intended for users that are familiar with an older version of t
     * [Customized Policy](#customized-policy)
     * [Custom HTTP Client](#custom-http-client)
     * [Error Handling](#error-handling)
+    * [Long Running Operations](#long-running-operations)
     * [Pagination](#pagination)
 
 ## Prerequisites
@@ -28,7 +29,7 @@ The important breaking changes are listed in the following sections:
 
 In old version (`services/**/mgmt/**`), `autorest.Authorizer` is used in authentication process.
 
-In new version (`sdk/**/arm**`), in order to provide an unified authentication based on Azure Identity for all Azure Go SDKs, the authentication mechanism has been re-designed and improved to offer a simpler interface.
+In new version (`sdk/**/arm**`), in order to provide a unified authentication based on Azure Identity for all Azure Go SDKs, the authentication mechanism has been re-designed and improved to offer a simpler interface.
 
 To the show the code snippets for the change:
 
@@ -71,16 +72,17 @@ conn := armcore.NewConnection(credential, &armcore.ConnectionOptions{
 
 ### Error Handling
 
-There is a minor namespace change in the exception class. To be specific, the errors returned by the SDK now is always of type `runtime.ResponseError` in `github.com/Azure/azure-sdk-for-go/sdk/internal/runtime` package which implements the `HTTPResponse` interface and `NonRetriableError` interface from `azcore` package.
+There is some minor changes in the error handling. 
 
-When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response.
+- The errors returned by the SDK now are always of type `runtime.ResponseError` in `github.com/Azure/azure-sdk-for-go/sdk/internal/runtime` package which implements the `HTTPResponse` interface and `NonRetriableError` interface from `github.com/Azure/azure-sdk-for-go/sdk/azcore` package.
+- When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you will need to get the raw HTTP response in `RawResponse` property of the first return value.
 
 **In old version (`services/**/mgmt/**`)**
 
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters)
 if err != nil {
-	log.Printf("Response code: %d", resp.Response.Response.StatusCode)
+	log.Fatalf("Response code: %d", resp.Response.Response.StatusCode)
 }
 ```
 
@@ -90,15 +92,94 @@ if err != nil {
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
 	rawResponse := err.(azcore.HTTPResponse).RawResponse()
-	log.Printf("Response code: %d", rawResponse.StatusCode)
+	log.Fatalf("Response code: %d", rawResponse.StatusCode)
 }
+```
+
+**When there is no errors in new version (`sdk/**/arm**`)**
+
+```go
+resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
+if err != nil {
+	rawResponse := err.(azcore.HTTPResponse).RawResponse()
+	log.Fatalf("Response code: %d", rawResponse.StatusCode)
+}
+log.Printf("Response code: %d", resp.RawResponse.StatusCode)
+```
+
+### Long Running Operations
+
+In old version, if a request is a long-running operation, a struct `**Future` will be returned, which is an extension of the interface `azure.FutureAPI`. You need to invoke the `future.WaitForCompletionRef` to wait until it finishes.
+
+In the new version, if a request is a long-running operation, the function name will start with `Begin` to indicate this function will return an interface `**Poller` will be returned, which is an extension of the interface `azcore.Poller`.
+
+**In old version (`services/**/mgmt/**`)**
+
+```go
+future, err := virtualMachinesClient.CreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param)
+if err != nil {
+	log.Fatal(err)
+}
+if err := future.WaitForCompletionRef(context.Background(), virtualMachinesClient.Client); err != nil {
+	log.Fatal(err)
+}
+vm, err := future.Result(virtualMachinesClient)
+if err != nil {
+	log.Fatal(err)
+}
+log.Printf("virtual machine ID: %v", *vm.ID)
+```
+
+**Equivalent in new version (`sdk/**/arm**`)**
+
+```go
+poller, err := client.BeginCreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param, nil)
+if err != nil {
+	log.Fatal(err)
+}
+resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
+if err != nil {
+    log.Fatal(err)
+}
+log.Printf("virtual machine ID: %v", *resp.VirtualMachine.ID)
 ```
 
 ### Pagination
 
-In old version, `**ResultPage` is returned. It is a struct with some paging methods but no interfaces are defined regarding that.
+In old version, if a request is a paginated operation, a struct `**ResultPage` will be returned, which is a struct with some paging methods but no interfaces are defined regarding that.
 
-In new version, `**Pager` interface is returned. It is an extension of the interface `azcore.Pager`.
+In new version, if a request is a paginated operation, an interface `**Pager` will be returned, which is an extension of the interface `azcore.Pager`.
+
+**In old version (`services/**/mgmt/**`)**
+
+```go
+pager, err := resourceGroupsClient.List(context.Background(), "", nil)
+if err != nil {
+    log.Fatal(err)
+}
+for p.NotDone() {
+    for _, v := range pager.Values() {
+        log.Printf("resource group ID: %s\n", *rg.ID)
+    }
+    if err := pager.NextWithContext(context.Background()); err != nil {
+        log.Fatal(err)
+    }
+}
+```
+
+**Equivalent in new version (`sdk/**/arm**`)**
+
+```go
+pager := resourceGroupsClient.List(nil)
+for pager.NextPage(context.Background()) {
+    if err := pager.Err(); err != nil {
+        log.Fatalf("failed to advance page: %v", err)
+    }
+    for _, rg := range pager.PageResponse().ResourceGroupListResult.Value {
+        log.Printf("resource group ID: %s\n", *rg.ID)
+    }
+}
+```
 
 ## Need help?
 

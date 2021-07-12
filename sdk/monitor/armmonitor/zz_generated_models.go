@@ -5195,7 +5195,11 @@ func (t TimeSeriesBaseline) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "data", t.Data)
 	populate(objectMap, "dimensions", t.Dimensions)
 	populate(objectMap, "metadataValues", t.MetadataValues)
-	populate(objectMap, "timestamps", t.Timestamps)
+	aux := make([]*timeRFC3339, len(t.Timestamps), len(t.Timestamps))
+	for i := 0; i < len(t.Timestamps); i++ {
+		aux[i] = (*timeRFC3339)(t.Timestamps[i])
+	}
+	populate(objectMap, "timestamps", aux)
 	return json.Marshal(objectMap)
 }
 

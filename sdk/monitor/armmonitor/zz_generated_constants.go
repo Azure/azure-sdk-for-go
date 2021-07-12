@@ -7,7 +7,7 @@
 
 package armmonitor
 
-const telemetryInfo = "azsdk-go-armmonitor/<version>"
+const telemetryInfo = "azsdk-go-armmonitor/v0.1.0"
 
 // AggregationType - the aggregation type of the metric.
 type AggregationType string

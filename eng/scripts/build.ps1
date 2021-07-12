@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param($filter, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 5)
+param($filter, [switch]$vet, [switch]$generate, [switch]$skipBuild)
 
 $sdks = @{};
 
@@ -16,7 +16,7 @@ if (![string]::IsNullOrWhiteSpace($filter)) {
     $keys = $keys.Where( { $_ -match $filter }) 
 }
 
-$keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
+$keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
     Push-Location $_.path
 
     if (!$skipBuild) {
@@ -31,4 +31,4 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
         Write-Host "##[command]Executing autorest.go in " $_.path
         # TODO
     }
-} -ThrottleLimit $parallel
+}

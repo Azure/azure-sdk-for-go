@@ -1,5 +1,5 @@
 {
-  "commit": "394395ed0bdc1c5c05cb37a031379ca03bfebbb5",
+  "commit": "9705c3528da31ea3def2acf3af715ae1f185e318",
   "readme": "/_/azure-rest-api-specs/specification/storagepool/resource-manager/readme.md",
   "tag": "package-2021-04-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

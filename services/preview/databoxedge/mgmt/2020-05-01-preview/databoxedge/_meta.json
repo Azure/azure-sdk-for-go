@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "cb835f4a8f3b32919a7819d49b19a48f4aa1168b",
   "readme": "/_/azure-rest-api-specs/specification/databoxedge/resource-manager/readme.md",
   "tag": "package-2020-05-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

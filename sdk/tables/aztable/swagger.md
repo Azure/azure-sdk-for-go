@@ -11,7 +11,7 @@ input-file: https://github.com/Azure/azure-rest-api-specs/blob/d744b6bcb95ab4034
 license-header: MICROSOFT_MIT_NO_VERSION
 namespace: aztables
 clear-output-folder: false
-output-folder: ./.
+output-folder: aztable
 file-prefix: "zz_generated_"
 module: aztables
 openapi-type: "data-plane"
@@ -21,19 +21,21 @@ credential-scope: none
 use: "@autorest/go@4.0.0-preview.20"
 ```
 
-<!-- ``` yaml
+``` yaml
 directive:
   # dynamically change TableEntityProperties from map[string]interface{} to []byte
-  - from: source-file-go
+  - from: swagger-document
     where: $.definitions.TableEntityProperties
     transform: >-
-      $["type"] = "array"
+      $["type"] = "array";
       $["items"] = {
           "type": "string",
           "format": "byte",
-      }
+      };
+      delete $.additionalProperties;
       $lib.log($);
-``` -->
+      return $;
+```
 
 ### Go multi-api
 

@@ -43,6 +43,8 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
     if (!$_.skipBuild) {
         Write-Host "##[command]Executing go build -v ./... in " $_.path
         go build -v ./...
+        Write-Host "##[command]Build Complete!"
+
     }
     if ($_.vet) {
         Write-Host "##[command]Executing go vet ./... in " $_.path

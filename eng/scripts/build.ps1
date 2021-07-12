@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 5)
+param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 1)
 
 $startingDirectory = Get-Location
 $root = Resolve-Path ($PSScriptRoot + "/../..")

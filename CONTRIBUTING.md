@@ -25,7 +25,7 @@ There currently is not a repository wide way to build or regenerate code.
 
 ## Guidelines and Code of Conduct
 
-Also please see these [guidelines][] about contributing to Azure projects.
+Also please see these [guidelines][guidelines] about contributing to Azure projects.
 
 This project follows the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][cocfaq]. Contact [opencode@microsoft.com][cocmail] with questions and comments.
 

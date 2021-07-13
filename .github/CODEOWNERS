@@ -10,10 +10,10 @@
 /sdk/                    @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
 
 # Samples
-/samples/                @rickwinter @jhendrixMSFT
+/samples/                @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
 
 # PRLabel: %Azure.Core
-/sdk/azcore/             @rickwinter @jhendrixMSFT
+/sdk/azcore/             @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
 
 # PRLabel: %Azure.Identity
 /sdk/azidentity/         @rickwinter @jhendrixMSFT

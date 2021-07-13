@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -70,7 +71,7 @@ type DriveStatus struct {
 // EncryptionKeyDetails specifies the encryption key properties
 type EncryptionKeyDetails struct {
 	// KekType - The type of kek encryption key. Possible values include: 'MicrosoftManaged', 'CustomerManaged'
-	KekType KekType `json:"kekType,omitempty"`
+	KekType EncryptionKekType `json:"kekType,omitempty"`
 	// KekURL - Specifies the url for kek encryption key.
 	KekURL *string `json:"kekUrl,omitempty"`
 	// KekVaultResourceID - Specifies the keyvault resource id for kek encryption key.
@@ -212,7 +213,7 @@ type GetBitLockerKeysResponse struct {
 // IdentityDetails specifies the identity properties.
 type IdentityDetails struct {
 	// Type - The type of identity. Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
-	Type Type `json:"type,omitempty"`
+	Type IdentityType `json:"type,omitempty"`
 	// PrincipalID - READ-ONLY; Specifies the principal id for the identity for the job.
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; Specifies the tenant id for the identity for the job.
@@ -271,6 +272,8 @@ type JobDetails struct {
 // JobResponse contains the job information.
 type JobResponse struct {
 	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; SystemData of ImportExport Jobs.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Specifies the resource identifier of the job.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the job.
@@ -571,6 +574,8 @@ type LocationProperties struct {
 	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
 	// Phone - The phone number for the Azure data center.
 	Phone *string `json:"phone,omitempty"`
+	// AdditionalShippingInformation - Additional shipping information for customer, specific to datacenter to which customer should send their disks.
+	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty"`
 	// SupportedCarriers - A list of carriers that are supported at this location.
 	SupportedCarriers *[]string `json:"supportedCarriers,omitempty"`
 	// AlternateLocations - A list of location IDs that should be used to ship shipping drives to for jobs created against the current location. If the current location is active, it will be part of the list. If it is temporarily closed due to maintenance, this list may contain other locations.
@@ -753,6 +758,22 @@ func (si ShippingInformation) MarshalJSON() ([]byte, error) {
 		objectMap["phone"] = si.Phone
 	}
 	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // UpdateJobParameters update Job parameters

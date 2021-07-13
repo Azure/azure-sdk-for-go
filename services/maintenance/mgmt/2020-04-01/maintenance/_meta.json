@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "2a8a9a79b23c72c6092d5b1212acf6d69b1b3850",
   "readme": "/_/azure-rest-api-specs/specification/maintenance/resource-manager/readme.md",
   "tag": "package-2020-04",
   "use": "@microsoft.azure/autorest.go@2.1.183",

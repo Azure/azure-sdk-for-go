@@ -308,6 +308,22 @@ func testListQueues(ctx context.Context, t *testing.T, qm *QueueManager, names [
 	for _, name := range names {
 		assert.Contains(t, queueNames, name)
 	}
+
+	// there should be at least two entities but there could be others if the service isn't clean (which is fine)
+	firstSet, err := qm.List(ctx, ListQueuesWithSkip(0), ListQueuesWithTop(1))
+	assert.NoError(t, err)
+	assert.EqualValues(t, 1, len(firstSet))
+
+	secondSet, err := qm.List(ctx, ListQueuesWithSkip(1), ListQueuesWithTop(1))
+	assert.NoError(t, err)
+	assert.EqualValues(t, 1, len(secondSet))
+
+	// sanity check - we didn't just retrieve the same entity twice.
+	assert.NotEqualValues(t, firstSet[0].Name, secondSet[0].Name)
+
+	lastSet, err := qm.List(ctx, ListQueuesWithSkip(0), ListQueuesWithTop(2))
+	assert.NoError(t, err)
+	assert.EqualValues(t, 2, len(lastSet))
 }
 
 func (suite *serviceBusSuite) randEntityName() string {

@@ -245,6 +245,50 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 	suite.testSubscriptionManager(tests)
 }
 
+func (suite *serviceBusSuite) TestSubscriptionManagementReads() {
+	tests := map[string]func(ctx context.Context, t *testing.T, sm *SubscriptionManager, topicName, name string){
+		"TestListSubscriptions": testListSubscriptions,
+	}
+
+	suite.testSubscriptionManager(tests)
+}
+
+func testListSubscriptions(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	names := []string{name + "-1", name + "-2"}
+
+	for _, name := range names {
+		buildSubscription(ctx, t, sm, name)
+	}
+
+	subs, err := sm.List(ctx)
+	assert.Nil(t, err)
+	assert.NotNil(t, subs)
+	subNames := make([]string, len(subs))
+	for idx, s := range subs {
+		subNames[idx] = s.Name
+	}
+
+	for _, name := range names {
+		assert.Contains(t, subNames, name)
+	}
+
+	// there should be at least two entities but there could be others if the service isn't clean (which is fine)
+	firstSet, err := sm.List(ctx, ListSubscriptionsWithSkip(0), ListSubscriptionsWithTop(1))
+	assert.NoError(t, err)
+	assert.EqualValues(t, 1, len(firstSet))
+
+	secondSet, err := sm.List(ctx, ListSubscriptionsWithSkip(1), ListSubscriptionsWithTop(1))
+	assert.NoError(t, err)
+	assert.EqualValues(t, 1, len(secondSet))
+
+	// sanity check - we didn't just retrieve the same entity twice.
+	assert.NotEqualValues(t, firstSet[0].Name, secondSet[0].Name)
+
+	lastSet, err := sm.List(ctx, ListSubscriptionsWithSkip(0), ListSubscriptionsWithTop(2))
+	assert.NoError(t, err)
+	assert.EqualValues(t, 2, len(lastSet))
+}
+
 func testDefaultSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
 	s := buildSubscription(ctx, t, sm, name)
 	assert.False(t, *s.DeadLetteringOnMessageExpiration, "should not have dead lettering on expiration")

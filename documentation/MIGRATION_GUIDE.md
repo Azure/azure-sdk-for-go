@@ -72,7 +72,7 @@ conn := armcore.NewConnection(credential, &armcore.ConnectionOptions{
 
 ### Error Handling
 
-There is some minor changes in the error handling. 
+There are some minor changes in the error handling. 
 
 - The errors returned by the SDK now are always of type `runtime.ResponseError` in `github.com/Azure/azure-sdk-for-go/sdk/internal/runtime` package which implements the `HTTPResponse` interface and `NonRetriableError` interface from `github.com/Azure/azure-sdk-for-go/sdk/azcore` package.
 - When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you will need to get the raw HTTP response in `RawResponse` property of the first return value.
@@ -161,7 +161,7 @@ for p.NotDone() {
     for _, v := range pager.Values() {
         log.Printf("resource group ID: %s\n", *rg.ID)
     }
-    if err := pager.NextWithContext(context.Background()); err != nil {
+    if err := pager.NextWithContext(context.Background()); err != nil   {
         log.Fatal(err)
     }
 }

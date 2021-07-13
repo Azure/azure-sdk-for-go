@@ -18,11 +18,9 @@ func ConstructAtomPath(basePath string, skip int, top int) string {
 		values.Add("$top", fmt.Sprintf("%d", top))
 	}
 
-	queryParams := values.Encode()
-
-	if len(queryParams) == 0 {
+	if len(values) == 0 {
 		return basePath
 	}
 
-	return fmt.Sprintf("%s?%s", basePath, queryParams)
+	return fmt.Sprintf("%s?%s", basePath, values.Encode())
 }

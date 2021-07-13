@@ -12,8 +12,8 @@ import (
 	"time"
 )
 
-// ByteArrayResponse is the response envelope for operations that return a []byte type.
-type ByteArrayResponse struct {
+// MapOfInterfaceResponse is the response envelope for operations that return a map[string]interface{} type.
+type MapOfInterfaceResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -36,7 +36,7 @@ type ByteArrayResponse struct {
 	RequestID *string
 
 	// The other properties of the table entity.
-	Value []byte
+	Value map[string]interface{}
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
@@ -341,4 +341,3 @@ type TableUpdateEntityResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -137,79 +136,79 @@ func (s *tableClientLiveTests) TestCreateTable() {
 // 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 // }
 
-func (s *tableClientLiveTests) TestUpsertEntity() {
-	assert := assert.New(s.T())
-	require := require.New(s.T())
-	client, delete := s.init(true)
-	defer delete()
+// func (s *tableClientLiveTests) TestUpsertEntity() {
+// 	assert := assert.New(s.T())
+// 	require := require.New(s.T())
+// 	client, delete := s.init(true)
+// 	defer delete()
 
-	entitiesToCreate := createSimpleEntities(1, "partition")
+// 	entitiesToCreate := createSimpleEntities(1, "partition")
 
-	_, err := client.UpsertEntity(ctx, (*entitiesToCreate)[0], Replace)
-	require.Nil(err)
+// 	_, err := client.UpsertEntity(ctx, (*entitiesToCreate)[0], Replace)
+// 	require.Nil(err)
 
-	var qResp TableEntityQueryResponseResponse
-	filter := "RowKey eq '1'"
-	pager := client.Query(QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	preMerge := qResp.TableEntityQueryResponse.Value[0]
+// 	var qResp TableEntityQueryResponseResponse
+// 	filter := "RowKey eq '1'"
+// 	pager := client.Query(QueryOptions{Filter: &filter})
+// 	for pager.NextPage(ctx) {
+// 		qResp = pager.PageResponse()
+// 	}
+// 	preMerge := qResp.TableEntityQueryResponse.Value[0]
 
-	mergeProp := "MergeProperty"
-	val := "foo"
-	var mergeProperty = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[0][partitionKey],
-		rowKey:       (*entitiesToCreate)[0][rowKey],
-		mergeProp:    val,
-	}
+// 	mergeProp := "MergeProperty"
+// 	val := "foo"
+// 	var mergeProperty = map[string]interface{}{
+// 		partitionKey: (*entitiesToCreate)[0][partitionKey],
+// 		rowKey:       (*entitiesToCreate)[0][rowKey],
+// 		mergeProp:    val,
+// 	}
 
-	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
-	require.Nil(updateErr)
+// 	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
+// 	require.Nil(updateErr)
 
-	pager = client.Query(QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	postMerge := qResp.TableEntityQueryResponse.Value[0]
+// 	pager = client.Query(QueryOptions{Filter: &filter})
+// 	for pager.NextPage(ctx) {
+// 		qResp = pager.PageResponse()
+// 	}
+// 	postMerge := qResp.TableEntityQueryResponse.Value[0]
 
-	// The merged entity has only the standard properties + the merged property
-	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
-	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
-}
+// 	// The merged entity has only the standard properties + the merged property
+// 	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
+// 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
+// }
 
-func (s *tableClientLiveTests) _TestGetEntity() {
-	assert := assert.New(s.T())
-	require := require.New(s.T())
-	client, delete := s.init(true)
-	defer delete()
+// func (s *tableClientLiveTests) _TestGetEntity() {
+// 	assert := assert.New(s.T())
+// 	require := require.New(s.T())
+// 	client, delete := s.init(true)
+// 	defer delete()
 
-	// Add 5 entities
-	entitiesToCreate := createSimpleEntities(1, "partition")
-	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, e)
-		assert.Nil(err)
-	}
+// 	// Add 5 entities
+// 	entitiesToCreate := createSimpleEntities(1, "partition")
+// 	for _, e := range *entitiesToCreate {
+// 		_, err := client.AddEntity(ctx, e)
+// 		assert.Nil(err)
+// 	}
 
-	resp, err := client.GetEntity(ctx, "partition", "1")
-	require.Nil(err)
-	e := resp.Value
-	_, ok := e[partitionKey].(string)
-	assert.True(ok)
-	_, ok = e[rowKey].(string)
-	assert.True(ok)
-	_, ok = e[timestamp].(string)
-	assert.True(ok)
-	_, ok = e[etagOdata].(string)
-	assert.True(ok)
-	_, ok = e["StringProp"].(string)
-	assert.True(ok)
-	//TODO: fix when serialization is implemented
-	_, ok = e["IntProp"].(float64)
-	assert.True(ok)
-	_, ok = e["BoolProp"].(bool)
-	assert.True(ok)
-}
+// 	resp, err := client.GetEntity(ctx, "partition", "1")
+// 	require.Nil(err)
+// 	e := resp.Value
+// 	_, ok := e[partitionKey].(string)
+// 	assert.True(ok)
+// 	_, ok = e[rowKey].(string)
+// 	assert.True(ok)
+// 	_, ok = e[timestamp].(string)
+// 	assert.True(ok)
+// 	_, ok = e[etagOdata].(string)
+// 	assert.True(ok)
+// 	_, ok = e["StringProp"].(string)
+// 	assert.True(ok)
+// 	//TODO: fix when serialization is implemented
+// 	_, ok = e["IntProp"].(float64)
+// 	assert.True(ok)
+// 	_, ok = e["BoolProp"].(bool)
+// 	assert.True(ok)
+// }
 
 // func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 // 	assert := assert.New(s.T())
@@ -341,86 +340,86 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 	}
 }
 
-func (s *tableClientLiveTests) TestBatchMixed() {
-	assert := assert.New(s.T())
-	require := require.New(s.T())
-	context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
-	defer delete()
+// func (s *tableClientLiveTests) TestBatchMixed() {
+// 	assert := assert.New(s.T())
+// 	require := require.New(s.T())
+// 	context := getTestContext(s.T().Name())
+// 	client, delete := s.init(true)
+// 	defer delete()
 
-	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
-	batch := make([]TableTransactionAction, 3)
+// 	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
+// 	batch := make([]TableTransactionAction, 3)
 
-	// Add the first 3 entities.
-	for i := range batch {
-		batch[i] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]}
-	}
+// 	// Add the first 3 entities.
+// 	for i := range batch {
+// 		batch[i] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]}
+// 	}
 
-	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	require.Nil(err)
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(http.StatusNoContent, r.StatusCode)
-	}
+// 	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
+// 	require.Nil(err)
+// 	for i := 0; i < len(*resp.TransactionResponses); i++ {
+// 		r := (*resp.TransactionResponses)[i]
+// 		assert.Equal(http.StatusNoContent, r.StatusCode)
+// 	}
 
-	var qResp TableEntityQueryResponseResponse
-	filter := "RowKey eq '1'"
-	pager := client.Query(QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	preMerge := qResp.TableEntityQueryResponse.Value[0]
+// 	var qResp TableEntityQueryResponseResponse
+// 	filter := "RowKey eq '1'"
+// 	pager := client.Query(QueryOptions{Filter: &filter})
+// 	for pager.NextPage(ctx) {
+// 		qResp = pager.PageResponse()
+// 	}
+// 	preMerge := qResp.TableEntityQueryResponse.Value[0]
 
-	// create a new batch slice.
-	batch = make([]TableTransactionAction, 5)
+// 	// create a new batch slice.
+// 	batch = make([]TableTransactionAction, 5)
 
-	// create a merge action for the first added entity
-	mergeProp := "MergeProperty"
-	val := "foo"
-	var mergeProperty = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[0][partitionKey],
-		rowKey:       (*entitiesToCreate)[0][rowKey],
-		mergeProp:    val,
-	}
-	batch[0] = TableTransactionAction{ActionType: UpdateMerge, Entity: mergeProperty, ETag: (*resp.TransactionResponses)[0].Header.Get(etag)}
+// 	// create a merge action for the first added entity
+// 	mergeProp := "MergeProperty"
+// 	val := "foo"
+// 	var mergeProperty = map[string]interface{}{
+// 		partitionKey: (*entitiesToCreate)[0][partitionKey],
+// 		rowKey:       (*entitiesToCreate)[0][rowKey],
+// 		mergeProp:    val,
+// 	}
+// 	batch[0] = TableTransactionAction{ActionType: UpdateMerge, Entity: mergeProperty, ETag: (*resp.TransactionResponses)[0].Header.Get(etag)}
 
-	// create a delete action for the second added entity
-	batch[1] = TableTransactionAction{ActionType: Delete, Entity: (*entitiesToCreate)[1]}
+// 	// create a delete action for the second added entity
+// 	batch[1] = TableTransactionAction{ActionType: Delete, Entity: (*entitiesToCreate)[1]}
 
-	// create an upsert action to replace the third added entity with a new value
-	replaceProp := "ReplaceProperty"
-	var replaceProperties = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[2][partitionKey],
-		rowKey:       (*entitiesToCreate)[2][rowKey],
-		replaceProp:  val,
-	}
-	batch[2] = TableTransactionAction{ActionType: UpsertReplace, Entity: replaceProperties}
+// 	// create an upsert action to replace the third added entity with a new value
+// 	replaceProp := "ReplaceProperty"
+// 	var replaceProperties = map[string]interface{}{
+// 		partitionKey: (*entitiesToCreate)[2][partitionKey],
+// 		rowKey:       (*entitiesToCreate)[2][rowKey],
+// 		replaceProp:  val,
+// 	}
+// 	batch[2] = TableTransactionAction{ActionType: UpsertReplace, Entity: replaceProperties}
 
-	// Add the remaining 2 entities.
-	batch[3] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[3]}
-	batch[4] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[4]}
+// 	// Add the remaining 2 entities.
+// 	batch[3] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[3]}
+// 	batch[4] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[4]}
 
-	//batch = batch[1:]
+// 	//batch = batch[1:]
 
-	resp, err = client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	require.Nil(err)
+// 	resp, err = client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
+// 	require.Nil(err)
 
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(http.StatusNoContent, r.StatusCode)
+// 	for i := 0; i < len(*resp.TransactionResponses); i++ {
+// 		r := (*resp.TransactionResponses)[i]
+// 		assert.Equal(http.StatusNoContent, r.StatusCode)
 
-	}
+// 	}
 
-	pager = client.Query(QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	postMerge := qResp.TableEntityQueryResponse.Value[0]
+// 	pager = client.Query(QueryOptions{Filter: &filter})
+// 	for pager.NextPage(ctx) {
+// 		qResp = pager.PageResponse()
+// 	}
+// 	postMerge := qResp.TableEntityQueryResponse.Value[0]
 
-	// The merged entity has all its properties + the merged property
-	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
-	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
-}
+// 	// The merged entity has all its properties + the merged property
+// 	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
+// 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
+// }
 
 // func (s *tableClientLiveTests) TestBatchError() {
 // 	assert := assert.New(s.T())

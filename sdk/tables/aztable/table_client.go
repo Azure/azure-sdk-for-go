@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -59,7 +60,7 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 // pager := client.Query(QueryOptions{})
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
@@ -78,17 +79,19 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
 // An entity must have at least a PartitionKey and RowKey property.
-func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
-	entmap, err := toMap(entity)
-	if err != nil {
-		return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
-	}
-	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: *entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (TableInsertEntityResponse, error) {
+	// entmap, err := toMap(entity)
+	// if err != nil {
+	// 	return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
+	// }
+	var marshalled map[string]interface{}
+	err := json.Unmarshal(entity, &marshalled)
+	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: marshalled, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return insertResp, nil
 	} else {
-		err = checkEntityForPkRk(entmap, err)
+		err = checkEntityForPkRk(&marshalled, err)
 		return TableInsertEntityResponse{}, err
 	}
 }

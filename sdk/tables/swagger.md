@@ -19,8 +19,8 @@ credential-scope: none
 use: "@autorest/go@4.0.0-preview.23"
 openapi-type: data-plane
 ```
-<!--
-``` yaml
+
+<!-- ``` yaml
 directive:
   # dynamically change TableEntityProperties from map[string]interface{} to []byte
   - from: swagger-document

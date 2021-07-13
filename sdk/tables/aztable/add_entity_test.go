@@ -1,6 +1,8 @@
 package aztable
 
 import (
+	"encoding/json"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,7 +29,9 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 		Float:   3.14159,
 	}
 
-	_, err := client.AddEntity(ctx, basicEntity)
+	marshalled, err := json.Marshal(basicEntity)
+	assert.Nil(err)
+	_, err = client.AddEntity(ctx, marshalled)
 	assert.Nil(err)
 
 	resp, err := client.GetEntity(ctx, "pk001", "rk001")

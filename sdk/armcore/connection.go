@@ -25,6 +25,10 @@ const (
 // ConnectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
 type ConnectionOptions struct {
+	// AuxiliaryTenants contains a list of additional tenants to be used to authenticate
+	// across multiple tenants.
+	AuxiliaryTenants []string
+
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
 
@@ -95,8 +99,11 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies,
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
-		azcore.NewLogPolicy(&options.Logging))
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}))
+	if len(options.AuxiliaryTenants) > 0 {
+		policies = append(policies, newMultiTenantPolicy(cred, authenticationPolicyOptions{AuxiliaryTenants: options.AuxiliaryTenants, Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}))
+	}
+	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
 	p := azcore.NewPipeline(options.HTTPClient, policies...)
 	return &Connection{u: endpoint, p: p}
 }

@@ -26,11 +26,8 @@ directive:
   - from: swagger-document
     where: $.definitions.TableEntityProperties
     transform: >-
-      $["type"] = "array";
-      $["items"] = {
-          "type": "string",
-          "format": "byte",
-      };
+      $["type"] = "string";
+      $["format"] = "byte";
       delete $.additionalProperties;
       $lib.log($);
       return $;

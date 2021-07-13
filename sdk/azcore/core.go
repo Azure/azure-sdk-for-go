@@ -13,6 +13,15 @@ import (
 	"reflect"
 )
 
+const (
+	headerContentLength     = "Content-Length"
+	headerContentType       = "Content-Type"
+	headerOperationLocation = "Operation-Location"
+	headerLocation          = "Location"
+	headerRetryAfter        = "Retry-After"
+	headerUserAgent         = "User-Agent"
+)
+
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
 // Request and react to the received Response.
 type Policy interface {

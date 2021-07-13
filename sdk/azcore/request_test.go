@@ -41,7 +41,7 @@ func TestRequestMarshalXML(t *testing.T) {
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
 	}
-	if ct := req.Header.Get(HeaderContentType); ct != contentTypeAppXML {
+	if ct := req.Header.Get(headerContentType); ct != contentTypeAppXML {
 		t.Fatalf("unexpected content type, got %s wanted %s", ct, contentTypeAppXML)
 	}
 	if req.Body == nil {
@@ -75,7 +75,7 @@ func TestRequestMarshalJSON(t *testing.T) {
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
 	}
-	if ct := req.Header.Get(HeaderContentType); ct != contentTypeAppJSON {
+	if ct := req.Header.Get(headerContentType); ct != contentTypeAppJSON {
 		t.Fatalf("unexpected content type, got %s wanted %s", ct, contentTypeAppJSON)
 	}
 	if req.Body == nil {
@@ -96,7 +96,7 @@ func TestRequestMarshalAsByteArrayURLFormat(t *testing.T) {
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
 	}
-	if ct := req.Header.Get(HeaderContentType); ct != contentTypeAppJSON {
+	if ct := req.Header.Get(headerContentType); ct != contentTypeAppJSON {
 		t.Fatalf("unexpected content type, got %s wanted %s", ct, contentTypeAppJSON)
 	}
 	if req.Body == nil {
@@ -124,7 +124,7 @@ func TestRequestMarshalAsByteArrayStdFormat(t *testing.T) {
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
 	}
-	if ct := req.Header.Get(HeaderContentType); ct != contentTypeAppJSON {
+	if ct := req.Header.Get(headerContentType); ct != contentTypeAppJSON {
 		t.Fatalf("unexpected content type, got %s wanted %s", ct, contentTypeAppJSON)
 	}
 	if req.Body == nil {
@@ -477,8 +477,8 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 		buff[i] = 1
 	}
 	req.SetBody(NopCloser(bytes.NewReader(buff)), "application/octet-stream")
-	if req.Header.Get(HeaderContentLength) != strconv.FormatInt(buffLen, 10) {
-		t.Fatalf("expected content-length %d, got %s", buffLen, req.Header.Get(HeaderContentLength))
+	if req.Header.Get(headerContentLength) != strconv.FormatInt(buffLen, 10) {
+		t.Fatalf("expected content-length %d, got %s", buffLen, req.Header.Get(headerContentLength))
 	}
 }
 
@@ -555,7 +555,7 @@ func TestSetMultipartFormData(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	mt, params, err := mime.ParseMediaType(req.Header.Get(HeaderContentType))
+	mt, params, err := mime.ParseMediaType(req.Header.Get(headerContentType))
 	if err != nil {
 		t.Fatal(err)
 	}

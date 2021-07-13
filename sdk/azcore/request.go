@@ -178,8 +178,8 @@ func (req *Request) SetBody(body ReadSeekCloser, contentType string) error {
 	req.body = body
 	req.Request.Body = body
 	req.Request.ContentLength = size
-	req.Header.Set(HeaderContentType, contentType)
-	req.Header.Set(HeaderContentLength, strconv.FormatInt(size, 10))
+	req.Header.Set(headerContentType, contentType)
+	req.Header.Set(headerContentLength, strconv.FormatInt(size, 10))
 	return nil
 }
 
@@ -217,8 +217,8 @@ func (req *Request) SetMultipartFormData(formData map[string]interface{}) error 
 	req.body = NopCloser(bytes.NewReader(body.Bytes()))
 	req.Body = req.body
 	req.ContentLength = int64(body.Len())
-	req.Header.Set(HeaderContentType, writer.FormDataContentType())
-	req.Header.Set(HeaderContentLength, strconv.FormatInt(req.ContentLength, 10))
+	req.Header.Set(headerContentType, writer.FormDataContentType())
+	req.Header.Set(headerContentLength, strconv.FormatInt(req.ContentLength, 10))
 	return nil
 }
 
@@ -284,7 +284,7 @@ func (req *Request) writeBody(b *bytes.Buffer) error {
 		fmt.Fprint(b, "   Request contained no body\n")
 		return nil
 	}
-	if ct := req.Header.Get(HeaderContentType); !shouldLogBody(b, ct) {
+	if ct := req.Header.Get(headerContentType); !shouldLogBody(b, ct) {
 		return nil
 	}
 	body, err := ioutil.ReadAll(req.Body)

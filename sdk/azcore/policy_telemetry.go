@@ -69,14 +69,14 @@ func (p telemetryPolicy) Do(req *Request) (*Response, error) {
 		return req.Next()
 	}
 	// preserve the existing User-Agent string
-	if ua := req.Request.Header.Get(HeaderUserAgent); ua != "" {
+	if ua := req.Request.Header.Get(headerUserAgent); ua != "" {
 		p.telemetryValue = fmt.Sprintf("%s %s", p.telemetryValue, ua)
 	}
 	var rt requestTelemetry
 	if req.OperationValue(&rt) {
 		p.telemetryValue = fmt.Sprintf("%s %s", string(rt), p.telemetryValue)
 	}
-	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
+	req.Request.Header.Set(headerUserAgent, p.telemetryValue)
 	return req.Next()
 }
 

@@ -9,12 +9,8 @@ package aztable
 
 import (
 	"fmt"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
-
-const scope = "none"
-const telemetryInfo = "azsdk-go-aztable/<version>"
 
 // connectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
@@ -52,7 +48,7 @@ type connection struct {
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newConnection(endpoint string, cred azcore.Credential, options *connectionOptions) *connection {
+func newConnection(endpoint string, options *connectionOptions) *connection {
 	if options == nil {
 		options = &connectionOptions{}
 	}
@@ -62,7 +58,6 @@ func newConnection(endpoint string, cred azcore.Credential, options *connectionO
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}))
 	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
 	return &connection{u: endpoint, p: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
@@ -73,6 +68,7 @@ func (c *connection) Endpoint() string {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() azcore.Pipeline {
+func (c *connection) Pipeline() (azcore.Pipeline) {
 	return c.p
 }
+

@@ -5,6 +5,7 @@ package aztable
 
 import "errors"
 
+//nolint
 const (
 	timestamp     = "Timestamp"
 	partitionKey  = "PartitionKey"

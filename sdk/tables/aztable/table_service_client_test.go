@@ -37,10 +37,17 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
+	failIfNotNil(assert, err)
 
 	_, err = context.client.Create(ctx, tableName)
-	defer context.client.Delete(ctx, tableName)
-	assert.Nil(err)
+	delete := func() {
+		_, err := context.client.Delete(ctx, tableName)
+		if err != nil {
+			fmt.Printf("Error cleaning up test. %v\n", err.Error())
+		}
+	}
+	defer delete()
+	failIfNotNil(assert, err)
 
 	// Create a duplicate table to produce an error
 	_, err = context.client.Create(ctx, tableName)
@@ -53,11 +60,18 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
+	failIfNotNil(assert, err)
 
 	resp, err := context.client.Create(ctx, tableName)
-	defer context.client.Delete(ctx, tableName)
+	delete := func() {
+		_, err := context.client.Delete(ctx, tableName)
+		if err != nil {
+			fmt.Printf("Error cleaning up test. %v\n", err.Error())
+		}
+	}
+	defer delete()
 
-	assert.Nil(err)
+	failIfNotNil(assert, err)
 	assert.Equal(*resp.TableResponse.TableName, tableName)
 }
 

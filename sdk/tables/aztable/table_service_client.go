@@ -75,8 +75,6 @@ func (t *TableServiceClient) Query(queryOptions *QueryOptions) TableQueryRespons
 }
 
 func isCosmosEndpoint(url string) bool {
-	isCosmosEmulator := strings.Index(url, "localhost") >= 0 && strings.Index(url, "8902") >= 0
-	return isCosmosEmulator ||
-		strings.Index(url, CosmosTableDomain) >= 0 ||
-		strings.Index(url, LegacyCosmosTableDomain) >= 0
+	isCosmosEmulator := strings.Contains(url, "localhost") && strings.Contains(url, "8902")
+	return isCosmosEmulator || strings.Contains(url, CosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)
 }

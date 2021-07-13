@@ -6,13 +6,17 @@ package aztable
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -56,7 +60,6 @@ func (s *tableClientLiveTests) TestCreateTable() {
 	assert.Equal(*resp.TableResponse.TableName, client.Name)
 }
 
-/*
 func (s *tableClientLiveTests) TestAddEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)
@@ -67,9 +70,7 @@ func (s *tableClientLiveTests) TestAddEntity() {
 	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
 	assert.Nil(err)
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestAddComplexEntity() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
@@ -85,9 +86,7 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 		assert.Nilf(err, getStringFromBody(svcErr))
 	}
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestDeleteEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)
@@ -100,9 +99,7 @@ func (s *tableClientLiveTests) TestDeleteEntity() {
 	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][partitionKey].(string), (*entitiesToCreate)[0][rowKey].(string), "*")
 	assert.Nil(delErr)
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestMergeEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)
@@ -142,9 +139,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestUpsertEntity() {
 	assert := assert.New(s.T())
 	require := require.New(s.T())
@@ -185,10 +180,8 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
-*/
 
-/*
-func (s *tableClientLiveTests) _TestGetEntity() {
+func (s *tableClientLiveTests) TestGetEntity() {
 	assert := assert.New(s.T())
 	require := require.New(s.T())
 	client, delete := s.init(true)
@@ -220,9 +213,7 @@ func (s *tableClientLiveTests) _TestGetEntity() {
 	_, ok = e["BoolProp"].(bool)
 	assert.True(ok)
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)
@@ -243,7 +234,8 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
-		resp.TableEntityQueryResponse.AsModels(&models)
+		err := resp.TableEntityQueryResponse.AsModels(&models)
+		assert.Nil(err)
 		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
 	}
 	resp = pager.PageResponse()
@@ -272,9 +264,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 		assert.True(ok)
 	}
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
@@ -333,9 +323,7 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 		assert.True(ok)
 	}
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestBatchAdd() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
@@ -356,9 +344,7 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 		assert.Equal(r.StatusCode, http.StatusNoContent)
 	}
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestBatchMixed() {
 	assert := assert.New(s.T())
 	require := require.New(s.T())
@@ -439,9 +425,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestBatchError() {
 	assert := assert.New(s.T())
 	require := require.New(s.T())
@@ -460,7 +444,8 @@ func (s *tableClientLiveTests) TestBatchError() {
 	assert.Equal(error_empty_transaction, err.Error())
 
 	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-	client.AddEntity(ctx, (*entitiesToCreate)[2])
+	_, err = client.AddEntity(ctx, (*entitiesToCreate)[2])
+	assert.Nil(err)
 
 	// Add the entities to the batch
 	for i := 0; i < cap(batch); i++ {
@@ -475,9 +460,7 @@ func (s *tableClientLiveTests) TestBatchError() {
 	assert.Equal(2, te.FailedEntityIndex)
 	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 }
-*/
 
-/*
 func (s *tableClientLiveTests) TestInvalidEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)
@@ -493,7 +476,6 @@ func (s *tableClientLiveTests) TestInvalidEntity() {
 	assert.NotNil(err)
 	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
 }
-*/
 
 // setup the test environment
 func (s *tableClientLiveTests) BeforeTest(suite string, test string) {
@@ -519,7 +501,10 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 		}
 	}
 	return client, func() {
-		client.Delete(ctx)
+		_, err := client.Delete(ctx)
+		if err != nil {
+			fmt.Printf("Error deleting table. %v\n", err.Error())
+		}
 	}
 }
 
@@ -536,7 +521,7 @@ func getStringFromBody(e *runtime.ResponseError) string {
 		if err != nil {
 			return "<emtpy body>"
 		}
-		b = ioutil.NopCloser(&body)
+		_ = ioutil.NopCloser(&body)
 	}
 	return body.String()
 }

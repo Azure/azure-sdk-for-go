@@ -176,7 +176,7 @@ func (p *tableQueryResponsePager) Err() error {
 
 func castAndRemoveAnnotationsSlice(entities *[]map[string]interface{}) {
 	for _, e := range *entities {
-		castAndRemoveAnnotations(&e)
+		castAndRemoveAnnotations(&e) //nolint:errcheck
 	}
 }
 
@@ -212,7 +212,7 @@ func castAndRemoveAnnotations(entity *map[string]interface{}) error {
 				}
 				value[valueKey] = i
 			default:
-				return errors.New(fmt.Sprintf("unsupported annotation found: %s", k))
+				return fmt.Errorf("unsupported annotation found: %s", k)
 			}
 			// remove the annotation key
 			delete(value, k)
@@ -249,7 +249,7 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 				entMap[k] = time.UTC().Format(ISO8601)
 				continue
 			default:
-				return errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", k, tn))
+				return fmt.Errorf("Invalid struct for entity field '%s' of type '%s'", k, tn)
 			}
 		case reflect.Float32, reflect.Float64:
 			entMap[odataType(k)] = edmDouble
@@ -321,7 +321,7 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 				entMap[name] = time.UTC().Format(ISO8601)
 				continue
 			default:
-				return nil, errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", typeOfT.Field(i).Name, tn))
+				return nil, fmt.Errorf("Invalid struct for entity field '%s' of type '%s'", typeOfT.Field(i).Name, tn)
 			}
 		case reflect.Float32, reflect.Float64:
 			entMap[odataType(name)] = edmDouble

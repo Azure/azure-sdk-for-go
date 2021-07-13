@@ -12,6 +12,7 @@ import (
 	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
+	"github.com/Azure/azure-service-bus-go/internal"
 )
 
 type (
@@ -48,6 +49,34 @@ type (
 	// TopicManagementOption represents named options for assisting Topic creation
 	TopicManagementOption func(*TopicDescription) error
 )
+
+type (
+	// ListTopicsOptions provides options for List() to control things like page size.
+	// NOTE: Use the ListTopicsWith* methods to specify this.
+	ListTopicsOptions struct {
+		top  int
+		skip int
+	}
+
+	// ListTopicsOption represents named options for listing topics
+	ListTopicsOption func(*ListTopicsOptions) error
+)
+
+// ListTopicsWithSkip will skip the specified number of entities
+func ListTopicsWithSkip(skip int) ListTopicsOption {
+	return func(options *ListTopicsOptions) error {
+		options.skip = skip
+		return nil
+	}
+}
+
+// ListTopicsWithTop will return at most `top` results
+func ListTopicsWithTop(top int) ListTopicsOption {
+	return func(options *ListTopicsOptions) error {
+		options.top = top
+		return nil
+	}
+}
 
 // NewTopicManager creates a new TopicManager for a Service Bus Namespace
 func (ns *Namespace) NewTopicManager() *TopicManager {
@@ -122,11 +151,21 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 }
 
 // List fetches all of the Topics for a Service Bus Namespace
-func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
+func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) ([]*TopicEntity, error) {
 	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
 	defer span.End()
 
-	res, err := tm.entityManager.Get(ctx, `/$Resources/Topics`)
+	listTopicsOptions := ListTopicsOptions{}
+
+	for _, option := range options {
+		if err := option(&listTopicsOptions); err != nil {
+			return nil, err
+		}
+	}
+
+	basePath := internal.ConstructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
+
+	res, err := tm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)
 
 	if err != nil {

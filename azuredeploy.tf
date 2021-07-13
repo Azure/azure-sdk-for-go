@@ -154,10 +154,14 @@ output "AZURE_TENANT_ID" {
 }
 
 output "AZURE_CLIENT_ID" {
-  value = compact(concat(azuread_application.test.*.application_id, list(data.azurerm_client_config.current.client_id)))[0]
+  value = compact(
+    concat(azuread_application.test.*.application_id, [data.azurerm_client_config.current.client_id])
+  )[0]
 }
 
 output "AZURE_CLIENT_SECRET" {
-  value     = compact(concat(azuread_service_principal_password.test.*.value, list(var.azure_client_secret)))[0]
+  value  = compact(
+    concat(azuread_service_principal_password.test.*.value, [var.azure_client_secret])
+  )[0]
   sensitive = true
 }

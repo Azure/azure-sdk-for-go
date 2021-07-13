@@ -15,6 +15,7 @@ import (
 	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
+	"github.com/Azure/azure-service-bus-go/internal"
 )
 
 type (
@@ -156,6 +157,34 @@ type (
 	SubscriptionManagementOption func(*SubscriptionDescription) error
 )
 
+type (
+	// ListSubscriptionsOptions provides options for List() to control things like page size.
+	// NOTE: Use the ListSubscriptionsWith* methods to specify this.
+	ListSubscriptionsOptions struct {
+		top  int
+		skip int
+	}
+
+	//ListSubscriptionsOption represents named options for listing topics
+	ListSubscriptionsOption func(*ListSubscriptionsOptions) error
+)
+
+// ListSubscriptionsWithSkip will skip the specified number of entities
+func ListSubscriptionsWithSkip(skip int) ListSubscriptionsOption {
+	return func(options *ListSubscriptionsOptions) error {
+		options.skip = skip
+		return nil
+	}
+}
+
+// ListSubscriptionsWithTop will return at most `top` results
+func ListSubscriptionsWithTop(top int) ListSubscriptionsOption {
+	return func(options *ListSubscriptionsOptions) error {
+		options.top = top
+		return nil
+	}
+}
+
 // NewSubscriptionManager creates a new SubscriptionManager for a Service Bus Topic
 func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
 	return &SubscriptionManager{
@@ -249,11 +278,21 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 }
 
 // List fetches all of the Topics for a Service Bus Namespace
-func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity, error) {
+func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscriptionsOption) ([]*SubscriptionEntity, error) {
 	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
 	defer span.End()
 
-	res, err := sm.entityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
+	listSubscriptionsOptions := ListSubscriptionsOptions{}
+
+	for _, option := range options {
+		if err := option(&listSubscriptionsOptions); err != nil {
+			return nil, err
+		}
+	}
+
+	basePath := internal.ConstructAtomPath("/"+sm.Topic.Name+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
+
+	res, err := sm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)
 
 	if err != nil {

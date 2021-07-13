@@ -51,6 +51,8 @@ type (
 )
 
 type (
+	// ListTopicsOptions provides options for List() to control things like page size.
+	// NOTE: Use the ListTopicsWith* methods to specify this.
 	ListTopicsOptions struct {
 		top  int
 		skip int
@@ -161,9 +163,9 @@ func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) (
 		}
 	}
 
-	baseUrl := internal.ConstructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
+	basePath := internal.ConstructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
 
-	res, err := tm.entityManager.Get(ctx, baseUrl)
+	res, err := tm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)
 
 	if err != nil {

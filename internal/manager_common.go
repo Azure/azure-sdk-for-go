@@ -7,7 +7,7 @@ import (
 
 // ConstructAtomPath adds the proper parameters for skip and top
 // This is common for the list operations for queues, topics and subscriptions.
-func ConstructAtomPath(baseUrl string, skip int, top int) string {
+func ConstructAtomPath(basePath string, skip int, top int) string {
 	values := url.Values{}
 
 	if skip > 0 {
@@ -21,8 +21,8 @@ func ConstructAtomPath(baseUrl string, skip int, top int) string {
 	queryParams := values.Encode()
 
 	if len(queryParams) == 0 {
-		return baseUrl
+		return basePath
 	}
 
-	return fmt.Sprintf("%s?%s", baseUrl, queryParams)
+	return fmt.Sprintf("%s?%s", basePath, queryParams)
 }

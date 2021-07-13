@@ -56,6 +56,8 @@ type (
 )
 
 type (
+	// ListQueuesOptions provides options for List() to control things like page size.
+	// NOTE: Use the ListQueuesWith* methods to specify this.
 	ListQueuesOptions struct {
 		top  int
 		skip int
@@ -339,9 +341,9 @@ func (qm *QueueManager) List(ctx context.Context, options ...ListQueuesOption) (
 		}
 	}
 
-	baseUrl := internal.ConstructAtomPath(`/$Resources/Queues`, listQueuesOptions.skip, listQueuesOptions.top)
+	basePath := internal.ConstructAtomPath(`/$Resources/Queues`, listQueuesOptions.skip, listQueuesOptions.top)
 
-	res, err := qm.entityManager.Get(ctx, baseUrl)
+	res, err := qm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)
 
 	if err != nil {

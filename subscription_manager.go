@@ -158,6 +158,8 @@ type (
 )
 
 type (
+	// ListSubscriptionsOptions provides options for List() to control things like page size.
+	// NOTE: Use the ListSubscriptionsWith* methods to specify this.
 	ListSubscriptionsOptions struct {
 		top  int
 		skip int
@@ -288,9 +290,9 @@ func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscrip
 		}
 	}
 
-	baseUrl := internal.ConstructAtomPath("/"+sm.Topic.Name+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
+	basePath := internal.ConstructAtomPath("/"+sm.Topic.Name+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
 
-	res, err := sm.entityManager.Get(ctx, baseUrl)
+	res, err := sm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)
 
 	if err != nil {

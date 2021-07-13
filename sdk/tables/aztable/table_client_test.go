@@ -456,6 +456,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 // 	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 // }
 
+/*
 func (s *tableClientLiveTests) TestInvalidEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)
@@ -471,6 +472,7 @@ func (s *tableClientLiveTests) TestInvalidEntity() {
 	assert.NotNil(err)
 	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
 }
+*/
 
 // setup the test environment
 func (s *tableClientLiveTests) BeforeTest(suite string, test string) {

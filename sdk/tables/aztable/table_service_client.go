@@ -28,7 +28,8 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
 	}
-	con := newConnection(serviceURL, cred, conOptions)
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"none"}}}))
+	con := newConnection(serviceURL, conOptions)
 	c, _ := cred.(*SharedKeyCredential)
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, nil
 }

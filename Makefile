@@ -40,8 +40,11 @@ test-race:    ARGS=-race         							## Run tests with race detector
 test-cover:   ARGS=-cover -coverprofile=cover.out -v     	## Run tests in verbose mode with coverage
 $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
-check test tests: cyclo lint vet terraform.tfstate; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
-	$Q cd $(BASE) && $(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS) 2>&1 | $(GOJUNITRPT) > report.xml
+check test tests: lint vet terraform.tfstate; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+	$Q cd $(BASE) && \
+	$(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS) 2>&1 | tee gotestoutput.log && \
+	$(GOJUNITRPT) <  gotestoutput.log > report.xml && \
+	rm -f gotestoutput.log
 
 .PHONY: vet
 vet: $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet

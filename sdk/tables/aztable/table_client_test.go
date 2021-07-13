@@ -319,26 +319,26 @@ func (s *tableClientLiveTests) TestCreateTable() {
 // 	}
 // }
 
-func (s *tableClientLiveTests) TestBatchAdd() {
-	assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
-	defer delete()
+// func (s *tableClientLiveTests) TestBatchAdd() {
+// 	assert := assert.New(s.T())
+// 	context := getTestContext(s.T().Name())
+// 	client, delete := s.init(true)
+// 	defer delete()
 
-	entitiesToCreate := createComplexMapEntities(context, 10, "partition")
-	batch := make([]TableTransactionAction, 10)
+// 	entitiesToCreate := createComplexMapEntities(context, 10, "partition")
+// 	batch := make([]TableTransactionAction, 10)
 
-	for i, e := range *entitiesToCreate {
-		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
-	}
+// 	for i, e := range *entitiesToCreate {
+// 		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
+// 	}
 
-	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.Nil(err)
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(r.StatusCode, http.StatusNoContent)
-	}
-}
+// 	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
+// 	assert.Nil(err)
+// 	for i := 0; i < len(*resp.TransactionResponses); i++ {
+// 		r := (*resp.TransactionResponses)[i]
+// 		assert.Equal(r.StatusCode, http.StatusNoContent)
+// 	}
+// }
 
 // func (s *tableClientLiveTests) TestBatchMixed() {
 // 	assert := assert.New(s.T())

@@ -56,9 +56,9 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	}
 	var resp TableEntityQueryResponseResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
-	if p.err == nil {
-		castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
-	}
+	// if p.err == nil {
+	// 	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
+	// }
 	p.current = &resp
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
@@ -106,19 +106,19 @@ type TableQueryResponsePager interface {
 
 // AsModels converts each map[string]interface{} entity result into a strongly slice of strongly typed models
 // The modelSlice parameter should be a pointer to a slice of struct types that match the entity model type in the table response.
-func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
-	models := reflect.ValueOf(modelSlice).Elem()
-	tt := getTypeArray(models.Interface())
-	fmap := getTypeValueMap(tt)
-	for i, e := range r.Value {
-		err := fromMap(tt, fmap, &e, models.Index(i))
-		if err != nil {
-			return nil
-		}
-	}
+// func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
+// 	models := reflect.ValueOf(modelSlice).Elem()
+// 	tt := getTypeArray(models.Interface())
+// 	fmap := getTypeValueMap(tt)
+// 	for i, e := range r.Value {
+// 		err := fromMap(tt, fmap, &e, models.Index(i))
+// 		if err != nil {
+// 			return nil
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
 // EntityMapAsModel converts a table entity in the form of map[string]interface{} and converts it to a strongly typed model.
 //

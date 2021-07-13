@@ -237,7 +237,7 @@ type TableEntityQueryResponse struct {
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of table entities.
-	Value []map[string]interface{} `json:"value,omitempty"`
+	Value [][]byte `json:"value,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TableEntityQueryResponse.
@@ -263,7 +263,7 @@ type TableInsertEntityOptions struct {
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
 	ResponsePreference *ResponseFormat
 	// The properties for the table entity.
-	TableEntityProperties map[string]interface{}
+	TableEntityProperties []byte
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 }
@@ -277,7 +277,7 @@ type TableMergeEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 	// The properties for the table entity.
-	TableEntityProperties map[string]interface{}
+	TableEntityProperties []byte
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 }
@@ -425,7 +425,7 @@ type TableUpdateEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 	// The properties for the table entity.
-	TableEntityProperties map[string]interface{}
+	TableEntityProperties []byte
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 }

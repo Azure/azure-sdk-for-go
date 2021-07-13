@@ -5,7 +5,6 @@ package aztable
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"time"
 
@@ -68,32 +67,31 @@ func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponseP
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (MapOfInterfaceResponse, error) {
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (ByteArrayResponse, error) {
 	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, &QueryOptions{})
-	if err != nil {
-		return resp, err
-	}
-	err = castAndRemoveAnnotations(&resp.Value)
+	// if err != nil {
+	// 	return resp, err
+	// }
+	// err = castAndRemoveAnnotations(&resp.Value)
 	return resp, err
 }
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
 // An entity must have at least a PartitionKey and RowKey property.
-func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (TableInsertEntityResponse, error) {
+func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}, error) {
 	// entmap, err := toMap(entity)
 	// if err != nil {
 	// 	return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
 	// }
-	var marshalled map[string]interface{}
-	err := json.Unmarshal(entity, &marshalled)
-	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: marshalled, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
-	if err == nil {
-		insertResp := resp.(TableInsertEntityResponse)
-		return insertResp, nil
-	} else {
-		err = checkEntityForPkRk(&marshalled, err)
-		return TableInsertEntityResponse{}, err
-	}
+	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	// if err == nil {
+	// 	insertResp := resp.(TableInsertEntityResponse)
+	// 	return insertResp, nil
+	// } else {
+	// 	err = checkEntityForPkRk(&marshalled, err)
+	// 	return TableInsertEntityResponse{}, err
+	// }
+	return resp, err
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
@@ -106,9 +104,11 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 // If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity. Properties not specified in the merge will be unaffected.
 // The specified etag value will be used for optimistic concurrency. If the etag does not match the value of the entity in the table, the operation will fail.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interface{}, etag *string, updateMode TableUpdateMode) (interface{}, error) {
-	pk := entity[partitionKey].(string)
-	rk := entity[rowKey].(string)
+func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *string, updateMode TableUpdateMode) (interface{}, error) {
+	// pk := entity[partitionKey].(string)
+	// rk := entity[rowKey].(string)
+	pk := "FixLater"
+	rk := "FixLater"
 	var ifMatch string = "*"
 	if etag != nil {
 		ifMatch = *etag
@@ -125,9 +125,11 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interf
 // UpsertEntity replaces the specified table entity if it exists or creates the entity if it does not exist.
 // If the entity exists and updateMode is Merge, the property values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interface{}, updateMode TableUpdateMode) (interface{}, error) {
-	pk := entity[partitionKey].(string)
-	rk := entity[rowKey].(string)
+func (t *TableClient) UpsertEntity(ctx context.Context, entity []byte, updateMode TableUpdateMode) (interface{}, error) {
+	// pk := entity[partitionKey].(string)
+	// rk := entity[rowKey].(string)
+	pk := "FixLater"
+	rk := "FixLater"
 
 	switch updateMode {
 	case Merge:

@@ -9,7 +9,6 @@ package aztable
 
 import (
 	"fmt"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -69,6 +68,7 @@ func (c *connection) Endpoint() string {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() azcore.Pipeline {
+func (c *connection) Pipeline() (azcore.Pipeline) {
 	return c.p
 }
+

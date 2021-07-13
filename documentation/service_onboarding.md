@@ -19,6 +19,7 @@ The Azure-sdk-for-go team supports Go versions 1.14 and greater, with our CI pip
 ## Install Autorest
 
 * swagger.md file
+
 ### Generating Code
 
 
@@ -29,7 +30,15 @@ After you have the generated code from Autorest, the next step is to wrap this g
 In other languages, types can be specifically marked "public" or "private", in Go exported types and methods are defined by starting with a capital letter. The methods on structs also follow this rule, if it is for use outside the model it must start with a capital letter.
 
 ### Documenting Code
-Code is documented directly in line and can be created directly using the Go toolchain.
+Code is documented directly in line and can be created directly using the `doc` tool which is part of the go toolchain. To document a type, variable, constant, function, or package write a regular comment directly preceding its declaration (with no intervening blank line). For an example, here is the documentation for the `fmt.Fprintf` function:
+```golang
+// Fprint formats using the default formats for its operands and writes to w.
+// Spaces are added between operands when neither is a string.
+// It returns the number of bytes written and any write error encountered.
+func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
+```
+
+Each package needs to include a `doc.go` file and not be a part of a service version. For more details about this file there is a detailed write-up in the [repo wiki](https://github.com/Azure/azure-sdk-for-go/wiki/doc.go-template). In the `doc.go` file you should include a short service overview, basic examples, and if they exist, a link to samples in the [`azure-sdk-for-go-samples` repository](https://github.com/azure-samples/azure-sdk-for-go-samples)
 
 ### Constructors
 All clients should be able to be initialized directly from the user and should begin with `New`. For example to define a constructor for a new client for the Tables service we start with defining the struct `TableServiceClient`:
@@ -73,21 +82,21 @@ The `(m *<MyStruct>)` portion is the "receiver". Methods can be defined for eith
 Both public and private methods can be declared on clients. Below is an example in the `aztables` package for a `Create` method on the `TableServiceClient`:
 ```golang
 // Create creates a table with the specified name.
-func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
+func (t *TableServiceClient) Create(ctx context.Context, name string) (TableCreateResponse, error) {
 	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
 	if err == nil {
-		tableResp := resp.(TableResponseResponse)
+		tableResp := resp.(TableCreateResponse)
 		return tableResp, nil
 	}
-	return TableResponseResponse{}, err
+	return TableCreateResponse{}, err
 }
 ```
 
-All methods that make a call to service must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to do SOMETHING TO BE FILLED IN LATER. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
-
-
+All methods that perform I/O of any kind, sleep, or perform a significant amount of CPU-bound work must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to carry a deadline, cancellation signal, and other values across API boundaries. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
 
 ## Write Tests
+
+Testing is built into the go toolchain as well with the `testing` library. 
 
 ## Create Pipelines
 

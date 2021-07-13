@@ -29,8 +29,6 @@ directive:
       $["type"] = "string";
       $["format"] = "byte";
       delete $.additionalProperties;
-      $lib.log($);
-      return $;
 ```
 
 ### Go multi-api

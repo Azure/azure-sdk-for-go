@@ -9,11 +9,12 @@ package costmanagement
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -724,7 +725,7 @@ type QueryFilter struct {
 	// Not - The logical "NOT" expression.
 	Not *QueryFilter `json:"not,omitempty"`
 	// Dimension - Has comparison expression for a dimension
-	Dimension *QueryComparisonExpression `json:"dimension,omitempty"`
+	Dimension *QueryComparisonExpression `json:"dimensions,omitempty"`
 	// Tag - Has comparison expression for a tag
 	Tag *QueryComparisonExpression `json:"tag,omitempty"`
 }

@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -17,6 +18,19 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
+
+// DeliveryPackageInformation contains information about the delivery package being shipped by the customer
+// to the Microsoft data center.
+type DeliveryPackageInformation struct {
+	// CarrierName - The name of the carrier that is used to ship the import or export drives.
+	CarrierName *string `json:"carrierName,omitempty"`
+	// TrackingNumber - The tracking number of the package.
+	TrackingNumber *string `json:"trackingNumber,omitempty"`
+	// DriveCount - The number of drives included in the package.
+	DriveCount *int64 `json:"driveCount,omitempty"`
+	// ShipDate - The date when the package is shipped.
+	ShipDate *string `json:"shipDate,omitempty"`
+}
 
 // DriveBitLockerKey bitLocker recovery key or password to the specified drive
 type DriveBitLockerKey struct {
@@ -43,7 +57,7 @@ type DriveStatus struct {
 	// CopyStatus - Detailed status about the data transfer process. This field is not returned in the response until the drive is in the Transferring state.
 	CopyStatus *string `json:"copyStatus,omitempty"`
 	// PercentComplete - Percentage completed for the drive.
-	PercentComplete *int32 `json:"percentComplete,omitempty"`
+	PercentComplete *int64 `json:"percentComplete,omitempty"`
 	// VerboseLogURI - A URI that points to the blob containing the verbose log for the data transfer operation.
 	VerboseLogURI *string `json:"verboseLogUri,omitempty"`
 	// ErrorLogURI - A URI that points to the blob containing the error log for the data transfer operation.
@@ -52,6 +66,16 @@ type DriveStatus struct {
 	ManifestURI *string `json:"manifestUri,omitempty"`
 	// BytesSucceeded - Bytes successfully transferred for the drive.
 	BytesSucceeded *int64 `json:"bytesSucceeded,omitempty"`
+}
+
+// EncryptionKeyDetails specifies the encryption key properties
+type EncryptionKeyDetails struct {
+	// KekType - The type of kek encryption key. Possible values include: 'MicrosoftManaged', 'CustomerManaged'
+	KekType EncryptionKekType `json:"kekType,omitempty"`
+	// KekURL - Specifies the url for kek encryption key.
+	KekURL *string `json:"kekUrl,omitempty"`
+	// KekVaultResourceID - Specifies the keyvault resource id for kek encryption key.
+	KekVaultResourceID *string `json:"kekVaultResourceID,omitempty"`
 }
 
 // ErrorResponse response when errors occurred
@@ -122,8 +146,8 @@ type ErrorResponseErrorDetailsItem struct {
 type Export struct {
 	// ExportBlobList - A list of the blobs to be exported.
 	*ExportBlobList `json:"blobList,omitempty"`
-	// BlobListblobPath - The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning with the container name. If the blob is in root container, the URI must begin with $root.
-	BlobListblobPath *string `json:"blobListblobPath,omitempty"`
+	// BlobListBlobPath - The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning with the container name. If the blob is in root container, the URI must begin with $root.
+	BlobListBlobPath *string `json:"blobListBlobPath,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Export.
@@ -132,8 +156,8 @@ func (e Export) MarshalJSON() ([]byte, error) {
 	if e.ExportBlobList != nil {
 		objectMap["blobList"] = e.ExportBlobList
 	}
-	if e.BlobListblobPath != nil {
-		objectMap["blobListblobPath"] = e.BlobListblobPath
+	if e.BlobListBlobPath != nil {
+		objectMap["blobListBlobPath"] = e.BlobListBlobPath
 	}
 	return json.Marshal(objectMap)
 }
@@ -156,14 +180,14 @@ func (e *Export) UnmarshalJSON(body []byte) error {
 				}
 				e.ExportBlobList = &exportBlobList
 			}
-		case "blobListblobPath":
+		case "blobListBlobPath":
 			if v != nil {
-				var blobListblobPath string
-				err = json.Unmarshal(*v, &blobListblobPath)
+				var blobListBlobPath string
+				err = json.Unmarshal(*v, &blobListBlobPath)
 				if err != nil {
 					return err
 				}
-				e.BlobListblobPath = &blobListblobPath
+				e.BlobListBlobPath = &blobListBlobPath
 			}
 		}
 	}
@@ -186,6 +210,25 @@ type GetBitLockerKeysResponse struct {
 	Value *[]DriveBitLockerKey `json:"value,omitempty"`
 }
 
+// IdentityDetails specifies the identity properties.
+type IdentityDetails struct {
+	// Type - The type of identity. Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
+	Type IdentityType `json:"type,omitempty"`
+	// PrincipalID - READ-ONLY; Specifies the principal id for the identity for the job.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; Specifies the tenant id for the identity for the job.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityDetails.
+func (ID IdentityDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ID.Type != "" {
+		objectMap["type"] = ID.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // JobDetails specifies the job properties
 type JobDetails struct {
 	// StorageAccountID - The resource identifier of the storage account where data will be imported to or exported from.
@@ -199,7 +242,7 @@ type JobDetails struct {
 	// ShippingInformation - Contains information about the Microsoft datacenter to which the drives should be shipped.
 	ShippingInformation *ShippingInformation `json:"shippingInformation,omitempty"`
 	// DeliveryPackage - Contains information about the package being shipped by the customer to the Microsoft data center.
-	DeliveryPackage *PackageInfomation `json:"deliveryPackage,omitempty"`
+	DeliveryPackage *DeliveryPackageInformation `json:"deliveryPackage,omitempty"`
 	// ReturnPackage - Contains information about the package being shipped from the Microsoft data center to the customer to return the drives. The format is the same as the deliveryPackage property above. This property is not included if the drives have not yet been returned.
 	ReturnPackage *PackageInfomation `json:"returnPackage,omitempty"`
 	// DiagnosticsPath - The virtual blob directory to which the copy logs and backups of drive manifest files (if enabled) will be stored.
@@ -222,11 +265,15 @@ type JobDetails struct {
 	Export *Export `json:"export,omitempty"`
 	// ProvisioningState - Specifies the provisioning state of the job.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// EncryptionKey - Contains information about the encryption key.
+	EncryptionKey *EncryptionKeyDetails `json:"encryptionKey,omitempty"`
 }
 
 // JobResponse contains the job information.
 type JobResponse struct {
 	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; SystemData of ImportExport Jobs.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Specifies the resource identifier of the job.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Specifies the name of the job.
@@ -239,6 +286,8 @@ type JobResponse struct {
 	Tags interface{} `json:"tags,omitempty"`
 	// Properties - Specifies the job properties
 	Properties *JobDetails `json:"properties,omitempty"`
+	// Identity - Specifies the job identity details
+	Identity *IdentityDetails `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for JobResponse.
@@ -252,6 +301,9 @@ func (jr JobResponse) MarshalJSON() ([]byte, error) {
 	}
 	if jr.Properties != nil {
 		objectMap["properties"] = jr.Properties
+	}
+	if jr.Identity != nil {
+		objectMap["identity"] = jr.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -522,6 +574,8 @@ type LocationProperties struct {
 	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
 	// Phone - The phone number for the Azure data center.
 	Phone *string `json:"phone,omitempty"`
+	// AdditionalShippingInformation - Additional shipping information for customer, specific to datacenter to which customer should send their disks.
+	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty"`
 	// SupportedCarriers - A list of carriers that are supported at this location.
 	SupportedCarriers *[]string `json:"supportedCarriers,omitempty"`
 	// AlternateLocations - A list of location IDs that should be used to ship shipping drives to for jobs created against the current location. If the current location is active, it will be part of the list. If it is temporarily closed due to maintenance, this list may contain other locations.
@@ -672,6 +726,54 @@ type ShippingInformation struct {
 	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
 	// Phone - Phone number of the recipient of the returned drives.
 	Phone *string `json:"phone,omitempty"`
+	// AdditionalInformation - READ-ONLY; Additional shipping information for customer, specific to datacenter to which customer should send their disks.
+	AdditionalInformation *string `json:"additionalInformation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShippingInformation.
+func (si ShippingInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if si.RecipientName != nil {
+		objectMap["recipientName"] = si.RecipientName
+	}
+	if si.StreetAddress1 != nil {
+		objectMap["streetAddress1"] = si.StreetAddress1
+	}
+	if si.StreetAddress2 != nil {
+		objectMap["streetAddress2"] = si.StreetAddress2
+	}
+	if si.City != nil {
+		objectMap["city"] = si.City
+	}
+	if si.StateOrProvince != nil {
+		objectMap["stateOrProvince"] = si.StateOrProvince
+	}
+	if si.PostalCode != nil {
+		objectMap["postalCode"] = si.PostalCode
+	}
+	if si.CountryOrRegion != nil {
+		objectMap["countryOrRegion"] = si.CountryOrRegion
+	}
+	if si.Phone != nil {
+		objectMap["phone"] = si.Phone
+	}
+	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // UpdateJobParameters update Job parameters
@@ -738,7 +840,7 @@ type UpdateJobParametersProperties struct {
 	// ReturnShipping - Specifies the return carrier and customer's account with the carrier.
 	ReturnShipping *ReturnShipping `json:"returnShipping,omitempty"`
 	// DeliveryPackage - Contains information about the package being shipped by the customer to the Microsoft data center.
-	DeliveryPackage *PackageInfomation `json:"deliveryPackage,omitempty"`
+	DeliveryPackage *DeliveryPackageInformation `json:"deliveryPackage,omitempty"`
 	// LogLevel - Indicates whether error logging or verbose logging is enabled.
 	LogLevel *string `json:"logLevel,omitempty"`
 	// BackupDriveManifest - Indicates whether the manifest files on the drives should be copied to block blobs.

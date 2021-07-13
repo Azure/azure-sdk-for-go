@@ -1,3 +1,5 @@
+# This builds only track 2 SDKs. See \azure-pipelines.yml for track 1.
+
 parameters:
   ServiceDirectory: ''
   GoWorkspace: ''

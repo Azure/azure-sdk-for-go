@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -129,6 +130,12 @@ type basicTestEntity struct {
 	Bool    bool
 }
 
+func marshalBasicEntity(b basicTestEntity, assert *assert.Assertions) *[]byte {
+	r, e := json.Marshal(b)
+	assert.Nil(e)
+	return &r
+}
+
 type complexTestEntity struct {
 	Entity
 	Integer  int
@@ -139,6 +146,12 @@ type complexTestEntity struct {
 	Byte     []byte
 	// Integer64 int64 // Need to add type hints for ints/floats above 32bits
 	// Float64   float64
+}
+
+func marshalComplexEntity(c complexTestEntity, assert *assert.Assertions) *[]byte {
+	r, e := json.Marshal(c)
+	assert.Nil(e)
+	return &r
 }
 
 func createSimpleEntity(count int, pk string) basicTestEntity {
@@ -198,7 +211,7 @@ func createComplexEntities(context *testContext, count int, pk string) *[]comple
 			String:   "someString",
 			Bool:     true,
 			Float:    3.14159,
-			DateTime: time.Now(),
+			DateTime: time.Date(2021, time.July, 13, 0, 0, 0, 0, time.UTC),
 			Byte:     []byte("somebytes"),
 			// Integer64: int64(math.Pow(2, 33)),
 			// Float64:   math.Pow(2, 33.1),

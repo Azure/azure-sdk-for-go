@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
 func (s *tableClientLiveTests) TestAddBasicEntity() {
 	assert := assert.New(s.T())
 	// context := getTestContext(s.T().Name())
@@ -39,7 +38,7 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 
 	queryString := "PartitionKey eq 'pk001'"
 	queryOptions := QueryOptions{Filter: &queryString}
-	pager := client.Query(queryOptions)
+	pager := client.Query(&queryOptions)
 	count := 0
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()

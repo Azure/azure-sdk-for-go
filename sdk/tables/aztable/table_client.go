@@ -57,14 +57,14 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 //
 // Query returns a Pager, which allows iteration through each page of results. Example:
 //
-// pager := client.Query(QueryOptions{})
+// pager := client.Query(nil)
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.Sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
-	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
+func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponsePager {
+	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
@@ -117,8 +117,6 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *string, updateMode TableUpdateMode) (interface{}, error) {
 	// pk := entity[partitionKey].(string)
 	// rk := entity[rowKey].(string)
-	pk := "FixLater"
-	rk := "FixLater"
 	var ifMatch string = "*"
 	if etag != nil {
 		ifMatch = *etag
@@ -130,11 +128,17 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 		return entity, err
 	}
 
+	pk, _ := mapEntity[partitionKey]
+	partKey := pk.(string)
+
+	rk, _ := mapEntity[rowKey]
+	rowkey := rk.(string)
+
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }

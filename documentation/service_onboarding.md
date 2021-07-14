@@ -27,7 +27,7 @@ The Azure-sdk-for-go team supports Go versions 1.14 and greater, with our CI pip
 
 After you have the generated code from Autorest, the next step is to wrap this generated code in a "convenience layer" that the customers will use directly to interact with the service. Go is not an object-oriented language like C#, Java, or Python. There is no type hierarchy in Go. Clients and models will be defined as `struct`s and methods will be defined on these structs to interact with the service.
 
-In other languages, types can be specifically marked "public" or "private", in Go exported types and methods are defined by starting with a capital letter. The methods on structs also follow this rule, if it is for use outside the model it must start with a capital letter.
+In other languages, types can be specifically marked "public" or "private", in Go exported types and methods are defined by starting with a capital letter. The methods on structs also follow this rule, if it is for use outside of the model it must start with a capital letter.
 
 ### Documenting Code
 Code is documented directly in line and can be created directly using the `doc` tool which is part of the go toolchain. To document a type, variable, constant, function, or package write a regular comment directly preceding its declaration (with no intervening blank line). For an example, here is the documentation for the `fmt.Fprintf` function:
@@ -38,7 +38,7 @@ Code is documented directly in line and can be created directly using the `doc` 
 func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
 ```
 
-Each package needs to include a `doc.go` file and not be a part of a service version. For more details about this file there is a detailed write-up in the [repo wiki](https://github.com/Azure/azure-sdk-for-go/wiki/doc.go-template). In the `doc.go` file you should include a short service overview, basic examples, and if they exist, a link to samples in the [`azure-sdk-for-go-samples` repository](https://github.com/azure-samples/azure-sdk-for-go-samples)
+Each package needs to include a `doc.go` file and not be a part of a service version. For more details about this file there is a detailed write-up in the [repo wiki](https://github.com/Azure/azure-sdk-for-go/wiki/doc.go-template). In the `doc.go` file you should include a short service overview, basic examples, and (if they exist) a link to samples in the [`azure-sdk-for-go-samples` repository](https://github.com/azure-samples/azure-sdk-for-go-samples)
 
 ### Constructors
 All clients should be able to be initialized directly from the user and should begin with `New`. For example to define a constructor for a new client for the Tables service we start with defining the struct `TableServiceClient`:
@@ -49,13 +49,14 @@ type TableServiceClient struct {
 	service *serviceClient
 	cred    SharedKeyCredential
 }
+
 ```
 Note that there are no exported fields on the `TableServiceClient` struct, and as a rule of thumb, generated clients and credentials should be private.
 
 Constructors for clients are separate methods that are not associated with the struct. The constructor for the TableServiceClient is as follow:
 ```golang
 // NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
-func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
+func NewTableServiceClient(serviceURL string, credential azcore.Credential, options *TableServiceClientOptions) (*TableServiceClient, error) {
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
@@ -65,7 +66,7 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, err
 }
 ```
-In `Go`, the parameters are surrounded in parenthesis immediately following the method name with the parameter name preceding the type of the parameter. Following the parameters and a closing parentheses is the return arguments. If a method has more than one return parameter the types of the parameter must be enclosed in parenthesis. Note the `*` before a type indicates a pointer to that type. All methods that create a new client or interact with the service should return an `error` type as the last argument.
+In `Go`, the method parameters are enclosed with parenthesis immediately following the method name with the parameter name preceding the parameter type. The return arguments follow the parameters. If a method has more than one return parameter the types of the parameter must be enclosed in parenthesis. Note the `*` before a type indicates a pointer to that type. All methods that create a new client or interact with the service should return an `error` type as the last argument.
 
 This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`](https://gobyexample.com/interfaces) which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.Credential` the `AuthenticationPolicy(options AuthenticationPolicyOptions) Policy` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change. The `Options` type should have a name that is intuitive to what the customer is trying to do, in this case `TableClientOptions`.
 
@@ -96,9 +97,35 @@ All methods that perform I/O of any kind, sleep, or perform a significant amount
 
 ## Write Tests
 
-Testing is built into the go toolchain as well with the `testing` library. 
+Testing is built into the go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables.
+
+A simple test for `aztables` is shown below:
+```golang
+
+import (
+	"github.com/testify/assert"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
+)
+
+const (
+	accountName := testframework.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME") // This should be the same as the environment variable
+	accountKey := testframework.GetEnv("TABLES_PRIMARY_ACCOUNT_KEY")
+	mode := testframework.Recording
+)
+
+// Test creating a single table
+func TestCreateTable(t *testing.T) {
+	client := NewTableClient()
+}
+```
 
 ## Create Pipelines
+
+When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch is only for libraries that are to be released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
+```
+/azp run prepare-pipelines
+```
+This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` is tested against versions 1.13 and 1.14 on Windows and Linux. All of your future PRs (regardless of whether they are made to `track2-<package>` or another branch) will be tested against these branches. For more information about individual steps that run in the CI pipelines refer to the [documentation here](./eng_sys.md).
 
 <!-- LINKS -->
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10

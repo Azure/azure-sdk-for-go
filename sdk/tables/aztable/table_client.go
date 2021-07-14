@@ -80,24 +80,19 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 // AddEntity adds an entity from an arbitrary interface value to the table.
 // An entity must have at least a PartitionKey and RowKey property.
 func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}, error) {
-	// entmap, err := toMap(entity)
-	// if err != nil {
-	// 	return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
-	// }
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return entity, err
 	}
 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
-	// if err == nil {
-	// 	insertResp := resp.(TableInsertEntityResponse)
-	// 	return insertResp, nil
-	// } else {
-	// 	err = checkEntityForPkRk(&marshalled, err)
-	// 	return TableInsertEntityResponse{}, err
-	// }
-	return resp, err
+	if err == nil {
+		insertResp := resp.(TableInsertEntityResponse)
+		return insertResp, nil
+	} else {
+		err = checkEntityForPkRk(&mapEntity, err)
+		return TableInsertEntityResponse{}, err
+	}
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.

@@ -7,8 +7,6 @@
 
 package aztable
 
-
-
 import (
 	"strings"
 	"time"

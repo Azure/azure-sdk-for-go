@@ -115,8 +115,6 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 // The specified etag value will be used for optimistic concurrency. If the etag does not match the value of the entity in the table, the operation will fail.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *string, updateMode TableUpdateMode) (interface{}, error) {
-	// pk := entity[partitionKey].(string)
-	// rk := entity[rowKey].(string)
 	var ifMatch string = "*"
 	if etag != nil {
 		ifMatch = *etag
@@ -147,22 +145,23 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 // If the entity exists and updateMode is Merge, the property values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 func (t *TableClient) UpsertEntity(ctx context.Context, entity []byte, updateMode TableUpdateMode) (interface{}, error) {
-	// pk := entity[partitionKey].(string)
-	// rk := entity[rowKey].(string)
-	pk := "FixLater"
-	rk := "FixLater"
-
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return entity, err
 	}
 
+	pk, _ := mapEntity[partitionKey]
+	partKey := pk.(string)
+
+	rk, _ := mapEntity[rowKey]
+	rowkey := rk.(string)
+
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &TableMergeEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }

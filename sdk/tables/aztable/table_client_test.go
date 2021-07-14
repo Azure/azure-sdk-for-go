@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -115,26 +116,16 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	_, err := client.AddEntity(ctx, *marshalled)
 	assert.Nil(err)
 
-	var qResp TableEntityQueryByteResponseResponse
 	filter := "RowKey eq '1'"
 	queryOptions := &QueryOptions{Filter: &filter}
-	pager := client.Query(queryOptions)
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
+
 	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey)
 	assert.Nil(err)
+
 	var unMarshalledPreMerge map[string]interface{}
 	err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
 	assert.Nil(err)
 
-	// mergeProp := "MergeProperty"
-	// val := "foo"
-	// var mergeProperty = map[string]interface{}{
-	// 	partitionKey: (*entitiesToCreate)[0][partitionKey],
-	// 	rowKey:       (*entitiesToCreate)[0][rowKey],
-	// 	mergeProp:    val,
-	// }
 	var mapEntity map[string]interface{}
 	err = json.Unmarshal(*marshalled, &mapEntity)
 	assert.Nil(err)
@@ -146,7 +137,8 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, Merge)
 	assert.Nil(updateErr)
 
-	pager = client.Query(queryOptions)
+	var qResp TableEntityQueryByteResponseResponse
+	pager := client.Query(queryOptions)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -162,79 +154,57 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	assert.False(ok)
 }
 
-// func (s *tableClientLiveTests) TestUpsertEntity() {
-// 	assert := assert.New(s.T())
-// 	require := require.New(s.T())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestUpsertEntity() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	entitiesToCreate := createSimpleEntities(1, "partition")
+	// 1. Create Basic Entity
+	entityToCreate := createSimpleEntity(1, "partition")
+	marshalled := marshalBasicEntity(entityToCreate, assert)
 
-// 	_, err := client.UpsertEntity(ctx, (*entitiesToCreate)[0], Replace)
-// 	require.Nil(err)
+	_, err := client.UpsertEntity(ctx, *marshalled, Replace)
+	assert.Nil(err)
 
-// 	var qResp TableEntityQueryResponseResponse
-// 	filter := "RowKey eq '1'"
-// 	pager := client.Query(QueryOptions{Filter: &filter})
-// 	for pager.NextPage(ctx) {
-// 		qResp = pager.PageResponse()
-// 	}
-// 	preMerge := qResp.TableEntityQueryResponse.Value[0]
+	filter := "RowKey eq '1'"
+	query := &QueryOptions{Filter: &filter}
 
-// 	mergeProp := "MergeProperty"
-// 	val := "foo"
-// 	var mergeProperty = map[string]interface{}{
-// 		partitionKey: (*entitiesToCreate)[0][partitionKey],
-// 		rowKey:       (*entitiesToCreate)[0][rowKey],
-// 		mergeProp:    val,
-// 	}
+	// 2. Query for basic Entity
+	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey)
+	assert.Nil(err)
 
-// 	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
-// 	require.Nil(updateErr)
+	var unMarshalledPreMerge map[string]interface{}
+	err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
+	assert.Nil(err)
 
-// 	pager = client.Query(QueryOptions{Filter: &filter})
-// 	for pager.NextPage(ctx) {
-// 		qResp = pager.PageResponse()
-// 	}
-// 	postMerge := qResp.TableEntityQueryResponse.Value[0]
+	// 3. Create same entity without Bool property, add "MergeProperty" prop
+	mapEntity := createSimpleEntityNoBool(1, "partition")
+	mapEntity["MergeProperty"] = "foo"
 
-// 	// The merged entity has only the standard properties + the merged property
-// 	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
-// 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
-// }
+	reMarshalled, err := json.Marshal(mapEntity)
 
-// func (s *tableClientLiveTests) _TestGetEntity() {
-// 	assert := assert.New(s.T())
-// 	require := require.New(s.T())
-// 	client, delete := s.init(true)
-// 	defer delete()
+	// 4. Replace Entity with "bool"-less entity
+	_, err = client.UpsertEntity(ctx, reMarshalled, Replace)
+	require.Nil(err)
 
-// 	// Add 5 entities
-// 	entitiesToCreate := createSimpleEntities(1, "partition")
-// 	for _, e := range *entitiesToCreate {
-// 		_, err := client.AddEntity(ctx, e)
-// 		assert.Nil(err)
-// 	}
+	// 5. Query for new entity
+	var qResp TableEntityQueryByteResponseResponse
+	pager := client.Query(query)
+	for pager.NextPage(ctx) {
+		qResp = pager.PageResponse()
+	}
+	postMerge := qResp.TableEntityQueryResponse.Value[0]
+	var unmarshalledPostMerge map[string]interface{}
+	err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 
-// 	resp, err := client.GetEntity(ctx, "partition", "1")
-// 	require.Nil(err)
-// 	e := resp.Value
-// 	_, ok := e[partitionKey].(string)
-// 	assert.True(ok)
-// 	_, ok = e[rowKey].(string)
-// 	assert.True(ok)
-// 	_, ok = e[timestamp].(string)
-// 	assert.True(ok)
-// 	_, ok = e[etagOdata].(string)
-// 	assert.True(ok)
-// 	_, ok = e["StringProp"].(string)
-// 	assert.True(ok)
-// 	//TODO: fix when serialization is implemented
-// 	_, ok = e["IntProp"].(float64)
-// 	assert.True(ok)
-// 	_, ok = e["BoolProp"].(bool)
-// 	assert.True(ok)
-// }
+	// 6. Make assertions
+	assert.Less(len(unmarshalledPostMerge), len(unMarshalledPreMerge))
+	assert.Equal(unmarshalledPostMerge["MergeProperty"], "foo")
+
+	_, ok := unmarshalledPostMerge["Bool"]
+	assert.Falsef(ok, "Bool property should not be available in the merged entity")
+}
 
 // func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 // 	assert := assert.New(s.T())

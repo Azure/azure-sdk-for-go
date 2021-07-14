@@ -8,7 +8,6 @@ import (
 
 func (s *tableClientLiveTests) TestAddBasicEntity() {
 	assert := assert.New(s.T())
-	// context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
 	defer delete()
 
@@ -42,7 +41,6 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	count := 0
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		// model := basicTestEntity{}
 		for _, e := range resp.TableEntityQueryResponse.Value {
 			err = json.Unmarshal(e, &receivedEntity)
 			assert.Nil(err)

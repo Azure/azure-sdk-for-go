@@ -166,6 +166,16 @@ func createSimpleEntity(count int, pk string) basicTestEntity {
 	}
 }
 
+// Use this for a replaced entity to assert a property (Bool) is removed
+func createSimpleEntityNoBool(count int, pk string) map[string]interface{} {
+	m := make(map[string]interface{})
+	m[partitionKey] = pk
+	m[rowKey] = fmt.Sprint(count)
+	m["String"] = fmt.Sprintf("some string %d", count)
+	m["Integer"] = int32(count)
+	return m
+}
+
 func createSimpleEntities(count int, pk string) *[]basicTestEntity {
 	result := make([]basicTestEntity, count)
 	for i := 1; i <= count; i++ {

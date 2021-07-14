@@ -95,15 +95,6 @@ func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	}
 }
 
-// func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
-// 	ent := createComplexEntity()
-// 	for i := 0; i < b.N; i++ {
-// 		m, _ := toMap(ent)
-// 		toOdataAnnotatedDictionary(m)
-// 		json.Marshal(m)
-// 	}
-// }
-
 func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntityMap()
 	for i := 0; i < b.N; i++ {
@@ -111,105 +102,6 @@ func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 		json.Marshal(ent)
 	}
 }
-
-// func TestToMap(t *testing.T) {
-// 	assert := assert.New(t)
-
-// 	ent := createComplexEntity()
-
-// 	entMap, err := toMap(ent)
-// 	assert.Nil(err)
-
-// 	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
-// 	for k, v := range odataHintProps {
-// 		vv, ok := (*entMap)[odataType(k)]
-// 		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
-// 		assert.Equal(v, vv)
-// 	}
-
-// 	// validate all the types were properly casted / converted
-// 	assert.Equal(ent.PartitionKey, (*entMap)["PartitionKey"])
-// 	assert.Equal(ent.RowKey, (*entMap)["RowKey"])
-// 	assert.Equal(base64.StdEncoding.EncodeToString(ent.SomeBinaryProperty), string((*entMap)["SomeBinaryProperty"].(string)))
-// 	ts, _ := time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
-// 	assert.Equal(ent.SomeDateProperty.UTC().Format(ISO8601), ts.Format(ISO8601))
-// 	assert.Equal(ent.SomeDoubleProperty0, (*entMap)["SomeDoubleProperty0"])
-// 	assert.Equal(ent.SomeDoubleProperty1, (*entMap)["SomeDoubleProperty1"])
-// 	var u uuid.UUID = ent.SomeGuidProperty
-// 	assert.Equal(u.String(), (*entMap)["SomeGuidProperty"].(string))
-// 	assert.Equal(strconv.FormatInt(ent.SomeInt64Property, 10), (*entMap)["SomeInt64Property"].(string))
-// 	assert.Equal(ent.SomeIntProperty, (*entMap)["SomeIntProperty"])
-// 	assert.Equal(ent.SomeStringProperty, (*entMap)["SomeStringProperty"])
-// 	assert.Equal(*ent.SomePtrStringProperty, (*entMap)["SomePtrStringProperty"])
-// }
-
-// func TestToMapWithMap(t *testing.T) {
-// 	assert := assert.New(t)
-
-// 	ent := createComplexEntityMap()
-
-// 	entMap, err := toMap(ent)
-// 	assert.Nil(err)
-
-// 	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
-// 	for k, v := range odataHintProps {
-// 		vv, ok := (*entMap)[odataType(k)]
-// 		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
-// 		assert.Equal(v, vv)
-// 	}
-
-// 	assert.Equal(&ent, entMap)
-// }
-
-// func TestEntitySerialization(t *testing.T) {
-// 	assert := assert.New(t)
-
-// 	ent := createComplexEntity()
-
-// 	b, err := json.Marshal(ent)
-// 	assert.Nil(err)
-// 	assert.NotEmpty(b)
-// 	s := string(b)
-// 	//assert.FailNow(s)
-// 	assert.NotEmpty(s)
-// }
-
-// func TestDeserializeFromMap(t *testing.T) {
-// 	assert := assert.New(t)
-
-// 	expected := createComplexEntity()
-// 	bt := []byte(complexPayload)
-// 	var val = make(map[string]interface{})
-// 	json.Unmarshal(bt, &val)
-// 	result := complexEntity{}
-// 	// tt := reflect.TypeOf(complexEntity{})
-// 	// err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
-// 	err := EntityMapAsModel(val, &result)
-// 	assert.Nil(err)
-// 	assert.EqualValues(expected, result)
-// }
-
-// func createComplexEntity() complexEntity {
-// 	sp := "some pointer to string"
-// 	t, _ := time.Parse(ISO8601, "2021-03-23T18:29:15.9686039Z")
-// 	t2, _ := time.Parse(ISO8601, "2020-01-01T01:02:00Z")
-// 	b, _ := base64.StdEncoding.DecodeString("AQIDBAU=")
-// 	var e = complexEntity{
-// 		PartitionKey:          "somePartition",
-// 		ETag:                  "W/\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\"",
-// 		RowKey:                "01",
-// 		Timestamp:             t,
-// 		SomeBinaryProperty:    b,
-// 		SomeDateProperty:      t2,
-// 		SomeDoubleProperty0:   float64(1.0),
-// 		SomeDoubleProperty1:   float64(1.5),
-// 		SomeGuidProperty:      uuid.Parse("0d391d16-97f1-4b9a-be68-4cc871f90001"),
-// 		SomeInt64Property:     int64(math.MaxInt64),
-// 		SomeIntProperty:       42,
-// 		SomeStringProperty:    "This is table entity number 01",
-// 		SomePtrStringProperty: &sp}
-// 	return e
-// }
 
 func createComplexEntityMap() map[string]interface{} {
 	sp := "some pointer to string"

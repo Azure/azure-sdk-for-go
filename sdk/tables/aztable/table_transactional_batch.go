@@ -6,6 +6,7 @@ package aztable
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -13,12 +14,14 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"net/textproto"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 type TableTransactionActionType string
@@ -59,7 +62,7 @@ func (e *TableTransactionError) Error() string {
 
 type TableTransactionAction struct {
 	ActionType TableTransactionActionType
-	Entity     map[string]interface{}
+	Entity     []byte
 	ETag       string
 }
 
@@ -99,62 +102,62 @@ var defaultChangesetHeaders = map[string]string{
 	"Prefer":       "return-no-content",
 }
 
-// // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
-// func (t *TableClient) SubmitTransaction(ctx context.Context, transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
-// 	return t.submitTransactionInternal(ctx, &transactionActions, uuid.New(), uuid.New(), tableSubmitTransactionOptions)
-// }
+// SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
+func (t *TableClient) SubmitTransaction(ctx context.Context, transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
+	return t.submitTransactionInternal(ctx, &transactionActions, uuid.New(), uuid.New(), tableSubmitTransactionOptions)
+}
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
-// func (t *TableClient) submitTransactionInternal(ctx context.Context, transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
-// 	if len(*transactionActions) == 0 {
-// 		return TableTransactionResponse{}, errors.New(error_empty_transaction)
-// 	}
-// 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
-// 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
-// 	if err != nil {
-// 		return TableTransactionResponse{}, err
-// 	}
-// 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.con.Endpoint(), "$batch"))
-// 	if err != nil {
-// 		return TableTransactionResponse{}, err
-// 	}
-// 	req.Header.Set("x-ms-version", "2019-02-02")
-// 	if tableSubmitTransactionOptions != nil && tableSubmitTransactionOptions.RequestID != nil {
-// 		req.Header.Set("x-ms-client-request-id", *tableSubmitTransactionOptions.RequestID)
-// 	}
-// 	req.Header.Set("DataServiceVersion", "3.0")
-// 	req.Header.Set("Accept", string(OdataMetadataFormatApplicationJSONOdataMinimalmetadata))
+func (t *TableClient) submitTransactionInternal(ctx context.Context, transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
+	if len(*transactionActions) == 0 {
+		return TableTransactionResponse{}, errors.New(error_empty_transaction)
+	}
+	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
+	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.con.Endpoint(), "$batch"))
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+	req.Header.Set("x-ms-version", "2019-02-02")
+	if tableSubmitTransactionOptions != nil && tableSubmitTransactionOptions.RequestID != nil {
+		req.Header.Set("x-ms-client-request-id", *tableSubmitTransactionOptions.RequestID)
+	}
+	req.Header.Set("DataServiceVersion", "3.0")
+	req.Header.Set("Accept", string(OdataMetadataFormatApplicationJSONOdataMinimalmetadata))
 
-// 	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
-// 	body := new(bytes.Buffer)
-// 	writer := multipart.NewWriter(body)
-// 	writer.SetBoundary(boundary)
-// 	h := make(textproto.MIMEHeader)
-// 	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
-// 	batchWriter, err := writer.CreatePart(h)
-// 	if err != nil {
-// 		return TableTransactionResponse{}, err
-// 	}
-// 	batchWriter.Write(changeSetBody.Bytes())
-// 	writer.Close()
+	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	writer.SetBoundary(boundary)
+	h := make(textproto.MIMEHeader)
+	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
+	batchWriter, err := writer.CreatePart(h)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+	batchWriter.Write(changeSetBody.Bytes())
+	writer.Close()
 
-// 	req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
+	req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
 
-// 	resp, err := t.client.con.Pipeline().Do(req)
-// 	if err != nil {
-// 		return TableTransactionResponse{}, err
-// 	}
+	resp, err := t.client.con.Pipeline().Do(req)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 
-// 	transactionResponse, err := buildTransactionResponse(req, resp, len(*transactionActions))
-// 	if err != nil {
-// 		return transactionResponse, err
-// 	}
+	transactionResponse, err := buildTransactionResponse(req, resp, len(*transactionActions))
+	if err != nil {
+		return transactionResponse, err
+	}
 
-// 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-// 		return TableTransactionResponse{}, azcore.NewResponseError(err, resp.Response)
-// 	}
-// 	return transactionResponse, nil
-// }
+	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+		return TableTransactionResponse{}, azcore.NewResponseError(err, resp.Response)
+	}
+	return transactionResponse, nil
+}
 
 func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCount int) (TableTransactionResponse, error) {
 	innerResponses := make([]azcore.Response, itemCount)
@@ -249,86 +252,90 @@ func newTableTransactionError(errorBody []byte) error {
 	return errors.New("Unknown error.")
 }
 
-// // generateChangesetBody generates the individual changesets for the various operations within the batch request.
-// // There is a changeset for Insert, Delete, Merge etc.
-// func (t *TableClient) generateChangesetBody(changesetBoundary string, transactionActions *[]TableTransactionAction) (*bytes.Buffer, error) {
+// generateChangesetBody generates the individual changesets for the various operations within the batch request.
+// There is a changeset for Insert, Delete, Merge etc.
+func (t *TableClient) generateChangesetBody(changesetBoundary string, transactionActions *[]TableTransactionAction) (*bytes.Buffer, error) {
 
-// 	body := new(bytes.Buffer)
-// 	writer := multipart.NewWriter(body)
-// 	writer.SetBoundary(changesetBoundary)
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	writer.SetBoundary(changesetBoundary)
 
-// 	for _, be := range *transactionActions {
-// 		err := t.generateEntitySubset(&be, writer)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 	}
+	for _, be := range *transactionActions {
+		err := t.generateEntitySubset(&be, writer)
+		if err != nil {
+			return nil, err
+		}
+	}
 
-// 	writer.Close()
-// 	return body, nil
-// }
+	writer.Close()
+	return body, nil
+}
 
-// // generateEntitySubset generates body payload for particular batch entity
-// func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAction, writer *multipart.Writer) error {
+// generateEntitySubset generates body payload for particular batch entity
+func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAction, writer *multipart.Writer) error {
 
-// 	h := make(textproto.MIMEHeader)
-// 	h.Set(headerContentTransferEncoding, "binary")
-// 	h.Set(headerContentType, "application/http")
-// 	qo := &QueryOptions{Format: OdataMetadataFormatApplicationJSONOdataMinimalmetadata.ToPtr()}
+	h := make(textproto.MIMEHeader)
+	h.Set(headerContentTransferEncoding, "binary")
+	h.Set(headerContentType, "application/http")
+	qo := &QueryOptions{Format: OdataMetadataFormatApplicationJSONOdataMinimalmetadata.ToPtr()}
 
-// 	operationWriter, err := writer.CreatePart(h)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	var req *azcore.Request
-// 	var entity map[string]interface{} = transactionAction.Entity
+	operationWriter, err := writer.CreatePart(h)
+	if err != nil {
+		return err
+	}
+	var req *azcore.Request
+	var entity map[string]interface{}
+	err = json.Unmarshal(transactionAction.Entity, &entity)
+	if err != nil {
+		return err
+	}
 
-// 	if _, ok := entity[partitionKey]; !ok {
-// 		return fmt.Errorf("entity properties must contain a %s property", partitionKey)
-// 	}
-// 	if _, ok := entity[rowKey]; !ok {
-// 		return fmt.Errorf("entity properties must contain a %s property", rowKey)
-// 	}
-// 	// Consider empty ETags as '*'
-// 	if len(transactionAction.ETag) == 0 {
-// 		transactionAction.ETag = "*"
-// 	}
+	if _, ok := entity[partitionKey]; !ok {
+		return fmt.Errorf("entity properties must contain a %s property", partitionKey)
+	}
+	if _, ok := entity[rowKey]; !ok {
+		return fmt.Errorf("entity properties must contain a %s property", rowKey)
+	}
+	// Consider empty ETags as '*'
+	if len(transactionAction.ETag) == 0 {
+		transactionAction.ETag = "*"
+	}
 
-// 	switch transactionAction.ActionType {
-// 	case Delete:
-// 		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
-// 	case Add:
-// 		toOdataAnnotatedDictionary(&entity)
-// 		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
-// 	case UpdateMerge:
-// 		fallthrough
-// 	case UpsertMerge:
-// 		toOdataAnnotatedDictionary(&entity)
-// 		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
-// 		if len(transactionAction.ETag) > 0 {
-// 			opts.IfMatch = &transactionAction.ETag
-// 		}
-// 		req, err = t.client.mergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
-// 		if isCosmosEndpoint(t.client.con.Endpoint()) {
-// 			transformPatchToCosmosPost(req)
-// 		}
-// 	case UpdateReplace:
-// 		fallthrough
-// 	case UpsertReplace:
-// 		toOdataAnnotatedDictionary(&entity)
-// 		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
-// 	}
+	switch transactionAction.ActionType {
+	case Delete:
+		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
+	case Add:
+		toOdataAnnotatedDictionary(&entity)
+		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
+	case UpdateMerge:
+		fallthrough
+	case UpsertMerge:
+		toOdataAnnotatedDictionary(&entity)
+		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
+		if len(transactionAction.ETag) > 0 {
+			opts.IfMatch = &transactionAction.ETag
+		}
+		req, err = t.client.mergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
+		if isCosmosEndpoint(t.client.con.Endpoint()) {
+			transformPatchToCosmosPost(req)
+		}
+	case UpdateReplace:
+		fallthrough
+	case UpsertReplace:
+		toOdataAnnotatedDictionary(&entity)
+		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+	}
 
-// 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
-// 	operationWriter.Write([]byte(urlAndVerb))
-// 	writeHeaders(req.Header, &operationWriter)
-// 	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
-// 	if req.Body != nil {
-// 		io.Copy(operationWriter, req.Body)
-// 	}
+	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
+	operationWriter.Write([]byte(urlAndVerb))
+	writeHeaders(req.Header, &operationWriter)
+	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
+	if req.Body != nil {
+		io.Copy(operationWriter, req.Body)
+	}
 
-// 	return nil
-// }
+	return nil
+}
 
 func writeHeaders(h http.Header, writer *io.Writer) {
 	// This way it is guaranteed the headers will be written in a sorted order

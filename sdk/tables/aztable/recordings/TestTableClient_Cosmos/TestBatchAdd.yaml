@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable9m3drbgv2znqx"}'
+    body: '{"TableName":"gotableatvlqji8c4x2j"}'
     form: {}
     headers:
       Accept:
@@ -16,85 +16,73 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 18 May 2021 15:39:58 GMT
+      - Wed, 14 Jul 2021 20:19:26 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    url: https://seankaneprim.table.cosmos.azure.com/Tables
     method: POST
   response:
-    body: '{"TableName":"gotable9m3drbgv2znqx","odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    body: '{"TableName":"gotableatvlqji8c4x2j","odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
     headers:
       Content-Type:
       - application/json;odata=minimalmetadata
       Date:
-      - Tue, 18 May 2021 15:40:00 GMT
+      - Wed, 14 Jul 2021 20:19:26 GMT
       Etag:
-      - W/"datetime'2021-05-18T15%3A40%3A00.0075784Z'"
+      - W/"datetime'2021-07-14T20%3A19%3A26.9209096Z'"
       Location:
-      - https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable9m3drbgv2znqx')
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - https://seankaneprim.table.cosmos.azure.com/Tables('gotableatvlqji8c4x2j')
       X-Ms-Request-Id:
-      - 85c6b886-4404-4b2e-865e-266f59837b2a
-    status: 201 Ok
+      - 3c933d38-3e3d-4f98-8fa7-89b7dd274c2d
+    status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: "--batch_bae5ce88-edc3-4b25-7b33-be5c7454aefc\r\nContent-Type: multipart/mixed;
-      boundary=changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\n\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+    body: "--batch_e587f6f2-f2cf-40b9-5311-77fc5743156d\r\nContent-Type: multipart/mixed;
+      boundary=changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\n\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":1,\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"1fb643ec-1e6e-4fc0-5606-be23d98cef50\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 1\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":1,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":2,\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"24d3bd3d-3e02-4411-580f-5a3a8146d1ed\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 2\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":2,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":3,\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"84d4e62a-f422-4b27-6dc2-6c322e138b6d\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 3\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":3,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":4,\"PartitionKey\":\"partition\",\"RowKey\":\"4\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"76ce5e7d-a431-4b17-472c-2a589bf333cf\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 4\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":4,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"4\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":5,\"PartitionKey\":\"partition\",\"RowKey\":\"5\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"39afa2e2-8d46-446d-4141-034427ec5a5c\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 5\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":5,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"5\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":6,\"PartitionKey\":\"partition\",\"RowKey\":\"6\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"b0bcacc3-0388-4bf4-6e61-0e60dfa720f3\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 6\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":6,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"6\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":7,\"PartitionKey\":\"partition\",\"RowKey\":\"7\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"6f8a8185-7c64-437c-451b-3dcde76a19d1\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 7\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":7,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"7\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":8,\"PartitionKey\":\"partition\",\"RowKey\":\"8\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"3d524c9f-5e29-42bf-5626-8d39c21fb846\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 8\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":8,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"8\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      663\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":9,\"PartitionKey\":\"partition\",\"RowKey\":\"9\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"8b8c218f-b30b-40bc-62c0-92f1c52bebf9\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 9\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":9,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"9\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      666\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":10,\"PartitionKey\":\"partition\",\"RowKey\":\"10\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-18T15:39:59.9902777Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"c1891fd1-e63b-4c16-7b74-1502bcab7668\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 10\"}\r\n--changeset_dd23acc5-a2fb-419d-5006-1de1ca035a9f--\r\n\r\n--batch_bae5ce88-edc3-4b25-7b33-be5c7454aefc--\r\n"
+      262\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":10,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"10\",\"String\":\"someString\",\"TimeStamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a96b50a6-4e8a-47cc-568e-0f81eae34b1e--\r\n\r\n--batch_e587f6f2-f2cf-40b9-5311-77fc5743156d--\r\n"
     form: {}
     headers:
       Accept:
@@ -102,73 +90,102 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "11281"
+      - "7210"
       Content-Type:
-      - multipart/mixed; boundary=batch_bae5ce88-edc3-4b25-7b33-be5c7454aefc
+      - multipart/mixed; boundary=batch_e587f6f2-f2cf-40b9-5311-77fc5743156d
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2; Windows_NT)
+      - azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5; Windows_NT)
       X-Ms-Date:
-      - Tue, 18 May 2021 15:39:59 GMT
+      - Wed, 14 Jul 2021 20:19:27 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/$batch
+    url: https://seankaneprim.table.cosmos.azure.com/$batch
     method: POST
   response:
-    body: "--batchresponse_38a3240d-92fd-45d7-a9f4-1507ec60bf61\r\nContent-Type: multipart/mixed;
-      boundary=changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+    body: "--batchresponse_ab729bed-588a-4f56-9d8a-f1956817454f\r\nContent-Type: multipart/mixed;
+      boundary=changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4656136Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='1')\r\nContent-ID:
-      1\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6642312Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='1')\r\nContent-ID:
+      1\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4663304Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='2')\r\nContent-ID:
-      2\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6648456Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='2')\r\nContent-ID:
+      2\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4669448Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='3')\r\nContent-ID:
-      3\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6652552Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='3')\r\nContent-ID:
+      3\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4675592Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='4')\r\nContent-ID:
-      4\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6655624Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='4')\r\nContent-ID:
+      4\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4680712Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='5')\r\nContent-ID:
-      5\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6658696Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='5')\r\nContent-ID:
+      5\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4685832Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='6')\r\nContent-ID:
-      6\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6662792Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='6')\r\nContent-ID:
+      6\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4689928Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='7')\r\nContent-ID:
-      7\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6665864Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='7')\r\nContent-ID:
+      7\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4695048Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='8')\r\nContent-ID:
-      8\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6668936Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='8')\r\nContent-ID:
+      8\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4699144Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='9')\r\nContent-ID:
-      9\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882\nContent-Type:
+      W/\"datetime'2021-07-14T20%3A19%3A27.6673032Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='9')\r\nContent-ID:
+      9\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603\nContent-Type:
       application/http\nContent-Transfer-Encoding: binary\n\nHTTP/1.1 204 No Content\r\nETag:
-      W/\"datetime'2021-05-18T15%3A40%3A00.4703240Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
-      https://chrisstablesprim.table.cosmos.azure.com/gotable9m3drbgv2znqx(PartitionKey='partition',RowKey='10')\r\nContent-ID:
-      10\r\n\r\n\r\n--changesetresponse_69a6b8e4-6cec-4fb2-a7f3-975a3df93882--\n--batchresponse_38a3240d-92fd-45d7-a9f4-1507ec60bf61--\r\n"
+      W/\"datetime'2021-07-14T20%3A19%3A27.6676104Z'\"\r\nPreference-Applied: return-no-content\r\nLocation:
+      https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j(PartitionKey='partition',RowKey='10')\r\nContent-ID:
+      10\r\n\r\n\r\n--changesetresponse_cb39c5d5-1c4d-4896-9c42-d1e8cb9d9603--\n--batchresponse_ab729bed-588a-4f56-9d8a-f1956817454f--\r\n"
     headers:
       Content-Type:
-      - multipart/mixed; boundary=batchresponse_38a3240d-92fd-45d7-a9f4-1507ec60bf61
+      - multipart/mixed; boundary=batchresponse_ab729bed-588a-4f56-9d8a-f1956817454f
       Date:
-      - Tue, 18 May 2021 15:40:00 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - Wed, 14 Jul 2021 20:19:26 GMT
       X-Ms-Request-Id:
-      - 24146f57-712a-4890-923b-e24eb0f41461
+      - b1421e15-fc88-43f8-9d2b-2f353c71c5d2
     status: 202 Accepted
     code: 202
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 14 Jul 2021 20:19:28 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/gotableatvlqji8c4x2j()
+    method: GET
+  response:
+    body: '{"value":[{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6642312Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":1.0,"PartitionKey":"partition","RowKey":"1","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6642312Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6648456Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":2.0,"PartitionKey":"partition","RowKey":"2","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6648456Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6652552Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":3.0,"PartitionKey":"partition","RowKey":"3","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6652552Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6655624Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":4.0,"PartitionKey":"partition","RowKey":"4","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6655624Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6658696Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":5.0,"PartitionKey":"partition","RowKey":"5","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6658696Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6662792Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":6.0,"PartitionKey":"partition","RowKey":"6","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6662792Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6665864Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":7.0,"PartitionKey":"partition","RowKey":"7","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6665864Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6668936Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":8.0,"PartitionKey":"partition","RowKey":"8","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6668936Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6673032Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":9.0,"PartitionKey":"partition","RowKey":"9","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6673032Z"},{"odata.etag":"W/\"datetime''2021-07-14T20%3A19%3A27.6676104Z''\"","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":10.0,"PartitionKey":"partition","RowKey":"10","String":"someString","TimeStamp":"0001-01-01T00:00:00Z","Timestamp":"2021-07-14T20:19:27.6676104Z"}],"odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#gotableatvlqji8c4x2j"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Wed, 14 Jul 2021 20:19:27 GMT
+      X-Ms-Request-Id:
+      - d2a1e41d-7c87-4890-ae24-96e22133998e
+    status: 200 OK
+    code: 200
     duration: ""
 - request:
     body: ""
@@ -179,25 +196,21 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 18 May 2021 15:40:00 GMT
+      - Wed, 14 Jul 2021 20:19:28 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable9m3drbgv2znqx')
+    url: https://seankaneprim.table.cosmos.azure.com/Tables('gotableatvlqji8c4x2j')
     method: DELETE
   response:
     body: ""
     headers:
-      Content-Length:
-      - "0"
       Date:
-      - Tue, 18 May 2021 15:40:00 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - Wed, 14 Jul 2021 20:19:27 GMT
       X-Ms-Request-Id:
-      - 51bb42ce-1f87-455b-a029-6d83ef15ef14
+      - d0443ded-5056-425a-88e1-1f3beb20beab
     status: 204 No Content
     code: 204
     duration: ""

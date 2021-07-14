@@ -427,39 +427,42 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	assert.Equalf(unMarshaledPostMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
 
-// func (s *tableClientLiveTests) TestBatchError() {
-// 	assert := assert.New(s.T())
-// 	require := require.New(s.T())
-// 	context := getTestContext(s.T().Name())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestBatchError() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	entitiesToCreate := createComplexMapEntities(context, 3, "partition")
+	entitiesToCreate := createComplexEntities(3, "partition")
 
-// 	// Create the batch.
-// 	batch := make([]TableTransactionAction, 0, 3)
+	// Create the batch.
+	batch := make([]TableTransactionAction, 0, 3)
 
-// 	// Sending an empty batch throws.
-// 	_, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-// 	assert.NotNil(err)
-// 	assert.Equal(error_empty_transaction, err.Error())
+	// Sending an empty batch throws.
+	_, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
+	assert.NotNil(err)
+	assert.Equal(error_empty_transaction, err.Error())
 
-// 	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-// 	client.AddEntity(ctx, (*entitiesToCreate)[2])
+	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
+	marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])
+	client.AddEntity(ctx, marshalledFinalEntity)
 
-// 	// Add the entities to the batch
-// 	for i := 0; i < cap(batch); i++ {
-// 		batch = append(batch, TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]})
-// 	}
+	// Add the entities to the batch
+	for i := 0; i < cap(batch); i++ {
+		marshalledEntity, err := json.Marshal((*entitiesToCreate)[i])
+		require.Nil(err)
+		batch = append(batch, TableTransactionAction{ActionType: Add, Entity: marshalledEntity})
+	}
 
-// 	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-// 	assert.NotNil(err)
-// 	te, ok := err.(*TableTransactionError)
-// 	require.Truef(ok, "err should be of type TableTransactionError")
-// 	assert.Equal("EntityAlreadyExists", te.OdataError.Code)
-// 	assert.Equal(2, te.FailedEntityIndex)
-// 	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
-// }
+	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
+	assert.NotNil(err)
+	transactionError, ok := err.(*TableTransactionError)
+	require.Truef(ok, "err should be of type TableTransactionError")
+	assert.Equal("EntityAlreadyExists", transactionError.OdataError.Code)
+	assert.Equal(2, transactionError.FailedEntityIndex)
+	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
+}
 
 func (s *tableClientLiveTests) TestInvalidEntity() {
 	assert := assert.New(s.T())

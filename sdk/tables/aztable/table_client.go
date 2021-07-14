@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -69,11 +70,11 @@ func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponseP
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
 func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (ByteArrayResponse, error) {
 	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, &QueryOptions{})
-	// if err != nil {
-	// 	return resp, err
-	// }
+	if err != nil {
+		return ByteArrayResponse{}, err
+	}
 	// err = castAndRemoveAnnotations(&resp.Value)
-	return resp, err
+	return newByteArrayResponse(resp)
 }
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
@@ -83,7 +84,12 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}
 	// if err != nil {
 	// 	return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
 	// }
-	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	var mapEntity map[string]interface{}
+	err := json.Unmarshal(entity, &mapEntity)
+	if err != nil {
+		return entity, err
+	}
+	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	// if err == nil {
 	// 	insertResp := resp.(TableInsertEntityResponse)
 	// 	return insertResp, nil
@@ -113,11 +119,18 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 	if etag != nil {
 		ifMatch = *etag
 	}
+
+	var mapEntity map[string]interface{}
+	err := json.Unmarshal(entity, &mapEntity)
+	if err != nil {
+		return entity, err
+	}
+
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }
@@ -131,11 +144,17 @@ func (t *TableClient) UpsertEntity(ctx context.Context, entity []byte, updateMod
 	pk := "FixLater"
 	rk := "FixLater"
 
+	var mapEntity map[string]interface{}
+	err := json.Unmarshal(entity, &mapEntity)
+	if err != nil {
+		return entity, err
+	}
+
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }

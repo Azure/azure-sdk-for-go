@@ -37,7 +37,6 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	resp, err := client.GetEntity(ctx, "pk001", "rk001")
 	assert.Nil(err)
 
-	// newEntity := resp.Value
 	receivedEntity := basicTestEntity{}
 	err = json.Unmarshal(resp.Value, &receivedEntity)
 	assert.Equal(receivedEntity.PartitionKey, "pk001")

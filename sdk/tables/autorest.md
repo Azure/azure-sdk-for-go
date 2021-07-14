@@ -13,14 +13,13 @@ license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: false
 output-folder: aztable
 file-prefix: "zz_generated_"
-# namespace: aztable
 tag: package-2019-02
 credential-scope: none
 use: "@autorest/go@4.0.0-preview.23"
 openapi-type: data-plane
 ```
 
-``` yaml
+<!-- ``` yaml
 directive:
   # dynamically change TableEntityProperties from map[string]interface{} to []byte
   - from: swagger-document
@@ -31,7 +30,7 @@ directive:
       delete $.additionalProperties;
       $lib.log($);
       return $;
-```
+``` -->
 
 ### Go multi-api
 

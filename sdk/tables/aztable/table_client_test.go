@@ -75,11 +75,11 @@ func (s *tableClientLiveTests) TestAddEntity() {
 
 func (s *tableClientLiveTests) TestAddComplexEntity() {
 	assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
+	// context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
 	defer delete()
 
-	entitiesToCreate := createComplexEntities(context, 1, "partition")
+	entitiesToCreate := createComplexEntities(1, "partition")
 
 	for _, e := range *entitiesToCreate {
 		marshalledEntity, err := json.Marshal(e)
@@ -255,64 +255,47 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	}
 }
 
-// func (s *tableClientLiveTests) TestQueryComplexEntity() {
-// 	assert := assert.New(s.T())
-// 	context := getTestContext(s.T().Name())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestQueryComplexEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	// Add 5 entities
-// 	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
-// 	for _, e := range *entitiesToCreate {
-// 		_, err := client.AddEntity(ctx, e)
-// 		assert.Nil(err)
-// 	}
+	// Add 5 entities
+	entitiesToCreate := createComplexEntities(5, "partition")
+	for _, e := range *entitiesToCreate {
+		marshalledEntity, err := json.Marshal(e)
+		assert.Nil(err)
+		_, err = client.AddEntity(ctx, marshalledEntity)
+		assert.Nil(err)
+	}
 
-// 	filter := "RowKey lt '5'"
-// 	expectedCount := 4
-// 	var resp TableEntityQueryResponseResponse
-// 	pager := client.Query(QueryOptions{Filter: &filter})
-// 	for pager.NextPage(ctx) {
-// 		resp = pager.PageResponse()
-// 		assert.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
-// 	}
-// 	resp = pager.PageResponse()
-// 	assert.Nil(pager.Err())
-// 	for _, e := range resp.TableEntityQueryResponse.Value {
-// 		_, ok := e[partitionKey].(string)
-// 		assert.True(ok)
-// 		_, ok = e[rowKey].(string)
-// 		assert.True(ok)
-// 		_, ok = e[timestamp].(string)
-// 		assert.True(ok)
-// 		_, ok = e[etagOdata].(string)
-// 		assert.True(ok)
-// 		_, ok = e["StringProp"].(string)
-// 		assert.True(ok)
-// 		//TODO: fix when serialization is implemented
-// 		_, ok = e["IntProp"].(float64)
-// 		assert.True(ok)
-// 		_, ok = e["BoolProp"].(bool)
-// 		assert.True(ok)
-// 		_, ok = e["SomeBinaryProperty"].([]byte)
-// 		assert.True(ok)
-// 		_, ok = e["SomeDateProperty"].(time.Time)
-// 		assert.True(ok)
-// 		_, ok = e["SomeDoubleProperty0"].(float64)
-// 		assert.True(ok)
-// 		_, ok = e["SomeDoubleProperty1"].(float64)
-// 		assert.True(ok)
-// 		_, ok = e["SomeGuidProperty"].(uuid.UUID)
-// 		assert.True(ok)
-// 		_, ok = e["SomeInt64Property"].(int64)
-// 		assert.True(ok)
-// 		//TODO: fix when serialization is implemented
-// 		_, ok = e["SomeIntProperty"].(float64)
-// 		assert.True(ok)
-// 		_, ok = e["SomeStringProperty"].(string)
-// 		assert.True(ok)
-// 	}
-// }
+	filter := "RowKey lt '5'"
+	expectedCount := 4
+	query := &QueryOptions{Filter: &filter}
+
+	var resp TableEntityQueryByteResponseResponse
+	pager := client.Query(query)
+	for pager.NextPage(ctx) {
+		resp = pager.PageResponse()
+		assert.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
+
+		for idx, entity := range resp.TableEntityQueryResponse.Value {
+			model := complexTestEntity{}
+			err := json.Unmarshal(entity, &model)
+			assert.Nil(err)
+
+			assert.Equal(model.PartitionKey, "partition")
+			assert.Equal(model.RowKey, (*entitiesToCreate)[idx].RowKey)
+			assert.Equal(model.Integer, (*entitiesToCreate)[idx].Integer)
+			assert.Equal(model.String, (*entitiesToCreate)[idx].String)
+			assert.Equal(model.Bool, (*entitiesToCreate)[idx].Bool)
+			assert.Equal(model.Float, (*entitiesToCreate)[idx].Float)
+			assert.Equal(model.DateTime, (*entitiesToCreate)[idx].DateTime)
+			assert.Equal(model.Byte, (*entitiesToCreate)[idx].Byte)
+		}
+
+	}
+}
 
 // func (s *tableClientLiveTests) TestBatchAdd() {
 // 	assert := assert.New(s.T())
@@ -450,23 +433,21 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 // 	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 // }
 
-/*
-func (s *tableClientLiveTests) TestInvalidEntity() {
-	assert := assert.New(s.T())
-	client, delete := s.init(true)
-	defer delete()
+// func (s *tableClientLiveTests) TestInvalidEntity() {
+// 	assert := assert.New(s.T())
+// 	client, delete := s.init(true)
+// 	defer delete()
 
-	badEntity := &map[string]interface{}{
-		"Value":  10,
-		"String": "stringystring",
-	}
+// 	badEntity := &map[string]interface{}{
+// 		"Value":  10,
+// 		"String": "stringystring",
+// 	}
 
-	_, err := client.AddEntity(ctx, *badEntity)
+// 	_, err := client.AddEntity(ctx, *badEntity)
 
-	assert.NotNil(err)
-	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
-}
-*/
+// 	assert.NotNil(err)
+// 	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
+// }
 
 // setup the test environment
 func (s *tableClientLiveTests) BeforeTest(suite string, test string) {

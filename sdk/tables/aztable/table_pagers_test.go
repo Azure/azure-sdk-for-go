@@ -95,14 +95,14 @@ func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
-	ent := createComplexEntity()
-	for i := 0; i < b.N; i++ {
-		m, _ := toMap(ent)
-		toOdataAnnotatedDictionary(m)
-		json.Marshal(m)
-	}
-}
+// func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
+// 	ent := createComplexEntity()
+// 	for i := 0; i < b.N; i++ {
+// 		m, _ := toMap(ent)
+// 		toOdataAnnotatedDictionary(m)
+// 		json.Marshal(m)
+// 	}
+// }
 
 func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 	ent := createComplexEntityMap()
@@ -161,55 +161,55 @@ func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 // 	assert.Equal(&ent, entMap)
 // }
 
-func TestEntitySerialization(t *testing.T) {
-	assert := assert.New(t)
+// func TestEntitySerialization(t *testing.T) {
+// 	assert := assert.New(t)
 
-	ent := createComplexEntity()
+// 	ent := createComplexEntity()
 
-	b, err := json.Marshal(ent)
-	assert.Nil(err)
-	assert.NotEmpty(b)
-	s := string(b)
-	//assert.FailNow(s)
-	assert.NotEmpty(s)
-}
+// 	b, err := json.Marshal(ent)
+// 	assert.Nil(err)
+// 	assert.NotEmpty(b)
+// 	s := string(b)
+// 	//assert.FailNow(s)
+// 	assert.NotEmpty(s)
+// }
 
-func TestDeserializeFromMap(t *testing.T) {
-	assert := assert.New(t)
+// func TestDeserializeFromMap(t *testing.T) {
+// 	assert := assert.New(t)
 
-	expected := createComplexEntity()
-	bt := []byte(complexPayload)
-	var val = make(map[string]interface{})
-	json.Unmarshal(bt, &val)
-	result := complexEntity{}
-	// tt := reflect.TypeOf(complexEntity{})
-	// err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
-	err := EntityMapAsModel(val, &result)
-	assert.Nil(err)
-	assert.EqualValues(expected, result)
-}
+// 	expected := createComplexEntity()
+// 	bt := []byte(complexPayload)
+// 	var val = make(map[string]interface{})
+// 	json.Unmarshal(bt, &val)
+// 	result := complexEntity{}
+// 	// tt := reflect.TypeOf(complexEntity{})
+// 	// err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
+// 	err := EntityMapAsModel(val, &result)
+// 	assert.Nil(err)
+// 	assert.EqualValues(expected, result)
+// }
 
-func createComplexEntity() complexEntity {
-	sp := "some pointer to string"
-	t, _ := time.Parse(ISO8601, "2021-03-23T18:29:15.9686039Z")
-	t2, _ := time.Parse(ISO8601, "2020-01-01T01:02:00Z")
-	b, _ := base64.StdEncoding.DecodeString("AQIDBAU=")
-	var e = complexEntity{
-		PartitionKey:          "somePartition",
-		ETag:                  "W/\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\"",
-		RowKey:                "01",
-		Timestamp:             t,
-		SomeBinaryProperty:    b,
-		SomeDateProperty:      t2,
-		SomeDoubleProperty0:   float64(1.0),
-		SomeDoubleProperty1:   float64(1.5),
-		SomeGuidProperty:      uuid.Parse("0d391d16-97f1-4b9a-be68-4cc871f90001"),
-		SomeInt64Property:     int64(math.MaxInt64),
-		SomeIntProperty:       42,
-		SomeStringProperty:    "This is table entity number 01",
-		SomePtrStringProperty: &sp}
-	return e
-}
+// func createComplexEntity() complexEntity {
+// 	sp := "some pointer to string"
+// 	t, _ := time.Parse(ISO8601, "2021-03-23T18:29:15.9686039Z")
+// 	t2, _ := time.Parse(ISO8601, "2020-01-01T01:02:00Z")
+// 	b, _ := base64.StdEncoding.DecodeString("AQIDBAU=")
+// 	var e = complexEntity{
+// 		PartitionKey:          "somePartition",
+// 		ETag:                  "W/\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\"",
+// 		RowKey:                "01",
+// 		Timestamp:             t,
+// 		SomeBinaryProperty:    b,
+// 		SomeDateProperty:      t2,
+// 		SomeDoubleProperty0:   float64(1.0),
+// 		SomeDoubleProperty1:   float64(1.5),
+// 		SomeGuidProperty:      uuid.Parse("0d391d16-97f1-4b9a-be68-4cc871f90001"),
+// 		SomeInt64Property:     int64(math.MaxInt64),
+// 		SomeIntProperty:       42,
+// 		SomeStringProperty:    "This is table entity number 01",
+// 		SomePtrStringProperty: &sp}
+// 	return e
+// }
 
 func createComplexEntityMap() map[string]interface{} {
 	sp := "some pointer to string"

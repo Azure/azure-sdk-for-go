@@ -184,49 +184,28 @@ func createSimpleEntities(count int, pk string) *[]basicTestEntity {
 	return &result
 }
 
-// func createComplexMapEntities(context *testContext, count int, pk string) *[]map[string]interface{} {
-// 	result := make([]map[string]interface{}, count)
+func createComplexEntity(i int, pk string) complexTestEntity {
+	return complexTestEntity{
+		Entity: Entity{
+			PartitionKey: "partition",
+			RowKey:       fmt.Sprint(i),
+		},
+		Integer:  int(i),
+		String:   "someString",
+		Bool:     true,
+		Float:    3.14159,
+		DateTime: time.Date(2021, time.July, 13, 0, 0, 0, 0, time.UTC),
+		Byte:     []byte("somebytes"),
+		// Integer64: int64(math.Pow(2, 33)),
+		// Float64:   math.Pow(2, 33.1),
+	}
+}
 
-// 	for i := 1; i <= count; i++ {
-// 		var e = map[string]interface{}{
-// 			partitionKey:          pk,
-// 			rowKey:                fmt.Sprint(i),
-// 			"StringProp":          fmt.Sprintf("some string %d", i),
-// 			"IntProp":             i,
-// 			"BoolProp":            true,
-// 			"SomeBinaryProperty":  []byte("some bytes"),
-// 			"SomeDateProperty":    context.recording.Now(),
-// 			"SomeDoubleProperty0": float64(1),
-// 			"SomeDoubleProperty1": float64(1.2345),
-// 			"SomeGuidProperty":    context.recording.UUID(),
-// 			"SomeInt64Property":   (int64)(math.MaxInt64),
-// 			"SomeIntProperty":     42,
-// 			"SomeStringProperty":  "some string",
-// 		}
-// 		result[i-1] = e
-// 	}
-// 	return &result
-// }
-
-func createComplexEntities(context *testContext, count int, pk string) *[]complexTestEntity {
+func createComplexEntities(count int, pk string) *[]complexTestEntity {
 	result := make([]complexTestEntity, count)
 
 	for i := 1; i <= count; i++ {
-		var e = complexTestEntity{
-			Entity: Entity{
-				PartitionKey: "partition",
-				RowKey:       "row",
-			},
-			Integer:  int(i),
-			String:   "someString",
-			Bool:     true,
-			Float:    3.14159,
-			DateTime: time.Date(2021, time.July, 13, 0, 0, 0, 0, time.UTC),
-			Byte:     []byte("somebytes"),
-			// Integer64: int64(math.Pow(2, 33)),
-			// Float64:   math.Pow(2, 33.1),
-		}
-		result[i-1] = e
+		result[i-1] = createComplexEntity(i, pk)
 	}
 	return &result
 }

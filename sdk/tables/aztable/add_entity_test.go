@@ -39,24 +39,25 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 
 	receivedEntity := basicTestEntity{}
 	err = json.Unmarshal(resp.Value, &receivedEntity)
+	assert.Nil(err)
 	assert.Equal(receivedEntity.PartitionKey, "pk001")
 	assert.Equal(receivedEntity.RowKey, "rk001")
 
-	// rk, ok := newEntity[rowKey]
-	// assert.True(ok)
-	// assert.Equal(rk, "rk001")
+	queryString := "PartitionKey eq 'pk001'"
+	queryOptions := QueryOptions{Filter: &queryString}
+	pager := client.Query(queryOptions)
+	count := 0
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		// model := basicTestEntity{}
+		for _, e := range resp.TableEntityQueryResponse.Value {
+			err = json.Unmarshal(e, &receivedEntity)
+			assert.Nil(err)
+			assert.Equal(receivedEntity.PartitionKey, "pk001")
+			assert.Equal(receivedEntity.RowKey, "rk001")
+			count += 1
+		}
+	}
 
-	// queryString := "PartitionKey eq 'pk001'"
-	// queryOptions := QueryOptions{Filter: &queryString}
-	// pager := client.Query(queryOptions)
-	// for pager.NextPage(ctx) {
-	// 	resp := pager.PageResponse()
-	// 	// model := basicTestEntity{}
-	// 	for _, e := range resp.TableEntityQueryResponse.Value {
-	// 		pk, ok := e[partitionKey]
-	// 		assert.True(ok)
-	// 		assert.Equal(pk, "pk001")
-	// 	}
-
-	// }
+	assert.Equal(count, 1)
 }

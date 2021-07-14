@@ -64,3 +64,66 @@ func newByteArrayResponse(m MapOfInterfaceResponse) (ByteArrayResponse, error) {
 		XMSContinuationNextRowKey:       m.XMSContinuationNextRowKey,
 	}, nil
 }
+
+// TableEntityQueryByteResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
+type TableEntityQueryByteResponseResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// The properties for the table entity query response.
+	TableEntityQueryResponse *TableEntityQueryByteResponse
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
+	XMSContinuationNextPartitionKey *string
+
+	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
+	XMSContinuationNextRowKey *string
+}
+
+// TableEntityQueryByteResponse - The properties for the table entity query response.
+type TableEntityQueryByteResponse struct {
+	// The metadata response of the table.
+	OdataMetadata *string
+
+	// List of table entities.
+	Value [][]byte
+}
+
+func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityQueryByteResponseResponse, error) {
+	marshalledValue := make([][]byte, 0)
+	for _, e := range resp.TableEntityQueryResponse.Value {
+		m, err := json.Marshal(e)
+		if err != nil {
+			return TableEntityQueryByteResponseResponse{}, err
+		}
+		marshalledValue = append(marshalledValue, m)
+	}
+
+	t := TableEntityQueryByteResponse{
+		OdataMetadata: resp.TableEntityQueryResponse.OdataMetadata,
+		Value:         marshalledValue,
+	}
+
+	return TableEntityQueryByteResponseResponse{
+		ClientRequestID:                 resp.ClientRequestID,
+		Date:                            resp.Date,
+		RawResponse:                     resp.RawResponse,
+		RequestID:                       resp.RequestID,
+		TableEntityQueryResponse:        &t,
+		Version:                         resp.Version,
+		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
+		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
+	}, nil
+}

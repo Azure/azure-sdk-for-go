@@ -36,12 +36,12 @@ type TableEntityQueryResponsePager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableEntityQueryResponseResponse
+	PageResponse() TableEntityQueryByteResponseResponse
 }
 
 type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
-	current           *TableEntityQueryResponseResponse
+	current           *TableEntityQueryByteResponseResponse
 	tableQueryOptions *TableQueryEntitiesOptions
 	queryOptions      *QueryOptions
 	err               error
@@ -59,7 +59,11 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	// if p.err == nil {
 	// 	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
 	// }
-	p.current = &resp
+	c, err := castToByteResponse(&resp)
+	if err != nil {
+		p.err = nil
+	}
+	p.current = &c
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
 	return p.err == nil && resp.TableEntityQueryResponse != nil && len(resp.TableEntityQueryResponse.Value) > 0
@@ -73,7 +77,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryResponseResponse {
+func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryByteResponseResponse {
 	return *p.current
 }
 

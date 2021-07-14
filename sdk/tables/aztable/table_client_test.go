@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -206,55 +207,53 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	assert.Falsef(ok, "Bool property should not be available in the merged entity")
 }
 
-// func (s *tableClientLiveTests) TestQuerySimpleEntity() {
-// 	assert := assert.New(s.T())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestQuerySimpleEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	// Add 5 entities
-// 	entitiesToCreate := createSimpleEntities(5, "partition")
-// 	for _, e := range *entitiesToCreate {
-// 		_, err := client.AddEntity(ctx, e)
-// 		assert.Nil(err)
-// 	}
+	// Add 5 entities
+	entitiesToCreate := createSimpleEntities(5, "partition")
+	for _, e := range *entitiesToCreate {
+		marshalledEntity, err := json.Marshal(e)
+		assert.Nil(err)
+		_, err = client.AddEntity(ctx, marshalledEntity)
+		assert.Nil(err)
+	}
 
-// 	filter := "RowKey lt '5'"
-// 	expectedCount := 4
-// 	var resp TableEntityQueryResponseResponse
-// 	var models []simpleEntity
-// 	pager := client.Query(QueryOptions{Filter: &filter})
-// 	for pager.NextPage(ctx) {
-// 		resp = pager.PageResponse()
-// 		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
-// 		resp.TableEntityQueryResponse.AsModels(&models)
-// 		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
-// 	}
-// 	resp = pager.PageResponse()
-// 	assert.Nil(pager.Err())
-// 	for i, e := range resp.TableEntityQueryResponse.Value {
-// 		_, ok := e[partitionKey].(string)
-// 		assert.True(ok)
-// 		assert.Equal(e[partitionKey], models[i].PartitionKey)
-// 		_, ok = e[rowKey].(string)
-// 		assert.True(ok)
-// 		assert.Equal(e[rowKey], models[i].RowKey)
-// 		_, ok = e[timestamp].(string)
-// 		assert.True(ok)
-// 		_, ok = e[etagOdata].(string)
-// 		assert.True(ok)
-// 		assert.Equal(e[etagOdata], models[i].ETag)
-// 		_, ok = e["StringProp"].(string)
-// 		assert.True(ok)
-// 		//TODO: fix when serialization is implemented
-// 		_, ok = e["IntProp"].(float64)
-// 		assert.Equal(int(e["IntProp"].(float64)), models[i].IntProp)
-// 		assert.True(ok)
-// 		_, ok = e["BoolProp"].(bool)
-// 		assert.Equal((*entitiesToCreate)[i]["BoolProp"], e["BoolProp"])
-// 		assert.Equal(e["BoolProp"], models[i].BoolProp)
-// 		assert.True(ok)
-// 	}
-// }
+	filter := "RowKey lt '5'"
+	query := &QueryOptions{Filter: &filter}
+	expectedCount := 4
+
+	var resp TableEntityQueryByteResponseResponse
+	pager := client.Query(query)
+	for pager.NextPage(ctx) {
+		resp = pager.PageResponse()
+		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
+	}
+
+	for i, e := range resp.TableEntityQueryResponse.Value {
+		var mapModel map[string]interface{}
+		err := json.Unmarshal(e, &mapModel)
+		assert.Nil(err)
+
+		_, ok := mapModel[timestamp]
+		assert.True(ok)
+
+		_, ok = mapModel[etagOdata]
+		assert.True(ok)
+
+		var b basicTestEntity
+		err = json.Unmarshal(e, &b)
+		assert.Nil(err)
+
+		assert.Equal(b.PartitionKey, "partition")
+		assert.Equal(b.RowKey, fmt.Sprint(i+1))
+		assert.Equal(b.String, (*entitiesToCreate)[i].String)
+		assert.Equal(b.Integer, (*entitiesToCreate)[i].Integer)
+		assert.Equal(b.Bool, (*entitiesToCreate)[i].Bool)
+	}
+}
 
 // func (s *tableClientLiveTests) TestQueryComplexEntity() {
 // 	assert := assert.New(s.T())

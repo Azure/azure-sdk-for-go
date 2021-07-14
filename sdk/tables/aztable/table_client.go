@@ -73,7 +73,6 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	if err != nil {
 		return ByteArrayResponse{}, err
 	}
-	// err = castAndRemoveAnnotations(&resp.Value)
 	return newByteArrayResponse(resp)
 }
 

@@ -98,7 +98,7 @@ func recordedTestTeardown(key string) {
 func cleanupTables(context *testContext, tables *[]string) {
 	c := context.client
 	if tables == nil {
-		pager := c.Query(QueryOptions{})
+		pager := c.Query(nil)
 		for pager.NextPage(ctx) {
 			for _, t := range pager.PageResponse().TableQueryResponse.Value {
 				c.Delete(ctx, *t.TableName)

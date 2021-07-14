@@ -65,14 +65,14 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 //
 // Query returns a Pager, which allows iteration through each page of results. Example:
 //
-// pager := client.Query(QueryOptions{})
+// pager := client.Query(nil)
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.sprintf("The page contains %i results", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) Query(queryOptions QueryOptions) TableQueryResponsePager {
-	return &tableQueryResponsePager{client: t.client, queryOptions: &queryOptions, tableQueryOptions: new(TableQueryOptions)}
+func (t *TableServiceClient) Query(queryOptions *QueryOptions) TableQueryResponsePager {
+	return &tableQueryResponsePager{client: t.client, queryOptions: queryOptions, tableQueryOptions: new(TableQueryOptions)}
 }
 
 func isCosmosEndpoint(url string) bool {

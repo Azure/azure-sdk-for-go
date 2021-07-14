@@ -6,12 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type basicTestEntity struct {
-	Entity
-	Integer int32
-	String  string
-	Float   float64
-}
 
 func (s *tableClientLiveTests) TestAddBasicEntity() {
 	assert := assert.New(s.T())
@@ -26,7 +20,7 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 		},
 		Integer: 10,
 		String:  "abcdef",
-		Float:   3.14159,
+		Bool:    true,
 	}
 
 	marshalled, err := json.Marshal(basicEntity)

@@ -6,7 +6,6 @@ package aztable
 import (
 	"context"
 	"fmt"
-	"math"
 	"testing"
 	"time"
 
@@ -123,65 +122,85 @@ func getTableName(context *testContext, prefix ...string) (string, error) {
 	}
 }
 
-func createSimpleEntities(count int, pk string) *[]map[string]interface{} {
-	result := make([]map[string]interface{}, count)
+type basicTestEntity struct {
+	Entity
+	Integer int32
+	String  string
+	Bool    bool
+}
+
+type complexTestEntity struct {
+	Entity
+	Integer  int
+	String   string
+	Bool     bool
+	Float    float32
+	DateTime time.Time
+	Byte     []byte
+	// Integer64 int64 // Need to add type hints for ints/floats above 32bits
+	// Float64   float64
+}
+
+func createSimpleEntities(count int, pk string) *[]basicTestEntity {
+	result := make([]basicTestEntity, count)
 
 	for i := 1; i <= count; i++ {
-		var e = map[string]interface{}{
-			partitionKey: pk,
-			rowKey:       fmt.Sprint(i),
-			"StringProp": fmt.Sprintf("some string %d", i),
-			"IntProp":    i,
-			"BoolProp":   true,
+		var e = basicTestEntity{
+			Entity: Entity{
+				PartitionKey: pk,
+				RowKey:       fmt.Sprint(i),
+			},
+			String:  fmt.Sprintf("some string %d", i),
+			Integer: int32(i),
+			Bool:    true,
 		}
 		result[i-1] = e
 	}
 	return &result
 }
 
-func createComplexMapEntities(context *testContext, count int, pk string) *[]map[string]interface{} {
-	result := make([]map[string]interface{}, count)
+// func createComplexMapEntities(context *testContext, count int, pk string) *[]map[string]interface{} {
+// 	result := make([]map[string]interface{}, count)
+
+// 	for i := 1; i <= count; i++ {
+// 		var e = map[string]interface{}{
+// 			partitionKey:          pk,
+// 			rowKey:                fmt.Sprint(i),
+// 			"StringProp":          fmt.Sprintf("some string %d", i),
+// 			"IntProp":             i,
+// 			"BoolProp":            true,
+// 			"SomeBinaryProperty":  []byte("some bytes"),
+// 			"SomeDateProperty":    context.recording.Now(),
+// 			"SomeDoubleProperty0": float64(1),
+// 			"SomeDoubleProperty1": float64(1.2345),
+// 			"SomeGuidProperty":    context.recording.UUID(),
+// 			"SomeInt64Property":   (int64)(math.MaxInt64),
+// 			"SomeIntProperty":     42,
+// 			"SomeStringProperty":  "some string",
+// 		}
+// 		result[i-1] = e
+// 	}
+// 	return &result
+// }
+
+func createComplexEntities(context *testContext, count int, pk string) *[]complexTestEntity {
+	result := make([]complexTestEntity, count)
 
 	for i := 1; i <= count; i++ {
-		var e = map[string]interface{}{
-			partitionKey:          pk,
-			rowKey:                fmt.Sprint(i),
-			"StringProp":          fmt.Sprintf("some string %d", i),
-			"IntProp":             i,
-			"BoolProp":            true,
-			"SomeBinaryProperty":  []byte("some bytes"),
-			"SomeDateProperty":    context.recording.Now(),
-			"SomeDoubleProperty0": float64(1),
-			"SomeDoubleProperty1": float64(1.2345),
-			"SomeGuidProperty":    context.recording.UUID(),
-			"SomeInt64Property":   (int64)(math.MaxInt64),
-			"SomeIntProperty":     42,
-			"SomeStringProperty":  "some string",
+		var e = complexTestEntity{
+			Entity: Entity{
+				PartitionKey: "partition",
+				RowKey:       "row",
+			},
+			Integer:  int(i),
+			String:   "someString",
+			Bool:     true,
+			Float:    3.14159,
+			DateTime: time.Now(),
+			Byte:     []byte("somebytes"),
+			// Integer64: int64(math.Pow(2, 33)),
+			// Float64:   math.Pow(2, 33.1),
 		}
-		result[i-1] = e
-	}
-	return &result
-}
-
-func createComplexEntities(context *testContext, count int, pk string) *[]complexEntity {
-	result := make([]complexEntity, count)
-
-	sp := "some pointer to string"
-	for i := 1; i <= count; i++ {
-		var e = complexEntity{
-			PartitionKey:          "partition",
-			ETag:                  "*",
-			RowKey:                "row",
-			Timestamp:             context.recording.Now(),
-			SomeBinaryProperty:    []byte("some bytes"),
-			SomeDateProperty:      context.recording.Now(),
-			SomeDoubleProperty0:   float64(1),
-			SomeDoubleProperty1:   float64(1.2345),
-			SomeGuidProperty:      context.recording.UUID(),
-			SomeInt64Property:     math.MaxInt64,
-			SomeIntProperty:       42,
-			SomeStringProperty:    "some string",
-			SomePtrStringProperty: &sp}
 		result[i-1] = e
 	}
 	return &result

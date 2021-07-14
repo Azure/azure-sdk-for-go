@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
@@ -56,32 +57,37 @@ func (s *tableClientLiveTests) TestCreateTable() {
 	assert.Equal(*resp.TableResponse.TableName, client.Name)
 }
 
-// func (s *tableClientLiveTests) TestAddEntity() {
-// 	assert := assert.New(s.T())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestAddEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	entitiesToCreate := createSimpleEntities(1, "partition")
+	entitiesToCreate := createSimpleEntities(1, "partition")
 
-// 	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
-// 	assert.Nil(err)
-// }
+	marshalledEntity, err := json.Marshal((*entitiesToCreate)[0])
+	assert.Nil(err)
+	resp, err := client.AddEntity(ctx, marshalledEntity)
+	assert.Nil(err)
+	assert.NotNil(resp)
+}
 
-// func (s *tableClientLiveTests) TestAddComplexEntity() {
-// 	assert := assert.New(s.T())
-// 	context := getTestContext(s.T().Name())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestAddComplexEntity() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	entitiesToCreate := createComplexEntities(context, 1, "partition")
+	entitiesToCreate := createComplexEntities(context, 1, "partition")
 
-// 	for _, e := range *entitiesToCreate {
-// 		_, err := client.AddEntity(ctx, e)
-// 		var svcErr *runtime.ResponseError
-// 		errors.As(err, &svcErr)
-// 		assert.Nilf(err, getStringFromBody(svcErr))
-// 	}
-// }
+	for _, e := range *entitiesToCreate {
+		marshalledEntity, err := json.Marshal(e)
+		assert.Nil(err)
+		_, err = client.AddEntity(ctx, marshalledEntity)
+		var svcErr *runtime.ResponseError
+		errors.As(err, &svcErr)
+		assert.Nilf(err, getStringFromBody(svcErr))
+	}
+}
 
 // func (s *tableClientLiveTests) TestDeleteEntity() {
 // 	assert := assert.New(s.T())

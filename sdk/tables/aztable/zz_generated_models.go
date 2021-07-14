@@ -10,9 +10,10 @@ package aztable
 import (
 	"encoding/json"
 	"encoding/xml"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessPolicy - An Access policy.

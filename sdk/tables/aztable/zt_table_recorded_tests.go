@@ -141,20 +141,22 @@ type complexTestEntity struct {
 	// Float64   float64
 }
 
+func createSimpleEntity(count int, pk string) basicTestEntity {
+	return basicTestEntity{
+		Entity: Entity{
+			PartitionKey: pk,
+			RowKey:       fmt.Sprint(count),
+		},
+		String:  fmt.Sprintf("some string %d", count),
+		Integer: int32(count),
+		Bool:    true,
+	}
+}
+
 func createSimpleEntities(count int, pk string) *[]basicTestEntity {
 	result := make([]basicTestEntity, count)
-
 	for i := 1; i <= count; i++ {
-		var e = basicTestEntity{
-			Entity: Entity{
-				PartitionKey: pk,
-				RowKey:       fmt.Sprint(i),
-			},
-			String:  fmt.Sprintf("some string %d", i),
-			Integer: int32(i),
-			Bool:    true,
-		}
-		result[i-1] = e
+		result[i-1] = createSimpleEntity(i, pk)
 	}
 	return &result
 }

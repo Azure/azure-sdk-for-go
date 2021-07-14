@@ -89,18 +89,20 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 	}
 }
 
-// func (s *tableClientLiveTests) TestDeleteEntity() {
-// 	assert := assert.New(s.T())
-// 	client, delete := s.init(true)
-// 	defer delete()
+func (s *tableClientLiveTests) TestDeleteEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
 
-// 	entitiesToCreate := createSimpleEntities(1, "partition")
+	simpleEntity := createSimpleEntity(1, "partition")
 
-// 	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
-// 	assert.Nil(err)
-// 	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][partitionKey].(string), (*entitiesToCreate)[0][rowKey].(string), "*")
-// 	assert.Nil(delErr)
-// }
+	marshalledEntity, err := json.Marshal(simpleEntity)
+	assert.Nil(err)
+	_, err = client.AddEntity(ctx, marshalledEntity)
+	assert.Nil(err)
+	_, delErr := client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, nil)
+	assert.Nil(delErr)
+}
 
 // func (s *tableClientLiveTests) TestMergeEntity() {
 // 	assert := assert.New(s.T())

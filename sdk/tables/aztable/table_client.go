@@ -101,8 +101,12 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
-func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag string) (TableDeleteEntityResponse, error) {
-	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, etag, nil, &QueryOptions{})
+func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag *string) (TableDeleteEntityResponse, error) {
+	if etag == nil {
+		nilEtag := "*"
+		etag = &nilEtag
+	}
+	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, *etag, nil, &QueryOptions{})
 }
 
 // UpdateEntity updates the specified table entity if it exists.

@@ -158,19 +158,13 @@ type Metrics struct {
 
 // QueryOptions contains a group of parameters for the Table.Query method.
 type QueryOptions struct {
-	// An Odata filter expression that limits results to those entities that satisfy the filter expression.
-	// For example, the following expression would return only entities with a PartitionKey of 'foo': "PartitionKey eq 'foo'"
+	// OData filter expression.
 	Filter *string
-
 	// Specifies the media type for the response.
 	Format *OdataMetadataFormat
-
-	// Select: A comma delimited list of entity property names that selects which set of entity properties to return in the result set.
-	// For example, the following value would return results containing only the PartitionKey and RowKey properties: "PartitionKey, RowKey"
+	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
-
-	// Top: The maximum number of entities that will be returned per page of results.
-	// Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
+	// Maximum number of records to return.
 	Top *int32
 }
 

@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "14f98895acdb489aa42126c1226bcc40aadd4cf9",
   "readme": "/_/azure-rest-api-specs/specification/desktopvirtualization/resource-manager/readme.md",
   "tag": "package-2020-09-21-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

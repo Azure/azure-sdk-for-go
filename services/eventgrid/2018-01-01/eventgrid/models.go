@@ -14,67 +14,33 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
-// ACSChatEventBaseProperties schema of common properties of all chat events
-type ACSChatEventBaseProperties struct {
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
+// AcsChatEventBaseProperties schema of common properties of all chat events
+type AcsChatEventBaseProperties struct {
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatMemberAddedToThreadWithUserEventData schema of the Data property of an EventGridEvent for an
-// Microsoft.Communication.ChatMemberAddedToThreadWithUser event.
-type ACSChatMemberAddedToThreadWithUserEventData struct {
-	// Time - The time at which the user was added to the thread
-	Time *date.Time `json:"time,omitempty"`
-	// AddedBy - The MRI of the user who added the user
-	AddedBy *string `json:"addedBy,omitempty"`
-	// MemberAdded - The details of the user who was added
-	MemberAdded *ACSChatThreadMemberProperties `json:"memberAdded,omitempty"`
-	// CreateTime - The original creation time of the thread
-	CreateTime *date.Time `json:"createTime,omitempty"`
-	// Version - The version of the thread
-	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
+// AcsChatEventInThreadBaseProperties schema of common properties of all thread-level chat events
+type AcsChatEventInThreadBaseProperties struct {
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatMemberRemovedFromThreadWithUserEventData schema of the Data property of an EventGridEvent for an
-// Microsoft.Communication.ChatMemberRemovedFromThreadWithUser event.
-type ACSChatMemberRemovedFromThreadWithUserEventData struct {
-	// Time - The time at which the user was removed to the thread
-	Time *date.Time `json:"time,omitempty"`
-	// RemovedBy - The MRI of the user who removed the user
-	RemovedBy *string `json:"removedBy,omitempty"`
-	// MemberRemoved - The details of the user who was removed
-	MemberRemoved *ACSChatThreadMemberProperties `json:"memberRemoved,omitempty"`
-	// CreateTime - The original creation time of the thread
-	CreateTime *date.Time `json:"createTime,omitempty"`
-	// Version - The version of the thread
-	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
-	// TransactionID - The transaction id will be used as co-relation vector
-	TransactionID *string `json:"transactionId,omitempty"`
-	// ThreadID - The chat thread id
-	ThreadID *string `json:"threadId,omitempty"`
-}
-
-// ACSChatMessageDeletedEventData schema of the Data property of an EventGridEvent for an
+// AcsChatMessageDeletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Communication.ChatMessageDeleted event.
-type ACSChatMessageDeletedEventData struct {
+type AcsChatMessageDeletedEventData struct {
 	// DeleteTime - The time at which the message was deleted
 	DeleteTime *date.Time `json:"deleteTime,omitempty"`
 	// MessageID - The chat message id
 	MessageID *string `json:"messageId,omitempty"`
-	// SenderID - The MRI of the sender
-	SenderID *string `json:"senderId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
 	// SenderDisplayName - The display name of the sender
 	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
 	// ComposeTime - The original compose time of the message
@@ -83,25 +49,50 @@ type ACSChatMessageDeletedEventData struct {
 	Type *string `json:"type,omitempty"`
 	// Version - The version of the message
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatMessageEditedEventData schema of the Data property of an EventGridEvent for an
+// AcsChatMessageDeletedInThreadEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatMessageDeletedInThread event.
+type AcsChatMessageDeletedInThreadEventData struct {
+	// DeleteTime - The time at which the message was deleted
+	DeleteTime *date.Time `json:"deleteTime,omitempty"`
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatMessageEditedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Communication.ChatMessageEdited event.
-type ACSChatMessageEditedEventData struct {
+type AcsChatMessageEditedEventData struct {
 	// MessageBody - The body of the chat message
 	MessageBody *string `json:"messageBody,omitempty"`
+	// Metadata - The chat message metadata
+	Metadata map[string]*string `json:"metadata"`
 	// EditTime - The time at which the message was edited
 	EditTime *date.Time `json:"editTime,omitempty"`
 	// MessageID - The chat message id
 	MessageID *string `json:"messageId,omitempty"`
-	// SenderID - The MRI of the sender
-	SenderID *string `json:"senderId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
 	// SenderDisplayName - The display name of the sender
 	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
 	// ComposeTime - The original compose time of the message
@@ -110,45 +101,69 @@ type ACSChatMessageEditedEventData struct {
 	Type *string `json:"type,omitempty"`
 	// Version - The version of the message
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatMessageEventBaseProperties schema of common properties of all chat message events
-type ACSChatMessageEventBaseProperties struct {
-	// MessageID - The chat message id
-	MessageID *string `json:"messageId,omitempty"`
-	// SenderID - The MRI of the sender
-	SenderID *string `json:"senderId,omitempty"`
-	// SenderDisplayName - The display name of the sender
-	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
-	// ComposeTime - The original compose time of the message
-	ComposeTime *date.Time `json:"composeTime,omitempty"`
-	// Type - The type of the message
-	Type *string `json:"type,omitempty"`
-	// Version - The version of the message
-	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
-	// TransactionID - The transaction id will be used as co-relation vector
-	TransactionID *string `json:"transactionId,omitempty"`
-	// ThreadID - The chat thread id
-	ThreadID *string `json:"threadId,omitempty"`
+// MarshalJSON is the custom marshaler for AcsChatMessageEditedEventData.
+func (acmeed AcsChatMessageEditedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acmeed.MessageBody != nil {
+		objectMap["messageBody"] = acmeed.MessageBody
+	}
+	if acmeed.Metadata != nil {
+		objectMap["metadata"] = acmeed.Metadata
+	}
+	if acmeed.EditTime != nil {
+		objectMap["editTime"] = acmeed.EditTime
+	}
+	if acmeed.MessageID != nil {
+		objectMap["messageId"] = acmeed.MessageID
+	}
+	if acmeed.SenderCommunicationIdentifier != nil {
+		objectMap["senderCommunicationIdentifier"] = acmeed.SenderCommunicationIdentifier
+	}
+	if acmeed.SenderDisplayName != nil {
+		objectMap["senderDisplayName"] = acmeed.SenderDisplayName
+	}
+	if acmeed.ComposeTime != nil {
+		objectMap["composeTime"] = acmeed.ComposeTime
+	}
+	if acmeed.Type != nil {
+		objectMap["type"] = acmeed.Type
+	}
+	if acmeed.Version != nil {
+		objectMap["version"] = acmeed.Version
+	}
+	if acmeed.RecipientCommunicationIdentifier != nil {
+		objectMap["recipientCommunicationIdentifier"] = acmeed.RecipientCommunicationIdentifier
+	}
+	if acmeed.TransactionID != nil {
+		objectMap["transactionId"] = acmeed.TransactionID
+	}
+	if acmeed.ThreadID != nil {
+		objectMap["threadId"] = acmeed.ThreadID
+	}
+	return json.Marshal(objectMap)
 }
 
-// ACSChatMessageReceivedEventData schema of the Data property of an EventGridEvent for an
-// Microsoft.Communication.ChatMessageReceived event.
-type ACSChatMessageReceivedEventData struct {
+// AcsChatMessageEditedInThreadEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatMessageEditedInThread event.
+type AcsChatMessageEditedInThreadEventData struct {
 	// MessageBody - The body of the chat message
 	MessageBody *string `json:"messageBody,omitempty"`
+	// Metadata - The chat message metadata
+	Metadata map[string]*string `json:"metadata"`
+	// EditTime - The time at which the message was edited
+	EditTime *date.Time `json:"editTime,omitempty"`
 	// MessageID - The chat message id
 	MessageID *string `json:"messageId,omitempty"`
-	// SenderID - The MRI of the sender
-	SenderID *string `json:"senderId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
 	// SenderDisplayName - The display name of the sender
 	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
 	// ComposeTime - The original compose time of the message
@@ -157,46 +172,375 @@ type ACSChatMessageReceivedEventData struct {
 	Type *string `json:"type,omitempty"`
 	// Version - The version of the message
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatThreadCreatedWithUserEventData schema of the Data property of an EventGridEvent for an
-// Microsoft.Communication.ChatThreadCreatedWithUser event.
-type ACSChatThreadCreatedWithUserEventData struct {
-	// CreatedBy - The MRI of the creator of the thread
-	CreatedBy *string `json:"createdBy,omitempty"`
-	// Properties - The thread properties
-	Properties map[string]interface{} `json:"properties"`
-	// Members - The list of properties of users who are part of the thread
-	Members *[]ACSChatThreadMemberProperties `json:"members,omitempty"`
+// MarshalJSON is the custom marshaler for AcsChatMessageEditedInThreadEventData.
+func (acmeited AcsChatMessageEditedInThreadEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acmeited.MessageBody != nil {
+		objectMap["messageBody"] = acmeited.MessageBody
+	}
+	if acmeited.Metadata != nil {
+		objectMap["metadata"] = acmeited.Metadata
+	}
+	if acmeited.EditTime != nil {
+		objectMap["editTime"] = acmeited.EditTime
+	}
+	if acmeited.MessageID != nil {
+		objectMap["messageId"] = acmeited.MessageID
+	}
+	if acmeited.SenderCommunicationIdentifier != nil {
+		objectMap["senderCommunicationIdentifier"] = acmeited.SenderCommunicationIdentifier
+	}
+	if acmeited.SenderDisplayName != nil {
+		objectMap["senderDisplayName"] = acmeited.SenderDisplayName
+	}
+	if acmeited.ComposeTime != nil {
+		objectMap["composeTime"] = acmeited.ComposeTime
+	}
+	if acmeited.Type != nil {
+		objectMap["type"] = acmeited.Type
+	}
+	if acmeited.Version != nil {
+		objectMap["version"] = acmeited.Version
+	}
+	if acmeited.TransactionID != nil {
+		objectMap["transactionId"] = acmeited.TransactionID
+	}
+	if acmeited.ThreadID != nil {
+		objectMap["threadId"] = acmeited.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// AcsChatMessageEventBaseProperties schema of common properties of all chat message events
+type AcsChatMessageEventBaseProperties struct {
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatMessageEventInThreadBaseProperties schema of common properties of all thread-level chat message
+// events
+type AcsChatMessageEventInThreadBaseProperties struct {
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatMessageReceivedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatMessageReceived event.
+type AcsChatMessageReceivedEventData struct {
+	// MessageBody - The body of the chat message
+	MessageBody *string `json:"messageBody,omitempty"`
+	// Metadata - The chat message metadata
+	Metadata map[string]*string `json:"metadata"`
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AcsChatMessageReceivedEventData.
+func (acmred AcsChatMessageReceivedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acmred.MessageBody != nil {
+		objectMap["messageBody"] = acmred.MessageBody
+	}
+	if acmred.Metadata != nil {
+		objectMap["metadata"] = acmred.Metadata
+	}
+	if acmred.MessageID != nil {
+		objectMap["messageId"] = acmred.MessageID
+	}
+	if acmred.SenderCommunicationIdentifier != nil {
+		objectMap["senderCommunicationIdentifier"] = acmred.SenderCommunicationIdentifier
+	}
+	if acmred.SenderDisplayName != nil {
+		objectMap["senderDisplayName"] = acmred.SenderDisplayName
+	}
+	if acmred.ComposeTime != nil {
+		objectMap["composeTime"] = acmred.ComposeTime
+	}
+	if acmred.Type != nil {
+		objectMap["type"] = acmred.Type
+	}
+	if acmred.Version != nil {
+		objectMap["version"] = acmred.Version
+	}
+	if acmred.RecipientCommunicationIdentifier != nil {
+		objectMap["recipientCommunicationIdentifier"] = acmred.RecipientCommunicationIdentifier
+	}
+	if acmred.TransactionID != nil {
+		objectMap["transactionId"] = acmred.TransactionID
+	}
+	if acmred.ThreadID != nil {
+		objectMap["threadId"] = acmred.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// AcsChatMessageReceivedInThreadEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatMessageReceivedInThread event.
+type AcsChatMessageReceivedInThreadEventData struct {
+	// MessageBody - The body of the chat message
+	MessageBody *string `json:"messageBody,omitempty"`
+	// Metadata - The chat message metadata
+	Metadata map[string]*string `json:"metadata"`
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderCommunicationIdentifier - The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel `json:"senderCommunicationIdentifier,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AcsChatMessageReceivedInThreadEventData.
+func (acmrited AcsChatMessageReceivedInThreadEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acmrited.MessageBody != nil {
+		objectMap["messageBody"] = acmrited.MessageBody
+	}
+	if acmrited.Metadata != nil {
+		objectMap["metadata"] = acmrited.Metadata
+	}
+	if acmrited.MessageID != nil {
+		objectMap["messageId"] = acmrited.MessageID
+	}
+	if acmrited.SenderCommunicationIdentifier != nil {
+		objectMap["senderCommunicationIdentifier"] = acmrited.SenderCommunicationIdentifier
+	}
+	if acmrited.SenderDisplayName != nil {
+		objectMap["senderDisplayName"] = acmrited.SenderDisplayName
+	}
+	if acmrited.ComposeTime != nil {
+		objectMap["composeTime"] = acmrited.ComposeTime
+	}
+	if acmrited.Type != nil {
+		objectMap["type"] = acmrited.Type
+	}
+	if acmrited.Version != nil {
+		objectMap["version"] = acmrited.Version
+	}
+	if acmrited.TransactionID != nil {
+		objectMap["transactionId"] = acmrited.TransactionID
+	}
+	if acmrited.ThreadID != nil {
+		objectMap["threadId"] = acmrited.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// AcsChatParticipantAddedToThreadEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadParticipantAdded event.
+type AcsChatParticipantAddedToThreadEventData struct {
+	// Time - The time at which the user was added to the thread
+	Time *date.Time `json:"time,omitempty"`
+	// AddedByCommunicationIdentifier - The communication identifier of the user who added the user
+	AddedByCommunicationIdentifier *CommunicationIdentifierModel `json:"addedByCommunicationIdentifier,omitempty"`
+	// ParticipantAdded - The details of the user who was added
+	ParticipantAdded *AcsChatThreadParticipantProperties `json:"participantAdded,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatParticipantAddedToThreadWithUserEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatParticipantAddedToThreadWithUser event.
+type AcsChatParticipantAddedToThreadWithUserEventData struct {
+	// Time - The time at which the user was added to the thread
+	Time *date.Time `json:"time,omitempty"`
+	// AddedByCommunicationIdentifier - The communication identifier of the user who added the user
+	AddedByCommunicationIdentifier *CommunicationIdentifierModel `json:"addedByCommunicationIdentifier,omitempty"`
+	// ParticipantAdded - The details of the user who was added
+	ParticipantAdded *AcsChatThreadParticipantProperties `json:"participantAdded,omitempty"`
 	// CreateTime - The original creation time of the thread
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - The version of the thread
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ACSChatThreadCreatedWithUserEventData.
-func (actcwued ACSChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, error) {
+// AcsChatParticipantRemovedFromThreadEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadParticipantRemoved event.
+type AcsChatParticipantRemovedFromThreadEventData struct {
+	// Time - The time at which the user was removed to the thread
+	Time *date.Time `json:"time,omitempty"`
+	// RemovedByCommunicationIdentifier - The communication identifier of the user who removed the user
+	RemovedByCommunicationIdentifier *CommunicationIdentifierModel `json:"removedByCommunicationIdentifier,omitempty"`
+	// ParticipantRemoved - The details of the user who was removed
+	ParticipantRemoved *AcsChatThreadParticipantProperties `json:"participantRemoved,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatParticipantRemovedFromThreadWithUserEventData schema of the Data property of an EventGridEvent
+// for a Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser event.
+type AcsChatParticipantRemovedFromThreadWithUserEventData struct {
+	// Time - The time at which the user was removed to the thread
+	Time *date.Time `json:"time,omitempty"`
+	// RemovedByCommunicationIdentifier - The communication identifier of the user who removed the user
+	RemovedByCommunicationIdentifier *CommunicationIdentifierModel `json:"removedByCommunicationIdentifier,omitempty"`
+	// ParticipantRemoved - The details of the user who was removed
+	ParticipantRemoved *AcsChatThreadParticipantProperties `json:"participantRemoved,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatThreadCreatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadCreated event.
+type AcsChatThreadCreatedEventData struct {
+	// CreatedByCommunicationIdentifier - The communication identifier of the user who created the thread
+	CreatedByCommunicationIdentifier *CommunicationIdentifierModel `json:"createdByCommunicationIdentifier,omitempty"`
+	// Properties - The thread properties
+	Properties map[string]interface{} `json:"properties"`
+	// Participants - The list of properties of participants who are part of the thread
+	Participants *[]AcsChatThreadParticipantProperties `json:"participants,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AcsChatThreadCreatedEventData.
+func (actced AcsChatThreadCreatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if actcwued.CreatedBy != nil {
-		objectMap["createdBy"] = actcwued.CreatedBy
+	if actced.CreatedByCommunicationIdentifier != nil {
+		objectMap["createdByCommunicationIdentifier"] = actced.CreatedByCommunicationIdentifier
+	}
+	if actced.Properties != nil {
+		objectMap["properties"] = actced.Properties
+	}
+	if actced.Participants != nil {
+		objectMap["participants"] = actced.Participants
+	}
+	if actced.CreateTime != nil {
+		objectMap["createTime"] = actced.CreateTime
+	}
+	if actced.Version != nil {
+		objectMap["version"] = actced.Version
+	}
+	if actced.TransactionID != nil {
+		objectMap["transactionId"] = actced.TransactionID
+	}
+	if actced.ThreadID != nil {
+		objectMap["threadId"] = actced.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// AcsChatThreadCreatedWithUserEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadCreatedWithUser event.
+type AcsChatThreadCreatedWithUserEventData struct {
+	// CreatedByCommunicationIdentifier - The communication identifier of the user who created the thread
+	CreatedByCommunicationIdentifier *CommunicationIdentifierModel `json:"createdByCommunicationIdentifier,omitempty"`
+	// Properties - The thread properties
+	Properties map[string]interface{} `json:"properties"`
+	// Participants - The list of properties of participants who are part of the thread
+	Participants *[]AcsChatThreadParticipantProperties `json:"participants,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AcsChatThreadCreatedWithUserEventData.
+func (actcwued AcsChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if actcwued.CreatedByCommunicationIdentifier != nil {
+		objectMap["createdByCommunicationIdentifier"] = actcwued.CreatedByCommunicationIdentifier
 	}
 	if actcwued.Properties != nil {
 		objectMap["properties"] = actcwued.Properties
 	}
-	if actcwued.Members != nil {
-		objectMap["members"] = actcwued.Members
+	if actcwued.Participants != nil {
+		objectMap["participants"] = actcwued.Participants
 	}
 	if actcwued.CreateTime != nil {
 		objectMap["createTime"] = actcwued.CreateTime
@@ -204,8 +548,8 @@ func (actcwued ACSChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, err
 	if actcwued.Version != nil {
 		objectMap["version"] = actcwued.Version
 	}
-	if actcwued.RecipientID != nil {
-		objectMap["recipientId"] = actcwued.RecipientID
+	if actcwued.RecipientCommunicationIdentifier != nil {
+		objectMap["recipientCommunicationIdentifier"] = actcwued.RecipientCommunicationIdentifier
 	}
 	if actcwued.TransactionID != nil {
 		objectMap["transactionId"] = actcwued.TransactionID
@@ -216,33 +560,62 @@ func (actcwued ACSChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
-// ACSChatThreadEventBaseProperties schema of common properties of all chat thread events
-type ACSChatThreadEventBaseProperties struct {
+// AcsChatThreadDeletedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadDeleted event.
+type AcsChatThreadDeletedEventData struct {
+	// DeletedByCommunicationIdentifier - The communication identifier of the user who deleted the thread
+	DeletedByCommunicationIdentifier *CommunicationIdentifierModel `json:"deletedByCommunicationIdentifier,omitempty"`
+	// DeleteTime - The deletion time of the thread
+	DeleteTime *date.Time `json:"deleteTime,omitempty"`
 	// CreateTime - The original creation time of the thread
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - The version of the thread
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatThreadMemberProperties schema of the chat thread member
-type ACSChatThreadMemberProperties struct {
-	// DisplayName - The name of the user
-	DisplayName *string `json:"displayName,omitempty"`
-	// MemberID - The MRI of the user
-	MemberID *string `json:"memberId,omitempty"`
+// AcsChatThreadEventBaseProperties schema of common properties of all chat thread events
+type AcsChatThreadEventBaseProperties struct {
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// ACSChatThreadPropertiesUpdatedPerUserEventData schema of the Data property of an EventGridEvent for an
-// Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser event.
-type ACSChatThreadPropertiesUpdatedPerUserEventData struct {
-	// EditedBy - The MRI of the user who updated the thread properties
-	EditedBy *string `json:"editedBy,omitempty"`
+// AcsChatThreadEventInThreadBaseProperties schema of common properties of all chat thread events
+type AcsChatThreadEventInThreadBaseProperties struct {
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsChatThreadParticipantProperties schema of the chat thread participant
+type AcsChatThreadParticipantProperties struct {
+	// DisplayName - The name of the user
+	DisplayName *string `json:"displayName,omitempty"`
+	// ParticipantCommunicationIdentifier - The communication identifier of the user
+	ParticipantCommunicationIdentifier *CommunicationIdentifierModel `json:"participantCommunicationIdentifier,omitempty"`
+}
+
+// AcsChatThreadPropertiesUpdatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadPropertiesUpdated event.
+type AcsChatThreadPropertiesUpdatedEventData struct {
+	// EditedByCommunicationIdentifier - The communication identifier of the user who updated the thread properties
+	EditedByCommunicationIdentifier *CommunicationIdentifierModel `json:"editedByCommunicationIdentifier,omitempty"`
 	// EditTime - The time at which the properties of the thread were updated
 	EditTime *date.Time `json:"editTime,omitempty"`
 	// Properties - The updated thread properties
@@ -251,19 +624,65 @@ type ACSChatThreadPropertiesUpdatedPerUserEventData struct {
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - The version of the thread
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ACSChatThreadPropertiesUpdatedPerUserEventData.
-func (actpupued ACSChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for AcsChatThreadPropertiesUpdatedEventData.
+func (actpued AcsChatThreadPropertiesUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if actpupued.EditedBy != nil {
-		objectMap["editedBy"] = actpupued.EditedBy
+	if actpued.EditedByCommunicationIdentifier != nil {
+		objectMap["editedByCommunicationIdentifier"] = actpued.EditedByCommunicationIdentifier
+	}
+	if actpued.EditTime != nil {
+		objectMap["editTime"] = actpued.EditTime
+	}
+	if actpued.Properties != nil {
+		objectMap["properties"] = actpued.Properties
+	}
+	if actpued.CreateTime != nil {
+		objectMap["createTime"] = actpued.CreateTime
+	}
+	if actpued.Version != nil {
+		objectMap["version"] = actpued.Version
+	}
+	if actpued.TransactionID != nil {
+		objectMap["transactionId"] = actpued.TransactionID
+	}
+	if actpued.ThreadID != nil {
+		objectMap["threadId"] = actpued.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// AcsChatThreadPropertiesUpdatedPerUserEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser event.
+type AcsChatThreadPropertiesUpdatedPerUserEventData struct {
+	// EditedByCommunicationIdentifier - The communication identifier of the user who updated the thread properties
+	EditedByCommunicationIdentifier *CommunicationIdentifierModel `json:"editedByCommunicationIdentifier,omitempty"`
+	// EditTime - The time at which the properties of the thread were updated
+	EditTime *date.Time `json:"editTime,omitempty"`
+	// Properties - The updated thread properties
+	Properties map[string]interface{} `json:"properties"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AcsChatThreadPropertiesUpdatedPerUserEventData.
+func (actpupued AcsChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if actpupued.EditedByCommunicationIdentifier != nil {
+		objectMap["editedByCommunicationIdentifier"] = actpupued.EditedByCommunicationIdentifier
 	}
 	if actpupued.EditTime != nil {
 		objectMap["editTime"] = actpupued.EditTime
@@ -277,8 +696,8 @@ func (actpupued ACSChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([
 	if actpupued.Version != nil {
 		objectMap["version"] = actpupued.Version
 	}
-	if actpupued.RecipientID != nil {
-		objectMap["recipientId"] = actpupued.RecipientID
+	if actpupued.RecipientCommunicationIdentifier != nil {
+		objectMap["recipientCommunicationIdentifier"] = actpupued.RecipientCommunicationIdentifier
 	}
 	if actpupued.TransactionID != nil {
 		objectMap["transactionId"] = actpupued.TransactionID
@@ -289,23 +708,56 @@ func (actpupued ACSChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([
 	return json.Marshal(objectMap)
 }
 
-// ACSChatThreadWithUserDeletedEventData schema of the Data property of an EventGridEvent for an
+// AcsChatThreadWithUserDeletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Communication.ChatThreadWithUserDeleted event.
-type ACSChatThreadWithUserDeletedEventData struct {
-	// DeletedBy - The MRI of the user who deleted the thread
-	DeletedBy *string `json:"deletedBy,omitempty"`
+type AcsChatThreadWithUserDeletedEventData struct {
+	// DeletedByCommunicationIdentifier - The communication identifier of the user who deleted the thread
+	DeletedByCommunicationIdentifier *CommunicationIdentifierModel `json:"deletedByCommunicationIdentifier,omitempty"`
 	// DeleteTime - The deletion time of the thread
 	DeleteTime *date.Time `json:"deleteTime,omitempty"`
 	// CreateTime - The original creation time of the thread
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - The version of the thread
 	Version *int64 `json:"version,omitempty"`
-	// RecipientID - The MRI of the target user
-	RecipientID *string `json:"recipientId,omitempty"`
+	// RecipientCommunicationIdentifier - The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel `json:"recipientCommunicationIdentifier,omitempty"`
 	// TransactionID - The transaction id will be used as co-relation vector
 	TransactionID *string `json:"transactionId,omitempty"`
 	// ThreadID - The chat thread id
 	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// AcsRecordingChunkInfoProperties schema for all properties of  Recording Chunk Information.
+type AcsRecordingChunkInfoProperties struct {
+	// DocumentID - The documentId of the recording chunk
+	DocumentID *string `json:"documentId,omitempty"`
+	// Index - The index of the recording chunk
+	Index *int64 `json:"index,omitempty"`
+	// EndReason - The reason for ending the recording chunk
+	EndReason *string `json:"endReason,omitempty"`
+	// MetadataLocation - The location of the metadata for this chunk
+	MetadataLocation *string `json:"metadataLocation,omitempty"`
+	// ContentLocation - The location of the content for this chunk
+	ContentLocation *string `json:"contentLocation,omitempty"`
+}
+
+// AcsRecordingFileStatusUpdatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Communication.RecordingFileStatusUpdated event.
+type AcsRecordingFileStatusUpdatedEventData struct {
+	// RecordingStorageInfo - The details of recording storage information
+	RecordingStorageInfo *AcsRecordingStorageInfoProperties `json:"recordingStorageInfo,omitempty"`
+	// RecordingStartTime - The time at which the recording started
+	RecordingStartTime *date.Time `json:"recordingStartTime,omitempty"`
+	// RecordingDurationMs - The recording duration in milliseconds
+	RecordingDurationMs *int64 `json:"recordingDurationMs,omitempty"`
+	// SessionEndReason - The reason for ending recording session
+	SessionEndReason *string `json:"sessionEndReason,omitempty"`
+}
+
+// AcsRecordingStorageInfoProperties schema for all properties of Recording Storage Information.
+type AcsRecordingStorageInfoProperties struct {
+	// RecordingChunks - List of details of recording chunks information
+	RecordingChunks *[]AcsRecordingChunkInfoProperties `json:"recordingChunks,omitempty"`
 }
 
 // AcsSmsDeliveryAttemptProperties schema for details of a delivery attempt
@@ -318,7 +770,7 @@ type AcsSmsDeliveryAttemptProperties struct {
 	SegmentsFailed *int32 `json:"segmentsFailed,omitempty"`
 }
 
-// AcsSmsDeliveryReportReceivedEventData schema of the Data property of an EventGridEvent for an
+// AcsSmsDeliveryReportReceivedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Communication.SMSDeliveryReportReceived event.
 type AcsSmsDeliveryReportReceivedEventData struct {
 	// DeliveryStatus - Status of Delivery
@@ -329,6 +781,8 @@ type AcsSmsDeliveryReportReceivedEventData struct {
 	DeliveryAttempts *[]AcsSmsDeliveryAttemptProperties `json:"deliveryAttempts,omitempty"`
 	// ReceivedTimestamp - The time at which the SMS delivery report was received
 	ReceivedTimestamp *date.Time `json:"receivedTimestamp,omitempty"`
+	// Tag - Customer Content
+	Tag *string `json:"tag,omitempty"`
 	// MessageID - The identity of the SMS message
 	MessageID *string `json:"messageId,omitempty"`
 	// From - The identity of SMS message sender
@@ -347,7 +801,7 @@ type AcsSmsEventBaseProperties struct {
 	To *string `json:"to,omitempty"`
 }
 
-// AcsSmsReceivedEventData schema of the Data property of an EventGridEvent for an
+// AcsSmsReceivedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Communication.SMSReceived event.
 type AcsSmsReceivedEventData struct {
 	// Message - The SMS content
@@ -362,7 +816,7 @@ type AcsSmsReceivedEventData struct {
 	To *string `json:"to,omitempty"`
 }
 
-// AppConfigurationKeyValueDeletedEventData schema of the Data property of an EventGridEvent for an
+// AppConfigurationKeyValueDeletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.AppConfiguration.KeyValueDeleted event.
 type AppConfigurationKeyValueDeletedEventData struct {
 	// Key - The key used to identify the key-value that was deleted.
@@ -371,9 +825,11 @@ type AppConfigurationKeyValueDeletedEventData struct {
 	Label *string `json:"label,omitempty"`
 	// Etag - The etag representing the key-value that was deleted.
 	Etag *string `json:"etag,omitempty"`
+	// SyncToken - The sync token representing the server state after the event.
+	SyncToken *string `json:"syncToken,omitempty"`
 }
 
-// AppConfigurationKeyValueModifiedEventData schema of the Data property of an EventGridEvent for an
+// AppConfigurationKeyValueModifiedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.AppConfiguration.KeyValueModified event.
 type AppConfigurationKeyValueModifiedEventData struct {
 	// Key - The key used to identify the key-value that was modified.
@@ -382,6 +838,8 @@ type AppConfigurationKeyValueModifiedEventData struct {
 	Label *string `json:"label,omitempty"`
 	// Etag - The etag representing the new state of the key-value.
 	Etag *string `json:"etag,omitempty"`
+	// SyncToken - The sync token representing the server state after the event.
+	SyncToken *string `json:"syncToken,omitempty"`
 }
 
 // AppEventTypeDetail detail of action on the app.
@@ -392,7 +850,7 @@ type AppEventTypeDetail struct {
 
 // AppServicePlanEventTypeDetail detail of action on the app service plan.
 type AppServicePlanEventTypeDetail struct {
-	// StampKind - Kind of environment where app service plan is. Possible values include: 'Public', 'AseV1', 'AseV2'
+	// StampKind - Kind of environment where app service plan is. Possible values include: 'StampKindPublic', 'StampKindAseV1', 'StampKindAseV2'
 	StampKind StampKind `json:"stampKind,omitempty"`
 	// Action - Type of action on the app service plan. Possible values include: 'Updated'
 	Action AppServicePlanAction `json:"action,omitempty"`
@@ -582,6 +1040,26 @@ func (cee *CloudEventEvent) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// CommunicationIdentifierModel identifies a participant in Azure Communication services. A participant is,
+// for example, a phone number or an Azure communication user. This model must be interpreted as a union:
+// Apart from rawId, at most one further property may be set.
+type CommunicationIdentifierModel struct {
+	// RawID - Raw Id of the identifier. Optional in requests, required in responses.
+	RawID *string `json:"rawId,omitempty"`
+	// CommunicationUser - The communication user.
+	CommunicationUser *CommunicationUserIdentifierModel `json:"communicationUser,omitempty"`
+	// PhoneNumber - The phone number.
+	PhoneNumber *PhoneNumberIdentifierModel `json:"phoneNumber,omitempty"`
+	// MicrosoftTeamsUser - The Microsoft Teams user.
+	MicrosoftTeamsUser *MicrosoftTeamsUserIdentifierModel `json:"microsoftTeamsUser,omitempty"`
+}
+
+// CommunicationUserIdentifierModel a user that got created with an Azure Communication Services resource.
+type CommunicationUserIdentifierModel struct {
+	// ID - The Id of the communication user.
+	ID *string `json:"id,omitempty"`
+}
+
 // ContainerRegistryArtifactEventData the content of the event request message.
 type ContainerRegistryArtifactEventData struct {
 	// ID - The event ID.
@@ -740,6 +1218,19 @@ type ContainerRegistryImagePushedEventData struct {
 	Actor *ContainerRegistryEventActor `json:"actor,omitempty"`
 	// Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates it.
 	Source *ContainerRegistryEventSource `json:"source,omitempty"`
+}
+
+// ContainerServiceNewKubernetesVersionAvailableEventData schema of the Data property of an EventGridEvent
+// for a Microsoft.ContainerService.NewKubernetesVersionAvailable event
+type ContainerServiceNewKubernetesVersionAvailableEventData struct {
+	// LatestSupportedKubernetesVersion - The highest PATCH Kubernetes version for the highest MINOR version supported by ManagedCluster resource
+	LatestSupportedKubernetesVersion *string `json:"latestSupportedKubernetesVersion,omitempty"`
+	// LatestStableKubernetesVersion - The highest PATCH Kubernetes version for the MINOR version considered stable for the ManagedCluster resource
+	LatestStableKubernetesVersion *string `json:"latestStableKubernetesVersion,omitempty"`
+	// LowestMinorKubernetesVersion - The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster resource
+	LowestMinorKubernetesVersion *string `json:"lowestMinorKubernetesVersion,omitempty"`
+	// LatestPreviewKubernetesVersion - The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any version in preview at the time of publishing the event
+	LatestPreviewKubernetesVersion *string `json:"latestPreviewKubernetesVersion,omitempty"`
 }
 
 // DeviceConnectionStateEventInfo information about the device connection state event.
@@ -905,7 +1396,7 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventHubCaptureFileCreatedEventData schema of the Data property of an EventGridEvent for an
+// EventHubCaptureFileCreatedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.EventHub.CaptureFileCreated event.
 type EventHubCaptureFileCreatedEventData struct {
 	// Fileurl - The path to the capture file.
@@ -997,8 +1488,8 @@ func (ihdted IotHubDeviceTelemetryEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// KeyVaultCertificateExpiredEventData schema of the Data property of an EventGridEvent for an
-// CertificateExpired event.
+// KeyVaultCertificateExpiredEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.CertificateExpired event.
 type KeyVaultCertificateExpiredEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1016,8 +1507,8 @@ type KeyVaultCertificateExpiredEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultCertificateNearExpiryEventData schema of the Data property of an EventGridEvent for an
-// CertificateNearExpiry event.
+// KeyVaultCertificateNearExpiryEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.CertificateNearExpiry event.
 type KeyVaultCertificateNearExpiryEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1035,8 +1526,8 @@ type KeyVaultCertificateNearExpiryEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultCertificateNewVersionCreatedEventData schema of the Data property of an EventGridEvent for an
-// CertificateNewVersionCreated event.
+// KeyVaultCertificateNewVersionCreatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.CertificateNewVersionCreated event.
 type KeyVaultCertificateNewVersionCreatedEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1054,7 +1545,8 @@ type KeyVaultCertificateNewVersionCreatedEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultKeyExpiredEventData schema of the Data property of an EventGridEvent for an KeyExpired event.
+// KeyVaultKeyExpiredEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.KeyExpired event.
 type KeyVaultKeyExpiredEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1072,8 +1564,8 @@ type KeyVaultKeyExpiredEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultKeyNearExpiryEventData schema of the Data property of an EventGridEvent for an KeyNearExpiry
-// event.
+// KeyVaultKeyNearExpiryEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.KeyNearExpiry event.
 type KeyVaultKeyNearExpiryEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1091,8 +1583,8 @@ type KeyVaultKeyNearExpiryEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultKeyNewVersionCreatedEventData schema of the Data property of an EventGridEvent for an
-// KeyNewVersionCreated event.
+// KeyVaultKeyNewVersionCreatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.KeyNewVersionCreated event.
 type KeyVaultKeyNewVersionCreatedEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1110,8 +1602,8 @@ type KeyVaultKeyNewVersionCreatedEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultSecretExpiredEventData schema of the Data property of an EventGridEvent for an SecretExpired
-// event.
+// KeyVaultSecretExpiredEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.SecretExpired event.
 type KeyVaultSecretExpiredEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1129,8 +1621,8 @@ type KeyVaultSecretExpiredEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultSecretNearExpiryEventData schema of the Data property of an EventGridEvent for an
-// SecretNearExpiry event.
+// KeyVaultSecretNearExpiryEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.SecretNearExpiry event.
 type KeyVaultSecretNearExpiryEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1148,8 +1640,8 @@ type KeyVaultSecretNearExpiryEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultSecretNewVersionCreatedEventData schema of the Data property of an EventGridEvent for an
-// SecretNewVersionCreated event.
+// KeyVaultSecretNewVersionCreatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.SecretNewVersionCreated event.
 type KeyVaultSecretNewVersionCreatedEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1167,8 +1659,8 @@ type KeyVaultSecretNewVersionCreatedEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
-// KeyVaultVaultAccessPolicyChangedEventData schema of the Data property of an EventGridEvent for an
-// VaultAccessPolicyChanged event.
+// KeyVaultVaultAccessPolicyChangedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.KeyVault.VaultAccessPolicyChanged event.
 type KeyVaultVaultAccessPolicyChangedEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
@@ -1187,7 +1679,7 @@ type KeyVaultVaultAccessPolicyChangedEventData struct {
 }
 
 // MachineLearningServicesDatasetDriftDetectedEventData schema of the Data property of an EventGridEvent
-// for an Microsoft.MachineLearningServices.DatasetDriftDetected event.
+// for a Microsoft.MachineLearningServices.DatasetDriftDetected event.
 type MachineLearningServicesDatasetDriftDetectedEventData struct {
 	// DataDriftID - The ID of the data drift monitor that triggered the event.
 	DataDriftID *string `json:"dataDriftId,omitempty"`
@@ -1207,7 +1699,7 @@ type MachineLearningServicesDatasetDriftDetectedEventData struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
-// MachineLearningServicesModelDeployedEventData schema of the Data property of an EventGridEvent for an
+// MachineLearningServicesModelDeployedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.MachineLearningServices.ModelDeployed event.
 type MachineLearningServicesModelDeployedEventData struct {
 	// ServiceName - The name of the deployed service.
@@ -1222,7 +1714,7 @@ type MachineLearningServicesModelDeployedEventData struct {
 	ServiceProperties interface{} `json:"serviceProperties,omitempty"`
 }
 
-// MachineLearningServicesModelRegisteredEventData schema of the Data property of an EventGridEvent for an
+// MachineLearningServicesModelRegisteredEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.MachineLearningServices.ModelRegistered event.
 type MachineLearningServicesModelRegisteredEventData struct {
 	// ModelName - The name of the model that was registered.
@@ -1235,7 +1727,7 @@ type MachineLearningServicesModelRegisteredEventData struct {
 	ModelProperties interface{} `json:"modelProperties,omitempty"`
 }
 
-// MachineLearningServicesRunCompletedEventData schema of the Data property of an EventGridEvent for an
+// MachineLearningServicesRunCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.MachineLearningServices.RunCompleted event.
 type MachineLearningServicesRunCompletedEventData struct {
 	// ExperimentID - The ID of the experiment that the run belongs to.
@@ -1252,7 +1744,7 @@ type MachineLearningServicesRunCompletedEventData struct {
 	RunProperties interface{} `json:"runProperties,omitempty"`
 }
 
-// MachineLearningServicesRunStatusChangedEventData schema of the Data property of an EventGridEvent for an
+// MachineLearningServicesRunStatusChangedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.MachineLearningServices.RunStatusChanged event.
 type MachineLearningServicesRunStatusChangedEventData struct {
 	// ExperimentID - The ID of the experiment that the Machine Learning Run belongs to.
@@ -1339,7 +1831,8 @@ type MapsGeofenceResultEventData struct {
 	IsEventPublished *bool `json:"isEventPublished,omitempty"`
 }
 
-// MediaJobCanceledEventData job canceled event data
+// MediaJobCanceledEventData job canceled event data. Schema of the data property of an EventGridEvent for
+// a Microsoft.Media.JobCanceled event.
 type MediaJobCanceledEventData struct {
 	// Outputs - Gets the Job outputs.
 	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
@@ -1413,7 +1906,8 @@ func (mjced *MediaJobCanceledEventData) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MediaJobCancelingEventData job canceling event data
+// MediaJobCancelingEventData job canceling event data. Schema of the data property of an EventGridEvent
+// for a Microsoft.Media.JobCanceling event.
 type MediaJobCancelingEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -1466,7 +1960,8 @@ func (mjed MediaJobErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MediaJobErroredEventData job error state event data
+// MediaJobErroredEventData job error state event data. Schema of the data property of an EventGridEvent
+// for a Microsoft.Media.JobErrored event.
 type MediaJobErroredEventData struct {
 	// Outputs - Gets the Job outputs.
 	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
@@ -1540,7 +2035,8 @@ func (mjeed *MediaJobErroredEventData) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MediaJobFinishedEventData job finished event data
+// MediaJobFinishedEventData job finished event data. Schema of the data property of an EventGridEvent for
+// a Microsoft.Media.JobFinished event.
 type MediaJobFinishedEventData struct {
 	// Outputs - Gets the Job outputs.
 	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
@@ -1764,7 +2260,8 @@ func (mjoa MediaJobOutputAsset) AsBasicMediaJobOutput() (BasicMediaJobOutput, bo
 	return &mjoa, true
 }
 
-// MediaJobOutputCanceledEventData job output canceled event data
+// MediaJobOutputCanceledEventData job output canceled event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputCanceled event.
 type MediaJobOutputCanceledEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -1825,7 +2322,8 @@ func (mjoced *MediaJobOutputCanceledEventData) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// MediaJobOutputCancelingEventData job output canceling event data
+// MediaJobOutputCancelingEventData job output canceling event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputCanceling event.
 type MediaJobOutputCancelingEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -1886,7 +2384,8 @@ func (mjoced *MediaJobOutputCancelingEventData) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// MediaJobOutputErroredEventData job output error event data
+// MediaJobOutputErroredEventData job output error event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputErrored event.
 type MediaJobOutputErroredEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -1947,7 +2446,8 @@ func (mjoeed *MediaJobOutputErroredEventData) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MediaJobOutputFinishedEventData job output finished event data
+// MediaJobOutputFinishedEventData job output finished event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputFinished event.
 type MediaJobOutputFinishedEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -2008,7 +2508,8 @@ func (mjofed *MediaJobOutputFinishedEventData) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// MediaJobOutputProcessingEventData job output processing event data
+// MediaJobOutputProcessingEventData job output processing event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputProcessing event.
 type MediaJobOutputProcessingEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -2069,7 +2570,8 @@ func (mjoped *MediaJobOutputProcessingEventData) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// MediaJobOutputProgressEventData job Output Progress Event Data.
+// MediaJobOutputProgressEventData job Output Progress Event Data. Schema of the Data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputProgress event.
 type MediaJobOutputProgressEventData struct {
 	// Label - Gets the Job output label.
 	Label *string `json:"label,omitempty"`
@@ -2094,7 +2596,8 @@ func (mjoped MediaJobOutputProgressEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MediaJobOutputScheduledEventData job output scheduled event data
+// MediaJobOutputScheduledEventData job output scheduled event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.JobOutputScheduled event.
 type MediaJobOutputScheduledEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -2217,7 +2720,8 @@ func (mjosced *MediaJobOutputStateChangeEventData) UnmarshalJSON(body []byte) er
 	return nil
 }
 
-// MediaJobProcessingEventData job processing event data
+// MediaJobProcessingEventData job processing event data. Schema of the data property of an EventGridEvent
+// for a Microsoft.Media.JobProcessing event.
 type MediaJobProcessingEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -2236,7 +2740,8 @@ func (mjped MediaJobProcessingEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MediaJobScheduledEventData job scheduled event data
+// MediaJobScheduledEventData job scheduled event data. Schema of the data property of an EventGridEvent
+// for a Microsoft.Media.JobScheduled event.
 type MediaJobScheduledEventData struct {
 	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
@@ -2275,7 +2780,8 @@ func (mjsced MediaJobStateChangeEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventConnectionRejectedEventData encoder connection rejected event data.
+// MediaLiveEventConnectionRejectedEventData encoder connection rejected event data. Schema of the data
+// property of an EventGridEvent for a Microsoft.Media.LiveEventConnectionRejected event.
 type MediaLiveEventConnectionRejectedEventData struct {
 	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
@@ -2295,7 +2801,8 @@ func (mlecred MediaLiveEventConnectionRejectedEventData) MarshalJSON() ([]byte, 
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventEncoderConnectedEventData encoder connect event data.
+// MediaLiveEventEncoderConnectedEventData encoder connect event data. Schema of the data property of an
+// EventGridEvent for a Microsoft.Media.LiveEventEncoderConnected event.
 type MediaLiveEventEncoderConnectedEventData struct {
 	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
@@ -2313,7 +2820,8 @@ func (mleeced MediaLiveEventEncoderConnectedEventData) MarshalJSON() ([]byte, er
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventEncoderDisconnectedEventData encoder disconnected event data.
+// MediaLiveEventEncoderDisconnectedEventData encoder disconnected event data. Schema of the Data property
+// of an EventGridEvent for a Microsoft.Media.LiveEventEncoderDisconnected event.
 type MediaLiveEventEncoderDisconnectedEventData struct {
 	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
@@ -2333,7 +2841,8 @@ func (mleeded MediaLiveEventEncoderDisconnectedEventData) MarshalJSON() ([]byte,
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventIncomingDataChunkDroppedEventData ingest fragment dropped event data.
+// MediaLiveEventIncomingDataChunkDroppedEventData ingest fragment dropped event data. Schema of the data
+// property of an EventGridEvent for a Microsoft.Media.LiveEventIncomingDataChunkDropped event.
 type MediaLiveEventIncomingDataChunkDroppedEventData struct {
 	// Timestamp - READ-ONLY; Gets the timestamp of the data chunk dropped.
 	Timestamp *string `json:"timestamp,omitempty"`
@@ -2355,7 +2864,8 @@ func (mleidcded MediaLiveEventIncomingDataChunkDroppedEventData) MarshalJSON() (
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventIncomingStreamReceivedEventData encoder connect event data.
+// MediaLiveEventIncomingStreamReceivedEventData encoder connect event data. Schema of the data property of
+// an EventGridEvent for a Microsoft.Media.LiveEventIncomingStreamReceived event.
 type MediaLiveEventIncomingStreamReceivedEventData struct {
 	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
@@ -2383,7 +2893,8 @@ func (mleisred MediaLiveEventIncomingStreamReceivedEventData) MarshalJSON() ([]b
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventIncomingStreamsOutOfSyncEventData incoming streams out of sync event data.
+// MediaLiveEventIncomingStreamsOutOfSyncEventData incoming streams out of sync event data. Schema of the
+// data property of an EventGridEvent for a Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
 type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
 	// MinLastTimestamp - READ-ONLY; Gets the minimum last timestamp received.
 	MinLastTimestamp *string `json:"minLastTimestamp,omitempty"`
@@ -2406,6 +2917,8 @@ func (mleisoosed MediaLiveEventIncomingStreamsOutOfSyncEventData) MarshalJSON() 
 }
 
 // MediaLiveEventIncomingVideoStreamsOutOfSyncEventData incoming video stream out of synch event data.
+// Schema of the data property of an EventGridEvent for a
+// Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
 type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
 	// FirstTimestamp - READ-ONLY; Gets the first timestamp received for one of the quality levels.
 	FirstTimestamp *string `json:"firstTimestamp,omitempty"`
@@ -2425,7 +2938,8 @@ func (mleivsoosed MediaLiveEventIncomingVideoStreamsOutOfSyncEventData) MarshalJ
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventIngestHeartbeatEventData ingest fragment dropped event data.
+// MediaLiveEventIngestHeartbeatEventData ingest fragment dropped event data. Schema of the data property
+// of an EventGridEvent for a Microsoft.Media.LiveEventIngestHeartbeat event.
 type MediaLiveEventIngestHeartbeatEventData struct {
 	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`
@@ -2459,7 +2973,9 @@ func (mleihed MediaLiveEventIngestHeartbeatEventData) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
-// MediaLiveEventTrackDiscontinuityDetectedEventData ingest track discontinuity detected event data.
+// MediaLiveEventTrackDiscontinuityDetectedEventData ingest track discontinuity detected event data. Schema
+// of the data property of an EventGridEvent for a Microsoft.Media.LiveEventTrackDiscontinuityDetected
+// event.
 type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`
@@ -2483,7 +2999,80 @@ func (mletdded MediaLiveEventTrackDiscontinuityDetectedEventData) MarshalJSON() 
 	return json.Marshal(objectMap)
 }
 
-// RedisExportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
+// MicrosoftTeamsUserIdentifierModel a Microsoft Teams user.
+type MicrosoftTeamsUserIdentifierModel struct {
+	// UserID - The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
+	UserID *string `json:"userId,omitempty"`
+	// IsAnonymous - True if the Microsoft Teams user is anonymous. By default false if missing.
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+	// Cloud - The cloud that the Microsoft Teams user belongs to. By default 'public' if missing. Possible values include: 'Public', 'Dod', 'Gcch'
+	Cloud CommunicationCloudEnvironmentModel `json:"cloud,omitempty"`
+}
+
+// PhoneNumberIdentifierModel a phone number.
+type PhoneNumberIdentifierModel struct {
+	// Value - The phone number in E.164 format.
+	Value *string `json:"value,omitempty"`
+}
+
+// PolicyInsightsPolicyStateChangedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.PolicyInsights.PolicyStateChanged event.
+type PolicyInsightsPolicyStateChangedEventData struct {
+	// Timestamp - The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// PolicyAssignmentID - The resource ID of the policy assignment.
+	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	// PolicyDefinitionID - The resource ID of the policy definition.
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// PolicyDefinitionReferenceID - The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative. May be empty.
+	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	// ComplianceState - The compliance state of the resource with respect to the policy assignment.
+	ComplianceState *string `json:"complianceState,omitempty"`
+	// SubscriptionID - The subscription ID of the resource.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// ComplianceReasonCode - The compliance reason code. May be empty.
+	ComplianceReasonCode *string `json:"complianceReasonCode,omitempty"`
+}
+
+// PolicyInsightsPolicyStateCreatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.PolicyInsights.PolicyStateCreated event.
+type PolicyInsightsPolicyStateCreatedEventData struct {
+	// Timestamp - The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// PolicyAssignmentID - The resource ID of the policy assignment.
+	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	// PolicyDefinitionID - The resource ID of the policy definition.
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// PolicyDefinitionReferenceID - The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative. May be empty.
+	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	// ComplianceState - The compliance state of the resource with respect to the policy assignment.
+	ComplianceState *string `json:"complianceState,omitempty"`
+	// SubscriptionID - The subscription ID of the resource.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// ComplianceReasonCode - The compliance reason code. May be empty.
+	ComplianceReasonCode *string `json:"complianceReasonCode,omitempty"`
+}
+
+// PolicyInsightsPolicyStateDeletedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.PolicyInsights.PolicyStateDeleted event.
+type PolicyInsightsPolicyStateDeletedEventData struct {
+	// Timestamp - The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// PolicyAssignmentID - The resource ID of the policy assignment.
+	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	// PolicyDefinitionID - The resource ID of the policy definition.
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// PolicyDefinitionReferenceID - The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative. May be empty.
+	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	// ComplianceState - The compliance state of the resource with respect to the policy assignment.
+	ComplianceState *string `json:"complianceState,omitempty"`
+	// SubscriptionID - The subscription ID of the resource.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// ComplianceReasonCode - The compliance reason code. May be empty.
+	ComplianceReasonCode *string `json:"complianceReasonCode,omitempty"`
+}
+
+// RedisExportRDBCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Cache.ExportRDBCompleted event.
 type RedisExportRDBCompletedEventData struct {
 	// Timestamp - The time at which the event occurred.
@@ -2494,7 +3083,7 @@ type RedisExportRDBCompletedEventData struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// RedisImportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
+// RedisImportRDBCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Cache.ImportRDBCompleted event.
 type RedisImportRDBCompletedEventData struct {
 	// Timestamp - The time at which the event occurred.
@@ -2505,7 +3094,7 @@ type RedisImportRDBCompletedEventData struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// RedisPatchingCompletedEventData schema of the Data property of an EventGridEvent for an
+// RedisPatchingCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Cache.PatchingCompleted event.
 type RedisPatchingCompletedEventData struct {
 	// Timestamp - The time at which the event occurred.
@@ -2516,7 +3105,7 @@ type RedisPatchingCompletedEventData struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// RedisScalingCompletedEventData schema of the Data property of an EventGridEvent for an
+// RedisScalingCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Cache.ScalingCompleted event.
 type RedisScalingCompletedEventData struct {
 	// Timestamp - The time at which the event occurred.
@@ -2527,7 +3116,7 @@ type RedisScalingCompletedEventData struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// ResourceActionCancelData schema of the Data property of an EventGridEvent for an
+// ResourceActionCancelData schema of the Data property of an EventGridEvent for a
 // Microsoft.Resources.ResourceActionCancel event. This is raised when a resource action operation is
 // canceled.
 type ResourceActionCancelData struct {
@@ -2610,7 +3199,7 @@ type ResourceActionSuccessData struct {
 	HTTPRequest *string `json:"httpRequest,omitempty"`
 }
 
-// ResourceDeleteCancelData schema of the Data property of an EventGridEvent for an
+// ResourceDeleteCancelData schema of the Data property of an EventGridEvent for a
 // Microsoft.Resources.ResourceDeleteCancel event. This is raised when a resource delete operation is
 // canceled.
 type ResourceDeleteCancelData struct {
@@ -2777,6 +3366,23 @@ type ResourceWriteSuccessData struct {
 	HTTPRequest *string `json:"httpRequest,omitempty"`
 }
 
+// ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData schema of the Data property of an
+// EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
+type ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData struct {
+	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string `json:"namespaceName,omitempty"`
+	// RequestURI - The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string `json:"requestUri,omitempty"`
+	// EntityType - The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string `json:"entityType,omitempty"`
+	// QueueName - The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string `json:"queueName,omitempty"`
+	// TopicName - The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string `json:"topicName,omitempty"`
+	// SubscriptionName - The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will be null.
+	SubscriptionName *string `json:"subscriptionName,omitempty"`
+}
+
 // ServiceBusActiveMessagesAvailableWithNoListenersEventData schema of the Data property of an
 // EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners event.
 type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
@@ -2794,8 +3400,25 @@ type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
 	SubscriptionName *string `json:"subscriptionName,omitempty"`
 }
 
+// ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData schema of the Data property of an
+// EventGridEvent for a Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications event.
+type ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData struct {
+	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string `json:"namespaceName,omitempty"`
+	// RequestURI - The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string `json:"requestUri,omitempty"`
+	// EntityType - The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string `json:"entityType,omitempty"`
+	// QueueName - The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string `json:"queueName,omitempty"`
+	// TopicName - The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string `json:"topicName,omitempty"`
+	// SubscriptionName - The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will be null.
+	SubscriptionName *string `json:"subscriptionName,omitempty"`
+}
+
 // ServiceBusDeadletterMessagesAvailableWithNoListenersEventData schema of the Data property of an
-// EventGridEvent for a Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListenersEvent event.
+// EventGridEvent for a Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
 type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
 	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string `json:"namespaceName,omitempty"`
@@ -2839,7 +3462,32 @@ type SignalRServiceClientConnectionDisconnectedEventData struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-// StorageBlobCreatedEventData schema of the Data property of an EventGridEvent for an
+// StorageAsyncOperationInitiatedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Storage.AsyncOperationInitiated event.
+type StorageAsyncOperationInitiatedEventData struct {
+	// API - The name of the API/operation that triggered this event.
+	API *string `json:"api,omitempty"`
+	// ClientRequestID - A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// RequestID - The request id generated by the Storage service for the storage API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// ContentType - The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
+	ContentType *string `json:"contentType,omitempty"`
+	// ContentLength - The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the blob.
+	ContentLength *int64 `json:"contentLength,omitempty"`
+	// BlobType - The type of blob.
+	BlobType *string `json:"blobType,omitempty"`
+	// URL - The path to the blob.
+	URL *string `json:"url,omitempty"`
+	// Sequencer - An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard string comparison to understand the relative sequence of two events on the same blob name.
+	Sequencer *string `json:"sequencer,omitempty"`
+	// Identity - The identity of the requester that triggered this event.
+	Identity *string `json:"identity,omitempty"`
+	// StorageDiagnostics - For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored by event consumers.
+	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
+}
+
+// StorageBlobCreatedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.BlobCreated event.
 type StorageBlobCreatedEventData struct {
 	// API - The name of the API/operation that triggered this event.
@@ -2868,7 +3516,7 @@ type StorageBlobCreatedEventData struct {
 	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
 }
 
-// StorageBlobDeletedEventData schema of the Data property of an EventGridEvent for an
+// StorageBlobDeletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.BlobDeleted event.
 type StorageBlobDeletedEventData struct {
 	// API - The name of the API/operation that triggered this event.
@@ -2891,7 +3539,26 @@ type StorageBlobDeletedEventData struct {
 	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
 }
 
-// StorageBlobRenamedEventData schema of the Data property of an EventGridEvent for an
+// StorageBlobInventoryPolicyCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Storage.BlobInventoryPolicyCompleted event.
+type StorageBlobInventoryPolicyCompletedEventData struct {
+	// ScheduleDateTime - The time at which inventory policy was scheduled.
+	ScheduleDateTime *date.Time `json:"scheduleDateTime,omitempty"`
+	// AccountName - The account name for which inventory policy is registered.
+	AccountName *string `json:"accountName,omitempty"`
+	// RuleName - The rule name for inventory policy.
+	RuleName *string `json:"ruleName,omitempty"`
+	// PolicyRunStatus - The status of inventory run, it can be Succeeded/PartiallySucceeded/Failed.
+	PolicyRunStatus *string `json:"policyRunStatus,omitempty"`
+	// PolicyRunStatusMessage - The status message for inventory run.
+	PolicyRunStatusMessage *string `json:"policyRunStatusMessage,omitempty"`
+	// PolicyRunID - The policy run id for inventory run.
+	PolicyRunID *string `json:"policyRunId,omitempty"`
+	// ManifestBlobURL - The blob URL for manifest file for inventory run.
+	ManifestBlobURL *string `json:"manifestBlobUrl,omitempty"`
+}
+
+// StorageBlobRenamedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.BlobRenamed event.
 type StorageBlobRenamedEventData struct {
 	// API - The name of the API/operation that triggered this event.
@@ -2912,7 +3579,32 @@ type StorageBlobRenamedEventData struct {
 	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
 }
 
-// StorageDirectoryCreatedEventData schema of the Data property of an EventGridEvent for an
+// StorageBlobTierChangedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Storage.BlobTierChanged event.
+type StorageBlobTierChangedEventData struct {
+	// API - The name of the API/operation that triggered this event.
+	API *string `json:"api,omitempty"`
+	// ClientRequestID - A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	// RequestID - The request id generated by the Storage service for the storage API operation that triggered this event.
+	RequestID *string `json:"requestId,omitempty"`
+	// ContentType - The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
+	ContentType *string `json:"contentType,omitempty"`
+	// ContentLength - The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the blob.
+	ContentLength *int64 `json:"contentLength,omitempty"`
+	// BlobType - The type of blob.
+	BlobType *string `json:"blobType,omitempty"`
+	// URL - The path to the blob.
+	URL *string `json:"url,omitempty"`
+	// Sequencer - An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard string comparison to understand the relative sequence of two events on the same blob name.
+	Sequencer *string `json:"sequencer,omitempty"`
+	// Identity - The identity of the requester that triggered this event.
+	Identity *string `json:"identity,omitempty"`
+	// StorageDiagnostics - For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored by event consumers.
+	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
+}
+
+// StorageDirectoryCreatedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.DirectoryCreated event.
 type StorageDirectoryCreatedEventData struct {
 	// API - The name of the API/operation that triggered this event.
@@ -2933,7 +3625,7 @@ type StorageDirectoryCreatedEventData struct {
 	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
 }
 
-// StorageDirectoryDeletedEventData schema of the Data property of an EventGridEvent for an
+// StorageDirectoryDeletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.DirectoryDeleted event.
 type StorageDirectoryDeletedEventData struct {
 	// API - The name of the API/operation that triggered this event.
@@ -2954,7 +3646,7 @@ type StorageDirectoryDeletedEventData struct {
 	StorageDiagnostics interface{} `json:"storageDiagnostics,omitempty"`
 }
 
-// StorageDirectoryRenamedEventData schema of the Data property of an EventGridEvent for an
+// StorageDirectoryRenamedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.DirectoryRenamed event.
 type StorageDirectoryRenamedEventData struct {
 	// API - The name of the API/operation that triggered this event.
@@ -2986,7 +3678,7 @@ type StorageLifecyclePolicyActionSummaryDetail struct {
 	ErrorList *string `json:"errorList,omitempty"`
 }
 
-// StorageLifecyclePolicyCompletedEventData schema of the Data property of an EventGridEvent for an
+// StorageLifecyclePolicyCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Storage.LifecyclePolicyCompleted event.
 type StorageLifecyclePolicyCompletedEventData struct {
 	// ScheduleTime - The time the policy task was scheduled.
@@ -2997,7 +3689,7 @@ type StorageLifecyclePolicyCompletedEventData struct {
 }
 
 // SubscriptionDeletedEventData schema of the Data property of an EventGridEvent for a
-// Microsoft.EventGrid.SubscriptionDeletedEvent.
+// Microsoft.EventGrid.SubscriptionDeletedEvent event.
 type SubscriptionDeletedEventData struct {
 	// EventSubscriptionID - READ-ONLY; The Azure resource ID of the deleted event subscription.
 	EventSubscriptionID *string `json:"eventSubscriptionId,omitempty"`
@@ -3010,7 +3702,7 @@ func (sded SubscriptionDeletedEventData) MarshalJSON() ([]byte, error) {
 }
 
 // SubscriptionValidationEventData schema of the Data property of an EventGridEvent for a
-// Microsoft.EventGrid.SubscriptionValidationEvent.
+// Microsoft.EventGrid.SubscriptionValidationEvent event.
 type SubscriptionValidationEventData struct {
 	// ValidationCode - READ-ONLY; The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation handshake, the subscriber must either respond with this validation code as part of the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
 	ValidationCode *string `json:"validationCode,omitempty"`
@@ -3032,7 +3724,7 @@ type SubscriptionValidationResponse struct {
 	ValidationResponse *string `json:"validationResponse,omitempty"`
 }
 
-// WebAppServicePlanUpdatedEventData schema of the Data property of an EventGridEvent for an
+// WebAppServicePlanUpdatedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.AppServicePlanUpdated event.
 type WebAppServicePlanUpdatedEventData struct {
 	AppServicePlanEventTypeDetail *AppServicePlanEventTypeDetail `json:"appServicePlanEventTypeDetail,omitempty"`
@@ -3066,7 +3758,7 @@ type WebAppServicePlanUpdatedEventDataSku struct {
 	Capacity *string `json:"Capacity,omitempty"`
 }
 
-// WebAppUpdatedEventData schema of the Data property of an EventGridEvent for an Microsoft.Web.AppUpdated
+// WebAppUpdatedEventData schema of the Data property of an EventGridEvent for a Microsoft.Web.AppUpdated
 // event.
 type WebAppUpdatedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3084,7 +3776,7 @@ type WebAppUpdatedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebBackupOperationCompletedEventData schema of the Data property of an EventGridEvent for an
+// WebBackupOperationCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.BackupOperationCompleted event.
 type WebBackupOperationCompletedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3102,7 +3794,7 @@ type WebBackupOperationCompletedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebBackupOperationFailedEventData schema of the Data property of an EventGridEvent for an
+// WebBackupOperationFailedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.BackupOperationFailed event.
 type WebBackupOperationFailedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3120,7 +3812,7 @@ type WebBackupOperationFailedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebBackupOperationStartedEventData schema of the Data property of an EventGridEvent for an
+// WebBackupOperationStartedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.BackupOperationStarted event.
 type WebBackupOperationStartedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3138,7 +3830,7 @@ type WebBackupOperationStartedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebRestoreOperationCompletedEventData schema of the Data property of an EventGridEvent for an
+// WebRestoreOperationCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.RestoreOperationCompleted event.
 type WebRestoreOperationCompletedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3156,7 +3848,7 @@ type WebRestoreOperationCompletedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebRestoreOperationFailedEventData schema of the Data property of an EventGridEvent for an
+// WebRestoreOperationFailedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.RestoreOperationFailed event.
 type WebRestoreOperationFailedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3174,7 +3866,7 @@ type WebRestoreOperationFailedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebRestoreOperationStartedEventData schema of the Data property of an EventGridEvent for an
+// WebRestoreOperationStartedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.RestoreOperationStarted event.
 type WebRestoreOperationStartedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3192,7 +3884,7 @@ type WebRestoreOperationStartedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebSlotSwapCompletedEventData schema of the Data property of an EventGridEvent for an
+// WebSlotSwapCompletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.SlotSwapCompleted event.
 type WebSlotSwapCompletedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3210,7 +3902,7 @@ type WebSlotSwapCompletedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebSlotSwapFailedEventData schema of the Data property of an EventGridEvent for an
+// WebSlotSwapFailedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.SlotSwapFailed event.
 type WebSlotSwapFailedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3228,7 +3920,7 @@ type WebSlotSwapFailedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebSlotSwapStartedEventData schema of the Data property of an EventGridEvent for an
+// WebSlotSwapStartedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.SlotSwapStarted event.
 type WebSlotSwapStartedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3246,7 +3938,7 @@ type WebSlotSwapStartedEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebSlotSwapWithPreviewCancelledEventData schema of the Data property of an EventGridEvent for an
+// WebSlotSwapWithPreviewCancelledEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.SlotSwapWithPreviewCancelled event.
 type WebSlotSwapWithPreviewCancelledEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`
@@ -3264,7 +3956,7 @@ type WebSlotSwapWithPreviewCancelledEventData struct {
 	Verb *string `json:"verb,omitempty"`
 }
 
-// WebSlotSwapWithPreviewStartedEventData schema of the Data property of an EventGridEvent for an
+// WebSlotSwapWithPreviewStartedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Web.SlotSwapWithPreviewStarted event.
 type WebSlotSwapWithPreviewStartedEventData struct {
 	AppEventTypeDetail *AppEventTypeDetail `json:"appEventTypeDetail,omitempty"`

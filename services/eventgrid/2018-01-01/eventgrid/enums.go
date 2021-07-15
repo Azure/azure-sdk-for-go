@@ -59,6 +59,23 @@ func PossibleAsyncStatusValues() []AsyncStatus {
 	return []AsyncStatus{AsyncStatusCompleted, AsyncStatusFailed, AsyncStatusStarted}
 }
 
+// CommunicationCloudEnvironmentModel enumerates the values for communication cloud environment model.
+type CommunicationCloudEnvironmentModel string
+
+const (
+	// Dod ...
+	Dod CommunicationCloudEnvironmentModel = "dod"
+	// Gcch ...
+	Gcch CommunicationCloudEnvironmentModel = "gcch"
+	// Public ...
+	Public CommunicationCloudEnvironmentModel = "public"
+)
+
+// PossibleCommunicationCloudEnvironmentModelValues returns an array of possible values for the CommunicationCloudEnvironmentModel const type.
+func PossibleCommunicationCloudEnvironmentModelValues() []CommunicationCloudEnvironmentModel {
+	return []CommunicationCloudEnvironmentModel{Dod, Gcch, Public}
+}
+
 // MediaJobErrorCategory enumerates the values for media job error category.
 type MediaJobErrorCategory string
 
@@ -179,15 +196,15 @@ func PossibleOdataTypeValues() []OdataType {
 type StampKind string
 
 const (
-	// AseV1 App Service Plan is running on an App Service Environment V1.
-	AseV1 StampKind = "AseV1"
-	// AseV2 App Service Plan is running on an App Service Environment V2.
-	AseV2 StampKind = "AseV2"
-	// Public App Service Plan is running on a public stamp.
-	Public StampKind = "Public"
+	// StampKindAseV1 App Service Plan is running on an App Service Environment V1.
+	StampKindAseV1 StampKind = "AseV1"
+	// StampKindAseV2 App Service Plan is running on an App Service Environment V2.
+	StampKindAseV2 StampKind = "AseV2"
+	// StampKindPublic App Service Plan is running on a public stamp.
+	StampKindPublic StampKind = "Public"
 )
 
 // PossibleStampKindValues returns an array of possible values for the StampKind const type.
 func PossibleStampKindValues() []StampKind {
-	return []StampKind{AseV1, AseV2, Public}
+	return []StampKind{StampKindAseV1, StampKindAseV2, StampKindPublic}
 }

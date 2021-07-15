@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable52ympbi37s2a7"}'
+    body: '{"TableName":"gotablep6e6qfifgukvi"}'
     form: {}
     headers:
       Accept:
@@ -19,35 +19,35 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 14 Jul 2021 20:01:15 GMT
+      - Thu, 15 Jul 2021 21:51:17 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotable52ympbi37s2a7"}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablep6e6qfifgukvi"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Wed, 14 Jul 2021 20:01:15 GMT
+      - Thu, 15 Jul 2021 21:51:17 GMT
       Location:
-      - https://seankaneprim.table.core.windows.net/Tables('gotable52ympbi37s2a7')
+      - https://seankaneprim.table.core.windows.net/Tables('gotablep6e6qfifgukvi')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 800029fe-3002-003c-6feb-78c1b2000000
+      - e67a0c95-2002-006d-35c3-795c3e000000
       X-Ms-Version:
       - "2019-02-02"
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: '{"Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":1,"PartitionKey":"partition","RowKey":"1","String":"someString","TimeStamp":"0001-01-01T00:00:00Z"}'
+    body: '{"Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":1,"PartitionKey":"partition","RowKey":"1","String":"someString","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -66,10 +66,10 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 14 Jul 2021 20:01:16 GMT
+      - Thu, 15 Jul 2021 21:51:18 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/gotable52ympbi37s2a7
+    url: https://seankaneprim.table.core.windows.net/gotablep6e6qfifgukvi
     method: POST
   response:
     body: ""
@@ -79,13 +79,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://seankaneprim.table.core.windows.net/gotable52ympbi37s2a7(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.core.windows.net/gotablep6e6qfifgukvi(PartitionKey='partition',RowKey='1')
       Date:
-      - Wed, 14 Jul 2021 20:01:15 GMT
+      - Thu, 15 Jul 2021 21:51:17 GMT
       Etag:
-      - W/"datetime'2021-07-14T20%3A01%3A16.0006819Z'"
+      - W/"datetime'2021-07-15T21%3A51%3A17.2884107Z'"
       Location:
-      - https://seankaneprim.table.core.windows.net/gotable52ympbi37s2a7(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.core.windows.net/gotablep6e6qfifgukvi(PartitionKey='partition',RowKey='1')
       Preference-Applied:
       - return-no-content
       Server:
@@ -93,7 +93,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 80002a49-3002-003c-38eb-78c1b2000000
+      - e67a0cf7-2002-006d-12c3-795c3e000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
@@ -111,10 +111,10 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 14 Jul 2021 20:01:16 GMT
+      - Thu, 15 Jul 2021 21:51:18 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/Tables('gotable52ympbi37s2a7')
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablep6e6qfifgukvi')
     method: DELETE
   response:
     body: ""
@@ -124,13 +124,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 14 Jul 2021 20:01:15 GMT
+      - Thu, 15 Jul 2021 21:51:17 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 80002aa8-3002-003c-11eb-78c1b2000000
+      - e67a0d21-2002-006d-3bc3-795c3e000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content

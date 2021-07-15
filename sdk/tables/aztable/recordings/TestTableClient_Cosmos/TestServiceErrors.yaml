@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable85g6eby7icg1v"}'
+    body: '{"TableName":"gotable3lqp0ygfyeypr"}'
     form: {}
     headers:
       Accept:
@@ -16,34 +16,32 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 04 Apr 2021 23:46:54 GMT
+      - Thu, 15 Jul 2021 21:46:47 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    url: https://seankaneprim.table.cosmos.azure.com/Tables
     method: POST
   response:
-    body: '{"TableName":"gotable85g6eby7icg1v","odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    body: '{"TableName":"gotable3lqp0ygfyeypr","odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
     headers:
       Content-Type:
       - application/json;odata=minimalmetadata
       Date:
-      - Sun, 04 Apr 2021 23:46:54 GMT
+      - Thu, 15 Jul 2021 21:46:46 GMT
       Etag:
-      - W/"datetime'2021-04-04T23%3A46%3A54.7914760Z'"
+      - W/"datetime'2021-07-15T21%3A46%3A46.9644296Z'"
       Location:
-      - https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable85g6eby7icg1v')
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - https://seankaneprim.table.cosmos.azure.com/Tables('gotable3lqp0ygfyeypr')
       X-Ms-Request-Id:
-      - 947f9642-3c9b-475a-b3a0-6c04b3c2d40b
+      - f66ed244-450e-475f-86d1-e0338722399f
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: '{"TableName":"gotable85g6eby7icg1v"}'
+    body: '{"TableName":"gotable3lqp0ygfyeypr"}'
     form: {}
     headers:
       Accept:
@@ -57,26 +55,24 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 04 Apr 2021 23:46:55 GMT
+      - Thu, 15 Jul 2021 21:46:48 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    url: https://seankaneprim.table.cosmos.azure.com/Tables
     method: POST
   response:
     body: "{\"odata.error\":{\"code\":\"TableAlreadyExists\",\"message\":{\"lang\":\"en-us\",\"value\":\"The
-      specified table already exists.\\nRequestID:58f7ef4b-3378-4612-8f88-7fad883916de\\n\"}}}\r\n"
+      specified table already exists.\\nRequestID:cd5b2bf8-283f-4f24-b66a-4f33a0dd58e3\\n\"}}}\r\n"
     headers:
       Content-Type:
       - application/json;odata=minimalmetadata
       Date:
-      - Sun, 04 Apr 2021 23:46:54 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - Thu, 15 Jul 2021 21:46:46 GMT
       X-Ms-Request-Id:
-      - 58f7ef4b-3378-4612-8f88-7fad883916de
+      - cd5b2bf8-283f-4f24-b66a-4f33a0dd58e3
     status: 409 Conflict
     code: 409
     duration: ""
@@ -89,25 +85,21 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 04 Apr 2021 23:46:55 GMT
+      - Thu, 15 Jul 2021 21:46:48 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable85g6eby7icg1v')
+    url: https://seankaneprim.table.cosmos.azure.com/Tables('gotable3lqp0ygfyeypr')
     method: DELETE
   response:
     body: ""
     headers:
-      Content-Length:
-      - "0"
       Date:
-      - Sun, 04 Apr 2021 23:46:54 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - Thu, 15 Jul 2021 21:46:47 GMT
       X-Ms-Request-Id:
-      - 40da51e2-3c50-4a09-a6e9-78663d0215c4
+      - e89ea7d0-07bf-4d3c-bf75-2cd047256160
     status: 204 No Content
     code: 204
     duration: ""

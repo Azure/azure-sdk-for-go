@@ -4,7 +4,7 @@ parameters:
   Scope: 'sdk/...'
   Image: ''
   GoVersion: ''
-  CoverageGoal: 0.99
+  CoverageGoal: 0.95
 
 steps:
 
@@ -71,7 +71,6 @@ steps:
       Get-Content ./coverage.json | gocov-xml > ./coverage.xml
       Get-Content ./coverage.json | gocov-html > ./coverage.html
       # use internal tool to fail if coverage is too low
-      Get-Location
       go run ../tools/internal/coverage/main.go --coverage-goal=${{ parameters.CoverageGoal}}
     displayName: 'Generate Coverage XML'
     workingDirectory: '${{parameters.GoWorkspace}}sdk'

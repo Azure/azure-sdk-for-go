@@ -8,9 +8,9 @@ pr:
   paths:
     include:
     - sdk/synapse/azartifacts/
-    
+
 stages:
 - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
     ServiceDirectory: 'synapse/azartifacts'
-
+    CoverageGoal: 0.80

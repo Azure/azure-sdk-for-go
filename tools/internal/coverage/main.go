@@ -43,26 +43,14 @@ func main() {
 	coverageFiles = make([]string, 0)
 	rootPath, err := filepath.Abs(".")
 	check(err)
-	// fmt.Println(rootPath)
 	FindCoverageFiles(rootPath)
-	// fmt.Println(coverageFiles)
 
-	coverageGoal := flag.Float64("coverage-goal", 0.80, "The goal coverage. This script will fail if coverage is below.")
-	// packagePath := flag.String("package-path", "", "The path to a package from sdk/...")
+	coverageGoal := flag.Float64("coverage-goal", 0.95, "The goal coverage. This script will fail if coverage is below.")
 
 	flag.Parse()
 
-	// if *packagePath == "" {
-	// 	fmt.Println("Path was not provided, please provide a path to a package.")
-	// 	os.Exit(1)
-	// }
-
-	// fmt.Printf("Checking coverage for package located at %v\n", rootPath)
 	fmt.Printf("Failing if the coverage is below %.2f\n", *coverageGoal)
 
-	// Need to add a step to find all coverage files
-
-	// xmlFilePath := filepath.Join(rootPath, *packagePath, coverageXmlFile)
 	coverageValues := make([]float64, 0)
 	for _, coverageFile := range coverageFiles {
 		xmlFile, err := os.Open(coverageFile)
@@ -78,9 +66,6 @@ func main() {
 			log.Fatalf("Could not match regexp to coverage.xml file.")
 		}
 
-		// fmt.Printf("%q\n", re.FindAll(byteValue, -1))
-
-		// for _, value := range coverageValue {
 		parts := strings.Split(string(coverageValue), "=")
 		coverageNumber := parts[1]
 
@@ -88,7 +73,6 @@ func main() {
 		coverageFloat, err := strconv.ParseFloat(coverageNumber, 32)
 		check(err)
 		coverageValues = append(coverageValues, coverageFloat)
-		// }
 	}
 
 	if len(coverageValues) != len(coverageFiles) {
@@ -111,11 +95,4 @@ func main() {
 		fmt.Println("Coverage step failed")
 		os.Exit(1)
 	}
-
-	// fmt.Printf("Found a coverage of %.4f for package %v\n", coverageFloat, coverageFile)
-	// if coverageFloat < *coverageGoal {
-	// 	fmt.Printf("Coverage is lower than expected. Got %.4f, expected %.4f\n", coverageFloat, *coverageGoal)
-	// 	os.Exit(1)
-	// }
-
 }

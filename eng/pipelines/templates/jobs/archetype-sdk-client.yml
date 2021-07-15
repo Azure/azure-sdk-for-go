@@ -1,6 +1,6 @@
 parameters:
   ServiceDirectory: ''
-  CoverageGoal: 0.99
+  CoverageGoal: 0.95
 
 stages:
   - stage: Build

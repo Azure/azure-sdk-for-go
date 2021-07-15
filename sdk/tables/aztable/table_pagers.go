@@ -127,7 +127,7 @@ type TableQueryResponsePager interface {
 // EntityMapAsModel converts a table entity in the form of map[string]interface{} and converts it to a strongly typed model.
 //
 // Example:
-// mapEntity, err := client.GetEntity("somePartition", "someRow")
+// mapEntity, err := client.GetEntity("somePartition", "someRow", nil)
 // myEntityModel := MyModel{}
 // err = EntityMapAsModel(mapEntity, &myEntityModel)
 func EntityMapAsModel(entityMap map[string]interface{}, model interface{}) error {

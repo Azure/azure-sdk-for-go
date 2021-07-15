@@ -31,7 +31,7 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	_, err = client.AddEntity(ctx, marshalled)
 	require.Nil(err)
 
-	resp, err := client.GetEntity(ctx, "pk001", "rk001")
+	resp, err := client.GetEntity(ctx, "pk001", "rk001", nil)
 	require.Nil(err)
 
 	receivedEntity := basicTestEntity{}
@@ -112,7 +112,11 @@ func (s *tableClientLiveTests) TestAddAnnotatedEntity() {
 	_, err = client.AddEntity(ctx, marshalled)
 	require.Nil(err)
 
-	resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1))
+	fullMetadata := &QueryOptions{
+		Format: OdataMetadataFormatApplicationJSONOdataFullmetadata.ToPtr(),
+	}
+
+	resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), fullMetadata)
 	require.Nil(err)
 	receivedEntity := AnnotatedEntity{}
 	err = json.Unmarshal(resp.Value, &receivedEntity)

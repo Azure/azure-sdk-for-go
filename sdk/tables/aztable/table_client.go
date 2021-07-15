@@ -68,8 +68,11 @@ func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponse
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (ByteArrayResponse, error) {
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, &QueryOptions{})
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, queryOptions *QueryOptions) (ByteArrayResponse, error) {
+	if queryOptions == nil {
+		queryOptions = &QueryOptions{}
+	}
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, queryOptions)
 	if err != nil {
 		return ByteArrayResponse{}, err
 	}

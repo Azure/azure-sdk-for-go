@@ -120,7 +120,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	filter := "RowKey eq '1'"
 	queryOptions := &QueryOptions{Filter: &filter}
 
-	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey)
+	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 	assert.Nil(err)
 
 	var unMarshalledPreMerge map[string]interface{}
@@ -172,7 +172,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	query := &QueryOptions{Filter: &filter}
 
 	// 2. Query for basic Entity
-	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey)
+	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 	assert.Nil(err)
 
 	var unMarshalledPreMerge map[string]interface{}

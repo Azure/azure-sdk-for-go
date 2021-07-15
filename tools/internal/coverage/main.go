@@ -48,14 +48,14 @@ func main() {
 	fmt.Println(coverageFiles)
 
 	coverageGoal := flag.Float64("coverage-goal", 0.80, "The goal coverage. This script will fail if coverage is below.")
-	packagePath := flag.String("package-path", "", "The path to a package from sdk/...")
+	// packagePath := flag.String("package-path", "", "The path to a package from sdk/...")
 
 	flag.Parse()
 
-	if *packagePath == "" {
-		fmt.Println("Path was not provided, please provide a path to a package.")
-		os.Exit(1)
-	}
+	// if *packagePath == "" {
+	// 	fmt.Println("Path was not provided, please provide a path to a package.")
+	// 	os.Exit(1)
+	// }
 
 	fmt.Printf("Checking coverage for package located at %v\n", rootPath)
 	fmt.Printf("Failing if the coverage is below %.2f\n", *coverageGoal)
@@ -63,8 +63,8 @@ func main() {
 	// Need to add a step to find all coverage files
 
 	// xmlFilePath := filepath.Join(rootPath, *packagePath, coverageXmlFile)
-	for _, coverageFiles := range coverageFiles {
-		xmlFile, err := os.Open(coverageFiles)
+	for _, coverageFile := range coverageFiles {
+		xmlFile, err := os.Open(coverageFile)
 		check(err)
 		defer xmlFile.Close()
 
@@ -87,7 +87,7 @@ func main() {
 			coverageFloat, err := strconv.ParseFloat(coverageNumber, 32)
 			check(err)
 
-			fmt.Printf("Found a coverage of %.4f for package %v\n", coverageFloat, *packagePath)
+			fmt.Printf("Found a coverage of %.4f for package %v\n", coverageFloat, coverageFile)
 			if coverageFloat < *coverageGoal {
 				fmt.Printf("Coverage is lower than expected. Got %.4f, expected %.4f\n", coverageFloat, *coverageGoal)
 				os.Exit(1)

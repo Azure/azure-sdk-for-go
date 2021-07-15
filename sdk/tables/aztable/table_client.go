@@ -77,13 +77,14 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 }
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
-// An entity must have at least a PartitionKey and RowKey property.
+// An entity must be a byte slice ([]byte) that can be json.Marshalled into a map[string]interface{}
 func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return entity, err
 	}
+	addOdataAnnotations(&mapEntity)
 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)

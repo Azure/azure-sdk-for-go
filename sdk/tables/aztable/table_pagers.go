@@ -229,6 +229,7 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 	entMap := *entity
 	for k, v := range entMap {
 		t := reflect.TypeOf(v)
+		fmt.Println(v, t.Kind())
 	Switch:
 		switch t.Kind() {
 		case reflect.Slice, reflect.Array:
@@ -246,6 +247,7 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 				entMap[k] = base64.StdEncoding.EncodeToString(b)
 			}
 		case reflect.Struct:
+			fmt.Println("Found struct: ", v)
 			switch tn := reflect.TypeOf(v).String(); tn {
 			case "time.Time":
 				entMap[odataType(k)] = edmDateTime

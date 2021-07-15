@@ -6,7 +6,7 @@ package aztable
 import "time"
 
 type Entity struct {
-	PartitionKey string
-	RowKey       string
-	TimeStamp    time.Time
+	PartitionKey string    `json:"PartitionKey"`
+	RowKey       string    `json:"RowKey"`
+	Timestamp    time.Time `json:"Timestamp"`
 }

@@ -84,7 +84,7 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}
 	if err != nil {
 		return entity, err
 	}
-	addOdataAnnotations(&mapEntity)
+	// addOdataAnnotations(&mapEntity)
 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)

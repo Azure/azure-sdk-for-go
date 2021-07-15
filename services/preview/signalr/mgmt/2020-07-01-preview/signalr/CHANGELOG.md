@@ -1,9 +1,7 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
 ### New Funcs
 
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. UserAssignedIdentityProperty.MarshalJSON() ([]byte, error)
+1. ResourceSku.MarshalJSON() ([]byte, error)

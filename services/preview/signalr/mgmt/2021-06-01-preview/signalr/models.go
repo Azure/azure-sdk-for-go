@@ -1107,7 +1107,7 @@ type Properties struct {
 	// Enable or disable local auth with AccessKey
 	// When set as true, connection with AccessKey=xxx won't work.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-	// DisableAadAuth - disableAadAuth
+	// DisableAadAuth - DisableLocalAuth
 	// Enable or disable aad auth
 	// When set as true, connection with AuthType=aad won't work.
 	DisableAadAuth *bool `json:"disableAadAuth,omitempty"`

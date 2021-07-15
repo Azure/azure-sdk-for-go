@@ -119,8 +119,18 @@ func (s *tableClientLiveTests) TestAddAnnotatedEntity() {
 	require.Nil(err)
 	assert.Equal(receivedEntity.PartitionKey, annotatedEntity.PartitionKey)
 	assert.Equal(receivedEntity.RowKey, annotatedEntity.RowKey)
-	// assert.Equal(receivedEntity.Large, annotatedEntity.Large)
-	// assert.Equal(receivedEntity.BigIntAnnotation, annotatedEntity.BigIntAnnotation)
+	assert.Equal(receivedEntity.Large, annotatedEntity.Large)
+	assert.Equal(receivedEntity.FloatType, annotatedEntity.FloatType)
+	// assert.Equal(receivedEntity.FloatTypeAnnotation, annotatedEntity.FloatTypeAnnotation)  // This does not come back
+	// assert.Equal(receivedEntity.DateType, annotatedEntity.DateType)
+	assert.Equal(receivedEntity.Stringy, annotatedEntity.Stringy)
+	// assert.Equal(receivedEntity.StringyAnnotation, annotatedEntity.StringyAnnotation) // This does not come back
+	assert.Equal(receivedEntity.Bool, annotatedEntity.Bool)
+	// assert.Equal(receivedEntity.BoolAnnotation, annotatedEntity.BoolAnnotation) // This does not come back
+	assert.Equal(receivedEntity.Small, annotatedEntity.Small)
+	// assert.Equal(receivedEntity.SmallAnnotation, annotatedEntity.SmallAnnotation) // This does not come back
+	assert.Equal(receivedEntity.Binary, annotatedEntity.Binary)
+	assert.Equal(receivedEntity.BinaryAnnotation, annotatedEntity.BinaryAnnotation)
 
 	queryString := "PartitionKey eq 'partition'"
 	queryOptions := QueryOptions{Filter: &queryString}
@@ -131,8 +141,20 @@ func (s *tableClientLiveTests) TestAddAnnotatedEntity() {
 		for _, e := range resp.TableEntityQueryResponse.Value {
 			err = json.Unmarshal(e, &receivedEntity)
 			require.Nil(err)
-			assert.Equal(receivedEntity.PartitionKey, "partition")
-			assert.Equal(receivedEntity.RowKey, "1")
+			assert.Equal(receivedEntity.PartitionKey, annotatedEntity.PartitionKey)
+			assert.Equal(receivedEntity.RowKey, annotatedEntity.RowKey)
+			assert.Equal(receivedEntity.Large, annotatedEntity.Large)
+			assert.Equal(receivedEntity.FloatType, annotatedEntity.FloatType)
+			// assert.Equal(receivedEntity.FloatTypeAnnotation, annotatedEntity.FloatTypeAnnotation) // This does not come back
+			// assert.Equal(receivedEntity.DateType, annotatedEntity.DateType)
+			assert.Equal(receivedEntity.Stringy, annotatedEntity.Stringy)
+			// assert.Equal(receivedEntity.StringyAnnotation, annotatedEntity.StringyAnnotation) // This does not come back
+			assert.Equal(receivedEntity.Bool, annotatedEntity.Bool)
+			// assert.Equal(receivedEntity.BoolAnnotation, annotatedEntity.BoolAnnotation) // This does not come back
+			assert.Equal(receivedEntity.Small, annotatedEntity.Small)
+			// assert.Equal(receivedEntity.SmallAnnotation, annotatedEntity.SmallAnnotation) // This does not come back
+			assert.Equal(receivedEntity.Binary, annotatedEntity.Binary)
+			assert.Equal(receivedEntity.BinaryAnnotation, annotatedEntity.BinaryAnnotation)
 			count += 1
 		}
 	}

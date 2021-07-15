@@ -34,11 +34,11 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // AddDataLakeStoreAccount updates the specified Data Lake Analytics account to include the additional Data Lake Store
 // account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account to which to add the Data Lake Store account.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // dataLakeStoreAccountName - the name of the Data Lake Store account to add.
 // parameters - the details of the Data Lake Store account.
-func (client Client) AddDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (result autorest.Response, err error) {
+func (client Client) AddDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters *AddDataLakeStoreParameters) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AddDataLakeStoreAccount")
 		defer func() {
@@ -49,12 +49,6 @@ func (client Client) AddDataLakeStoreAccount(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("account.Client", "AddDataLakeStoreAccount", err.Error())
-	}
-
 	req, err := client.AddDataLakeStoreAccountPreparer(ctx, resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", nil, "Failure preparing request")
@@ -78,7 +72,7 @@ func (client Client) AddDataLakeStoreAccount(ctx context.Context, resourceGroupN
 }
 
 // AddDataLakeStoreAccountPreparer prepares the AddDataLakeStoreAccount request.
-func (client Client) AddDataLakeStoreAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (*http.Request, error) {
+func (client Client) AddDataLakeStoreAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters *AddDataLakeStoreParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":              autorest.Encode("path", accountName),
 		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
@@ -96,8 +90,11 @@ func (client Client) AddDataLakeStoreAccountPreparer(ctx context.Context, resour
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -120,8 +117,8 @@ func (client Client) AddDataLakeStoreAccountResponder(resp *http.Response) (resu
 
 // AddStorageAccount updates the specified Data Lake Analytics account to add an Azure Storage account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account to which to add the Azure Storage account.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the name of the Azure Storage account to add
 // parameters - the parameters containing the access key and optional suffix for the Azure Storage Account.
 func (client Client) AddStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
@@ -137,8 +134,8 @@ func (client Client) AddStorageAccount(ctx context.Context, resourceGroupName st
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.AccessKey", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.StorageAccountProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.StorageAccountProperties.AccessKey", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("account.Client", "AddStorageAccount", err.Error())
 	}
 
@@ -206,13 +203,12 @@ func (client Client) AddStorageAccountResponder(resp *http.Response) (result aut
 }
 
 // Create creates the specified Data Lake Analytics account. This supplies the user with computation services for Data
-// Lake Analytics workloads
+// Lake Analytics workloads.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.the
-// account will be associated with.
-// name - the name of the Data Lake Analytics account to create.
-// parameters - parameters supplied to the create Data Lake Analytics account operation.
-func (client Client) Create(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (result CreateFuture, err error) {
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account to retrieve.
+// parameters - parameters supplied to create a new Data Lake Analytics account.
+func (client Client) Create(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters) (result CreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -223,7 +219,25 @@ func (client Client) Create(ctx context.Context, resourceGroupName string, name 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, resourceGroupName, name, parameters)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.CreateDataLakeAnalyticsAccountProperties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.DefaultDataLakeStoreAccount", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.DataLakeStoreAccounts", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.MaxDegreeOfParallelismPerJob", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.MaxDegreeOfParallelismPerJob", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}},
+						{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.MinPriorityPerJob", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.MinPriorityPerJob", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}},
+						{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.QueryStoreRetention", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.QueryStoreRetention", Name: validation.InclusiveMaximum, Rule: int64(180), Chain: nil},
+								{Target: "parameters.CreateDataLakeAnalyticsAccountProperties.QueryStoreRetention", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
+							}},
+					}}}}}); err != nil {
+		return result, validation.NewError("account.Client", "Create", err.Error())
+	}
+
+	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "Create", nil, "Failure preparing request")
 		return
@@ -239,9 +253,9 @@ func (client Client) Create(ctx context.Context, resourceGroupName string, name 
 }
 
 // CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (*http.Request, error) {
+func (client Client) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
+		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -251,13 +265,11 @@ func (client Client) CreatePreparer(ctx context.Context, resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	parameters.Type = nil
-	parameters.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -292,8 +304,8 @@ func (client Client) CreateResponder(resp *http.Response) (result DataLakeAnalyt
 
 // Delete begins the delete process for the Data Lake Analytics account object specified by the account name.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account to delete
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account to retrieve.
 func (client Client) Delete(ctx context.Context, resourceGroupName string, accountName string) (result DeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
@@ -361,7 +373,7 @@ func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err e
 func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -370,8 +382,8 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // DeleteDataLakeStoreAccount updates the Data Lake Analytics account specified to remove the specified Data Lake Store
 // account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // dataLakeStoreAccountName - the name of the Data Lake Store account to remove
 func (client Client) DeleteDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -439,7 +451,7 @@ func (client Client) DeleteDataLakeStoreAccountSender(req *http.Request) (*http.
 func (client Client) DeleteDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -447,8 +459,8 @@ func (client Client) DeleteDataLakeStoreAccountResponder(resp *http.Response) (r
 
 // DeleteStorageAccount updates the specified Data Lake Analytics account to remove an Azure Storage account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account from which to remove the Azure Storage account.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the name of the Azure Storage account to remove
 func (client Client) DeleteStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -516,7 +528,7 @@ func (client Client) DeleteStorageAccountSender(req *http.Request) (*http.Respon
 func (client Client) DeleteStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -524,7 +536,7 @@ func (client Client) DeleteStorageAccountResponder(resp *http.Response) (result 
 
 // Get gets details of the specified Data Lake Analytics account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
+// resourceGroupName - the name of the Azure resource group.
 // accountName - the name of the Data Lake Analytics account to retrieve.
 func (client Client) Get(ctx context.Context, resourceGroupName string, accountName string) (result DataLakeAnalyticsAccount, err error) {
 	if tracing.IsEnabled() {
@@ -601,11 +613,10 @@ func (client Client) GetResponder(resp *http.Response) (result DataLakeAnalytics
 // GetDataLakeStoreAccount gets the specified Data Lake Store account details in the specified Data Lake Analytics
 // account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account from which to retrieve the Data Lake Store account
-// details.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // dataLakeStoreAccountName - the name of the Data Lake Store account to retrieve
-func (client Client) GetDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result DataLakeStoreAccountInfo, err error) {
+func (client Client) GetDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result DataLakeStoreAccountInformation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDataLakeStoreAccount")
 		defer func() {
@@ -668,7 +679,7 @@ func (client Client) GetDataLakeStoreAccountSender(req *http.Request) (*http.Res
 
 // GetDataLakeStoreAccountResponder handles the response to the GetDataLakeStoreAccount request. The method always
 // closes the http.Response Body.
-func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (result DataLakeStoreAccountInfo, err error) {
+func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (result DataLakeStoreAccountInformation, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -680,11 +691,10 @@ func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (resu
 
 // GetStorageAccount gets the specified Azure Storage account linked to the given Data Lake Analytics account.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account from which to retrieve Azure storage account
-// details.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the name of the Azure Storage account for which to retrieve the details.
-func (client Client) GetStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result StorageAccountInfo, err error) {
+func (client Client) GetStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result StorageAccountInformation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetStorageAccount")
 		defer func() {
@@ -747,7 +757,7 @@ func (client Client) GetStorageAccountSender(req *http.Request) (*http.Response,
 
 // GetStorageAccountResponder handles the response to the GetStorageAccount request. The method always
 // closes the http.Response Body.
-func (client Client) GetStorageAccountResponder(resp *http.Response) (result StorageAccountInfo, err error) {
+func (client Client) GetStorageAccountResponder(resp *http.Response) (result StorageAccountInformation, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -760,11 +770,11 @@ func (client Client) GetStorageAccountResponder(resp *http.Response) (result Sto
 // GetStorageContainer gets the specified Azure Storage container associated with the given Data Lake Analytics and
 // Azure Storage accounts.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account for which to retrieve blob container.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the name of the Azure storage account from which to retrieve the blob container.
 // containerName - the name of the Azure storage container to retrieve
-func (client Client) GetStorageContainer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result BlobContainer, err error) {
+func (client Client) GetStorageContainer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result StorageContainer, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetStorageContainer")
 		defer func() {
@@ -815,7 +825,7 @@ func (client Client) GetStorageContainerPreparer(ctx context.Context, resourceGr
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/storageAccounts/{storageAccountName}/containers/{containerName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -828,7 +838,7 @@ func (client Client) GetStorageContainerSender(req *http.Request) (*http.Respons
 
 // GetStorageContainerResponder handles the response to the GetStorageContainer request. The method always
 // closes the http.Response Body.
-func (client Client) GetStorageContainerResponder(resp *http.Response) (result BlobContainer, err error) {
+func (client Client) GetStorageContainerResponder(resp *http.Response) (result StorageContainer, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -844,8 +854,6 @@ func (client Client) GetStorageContainerResponder(resp *http.Response) (result B
 // filter - oData filter. Optional.
 // top - the number of items to return. Optional.
 // skip - the number of items to skip over before returning elements. Optional.
-// expand - oData expansion. Expand related resources in line with the retrieved resources, e.g.
-// Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
 // selectParameter - oData Select statement. Limits the properties on each entry to just those requested, e.g.
 // Categories?$select=CategoryName,Description. Optional.
 // orderby - orderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
@@ -853,11 +861,7 @@ func (client Client) GetStorageContainerResponder(resp *http.Response) (result B
 // Optional.
 // count - the Boolean value of true or false to request a count of the matching resources included with the
 // resources in the response, e.g. Categories?$count=true. Optional.
-// search - a free form search. A free-text search expression to match for whether a particular entry should be
-// included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the desired return format. Return the response in particular format without access to
-// request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) List(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultPage, err error) {
+func (client Client) List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeAnalyticsAccountListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
 		defer func() {
@@ -868,8 +872,18 @@ func (client Client) List(ctx context.Context, filter string, top *int32, skip *
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("account.Client", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	req, err := client.ListPreparer(ctx, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "List", nil, "Failure preparing request")
 		return
@@ -896,7 +910,7 @@ func (client Client) List(ctx context.Context, filter string, top *int32, skip *
 }
 
 // ListPreparer prepares the List request.
-func (client Client) ListPreparer(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListPreparer(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -914,9 +928,6 @@ func (client Client) ListPreparer(ctx context.Context, filter string, top *int32
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -925,12 +936,6 @@ func (client Client) ListPreparer(ctx context.Context, filter string, top *int32
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -981,7 +986,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults DataLakeAn
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListComplete(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultIterator, err error) {
+func (client Client) ListComplete(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeAnalyticsAccountListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
 		defer func() {
@@ -992,19 +997,17 @@ func (client Client) ListComplete(ctx context.Context, filter string, top *int32
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	result.page, err = client.List(ctx, filter, top, skip, selectParameter, orderby, count)
 	return
 }
 
 // ListByResourceGroup gets the first page of Data Lake Analytics accounts, if any, within a specific resource group.
 // This includes a link to the next page, if any.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
+// resourceGroupName - the name of the Azure resource group.
 // filter - oData filter. Optional.
 // top - the number of items to return. Optional.
 // skip - the number of items to skip over before returning elements. Optional.
-// expand - oData expansion. Expand related resources in line with the retrieved resources, e.g.
-// Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
 // selectParameter - oData Select statement. Limits the properties on each entry to just those requested, e.g.
 // Categories?$select=CategoryName,Description. Optional.
 // orderby - orderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
@@ -1012,11 +1015,7 @@ func (client Client) ListComplete(ctx context.Context, filter string, top *int32
 // Optional.
 // count - the Boolean value of true or false to request a count of the matching resources included with the
 // resources in the response, e.g. Categories?$count=true. Optional.
-// search - a free form search. A free-text search expression to match for whether a particular entry should be
-// included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the return format. Return the response in particular format without access to request
-// headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultPage, err error) {
+func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeAnalyticsAccountListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListByResourceGroup")
 		defer func() {
@@ -1027,8 +1026,18 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("account.Client", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -1055,7 +1064,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -1074,9 +1083,6 @@ func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGr
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -1085,12 +1091,6 @@ func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGr
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1141,7 +1141,7 @@ func (client Client) listByResourceGroupNextResults(ctx context.Context, lastRes
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultIterator, err error) {
+func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeAnalyticsAccountListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListByResourceGroup")
 		defer func() {
@@ -1152,20 +1152,18 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, filter, top, skip, selectParameter, orderby, count)
 	return
 }
 
 // ListDataLakeStoreAccounts gets the first page of Data Lake Store accounts linked to the specified Data Lake
 // Analytics account. The response includes a link to the next page, if any.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account for which to list Data Lake Store accounts.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // filter - oData filter. Optional.
 // top - the number of items to return. Optional.
 // skip - the number of items to skip over before returning elements. Optional.
-// expand - oData expansion. Expand related resources in line with the retrieved resources, e.g.
-// Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
 // selectParameter - oData Select statement. Limits the properties on each entry to just those requested, e.g.
 // Categories?$select=CategoryName,Description. Optional.
 // orderby - orderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
@@ -1173,23 +1171,29 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 // Optional.
 // count - the Boolean value of true or false to request a count of the matching resources included with the
 // resources in the response, e.g. Categories?$count=true. Optional.
-// search - a free form search. A free-text search expression to match for whether a particular entry should be
-// included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the desired return format. Return the response in particular format without access to
-// request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListDataLakeStoreResultPage, err error) {
+func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeStoreAccountInformationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListDataLakeStoreAccounts")
 		defer func() {
 			sc := -1
-			if result.dlaaldlsr.Response.Response != nil {
-				sc = result.dlaaldlsr.Response.Response.StatusCode
+			if result.dlsailr.Response.Response != nil {
+				sc = result.dlsailr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("account.Client", "ListDataLakeStoreAccounts", err.Error())
+	}
+
 	result.fn = client.listDataLakeStoreAccountsNextResults
-	req, err := client.ListDataLakeStoreAccountsPreparer(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	req, err := client.ListDataLakeStoreAccountsPreparer(ctx, resourceGroupName, accountName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", nil, "Failure preparing request")
 		return
@@ -1197,17 +1201,17 @@ func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGrou
 
 	resp, err := client.ListDataLakeStoreAccountsSender(req)
 	if err != nil {
-		result.dlaaldlsr.Response = autorest.Response{Response: resp}
+		result.dlsailr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure sending request")
 		return
 	}
 
-	result.dlaaldlsr, err = client.ListDataLakeStoreAccountsResponder(resp)
+	result.dlsailr, err = client.ListDataLakeStoreAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure responding to request")
 		return
 	}
-	if result.dlaaldlsr.hasNextLink() && result.dlaaldlsr.IsEmpty() {
+	if result.dlsailr.hasNextLink() && result.dlsailr.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -1216,7 +1220,7 @@ func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGrou
 }
 
 // ListDataLakeStoreAccountsPreparer prepares the ListDataLakeStoreAccounts request.
-func (client Client) ListDataLakeStoreAccountsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListDataLakeStoreAccountsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1236,9 +1240,6 @@ func (client Client) ListDataLakeStoreAccountsPreparer(ctx context.Context, reso
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -1247,12 +1248,6 @@ func (client Client) ListDataLakeStoreAccountsPreparer(ctx context.Context, reso
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1271,7 +1266,7 @@ func (client Client) ListDataLakeStoreAccountsSender(req *http.Request) (*http.R
 
 // ListDataLakeStoreAccountsResponder handles the response to the ListDataLakeStoreAccounts request. The method always
 // closes the http.Response Body.
-func (client Client) ListDataLakeStoreAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
+func (client Client) ListDataLakeStoreAccountsResponder(resp *http.Response) (result DataLakeStoreAccountInformationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1282,8 +1277,8 @@ func (client Client) ListDataLakeStoreAccountsResponder(resp *http.Response) (re
 }
 
 // listDataLakeStoreAccountsNextResults retrieves the next set of results, if any.
-func (client Client) listDataLakeStoreAccountsNextResults(ctx context.Context, lastResults DataLakeAnalyticsAccountListDataLakeStoreResult) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
-	req, err := lastResults.dataLakeAnalyticsAccountListDataLakeStoreResultPreparer(ctx)
+func (client Client) listDataLakeStoreAccountsNextResults(ctx context.Context, lastResults DataLakeStoreAccountInformationListResult) (result DataLakeStoreAccountInformationListResult, err error) {
+	req, err := lastResults.dataLakeStoreAccountInformationListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "listDataLakeStoreAccountsNextResults", nil, "Failure preparing next results request")
 	}
@@ -1303,7 +1298,7 @@ func (client Client) listDataLakeStoreAccountsNextResults(ctx context.Context, l
 }
 
 // ListDataLakeStoreAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListDataLakeStoreAccountsComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListDataLakeStoreResultIterator, err error) {
+func (client Client) ListDataLakeStoreAccountsComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeStoreAccountInformationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListDataLakeStoreAccounts")
 		defer func() {
@@ -1314,25 +1309,24 @@ func (client Client) ListDataLakeStoreAccountsComplete(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListDataLakeStoreAccounts(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	result.page, err = client.ListDataLakeStoreAccounts(ctx, resourceGroupName, accountName, filter, top, skip, selectParameter, orderby, count)
 	return
 }
 
 // ListSasTokens gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and
 // container combination.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account from which an Azure Storage account's SAS token is
-// being requested.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the name of the Azure storage account for which the SAS token is being requested.
 // containerName - the name of the Azure storage container for which the SAS token is being requested.
-func (client Client) ListSasTokens(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResultPage, err error) {
+func (client Client) ListSasTokens(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result SasTokenInformationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListSasTokens")
 		defer func() {
 			sc := -1
-			if result.lstr.Response.Response != nil {
-				sc = result.lstr.Response.Response.StatusCode
+			if result.stilr.Response.Response != nil {
+				sc = result.stilr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1346,17 +1340,17 @@ func (client Client) ListSasTokens(ctx context.Context, resourceGroupName string
 
 	resp, err := client.ListSasTokensSender(req)
 	if err != nil {
-		result.lstr.Response = autorest.Response{Response: resp}
+		result.stilr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure sending request")
 		return
 	}
 
-	result.lstr, err = client.ListSasTokensResponder(resp)
+	result.stilr, err = client.ListSasTokensResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure responding to request")
 		return
 	}
-	if result.lstr.hasNextLink() && result.lstr.IsEmpty() {
+	if result.stilr.hasNextLink() && result.stilr.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -1382,7 +1376,7 @@ func (client Client) ListSasTokensPreparer(ctx context.Context, resourceGroupNam
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}/listSasTokens", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/storageAccounts/{storageAccountName}/containers/{containerName}/listSasTokens", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1395,7 +1389,7 @@ func (client Client) ListSasTokensSender(req *http.Request) (*http.Response, err
 
 // ListSasTokensResponder handles the response to the ListSasTokens request. The method always
 // closes the http.Response Body.
-func (client Client) ListSasTokensResponder(resp *http.Response) (result ListSasTokensResult, err error) {
+func (client Client) ListSasTokensResponder(resp *http.Response) (result SasTokenInformationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1406,8 +1400,8 @@ func (client Client) ListSasTokensResponder(resp *http.Response) (result ListSas
 }
 
 // listSasTokensNextResults retrieves the next set of results, if any.
-func (client Client) listSasTokensNextResults(ctx context.Context, lastResults ListSasTokensResult) (result ListSasTokensResult, err error) {
-	req, err := lastResults.listSasTokensResultPreparer(ctx)
+func (client Client) listSasTokensNextResults(ctx context.Context, lastResults SasTokenInformationListResult) (result SasTokenInformationListResult, err error) {
+	req, err := lastResults.sasTokenInformationListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "listSasTokensNextResults", nil, "Failure preparing next results request")
 	}
@@ -1427,7 +1421,7 @@ func (client Client) listSasTokensNextResults(ctx context.Context, lastResults L
 }
 
 // ListSasTokensComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResultIterator, err error) {
+func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result SasTokenInformationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListSasTokens")
 		defer func() {
@@ -1445,13 +1439,11 @@ func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupNam
 // ListStorageAccounts gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake
 // Analytics account. The response includes a link to the next page, if any.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account for which to list Azure Storage accounts.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // filter - the OData filter. Optional.
 // top - the number of items to return. Optional.
 // skip - the number of items to skip over before returning elements. Optional.
-// expand - oData expansion. Expand related resources in line with the retrieved resources, e.g.
-// Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
 // selectParameter - oData Select statement. Limits the properties on each entry to just those requested, e.g.
 // Categories?$select=CategoryName,Description. Optional.
 // orderby - orderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
@@ -1459,23 +1451,29 @@ func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupNam
 // Optional.
 // count - the Boolean value of true or false to request a count of the matching resources included with the
 // resources in the response, e.g. Categories?$count=true. Optional.
-// search - a free form search. A free-text search expression to match for whether a particular entry should be
-// included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the desired return format. Return the response in particular format without access to
-// request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListStorageAccountsResultPage, err error) {
+func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result StorageAccountInformationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListStorageAccounts")
 		defer func() {
 			sc := -1
-			if result.dlaalsar.Response.Response != nil {
-				sc = result.dlaalsar.Response.Response.StatusCode
+			if result.sailr.Response.Response != nil {
+				sc = result.sailr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("account.Client", "ListStorageAccounts", err.Error())
+	}
+
 	result.fn = client.listStorageAccountsNextResults
-	req, err := client.ListStorageAccountsPreparer(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	req, err := client.ListStorageAccountsPreparer(ctx, resourceGroupName, accountName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", nil, "Failure preparing request")
 		return
@@ -1483,17 +1481,17 @@ func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName 
 
 	resp, err := client.ListStorageAccountsSender(req)
 	if err != nil {
-		result.dlaalsar.Response = autorest.Response{Response: resp}
+		result.sailr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure sending request")
 		return
 	}
 
-	result.dlaalsar, err = client.ListStorageAccountsResponder(resp)
+	result.sailr, err = client.ListStorageAccountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure responding to request")
 		return
 	}
-	if result.dlaalsar.hasNextLink() && result.dlaalsar.IsEmpty() {
+	if result.sailr.hasNextLink() && result.sailr.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -1502,7 +1500,7 @@ func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName 
 }
 
 // ListStorageAccountsPreparer prepares the ListStorageAccounts request.
-func (client Client) ListStorageAccountsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListStorageAccountsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1522,9 +1520,6 @@ func (client Client) ListStorageAccountsPreparer(ctx context.Context, resourceGr
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -1533,12 +1528,6 @@ func (client Client) ListStorageAccountsPreparer(ctx context.Context, resourceGr
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1557,7 +1546,7 @@ func (client Client) ListStorageAccountsSender(req *http.Request) (*http.Respons
 
 // ListStorageAccountsResponder handles the response to the ListStorageAccounts request. The method always
 // closes the http.Response Body.
-func (client Client) ListStorageAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
+func (client Client) ListStorageAccountsResponder(resp *http.Response) (result StorageAccountInformationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1568,8 +1557,8 @@ func (client Client) ListStorageAccountsResponder(resp *http.Response) (result D
 }
 
 // listStorageAccountsNextResults retrieves the next set of results, if any.
-func (client Client) listStorageAccountsNextResults(ctx context.Context, lastResults DataLakeAnalyticsAccountListStorageAccountsResult) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
-	req, err := lastResults.dataLakeAnalyticsAccountListStorageAccountsResultPreparer(ctx)
+func (client Client) listStorageAccountsNextResults(ctx context.Context, lastResults StorageAccountInformationListResult) (result StorageAccountInformationListResult, err error) {
+	req, err := lastResults.storageAccountInformationListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "listStorageAccountsNextResults", nil, "Failure preparing next results request")
 	}
@@ -1589,7 +1578,7 @@ func (client Client) listStorageAccountsNextResults(ctx context.Context, lastRes
 }
 
 // ListStorageAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListStorageAccountsComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListStorageAccountsResultIterator, err error) {
+func (client Client) ListStorageAccountsComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result StorageAccountInformationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListStorageAccounts")
 		defer func() {
@@ -1600,23 +1589,23 @@ func (client Client) ListStorageAccountsComplete(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListStorageAccounts(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+	result.page, err = client.ListStorageAccounts(ctx, resourceGroupName, accountName, filter, top, skip, selectParameter, orderby, count)
 	return
 }
 
 // ListStorageContainers lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics
 // and Azure Storage account combination. The response includes a link to the next page of results, if any.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account for which to list Azure Storage blob containers.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the name of the Azure storage account from which to list blob containers.
-func (client Client) ListStorageContainers(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result ListBlobContainersResultPage, err error) {
+func (client Client) ListStorageContainers(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result StorageContainerListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListStorageContainers")
 		defer func() {
 			sc := -1
-			if result.lbcr.Response.Response != nil {
-				sc = result.lbcr.Response.Response.StatusCode
+			if result.sclr.Response.Response != nil {
+				sc = result.sclr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1630,17 +1619,17 @@ func (client Client) ListStorageContainers(ctx context.Context, resourceGroupNam
 
 	resp, err := client.ListStorageContainersSender(req)
 	if err != nil {
-		result.lbcr.Response = autorest.Response{Response: resp}
+		result.sclr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure sending request")
 		return
 	}
 
-	result.lbcr, err = client.ListStorageContainersResponder(resp)
+	result.sclr, err = client.ListStorageContainersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure responding to request")
 		return
 	}
-	if result.lbcr.hasNextLink() && result.lbcr.IsEmpty() {
+	if result.sclr.hasNextLink() && result.sclr.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -1665,7 +1654,7 @@ func (client Client) ListStorageContainersPreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/storageAccounts/{storageAccountName}/containers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1678,7 +1667,7 @@ func (client Client) ListStorageContainersSender(req *http.Request) (*http.Respo
 
 // ListStorageContainersResponder handles the response to the ListStorageContainers request. The method always
 // closes the http.Response Body.
-func (client Client) ListStorageContainersResponder(resp *http.Response) (result ListBlobContainersResult, err error) {
+func (client Client) ListStorageContainersResponder(resp *http.Response) (result StorageContainerListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1689,8 +1678,8 @@ func (client Client) ListStorageContainersResponder(resp *http.Response) (result
 }
 
 // listStorageContainersNextResults retrieves the next set of results, if any.
-func (client Client) listStorageContainersNextResults(ctx context.Context, lastResults ListBlobContainersResult) (result ListBlobContainersResult, err error) {
-	req, err := lastResults.listBlobContainersResultPreparer(ctx)
+func (client Client) listStorageContainersNextResults(ctx context.Context, lastResults StorageContainerListResult) (result StorageContainerListResult, err error) {
+	req, err := lastResults.storageContainerListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "listStorageContainersNextResults", nil, "Failure preparing next results request")
 	}
@@ -1710,7 +1699,7 @@ func (client Client) listStorageContainersNextResults(ctx context.Context, lastR
 }
 
 // ListStorageContainersComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListStorageContainersComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result ListBlobContainersResultIterator, err error) {
+func (client Client) ListStorageContainersComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result StorageContainerListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListStorageContainers")
 		defer func() {
@@ -1728,10 +1717,10 @@ func (client Client) ListStorageContainersComplete(ctx context.Context, resource
 // Update updates the Data Lake Analytics account object specified by the accountName with the contents of the account
 // object.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// name - the name of the Data Lake Analytics account to update.
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account to update.
 // parameters - parameters supplied to the update Data Lake Analytics account operation.
-func (client Client) Update(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (result UpdateFuture, err error) {
+func (client Client) Update(ctx context.Context, resourceGroupName string, accountName string, parameters *UpdateDataLakeAnalyticsAccountParameters) (result UpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Update")
 		defer func() {
@@ -1742,7 +1731,7 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, name 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, name, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.Client", "Update", nil, "Failure preparing request")
 		return
@@ -1758,9 +1747,9 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, name 
 }
 
 // UpdatePreparer prepares the Update request.
-func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (*http.Request, error) {
+func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, parameters *UpdateDataLakeAnalyticsAccountParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
+		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -1770,15 +1759,16 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	parameters.Type = nil
-	parameters.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1802,7 +1792,7 @@ func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err e
 func (client Client) UpdateResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1812,11 +1802,12 @@ func (client Client) UpdateResponder(resp *http.Response) (result DataLakeAnalyt
 // UpdateStorageAccount updates the Data Lake Analytics account to replace Azure Storage blob account details, such as
 // the access key and/or suffix.
 // Parameters:
-// resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
-// accountName - the name of the Data Lake Analytics account to modify storage accounts in
+// resourceGroupName - the name of the Azure resource group.
+// accountName - the name of the Data Lake Analytics account.
 // storageAccountName - the Azure Storage account to modify
-// parameters - the parameters containing the access key and suffix to update the storage account with.
-func (client Client) UpdateStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
+// parameters - the parameters containing the access key and suffix to update the storage account with, if any.
+// Passing nothing results in no change.
+func (client Client) UpdateStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters *UpdateStorageAccountParameters) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.UpdateStorageAccount")
 		defer func() {
@@ -1850,7 +1841,7 @@ func (client Client) UpdateStorageAccount(ctx context.Context, resourceGroupName
 }
 
 // UpdateStorageAccountPreparer prepares the UpdateStorageAccount request.
-func (client Client) UpdateStorageAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Request, error) {
+func (client Client) UpdateStorageAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters *UpdateStorageAccountParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":        autorest.Encode("path", accountName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -1868,8 +1859,11 @@ func (client Client) UpdateStorageAccountPreparer(ctx context.Context, resourceG
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

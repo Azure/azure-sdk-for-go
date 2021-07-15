@@ -71,6 +71,23 @@ func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountSt
 	return []DataLakeAnalyticsAccountStatus{Canceled, Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending, Undeleting}
 }
 
+// DebugDataAccessLevel enumerates the values for debug data access level.
+type DebugDataAccessLevel string
+
+const (
+	// All ...
+	All DebugDataAccessLevel = "All"
+	// Customer ...
+	Customer DebugDataAccessLevel = "Customer"
+	// None ...
+	None DebugDataAccessLevel = "None"
+)
+
+// PossibleDebugDataAccessLevelValues returns an array of possible values for the DebugDataAccessLevel const type.
+func PossibleDebugDataAccessLevelValues() []DebugDataAccessLevel {
+	return []DebugDataAccessLevel{All, Customer, None}
+}
+
 // FirewallAllowAzureIpsState enumerates the values for firewall allow azure ips state.
 type FirewallAllowAzureIpsState string
 
@@ -99,6 +116,23 @@ const (
 // PossibleFirewallStateValues returns an array of possible values for the FirewallState const type.
 func PossibleFirewallStateValues() []FirewallState {
 	return []FirewallState{FirewallStateDisabled, FirewallStateEnabled}
+}
+
+// NestedResourceProvisioningState enumerates the values for nested resource provisioning state.
+type NestedResourceProvisioningState string
+
+const (
+	// NestedResourceProvisioningStateCanceled ...
+	NestedResourceProvisioningStateCanceled NestedResourceProvisioningState = "Canceled"
+	// NestedResourceProvisioningStateFailed ...
+	NestedResourceProvisioningStateFailed NestedResourceProvisioningState = "Failed"
+	// NestedResourceProvisioningStateSucceeded ...
+	NestedResourceProvisioningStateSucceeded NestedResourceProvisioningState = "Succeeded"
+)
+
+// PossibleNestedResourceProvisioningStateValues returns an array of possible values for the NestedResourceProvisioningState const type.
+func PossibleNestedResourceProvisioningStateValues() []NestedResourceProvisioningState {
+	return []NestedResourceProvisioningState{NestedResourceProvisioningStateCanceled, NestedResourceProvisioningStateFailed, NestedResourceProvisioningStateSucceeded}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -166,4 +200,21 @@ const (
 // PossibleTierTypeValues returns an array of possible values for the TierType const type.
 func PossibleTierTypeValues() []TierType {
 	return []TierType{Commitment100000AUHours, Commitment10000AUHours, Commitment1000AUHours, Commitment100AUHours, Commitment500000AUHours, Commitment50000AUHours, Commitment5000AUHours, Commitment500AUHours, Consumption}
+}
+
+// VirtualNetworkRuleState enumerates the values for virtual network rule state.
+type VirtualNetworkRuleState string
+
+const (
+	// VirtualNetworkRuleStateActive ...
+	VirtualNetworkRuleStateActive VirtualNetworkRuleState = "Active"
+	// VirtualNetworkRuleStateFailed ...
+	VirtualNetworkRuleStateFailed VirtualNetworkRuleState = "Failed"
+	// VirtualNetworkRuleStateNetworkSourceDeleted ...
+	VirtualNetworkRuleStateNetworkSourceDeleted VirtualNetworkRuleState = "NetworkSourceDeleted"
+)
+
+// PossibleVirtualNetworkRuleStateValues returns an array of possible values for the VirtualNetworkRuleState const type.
+func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
+	return []VirtualNetworkRuleState{VirtualNetworkRuleStateActive, VirtualNetworkRuleStateFailed, VirtualNetworkRuleStateNetworkSourceDeleted}
 }

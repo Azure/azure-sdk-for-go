@@ -3332,7 +3332,7 @@ type ApplicationGatewayRewriteRuleCondition struct {
 	Variable *string `json:"variable,omitempty"`
 	// Pattern - The pattern, either fixed string or regular expression, that evaluates the truthfulness of the condition.
 	Pattern *string `json:"pattern,omitempty"`
-	// IgnoreCase - Setting this paramter to truth value with force the pattern to do a case in-sensitive comparison.
+	// IgnoreCase - Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
 	IgnoreCase *bool `json:"ignoreCase,omitempty"`
 	// Negate - Setting this value as truth will force to check the negation of the condition given by the user.
 	Negate *bool `json:"negate,omitempty"`
@@ -14218,7 +14218,7 @@ type ExpressRouteLinkMacSecConfig struct {
 	CknSecretIdentifier *string `json:"cknSecretIdentifier,omitempty"`
 	// CakSecretIdentifier - Keyvault Secret Identifier URL containing Mac security CAK key.
 	CakSecretIdentifier *string `json:"cakSecretIdentifier,omitempty"`
-	// Cipher - Mac security cipher. Possible values include: 'GcmAes128', 'GcmAes256'
+	// Cipher - Mac security cipher. Possible values include: 'GcmAes256', 'GcmAes128'
 	Cipher ExpressRouteLinkMacSecCipher `json:"cipher,omitempty"`
 }
 

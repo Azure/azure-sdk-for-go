@@ -1342,6 +1342,21 @@ func PossibleInboundSecurityRulesProtocolValues() []InboundSecurityRulesProtocol
 	return []InboundSecurityRulesProtocol{InboundSecurityRulesProtocolTCP, InboundSecurityRulesProtocolUDP}
 }
 
+// InterfaceNicType enumerates the values for interface nic type.
+type InterfaceNicType string
+
+const (
+	// InterfaceNicTypeElastic ...
+	InterfaceNicTypeElastic InterfaceNicType = "Elastic"
+	// InterfaceNicTypeStandard ...
+	InterfaceNicTypeStandard InterfaceNicType = "Standard"
+)
+
+// PossibleInterfaceNicTypeValues returns an array of possible values for the InterfaceNicType const type.
+func PossibleInterfaceNicTypeValues() []InterfaceNicType {
+	return []InterfaceNicType{InterfaceNicTypeElastic, InterfaceNicTypeStandard}
+}
+
 // IPAllocationMethod enumerates the values for ip allocation method.
 type IPAllocationMethod string
 
@@ -1903,6 +1918,27 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Deleting, Failed, Succeeded, Updating}
 }
 
+// PublicIPAddressMigrationPhase enumerates the values for public ip address migration phase.
+type PublicIPAddressMigrationPhase string
+
+const (
+	// PublicIPAddressMigrationPhaseAbort ...
+	PublicIPAddressMigrationPhaseAbort PublicIPAddressMigrationPhase = "Abort"
+	// PublicIPAddressMigrationPhaseCommit ...
+	PublicIPAddressMigrationPhaseCommit PublicIPAddressMigrationPhase = "Commit"
+	// PublicIPAddressMigrationPhaseCommitted ...
+	PublicIPAddressMigrationPhaseCommitted PublicIPAddressMigrationPhase = "Committed"
+	// PublicIPAddressMigrationPhaseNone ...
+	PublicIPAddressMigrationPhaseNone PublicIPAddressMigrationPhase = "None"
+	// PublicIPAddressMigrationPhasePrepare ...
+	PublicIPAddressMigrationPhasePrepare PublicIPAddressMigrationPhase = "Prepare"
+)
+
+// PossiblePublicIPAddressMigrationPhaseValues returns an array of possible values for the PublicIPAddressMigrationPhase const type.
+func PossiblePublicIPAddressMigrationPhaseValues() []PublicIPAddressMigrationPhase {
+	return []PublicIPAddressMigrationPhase{PublicIPAddressMigrationPhaseAbort, PublicIPAddressMigrationPhaseCommit, PublicIPAddressMigrationPhaseCommitted, PublicIPAddressMigrationPhaseNone, PublicIPAddressMigrationPhasePrepare}
+}
+
 // PublicIPAddressSkuName enumerates the values for public ip address sku name.
 type PublicIPAddressSkuName string
 
@@ -2426,6 +2462,38 @@ const (
 // PossibleVirtualNetworkPeeringStateValues returns an array of possible values for the VirtualNetworkPeeringState const type.
 func PossibleVirtualNetworkPeeringStateValues() []VirtualNetworkPeeringState {
 	return []VirtualNetworkPeeringState{VirtualNetworkPeeringStateConnected, VirtualNetworkPeeringStateDisconnected, VirtualNetworkPeeringStateInitiated}
+}
+
+// VirtualNetworkPrivateEndpointNetworkPolicies enumerates the values for virtual network private endpoint
+// network policies.
+type VirtualNetworkPrivateEndpointNetworkPolicies string
+
+const (
+	// VirtualNetworkPrivateEndpointNetworkPoliciesDisabled ...
+	VirtualNetworkPrivateEndpointNetworkPoliciesDisabled VirtualNetworkPrivateEndpointNetworkPolicies = "Disabled"
+	// VirtualNetworkPrivateEndpointNetworkPoliciesEnabled ...
+	VirtualNetworkPrivateEndpointNetworkPoliciesEnabled VirtualNetworkPrivateEndpointNetworkPolicies = "Enabled"
+)
+
+// PossibleVirtualNetworkPrivateEndpointNetworkPoliciesValues returns an array of possible values for the VirtualNetworkPrivateEndpointNetworkPolicies const type.
+func PossibleVirtualNetworkPrivateEndpointNetworkPoliciesValues() []VirtualNetworkPrivateEndpointNetworkPolicies {
+	return []VirtualNetworkPrivateEndpointNetworkPolicies{VirtualNetworkPrivateEndpointNetworkPoliciesDisabled, VirtualNetworkPrivateEndpointNetworkPoliciesEnabled}
+}
+
+// VirtualNetworkPrivateLinkServiceNetworkPolicies enumerates the values for virtual network private link
+// service network policies.
+type VirtualNetworkPrivateLinkServiceNetworkPolicies string
+
+const (
+	// VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled ...
+	VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled VirtualNetworkPrivateLinkServiceNetworkPolicies = "Disabled"
+	// VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled ...
+	VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled VirtualNetworkPrivateLinkServiceNetworkPolicies = "Enabled"
+)
+
+// PossibleVirtualNetworkPrivateLinkServiceNetworkPoliciesValues returns an array of possible values for the VirtualNetworkPrivateLinkServiceNetworkPolicies const type.
+func PossibleVirtualNetworkPrivateLinkServiceNetworkPoliciesValues() []VirtualNetworkPrivateLinkServiceNetworkPolicies {
+	return []VirtualNetworkPrivateLinkServiceNetworkPolicies{VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled, VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled}
 }
 
 // VirtualWanSecurityProviderType enumerates the values for virtual wan security provider type.

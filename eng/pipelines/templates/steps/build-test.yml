@@ -71,7 +71,7 @@ steps:
       Get-Content ./coverage.json | gocov-xml > ./coverage.xml
       Get-Content ./coverage.json | gocov-html > ./coverage.html
       # use internal tool to fail if coverage is too low
-      ../../../tools/internal/coverage/main.go --coverage-goal={{parameters.CoverageGoal}} --package-path=.
+      go run ../../../tools/internal/coverage/main.go --coverage-goal={{parameters.CoverageGoal}} --package-path=.
     displayName: 'Generate Coverage XML'
     workingDirectory: '${{parameters.GoWorkspace}}sdk'
 

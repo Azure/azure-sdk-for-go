@@ -40,6 +40,8 @@ func main() {
 	fmt.Printf("Checking coverage for package located at %v\n", rootPath)
 	fmt.Printf("Failing if the coverage is below %.2f\n", *coverageGoal)
 
+	// Need to add a step to find all coverage files
+
 	xmlFilePath := filepath.Join(rootPath, *packagePath, coverageXmlFile)
 	xmlFile, err := os.Open(xmlFilePath)
 	check(err)

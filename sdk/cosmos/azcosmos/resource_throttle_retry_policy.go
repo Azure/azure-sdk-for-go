@@ -35,7 +35,7 @@ func (p *cosmosRetryPolicyThrottle) Do(req *azcore.Request) (*azcore.Response, e
 
 	var resp *azcore.Response
 	var err error
-	var cummulativeWaitTime time.Duration
+	var cumulativeWaitTime time.Duration
 	for attempts := 0; attempts < p.MaxRetryCount; attempts++ {
 		// make the original request
 		resp, err = req.Next()
@@ -46,9 +46,9 @@ func (p *cosmosRetryPolicyThrottle) Do(req *azcore.Request) (*azcore.Response, e
 
 		retryAfter := resp.Header.Get(cosmosHeaderRetryAfter)
 		retryAfterDuration := parseRetryAfter(retryAfter)
-		cummulativeWaitTime += retryAfterDuration
+		cumulativeWaitTime += retryAfterDuration
 
-		if retryAfterDuration > p.MaxWaitTime || cummulativeWaitTime > p.MaxWaitTime {
+		if retryAfterDuration > p.MaxWaitTime || cumulativeWaitTime > p.MaxWaitTime {
 			return resp, err
 		}
 	}

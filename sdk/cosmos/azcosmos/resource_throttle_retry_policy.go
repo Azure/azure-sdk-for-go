@@ -61,10 +61,10 @@ func parseRetryAfter(retryAfter string) time.Duration {
 		return 0
 	}
 
-	retryAfterInMilliseconds, err := time.ParseDuration(retryAfter + "ms")
+	retryAfterDuration, err := time.ParseDuration(retryAfter + "ms")
 	if err != nil {
 		return 0
 	}
 
-	return retryAfterInMilliseconds
+	return retryAfterDuration
 }

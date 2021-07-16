@@ -165,3 +165,4 @@ func (s *tableClientLiveTests) TestAddAnnotatedEntity() {
 
 	assert.Equal(count, 1)
 }
+

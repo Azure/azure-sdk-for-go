@@ -293,7 +293,6 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 			assert.Equal(model.DateTime, (*entitiesToCreate)[idx].DateTime)
 			assert.Equal(model.Byte, (*entitiesToCreate)[idx].Byte)
 		}
-
 	}
 }
 
@@ -331,6 +330,7 @@ func (s *tableClientLiveTests) init(createTable bool) (*TableClient, func()) {
 	client := context.client.NewTableClient(tableName)
 	if createTable {
 		_, err := client.Create(ctx)
+		// fmt.Println("CREATE ERROR: ", err.Error())
 		if err != nil {
 			var svcErr *runtime.ResponseError
 			errors.As(err, &svcErr)

@@ -82,7 +82,7 @@ func (o *CosmosClientOptions) enrichTelemetryOptions() *azcore.TelemetryOptions 
 // This includes throttling and failover policies.
 func (o *CosmosClientOptions) getSDKInternalPolicies() []azcore.Policy {
 	return []azcore.Policy{
-		NewCosmosRetryPolicyThrottle(o),
+		newResourceThrottleRetryPolicy(o),
 		// TODO: Add more policies here.
 	}
 }

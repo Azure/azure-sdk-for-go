@@ -13,21 +13,21 @@ import (
 const defaultMaxWaitTime time.Duration = 60 * time.Second
 const defaultRetryCount int = 9
 
-// cosmosRetryPolicyThrottle retries on HTTP 429.
-type cosmosRetryPolicyThrottle struct {
+// resourceThrottleRetryPolicy retries on HTTP 429.
+type resourceThrottleRetryPolicy struct {
 	MaxWaitTime   time.Duration
 	MaxRetryCount int
 }
 
-func NewCosmosRetryPolicyThrottle(o *CosmosClientOptions) *cosmosRetryPolicyThrottle {
+func newResourceThrottleRetryPolicy(o *CosmosClientOptions) *resourceThrottleRetryPolicy {
 	if o.RateLimitedRetry == nil {
-		return &cosmosRetryPolicyThrottle{MaxWaitTime: defaultMaxWaitTime, MaxRetryCount: defaultRetryCount}
+		return &resourceThrottleRetryPolicy{MaxWaitTime: defaultMaxWaitTime, MaxRetryCount: defaultRetryCount}
 	}
 
-	return &cosmosRetryPolicyThrottle{MaxWaitTime: o.RateLimitedRetry.MaxRetryWaitTime, MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
+	return &resourceThrottleRetryPolicy{MaxWaitTime: o.RateLimitedRetry.MaxRetryWaitTime, MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
 }
 
-func (p *cosmosRetryPolicyThrottle) Do(req *azcore.Request) (*azcore.Response, error) {
+func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	// Policy disabled
 	if p.MaxRetryCount == 0 {
 		return req.Next()

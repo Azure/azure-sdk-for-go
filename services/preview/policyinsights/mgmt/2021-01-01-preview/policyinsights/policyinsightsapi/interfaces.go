@@ -8,7 +8,8 @@ package policyinsightsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights"
+	"github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2021-01-01-preview/policyinsights"
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
@@ -135,3 +136,32 @@ type PolicyMetadataClientAPI interface {
 }
 
 var _ PolicyMetadataClientAPI = (*policyinsights.PolicyMetadataClient)(nil)
+
+// PolicyRestrictionsClientAPI contains the set of methods on the PolicyRestrictionsClient type.
+type PolicyRestrictionsClientAPI interface {
+	CheckAtResourceGroupScope(ctx context.Context, subscriptionID string, resourceGroupName string, parameters policyinsights.CheckRestrictionsRequest) (result policyinsights.CheckRestrictionsResult, err error)
+	CheckAtSubscriptionScope(ctx context.Context, subscriptionID string, parameters policyinsights.CheckRestrictionsRequest) (result policyinsights.CheckRestrictionsResult, err error)
+}
+
+var _ PolicyRestrictionsClientAPI = (*policyinsights.PolicyRestrictionsClient)(nil)
+
+// AttestationsClientAPI contains the set of methods on the AttestationsClient type.
+type AttestationsClientAPI interface {
+	CreateOrUpdateAtResource(ctx context.Context, resourceID string, attestationName string, parameters policyinsights.Attestation) (result policyinsights.AttestationsCreateOrUpdateAtResourceFuture, err error)
+	CreateOrUpdateAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, attestationName string, parameters policyinsights.Attestation) (result policyinsights.AttestationsCreateOrUpdateAtResourceGroupFuture, err error)
+	CreateOrUpdateAtSubscription(ctx context.Context, subscriptionID string, attestationName string, parameters policyinsights.Attestation) (result policyinsights.AttestationsCreateOrUpdateAtSubscriptionFuture, err error)
+	DeleteAtResource(ctx context.Context, resourceID string, attestationName string) (result autorest.Response, err error)
+	DeleteAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, attestationName string) (result autorest.Response, err error)
+	DeleteAtSubscription(ctx context.Context, subscriptionID string, attestationName string) (result autorest.Response, err error)
+	GetAtResource(ctx context.Context, resourceID string, attestationName string) (result policyinsights.Attestation, err error)
+	GetAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, attestationName string) (result policyinsights.Attestation, err error)
+	GetAtSubscription(ctx context.Context, subscriptionID string, attestationName string) (result policyinsights.Attestation, err error)
+	ListForResource(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.AttestationListResultPage, err error)
+	ListForResourceComplete(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.AttestationListResultIterator, err error)
+	ListForResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result policyinsights.AttestationListResultPage, err error)
+	ListForResourceGroupComplete(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result policyinsights.AttestationListResultIterator, err error)
+	ListForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.AttestationListResultPage, err error)
+	ListForSubscriptionComplete(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.AttestationListResultIterator, err error)
+}
+
+var _ AttestationsClientAPI = (*policyinsights.AttestationsClient)(nil)

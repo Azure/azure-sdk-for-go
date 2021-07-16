@@ -1005,18 +1005,6 @@ func (peqr PolicyEventsQueryResults) hasNextLink() bool {
 	return peqr.OdataNextLink != nil && len(*peqr.OdataNextLink) != 0
 }
 
-// policyEventsQueryResultsPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (peqr PolicyEventsQueryResults) policyEventsQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
-	if !peqr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(peqr.OdataNextLink)))
-}
-
 // PolicyEventsQueryResultsPage contains a page of PolicyEvent values.
 type PolicyEventsQueryResultsPage struct {
 	fn   func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)
@@ -1970,18 +1958,6 @@ func (psqr PolicyStatesQueryResults) IsEmpty() bool {
 // hasNextLink returns true if the NextLink is not empty.
 func (psqr PolicyStatesQueryResults) hasNextLink() bool {
 	return psqr.OdataNextLink != nil && len(*psqr.OdataNextLink) != 0
-}
-
-// policyStatesQueryResultsPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (psqr PolicyStatesQueryResults) policyStatesQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
-	if !psqr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(psqr.OdataNextLink)))
 }
 
 // PolicyStatesQueryResultsPage contains a page of PolicyState values.

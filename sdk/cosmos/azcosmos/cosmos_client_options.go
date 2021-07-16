@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -35,14 +36,23 @@ type CosmosClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// LimitToEndpoint limits the operations to the provided endpoint on the CosmosClient. See https://docs.microsoft.com/azure/cosmos-db/troubleshoot-sdk-availability
 	LimitToEndpoint bool
-	// MaxRetryAttemptsOnRateLimitedRequests specifies the number of retries to perform on rate limited requests. By default, 9.
-	MaxRetryAttemptsOnRateLimitedRequests int
+	// RateLimitedRetry defines the retry configuration for rate limited requests.
+	// By default, the SDK will do 9 retries.
+	RateLimitedRetry *CosmosClientOptionsRateLimitedRetry
+}
+
+type CosmosClientOptionsRateLimitedRetry struct {
+	// MaxRetryAttempts specifies the number of retries to perform on rate limited requests.
+	MaxRetryAttempts int
+	// MaxRetryWaitTime specifies the maximum time to wait for retries.
+	MaxRetryWaitTime time.Duration
 }
 
 func (o *CosmosClientOptions) getClientConnection() *cosmosClientConnection {
 	if o == nil {
 		o = &CosmosClientOptions{}
 	}
+
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(o.enrichTelemetryOptions()),
 	}
@@ -70,5 +80,6 @@ func (o *CosmosClientOptions) enrichTelemetryOptions() *azcore.TelemetryOptions 
 func (o *CosmosClientOptions) getSDKInternalPolicies() []azcore.Policy {
 	return []azcore.Policy{
 		NewCosmosRetryPolicyThrottle(o),
+		// TODO: Add more policies here.
 	}
 }

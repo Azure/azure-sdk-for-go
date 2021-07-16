@@ -29,7 +29,7 @@ func createEdmEntity(count int, pk string) edmEntity {
 		},
 		BigInt:   1125899906842624,
 		Guid:     "abcd-efgh-ijkl",
-		Time:     EdmDateTime{time.Date(2021, 1, 2, 3, 4, 5, 6, time.UTC)},
+		Time:     EdmDateTime(time.Date(2021, 1, 2, 3, 4, 5, 6, time.UTC)),
 		SmallInt: 10,
 		Bool:     true,
 		Bytes:    []byte("somebytes"),

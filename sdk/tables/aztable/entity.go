@@ -34,12 +34,10 @@ func (e EdmGuid) MarshalJSON() ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
-type EdmDateTime struct {
-	time.Time
-}
+type EdmDateTime time.Time
 
 func (e EdmDateTime) MarshalJSON() ([]byte, error) {
-	u := e.UTC()
+	u := time.Time(e).UTC()
 	formatted := fmt.Sprintf("\"%d-%d-%dT%d:%d:%d.%dZ\"", u.Year(), u.Month(), u.Day(), u.Hour(), u.Minute(), u.Second(), u.Nanosecond())
 	buffer := bytes.NewBufferString(formatted)
 	return buffer.Bytes(), nil
@@ -83,6 +81,6 @@ func (e *EdmDateTime) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	*e = EdmDateTime{time.Date(year, time.Month(month), day, hours, minutes, seconds, nano, time.UTC)}
+	*e = EdmDateTime(time.Date(year, time.Month(month), day, hours, minutes, seconds, nano, time.UTC))
 	return nil
 }

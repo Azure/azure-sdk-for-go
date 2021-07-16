@@ -10,8 +10,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const defaultMaxWaitTimeInSeconds time.Duration = 60 * time.Second
-const defaultRetryInSeconds int = 5
+const defaultMaxWaitTime time.Duration = 60 * time.Second
+const defaultRetryCount int = 9
 
 // cosmosRetryPolicyThrottle retries on HTTP 429.
 type cosmosRetryPolicyThrottle struct {
@@ -21,7 +21,7 @@ type cosmosRetryPolicyThrottle struct {
 
 func NewCosmosRetryPolicyThrottle(o *CosmosClientOptions) *cosmosRetryPolicyThrottle {
 	if o.RateLimitedRetry == nil {
-		return &cosmosRetryPolicyThrottle{MaxWaitTime: defaultMaxWaitTimeInSeconds, MaxRetryCount: defaultRetryInSeconds}
+		return &cosmosRetryPolicyThrottle{MaxWaitTime: defaultMaxWaitTime, MaxRetryCount: defaultRetryCount}
 	}
 
 	return &cosmosRetryPolicyThrottle{MaxWaitTime: o.RateLimitedRetry.MaxRetryWaitTime, MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}

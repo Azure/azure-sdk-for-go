@@ -103,21 +103,34 @@ A simple test for `aztables` is shown below:
 ```golang
 
 import (
+	"os"
+
 	"github.com/testify/assert"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
 )
 
 const (
-	accountName := testframework.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME") // This should be the same as the environment variable
-	accountKey := testframework.GetEnv("TABLES_PRIMARY_ACCOUNT_KEY")
+	accountName := os.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountKey := os.GetEnv("TABLES_PRIMARY_ACCOUNT_KEY")
 	mode := testframework.Recording
 )
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
-	client := NewTableClient()
+	client := NewTableClient(accountName, accountKey, "tableName")
+	resp, err := client.Create()
+	assert.Nil(t, err)
+	assert.Equal(t, respo.TableResponse.TableName, "tableName")
 }
 ```
+
+The first part of the test above is for getting the secrets needed for authentication from your environment, the current practice is to store your test secrets in environment variables.
+
+The rest of the snippet shows a test that creates a single table and asserts that the response from the service has the same table name as the supplied parameter. Every test in Go has to have exactly one parameter, the `t *testing.T` object, and it must begin with `Test`. After making a service call or creating an object you can make assertions on that object by using the external `testify/assert` library. In the example above, we assert that the error returned is `nil`, meaning the call was successful and then we assert that the response object has the same table name as supplied.
+
+You can also use the `testify/require` library instead of `testify/assert` if you want your test to fail as soon as you have an unexpected result.
+
+Check out the docs for more information about the methods available in the [`assert`](https://pkg.go.dev/github.com/stretchr/testify/assert) and [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) libraries.
 
 ## Create Pipelines
 

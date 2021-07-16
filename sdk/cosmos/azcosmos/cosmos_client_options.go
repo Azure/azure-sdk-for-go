@@ -60,6 +60,9 @@ func (o *CosmosClientOptions) getClientConnection() *cosmosClientConnection {
 	policies = append(policies, azcore.NewRetryPolicy(&o.Retry))
 	policies = append(policies, o.PerRetryPolicies...)
 	policies = append(policies, o.getSDKInternalPolicies()...)
+	// Unsure if authentication should be done the same way as other sdks
+	// https://github.com/Azure/azure-sdk-for-go/blob/658d8c542a562cbd028d6dbb6217d71c21e234f8/sdk/synapse/azartifacts/zz_generated_connection.go#L64
+	// policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}))
 	policies = append(policies, azcore.NewLogPolicy(&o.Logging))
 	return &cosmosClientConnection{Pipeline: azcore.NewPipeline(o.HTTPClient, policies...)}
 }

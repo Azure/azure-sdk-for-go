@@ -1,5 +1,5 @@
 {
-  "commit": "5d89c9807d3e84a5890b381a68a308198f9ef141",
+  "commit": "a2d4dc4b1296624eefd4b5c235d56af46f7c39d2",
   "readme": "/_/azure-rest-api-specs/specification/hybridnetwork/resource-manager/readme.md",
   "tag": "package-2020-01-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

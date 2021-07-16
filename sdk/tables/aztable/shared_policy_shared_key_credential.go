@@ -55,8 +55,8 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
 func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
-	_, err := h.Write([]byte(message))
-	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
+	h.Write([]byte(message))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil)), nil
 }
 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {

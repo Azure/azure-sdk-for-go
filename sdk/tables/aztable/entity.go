@@ -20,12 +20,9 @@ func (e EdmInt64) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EdmInt64) UnmarshalJSON(b []byte) error {
-	fmt.Println(e)
 	stringValue := string(b)
 	i, err := strconv.ParseInt(stringValue[1:len(stringValue)-1], 10, 64) // Have to peel off the quotations
 	*e = EdmInt64(i)
-	fmt.Println("e: ", e)
-	fmt.Println(e)
 	return err
 }
 
@@ -54,45 +51,34 @@ func (e *EdmDateTime) UnmarshalJSON(b []byte) error {
 	date := splitValue[0]
 	d := strings.Split(date, "-")
 	year, err := strconv.Atoi(d[0][1:len(d[0])])
-	// fmt.Println("Year: ", year)
 	if err != nil {
 		return err
 	}
 	month, err := strconv.Atoi(d[1])
-	// fmt.Println("Month: ", month)
 	if err != nil {
 		return err
 	}
 	day, err := strconv.Atoi(d[2])
-	// fmt.Println("Day: ", day)
 	if err != nil {
 		return err
 	}
 
 	timeVal := splitValue[1]
-	// fmt.Println("timeVal: ", timeVal)
 	t := strings.Split(timeVal, ":")
-	// fmt.Println("t: ", t)
 	hours, err := strconv.Atoi(t[0])
-	// fmt.Println("Hours: ", hours)
 	if err != nil {
 		return err
 	}
 	minutes, err := strconv.Atoi(t[1])
-	// fmt.Println("Minutes: ", minutes)
 	if err != nil {
 		return err
 	}
 	s := strings.Split(string(t[2]), ".")
-	// fmt.Println("s: ", s)
 	seconds, err := strconv.Atoi(s[0])
-	// fmt.Println("Seconds: ", seconds)
 	if err != nil {
 		return err
 	}
-	// fmt.Println(s[1][0 : len(s[1])-2])
 	nano, err := strconv.Atoi(s[1][0 : len(s[1])-2]) // Peel off the 'Z' for UTC
-	// fmt.Println("Nano: ", nano)
 	if err != nil {
 		return err
 	}

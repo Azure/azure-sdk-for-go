@@ -13,9 +13,12 @@ import (
 
 type edmEntity struct {
 	Entity
-	BigInt EdmInt64    `json:"BigInt"`
-	Guid   EdmGuid     `json:"Guid"`
-	Time   EdmDateTime `json:"Time"`
+	BigInt   EdmInt64    `json:"BigInt"`
+	Guid     EdmGuid     `json:"Guid"`
+	Time     EdmDateTime `json:"Time"`
+	SmallInt int         `json:"SmallInt"`
+	Bool     bool        `json:"Bool"`
+	Bytes    []byte      `json:"Bytes"`
 }
 
 func createEdmEntity(count int, pk string) edmEntity {
@@ -24,9 +27,12 @@ func createEdmEntity(count int, pk string) edmEntity {
 			PartitionKey: pk,
 			RowKey:       fmt.Sprint(count),
 		},
-		BigInt: 1125899906842624,
-		Guid:   "abcd-efgh-ijkl",
-		Time:   EdmDateTime{time.Date(2021, 1, 2, 3, 4, 5, 6, time.UTC)},
+		BigInt:   1125899906842624,
+		Guid:     "abcd-efgh-ijkl",
+		Time:     EdmDateTime{time.Date(2021, 1, 2, 3, 4, 5, 6, time.UTC)},
+		SmallInt: 10,
+		Bool:     true,
+		Bytes:    []byte("somebytes"),
 	}
 }
 
@@ -52,12 +58,12 @@ func (s *tableClientLiveTests) TestEdmMarshalling() {
 	err = json.Unmarshal(resp.Value, &receivedEntity)
 	require.Nil(err)
 
-	fmt.Println(receivedEntity)
-
 	require.Equal(receivedEntity.BigInt, EdmEntity.BigInt)
 	require.Equal(receivedEntity.Guid, EdmEntity.Guid)
 	require.Equal(receivedEntity.Time, EdmEntity.Time)
 	require.Equal(receivedEntity.PartitionKey, EdmEntity.PartitionKey)
 	require.Equal(receivedEntity.RowKey, EdmEntity.RowKey)
-
+	require.Equal(receivedEntity.SmallInt, EdmEntity.SmallInt)
+	require.Equal(receivedEntity.Bool, EdmEntity.Bool)
+	require.Equal(receivedEntity.Bytes, EdmEntity.Bytes)
 }

@@ -25,7 +25,7 @@
 /sdk/storage/            @rickwinter @jhendrixMSFT
 
 # PRLabel: %Cosmos
-/sdk/cosmos/            @ealsur @ausfeldt 
+/sdk/cosmos/             @ealsur @ausfeldt 
 
 # PRLabel: %EngSys
 /sdk/template/           @benbp @Azure/azure-sdk-eng

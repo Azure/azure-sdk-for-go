@@ -19,6 +19,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -434,7 +435,7 @@ var client = http.Client{}
 
 type TestProxyPolicy struct{}
 
-func (t *TestProxyPolicy) Do(req *http.Request) (*http.Response, error) {
+func (t TestProxyPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	if recordMode == "record" || recordMode == "playback" {
 		originalUrl := req.URL
 		req.Header.Set("x-recording-upstream-base-uri", originalUrl.String())
@@ -445,6 +446,9 @@ func (t *TestProxyPolicy) Do(req *http.Request) (*http.Response, error) {
 }
 
 func StartRecording(t *testing.T) error {
+	if recordMode == "" {
+		return errors.New("AZURE_RECORD_MODE was not set")
+	}
 	recordingId := getTestId(t)
 	fmt.Println(recordingId)
 	req, err := http.NewRequest("POST", startURL, nil)

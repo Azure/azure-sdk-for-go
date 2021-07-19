@@ -14,7 +14,7 @@ import (
 type TableClient struct {
 	client  *tableClient
 	service *TableServiceClient
-	cred    SharedKeyCredential
+	cred    azcore.Credential
 	Name    string
 }
 

@@ -16,6 +16,8 @@ type TableClientOptions struct {
 	Telemetry azcore.TelemetryOptions
 	// PerCallOptions are options to run on every request
 	PerCallOptions []azcore.Policy
+	// Scopes are the authentication scopes for AAD Authentication
+	Scopes []string
 }
 
 func (o *TableClientOptions) getConnectionOptions() *connectionOptions {

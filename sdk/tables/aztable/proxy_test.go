@@ -10,18 +10,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var AADAuthenticationScope = "https://storage.azure.com/.default"
+
 func Test_TestProxy(t *testing.T) {
 	require := require.New(t)
 	err := recording.StartRecording(t)
+	require.Nil(err)
 	defer recording.StopRecording(t)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	cred, err := azidentity.NewDefaultAzureCredential()
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.Nil(err)
 	testProxyPolicy := recording.TestProxyPolicy{}
 	options := TableClientOptions{
+		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{testProxyPolicy},
 	}
 	client, err := NewTableClient("testproxy", "https://seankaneprimx.table.core.windows.net", cred, &options)

@@ -33,17 +33,17 @@ func NewExtensionsClient(con *armcore.Connection, subscriptionID string) *Extens
 
 // Create - Install extension.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Create(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsCreateOptions) (ExtensionResponse, error) {
+func (client *ExtensionsClient) Create(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsCreateOptions) (ExtensionsCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionResponse{}, err
+		return ExtensionsCreateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ExtensionResponse{}, err
+		return ExtensionsCreateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusCreated) {
-		return ExtensionResponse{}, client.createHandleError(resp)
+		return ExtensionsCreateResponse{}, client.createHandleError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
@@ -80,12 +80,12 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, extensi
 }
 
 // createHandleResponse handles the Create response.
-func (client *ExtensionsClient) createHandleResponse(resp *azcore.Response) (ExtensionResponse, error) {
-	var val *Extension
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ExtensionResponse{}, err
+func (client *ExtensionsClient) createHandleResponse(resp *azcore.Response) (ExtensionsCreateResponse, error) {
+	result := ExtensionsCreateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Extension); err != nil {
+		return ExtensionsCreateResponse{}, err
 	}
-	return ExtensionResponse{RawResponse: resp.Response, Extension: val}, nil
+	return result, nil
 }
 
 // createHandleError handles the Create error response.
@@ -103,19 +103,19 @@ func (client *ExtensionsClient) createHandleError(resp *azcore.Response) error {
 
 // Delete - Uninstall extension.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Delete(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsDeleteOptions) (*http.Response, error) {
+func (client *ExtensionsClient) Delete(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsDeleteOptions) (ExtensionsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return nil, err
+		return ExtensionsDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ExtensionsDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return ExtensionsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return ExtensionsDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -164,17 +164,17 @@ func (client *ExtensionsClient) deleteHandleError(resp *azcore.Response) error {
 
 // Get - Get installed extension details by extension id.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Get(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsGetOptions) (ExtensionResponse, error) {
+func (client *ExtensionsClient) Get(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsGetOptions) (ExtensionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionResponse{}, err
+		return ExtensionsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ExtensionResponse{}, err
+		return ExtensionsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ExtensionResponse{}, client.getHandleError(resp)
+		return ExtensionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -211,12 +211,12 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, extensionI
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionsClient) getHandleResponse(resp *azcore.Response) (ExtensionResponse, error) {
-	var val *Extension
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ExtensionResponse{}, err
+func (client *ExtensionsClient) getHandleResponse(resp *azcore.Response) (ExtensionsGetResponse, error) {
+	result := ExtensionsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Extension); err != nil {
+		return ExtensionsGetResponse{}, err
 	}
-	return ExtensionResponse{RawResponse: resp.Response, Extension: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -234,18 +234,15 @@ func (client *ExtensionsClient) getHandleError(resp *azcore.Response) error {
 
 // ListByFarmBeats - Get installed extensions details.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) ListByFarmBeats(resourceGroupName string, farmBeatsResourceName string, options *ExtensionsListByFarmBeatsOptions) ExtensionListResponsePager {
-	return &extensionListResponsePager{
-		pipeline: client.con.Pipeline(),
+func (client *ExtensionsClient) ListByFarmBeats(resourceGroupName string, farmBeatsResourceName string, options *ExtensionsListByFarmBeatsOptions) ExtensionsListByFarmBeatsPager {
+	return &extensionsListByFarmBeatsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByFarmBeatsCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, options)
 		},
-		responder: client.listByFarmBeatsHandleResponse,
-		errorer:   client.listByFarmBeatsHandleError,
-		advancer: func(ctx context.Context, resp ExtensionListResponseResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ExtensionsListByFarmBeatsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExtensionListResponse.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -293,12 +290,12 @@ func (client *ExtensionsClient) listByFarmBeatsCreateRequest(ctx context.Context
 }
 
 // listByFarmBeatsHandleResponse handles the ListByFarmBeats response.
-func (client *ExtensionsClient) listByFarmBeatsHandleResponse(resp *azcore.Response) (ExtensionListResponseResponse, error) {
-	var val *ExtensionListResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ExtensionListResponseResponse{}, err
+func (client *ExtensionsClient) listByFarmBeatsHandleResponse(resp *azcore.Response) (ExtensionsListByFarmBeatsResponse, error) {
+	result := ExtensionsListByFarmBeatsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ExtensionListResponse); err != nil {
+		return ExtensionsListByFarmBeatsResponse{}, err
 	}
-	return ExtensionListResponseResponse{RawResponse: resp.Response, ExtensionListResponse: val}, nil
+	return result, nil
 }
 
 // listByFarmBeatsHandleError handles the ListByFarmBeats error response.
@@ -316,17 +313,17 @@ func (client *ExtensionsClient) listByFarmBeatsHandleError(resp *azcore.Response
 
 // Update - Upgrade to latest extension.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Update(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsUpdateOptions) (ExtensionResponse, error) {
+func (client *ExtensionsClient) Update(ctx context.Context, extensionID string, farmBeatsResourceName string, resourceGroupName string, options *ExtensionsUpdateOptions) (ExtensionsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, extensionID, farmBeatsResourceName, resourceGroupName, options)
 	if err != nil {
-		return ExtensionResponse{}, err
+		return ExtensionsUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ExtensionResponse{}, err
+		return ExtensionsUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ExtensionResponse{}, client.updateHandleError(resp)
+		return ExtensionsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -363,12 +360,12 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, extensi
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ExtensionsClient) updateHandleResponse(resp *azcore.Response) (ExtensionResponse, error) {
-	var val *Extension
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ExtensionResponse{}, err
+func (client *ExtensionsClient) updateHandleResponse(resp *azcore.Response) (ExtensionsUpdateResponse, error) {
+	result := ExtensionsUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Extension); err != nil {
+		return ExtensionsUpdateResponse{}, err
 	}
-	return ExtensionResponse{RawResponse: resp.Response, Extension: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.

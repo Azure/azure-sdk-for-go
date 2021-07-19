@@ -7,6 +7,8 @@
 
 package armagfood
 
+const telemetryInfo = "azsdk-go-armagfood/v0.2.0"
+
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

@@ -32,17 +32,17 @@ func NewFarmBeatsExtensionsClient(con *armcore.Connection) *FarmBeatsExtensionsC
 
 // Get - Get farmBeats extension.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsExtensionsClient) Get(ctx context.Context, farmBeatsExtensionID string, options *FarmBeatsExtensionsGetOptions) (FarmBeatsExtensionResponse, error) {
+func (client *FarmBeatsExtensionsClient) Get(ctx context.Context, farmBeatsExtensionID string, options *FarmBeatsExtensionsGetOptions) (FarmBeatsExtensionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, farmBeatsExtensionID, options)
 	if err != nil {
-		return FarmBeatsExtensionResponse{}, err
+		return FarmBeatsExtensionsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FarmBeatsExtensionResponse{}, err
+		return FarmBeatsExtensionsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FarmBeatsExtensionResponse{}, client.getHandleError(resp)
+		return FarmBeatsExtensionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -67,12 +67,12 @@ func (client *FarmBeatsExtensionsClient) getCreateRequest(ctx context.Context, f
 }
 
 // getHandleResponse handles the Get response.
-func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *azcore.Response) (FarmBeatsExtensionResponse, error) {
-	var val *FarmBeatsExtension
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FarmBeatsExtensionResponse{}, err
+func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *azcore.Response) (FarmBeatsExtensionsGetResponse, error) {
+	result := FarmBeatsExtensionsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FarmBeatsExtension); err != nil {
+		return FarmBeatsExtensionsGetResponse{}, err
 	}
-	return FarmBeatsExtensionResponse{RawResponse: resp.Response, FarmBeatsExtension: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -90,18 +90,15 @@ func (client *FarmBeatsExtensionsClient) getHandleError(resp *azcore.Response) e
 
 // List - Get list of farmBeats extension.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *FarmBeatsExtensionsClient) List(options *FarmBeatsExtensionsListOptions) FarmBeatsExtensionListResponsePager {
-	return &farmBeatsExtensionListResponsePager{
-		pipeline: client.con.Pipeline(),
+func (client *FarmBeatsExtensionsClient) List(options *FarmBeatsExtensionsListOptions) FarmBeatsExtensionsListPager {
+	return &farmBeatsExtensionsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp FarmBeatsExtensionListResponseResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp FarmBeatsExtensionsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FarmBeatsExtensionListResponse.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -144,12 +141,12 @@ func (client *FarmBeatsExtensionsClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *FarmBeatsExtensionsClient) listHandleResponse(resp *azcore.Response) (FarmBeatsExtensionListResponseResponse, error) {
-	var val *FarmBeatsExtensionListResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FarmBeatsExtensionListResponseResponse{}, err
+func (client *FarmBeatsExtensionsClient) listHandleResponse(resp *azcore.Response) (FarmBeatsExtensionsListResponse, error) {
+	result := FarmBeatsExtensionsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FarmBeatsExtensionListResponse); err != nil {
+		return FarmBeatsExtensionsListResponse{}, err
 	}
-	return FarmBeatsExtensionListResponseResponse{RawResponse: resp.Response, FarmBeatsExtensionListResponse: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

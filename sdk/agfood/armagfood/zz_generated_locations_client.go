@@ -32,17 +32,17 @@ func NewLocationsClient(con *armcore.Connection, subscriptionID string) *Locatio
 
 // CheckNameAvailability - Checks the name availability of the resource with requested resource name.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityRequest, options *LocationsCheckNameAvailabilityOptions) (CheckNameAvailabilityResponseResponse, error) {
+func (client *LocationsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityRequest, options *LocationsCheckNameAvailabilityOptions) (LocationsCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, body, options)
 	if err != nil {
-		return CheckNameAvailabilityResponseResponse{}, err
+		return LocationsCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CheckNameAvailabilityResponseResponse{}, err
+		return LocationsCheckNameAvailabilityResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CheckNameAvailabilityResponseResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return LocationsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
@@ -67,12 +67,12 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (CheckNameAvailabilityResponseResponse, error) {
-	var val *CheckNameAvailabilityResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CheckNameAvailabilityResponseResponse{}, err
+func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (LocationsCheckNameAvailabilityResponse, error) {
+	result := LocationsCheckNameAvailabilityResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CheckNameAvailabilityResponse); err != nil {
+		return LocationsCheckNameAvailabilityResponse{}, err
 	}
-	return CheckNameAvailabilityResponseResponse{RawResponse: resp.Response, CheckNameAvailabilityResponse: val}, nil
+	return result, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.

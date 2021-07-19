@@ -10,49 +10,29 @@ package armagfood
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 	"reflect"
 )
 
-// ExtensionListResponsePager provides iteration over ExtensionListResponse pages.
-type ExtensionListResponsePager interface {
+type ExtensionsListByFarmBeatsPager interface {
 	azcore.Pager
-
-	// Page returns the current ExtensionListResponseResponse.
-	PageResponse() ExtensionListResponseResponse
+	// PageResponse returns the current ExtensionsListByFarmBeatsResponse.
+	PageResponse() ExtensionsListByFarmBeatsResponse
 }
 
-type extensionListResponseCreateRequest func(context.Context) (*azcore.Request, error)
-
-type extensionListResponseHandleError func(*azcore.Response) error
-
-type extensionListResponseHandleResponse func(*azcore.Response) (ExtensionListResponseResponse, error)
-
-type extensionListResponseAdvancePage func(context.Context, ExtensionListResponseResponse) (*azcore.Request, error)
-
-type extensionListResponsePager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester extensionListResponseCreateRequest
-	// callback for handling response errors
-	errorer extensionListResponseHandleError
-	// callback for handling the HTTP response
-	responder extensionListResponseHandleResponse
-	// callback for advancing to the next page
-	advancer extensionListResponseAdvancePage
-	// contains the current response
-	current ExtensionListResponseResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type extensionsListByFarmBeatsPager struct {
+	client    *ExtensionsClient
+	current   ExtensionsListByFarmBeatsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ExtensionsListByFarmBeatsResponse) (*azcore.Request, error)
 }
 
-func (p *extensionListResponsePager) Err() error {
+func (p *extensionsListByFarmBeatsPager) Err() error {
 	return p.err
 }
 
-func (p *extensionListResponsePager) NextPage(ctx context.Context) bool {
+func (p *extensionsListByFarmBeatsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -67,16 +47,16 @@ func (p *extensionListResponsePager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByFarmBeatsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByFarmBeatsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -85,50 +65,29 @@ func (p *extensionListResponsePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *extensionListResponsePager) PageResponse() ExtensionListResponseResponse {
+func (p *extensionsListByFarmBeatsPager) PageResponse() ExtensionsListByFarmBeatsResponse {
 	return p.current
 }
 
-// FarmBeatsExtensionListResponsePager provides iteration over FarmBeatsExtensionListResponse pages.
-type FarmBeatsExtensionListResponsePager interface {
+type FarmBeatsExtensionsListPager interface {
 	azcore.Pager
-
-	// Page returns the current FarmBeatsExtensionListResponseResponse.
-	PageResponse() FarmBeatsExtensionListResponseResponse
+	// PageResponse returns the current FarmBeatsExtensionsListResponse.
+	PageResponse() FarmBeatsExtensionsListResponse
 }
 
-type farmBeatsExtensionListResponseCreateRequest func(context.Context) (*azcore.Request, error)
-
-type farmBeatsExtensionListResponseHandleError func(*azcore.Response) error
-
-type farmBeatsExtensionListResponseHandleResponse func(*azcore.Response) (FarmBeatsExtensionListResponseResponse, error)
-
-type farmBeatsExtensionListResponseAdvancePage func(context.Context, FarmBeatsExtensionListResponseResponse) (*azcore.Request, error)
-
-type farmBeatsExtensionListResponsePager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester farmBeatsExtensionListResponseCreateRequest
-	// callback for handling response errors
-	errorer farmBeatsExtensionListResponseHandleError
-	// callback for handling the HTTP response
-	responder farmBeatsExtensionListResponseHandleResponse
-	// callback for advancing to the next page
-	advancer farmBeatsExtensionListResponseAdvancePage
-	// contains the current response
-	current FarmBeatsExtensionListResponseResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type farmBeatsExtensionsListPager struct {
+	client    *FarmBeatsExtensionsClient
+	current   FarmBeatsExtensionsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, FarmBeatsExtensionsListResponse) (*azcore.Request, error)
 }
 
-func (p *farmBeatsExtensionListResponsePager) Err() error {
+func (p *farmBeatsExtensionsListPager) Err() error {
 	return p.err
 }
 
-func (p *farmBeatsExtensionListResponsePager) NextPage(ctx context.Context) bool {
+func (p *farmBeatsExtensionsListPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -143,16 +102,16 @@ func (p *farmBeatsExtensionListResponsePager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -161,50 +120,29 @@ func (p *farmBeatsExtensionListResponsePager) NextPage(ctx context.Context) bool
 	return true
 }
 
-func (p *farmBeatsExtensionListResponsePager) PageResponse() FarmBeatsExtensionListResponseResponse {
+func (p *farmBeatsExtensionsListPager) PageResponse() FarmBeatsExtensionsListResponse {
 	return p.current
 }
 
-// FarmBeatsListResponsePager provides iteration over FarmBeatsListResponse pages.
-type FarmBeatsListResponsePager interface {
+type FarmBeatsModelsListByResourceGroupPager interface {
 	azcore.Pager
-
-	// Page returns the current FarmBeatsListResponseResponse.
-	PageResponse() FarmBeatsListResponseResponse
+	// PageResponse returns the current FarmBeatsModelsListByResourceGroupResponse.
+	PageResponse() FarmBeatsModelsListByResourceGroupResponse
 }
 
-type farmBeatsListResponseCreateRequest func(context.Context) (*azcore.Request, error)
-
-type farmBeatsListResponseHandleError func(*azcore.Response) error
-
-type farmBeatsListResponseHandleResponse func(*azcore.Response) (FarmBeatsListResponseResponse, error)
-
-type farmBeatsListResponseAdvancePage func(context.Context, FarmBeatsListResponseResponse) (*azcore.Request, error)
-
-type farmBeatsListResponsePager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester farmBeatsListResponseCreateRequest
-	// callback for handling response errors
-	errorer farmBeatsListResponseHandleError
-	// callback for handling the HTTP response
-	responder farmBeatsListResponseHandleResponse
-	// callback for advancing to the next page
-	advancer farmBeatsListResponseAdvancePage
-	// contains the current response
-	current FarmBeatsListResponseResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type farmBeatsModelsListByResourceGroupPager struct {
+	client    *FarmBeatsModelsClient
+	current   FarmBeatsModelsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, FarmBeatsModelsListByResourceGroupResponse) (*azcore.Request, error)
 }
 
-func (p *farmBeatsListResponsePager) Err() error {
+func (p *farmBeatsModelsListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *farmBeatsListResponsePager) NextPage(ctx context.Context) bool {
+func (p *farmBeatsModelsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -219,16 +157,16 @@ func (p *farmBeatsListResponsePager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -237,50 +175,84 @@ func (p *farmBeatsListResponsePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *farmBeatsListResponsePager) PageResponse() FarmBeatsListResponseResponse {
+func (p *farmBeatsModelsListByResourceGroupPager) PageResponse() FarmBeatsModelsListByResourceGroupResponse {
 	return p.current
 }
 
-// OperationListResultPager provides iteration over OperationListResult pages.
-type OperationListResultPager interface {
+type FarmBeatsModelsListBySubscriptionPager interface {
 	azcore.Pager
-
-	// Page returns the current OperationListResultResponse.
-	PageResponse() OperationListResultResponse
+	// PageResponse returns the current FarmBeatsModelsListBySubscriptionResponse.
+	PageResponse() FarmBeatsModelsListBySubscriptionResponse
 }
 
-type operationListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type operationListResultHandleError func(*azcore.Response) error
-
-type operationListResultHandleResponse func(*azcore.Response) (OperationListResultResponse, error)
-
-type operationListResultAdvancePage func(context.Context, OperationListResultResponse) (*azcore.Request, error)
-
-type operationListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester operationListResultCreateRequest
-	// callback for handling response errors
-	errorer operationListResultHandleError
-	// callback for handling the HTTP response
-	responder operationListResultHandleResponse
-	// callback for advancing to the next page
-	advancer operationListResultAdvancePage
-	// contains the current response
-	current OperationListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type farmBeatsModelsListBySubscriptionPager struct {
+	client    *FarmBeatsModelsClient
+	current   FarmBeatsModelsListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, FarmBeatsModelsListBySubscriptionResponse) (*azcore.Request, error)
 }
 
-func (p *operationListResultPager) Err() error {
+func (p *farmBeatsModelsListBySubscriptionPager) Err() error {
 	return p.err
 }
 
-func (p *operationListResultPager) NextPage(ctx context.Context) bool {
+func (p *farmBeatsModelsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FarmBeatsListResponse.NextLink == nil || len(*p.current.FarmBeatsListResponse.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBySubscriptionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *farmBeatsModelsListBySubscriptionPager) PageResponse() FarmBeatsModelsListBySubscriptionResponse {
+	return p.current
+}
+
+type OperationsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current OperationsListResponse.
+	PageResponse() OperationsListResponse
+}
+
+type operationsListPager struct {
+	client    *OperationsClient
+	current   OperationsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, OperationsListResponse) (*azcore.Request, error)
+}
+
+func (p *operationsListPager) Err() error {
+	return p.err
+}
+
+func (p *operationsListPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -295,16 +267,16 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -313,6 +285,6 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *operationListResultPager) PageResponse() OperationListResultResponse {
+func (p *operationsListPager) PageResponse() OperationsListResponse {
 	return p.current
 }

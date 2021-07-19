@@ -3,10 +3,10 @@
 
 package aztable
 
-import "time"
+// import "time"
 
-type Entity struct {
-	PartitionKey string    `json:"PartitionKey"`
-	RowKey       string    `json:"RowKey"`
-	Timestamp    time.Time `json:"Timestamp"`
-}
+// type Entity struct {
+// 	PartitionKey string    `json:"PartitionKey"`
+// 	RowKey       string    `json:"RowKey"`
+// 	Timestamp    time.Time `json:"Timestamp"`
+// }

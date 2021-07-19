@@ -9,15 +9,15 @@ This document is intended for users that are familiar with an older version of t
 * [Prerequisites](#prerequisites)
 * [General Changes](#general-changes)
     * [Authentication](#authentication)
-    * [Customized Policy](#customized-policy)
-    * [Custom HTTP Client](#custom-http-client)
     * [Error Handling](#error-handling)
     * [Long Running Operations](#long-running-operations)
     * [Pagination](#pagination)
+    * [Customized Policy](#customized-policy)
+    * [Custom HTTP Client](#custom-http-client)
 
 ## Prerequisites
 
-Golang 1.13 or above.
+Go 1.13 or above.
 
 ## General Changes
 
@@ -37,44 +37,24 @@ To the show the code snippets for the change:
 
 ```go
 authorizer, err := adal.NewServicePrincipalToken(oAuthToken, "<ClientId>", "<ClientSecret>", endpoint)
+client := resources.NewGroupsClient("<SubscriptionId>")
+client.Authorizer = authorizer
 ```        
 
 **Equivalent in new version (`sdk/**/arm**`)**
 
 ```go
-credential, err = azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
+credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
+connection := armcore.NewDefaultConnection(credential, nil)
+client := armresources.NewResourceGroupsClient(connection, "<SubscriptionId>")
 ```
 
 For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md)
-
-### Customized Policy
-
-Because of adopting Azure Core which is a shared library across all Azure SDKs, there is also a minor change regarding how customized policy in configured.
-
-In old version (`services/**/mgmt/**`), we use the `(autorest.Client).Sender`, `(autorest.Client).RequestInspector` and `(autorest.Client).ResponseInspector` properties in `github.com/Azure/go-autorest/autorest` module to provide customized interceptor for the HTTP traffic.
-
-In new version (`sdk/**/arm**`), we use `(armcore.ConnectionOptions).PerCallPolicies` and `(armcore.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module instead to inject customized policy to the pipeline.
-
-### Custom HTTP Client
-
-Similar to the customized policy, there are changes regarding how the custom HTTP client is configured as well. You can now use the `(armcore.ConnectionOptions).HTTPClient` option in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module to use your own implementation of HTTP client and plug in what they need into the configuration.
-
-**In old version (`services/**/mgmt/**`)** you cannot customize the HTTP client.
-
-**In new version (`sdk/**/arm**`)**
-
-```go
-httpClient := NewYourOwnHTTPClient{}
-conn := armcore.NewConnection(credential, &armcore.ConnectionOptions{
-    HTTPClient: &httpClient,
-})
-```
 
 ### Error Handling
 
 There are some minor changes in the error handling. 
 
-- The errors returned by the SDK now are always of type `runtime.ResponseError` in `github.com/Azure/azure-sdk-for-go/sdk/internal/runtime` package which implements the `HTTPResponse` interface and `NonRetriableError` interface from `github.com/Azure/azure-sdk-for-go/sdk/azcore` package.
 - When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you will need to get the raw HTTP response in `RawResponse` property of the first return value.
 
 **In old version (`services/**/mgmt/**`)**
@@ -82,7 +62,7 @@ There are some minor changes in the error handling.
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters)
 if err != nil {
-	log.Fatalf("Response code: %d", resp.Response.Response.StatusCode)
+	log.Fatalf("Status code: %d", resp.Response.Response.StatusCode)
 }
 ```
 
@@ -91,27 +71,33 @@ if err != nil {
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
-	rawResponse := err.(azcore.HTTPResponse).RawResponse()
-	log.Fatalf("Response code: %d", rawResponse.StatusCode)
+    var respErr azcore.HTTPResponse
+    if errors.As(err, &respErr) {
+        log.Fatalf("Status code: %d", respErr.RawResponse().StatusCode)
+    }
+	log.Fatalf("Other error: %+v", err)
 }
 ```
 
-**When there is no errors in new version (`sdk/**/arm**`)**
+**When there is no error in new version (`sdk/**/arm**`)**
 
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
-	rawResponse := err.(azcore.HTTPResponse).RawResponse()
-	log.Fatalf("Response code: %d", rawResponse.StatusCode)
+    var respErr azcore.HTTPResponse
+    if errors.As(err, &respErr) {
+        log.Fatalf("Status code: %d", respErr.RawResponse().StatusCode)
+    }
+    log.Fatalf("Other error: %+v", err)
 }
-log.Printf("Response code: %d", resp.RawResponse.StatusCode)
+log.Printf("Status code: %d", resp.RawResponse.StatusCode)
 ```
 
 ### Long Running Operations
 
 In old version, if a request is a long-running operation, a struct `**Future` will be returned, which is an extension of the interface `azure.FutureAPI`. You need to invoke the `future.WaitForCompletionRef` to wait until it finishes.
 
-In the new version, if a request is a long-running operation, the function name will start with `Begin` to indicate this function will return an interface `**Poller` will be returned, which is an extension of the interface `azcore.Poller`.
+In the new version, if a request is a long-running operation, the function name will start with `Begin` to indicate this function will return a poller struct which envelopes the interface `**Poller`, which is an extension of the interface `azcore.Poller`.
 
 **In old version (`services/**/mgmt/**`)**
 
@@ -179,6 +165,35 @@ for pager.NextPage(context.Background()) {
         log.Printf("resource group ID: %s\n", *rg.ID)
     }
 }
+```
+
+### Customized Policy
+
+Because of adopting Azure Core which is a shared library across all Azure SDKs, there is also a minor change regarding how customized policy in configured.
+
+In old version (`services/**/mgmt/**`), we use the `(autorest.Client).Sender`, `(autorest.Client).RequestInspector` and `(autorest.Client).ResponseInspector` properties in `github.com/Azure/go-autorest/autorest` module to provide customized interceptor for the HTTP traffic.
+
+In new version (`sdk/**/arm**`), we use `(armcore.ConnectionOptions).PerCallPolicies` and `(armcore.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module instead to inject customized policy to the pipeline.
+
+### Custom HTTP Client
+
+Similar to the customized policy, there are changes regarding how the custom HTTP client is configured as well. You can now use the `(armcore.ConnectionOptions).HTTPClient` option in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module to use your own implementation of HTTP client and plug in what they need into the configuration.
+
+**In old version (`services/**/mgmt/**`)** 
+```go
+httpClient := NewYourOwnHTTPClient{}
+client := resources.NewGroupsClient("<SubscriptionId>")
+client.Sender = &httpClient
+```
+
+**In new version (`sdk/**/arm**`)**
+
+```go
+httpClient := NewYourOwnHTTPClient{}
+connection := armcore.NewConnection(credential, &armcore.ConnectionOptions{
+    HTTPClient: &httpClient,
+})
+client := armresources.NewResourceGroupsClient(connection, "<SubscriptionId>")
 ```
 
 ## Need help?

@@ -24,7 +24,7 @@ type Entity struct {
 type EdmEntity struct {
 	Metadata string `json:"odata.metadata"`
 	Id       string `json:"odata.id"`
-	EditLink string `json:"odata.editlink"`
+	EditLink string `json:"odata.editLink"`
 	Type     string `json:"odata.type"`
 	Etag     string `json:"odata.etag"`
 	Entity
@@ -72,7 +72,7 @@ func (e *EdmEntity) UnmarshalJSON(data []byte) (err error) {
 			err = json.Unmarshal(propRawValue, &e.Metadata)
 		case "odata.id":
 			err = json.Unmarshal(propRawValue, &e.Id)
-		case "odata.editlink": // TODO: Verify the casing that the the service returns
+		case "odata.editLink": // TODO: Verify the casing that the the service returns
 			err = json.Unmarshal(propRawValue, &e.EditLink)
 		case "odata.type":
 			err = json.Unmarshal(propRawValue, &e.Type)
@@ -194,7 +194,7 @@ func aztabletest() {
         "odata.type":"account.Customers",
         "odata.id":https://myaccount.table.core.windows.net/Customers(PartitionKey='Customer03',RowKey='Name'),
         "odata.etag":"W/\"0x5B168C7B6E589D2\"",
-        "odata.editlink":"Customers(PartitionKey='Customer03',RowKey='Name')",
+        "odata.editLink":"Customers(PartitionKey='Customer03',RowKey='Name')",
         "PartitionKey":"partitionkey",
         "RowKey":"rowkey",
         "Timestamp":"2013-08-09T18:55:48.3402073Z",

@@ -11,20 +11,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// type edmEntity struct {
-// 	Entity
-// 	BigInt   EdmInt64    `json:"BigInt"`
-// 	Guid     EdmGuid     `json:"Guid"`
-// 	Time     EdmDateTime `json:"Time"`
-// 	SmallInt int         `json:"SmallInt"`
-// 	Bool     bool        `json:"Bool"`
-// 	Bytes    []byte      `json:"Bytes"`
-// }
-
 // "odata.type":"account.Customers",
 // "odata.id":https://myaccount.table.core.windows.net/Customers(PartitionKey='Customer03',RowKey='Name'),
 // "odata.etag":"W/\"0x5B168C7B6E589D2\"",
-// "odata.editlink":"Customers(PartitionKey='Customer03',RowKey='Name')",
+// "odata.editLink":"Customers(PartitionKey='Customer03',RowKey='Name')",
 // "PartitionKey":"partitionkey",
 // "RowKey":"rowkey",
 // "Timestamp":"2013-08-09T18:55:48.3402073Z",

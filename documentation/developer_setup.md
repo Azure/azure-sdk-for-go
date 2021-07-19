@@ -19,7 +19,7 @@ After you have the generated code from Autorest, the next step is to wrap this g
 In other languages, types can be specifically marked "public" or "private", in Go exported types and methods are defined by starting with a capital letter. The methods on structs also follow this rule, if it is for use outside of the model it must start with a capital letter.
 
 ### Documenting Code
-Code is documented directly in line and can be created directly using the `doc` tool which is part of the go toolchain. To document a type, variable, constant, function, or package write a regular comment directly preceding its declaration (with no intervening blank line). For an example, here is the documentation for the `fmt.Fprintf` function:
+Code is documented directly in line and can be created directly using the `doc` tool which is part of the Go toolchain. To document a type, variable, constant, function, or package write a regular comment directly preceding its declaration (with no intervening blank line). For an example, here is the documentation for the `fmt.Fprintf` function:
 ```golang
 // Fprint formats using the default formats for its operands and writes to w.
 // Spaces are added between operands when neither is a string.
@@ -86,7 +86,7 @@ All methods that perform I/O of any kind, sleep, or perform a significant amount
 
 ## Write Tests
 
-Testing is built into the go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables.
+Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables.
 
 A simple test for `aztables` is shown below:
 ```golang
@@ -95,13 +95,13 @@ import (
 	"os"
 
 	"github.com/testify/assert"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 const (
 	accountName := os.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.GetEnv("TABLES_PRIMARY_ACCOUNT_KEY")
-	mode := testframework.Recording
+	mode := recording.Recording
 )
 
 // Test creating a single table

@@ -13,8 +13,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -411,4 +413,66 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Record:   recorder.ModeRecording,
 	Live:     recorder.ModeDisabled,
 	Playback: recorder.ModeReplaying,
+}
+
+func getTestId(t *testing.T) string {
+	_, fileName, _, _ := runtime.Caller(0)
+	return fmt.Sprintf("%v.%v", fileName, t.Name())
+}
+
+var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
+
+var baseProxyURL = "https://localhost:5001"
+var startURL = baseProxyURL + "/record/start"
+var stopURL = baseProxyURL + "/record/stop"
+
+var recordingId string
+var recordingIdHeader = "x-recording-id"
+var recordingModeHeader = "x-recording-mode"
+
+var client = http.Client{}
+
+type TestProxyPolicy struct{}
+
+func (t *TestProxyPolicy) Do(req *http.Request) (*http.Response, error) {
+	if recordMode == "record" || recordMode == "playback" {
+		originalUrl := req.URL
+		req.Header.Set("x-recording-upstream-base-uri", originalUrl.String())
+		req.Header.Set(recordingIdHeader, recordingId)
+		req.Header.Set(recordingModeHeader, recordMode)
+	}
+	return nil, nil
+}
+
+func StartRecording(t *testing.T) error {
+	recordingId := getTestId(t)
+	fmt.Println(recordingId)
+	req, err := http.NewRequest("POST", startURL, nil)
+	fmt.Println("URL: ", req.URL.String())
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-recording-file", recordingId)
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	recordingId = resp.Header.Get(recordingIdHeader)
+	return nil
+}
+
+func StopRecording(t *testing.T) error {
+	req, err := http.NewRequest("POST", stopURL, nil)
+	if err != nil {
+		return err
+	}
+	if recordingId == "" {
+		return errors.New("Recording ID was never set. Did you call StartRecording?")
+	}
+	req.Header.Set("x-recording-id", recordingId)
+	_, err = client.Do(req)
+	if err != nil {
+		return err
+	}
+	return nil
 }

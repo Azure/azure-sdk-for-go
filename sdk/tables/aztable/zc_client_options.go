@@ -14,6 +14,8 @@ type TableClientOptions struct {
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
+	// PerCallOptions are options to run on every request
+	PerCallOptions []azcore.Policy
 }
 
 func (o *TableClientOptions) getConnectionOptions() *connectionOptions {

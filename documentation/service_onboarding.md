@@ -132,6 +132,20 @@ You can also use the `testify/require` library instead of `testify/assert` if yo
 
 Check out the docs for more information about the methods available in the [`assert`](https://pkg.go.dev/github.com/stretchr/testify/assert) and [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) libraries.
 
+## Running Tests
+
+The tests are all run using the Go toolchain. To run all your tests simply type `go test` into your command line and you should see an output like:
+```
+PASS
+ok      github.com/Azure/azure-sdk-for-go/sdk/<your_package>        <runtime>s
+```
+
+If you want more details about each of the tests that was run add the `-v` flag for a more verbose output.
+
+### Details about recordings
+
+To be added later.
+
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch is only for libraries that are to be released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
@@ -140,6 +154,11 @@ When you create the first PR for your library you will want to create this PR ag
 ```
 This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` is tested against versions 1.13 and 1.14 on Windows and Linux. All of your future PRs (regardless of whether they are made to `track2-<package>` or another branch) will be tested against these branches. For more information about individual steps that run in the CI pipelines refer to the [documentation here](./eng_sys.md).
 
+
+## Advance
+For more information about options for configuring your tests and more examples check out the [advanced guide][advanced]
+
 <!-- LINKS -->
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
 [golang_context]: https://golang.org/pkg/context/#Context
+[advanced]: https://microsoft.com

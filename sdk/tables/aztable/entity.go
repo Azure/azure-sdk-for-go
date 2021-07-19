@@ -104,20 +104,21 @@ func (e *EdmEntity) UnmarshalJSON(data []byte) (err error) {
 					err = json.Unmarshal(propRawValue, &propValue)
 				}
 			case "Edm.DateTime":
-				propValue = &EdmDateTime{}
-				err = json.Unmarshal(propRawValue, propValue)
+				var v EdmDateTime
+				err = json.Unmarshal(propRawValue, &v)
+				propValue = v
 			case "Edm.Binary":
-				propValue = &EdmBinary{}
-				err = json.Unmarshal(propRawValue, propValue)
+				var v EdmBinary
+				err = json.Unmarshal(propRawValue, &v)
+				propValue = v
 			case "Edm.Guid":
 				var v EdmGuid
-				propValue = &v
-				err = json.Unmarshal(propRawValue, propValue)
+				err = json.Unmarshal(propRawValue, &v)
+				propValue = v
 			case "Edm.Int64":
 				var v EdmInt64
-				propValue = &v
-				err = json.Unmarshal(propRawValue, propValue)
-				fmt.Println(propValue)
+				err = json.Unmarshal(propRawValue, &v)
+				propValue = v
 			}
 			if err != nil {
 				return

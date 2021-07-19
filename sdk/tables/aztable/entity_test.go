@@ -60,6 +60,21 @@ func createEdmEntity(count int, pk string) EdmEntity {
 	}
 }
 
+func requireSameDateTime(r *require.Assertions, time1, time2 interface{}) {
+	t1 := time.Time(time1.(EdmDateTime))
+	t2 := time.Time(time2.(EdmDateTime))
+	r.Equal(t1.Year(), t2.Year())
+	r.Equal(t1.Month(), t2.Month())
+	r.Equal(t1.Day(), t2.Day())
+	r.Equal(t1.Hour(), t2.Hour())
+	r.Equal(t1.Minute(), t2.Minute())
+	r.Equal(t1.Second(), t2.Second())
+	// r.Equal(t1.Nanosecond(), t2.Nanosecond())  // Service cuts off at 6 decimals
+	z1, _ := t1.Zone()
+	z2, _ := t2.Zone()
+	r.Equal(z1, z2)
+}
+
 func (s *tableClientLiveTests) TestEdmMarshalling() {
 	require := require.New(s.T())
 	client, delete := s.init(true)
@@ -86,11 +101,20 @@ func (s *tableClientLiveTests) TestEdmMarshalling() {
 	require.Equal(edmEntity.RowKey, receivedEntity.RowKey)
 	require.Equal(edmEntity.Properties["Bool"], receivedEntity.Properties["Bool"])
 	require.Equal(edmEntity.Properties["Int32"], receivedEntity.Properties["Int32"])
-	fmt.Println(receivedEntity.Properties["Int64"])
-	// require.Equal(edmEntity.Properties["Int64"], receivedEntity.Properties["Int64"])
+	require.Equal(edmEntity.Properties["Int64"], receivedEntity.Properties["Int64"])
 	require.Equal(edmEntity.Properties["Double"], receivedEntity.Properties["Double"])
 	require.Equal(edmEntity.Properties["String"], receivedEntity.Properties["String"])
 	require.Equal(edmEntity.Properties["Guid"], receivedEntity.Properties["Guid"])
-	require.Equal(edmEntity.Properties["DateTime"], receivedEntity.Properties["DateTime"])
 	require.Equal(edmEntity.Properties["Binary"], receivedEntity.Properties["Binary"])
+	requireSameDateTime(require, edmEntity.Properties["DateTime"], receivedEntity.Properties["DateTime"])
+
+	// Unmarshal to raw json
+	var received2 map[string]json.RawMessage
+	err = json.Unmarshal(resp.Value, &received2)
+	require.Nil(err)
+
+	// Unmarshal to plain map
+	var received3 map[string]interface{}
+	err = json.Unmarshal(resp.Value, &received3)
+	require.Nil(err)
 }

@@ -29,7 +29,7 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - ${{ if parameters.RunTests }}:
+  - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
         $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
         foreach ($td in $testDirs) {

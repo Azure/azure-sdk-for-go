@@ -433,16 +433,34 @@ var recordingModeHeader = "x-recording-mode"
 
 var client = http.Client{}
 
-type TestProxyPolicy struct{}
+type TestProxyTransport struct{}
 
-func (t TestProxyPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
+func convertToHttpRequest(req *azcore.Request) *http.Request {
+	r := http.Request{}
+
+	r.URL = req.URL
+	r.Header = req.Header
+
+	return &r
+}
+
+func convertToAzcoreResponse(resp *http.Response) *azcore.Response {
+	r := azcore.Response{}
+	r.Header = resp.Header
+	r.Body = resp.Body
+	return &r
+}
+
+func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 	if recordMode == "record" || recordMode == "playback" {
 		originalUrl := req.URL
 		req.Header.Set("x-recording-upstream-base-uri", originalUrl.String())
 		req.Header.Set(recordingIdHeader, recordingId)
 		req.Header.Set(recordingModeHeader, recordMode)
+		response, err := http.DefaultClient.Do(req)
+		return response, err
 	}
-	return nil, nil
+	return nil, errors.New("AZURE_RECORD_MODE was not set")
 }
 
 func StartRecording(t *testing.T) error {

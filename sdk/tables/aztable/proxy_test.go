@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -15,25 +14,25 @@ var AADAuthenticationScope = "https://storage.azure.com/.default"
 func Test_TestProxy(t *testing.T) {
 	require := require.New(t)
 	err := recording.StartRecording(t)
-	require.Nil(err)
+	require.NoError(err)
 	defer recording.StopRecording(t)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.Nil(err)
-	testProxyPolicy := recording.TestProxyPolicy{}
+	require.NoError(err)
+	testProxyTransport := recording.TestProxyTransport{}
 	options := TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
-		PerCallOptions: []azcore.Policy{testProxyPolicy},
+		Scopes:     []string{AADAuthenticationScope},
+		HTTPClient: testProxyTransport,
 	}
 	client, err := NewTableClient("testproxy", "https://seankaneprimx.table.core.windows.net", cred, &options)
-	require.Nil(err)
+	require.NoError(err)
 
 	_, err = client.Create(ctx)
-	require.Nil(err)
+	require.NoError(err)
 
 	client.Delete(ctx)
-	require.Nil(err)
+	require.NoError(err)
 }

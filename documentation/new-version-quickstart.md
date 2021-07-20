@@ -636,11 +636,24 @@ func deleteVirtualMachine(connection *armcore.Connection) error {
 ```
 Long Running Operations
 -----------------------
-In the samples above, you might notice some operations has a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (In short, LRO). For those operations, you need to follow a specific pattern. 
-- Use Poller
-- Pass a polling interval
+In the samples above, you might notice that some operations has a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (In short, LRO). For resource managment libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
 
-For details on design guidelines of LRO, please follow [this documentation here](https://azure.github.io/azure-sdk/golang_introduction.html#methods-invoking-long-running-operations)
+```go
+interval :=  5*time.Second
+resp, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
+if err != nil {
+	// handle error...
+}
+w, err = resp.PollUntilDone(context.Background(), interval)
+if err != nil {
+	// handle error...
+}
+fmt.Printf("LRO done")
+process(w)
+```
+Note that you will need to pass a polling interval to ```PollUntilDone``` and tell the poller how often it should try to get the status. This number is usually small but it's best to consult the [Azure service documentation](https://docs.microsoft.com/en-us/azure/?product=featured) on best practices and recommdend intervals for your specific use cases.
+
+For more advanced usage of LRO and design guidelines of LRO, please visit [this documentation here](https://azure.github.io/azure-sdk/golang_introduction.html#methods-invoking-long-running-operations)
 
 ## Code Samples
 

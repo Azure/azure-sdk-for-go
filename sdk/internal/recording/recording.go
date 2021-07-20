@@ -6,6 +6,7 @@
 package recording
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -15,8 +16,10 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -34,7 +37,6 @@ type Recording struct {
 	src                      rand.Source
 	now                      *time.Time
 	Sanitizer                *Sanitizer
-	Matcher                  *RequestMatcher
 	c                        TestContext
 }
 
@@ -64,11 +66,8 @@ const (
 type VariableType string
 
 const (
-	// NoSanitization indicates that the recorded value should not be sanitized.
-	NoSanitization VariableType = "default"
-	// Secret_String indicates that the recorded value should be replaced with a sanitized value.
-	Secret_String VariableType = "secret_string"
-	// Secret_Base64String indicates that the recorded value should be replaced with a sanitized valid base-64 string value.
+	Default             VariableType = "default"
+	Secret_String       VariableType = "secret_string"
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
@@ -105,18 +104,17 @@ func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	}
 
 	// set the recorder Matcher
-	recording.Matcher = defaultMatcher(c)
 	rec.SetMatcher(recording.matchRequest)
 
 	// wire up the sanitizer
-	recording.Sanitizer = defaultSanitizer(rec)
+	recording.Sanitizer = DefaultSanitizer(rec)
 
 	return recording, err
 }
 
-// GetEnvVar returns a recorded environment variable. If the variable is not found we return an error.
-// variableType determines how the recorded variable will be saved.
-func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, error) {
+// GetRecordedVariable returns a recorded variable. If the variable is not found we return an error
+// variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
+func (r *Recording) GetRecordedVariable(name string, variableType VariableType) (string, error) {
 	var err error
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
@@ -131,10 +129,9 @@ func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, e
 	return *result, err
 }
 
-// GetOptionalEnvVar returns a recorded environment variable with a fallback default value.
-// default Value configures the fallback value to be returned if the environment variable is not set.
-// variableType determines how the recorded variable will be saved.
-func (r *Recording) GetOptionalEnvVar(name string, defaultValue string, variableType VariableType) string {
+// GetOptionalRecordedVariable returns a recorded variable with a fallback default value
+// variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
+func (r *Recording) GetOptionalRecordedVariable(name string, defaultValue string, variableType VariableType) string {
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
 		result = getOptionalEnv(name, defaultValue)
@@ -269,10 +266,10 @@ func getOptionalEnv(name string, defaultValue string) *string {
 }
 
 func (r *Recording) matchRequest(req *http.Request, rec cassette.Request) bool {
-	isMatch := r.Matcher.compareMethods(req, rec.Method) &&
-		r.Matcher.compareURLs(req, rec.URL) &&
-		r.Matcher.compareHeaders(req, rec) &&
-		r.Matcher.compareBodies(req, rec.Body)
+	isMatch := compareMethods(req, rec, r.c) &&
+		compareURLs(req, rec, r.c) &&
+		compareHeaders(req, rec, r.c) &&
+		compareBodies(req, rec, r.c)
 
 	return isMatch
 }
@@ -417,4 +414,98 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Record:   recorder.ModeRecording,
 	Live:     recorder.ModeDisabled,
 	Playback: recorder.ModeReplaying,
+}
+
+var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
+
+var baseProxyURL = "https://localhost:5001"
+var startURL = baseProxyURL + "/record/start"
+var stopURL = baseProxyURL + "/record/stop"
+
+var recordingId string
+var recordingIdHeader = "x-recording-id"
+var recordingModeHeader = "x-recording-mode"
+
+var tr = &http.Transport{
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+}
+var client = http.Client{Transport: tr}
+
+type TestProxyTransport struct{}
+
+func getTestId(t *testing.T) string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Errorf("Could not find current working directory")
+	}
+	// cwd = cwd + "/recordings/"
+	cwd = "."
+	fmt.Printf("TestID: %v.%v\n", cwd, t.Name())
+	return fmt.Sprintf("%v.%v", cwd, t.Name())
+}
+
+func convertToHttpRequest(req *azcore.Request) *http.Request {
+	r := http.Request{}
+
+	r.URL = req.URL
+	r.Header = req.Header
+
+	return &r
+}
+
+func convertToAzcoreResponse(resp *http.Response) *azcore.Response {
+	r := azcore.Response{}
+	r.Header = resp.Header
+	r.Body = resp.Body
+	return &r
+}
+
+func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
+	if recordMode == "record" || recordMode == "playback" {
+		originalUrl := req.URL
+		req.Header.Set("x-recording-upstream-base-uri", originalUrl.String())
+		req.Header.Set(recordingIdHeader, recordingId)
+		req.Header.Set(recordingModeHeader, recordMode)
+		response, err := client.Do(req)
+		return response, err
+	}
+	return nil, errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
+}
+
+func StartRecording(t *testing.T) error {
+	if recordMode == "" {
+		return errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
+	}
+	fmt.Println("Starting recording...")
+	testId := getTestId(t)
+	fmt.Println("Recording ID: ", testId)
+	req, err := http.NewRequest("POST", startURL, nil)
+	fmt.Println("URL: ", req.URL.String())
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-recording-file", testId)
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	recordingId = resp.Header.Get(recordingIdHeader)
+	return nil
+}
+
+func StopRecording(t *testing.T) error {
+	req, err := http.NewRequest("POST", stopURL, nil)
+	if err != nil {
+		return err
+	}
+	if recordingId == "" {
+		return errors.New("Recording ID was never set. Did you call StartRecording?")
+	}
+	req.Header.Set("x-recording-id", recordingId)
+	_, err = client.Do(req)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	fmt.Println("Stopped recording")
+	return nil
 }

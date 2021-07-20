@@ -81,6 +81,7 @@ We also recommend installing other packages for authentication and core function
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/armcore
+go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 go get github.com/Azure/azure-sdk-for-go/sdk/to
 ```

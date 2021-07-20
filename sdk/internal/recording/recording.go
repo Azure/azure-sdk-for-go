@@ -439,7 +439,7 @@ func getTestId(t *testing.T) string {
 		t.Errorf("Could not find current working directory")
 	}
 	// cwd = cwd + "/recordings/"
-	cwd = "recordings"
+	cwd = "."
 	fmt.Printf("TestID: %v.%v\n", cwd, t.Name())
 	return fmt.Sprintf("%v.%v", cwd, t.Name())
 }
@@ -484,7 +484,7 @@ func StartRecording(t *testing.T) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-recording-file", recordingId)
+	req.Header.Set("x-recording-file", testId)
 	resp, err := client.Do(req)
 	if err != nil {
 		return err

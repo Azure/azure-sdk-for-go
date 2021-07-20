@@ -322,12 +322,6 @@ In addition to resource groups, we will also use Virtual Machine as an example a
 ***Import the packages***
 ```go
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"os"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"

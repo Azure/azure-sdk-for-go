@@ -6,6 +6,7 @@
 package recording
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -415,15 +416,6 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Playback: recorder.ModeReplaying,
 }
 
-func getTestId(t *testing.T) string {
-	cwd, err := os.Getwd()
-	if err != nil {
-		t.Errorf("Could not find current working directory")
-	}
-	fmt.Println(cwd, t.Name())
-	return fmt.Sprintf("%v.%v", cwd, t.Name())
-}
-
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
 
 var baseProxyURL = "https://localhost:5001"
@@ -434,9 +426,23 @@ var recordingId string
 var recordingIdHeader = "x-recording-id"
 var recordingModeHeader = "x-recording-mode"
 
-var client = http.Client{}
+var tr = &http.Transport{
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+}
+var client = http.Client{Transport: tr}
 
 type TestProxyTransport struct{}
+
+func getTestId(t *testing.T) string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Errorf("Could not find current working directory")
+	}
+	// cwd = cwd + "/recordings/"
+	cwd = "recordings"
+	fmt.Printf("TestID: %v.%v\n", cwd, t.Name())
+	return fmt.Sprintf("%v.%v", cwd, t.Name())
+}
 
 func convertToHttpRequest(req *azcore.Request) *http.Request {
 	r := http.Request{}
@@ -460,7 +466,7 @@ func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 		req.Header.Set("x-recording-upstream-base-uri", originalUrl.String())
 		req.Header.Set(recordingIdHeader, recordingId)
 		req.Header.Set(recordingModeHeader, recordMode)
-		response, err := http.DefaultClient.Do(req)
+		response, err := client.Do(req)
 		return response, err
 	}
 	return nil, errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
@@ -471,8 +477,8 @@ func StartRecording(t *testing.T) error {
 		return errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
 	}
 	fmt.Println("Starting recording...")
-	recordingId = getTestId(t)
-	fmt.Println(recordingId)
+	testId := getTestId(t)
+	fmt.Println("Recording ID: ", testId)
 	req, err := http.NewRequest("POST", startURL, nil)
 	fmt.Println("URL: ", req.URL.String())
 	if err != nil {

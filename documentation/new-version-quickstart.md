@@ -166,7 +166,6 @@ var (
 	subscriptionId    = os.Getenv("AZURE_SUBSCRIPTION_ID")
 	location          = "westus2"
 	resourceGroupName = "resourceGroupName"
-	resourceGroupID string
 )
 ```
 

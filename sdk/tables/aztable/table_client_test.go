@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -475,6 +476,43 @@ func (s *tableClientLiveTests) TestInvalidEntity() {
 
 	assert.NotNil(err)
 	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
+}
+
+func (s *tableClientLiveTests) TestListEntities() {
+	require := require.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
+
+	err := insertNEntities("partition", 5, client)
+	require.NoError(err)
+
+	count := 0
+	pager := client.List()
+	for pager.NextPage(context.Background()) {
+		resp := pager.PageResponse()
+		for _, e := range resp.TableEntityQueryResponse.Value {
+			require.Equal(e["PartitionKey"].(string), "partition")
+			count += 1
+		}
+	}
+	err = pager.Err()
+	require.NoError(err)
+	require.Equal(5, count)
+}
+
+func insertNEntities(pk string, n int, client *TableClient) error {
+	for i := 0; i < n; i++ {
+		e := &map[string]interface{}{
+			"PartitionKey": pk,
+			"RowKey":       fmt.Sprint(i),
+			"Value":        i + 1,
+		}
+		_, err := client.AddEntity(ctx, *e)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // setup the test environment

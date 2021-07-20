@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -125,6 +126,46 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 	assert.Nil(pager.Err())
 	assert.Equal(resultCount, tableCount-1)
 	assert.Equal(pageCount, int(top))
+}
+
+func clearAllTables(context *testContext) error {
+	pager := context.client.List()
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, v := range resp.TableQueryResponse.Value {
+			_, err := context.client.Delete(ctx, *v.TableName)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return pager.Err()
+}
+
+func (s *tableServiceClientLiveTests) TestListTables() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	tableName, err := getTableName(context)
+	require.NoError(err)
+
+	err = clearAllTables(context)
+	require.NoError(err)
+
+	for i := 0; i < 5; i++ {
+		_, err := context.client.Create(ctx, fmt.Sprintf("%v%v", tableName, i))
+		require.NoError(err)
+		fmt.Println("Created: ", i)
+	}
+
+	count := 0
+	pager := context.client.List()
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		count += len(resp.TableQueryResponse.Value)
+	}
+
+	require.NoError(pager.Err())
+	require.Equal(5, count)
 }
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {

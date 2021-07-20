@@ -68,11 +68,22 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 // pager := client.Query(nil)
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableQueryResponse.Value))
+//     fmt.Fprintf("The page contains %i results", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
 func (t *TableServiceClient) Query(queryOptions *QueryOptions) TableQueryResponsePager {
 	return &tableQueryResponsePager{client: t.client, queryOptions: queryOptions, tableQueryOptions: new(TableQueryOptions)}
+}
+
+// List returns all the existing tables.
+// pager := client.List()
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+// 	   fmt.Printf("There are %i tables in this page", len(resp.TableQueryResponse.Value))
+// }
+// err := pager.Err()
+func (t *TableServiceClient) List() TableQueryResponsePager {
+	return &tableQueryResponsePager{client: t.client, queryOptions: nil, tableQueryOptions: new(TableQueryOptions)}
 }
 
 func isCosmosEndpoint(url string) bool {

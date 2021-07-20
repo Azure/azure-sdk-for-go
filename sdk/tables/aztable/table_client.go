@@ -41,7 +41,7 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 	return t.service.Delete(ctx, t.Name)
 }
 
-// Query queries the tables using the specified QueryOptions.
+// Query queries the entities using the specified QueryOptions.
 // QueryOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An Odata filter expression that limits results to those entities that satisfy the filter expression.
@@ -58,14 +58,35 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 // pager := client.Query(nil)
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Fprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponsePager {
 	if queryOptions == nil {
 		queryOptions = &QueryOptions{}
 	}
-	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
+	return &tableEntityQueryResponsePager{
+		tableClient:       t,
+		queryOptions:      queryOptions,
+		tableQueryOptions: &TableQueryEntitiesOptions{}}
+}
+
+// List returns all the entities in a table
+//
+// List returns a Pager, which allows iteration through each page of results. Example:
+//
+// pager := client.List()
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.Fprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
+// err := pager.Err()
+func (t *TableClient) List() TableEntityQueryResponsePager {
+	return &tableEntityQueryResponsePager{
+		tableClient:       t,
+		queryOptions:      &QueryOptions{},
+		tableQueryOptions: &TableQueryEntitiesOptions{},
+	}
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.

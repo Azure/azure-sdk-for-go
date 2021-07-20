@@ -445,10 +445,7 @@ func createVirtualNetwork(connection *armcore.Connection) (armnetwork.VirtualNet
 	if err != nil {
 		return err
 	}
-	resp, err := poller.PollUntilDone(ctx, interval)
-	if err != nil {
-		return err
-	}
+	return poller.PollUntilDone(ctx, interval)
 	b, err := json.MarshalIndent(*resp.VirtualNetwork, "", "  ")
 	if err != nil {
 		return err

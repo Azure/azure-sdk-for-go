@@ -32,17 +32,17 @@ func NewGlobalClient(con *armcore.Connection, subscriptionID string) *GlobalClie
 
 // GetDeletedWebApp - Description for Get deleted app for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppOptions) (DeletedSiteResponse, error) {
+func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppOptions) (GlobalGetDeletedWebAppResponse, error) {
 	req, err := client.getDeletedWebAppCreateRequest(ctx, deletedSiteID, options)
 	if err != nil {
-		return DeletedSiteResponse{}, err
+		return GlobalGetDeletedWebAppResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeletedSiteResponse{}, err
+		return GlobalGetDeletedWebAppResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeletedSiteResponse{}, client.getDeletedWebAppHandleError(resp)
+		return GlobalGetDeletedWebAppResponse{}, client.getDeletedWebAppHandleError(resp)
 	}
 	return client.getDeletedWebAppHandleResponse(resp)
 }
@@ -71,12 +71,12 @@ func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, d
 }
 
 // getDeletedWebAppHandleResponse handles the GetDeletedWebApp response.
-func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *azcore.Response) (DeletedSiteResponse, error) {
-	var val *DeletedSite
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeletedSiteResponse{}, err
+func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *azcore.Response) (GlobalGetDeletedWebAppResponse, error) {
+	result := GlobalGetDeletedWebAppResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeletedSite); err != nil {
+		return GlobalGetDeletedWebAppResponse{}, err
 	}
-	return DeletedSiteResponse{RawResponse: resp.Response, DeletedSite: val}, nil
+	return result, nil
 }
 
 // getDeletedWebAppHandleError handles the GetDeletedWebApp error response.
@@ -94,17 +94,17 @@ func (client *GlobalClient) getDeletedWebAppHandleError(resp *azcore.Response) e
 
 // GetDeletedWebAppSnapshots - Description for Get all deleted apps for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppSnapshotsOptions) (SnapshotArrayResponse, error) {
+func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppSnapshotsOptions) (GlobalGetDeletedWebAppSnapshotsResponse, error) {
 	req, err := client.getDeletedWebAppSnapshotsCreateRequest(ctx, deletedSiteID, options)
 	if err != nil {
-		return SnapshotArrayResponse{}, err
+		return GlobalGetDeletedWebAppSnapshotsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SnapshotArrayResponse{}, err
+		return GlobalGetDeletedWebAppSnapshotsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SnapshotArrayResponse{}, client.getDeletedWebAppSnapshotsHandleError(resp)
+		return GlobalGetDeletedWebAppSnapshotsResponse{}, client.getDeletedWebAppSnapshotsHandleError(resp)
 	}
 	return client.getDeletedWebAppSnapshotsHandleResponse(resp)
 }
@@ -133,12 +133,12 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.C
 }
 
 // getDeletedWebAppSnapshotsHandleResponse handles the GetDeletedWebAppSnapshots response.
-func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *azcore.Response) (SnapshotArrayResponse, error) {
-	var val []*Snapshot
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotArrayResponse{}, err
+func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *azcore.Response) (GlobalGetDeletedWebAppSnapshotsResponse, error) {
+	result := GlobalGetDeletedWebAppSnapshotsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotArray); err != nil {
+		return GlobalGetDeletedWebAppSnapshotsResponse{}, err
 	}
-	return SnapshotArrayResponse{RawResponse: resp.Response, SnapshotArray: val}, nil
+	return result, nil
 }
 
 // getDeletedWebAppSnapshotsHandleError handles the GetDeletedWebAppSnapshots error response.
@@ -156,19 +156,19 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsHandleError(resp *azcore.Re
 
 // GetSubscriptionOperationWithAsyncResponse - Description for Gets an operation in a subscription and given region
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx context.Context, location string, operationID string, options *GlobalGetSubscriptionOperationWithAsyncResponseOptions) (*http.Response, error) {
+func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx context.Context, location string, operationID string, options *GlobalGetSubscriptionOperationWithAsyncResponseOptions) (GlobalGetSubscriptionOperationWithAsyncResponseResponse, error) {
 	req, err := client.getSubscriptionOperationWithAsyncResponseCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return nil, err
+		return GlobalGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return GlobalGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.getSubscriptionOperationWithAsyncResponseHandleError(resp)
+		return GlobalGetSubscriptionOperationWithAsyncResponseResponse{}, client.getSubscriptionOperationWithAsyncResponseHandleError(resp)
 	}
-	return resp.Response, nil
+	return GlobalGetSubscriptionOperationWithAsyncResponseResponse{RawResponse: resp.Response}, nil
 }
 
 // getSubscriptionOperationWithAsyncResponseCreateRequest creates the GetSubscriptionOperationWithAsyncResponse request.

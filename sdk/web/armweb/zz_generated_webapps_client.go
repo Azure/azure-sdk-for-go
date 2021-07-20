@@ -34,17 +34,17 @@ func NewWebAppsClient(con *armcore.Connection, subscriptionID string) *WebAppsCl
 
 // AddPremierAddOn - Description for Updates a named add-on of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) AddPremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOn, options *WebAppsAddPremierAddOnOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) AddPremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOn, options *WebAppsAddPremierAddOnOptions) (WebAppsAddPremierAddOnResponse, error) {
 	req, err := client.addPremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, premierAddOn, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsAddPremierAddOnResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsAddPremierAddOnResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.addPremierAddOnHandleError(resp)
+		return WebAppsAddPremierAddOnResponse{}, client.addPremierAddOnHandleError(resp)
 	}
 	return client.addPremierAddOnHandleResponse(resp)
 }
@@ -81,12 +81,12 @@ func (client *WebAppsClient) addPremierAddOnCreateRequest(ctx context.Context, r
 }
 
 // addPremierAddOnHandleResponse handles the AddPremierAddOn response.
-func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *azcore.Response) (WebAppsAddPremierAddOnResponse, error) {
+	result := WebAppsAddPremierAddOnResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsAddPremierAddOnResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // addPremierAddOnHandleError handles the AddPremierAddOn error response.
@@ -104,17 +104,17 @@ func (client *WebAppsClient) addPremierAddOnHandleError(resp *azcore.Response) e
 
 // AddPremierAddOnSlot - Description for Updates a named add-on of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) AddPremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOn, options *WebAppsAddPremierAddOnSlotOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) AddPremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOn, options *WebAppsAddPremierAddOnSlotOptions) (WebAppsAddPremierAddOnSlotResponse, error) {
 	req, err := client.addPremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, premierAddOn, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsAddPremierAddOnSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsAddPremierAddOnSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.addPremierAddOnSlotHandleError(resp)
+		return WebAppsAddPremierAddOnSlotResponse{}, client.addPremierAddOnSlotHandleError(resp)
 	}
 	return client.addPremierAddOnSlotHandleResponse(resp)
 }
@@ -155,12 +155,12 @@ func (client *WebAppsClient) addPremierAddOnSlotCreateRequest(ctx context.Contex
 }
 
 // addPremierAddOnSlotHandleResponse handles the AddPremierAddOnSlot response.
-func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *azcore.Response) (WebAppsAddPremierAddOnSlotResponse, error) {
+	result := WebAppsAddPremierAddOnSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsAddPremierAddOnSlotResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // addPremierAddOnSlotHandleError handles the AddPremierAddOnSlot error response.
@@ -178,17 +178,17 @@ func (client *WebAppsClient) addPremierAddOnSlotHandleError(resp *azcore.Respons
 
 // AnalyzeCustomHostname - Description for Analyze a custom hostname.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) AnalyzeCustomHostname(ctx context.Context, resourceGroupName string, name string, options *WebAppsAnalyzeCustomHostnameOptions) (CustomHostnameAnalysisResultResponse, error) {
+func (client *WebAppsClient) AnalyzeCustomHostname(ctx context.Context, resourceGroupName string, name string, options *WebAppsAnalyzeCustomHostnameOptions) (WebAppsAnalyzeCustomHostnameResponse, error) {
 	req, err := client.analyzeCustomHostnameCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CustomHostnameAnalysisResultResponse{}, err
+		return WebAppsAnalyzeCustomHostnameResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CustomHostnameAnalysisResultResponse{}, err
+		return WebAppsAnalyzeCustomHostnameResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CustomHostnameAnalysisResultResponse{}, client.analyzeCustomHostnameHandleError(resp)
+		return WebAppsAnalyzeCustomHostnameResponse{}, client.analyzeCustomHostnameHandleError(resp)
 	}
 	return client.analyzeCustomHostnameHandleResponse(resp)
 }
@@ -224,12 +224,12 @@ func (client *WebAppsClient) analyzeCustomHostnameCreateRequest(ctx context.Cont
 }
 
 // analyzeCustomHostnameHandleResponse handles the AnalyzeCustomHostname response.
-func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *azcore.Response) (CustomHostnameAnalysisResultResponse, error) {
-	var val *CustomHostnameAnalysisResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CustomHostnameAnalysisResultResponse{}, err
+func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *azcore.Response) (WebAppsAnalyzeCustomHostnameResponse, error) {
+	result := WebAppsAnalyzeCustomHostnameResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CustomHostnameAnalysisResult); err != nil {
+		return WebAppsAnalyzeCustomHostnameResponse{}, err
 	}
-	return CustomHostnameAnalysisResultResponse{RawResponse: resp.Response, CustomHostnameAnalysisResult: val}, nil
+	return result, nil
 }
 
 // analyzeCustomHostnameHandleError handles the AnalyzeCustomHostname error response.
@@ -247,17 +247,17 @@ func (client *WebAppsClient) analyzeCustomHostnameHandleError(resp *azcore.Respo
 
 // AnalyzeCustomHostnameSlot - Description for Analyze a custom hostname.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) AnalyzeCustomHostnameSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsAnalyzeCustomHostnameSlotOptions) (CustomHostnameAnalysisResultResponse, error) {
+func (client *WebAppsClient) AnalyzeCustomHostnameSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsAnalyzeCustomHostnameSlotOptions) (WebAppsAnalyzeCustomHostnameSlotResponse, error) {
 	req, err := client.analyzeCustomHostnameSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return CustomHostnameAnalysisResultResponse{}, err
+		return WebAppsAnalyzeCustomHostnameSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CustomHostnameAnalysisResultResponse{}, err
+		return WebAppsAnalyzeCustomHostnameSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CustomHostnameAnalysisResultResponse{}, client.analyzeCustomHostnameSlotHandleError(resp)
+		return WebAppsAnalyzeCustomHostnameSlotResponse{}, client.analyzeCustomHostnameSlotHandleError(resp)
 	}
 	return client.analyzeCustomHostnameSlotHandleResponse(resp)
 }
@@ -297,12 +297,12 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotCreateRequest(ctx context.
 }
 
 // analyzeCustomHostnameSlotHandleResponse handles the AnalyzeCustomHostnameSlot response.
-func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *azcore.Response) (CustomHostnameAnalysisResultResponse, error) {
-	var val *CustomHostnameAnalysisResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CustomHostnameAnalysisResultResponse{}, err
+func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *azcore.Response) (WebAppsAnalyzeCustomHostnameSlotResponse, error) {
+	result := WebAppsAnalyzeCustomHostnameSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CustomHostnameAnalysisResult); err != nil {
+		return WebAppsAnalyzeCustomHostnameSlotResponse{}, err
 	}
-	return CustomHostnameAnalysisResultResponse{RawResponse: resp.Response, CustomHostnameAnalysisResult: val}, nil
+	return result, nil
 }
 
 // analyzeCustomHostnameSlotHandleError handles the AnalyzeCustomHostnameSlot error response.
@@ -320,19 +320,19 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotHandleError(resp *azcore.R
 
 // ApplySlotConfigToProduction - Description for Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ApplySlotConfigToProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsApplySlotConfigToProductionOptions) (*http.Response, error) {
+func (client *WebAppsClient) ApplySlotConfigToProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsApplySlotConfigToProductionOptions) (WebAppsApplySlotConfigToProductionResponse, error) {
 	req, err := client.applySlotConfigToProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, options)
 	if err != nil {
-		return nil, err
+		return WebAppsApplySlotConfigToProductionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsApplySlotConfigToProductionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.applySlotConfigToProductionHandleError(resp)
+		return WebAppsApplySlotConfigToProductionResponse{}, client.applySlotConfigToProductionHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsApplySlotConfigToProductionResponse{RawResponse: resp.Response}, nil
 }
 
 // applySlotConfigToProductionCreateRequest creates the ApplySlotConfigToProduction request.
@@ -377,19 +377,19 @@ func (client *WebAppsClient) applySlotConfigToProductionHandleError(resp *azcore
 
 // ApplySlotConfigurationSlot - Description for Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ApplySlotConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsApplySlotConfigurationSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) ApplySlotConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsApplySlotConfigurationSlotOptions) (WebAppsApplySlotConfigurationSlotResponse, error) {
 	req, err := client.applySlotConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
 	if err != nil {
-		return nil, err
+		return WebAppsApplySlotConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsApplySlotConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.applySlotConfigurationSlotHandleError(resp)
+		return WebAppsApplySlotConfigurationSlotResponse{}, client.applySlotConfigurationSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsApplySlotConfigurationSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // applySlotConfigurationSlotCreateRequest creates the ApplySlotConfigurationSlot request.
@@ -438,47 +438,47 @@ func (client *WebAppsClient) applySlotConfigurationSlotHandleError(resp *azcore.
 
 // BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *WebAppsBeginApproveOrRejectPrivateEndpointConnectionOptions) (RemotePrivateEndpointConnectionARMResourcePollerResponse, error) {
+func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *WebAppsBeginApproveOrRejectPrivateEndpointConnectionOptions) (WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.approveOrRejectPrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := RemotePrivateEndpointConnectionARMResourcePollerResponse{
+	result := WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.ApproveOrRejectPrivateEndpointConnection", "", resp, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &remotePrivateEndpointConnectionARMResourcePoller{
+	poller := &webAppsApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeApproveOrRejectPrivateEndpointConnection creates a new RemotePrivateEndpointConnectionARMResourcePoller from the specified resume token.
-// token - The value must come from a previous call to RemotePrivateEndpointConnectionARMResourcePoller.ResumeToken().
-func (client *WebAppsClient) ResumeApproveOrRejectPrivateEndpointConnection(ctx context.Context, token string) (RemotePrivateEndpointConnectionARMResourcePollerResponse, error) {
+// ResumeApproveOrRejectPrivateEndpointConnection creates a new WebAppsApproveOrRejectPrivateEndpointConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken().
+func (client *WebAppsClient) ResumeApproveOrRejectPrivateEndpointConnection(ctx context.Context, token string) (WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnection", token, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &remotePrivateEndpointConnectionARMResourcePoller{
+	poller := &webAppsApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := RemotePrivateEndpointConnectionARMResourcePollerResponse{
+	result := WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -547,47 +547,47 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionHandleError
 
 // BeginApproveOrRejectPrivateEndpointConnectionSlot - Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *WebAppsBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (RemotePrivateEndpointConnectionARMResourcePollerResponse, error) {
+func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *WebAppsBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse, error) {
 	resp, err := client.approveOrRejectPrivateEndpointConnectionSlot(ctx, resourceGroupName, name, privateEndpointConnectionName, slot, privateEndpointWrapper, options)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	result := RemotePrivateEndpointConnectionARMResourcePollerResponse{
+	result := WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot", "", resp, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionSlotHandleError)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	poller := &remotePrivateEndpointConnectionARMResourcePoller{
+	poller := &webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeApproveOrRejectPrivateEndpointConnectionSlot creates a new RemotePrivateEndpointConnectionARMResourcePoller from the specified resume token.
-// token - The value must come from a previous call to RemotePrivateEndpointConnectionARMResourcePoller.ResumeToken().
-func (client *WebAppsClient) ResumeApproveOrRejectPrivateEndpointConnectionSlot(ctx context.Context, token string) (RemotePrivateEndpointConnectionARMResourcePollerResponse, error) {
+// ResumeApproveOrRejectPrivateEndpointConnectionSlot creates a new WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeApproveOrRejectPrivateEndpointConnectionSlot(ctx context.Context, token string) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot", token, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionSlotHandleError)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	poller := &remotePrivateEndpointConnectionARMResourcePoller{
+	poller := &webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	result := RemotePrivateEndpointConnectionARMResourcePollerResponse{
+	result := WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -660,17 +660,17 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlotHandleE
 
 // Backup - Description for Creates a backup of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Backup(ctx context.Context, resourceGroupName string, name string, request BackupRequest, options *WebAppsBackupOptions) (BackupItemResponse, error) {
+func (client *WebAppsClient) Backup(ctx context.Context, resourceGroupName string, name string, request BackupRequest, options *WebAppsBackupOptions) (WebAppsBackupResponse, error) {
 	req, err := client.backupCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsBackupResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsBackupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupItemResponse{}, client.backupHandleError(resp)
+		return WebAppsBackupResponse{}, client.backupHandleError(resp)
 	}
 	return client.backupHandleResponse(resp)
 }
@@ -703,12 +703,12 @@ func (client *WebAppsClient) backupCreateRequest(ctx context.Context, resourceGr
 }
 
 // backupHandleResponse handles the Backup response.
-func (client *WebAppsClient) backupHandleResponse(resp *azcore.Response) (BackupItemResponse, error) {
-	var val *BackupItem
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemResponse{}, err
+func (client *WebAppsClient) backupHandleResponse(resp *azcore.Response) (WebAppsBackupResponse, error) {
+	result := WebAppsBackupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItem); err != nil {
+		return WebAppsBackupResponse{}, err
 	}
-	return BackupItemResponse{RawResponse: resp.Response, BackupItem: val}, nil
+	return result, nil
 }
 
 // backupHandleError handles the Backup error response.
@@ -726,17 +726,17 @@ func (client *WebAppsClient) backupHandleError(resp *azcore.Response) error {
 
 // BackupSlot - Description for Creates a backup of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BackupSlot(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, options *WebAppsBackupSlotOptions) (BackupItemResponse, error) {
+func (client *WebAppsClient) BackupSlot(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, options *WebAppsBackupSlotOptions) (WebAppsBackupSlotResponse, error) {
 	req, err := client.backupSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsBackupSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsBackupSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupItemResponse{}, client.backupSlotHandleError(resp)
+		return WebAppsBackupSlotResponse{}, client.backupSlotHandleError(resp)
 	}
 	return client.backupSlotHandleResponse(resp)
 }
@@ -773,12 +773,12 @@ func (client *WebAppsClient) backupSlotCreateRequest(ctx context.Context, resour
 }
 
 // backupSlotHandleResponse handles the BackupSlot response.
-func (client *WebAppsClient) backupSlotHandleResponse(resp *azcore.Response) (BackupItemResponse, error) {
-	var val *BackupItem
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemResponse{}, err
+func (client *WebAppsClient) backupSlotHandleResponse(resp *azcore.Response) (WebAppsBackupSlotResponse, error) {
+	result := WebAppsBackupSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItem); err != nil {
+		return WebAppsBackupSlotResponse{}, err
 	}
-	return BackupItemResponse{RawResponse: resp.Response, BackupItem: val}, nil
+	return result, nil
 }
 
 // backupSlotHandleError handles the BackupSlot error response.
@@ -796,17 +796,17 @@ func (client *WebAppsClient) backupSlotHandleError(resp *azcore.Response) error 
 
 // CreateDeployment - Description for Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateDeployment(ctx context.Context, resourceGroupName string, name string, id string, deployment Deployment, options *WebAppsCreateDeploymentOptions) (DeploymentResponse, error) {
+func (client *WebAppsClient) CreateDeployment(ctx context.Context, resourceGroupName string, name string, id string, deployment Deployment, options *WebAppsCreateDeploymentOptions) (WebAppsCreateDeploymentResponse, error) {
 	req, err := client.createDeploymentCreateRequest(ctx, resourceGroupName, name, id, deployment, options)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsCreateDeploymentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsCreateDeploymentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentResponse{}, client.createDeploymentHandleError(resp)
+		return WebAppsCreateDeploymentResponse{}, client.createDeploymentHandleError(resp)
 	}
 	return client.createDeploymentHandleResponse(resp)
 }
@@ -843,12 +843,12 @@ func (client *WebAppsClient) createDeploymentCreateRequest(ctx context.Context, 
 }
 
 // createDeploymentHandleResponse handles the CreateDeployment response.
-func (client *WebAppsClient) createDeploymentHandleResponse(resp *azcore.Response) (DeploymentResponse, error) {
-	var val *Deployment
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentResponse{}, err
+func (client *WebAppsClient) createDeploymentHandleResponse(resp *azcore.Response) (WebAppsCreateDeploymentResponse, error) {
+	result := WebAppsCreateDeploymentResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Deployment); err != nil {
+		return WebAppsCreateDeploymentResponse{}, err
 	}
-	return DeploymentResponse{RawResponse: resp.Response, Deployment: val}, nil
+	return result, nil
 }
 
 // createDeploymentHandleError handles the CreateDeployment error response.
@@ -866,17 +866,17 @@ func (client *WebAppsClient) createDeploymentHandleError(resp *azcore.Response) 
 
 // CreateDeploymentSlot - Description for Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment Deployment, options *WebAppsCreateDeploymentSlotOptions) (DeploymentResponse, error) {
+func (client *WebAppsClient) CreateDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment Deployment, options *WebAppsCreateDeploymentSlotOptions) (WebAppsCreateDeploymentSlotResponse, error) {
 	req, err := client.createDeploymentSlotCreateRequest(ctx, resourceGroupName, name, id, slot, deployment, options)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsCreateDeploymentSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsCreateDeploymentSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentResponse{}, client.createDeploymentSlotHandleError(resp)
+		return WebAppsCreateDeploymentSlotResponse{}, client.createDeploymentSlotHandleError(resp)
 	}
 	return client.createDeploymentSlotHandleResponse(resp)
 }
@@ -917,12 +917,12 @@ func (client *WebAppsClient) createDeploymentSlotCreateRequest(ctx context.Conte
 }
 
 // createDeploymentSlotHandleResponse handles the CreateDeploymentSlot response.
-func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *azcore.Response) (DeploymentResponse, error) {
-	var val *Deployment
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentResponse{}, err
+func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *azcore.Response) (WebAppsCreateDeploymentSlotResponse, error) {
+	result := WebAppsCreateDeploymentSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Deployment); err != nil {
+		return WebAppsCreateDeploymentSlotResponse{}, err
 	}
-	return DeploymentResponse{RawResponse: resp.Response, Deployment: val}, nil
+	return result, nil
 }
 
 // createDeploymentSlotHandleError handles the CreateDeploymentSlot error response.
@@ -940,47 +940,47 @@ func (client *WebAppsClient) createDeploymentSlotHandleError(resp *azcore.Respon
 
 // BeginCreateFunction - Description for Create function for web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateFunction(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, options *WebAppsBeginCreateFunctionOptions) (FunctionEnvelopePollerResponse, error) {
+func (client *WebAppsClient) BeginCreateFunction(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, options *WebAppsBeginCreateFunctionOptions) (WebAppsCreateFunctionPollerResponse, error) {
 	resp, err := client.createFunction(ctx, resourceGroupName, name, functionName, functionEnvelope, options)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateFunctionPollerResponse{}, err
 	}
-	result := FunctionEnvelopePollerResponse{
+	result := WebAppsCreateFunctionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateFunction", "", resp, client.con.Pipeline(), client.createFunctionHandleError)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateFunctionPollerResponse{}, err
 	}
-	poller := &functionEnvelopePoller{
+	poller := &webAppsCreateFunctionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FunctionEnvelopeResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateFunctionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateFunction creates a new FunctionEnvelopePoller from the specified resume token.
-// token - The value must come from a previous call to FunctionEnvelopePoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateFunction(ctx context.Context, token string) (FunctionEnvelopePollerResponse, error) {
+// ResumeCreateFunction creates a new WebAppsCreateFunctionPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateFunctionPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateFunction(ctx context.Context, token string) (WebAppsCreateFunctionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateFunction", token, client.con.Pipeline(), client.createFunctionHandleError)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateFunctionPollerResponse{}, err
 	}
-	poller := &functionEnvelopePoller{
+	poller := &webAppsCreateFunctionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateFunctionPollerResponse{}, err
 	}
-	result := FunctionEnvelopePollerResponse{
+	result := WebAppsCreateFunctionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FunctionEnvelopeResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateFunctionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1049,47 +1049,47 @@ func (client *WebAppsClient) createFunctionHandleError(resp *azcore.Response) er
 
 // BeginCreateInstanceFunctionSlot - Description for Create function for web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, options *WebAppsBeginCreateInstanceFunctionSlotOptions) (FunctionEnvelopePollerResponse, error) {
+func (client *WebAppsClient) BeginCreateInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, options *WebAppsBeginCreateInstanceFunctionSlotOptions) (WebAppsCreateInstanceFunctionSlotPollerResponse, error) {
 	resp, err := client.createInstanceFunctionSlot(ctx, resourceGroupName, name, functionName, slot, functionEnvelope, options)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateInstanceFunctionSlotPollerResponse{}, err
 	}
-	result := FunctionEnvelopePollerResponse{
+	result := WebAppsCreateInstanceFunctionSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateInstanceFunctionSlot", "", resp, client.con.Pipeline(), client.createInstanceFunctionSlotHandleError)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateInstanceFunctionSlotPollerResponse{}, err
 	}
-	poller := &functionEnvelopePoller{
+	poller := &webAppsCreateInstanceFunctionSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FunctionEnvelopeResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceFunctionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateInstanceFunctionSlot creates a new FunctionEnvelopePoller from the specified resume token.
-// token - The value must come from a previous call to FunctionEnvelopePoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateInstanceFunctionSlot(ctx context.Context, token string) (FunctionEnvelopePollerResponse, error) {
+// ResumeCreateInstanceFunctionSlot creates a new WebAppsCreateInstanceFunctionSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateInstanceFunctionSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateInstanceFunctionSlot(ctx context.Context, token string) (WebAppsCreateInstanceFunctionSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateInstanceFunctionSlot", token, client.con.Pipeline(), client.createInstanceFunctionSlotHandleError)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateInstanceFunctionSlotPollerResponse{}, err
 	}
-	poller := &functionEnvelopePoller{
+	poller := &webAppsCreateInstanceFunctionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return FunctionEnvelopePollerResponse{}, err
+		return WebAppsCreateInstanceFunctionSlotPollerResponse{}, err
 	}
-	result := FunctionEnvelopePollerResponse{
+	result := WebAppsCreateInstanceFunctionSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FunctionEnvelopeResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceFunctionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1162,47 +1162,47 @@ func (client *WebAppsClient) createInstanceFunctionSlotHandleError(resp *azcore.
 
 // BeginCreateInstanceMSDeployOperation - Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateInstanceMSDeployOperation(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, options *WebAppsBeginCreateInstanceMSDeployOperationOptions) (MSDeployStatusPollerResponse, error) {
+func (client *WebAppsClient) BeginCreateInstanceMSDeployOperation(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, options *WebAppsBeginCreateInstanceMSDeployOperationOptions) (WebAppsCreateInstanceMSDeployOperationPollerResponse, error) {
 	resp, err := client.createInstanceMSDeployOperation(ctx, resourceGroupName, name, instanceID, msDeploy, options)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateInstanceMSDeployOperationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateInstanceMSDeployOperation", "", resp, client.con.Pipeline(), client.createInstanceMSDeployOperationHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateInstanceMSDeployOperationPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceMSDeployOperationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateInstanceMSDeployOperation creates a new MSDeployStatusPoller from the specified resume token.
-// token - The value must come from a previous call to MSDeployStatusPoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateInstanceMSDeployOperation(ctx context.Context, token string) (MSDeployStatusPollerResponse, error) {
+// ResumeCreateInstanceMSDeployOperation creates a new WebAppsCreateInstanceMSDeployOperationPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateInstanceMSDeployOperationPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateInstanceMSDeployOperation(ctx context.Context, token string) (WebAppsCreateInstanceMSDeployOperationPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperation", token, client.con.Pipeline(), client.createInstanceMSDeployOperationHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateInstanceMSDeployOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateInstanceMSDeployOperationPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceMSDeployOperationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1279,47 +1279,47 @@ func (client *WebAppsClient) createInstanceMSDeployOperationHandleError(resp *az
 
 // BeginCreateInstanceMSDeployOperationSlot - Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateInstanceMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, options *WebAppsBeginCreateInstanceMSDeployOperationSlotOptions) (MSDeployStatusPollerResponse, error) {
+func (client *WebAppsClient) BeginCreateInstanceMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, options *WebAppsBeginCreateInstanceMSDeployOperationSlotOptions) (WebAppsCreateInstanceMSDeployOperationSlotPollerResponse, error) {
 	resp, err := client.createInstanceMSDeployOperationSlot(ctx, resourceGroupName, name, slot, instanceID, msDeploy, options)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationSlotPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateInstanceMSDeployOperationSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateInstanceMSDeployOperationSlot", "", resp, client.con.Pipeline(), client.createInstanceMSDeployOperationSlotHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationSlotPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateInstanceMSDeployOperationSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateInstanceMSDeployOperationSlot creates a new MSDeployStatusPoller from the specified resume token.
-// token - The value must come from a previous call to MSDeployStatusPoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateInstanceMSDeployOperationSlot(ctx context.Context, token string) (MSDeployStatusPollerResponse, error) {
+// ResumeCreateInstanceMSDeployOperationSlot creates a new WebAppsCreateInstanceMSDeployOperationSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateInstanceMSDeployOperationSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateInstanceMSDeployOperationSlot(ctx context.Context, token string) (WebAppsCreateInstanceMSDeployOperationSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperationSlot", token, client.con.Pipeline(), client.createInstanceMSDeployOperationSlotHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationSlotPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateInstanceMSDeployOperationSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateInstanceMSDeployOperationSlotPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateInstanceMSDeployOperationSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1400,47 +1400,47 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlotHandleError(resp
 
 // BeginCreateMSDeployOperation - Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateMSDeployOperation(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, options *WebAppsBeginCreateMSDeployOperationOptions) (MSDeployStatusPollerResponse, error) {
+func (client *WebAppsClient) BeginCreateMSDeployOperation(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, options *WebAppsBeginCreateMSDeployOperationOptions) (WebAppsCreateMSDeployOperationPollerResponse, error) {
 	resp, err := client.createMSDeployOperation(ctx, resourceGroupName, name, msDeploy, options)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateMSDeployOperationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateMSDeployOperation", "", resp, client.con.Pipeline(), client.createMSDeployOperationHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateMSDeployOperationPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateMSDeployOperationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateMSDeployOperation creates a new MSDeployStatusPoller from the specified resume token.
-// token - The value must come from a previous call to MSDeployStatusPoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateMSDeployOperation(ctx context.Context, token string) (MSDeployStatusPollerResponse, error) {
+// ResumeCreateMSDeployOperation creates a new WebAppsCreateMSDeployOperationPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateMSDeployOperationPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateMSDeployOperation(ctx context.Context, token string) (WebAppsCreateMSDeployOperationPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateMSDeployOperation", token, client.con.Pipeline(), client.createMSDeployOperationHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateMSDeployOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateMSDeployOperationPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateMSDeployOperationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1513,47 +1513,47 @@ func (client *WebAppsClient) createMSDeployOperationHandleError(resp *azcore.Res
 
 // BeginCreateMSDeployOperationSlot - Description for Invoke the MSDeploy web app extension.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, options *WebAppsBeginCreateMSDeployOperationSlotOptions) (MSDeployStatusPollerResponse, error) {
+func (client *WebAppsClient) BeginCreateMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, options *WebAppsBeginCreateMSDeployOperationSlotOptions) (WebAppsCreateMSDeployOperationSlotPollerResponse, error) {
 	resp, err := client.createMSDeployOperationSlot(ctx, resourceGroupName, name, slot, msDeploy, options)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationSlotPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateMSDeployOperationSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateMSDeployOperationSlot", "", resp, client.con.Pipeline(), client.createMSDeployOperationSlotHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationSlotPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateMSDeployOperationSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateMSDeployOperationSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateMSDeployOperationSlot creates a new MSDeployStatusPoller from the specified resume token.
-// token - The value must come from a previous call to MSDeployStatusPoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateMSDeployOperationSlot(ctx context.Context, token string) (MSDeployStatusPollerResponse, error) {
+// ResumeCreateMSDeployOperationSlot creates a new WebAppsCreateMSDeployOperationSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateMSDeployOperationSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateMSDeployOperationSlot(ctx context.Context, token string) (WebAppsCreateMSDeployOperationSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateMSDeployOperationSlot", token, client.con.Pipeline(), client.createMSDeployOperationSlotHandleError)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationSlotPollerResponse{}, err
 	}
-	poller := &msDeployStatusPoller{
+	poller := &webAppsCreateMSDeployOperationSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return MSDeployStatusPollerResponse{}, err
+		return WebAppsCreateMSDeployOperationSlotPollerResponse{}, err
 	}
-	result := MSDeployStatusPollerResponse{
+	result := WebAppsCreateMSDeployOperationSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MSDeployStatusResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateMSDeployOperationSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1630,47 +1630,47 @@ func (client *WebAppsClient) createMSDeployOperationSlotHandleError(resp *azcore
 
 // BeginCreateOrUpdate - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, options *WebAppsBeginCreateOrUpdateOptions) (SitePollerResponse, error) {
+func (client *WebAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, options *WebAppsBeginCreateOrUpdateOptions) (WebAppsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, siteEnvelope, options)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdatePollerResponse{}, err
 	}
-	result := SitePollerResponse{
+	result := WebAppsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &sitePoller{
+	poller := &webAppsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new SitePoller from the specified resume token.
-// token - The value must come from a previous call to SitePoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SitePollerResponse, error) {
+// ResumeCreateOrUpdate creates a new WebAppsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateOrUpdatePoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (WebAppsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &sitePoller{
+	poller := &webAppsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdatePollerResponse{}, err
 	}
-	result := SitePollerResponse{
+	result := WebAppsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1735,17 +1735,17 @@ func (client *WebAppsClient) createOrUpdateHandleError(resp *azcore.Response) er
 
 // CreateOrUpdateConfiguration - Description for Updates the configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateConfiguration(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, options *WebAppsCreateOrUpdateConfigurationOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateConfiguration(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, options *WebAppsCreateOrUpdateConfigurationOptions) (WebAppsCreateOrUpdateConfigurationResponse, error) {
 	req, err := client.createOrUpdateConfigurationCreateRequest(ctx, resourceGroupName, name, siteConfig, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsCreateOrUpdateConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsCreateOrUpdateConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.createOrUpdateConfigurationHandleError(resp)
+		return WebAppsCreateOrUpdateConfigurationResponse{}, client.createOrUpdateConfigurationHandleError(resp)
 	}
 	return client.createOrUpdateConfigurationHandleResponse(resp)
 }
@@ -1778,12 +1778,12 @@ func (client *WebAppsClient) createOrUpdateConfigurationCreateRequest(ctx contex
 }
 
 // createOrUpdateConfigurationHandleResponse handles the CreateOrUpdateConfiguration response.
-func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateConfigurationResponse, error) {
+	result := WebAppsCreateOrUpdateConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsCreateOrUpdateConfigurationResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // createOrUpdateConfigurationHandleError handles the CreateOrUpdateConfiguration error response.
@@ -1801,17 +1801,17 @@ func (client *WebAppsClient) createOrUpdateConfigurationHandleError(resp *azcore
 
 // CreateOrUpdateConfigurationSlot - Description for Updates the configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, options *WebAppsCreateOrUpdateConfigurationSlotOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, options *WebAppsCreateOrUpdateConfigurationSlotOptions) (WebAppsCreateOrUpdateConfigurationSlotResponse, error) {
 	req, err := client.createOrUpdateConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, siteConfig, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsCreateOrUpdateConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsCreateOrUpdateConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.createOrUpdateConfigurationSlotHandleError(resp)
+		return WebAppsCreateOrUpdateConfigurationSlotResponse{}, client.createOrUpdateConfigurationSlotHandleError(resp)
 	}
 	return client.createOrUpdateConfigurationSlotHandleResponse(resp)
 }
@@ -1848,12 +1848,12 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotCreateRequest(ctx co
 }
 
 // createOrUpdateConfigurationSlotHandleResponse handles the CreateOrUpdateConfigurationSlot response.
-func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateConfigurationSlotResponse, error) {
+	result := WebAppsCreateOrUpdateConfigurationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsCreateOrUpdateConfigurationSlotResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // createOrUpdateConfigurationSlotHandleError handles the CreateOrUpdateConfigurationSlot error response.
@@ -1871,17 +1871,17 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleError(resp *az
 
 // CreateOrUpdateDomainOwnershipIdentifier - Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, options *WebAppsCreateOrUpdateDomainOwnershipIdentifierOptions) (IdentifierResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, options *WebAppsCreateOrUpdateDomainOwnershipIdentifierOptions) (WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse, error) {
 	req, err := client.createOrUpdateDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier, options)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IdentifierResponse{}, client.createOrUpdateDomainOwnershipIdentifierHandleError(resp)
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse{}, client.createOrUpdateDomainOwnershipIdentifierHandleError(resp)
 	}
 	return client.createOrUpdateDomainOwnershipIdentifierHandleResponse(resp)
 }
@@ -1918,12 +1918,12 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierCreateReques
 }
 
 // createOrUpdateDomainOwnershipIdentifierHandleResponse handles the CreateOrUpdateDomainOwnershipIdentifier response.
-func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (IdentifierResponse, error) {
-	var val *Identifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierResponse{}, err
+func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse, error) {
+	result := WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Identifier); err != nil {
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	return IdentifierResponse{RawResponse: resp.Response, Identifier: val}, nil
+	return result, nil
 }
 
 // createOrUpdateDomainOwnershipIdentifierHandleError handles the CreateOrUpdateDomainOwnershipIdentifier error response.
@@ -1941,17 +1941,17 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleError(
 
 // CreateOrUpdateDomainOwnershipIdentifierSlot - Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, options *WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotOptions) (IdentifierResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, options *WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotOptions) (WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.createOrUpdateDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier, options)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IdentifierResponse{}, client.createOrUpdateDomainOwnershipIdentifierSlotHandleError(resp)
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, client.createOrUpdateDomainOwnershipIdentifierSlotHandleError(resp)
 	}
 	return client.createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(resp)
 }
@@ -1992,12 +1992,12 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotCreateRe
 }
 
 // createOrUpdateDomainOwnershipIdentifierSlotHandleResponse handles the CreateOrUpdateDomainOwnershipIdentifierSlot response.
-func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(resp *azcore.Response) (IdentifierResponse, error) {
-	var val *Identifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierResponse{}, err
+func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error) {
+	result := WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Identifier); err != nil {
+		return WebAppsCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	return IdentifierResponse{RawResponse: resp.Response, Identifier: val}, nil
+	return result, nil
 }
 
 // createOrUpdateDomainOwnershipIdentifierSlotHandleError handles the CreateOrUpdateDomainOwnershipIdentifierSlot error response.
@@ -2015,17 +2015,17 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleEr
 
 // CreateOrUpdateFunctionSecret - Description for Add or update a function secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key KeyInfo, options *WebAppsCreateOrUpdateFunctionSecretOptions) (KeyInfoResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key KeyInfo, options *WebAppsCreateOrUpdateFunctionSecretOptions) (WebAppsCreateOrUpdateFunctionSecretResponse, error) {
 	req, err := client.createOrUpdateFunctionSecretCreateRequest(ctx, resourceGroupName, name, functionName, keyName, key, options)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateFunctionSecretResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateFunctionSecretResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return KeyInfoResponse{}, client.createOrUpdateFunctionSecretHandleError(resp)
+		return WebAppsCreateOrUpdateFunctionSecretResponse{}, client.createOrUpdateFunctionSecretHandleError(resp)
 	}
 	return client.createOrUpdateFunctionSecretHandleResponse(resp)
 }
@@ -2066,12 +2066,12 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretCreateRequest(ctx conte
 }
 
 // createOrUpdateFunctionSecretHandleResponse handles the CreateOrUpdateFunctionSecret response.
-func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *azcore.Response) (KeyInfoResponse, error) {
-	var val *KeyInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return KeyInfoResponse{}, err
+func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateFunctionSecretResponse, error) {
+	result := WebAppsCreateOrUpdateFunctionSecretResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.KeyInfo); err != nil {
+		return WebAppsCreateOrUpdateFunctionSecretResponse{}, err
 	}
-	return KeyInfoResponse{RawResponse: resp.Response, KeyInfo: val}, nil
+	return result, nil
 }
 
 // createOrUpdateFunctionSecretHandleError handles the CreateOrUpdateFunctionSecret error response.
@@ -2089,17 +2089,17 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretHandleError(resp *azcor
 
 // CreateOrUpdateFunctionSecretSlot - Description for Add or update a function secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key KeyInfo, options *WebAppsCreateOrUpdateFunctionSecretSlotOptions) (KeyInfoResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key KeyInfo, options *WebAppsCreateOrUpdateFunctionSecretSlotOptions) (WebAppsCreateOrUpdateFunctionSecretSlotResponse, error) {
 	req, err := client.createOrUpdateFunctionSecretSlotCreateRequest(ctx, resourceGroupName, name, functionName, keyName, slot, key, options)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return KeyInfoResponse{}, client.createOrUpdateFunctionSecretSlotHandleError(resp)
+		return WebAppsCreateOrUpdateFunctionSecretSlotResponse{}, client.createOrUpdateFunctionSecretSlotHandleError(resp)
 	}
 	return client.createOrUpdateFunctionSecretSlotHandleResponse(resp)
 }
@@ -2144,12 +2144,12 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotCreateRequest(ctx c
 }
 
 // createOrUpdateFunctionSecretSlotHandleResponse handles the CreateOrUpdateFunctionSecretSlot response.
-func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp *azcore.Response) (KeyInfoResponse, error) {
-	var val *KeyInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return KeyInfoResponse{}, err
+func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateFunctionSecretSlotResponse, error) {
+	result := WebAppsCreateOrUpdateFunctionSecretSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.KeyInfo); err != nil {
+		return WebAppsCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
-	return KeyInfoResponse{RawResponse: resp.Response, KeyInfo: val}, nil
+	return result, nil
 }
 
 // createOrUpdateFunctionSecretSlotHandleError handles the CreateOrUpdateFunctionSecretSlot error response.
@@ -2167,17 +2167,17 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleError(resp *a
 
 // CreateOrUpdateHostNameBinding - Description for Creates a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding HostNameBinding, options *WebAppsCreateOrUpdateHostNameBindingOptions) (HostNameBindingResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding HostNameBinding, options *WebAppsCreateOrUpdateHostNameBindingOptions) (WebAppsCreateOrUpdateHostNameBindingResponse, error) {
 	req, err := client.createOrUpdateHostNameBindingCreateRequest(ctx, resourceGroupName, name, hostName, hostNameBinding, options)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsCreateOrUpdateHostNameBindingResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsCreateOrUpdateHostNameBindingResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostNameBindingResponse{}, client.createOrUpdateHostNameBindingHandleError(resp)
+		return WebAppsCreateOrUpdateHostNameBindingResponse{}, client.createOrUpdateHostNameBindingHandleError(resp)
 	}
 	return client.createOrUpdateHostNameBindingHandleResponse(resp)
 }
@@ -2214,12 +2214,12 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingCreateRequest(ctx cont
 }
 
 // createOrUpdateHostNameBindingHandleResponse handles the CreateOrUpdateHostNameBinding response.
-func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *azcore.Response) (HostNameBindingResponse, error) {
-	var val *HostNameBinding
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostNameBindingResponse{}, err
+func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateHostNameBindingResponse, error) {
+	result := WebAppsCreateOrUpdateHostNameBindingResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostNameBinding); err != nil {
+		return WebAppsCreateOrUpdateHostNameBindingResponse{}, err
 	}
-	return HostNameBindingResponse{RawResponse: resp.Response, HostNameBinding: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHostNameBindingHandleError handles the CreateOrUpdateHostNameBinding error response.
@@ -2237,17 +2237,17 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingHandleError(resp *azco
 
 // CreateOrUpdateHostNameBindingSlot - Description for Creates a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, hostName string, slot string, hostNameBinding HostNameBinding, options *WebAppsCreateOrUpdateHostNameBindingSlotOptions) (HostNameBindingResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, hostName string, slot string, hostNameBinding HostNameBinding, options *WebAppsCreateOrUpdateHostNameBindingSlotOptions) (WebAppsCreateOrUpdateHostNameBindingSlotResponse, error) {
 	req, err := client.createOrUpdateHostNameBindingSlotCreateRequest(ctx, resourceGroupName, name, hostName, slot, hostNameBinding, options)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostNameBindingResponse{}, client.createOrUpdateHostNameBindingSlotHandleError(resp)
+		return WebAppsCreateOrUpdateHostNameBindingSlotResponse{}, client.createOrUpdateHostNameBindingSlotHandleError(resp)
 	}
 	return client.createOrUpdateHostNameBindingSlotHandleResponse(resp)
 }
@@ -2288,12 +2288,12 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotCreateRequest(ctx 
 }
 
 // createOrUpdateHostNameBindingSlotHandleResponse handles the CreateOrUpdateHostNameBindingSlot response.
-func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(resp *azcore.Response) (HostNameBindingResponse, error) {
-	var val *HostNameBinding
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostNameBindingResponse{}, err
+func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateHostNameBindingSlotResponse, error) {
+	result := WebAppsCreateOrUpdateHostNameBindingSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostNameBinding); err != nil {
+		return WebAppsCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
-	return HostNameBindingResponse{RawResponse: resp.Response, HostNameBinding: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHostNameBindingSlotHandleError handles the CreateOrUpdateHostNameBindingSlot error response.
@@ -2311,17 +2311,17 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleError(resp *
 
 // CreateOrUpdateHostSecret - Description for Add or update a host level secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key KeyInfo, options *WebAppsCreateOrUpdateHostSecretOptions) (KeyInfoResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key KeyInfo, options *WebAppsCreateOrUpdateHostSecretOptions) (WebAppsCreateOrUpdateHostSecretResponse, error) {
 	req, err := client.createOrUpdateHostSecretCreateRequest(ctx, resourceGroupName, name, keyType, keyName, key, options)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateHostSecretResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateHostSecretResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return KeyInfoResponse{}, client.createOrUpdateHostSecretHandleError(resp)
+		return WebAppsCreateOrUpdateHostSecretResponse{}, client.createOrUpdateHostSecretHandleError(resp)
 	}
 	return client.createOrUpdateHostSecretHandleResponse(resp)
 }
@@ -2362,12 +2362,12 @@ func (client *WebAppsClient) createOrUpdateHostSecretCreateRequest(ctx context.C
 }
 
 // createOrUpdateHostSecretHandleResponse handles the CreateOrUpdateHostSecret response.
-func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *azcore.Response) (KeyInfoResponse, error) {
-	var val *KeyInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return KeyInfoResponse{}, err
+func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateHostSecretResponse, error) {
+	result := WebAppsCreateOrUpdateHostSecretResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.KeyInfo); err != nil {
+		return WebAppsCreateOrUpdateHostSecretResponse{}, err
 	}
-	return KeyInfoResponse{RawResponse: resp.Response, KeyInfo: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHostSecretHandleError handles the CreateOrUpdateHostSecret error response.
@@ -2385,17 +2385,17 @@ func (client *WebAppsClient) createOrUpdateHostSecretHandleError(resp *azcore.Re
 
 // CreateOrUpdateHostSecretSlot - Description for Add or update a host level secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key KeyInfo, options *WebAppsCreateOrUpdateHostSecretSlotOptions) (KeyInfoResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key KeyInfo, options *WebAppsCreateOrUpdateHostSecretSlotOptions) (WebAppsCreateOrUpdateHostSecretSlotResponse, error) {
 	req, err := client.createOrUpdateHostSecretSlotCreateRequest(ctx, resourceGroupName, name, keyType, keyName, slot, key, options)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateHostSecretSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return KeyInfoResponse{}, err
+		return WebAppsCreateOrUpdateHostSecretSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return KeyInfoResponse{}, client.createOrUpdateHostSecretSlotHandleError(resp)
+		return WebAppsCreateOrUpdateHostSecretSlotResponse{}, client.createOrUpdateHostSecretSlotHandleError(resp)
 	}
 	return client.createOrUpdateHostSecretSlotHandleResponse(resp)
 }
@@ -2440,12 +2440,12 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotCreateRequest(ctx conte
 }
 
 // createOrUpdateHostSecretSlotHandleResponse handles the CreateOrUpdateHostSecretSlot response.
-func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *azcore.Response) (KeyInfoResponse, error) {
-	var val *KeyInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return KeyInfoResponse{}, err
+func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateHostSecretSlotResponse, error) {
+	result := WebAppsCreateOrUpdateHostSecretSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.KeyInfo); err != nil {
+		return WebAppsCreateOrUpdateHostSecretSlotResponse{}, err
 	}
-	return KeyInfoResponse{RawResponse: resp.Response, KeyInfo: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHostSecretSlotHandleError handles the CreateOrUpdateHostSecretSlot error response.
@@ -2463,17 +2463,17 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleError(resp *azcor
 
 // CreateOrUpdateHybridConnection - Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, options *WebAppsCreateOrUpdateHybridConnectionOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, options *WebAppsCreateOrUpdateHybridConnectionOptions) (WebAppsCreateOrUpdateHybridConnectionResponse, error) {
 	req, err := client.createOrUpdateHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, connectionEnvelope, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsCreateOrUpdateHybridConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsCreateOrUpdateHybridConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.createOrUpdateHybridConnectionHandleError(resp)
+		return WebAppsCreateOrUpdateHybridConnectionResponse{}, client.createOrUpdateHybridConnectionHandleError(resp)
 	}
 	return client.createOrUpdateHybridConnectionHandleResponse(resp)
 }
@@ -2514,12 +2514,12 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionCreateRequest(ctx con
 }
 
 // createOrUpdateHybridConnectionHandleResponse handles the CreateOrUpdateHybridConnection response.
-func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateHybridConnectionResponse, error) {
+	result := WebAppsCreateOrUpdateHybridConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsCreateOrUpdateHybridConnectionResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHybridConnectionHandleError handles the CreateOrUpdateHybridConnection error response.
@@ -2537,17 +2537,17 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionHandleError(resp *azc
 
 // CreateOrUpdateHybridConnectionSlot - Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, options *WebAppsCreateOrUpdateHybridConnectionSlotOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, options *WebAppsCreateOrUpdateHybridConnectionSlotOptions) (WebAppsCreateOrUpdateHybridConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.createOrUpdateHybridConnectionSlotHandleError(resp)
+		return WebAppsCreateOrUpdateHybridConnectionSlotResponse{}, client.createOrUpdateHybridConnectionSlotHandleError(resp)
 	}
 	return client.createOrUpdateHybridConnectionSlotHandleResponse(resp)
 }
@@ -2592,12 +2592,12 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotCreateRequest(ctx
 }
 
 // createOrUpdateHybridConnectionSlotHandleResponse handles the CreateOrUpdateHybridConnectionSlot response.
-func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateHybridConnectionSlotResponse, error) {
+	result := WebAppsCreateOrUpdateHybridConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHybridConnectionSlotHandleError handles the CreateOrUpdateHybridConnectionSlot error response.
@@ -2615,17 +2615,17 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleError(resp 
 
 // CreateOrUpdatePublicCertificate - Description for Creates a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdatePublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, publicCertificate PublicCertificate, options *WebAppsCreateOrUpdatePublicCertificateOptions) (PublicCertificateResponse, error) {
+func (client *WebAppsClient) CreateOrUpdatePublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, publicCertificate PublicCertificate, options *WebAppsCreateOrUpdatePublicCertificateOptions) (WebAppsCreateOrUpdatePublicCertificateResponse, error) {
 	req, err := client.createOrUpdatePublicCertificateCreateRequest(ctx, resourceGroupName, name, publicCertificateName, publicCertificate, options)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsCreateOrUpdatePublicCertificateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsCreateOrUpdatePublicCertificateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PublicCertificateResponse{}, client.createOrUpdatePublicCertificateHandleError(resp)
+		return WebAppsCreateOrUpdatePublicCertificateResponse{}, client.createOrUpdatePublicCertificateHandleError(resp)
 	}
 	return client.createOrUpdatePublicCertificateHandleResponse(resp)
 }
@@ -2662,12 +2662,12 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateCreateRequest(ctx co
 }
 
 // createOrUpdatePublicCertificateHandleResponse handles the CreateOrUpdatePublicCertificate response.
-func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp *azcore.Response) (PublicCertificateResponse, error) {
-	var val *PublicCertificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublicCertificateResponse{}, err
+func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdatePublicCertificateResponse, error) {
+	result := WebAppsCreateOrUpdatePublicCertificateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublicCertificate); err != nil {
+		return WebAppsCreateOrUpdatePublicCertificateResponse{}, err
 	}
-	return PublicCertificateResponse{RawResponse: resp.Response, PublicCertificate: val}, nil
+	return result, nil
 }
 
 // createOrUpdatePublicCertificateHandleError handles the CreateOrUpdatePublicCertificate error response.
@@ -2685,17 +2685,17 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateHandleError(resp *az
 
 // CreateOrUpdatePublicCertificateSlot - Description for Creates a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdatePublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, slot string, publicCertificate PublicCertificate, options *WebAppsCreateOrUpdatePublicCertificateSlotOptions) (PublicCertificateResponse, error) {
+func (client *WebAppsClient) CreateOrUpdatePublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, slot string, publicCertificate PublicCertificate, options *WebAppsCreateOrUpdatePublicCertificateSlotOptions) (WebAppsCreateOrUpdatePublicCertificateSlotResponse, error) {
 	req, err := client.createOrUpdatePublicCertificateSlotCreateRequest(ctx, resourceGroupName, name, publicCertificateName, slot, publicCertificate, options)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PublicCertificateResponse{}, client.createOrUpdatePublicCertificateSlotHandleError(resp)
+		return WebAppsCreateOrUpdatePublicCertificateSlotResponse{}, client.createOrUpdatePublicCertificateSlotHandleError(resp)
 	}
 	return client.createOrUpdatePublicCertificateSlotHandleResponse(resp)
 }
@@ -2736,12 +2736,12 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotCreateRequest(ct
 }
 
 // createOrUpdatePublicCertificateSlotHandleResponse handles the CreateOrUpdatePublicCertificateSlot response.
-func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(resp *azcore.Response) (PublicCertificateResponse, error) {
-	var val *PublicCertificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublicCertificateResponse{}, err
+func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdatePublicCertificateSlotResponse, error) {
+	result := WebAppsCreateOrUpdatePublicCertificateSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublicCertificate); err != nil {
+		return WebAppsCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
-	return PublicCertificateResponse{RawResponse: resp.Response, PublicCertificate: val}, nil
+	return result, nil
 }
 
 // createOrUpdatePublicCertificateSlotHandleError handles the CreateOrUpdatePublicCertificateSlot error response.
@@ -2759,17 +2759,17 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleError(resp
 
 // CreateOrUpdateRelayServiceConnection - Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsCreateOrUpdateRelayServiceConnectionOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsCreateOrUpdateRelayServiceConnectionOptions) (WebAppsCreateOrUpdateRelayServiceConnectionResponse, error) {
 	req, err := client.createOrUpdateRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, connectionEnvelope, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.createOrUpdateRelayServiceConnectionHandleError(resp)
+		return WebAppsCreateOrUpdateRelayServiceConnectionResponse{}, client.createOrUpdateRelayServiceConnectionHandleError(resp)
 	}
 	return client.createOrUpdateRelayServiceConnectionHandleResponse(resp)
 }
@@ -2806,12 +2806,12 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionCreateRequest(c
 }
 
 // createOrUpdateRelayServiceConnectionHandleResponse handles the CreateOrUpdateRelayServiceConnection response.
-func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateRelayServiceConnectionResponse, error) {
+	result := WebAppsCreateOrUpdateRelayServiceConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // createOrUpdateRelayServiceConnectionHandleError handles the CreateOrUpdateRelayServiceConnection error response.
@@ -2829,17 +2829,17 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleError(res
 
 // CreateOrUpdateRelayServiceConnectionSlot - Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsCreateOrUpdateRelayServiceConnectionSlotOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsCreateOrUpdateRelayServiceConnectionSlotOptions) (WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, connectionEnvelope, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.createOrUpdateRelayServiceConnectionSlotHandleError(resp)
+		return WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse{}, client.createOrUpdateRelayServiceConnectionSlotHandleError(resp)
 	}
 	return client.createOrUpdateRelayServiceConnectionSlotHandleResponse(resp)
 }
@@ -2880,12 +2880,12 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotCreateReque
 }
 
 // createOrUpdateRelayServiceConnectionSlotHandleResponse handles the CreateOrUpdateRelayServiceConnectionSlot response.
-func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse, error) {
+	result := WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // createOrUpdateRelayServiceConnectionSlotHandleError handles the CreateOrUpdateRelayServiceConnectionSlot error response.
@@ -2903,47 +2903,47 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleError
 
 // BeginCreateOrUpdateSlot - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, options *WebAppsBeginCreateOrUpdateSlotOptions) (SitePollerResponse, error) {
+func (client *WebAppsClient) BeginCreateOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, options *WebAppsBeginCreateOrUpdateSlotOptions) (WebAppsCreateOrUpdateSlotPollerResponse, error) {
 	resp, err := client.createOrUpdateSlot(ctx, resourceGroupName, name, slot, siteEnvelope, options)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdateSlotPollerResponse{}, err
 	}
-	result := SitePollerResponse{
+	result := WebAppsCreateOrUpdateSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateOrUpdateSlot", "", resp, client.con.Pipeline(), client.createOrUpdateSlotHandleError)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdateSlotPollerResponse{}, err
 	}
-	poller := &sitePoller{
+	poller := &webAppsCreateOrUpdateSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdateSlot creates a new SitePoller from the specified resume token.
-// token - The value must come from a previous call to SitePoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateOrUpdateSlot(ctx context.Context, token string) (SitePollerResponse, error) {
+// ResumeCreateOrUpdateSlot creates a new WebAppsCreateOrUpdateSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateOrUpdateSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateOrUpdateSlot(ctx context.Context, token string) (WebAppsCreateOrUpdateSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateOrUpdateSlot", token, client.con.Pipeline(), client.createOrUpdateSlotHandleError)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdateSlotPollerResponse{}, err
 	}
-	poller := &sitePoller{
+	poller := &webAppsCreateOrUpdateSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SitePollerResponse{}, err
+		return WebAppsCreateOrUpdateSlotPollerResponse{}, err
 	}
-	result := SitePollerResponse{
+	result := WebAppsCreateOrUpdateSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -3012,47 +3012,47 @@ func (client *WebAppsClient) createOrUpdateSlotHandleError(resp *azcore.Response
 
 // BeginCreateOrUpdateSourceControl - Description for Updates the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsBeginCreateOrUpdateSourceControlOptions) (SiteSourceControlPollerResponse, error) {
+func (client *WebAppsClient) BeginCreateOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsBeginCreateOrUpdateSourceControlOptions) (WebAppsCreateOrUpdateSourceControlPollerResponse, error) {
 	resp, err := client.createOrUpdateSourceControl(ctx, resourceGroupName, name, siteSourceControl, options)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlPollerResponse{}, err
 	}
-	result := SiteSourceControlPollerResponse{
+	result := WebAppsCreateOrUpdateSourceControlPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateOrUpdateSourceControl", "", resp, client.con.Pipeline(), client.createOrUpdateSourceControlHandleError)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlPollerResponse{}, err
 	}
-	poller := &siteSourceControlPoller{
+	poller := &webAppsCreateOrUpdateSourceControlPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteSourceControlResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSourceControlResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdateSourceControl creates a new SiteSourceControlPoller from the specified resume token.
-// token - The value must come from a previous call to SiteSourceControlPoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateOrUpdateSourceControl(ctx context.Context, token string) (SiteSourceControlPollerResponse, error) {
+// ResumeCreateOrUpdateSourceControl creates a new WebAppsCreateOrUpdateSourceControlPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateOrUpdateSourceControlPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateOrUpdateSourceControl(ctx context.Context, token string) (WebAppsCreateOrUpdateSourceControlPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControl", token, client.con.Pipeline(), client.createOrUpdateSourceControlHandleError)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlPollerResponse{}, err
 	}
-	poller := &siteSourceControlPoller{
+	poller := &webAppsCreateOrUpdateSourceControlPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlPollerResponse{}, err
 	}
-	result := SiteSourceControlPollerResponse{
+	result := WebAppsCreateOrUpdateSourceControlPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteSourceControlResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSourceControlResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -3117,47 +3117,47 @@ func (client *WebAppsClient) createOrUpdateSourceControlHandleError(resp *azcore
 
 // BeginCreateOrUpdateSourceControlSlot - Description for Updates the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginCreateOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsBeginCreateOrUpdateSourceControlSlotOptions) (SiteSourceControlPollerResponse, error) {
+func (client *WebAppsClient) BeginCreateOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsBeginCreateOrUpdateSourceControlSlotOptions) (WebAppsCreateOrUpdateSourceControlSlotPollerResponse, error) {
 	resp, err := client.createOrUpdateSourceControlSlot(ctx, resourceGroupName, name, slot, siteSourceControl, options)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlSlotPollerResponse{}, err
 	}
-	result := SiteSourceControlPollerResponse{
+	result := WebAppsCreateOrUpdateSourceControlSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.CreateOrUpdateSourceControlSlot", "", resp, client.con.Pipeline(), client.createOrUpdateSourceControlSlotHandleError)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlSlotPollerResponse{}, err
 	}
-	poller := &siteSourceControlPoller{
+	poller := &webAppsCreateOrUpdateSourceControlSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteSourceControlResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSourceControlSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdateSourceControlSlot creates a new SiteSourceControlPoller from the specified resume token.
-// token - The value must come from a previous call to SiteSourceControlPoller.ResumeToken().
-func (client *WebAppsClient) ResumeCreateOrUpdateSourceControlSlot(ctx context.Context, token string) (SiteSourceControlPollerResponse, error) {
+// ResumeCreateOrUpdateSourceControlSlot creates a new WebAppsCreateOrUpdateSourceControlSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsCreateOrUpdateSourceControlSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeCreateOrUpdateSourceControlSlot(ctx context.Context, token string) (WebAppsCreateOrUpdateSourceControlSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControlSlot", token, client.con.Pipeline(), client.createOrUpdateSourceControlSlotHandleError)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlSlotPollerResponse{}, err
 	}
-	poller := &siteSourceControlPoller{
+	poller := &webAppsCreateOrUpdateSourceControlSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SiteSourceControlPollerResponse{}, err
+		return WebAppsCreateOrUpdateSourceControlSlotPollerResponse{}, err
 	}
-	result := SiteSourceControlPollerResponse{
+	result := WebAppsCreateOrUpdateSourceControlSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteSourceControlResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSourceControlSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -3228,17 +3228,17 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlotHandleError(resp *az
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been
 // delegated, and is not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (SwiftVirtualNetworkResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
 	req, err := client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckCreateRequest(ctx, resourceGroupName, name, connectionEnvelope, options)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SwiftVirtualNetworkResponse{}, client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleError(resp)
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleError(resp)
 	}
 	return client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp)
 }
@@ -3271,12 +3271,12 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse handles the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck response.
-func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *azcore.Response) (SwiftVirtualNetworkResponse, error) {
-	var val *SwiftVirtualNetwork
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
+	result := WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SwiftVirtualNetwork); err != nil {
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
-	return SwiftVirtualNetworkResponse{RawResponse: resp.Response, SwiftVirtualNetwork: val}, nil
+	return result, nil
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleError handles the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck error response.
@@ -3296,17 +3296,17 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been
 // delegated, and is not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (SwiftVirtualNetworkResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
 	req, err := client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest(ctx, resourceGroupName, name, slot, connectionEnvelope, options)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SwiftVirtualNetworkResponse{}, client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleError(resp)
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleError(resp)
 	}
 	return client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp)
 }
@@ -3343,12 +3343,12 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse handles the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot response.
-func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *azcore.Response) (SwiftVirtualNetworkResponse, error) {
-	var val *SwiftVirtualNetwork
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
+	result := WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SwiftVirtualNetwork); err != nil {
+		return WebAppsCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
-	return SwiftVirtualNetworkResponse{RawResponse: resp.Response, SwiftVirtualNetwork: val}, nil
+	return result, nil
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleError handles the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot error response.
@@ -3366,17 +3366,17 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 
 // CreateOrUpdateVnetConnection - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, options *WebAppsCreateOrUpdateVnetConnectionOptions) (VnetInfoResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, options *WebAppsCreateOrUpdateVnetConnectionOptions) (WebAppsCreateOrUpdateVnetConnectionResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, connectionEnvelope, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.createOrUpdateVnetConnectionHandleError(resp)
+		return WebAppsCreateOrUpdateVnetConnectionResponse{}, client.createOrUpdateVnetConnectionHandleError(resp)
 	}
 	return client.createOrUpdateVnetConnectionHandleResponse(resp)
 }
@@ -3413,12 +3413,12 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionCreateRequest(ctx conte
 }
 
 // createOrUpdateVnetConnectionHandleResponse handles the CreateOrUpdateVnetConnection response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateVnetConnectionResponse, error) {
+	result := WebAppsCreateOrUpdateVnetConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return WebAppsCreateOrUpdateVnetConnectionResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // createOrUpdateVnetConnectionHandleError handles the CreateOrUpdateVnetConnection error response.
@@ -3436,17 +3436,17 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionHandleError(resp *azcor
 
 // CreateOrUpdateVnetConnectionGateway - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *WebAppsCreateOrUpdateVnetConnectionGatewayOptions) (VnetGatewayResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *WebAppsCreateOrUpdateVnetConnectionGatewayOptions) (WebAppsCreateOrUpdateVnetConnectionGatewayResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.createOrUpdateVnetConnectionGatewayHandleError(resp)
+		return WebAppsCreateOrUpdateVnetConnectionGatewayResponse{}, client.createOrUpdateVnetConnectionGatewayHandleError(resp)
 	}
 	return client.createOrUpdateVnetConnectionGatewayHandleResponse(resp)
 }
@@ -3487,12 +3487,12 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayCreateRequest(ct
 }
 
 // createOrUpdateVnetConnectionGatewayHandleResponse handles the CreateOrUpdateVnetConnectionGateway response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateVnetConnectionGatewayResponse, error) {
+	result := WebAppsCreateOrUpdateVnetConnectionGatewayResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return WebAppsCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // createOrUpdateVnetConnectionGatewayHandleError handles the CreateOrUpdateVnetConnectionGateway error response.
@@ -3510,17 +3510,17 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleError(resp
 
 // CreateOrUpdateVnetConnectionGatewaySlot - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, options *WebAppsCreateOrUpdateVnetConnectionGatewaySlotOptions) (VnetGatewayResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, options *WebAppsCreateOrUpdateVnetConnectionGatewaySlotOptions) (WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionGatewaySlotCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.createOrUpdateVnetConnectionGatewaySlotHandleError(resp)
+		return WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse{}, client.createOrUpdateVnetConnectionGatewaySlotHandleError(resp)
 	}
 	return client.createOrUpdateVnetConnectionGatewaySlotHandleResponse(resp)
 }
@@ -3565,12 +3565,12 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotCreateReques
 }
 
 // createOrUpdateVnetConnectionGatewaySlotHandleResponse handles the CreateOrUpdateVnetConnectionGatewaySlot response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse, error) {
+	result := WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return WebAppsCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // createOrUpdateVnetConnectionGatewaySlotHandleError handles the CreateOrUpdateVnetConnectionGatewaySlot error response.
@@ -3588,17 +3588,17 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleError(
 
 // CreateOrUpdateVnetConnectionSlot - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) CreateOrUpdateVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfo, options *WebAppsCreateOrUpdateVnetConnectionSlotOptions) (VnetInfoResponse, error) {
+func (client *WebAppsClient) CreateOrUpdateVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfo, options *WebAppsCreateOrUpdateVnetConnectionSlotOptions) (WebAppsCreateOrUpdateVnetConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, connectionEnvelope, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.createOrUpdateVnetConnectionSlotHandleError(resp)
+		return WebAppsCreateOrUpdateVnetConnectionSlotResponse{}, client.createOrUpdateVnetConnectionSlotHandleError(resp)
 	}
 	return client.createOrUpdateVnetConnectionSlotHandleResponse(resp)
 }
@@ -3639,12 +3639,12 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotCreateRequest(ctx c
 }
 
 // createOrUpdateVnetConnectionSlotHandleResponse handles the CreateOrUpdateVnetConnectionSlot response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsCreateOrUpdateVnetConnectionSlotResponse, error) {
+	result := WebAppsCreateOrUpdateVnetConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return WebAppsCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // createOrUpdateVnetConnectionSlotHandleError handles the CreateOrUpdateVnetConnectionSlot error response.
@@ -3662,19 +3662,19 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleError(resp *a
 
 // Delete - Description for Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Delete(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteOptions) (*http.Response, error) {
+func (client *WebAppsClient) Delete(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteOptions) (WebAppsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return WebAppsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -3733,19 +3733,19 @@ func (client *WebAppsClient) deleteHandleError(resp *azcore.Response) error {
 
 // DeleteBackup - Description for Deletes a backup of an app by its ID.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteBackup(ctx context.Context, resourceGroupName string, name string, backupID string, options *WebAppsDeleteBackupOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteBackup(ctx context.Context, resourceGroupName string, name string, backupID string, options *WebAppsDeleteBackupOptions) (WebAppsDeleteBackupResponse, error) {
 	req, err := client.deleteBackupCreateRequest(ctx, resourceGroupName, name, backupID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteBackupHandleError(resp)
+		return WebAppsDeleteBackupResponse{}, client.deleteBackupHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteBackupResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteBackupCreateRequest creates the DeleteBackup request.
@@ -3802,19 +3802,19 @@ func (client *WebAppsClient) deleteBackupHandleError(resp *azcore.Response) erro
 
 // DeleteBackupConfiguration - Description for Deletes the backup configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteBackupConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteBackupConfigurationOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteBackupConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteBackupConfigurationOptions) (WebAppsDeleteBackupConfigurationResponse, error) {
 	req, err := client.deleteBackupConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteBackupConfigurationHandleError(resp)
+		return WebAppsDeleteBackupConfigurationResponse{}, client.deleteBackupConfigurationHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteBackupConfigurationResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteBackupConfigurationCreateRequest creates the DeleteBackupConfiguration request.
@@ -3859,19 +3859,19 @@ func (client *WebAppsClient) deleteBackupConfigurationHandleError(resp *azcore.R
 
 // DeleteBackupConfigurationSlot - Description for Deletes the backup configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteBackupConfigurationSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteBackupConfigurationSlotOptions) (WebAppsDeleteBackupConfigurationSlotResponse, error) {
 	req, err := client.deleteBackupConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteBackupConfigurationSlotHandleError(resp)
+		return WebAppsDeleteBackupConfigurationSlotResponse{}, client.deleteBackupConfigurationSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteBackupConfigurationSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteBackupConfigurationSlotCreateRequest creates the DeleteBackupConfigurationSlot request.
@@ -3920,19 +3920,19 @@ func (client *WebAppsClient) deleteBackupConfigurationSlotHandleError(resp *azco
 
 // DeleteBackupSlot - Description for Deletes a backup of an app by its ID.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteBackupSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *WebAppsDeleteBackupSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteBackupSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *WebAppsDeleteBackupSlotOptions) (WebAppsDeleteBackupSlotResponse, error) {
 	req, err := client.deleteBackupSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteBackupSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteBackupSlotHandleError(resp)
+		return WebAppsDeleteBackupSlotResponse{}, client.deleteBackupSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteBackupSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteBackupSlotCreateRequest creates the DeleteBackupSlot request.
@@ -3993,19 +3993,19 @@ func (client *WebAppsClient) deleteBackupSlotHandleError(resp *azcore.Response) 
 
 // DeleteContinuousWebJob - Description for Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsDeleteContinuousWebJobOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsDeleteContinuousWebJobOptions) (WebAppsDeleteContinuousWebJobResponse, error) {
 	req, err := client.deleteContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteContinuousWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteContinuousWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteContinuousWebJobHandleError(resp)
+		return WebAppsDeleteContinuousWebJobResponse{}, client.deleteContinuousWebJobHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteContinuousWebJobResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteContinuousWebJobCreateRequest creates the DeleteContinuousWebJob request.
@@ -4054,19 +4054,19 @@ func (client *WebAppsClient) deleteContinuousWebJobHandleError(resp *azcore.Resp
 
 // DeleteContinuousWebJobSlot - Description for Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsDeleteContinuousWebJobSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsDeleteContinuousWebJobSlotOptions) (WebAppsDeleteContinuousWebJobSlotResponse, error) {
 	req, err := client.deleteContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteContinuousWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteContinuousWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteContinuousWebJobSlotHandleError(resp)
+		return WebAppsDeleteContinuousWebJobSlotResponse{}, client.deleteContinuousWebJobSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteContinuousWebJobSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteContinuousWebJobSlotCreateRequest creates the DeleteContinuousWebJobSlot request.
@@ -4119,19 +4119,19 @@ func (client *WebAppsClient) deleteContinuousWebJobSlotHandleError(resp *azcore.
 
 // DeleteDeployment - Description for Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteDeployment(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsDeleteDeploymentOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteDeployment(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsDeleteDeploymentOptions) (WebAppsDeleteDeploymentResponse, error) {
 	req, err := client.deleteDeploymentCreateRequest(ctx, resourceGroupName, name, id, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDeploymentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDeploymentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteDeploymentHandleError(resp)
+		return WebAppsDeleteDeploymentResponse{}, client.deleteDeploymentHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteDeploymentResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteDeploymentCreateRequest creates the DeleteDeployment request.
@@ -4180,19 +4180,19 @@ func (client *WebAppsClient) deleteDeploymentHandleError(resp *azcore.Response) 
 
 // DeleteDeploymentSlot - Description for Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsDeleteDeploymentSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsDeleteDeploymentSlotOptions) (WebAppsDeleteDeploymentSlotResponse, error) {
 	req, err := client.deleteDeploymentSlotCreateRequest(ctx, resourceGroupName, name, id, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDeploymentSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDeploymentSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteDeploymentSlotHandleError(resp)
+		return WebAppsDeleteDeploymentSlotResponse{}, client.deleteDeploymentSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteDeploymentSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteDeploymentSlotCreateRequest creates the DeleteDeploymentSlot request.
@@ -4245,19 +4245,19 @@ func (client *WebAppsClient) deleteDeploymentSlotHandleError(resp *azcore.Respon
 
 // DeleteDomainOwnershipIdentifier - Description for Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *WebAppsDeleteDomainOwnershipIdentifierOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *WebAppsDeleteDomainOwnershipIdentifierOptions) (WebAppsDeleteDomainOwnershipIdentifierResponse, error) {
 	req, err := client.deleteDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDomainOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDomainOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteDomainOwnershipIdentifierHandleError(resp)
+		return WebAppsDeleteDomainOwnershipIdentifierResponse{}, client.deleteDomainOwnershipIdentifierHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteDomainOwnershipIdentifierResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteDomainOwnershipIdentifierCreateRequest creates the DeleteDomainOwnershipIdentifier request.
@@ -4306,19 +4306,19 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierHandleError(resp *az
 
 // DeleteDomainOwnershipIdentifierSlot - Description for Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *WebAppsDeleteDomainOwnershipIdentifierSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *WebAppsDeleteDomainOwnershipIdentifierSlotOptions) (WebAppsDeleteDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.deleteDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteDomainOwnershipIdentifierSlotHandleError(resp)
+		return WebAppsDeleteDomainOwnershipIdentifierSlotResponse{}, client.deleteDomainOwnershipIdentifierSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteDomainOwnershipIdentifierSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteDomainOwnershipIdentifierSlotCreateRequest creates the DeleteDomainOwnershipIdentifierSlot request.
@@ -4371,19 +4371,19 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotHandleError(resp
 
 // DeleteFunction - Description for Delete a function for web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteFunction(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsDeleteFunctionOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteFunction(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsDeleteFunctionOptions) (WebAppsDeleteFunctionResponse, error) {
 	req, err := client.deleteFunctionCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteFunctionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteFunctionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteFunctionHandleError(resp)
+		return WebAppsDeleteFunctionResponse{}, client.deleteFunctionHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteFunctionResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteFunctionCreateRequest creates the DeleteFunction request.
@@ -4440,19 +4440,19 @@ func (client *WebAppsClient) deleteFunctionHandleError(resp *azcore.Response) er
 
 // DeleteFunctionSecret - Description for Delete a function secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, options *WebAppsDeleteFunctionSecretOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, options *WebAppsDeleteFunctionSecretOptions) (WebAppsDeleteFunctionSecretResponse, error) {
 	req, err := client.deleteFunctionSecretCreateRequest(ctx, resourceGroupName, name, functionName, keyName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteFunctionSecretResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteFunctionSecretResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteFunctionSecretHandleError(resp)
+		return WebAppsDeleteFunctionSecretResponse{}, client.deleteFunctionSecretHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteFunctionSecretResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteFunctionSecretCreateRequest creates the DeleteFunctionSecret request.
@@ -4513,19 +4513,19 @@ func (client *WebAppsClient) deleteFunctionSecretHandleError(resp *azcore.Respon
 
 // DeleteFunctionSecretSlot - Description for Delete a function secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, options *WebAppsDeleteFunctionSecretSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, options *WebAppsDeleteFunctionSecretSlotOptions) (WebAppsDeleteFunctionSecretSlotResponse, error) {
 	req, err := client.deleteFunctionSecretSlotCreateRequest(ctx, resourceGroupName, name, functionName, keyName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteFunctionSecretSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteFunctionSecretSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteFunctionSecretSlotHandleError(resp)
+		return WebAppsDeleteFunctionSecretSlotResponse{}, client.deleteFunctionSecretSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteFunctionSecretSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteFunctionSecretSlotCreateRequest creates the DeleteFunctionSecretSlot request.
@@ -4590,19 +4590,19 @@ func (client *WebAppsClient) deleteFunctionSecretSlotHandleError(resp *azcore.Re
 
 // DeleteHostNameBinding - Description for Deletes a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, options *WebAppsDeleteHostNameBindingOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, options *WebAppsDeleteHostNameBindingOptions) (WebAppsDeleteHostNameBindingResponse, error) {
 	req, err := client.deleteHostNameBindingCreateRequest(ctx, resourceGroupName, name, hostName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostNameBindingResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostNameBindingResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHostNameBindingHandleError(resp)
+		return WebAppsDeleteHostNameBindingResponse{}, client.deleteHostNameBindingHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteHostNameBindingResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHostNameBindingCreateRequest creates the DeleteHostNameBinding request.
@@ -4651,19 +4651,19 @@ func (client *WebAppsClient) deleteHostNameBindingHandleError(resp *azcore.Respo
 
 // DeleteHostNameBindingSlot - Description for Deletes a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *WebAppsDeleteHostNameBindingSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *WebAppsDeleteHostNameBindingSlotOptions) (WebAppsDeleteHostNameBindingSlotResponse, error) {
 	req, err := client.deleteHostNameBindingSlotCreateRequest(ctx, resourceGroupName, name, slot, hostName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostNameBindingSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostNameBindingSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHostNameBindingSlotHandleError(resp)
+		return WebAppsDeleteHostNameBindingSlotResponse{}, client.deleteHostNameBindingSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteHostNameBindingSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHostNameBindingSlotCreateRequest creates the DeleteHostNameBindingSlot request.
@@ -4716,19 +4716,19 @@ func (client *WebAppsClient) deleteHostNameBindingSlotHandleError(resp *azcore.R
 
 // DeleteHostSecret - Description for Delete a host level secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, options *WebAppsDeleteHostSecretOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, options *WebAppsDeleteHostSecretOptions) (WebAppsDeleteHostSecretResponse, error) {
 	req, err := client.deleteHostSecretCreateRequest(ctx, resourceGroupName, name, keyType, keyName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostSecretResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostSecretResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteHostSecretHandleError(resp)
+		return WebAppsDeleteHostSecretResponse{}, client.deleteHostSecretHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteHostSecretResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHostSecretCreateRequest creates the DeleteHostSecret request.
@@ -4789,19 +4789,19 @@ func (client *WebAppsClient) deleteHostSecretHandleError(resp *azcore.Response) 
 
 // DeleteHostSecretSlot - Description for Delete a host level secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, options *WebAppsDeleteHostSecretSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, options *WebAppsDeleteHostSecretSlotOptions) (WebAppsDeleteHostSecretSlotResponse, error) {
 	req, err := client.deleteHostSecretSlotCreateRequest(ctx, resourceGroupName, name, keyType, keyName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostSecretSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHostSecretSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteHostSecretSlotHandleError(resp)
+		return WebAppsDeleteHostSecretSlotResponse{}, client.deleteHostSecretSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteHostSecretSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHostSecretSlotCreateRequest creates the DeleteHostSecretSlot request.
@@ -4866,19 +4866,19 @@ func (client *WebAppsClient) deleteHostSecretSlotHandleError(resp *azcore.Respon
 
 // DeleteHybridConnection - Description for Removes a Hybrid Connection from this site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsDeleteHybridConnectionOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsDeleteHybridConnectionOptions) (WebAppsDeleteHybridConnectionResponse, error) {
 	req, err := client.deleteHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHybridConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHybridConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteHybridConnectionHandleError(resp)
+		return WebAppsDeleteHybridConnectionResponse{}, client.deleteHybridConnectionHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteHybridConnectionResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHybridConnectionCreateRequest creates the DeleteHybridConnection request.
@@ -4939,19 +4939,19 @@ func (client *WebAppsClient) deleteHybridConnectionHandleError(resp *azcore.Resp
 
 // DeleteHybridConnectionSlot - Description for Removes a Hybrid Connection from this site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsDeleteHybridConnectionSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsDeleteHybridConnectionSlotOptions) (WebAppsDeleteHybridConnectionSlotResponse, error) {
 	req, err := client.deleteHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHybridConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteHybridConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteHybridConnectionSlotHandleError(resp)
+		return WebAppsDeleteHybridConnectionSlotResponse{}, client.deleteHybridConnectionSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteHybridConnectionSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHybridConnectionSlotCreateRequest creates the DeleteHybridConnectionSlot request.
@@ -5016,19 +5016,19 @@ func (client *WebAppsClient) deleteHybridConnectionSlotHandleError(resp *azcore.
 
 // DeleteInstanceFunctionSlot - Description for Delete a function for web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsDeleteInstanceFunctionSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsDeleteInstanceFunctionSlotOptions) (WebAppsDeleteInstanceFunctionSlotResponse, error) {
 	req, err := client.deleteInstanceFunctionSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteInstanceFunctionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteInstanceFunctionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteInstanceFunctionSlotHandleError(resp)
+		return WebAppsDeleteInstanceFunctionSlotResponse{}, client.deleteInstanceFunctionSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteInstanceFunctionSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteInstanceFunctionSlotCreateRequest creates the DeleteInstanceFunctionSlot request.
@@ -5090,19 +5090,19 @@ func (client *WebAppsClient) deleteInstanceFunctionSlotHandleError(resp *azcore.
 // DeleteInstanceProcess - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
 // site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteInstanceProcess(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsDeleteInstanceProcessOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteInstanceProcess(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsDeleteInstanceProcessOptions) (WebAppsDeleteInstanceProcessResponse, error) {
 	req, err := client.deleteInstanceProcessCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteInstanceProcessResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteInstanceProcessResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteInstanceProcessHandleError(resp)
+		return WebAppsDeleteInstanceProcessResponse{}, client.deleteInstanceProcessHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteInstanceProcessResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteInstanceProcessCreateRequest creates the DeleteInstanceProcess request.
@@ -5164,19 +5164,19 @@ func (client *WebAppsClient) deleteInstanceProcessHandleError(resp *azcore.Respo
 // DeleteInstanceProcessSlot - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a
 // web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteInstanceProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsDeleteInstanceProcessSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteInstanceProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsDeleteInstanceProcessSlotOptions) (WebAppsDeleteInstanceProcessSlotResponse, error) {
 	req, err := client.deleteInstanceProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteInstanceProcessSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteInstanceProcessSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteInstanceProcessSlotHandleError(resp)
+		return WebAppsDeleteInstanceProcessSlotResponse{}, client.deleteInstanceProcessSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteInstanceProcessSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteInstanceProcessSlotCreateRequest creates the DeleteInstanceProcessSlot request.
@@ -5241,19 +5241,19 @@ func (client *WebAppsClient) deleteInstanceProcessSlotHandleError(resp *azcore.R
 
 // DeletePremierAddOn - Description for Delete a premier add-on from an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeletePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *WebAppsDeletePremierAddOnOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeletePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *WebAppsDeletePremierAddOnOptions) (WebAppsDeletePremierAddOnResponse, error) {
 	req, err := client.deletePremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePremierAddOnResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePremierAddOnResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deletePremierAddOnHandleError(resp)
+		return WebAppsDeletePremierAddOnResponse{}, client.deletePremierAddOnHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeletePremierAddOnResponse{RawResponse: resp.Response}, nil
 }
 
 // deletePremierAddOnCreateRequest creates the DeletePremierAddOn request.
@@ -5302,19 +5302,19 @@ func (client *WebAppsClient) deletePremierAddOnHandleError(resp *azcore.Response
 
 // DeletePremierAddOnSlot - Description for Delete a premier add-on from an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeletePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *WebAppsDeletePremierAddOnSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeletePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *WebAppsDeletePremierAddOnSlotOptions) (WebAppsDeletePremierAddOnSlotResponse, error) {
 	req, err := client.deletePremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePremierAddOnSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePremierAddOnSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deletePremierAddOnSlotHandleError(resp)
+		return WebAppsDeletePremierAddOnSlotResponse{}, client.deletePremierAddOnSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeletePremierAddOnSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deletePremierAddOnSlotCreateRequest creates the DeletePremierAddOnSlot request.
@@ -5367,47 +5367,47 @@ func (client *WebAppsClient) deletePremierAddOnSlotHandleError(resp *azcore.Resp
 
 // BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *WebAppsBeginDeletePrivateEndpointConnectionOptions) (ObjectPollerResponse, error) {
+func (client *WebAppsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *WebAppsBeginDeletePrivateEndpointConnectionOptions) (WebAppsDeletePrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := ObjectPollerResponse{
+	result := WebAppsDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.DeletePrivateEndpointConnection", "", resp, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &objectPoller{
+	poller := &webAppsDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ObjectResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsDeletePrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDeletePrivateEndpointConnection creates a new ObjectPoller from the specified resume token.
-// token - The value must come from a previous call to ObjectPoller.ResumeToken().
-func (client *WebAppsClient) ResumeDeletePrivateEndpointConnection(ctx context.Context, token string) (ObjectPollerResponse, error) {
+// ResumeDeletePrivateEndpointConnection creates a new WebAppsDeletePrivateEndpointConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsDeletePrivateEndpointConnectionPoller.ResumeToken().
+func (client *WebAppsClient) ResumeDeletePrivateEndpointConnection(ctx context.Context, token string) (WebAppsDeletePrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnection", token, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &objectPoller{
+	poller := &webAppsDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := ObjectPollerResponse{
+	result := WebAppsDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ObjectResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsDeletePrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -5476,47 +5476,47 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionHandleError(resp *az
 
 // BeginDeletePrivateEndpointConnectionSlot - Description for Deletes a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginDeletePrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *WebAppsBeginDeletePrivateEndpointConnectionSlotOptions) (ObjectPollerResponse, error) {
+func (client *WebAppsClient) BeginDeletePrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *WebAppsBeginDeletePrivateEndpointConnectionSlotOptions) (WebAppsDeletePrivateEndpointConnectionSlotPollerResponse, error) {
 	resp, err := client.deletePrivateEndpointConnectionSlot(ctx, resourceGroupName, name, privateEndpointConnectionName, slot, options)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	result := ObjectPollerResponse{
+	result := WebAppsDeletePrivateEndpointConnectionSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.DeletePrivateEndpointConnectionSlot", "", resp, client.con.Pipeline(), client.deletePrivateEndpointConnectionSlotHandleError)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	poller := &objectPoller{
+	poller := &webAppsDeletePrivateEndpointConnectionSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ObjectResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDeletePrivateEndpointConnectionSlot creates a new ObjectPoller from the specified resume token.
-// token - The value must come from a previous call to ObjectPoller.ResumeToken().
-func (client *WebAppsClient) ResumeDeletePrivateEndpointConnectionSlot(ctx context.Context, token string) (ObjectPollerResponse, error) {
+// ResumeDeletePrivateEndpointConnectionSlot creates a new WebAppsDeletePrivateEndpointConnectionSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsDeletePrivateEndpointConnectionSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeDeletePrivateEndpointConnectionSlot(ctx context.Context, token string) (WebAppsDeletePrivateEndpointConnectionSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnectionSlot", token, client.con.Pipeline(), client.deletePrivateEndpointConnectionSlotHandleError)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	poller := &objectPoller{
+	poller := &webAppsDeletePrivateEndpointConnectionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return WebAppsDeletePrivateEndpointConnectionSlotPollerResponse{}, err
 	}
-	result := ObjectPollerResponse{
+	result := WebAppsDeletePrivateEndpointConnectionSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ObjectResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -5589,19 +5589,19 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlotHandleError(resp
 
 // DeleteProcess - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteProcess(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsDeleteProcessOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteProcess(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsDeleteProcessOptions) (WebAppsDeleteProcessResponse, error) {
 	req, err := client.deleteProcessCreateRequest(ctx, resourceGroupName, name, processID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteProcessResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteProcessResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteProcessHandleError(resp)
+		return WebAppsDeleteProcessResponse{}, client.deleteProcessHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteProcessResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteProcessCreateRequest creates the DeleteProcess request.
@@ -5658,19 +5658,19 @@ func (client *WebAppsClient) deleteProcessHandleError(resp *azcore.Response) err
 
 // DeleteProcessSlot - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsDeleteProcessSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsDeleteProcessSlotOptions) (WebAppsDeleteProcessSlotResponse, error) {
 	req, err := client.deleteProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteProcessSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteProcessSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteProcessSlotHandleError(resp)
+		return WebAppsDeleteProcessSlotResponse{}, client.deleteProcessSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteProcessSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteProcessSlotCreateRequest creates the DeleteProcessSlot request.
@@ -5731,19 +5731,19 @@ func (client *WebAppsClient) deleteProcessSlotHandleError(resp *azcore.Response)
 
 // DeletePublicCertificate - Description for Deletes a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeletePublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *WebAppsDeletePublicCertificateOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeletePublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *WebAppsDeletePublicCertificateOptions) (WebAppsDeletePublicCertificateResponse, error) {
 	req, err := client.deletePublicCertificateCreateRequest(ctx, resourceGroupName, name, publicCertificateName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePublicCertificateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePublicCertificateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deletePublicCertificateHandleError(resp)
+		return WebAppsDeletePublicCertificateResponse{}, client.deletePublicCertificateHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeletePublicCertificateResponse{RawResponse: resp.Response}, nil
 }
 
 // deletePublicCertificateCreateRequest creates the DeletePublicCertificate request.
@@ -5792,19 +5792,19 @@ func (client *WebAppsClient) deletePublicCertificateHandleError(resp *azcore.Res
 
 // DeletePublicCertificateSlot - Description for Deletes a hostname binding for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeletePublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *WebAppsDeletePublicCertificateSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeletePublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *WebAppsDeletePublicCertificateSlotOptions) (WebAppsDeletePublicCertificateSlotResponse, error) {
 	req, err := client.deletePublicCertificateSlotCreateRequest(ctx, resourceGroupName, name, slot, publicCertificateName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePublicCertificateSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeletePublicCertificateSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deletePublicCertificateSlotHandleError(resp)
+		return WebAppsDeletePublicCertificateSlotResponse{}, client.deletePublicCertificateSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeletePublicCertificateSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deletePublicCertificateSlotCreateRequest creates the DeletePublicCertificateSlot request.
@@ -5857,19 +5857,19 @@ func (client *WebAppsClient) deletePublicCertificateSlotHandleError(resp *azcore
 
 // DeleteRelayServiceConnection - Description for Deletes a relay service connection by its name.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, options *WebAppsDeleteRelayServiceConnectionOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, options *WebAppsDeleteRelayServiceConnectionOptions) (WebAppsDeleteRelayServiceConnectionResponse, error) {
 	req, err := client.deleteRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteRelayServiceConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteRelayServiceConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteRelayServiceConnectionHandleError(resp)
+		return WebAppsDeleteRelayServiceConnectionResponse{}, client.deleteRelayServiceConnectionHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteRelayServiceConnectionResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteRelayServiceConnectionCreateRequest creates the DeleteRelayServiceConnection request.
@@ -5926,19 +5926,19 @@ func (client *WebAppsClient) deleteRelayServiceConnectionHandleError(resp *azcor
 
 // DeleteRelayServiceConnectionSlot - Description for Deletes a relay service connection by its name.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *WebAppsDeleteRelayServiceConnectionSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *WebAppsDeleteRelayServiceConnectionSlotOptions) (WebAppsDeleteRelayServiceConnectionSlotResponse, error) {
 	req, err := client.deleteRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteRelayServiceConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteRelayServiceConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteRelayServiceConnectionSlotHandleError(resp)
+		return WebAppsDeleteRelayServiceConnectionSlotResponse{}, client.deleteRelayServiceConnectionSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteRelayServiceConnectionSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteRelayServiceConnectionSlotCreateRequest creates the DeleteRelayServiceConnectionSlot request.
@@ -5999,19 +5999,19 @@ func (client *WebAppsClient) deleteRelayServiceConnectionSlotHandleError(resp *a
 
 // DeleteSiteExtension - Description for Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsDeleteSiteExtensionOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsDeleteSiteExtensionOptions) (WebAppsDeleteSiteExtensionResponse, error) {
 	req, err := client.deleteSiteExtensionCreateRequest(ctx, resourceGroupName, name, siteExtensionID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSiteExtensionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSiteExtensionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteSiteExtensionHandleError(resp)
+		return WebAppsDeleteSiteExtensionResponse{}, client.deleteSiteExtensionHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSiteExtensionResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSiteExtensionCreateRequest creates the DeleteSiteExtension request.
@@ -6068,19 +6068,19 @@ func (client *WebAppsClient) deleteSiteExtensionHandleError(resp *azcore.Respons
 
 // DeleteSiteExtensionSlot - Description for Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsDeleteSiteExtensionSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsDeleteSiteExtensionSlotOptions) (WebAppsDeleteSiteExtensionSlotResponse, error) {
 	req, err := client.deleteSiteExtensionSlotCreateRequest(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSiteExtensionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSiteExtensionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.deleteSiteExtensionSlotHandleError(resp)
+		return WebAppsDeleteSiteExtensionSlotResponse{}, client.deleteSiteExtensionSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSiteExtensionSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSiteExtensionSlotCreateRequest creates the DeleteSiteExtensionSlot request.
@@ -6141,19 +6141,19 @@ func (client *WebAppsClient) deleteSiteExtensionSlotHandleError(resp *azcore.Res
 
 // DeleteSlot - Description for Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteSlotOptions) (WebAppsDeleteSlotResponse, error) {
 	req, err := client.deleteSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteSlotHandleError(resp)
+		return WebAppsDeleteSlotResponse{}, client.deleteSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSlotCreateRequest creates the DeleteSlot request.
@@ -6216,19 +6216,19 @@ func (client *WebAppsClient) deleteSlotHandleError(resp *azcore.Response) error 
 
 // DeleteSourceControl - Description for Deletes the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSourceControl(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteSourceControlOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSourceControl(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteSourceControlOptions) (WebAppsDeleteSourceControlResponse, error) {
 	req, err := client.deleteSourceControlCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSourceControlResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSourceControlResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteSourceControlHandleError(resp)
+		return WebAppsDeleteSourceControlResponse{}, client.deleteSourceControlHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSourceControlResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSourceControlCreateRequest creates the DeleteSourceControl request.
@@ -6284,19 +6284,19 @@ func (client *WebAppsClient) deleteSourceControlHandleError(resp *azcore.Respons
 
 // DeleteSourceControlSlot - Description for Deletes the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteSourceControlSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteSourceControlSlotOptions) (WebAppsDeleteSourceControlSlotResponse, error) {
 	req, err := client.deleteSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSourceControlSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSourceControlSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteSourceControlSlotHandleError(resp)
+		return WebAppsDeleteSourceControlSlotResponse{}, client.deleteSourceControlSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSourceControlSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSourceControlSlotCreateRequest creates the DeleteSourceControlSlot request.
@@ -6356,19 +6356,19 @@ func (client *WebAppsClient) deleteSourceControlSlotHandleError(resp *azcore.Res
 
 // DeleteSwiftVirtualNetwork - Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteSwiftVirtualNetworkOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, resourceGroupName string, name string, options *WebAppsDeleteSwiftVirtualNetworkOptions) (WebAppsDeleteSwiftVirtualNetworkResponse, error) {
 	req, err := client.deleteSwiftVirtualNetworkCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSwiftVirtualNetworkResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSwiftVirtualNetworkResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteSwiftVirtualNetworkHandleError(resp)
+		return WebAppsDeleteSwiftVirtualNetworkResponse{}, client.deleteSwiftVirtualNetworkHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSwiftVirtualNetworkResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSwiftVirtualNetworkCreateRequest creates the DeleteSwiftVirtualNetwork request.
@@ -6421,19 +6421,19 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkHandleError(resp *azcore.R
 
 // DeleteSwiftVirtualNetworkSlot - Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteSwiftVirtualNetworkSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsDeleteSwiftVirtualNetworkSlotOptions) (WebAppsDeleteSwiftVirtualNetworkSlotResponse, error) {
 	req, err := client.deleteSwiftVirtualNetworkSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteSwiftVirtualNetworkSlotHandleError(resp)
+		return WebAppsDeleteSwiftVirtualNetworkSlotResponse{}, client.deleteSwiftVirtualNetworkSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteSwiftVirtualNetworkSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteSwiftVirtualNetworkSlotCreateRequest creates the DeleteSwiftVirtualNetworkSlot request.
@@ -6490,19 +6490,19 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotHandleError(resp *azco
 
 // DeleteTriggeredWebJob - Description for Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsDeleteTriggeredWebJobOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsDeleteTriggeredWebJobOptions) (WebAppsDeleteTriggeredWebJobResponse, error) {
 	req, err := client.deleteTriggeredWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteTriggeredWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteTriggeredWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteTriggeredWebJobHandleError(resp)
+		return WebAppsDeleteTriggeredWebJobResponse{}, client.deleteTriggeredWebJobHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteTriggeredWebJobResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteTriggeredWebJobCreateRequest creates the DeleteTriggeredWebJob request.
@@ -6551,19 +6551,19 @@ func (client *WebAppsClient) deleteTriggeredWebJobHandleError(resp *azcore.Respo
 
 // DeleteTriggeredWebJobSlot - Description for Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsDeleteTriggeredWebJobSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsDeleteTriggeredWebJobSlotOptions) (WebAppsDeleteTriggeredWebJobSlotResponse, error) {
 	req, err := client.deleteTriggeredWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteTriggeredWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteTriggeredWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteTriggeredWebJobSlotHandleError(resp)
+		return WebAppsDeleteTriggeredWebJobSlotResponse{}, client.deleteTriggeredWebJobSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteTriggeredWebJobSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteTriggeredWebJobSlotCreateRequest creates the DeleteTriggeredWebJobSlot request.
@@ -6616,19 +6616,19 @@ func (client *WebAppsClient) deleteTriggeredWebJobSlotHandleError(resp *azcore.R
 
 // DeleteVnetConnection - Description for Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, options *WebAppsDeleteVnetConnectionOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, options *WebAppsDeleteVnetConnectionOptions) (WebAppsDeleteVnetConnectionResponse, error) {
 	req, err := client.deleteVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteVnetConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteVnetConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteVnetConnectionHandleError(resp)
+		return WebAppsDeleteVnetConnectionResponse{}, client.deleteVnetConnectionHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteVnetConnectionResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteVnetConnectionCreateRequest creates the DeleteVnetConnection request.
@@ -6685,19 +6685,19 @@ func (client *WebAppsClient) deleteVnetConnectionHandleError(resp *azcore.Respon
 
 // DeleteVnetConnectionSlot - Description for Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *WebAppsDeleteVnetConnectionSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *WebAppsDeleteVnetConnectionSlotOptions) (WebAppsDeleteVnetConnectionSlotResponse, error) {
 	req, err := client.deleteVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteVnetConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsDeleteVnetConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteVnetConnectionSlotHandleError(resp)
+		return WebAppsDeleteVnetConnectionSlotResponse{}, client.deleteVnetConnectionSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsDeleteVnetConnectionSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteVnetConnectionSlotCreateRequest creates the DeleteVnetConnectionSlot request.
@@ -6759,17 +6759,17 @@ func (client *WebAppsClient) deleteVnetConnectionSlotHandleError(resp *azcore.Re
 // DiscoverBackup - Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about
 // the databases stored in a backup.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DiscoverBackup(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsDiscoverBackupOptions) (RestoreRequestResponse, error) {
+func (client *WebAppsClient) DiscoverBackup(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsDiscoverBackupOptions) (WebAppsDiscoverBackupResponse, error) {
 	req, err := client.discoverBackupCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
-		return RestoreRequestResponse{}, err
+		return WebAppsDiscoverBackupResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RestoreRequestResponse{}, err
+		return WebAppsDiscoverBackupResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RestoreRequestResponse{}, client.discoverBackupHandleError(resp)
+		return WebAppsDiscoverBackupResponse{}, client.discoverBackupHandleError(resp)
 	}
 	return client.discoverBackupHandleResponse(resp)
 }
@@ -6802,12 +6802,12 @@ func (client *WebAppsClient) discoverBackupCreateRequest(ctx context.Context, re
 }
 
 // discoverBackupHandleResponse handles the DiscoverBackup response.
-func (client *WebAppsClient) discoverBackupHandleResponse(resp *azcore.Response) (RestoreRequestResponse, error) {
-	var val *RestoreRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestoreRequestResponse{}, err
+func (client *WebAppsClient) discoverBackupHandleResponse(resp *azcore.Response) (WebAppsDiscoverBackupResponse, error) {
+	result := WebAppsDiscoverBackupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestoreRequest); err != nil {
+		return WebAppsDiscoverBackupResponse{}, err
 	}
-	return RestoreRequestResponse{RawResponse: resp.Response, RestoreRequest: val}, nil
+	return result, nil
 }
 
 // discoverBackupHandleError handles the DiscoverBackup error response.
@@ -6826,17 +6826,17 @@ func (client *WebAppsClient) discoverBackupHandleError(resp *azcore.Response) er
 // DiscoverBackupSlot - Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
 // about the databases stored in a backup.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) DiscoverBackupSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsDiscoverBackupSlotOptions) (RestoreRequestResponse, error) {
+func (client *WebAppsClient) DiscoverBackupSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsDiscoverBackupSlotOptions) (WebAppsDiscoverBackupSlotResponse, error) {
 	req, err := client.discoverBackupSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
-		return RestoreRequestResponse{}, err
+		return WebAppsDiscoverBackupSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RestoreRequestResponse{}, err
+		return WebAppsDiscoverBackupSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RestoreRequestResponse{}, client.discoverBackupSlotHandleError(resp)
+		return WebAppsDiscoverBackupSlotResponse{}, client.discoverBackupSlotHandleError(resp)
 	}
 	return client.discoverBackupSlotHandleResponse(resp)
 }
@@ -6873,12 +6873,12 @@ func (client *WebAppsClient) discoverBackupSlotCreateRequest(ctx context.Context
 }
 
 // discoverBackupSlotHandleResponse handles the DiscoverBackupSlot response.
-func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *azcore.Response) (RestoreRequestResponse, error) {
-	var val *RestoreRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestoreRequestResponse{}, err
+func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *azcore.Response) (WebAppsDiscoverBackupSlotResponse, error) {
+	result := WebAppsDiscoverBackupSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestoreRequest); err != nil {
+		return WebAppsDiscoverBackupSlotResponse{}, err
 	}
-	return RestoreRequestResponse{RawResponse: resp.Response, RestoreRequest: val}, nil
+	return result, nil
 }
 
 // discoverBackupSlotHandleError handles the DiscoverBackupSlot error response.
@@ -6896,19 +6896,19 @@ func (client *WebAppsClient) discoverBackupSlotHandleError(resp *azcore.Response
 
 // GenerateNewSitePublishingPassword - Description for Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GenerateNewSitePublishingPassword(ctx context.Context, resourceGroupName string, name string, options *WebAppsGenerateNewSitePublishingPasswordOptions) (*http.Response, error) {
+func (client *WebAppsClient) GenerateNewSitePublishingPassword(ctx context.Context, resourceGroupName string, name string, options *WebAppsGenerateNewSitePublishingPasswordOptions) (WebAppsGenerateNewSitePublishingPasswordResponse, error) {
 	req, err := client.generateNewSitePublishingPasswordCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGenerateNewSitePublishingPasswordResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGenerateNewSitePublishingPasswordResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.generateNewSitePublishingPasswordHandleError(resp)
+		return WebAppsGenerateNewSitePublishingPasswordResponse{}, client.generateNewSitePublishingPasswordHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGenerateNewSitePublishingPasswordResponse{RawResponse: resp.Response}, nil
 }
 
 // generateNewSitePublishingPasswordCreateRequest creates the GenerateNewSitePublishingPassword request.
@@ -6953,19 +6953,19 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordHandleError(resp *
 
 // GenerateNewSitePublishingPasswordSlot - Description for Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GenerateNewSitePublishingPasswordSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGenerateNewSitePublishingPasswordSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) GenerateNewSitePublishingPasswordSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGenerateNewSitePublishingPasswordSlotOptions) (WebAppsGenerateNewSitePublishingPasswordSlotResponse, error) {
 	req, err := client.generateNewSitePublishingPasswordSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.generateNewSitePublishingPasswordSlotHandleError(resp)
+		return WebAppsGenerateNewSitePublishingPasswordSlotResponse{}, client.generateNewSitePublishingPasswordSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGenerateNewSitePublishingPasswordSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // generateNewSitePublishingPasswordSlotCreateRequest creates the GenerateNewSitePublishingPasswordSlot request.
@@ -7014,17 +7014,17 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordSlotHandleError(re
 
 // Get - Description for Gets the details of a web, mobile, or API app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Get(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetOptions) (SiteResponse, error) {
+func (client *WebAppsClient) Get(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetOptions) (WebAppsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteResponse{}, client.getHandleError(resp)
+		return WebAppsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -7057,12 +7057,12 @@ func (client *WebAppsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *WebAppsClient) getHandleResponse(resp *azcore.Response) (SiteResponse, error) {
-	var val *Site
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteResponse{}, err
+func (client *WebAppsClient) getHandleResponse(resp *azcore.Response) (WebAppsGetResponse, error) {
+	result := WebAppsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Site); err != nil {
+		return WebAppsGetResponse{}, err
 	}
-	return SiteResponse{RawResponse: resp.Response, Site: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -7088,17 +7088,17 @@ func (client *WebAppsClient) getHandleError(resp *azcore.Response) error {
 
 // GetAppSettingKeyVaultReference - Description for Gets the config reference and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAppSettingKeyVaultReference(ctx context.Context, resourceGroupName string, name string, appSettingKey string, options *WebAppsGetAppSettingKeyVaultReferenceOptions) (APIKVReferenceResponse, error) {
+func (client *WebAppsClient) GetAppSettingKeyVaultReference(ctx context.Context, resourceGroupName string, name string, appSettingKey string, options *WebAppsGetAppSettingKeyVaultReferenceOptions) (WebAppsGetAppSettingKeyVaultReferenceResponse, error) {
 	req, err := client.getAppSettingKeyVaultReferenceCreateRequest(ctx, resourceGroupName, name, appSettingKey, options)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetAppSettingKeyVaultReferenceResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetAppSettingKeyVaultReferenceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return APIKVReferenceResponse{}, client.getAppSettingKeyVaultReferenceHandleError(resp)
+		return WebAppsGetAppSettingKeyVaultReferenceResponse{}, client.getAppSettingKeyVaultReferenceHandleError(resp)
 	}
 	return client.getAppSettingKeyVaultReferenceHandleResponse(resp)
 }
@@ -7135,12 +7135,12 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceCreateRequest(ctx con
 }
 
 // getAppSettingKeyVaultReferenceHandleResponse handles the GetAppSettingKeyVaultReference response.
-func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleResponse(resp *azcore.Response) (APIKVReferenceResponse, error) {
-	var val *APIKVReference
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceResponse{}, err
+func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleResponse(resp *azcore.Response) (WebAppsGetAppSettingKeyVaultReferenceResponse, error) {
+	result := WebAppsGetAppSettingKeyVaultReferenceResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReference); err != nil {
+		return WebAppsGetAppSettingKeyVaultReferenceResponse{}, err
 	}
-	return APIKVReferenceResponse{RawResponse: resp.Response, APIKVReference: val}, nil
+	return result, nil
 }
 
 // getAppSettingKeyVaultReferenceHandleError handles the GetAppSettingKeyVaultReference error response.
@@ -7158,17 +7158,17 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleError(resp *azc
 
 // GetAppSettingKeyVaultReferenceSlot - Description for Gets the config reference and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAppSettingKeyVaultReferenceSlot(ctx context.Context, resourceGroupName string, name string, appSettingKey string, slot string, options *WebAppsGetAppSettingKeyVaultReferenceSlotOptions) (APIKVReferenceResponse, error) {
+func (client *WebAppsClient) GetAppSettingKeyVaultReferenceSlot(ctx context.Context, resourceGroupName string, name string, appSettingKey string, slot string, options *WebAppsGetAppSettingKeyVaultReferenceSlotOptions) (WebAppsGetAppSettingKeyVaultReferenceSlotResponse, error) {
 	req, err := client.getAppSettingKeyVaultReferenceSlotCreateRequest(ctx, resourceGroupName, name, appSettingKey, slot, options)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetAppSettingKeyVaultReferenceSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetAppSettingKeyVaultReferenceSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return APIKVReferenceResponse{}, client.getAppSettingKeyVaultReferenceSlotHandleError(resp)
+		return WebAppsGetAppSettingKeyVaultReferenceSlotResponse{}, client.getAppSettingKeyVaultReferenceSlotHandleError(resp)
 	}
 	return client.getAppSettingKeyVaultReferenceSlotHandleResponse(resp)
 }
@@ -7209,12 +7209,12 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotCreateRequest(ctx
 }
 
 // getAppSettingKeyVaultReferenceSlotHandleResponse handles the GetAppSettingKeyVaultReferenceSlot response.
-func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(resp *azcore.Response) (APIKVReferenceResponse, error) {
-	var val *APIKVReference
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceResponse{}, err
+func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(resp *azcore.Response) (WebAppsGetAppSettingKeyVaultReferenceSlotResponse, error) {
+	result := WebAppsGetAppSettingKeyVaultReferenceSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReference); err != nil {
+		return WebAppsGetAppSettingKeyVaultReferenceSlotResponse{}, err
 	}
-	return APIKVReferenceResponse{RawResponse: resp.Response, APIKVReference: val}, nil
+	return result, nil
 }
 
 // getAppSettingKeyVaultReferenceSlotHandleError handles the GetAppSettingKeyVaultReferenceSlot error response.
@@ -7232,18 +7232,15 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleError(resp 
 
 // GetAppSettingsKeyVaultReferences - Description for Gets the config reference app settings and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAppSettingsKeyVaultReferences(resourceGroupName string, name string, options *WebAppsGetAppSettingsKeyVaultReferencesOptions) APIKVReferenceCollectionPager {
-	return &apikvReferenceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) GetAppSettingsKeyVaultReferences(resourceGroupName string, name string, options *WebAppsGetAppSettingsKeyVaultReferencesOptions) WebAppsGetAppSettingsKeyVaultReferencesPager {
+	return &webAppsGetAppSettingsKeyVaultReferencesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getAppSettingsKeyVaultReferencesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.getAppSettingsKeyVaultReferencesHandleResponse,
-		errorer:   client.getAppSettingsKeyVaultReferencesHandleError,
-		advancer: func(ctx context.Context, resp APIKVReferenceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsGetAppSettingsKeyVaultReferencesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIKVReferenceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -7275,12 +7272,12 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesCreateRequest(ctx c
 }
 
 // getAppSettingsKeyVaultReferencesHandleResponse handles the GetAppSettingsKeyVaultReferences response.
-func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp *azcore.Response) (APIKVReferenceCollectionResponse, error) {
-	var val *APIKVReferenceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceCollectionResponse{}, err
+func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp *azcore.Response) (WebAppsGetAppSettingsKeyVaultReferencesResponse, error) {
+	result := WebAppsGetAppSettingsKeyVaultReferencesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReferenceCollection); err != nil {
+		return WebAppsGetAppSettingsKeyVaultReferencesResponse{}, err
 	}
-	return APIKVReferenceCollectionResponse{RawResponse: resp.Response, APIKVReferenceCollection: val}, nil
+	return result, nil
 }
 
 // getAppSettingsKeyVaultReferencesHandleError handles the GetAppSettingsKeyVaultReferences error response.
@@ -7298,18 +7295,15 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleError(resp *a
 
 // GetAppSettingsKeyVaultReferencesSlot - Description for Gets the config reference app settings and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAppSettingsKeyVaultReferencesSlot(resourceGroupName string, name string, slot string, options *WebAppsGetAppSettingsKeyVaultReferencesSlotOptions) APIKVReferenceCollectionPager {
-	return &apikvReferenceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) GetAppSettingsKeyVaultReferencesSlot(resourceGroupName string, name string, slot string, options *WebAppsGetAppSettingsKeyVaultReferencesSlotOptions) WebAppsGetAppSettingsKeyVaultReferencesSlotPager {
+	return &webAppsGetAppSettingsKeyVaultReferencesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getAppSettingsKeyVaultReferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.getAppSettingsKeyVaultReferencesSlotHandleResponse,
-		errorer:   client.getAppSettingsKeyVaultReferencesSlotHandleError,
-		advancer: func(ctx context.Context, resp APIKVReferenceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsGetAppSettingsKeyVaultReferencesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIKVReferenceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -7345,12 +7339,12 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotCreateRequest(c
 }
 
 // getAppSettingsKeyVaultReferencesSlotHandleResponse handles the GetAppSettingsKeyVaultReferencesSlot response.
-func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleResponse(resp *azcore.Response) (APIKVReferenceCollectionResponse, error) {
-	var val *APIKVReferenceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceCollectionResponse{}, err
+func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleResponse(resp *azcore.Response) (WebAppsGetAppSettingsKeyVaultReferencesSlotResponse, error) {
+	result := WebAppsGetAppSettingsKeyVaultReferencesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReferenceCollection); err != nil {
+		return WebAppsGetAppSettingsKeyVaultReferencesSlotResponse{}, err
 	}
-	return APIKVReferenceCollectionResponse{RawResponse: resp.Response, APIKVReferenceCollection: val}, nil
+	return result, nil
 }
 
 // getAppSettingsKeyVaultReferencesSlotHandleError handles the GetAppSettingsKeyVaultReferencesSlot error response.
@@ -7368,17 +7362,17 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleError(res
 
 // GetAuthSettings - Description for Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAuthSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetAuthSettingsOptions) (SiteAuthSettingsResponse, error) {
+func (client *WebAppsClient) GetAuthSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetAuthSettingsOptions) (WebAppsGetAuthSettingsResponse, error) {
 	req, err := client.getAuthSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsGetAuthSettingsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsGetAuthSettingsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsResponse{}, client.getAuthSettingsHandleError(resp)
+		return WebAppsGetAuthSettingsResponse{}, client.getAuthSettingsHandleError(resp)
 	}
 	return client.getAuthSettingsHandleResponse(resp)
 }
@@ -7411,12 +7405,12 @@ func (client *WebAppsClient) getAuthSettingsCreateRequest(ctx context.Context, r
 }
 
 // getAuthSettingsHandleResponse handles the GetAuthSettings response.
-func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *azcore.Response) (SiteAuthSettingsResponse, error) {
-	var val *SiteAuthSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsResponse{}, err
+func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *azcore.Response) (WebAppsGetAuthSettingsResponse, error) {
+	result := WebAppsGetAuthSettingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettings); err != nil {
+		return WebAppsGetAuthSettingsResponse{}, err
 	}
-	return SiteAuthSettingsResponse{RawResponse: resp.Response, SiteAuthSettings: val}, nil
+	return result, nil
 }
 
 // getAuthSettingsHandleError handles the GetAuthSettings error response.
@@ -7434,17 +7428,17 @@ func (client *WebAppsClient) getAuthSettingsHandleError(resp *azcore.Response) e
 
 // GetAuthSettingsSlot - Description for Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetAuthSettingsSlotOptions) (SiteAuthSettingsResponse, error) {
+func (client *WebAppsClient) GetAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetAuthSettingsSlotOptions) (WebAppsGetAuthSettingsSlotResponse, error) {
 	req, err := client.getAuthSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsGetAuthSettingsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsGetAuthSettingsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsResponse{}, client.getAuthSettingsSlotHandleError(resp)
+		return WebAppsGetAuthSettingsSlotResponse{}, client.getAuthSettingsSlotHandleError(resp)
 	}
 	return client.getAuthSettingsSlotHandleResponse(resp)
 }
@@ -7481,12 +7475,12 @@ func (client *WebAppsClient) getAuthSettingsSlotCreateRequest(ctx context.Contex
 }
 
 // getAuthSettingsSlotHandleResponse handles the GetAuthSettingsSlot response.
-func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *azcore.Response) (SiteAuthSettingsResponse, error) {
-	var val *SiteAuthSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsResponse{}, err
+func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *azcore.Response) (WebAppsGetAuthSettingsSlotResponse, error) {
+	result := WebAppsGetAuthSettingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettings); err != nil {
+		return WebAppsGetAuthSettingsSlotResponse{}, err
 	}
-	return SiteAuthSettingsResponse{RawResponse: resp.Response, SiteAuthSettings: val}, nil
+	return result, nil
 }
 
 // getAuthSettingsSlotHandleError handles the GetAuthSettingsSlot error response.
@@ -7504,17 +7498,17 @@ func (client *WebAppsClient) getAuthSettingsSlotHandleError(resp *azcore.Respons
 
 // GetAuthSettingsV2 - Description for Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAuthSettingsV2(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetAuthSettingsV2Options) (SiteAuthSettingsV2Response, error) {
+func (client *WebAppsClient) GetAuthSettingsV2(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetAuthSettingsV2Options) (WebAppsGetAuthSettingsV2Response, error) {
 	req, err := client.getAuthSettingsV2CreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsGetAuthSettingsV2Response{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsGetAuthSettingsV2Response{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsV2Response{}, client.getAuthSettingsV2HandleError(resp)
+		return WebAppsGetAuthSettingsV2Response{}, client.getAuthSettingsV2HandleError(resp)
 	}
 	return client.getAuthSettingsV2HandleResponse(resp)
 }
@@ -7547,12 +7541,12 @@ func (client *WebAppsClient) getAuthSettingsV2CreateRequest(ctx context.Context,
 }
 
 // getAuthSettingsV2HandleResponse handles the GetAuthSettingsV2 response.
-func (client *WebAppsClient) getAuthSettingsV2HandleResponse(resp *azcore.Response) (SiteAuthSettingsV2Response, error) {
-	var val *SiteAuthSettingsV2
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsV2Response{}, err
+func (client *WebAppsClient) getAuthSettingsV2HandleResponse(resp *azcore.Response) (WebAppsGetAuthSettingsV2Response, error) {
+	result := WebAppsGetAuthSettingsV2Response{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettingsV2); err != nil {
+		return WebAppsGetAuthSettingsV2Response{}, err
 	}
-	return SiteAuthSettingsV2Response{RawResponse: resp.Response, SiteAuthSettingsV2: val}, nil
+	return result, nil
 }
 
 // getAuthSettingsV2HandleError handles the GetAuthSettingsV2 error response.
@@ -7570,17 +7564,17 @@ func (client *WebAppsClient) getAuthSettingsV2HandleError(resp *azcore.Response)
 
 // GetAuthSettingsV2Slot - Description for Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetAuthSettingsV2Slot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetAuthSettingsV2SlotOptions) (SiteAuthSettingsV2Response, error) {
+func (client *WebAppsClient) GetAuthSettingsV2Slot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetAuthSettingsV2SlotOptions) (WebAppsGetAuthSettingsV2SlotResponse, error) {
 	req, err := client.getAuthSettingsV2SlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsGetAuthSettingsV2SlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsGetAuthSettingsV2SlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsV2Response{}, client.getAuthSettingsV2SlotHandleError(resp)
+		return WebAppsGetAuthSettingsV2SlotResponse{}, client.getAuthSettingsV2SlotHandleError(resp)
 	}
 	return client.getAuthSettingsV2SlotHandleResponse(resp)
 }
@@ -7617,12 +7611,12 @@ func (client *WebAppsClient) getAuthSettingsV2SlotCreateRequest(ctx context.Cont
 }
 
 // getAuthSettingsV2SlotHandleResponse handles the GetAuthSettingsV2Slot response.
-func (client *WebAppsClient) getAuthSettingsV2SlotHandleResponse(resp *azcore.Response) (SiteAuthSettingsV2Response, error) {
-	var val *SiteAuthSettingsV2
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsV2Response{}, err
+func (client *WebAppsClient) getAuthSettingsV2SlotHandleResponse(resp *azcore.Response) (WebAppsGetAuthSettingsV2SlotResponse, error) {
+	result := WebAppsGetAuthSettingsV2SlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettingsV2); err != nil {
+		return WebAppsGetAuthSettingsV2SlotResponse{}, err
 	}
-	return SiteAuthSettingsV2Response{RawResponse: resp.Response, SiteAuthSettingsV2: val}, nil
+	return result, nil
 }
 
 // getAuthSettingsV2SlotHandleError handles the GetAuthSettingsV2Slot error response.
@@ -7640,17 +7634,17 @@ func (client *WebAppsClient) getAuthSettingsV2SlotHandleError(resp *azcore.Respo
 
 // GetBackupConfiguration - Description for Gets the backup configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetBackupConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetBackupConfigurationOptions) (BackupRequestResponse, error) {
+func (client *WebAppsClient) GetBackupConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetBackupConfigurationOptions) (WebAppsGetBackupConfigurationResponse, error) {
 	req, err := client.getBackupConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsGetBackupConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsGetBackupConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupRequestResponse{}, client.getBackupConfigurationHandleError(resp)
+		return WebAppsGetBackupConfigurationResponse{}, client.getBackupConfigurationHandleError(resp)
 	}
 	return client.getBackupConfigurationHandleResponse(resp)
 }
@@ -7683,12 +7677,12 @@ func (client *WebAppsClient) getBackupConfigurationCreateRequest(ctx context.Con
 }
 
 // getBackupConfigurationHandleResponse handles the GetBackupConfiguration response.
-func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *azcore.Response) (BackupRequestResponse, error) {
-	var val *BackupRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupRequestResponse{}, err
+func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *azcore.Response) (WebAppsGetBackupConfigurationResponse, error) {
+	result := WebAppsGetBackupConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupRequest); err != nil {
+		return WebAppsGetBackupConfigurationResponse{}, err
 	}
-	return BackupRequestResponse{RawResponse: resp.Response, BackupRequest: val}, nil
+	return result, nil
 }
 
 // getBackupConfigurationHandleError handles the GetBackupConfiguration error response.
@@ -7706,17 +7700,17 @@ func (client *WebAppsClient) getBackupConfigurationHandleError(resp *azcore.Resp
 
 // GetBackupConfigurationSlot - Description for Gets the backup configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetBackupConfigurationSlotOptions) (BackupRequestResponse, error) {
+func (client *WebAppsClient) GetBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetBackupConfigurationSlotOptions) (WebAppsGetBackupConfigurationSlotResponse, error) {
 	req, err := client.getBackupConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsGetBackupConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsGetBackupConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupRequestResponse{}, client.getBackupConfigurationSlotHandleError(resp)
+		return WebAppsGetBackupConfigurationSlotResponse{}, client.getBackupConfigurationSlotHandleError(resp)
 	}
 	return client.getBackupConfigurationSlotHandleResponse(resp)
 }
@@ -7753,12 +7747,12 @@ func (client *WebAppsClient) getBackupConfigurationSlotCreateRequest(ctx context
 }
 
 // getBackupConfigurationSlotHandleResponse handles the GetBackupConfigurationSlot response.
-func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *azcore.Response) (BackupRequestResponse, error) {
-	var val *BackupRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupRequestResponse{}, err
+func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *azcore.Response) (WebAppsGetBackupConfigurationSlotResponse, error) {
+	result := WebAppsGetBackupConfigurationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupRequest); err != nil {
+		return WebAppsGetBackupConfigurationSlotResponse{}, err
 	}
-	return BackupRequestResponse{RawResponse: resp.Response, BackupRequest: val}, nil
+	return result, nil
 }
 
 // getBackupConfigurationSlotHandleError handles the GetBackupConfigurationSlot error response.
@@ -7776,17 +7770,17 @@ func (client *WebAppsClient) getBackupConfigurationSlotHandleError(resp *azcore.
 
 // GetBackupStatus - Description for Gets a backup of an app by its ID.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetBackupStatus(ctx context.Context, resourceGroupName string, name string, backupID string, options *WebAppsGetBackupStatusOptions) (BackupItemResponse, error) {
+func (client *WebAppsClient) GetBackupStatus(ctx context.Context, resourceGroupName string, name string, backupID string, options *WebAppsGetBackupStatusOptions) (WebAppsGetBackupStatusResponse, error) {
 	req, err := client.getBackupStatusCreateRequest(ctx, resourceGroupName, name, backupID, options)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsGetBackupStatusResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsGetBackupStatusResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupItemResponse{}, client.getBackupStatusHandleError(resp)
+		return WebAppsGetBackupStatusResponse{}, client.getBackupStatusHandleError(resp)
 	}
 	return client.getBackupStatusHandleResponse(resp)
 }
@@ -7823,12 +7817,12 @@ func (client *WebAppsClient) getBackupStatusCreateRequest(ctx context.Context, r
 }
 
 // getBackupStatusHandleResponse handles the GetBackupStatus response.
-func (client *WebAppsClient) getBackupStatusHandleResponse(resp *azcore.Response) (BackupItemResponse, error) {
-	var val *BackupItem
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemResponse{}, err
+func (client *WebAppsClient) getBackupStatusHandleResponse(resp *azcore.Response) (WebAppsGetBackupStatusResponse, error) {
+	result := WebAppsGetBackupStatusResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItem); err != nil {
+		return WebAppsGetBackupStatusResponse{}, err
 	}
-	return BackupItemResponse{RawResponse: resp.Response, BackupItem: val}, nil
+	return result, nil
 }
 
 // getBackupStatusHandleError handles the GetBackupStatus error response.
@@ -7846,17 +7840,17 @@ func (client *WebAppsClient) getBackupStatusHandleError(resp *azcore.Response) e
 
 // GetBackupStatusSlot - Description for Gets a backup of an app by its ID.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetBackupStatusSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *WebAppsGetBackupStatusSlotOptions) (BackupItemResponse, error) {
+func (client *WebAppsClient) GetBackupStatusSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *WebAppsGetBackupStatusSlotOptions) (WebAppsGetBackupStatusSlotResponse, error) {
 	req, err := client.getBackupStatusSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, options)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsGetBackupStatusSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsGetBackupStatusSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupItemResponse{}, client.getBackupStatusSlotHandleError(resp)
+		return WebAppsGetBackupStatusSlotResponse{}, client.getBackupStatusSlotHandleError(resp)
 	}
 	return client.getBackupStatusSlotHandleResponse(resp)
 }
@@ -7897,12 +7891,12 @@ func (client *WebAppsClient) getBackupStatusSlotCreateRequest(ctx context.Contex
 }
 
 // getBackupStatusSlotHandleResponse handles the GetBackupStatusSlot response.
-func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *azcore.Response) (BackupItemResponse, error) {
-	var val *BackupItem
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemResponse{}, err
+func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *azcore.Response) (WebAppsGetBackupStatusSlotResponse, error) {
+	result := WebAppsGetBackupStatusSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItem); err != nil {
+		return WebAppsGetBackupStatusSlotResponse{}, err
 	}
-	return BackupItemResponse{RawResponse: resp.Response, BackupItem: val}, nil
+	return result, nil
 }
 
 // getBackupStatusSlotHandleError handles the GetBackupStatusSlot error response.
@@ -7921,17 +7915,17 @@ func (client *WebAppsClient) getBackupStatusSlotHandleError(resp *azcore.Respons
 // GetConfiguration - Description for Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always
 // On, etc.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetConfigurationOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) GetConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetConfigurationOptions) (WebAppsGetConfigurationResponse, error) {
 	req, err := client.getConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.getConfigurationHandleError(resp)
+		return WebAppsGetConfigurationResponse{}, client.getConfigurationHandleError(resp)
 	}
 	return client.getConfigurationHandleResponse(resp)
 }
@@ -7964,12 +7958,12 @@ func (client *WebAppsClient) getConfigurationCreateRequest(ctx context.Context, 
 }
 
 // getConfigurationHandleResponse handles the GetConfiguration response.
-func (client *WebAppsClient) getConfigurationHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) getConfigurationHandleResponse(resp *azcore.Response) (WebAppsGetConfigurationResponse, error) {
+	result := WebAppsGetConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsGetConfigurationResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // getConfigurationHandleError handles the GetConfiguration error response.
@@ -7988,17 +7982,17 @@ func (client *WebAppsClient) getConfigurationHandleError(resp *azcore.Response) 
 // GetConfigurationSlot - Description for Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
 // Always On, etc.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetConfigurationSlotOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) GetConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetConfigurationSlotOptions) (WebAppsGetConfigurationSlotResponse, error) {
 	req, err := client.getConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.getConfigurationSlotHandleError(resp)
+		return WebAppsGetConfigurationSlotResponse{}, client.getConfigurationSlotHandleError(resp)
 	}
 	return client.getConfigurationSlotHandleResponse(resp)
 }
@@ -8035,12 +8029,12 @@ func (client *WebAppsClient) getConfigurationSlotCreateRequest(ctx context.Conte
 }
 
 // getConfigurationSlotHandleResponse handles the GetConfigurationSlot response.
-func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *azcore.Response) (WebAppsGetConfigurationSlotResponse, error) {
+	result := WebAppsGetConfigurationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsGetConfigurationSlotResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // getConfigurationSlotHandleError handles the GetConfigurationSlot error response.
@@ -8058,17 +8052,17 @@ func (client *WebAppsClient) getConfigurationSlotHandleError(resp *azcore.Respon
 
 // GetConfigurationSnapshot - Description for Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetConfigurationSnapshot(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *WebAppsGetConfigurationSnapshotOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) GetConfigurationSnapshot(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *WebAppsGetConfigurationSnapshotOptions) (WebAppsGetConfigurationSnapshotResponse, error) {
 	req, err := client.getConfigurationSnapshotCreateRequest(ctx, resourceGroupName, name, snapshotID, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationSnapshotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationSnapshotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.getConfigurationSnapshotHandleError(resp)
+		return WebAppsGetConfigurationSnapshotResponse{}, client.getConfigurationSnapshotHandleError(resp)
 	}
 	return client.getConfigurationSnapshotHandleResponse(resp)
 }
@@ -8105,12 +8099,12 @@ func (client *WebAppsClient) getConfigurationSnapshotCreateRequest(ctx context.C
 }
 
 // getConfigurationSnapshotHandleResponse handles the GetConfigurationSnapshot response.
-func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *azcore.Response) (WebAppsGetConfigurationSnapshotResponse, error) {
+	result := WebAppsGetConfigurationSnapshotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsGetConfigurationSnapshotResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // getConfigurationSnapshotHandleError handles the GetConfigurationSnapshot error response.
@@ -8128,17 +8122,17 @@ func (client *WebAppsClient) getConfigurationSnapshotHandleError(resp *azcore.Re
 
 // GetConfigurationSnapshotSlot - Description for Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetConfigurationSnapshotSlot(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *WebAppsGetConfigurationSnapshotSlotOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) GetConfigurationSnapshotSlot(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *WebAppsGetConfigurationSnapshotSlotOptions) (WebAppsGetConfigurationSnapshotSlotResponse, error) {
 	req, err := client.getConfigurationSnapshotSlotCreateRequest(ctx, resourceGroupName, name, snapshotID, slot, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationSnapshotSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsGetConfigurationSnapshotSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.getConfigurationSnapshotSlotHandleError(resp)
+		return WebAppsGetConfigurationSnapshotSlotResponse{}, client.getConfigurationSnapshotSlotHandleError(resp)
 	}
 	return client.getConfigurationSnapshotSlotHandleResponse(resp)
 }
@@ -8179,12 +8173,12 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotCreateRequest(ctx conte
 }
 
 // getConfigurationSnapshotSlotHandleResponse handles the GetConfigurationSnapshotSlot response.
-func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *azcore.Response) (WebAppsGetConfigurationSnapshotSlotResponse, error) {
+	result := WebAppsGetConfigurationSnapshotSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsGetConfigurationSnapshotSlotResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // getConfigurationSnapshotSlotHandleError handles the GetConfigurationSnapshotSlot error response.
@@ -8202,19 +8196,19 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotHandleError(resp *azcor
 
 // GetContainerLogsZip - Description for Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns a generic error.
-func (client *WebAppsClient) GetContainerLogsZip(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetContainerLogsZipOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetContainerLogsZip(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetContainerLogsZipOptions) (WebAppsGetContainerLogsZipResponse, error) {
 	req, err := client.getContainerLogsZipCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetContainerLogsZipResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetContainerLogsZipResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.getContainerLogsZipHandleError(resp)
+		return WebAppsGetContainerLogsZipResponse{}, client.getContainerLogsZipHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetContainerLogsZipResponse{RawResponse: resp.Response}, nil
 }
 
 // getContainerLogsZipCreateRequest creates the GetContainerLogsZip request.
@@ -8259,19 +8253,19 @@ func (client *WebAppsClient) getContainerLogsZipHandleError(resp *azcore.Respons
 
 // GetContainerLogsZipSlot - Description for Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns a generic error.
-func (client *WebAppsClient) GetContainerLogsZipSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetContainerLogsZipSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetContainerLogsZipSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetContainerLogsZipSlotOptions) (WebAppsGetContainerLogsZipSlotResponse, error) {
 	req, err := client.getContainerLogsZipSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetContainerLogsZipSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetContainerLogsZipSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.getContainerLogsZipSlotHandleError(resp)
+		return WebAppsGetContainerLogsZipSlotResponse{}, client.getContainerLogsZipSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetContainerLogsZipSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // getContainerLogsZipSlotCreateRequest creates the GetContainerLogsZipSlot request.
@@ -8320,17 +8314,17 @@ func (client *WebAppsClient) getContainerLogsZipSlotHandleError(resp *azcore.Res
 
 // GetContinuousWebJob - Description for Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsGetContinuousWebJobOptions) (ContinuousWebJobResponse, error) {
+func (client *WebAppsClient) GetContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsGetContinuousWebJobOptions) (WebAppsGetContinuousWebJobResponse, error) {
 	req, err := client.getContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return ContinuousWebJobResponse{}, err
+		return WebAppsGetContinuousWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ContinuousWebJobResponse{}, err
+		return WebAppsGetContinuousWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ContinuousWebJobResponse{}, client.getContinuousWebJobHandleError(resp)
+		return WebAppsGetContinuousWebJobResponse{}, client.getContinuousWebJobHandleError(resp)
 	}
 	return client.getContinuousWebJobHandleResponse(resp)
 }
@@ -8367,12 +8361,12 @@ func (client *WebAppsClient) getContinuousWebJobCreateRequest(ctx context.Contex
 }
 
 // getContinuousWebJobHandleResponse handles the GetContinuousWebJob response.
-func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *azcore.Response) (ContinuousWebJobResponse, error) {
-	var val *ContinuousWebJob
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ContinuousWebJobResponse{}, err
+func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *azcore.Response) (WebAppsGetContinuousWebJobResponse, error) {
+	result := WebAppsGetContinuousWebJobResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ContinuousWebJob); err != nil {
+		return WebAppsGetContinuousWebJobResponse{}, err
 	}
-	return ContinuousWebJobResponse{RawResponse: resp.Response, ContinuousWebJob: val}, nil
+	return result, nil
 }
 
 // getContinuousWebJobHandleError handles the GetContinuousWebJob error response.
@@ -8398,17 +8392,17 @@ func (client *WebAppsClient) getContinuousWebJobHandleError(resp *azcore.Respons
 
 // GetContinuousWebJobSlot - Description for Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsGetContinuousWebJobSlotOptions) (ContinuousWebJobResponse, error) {
+func (client *WebAppsClient) GetContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsGetContinuousWebJobSlotOptions) (WebAppsGetContinuousWebJobSlotResponse, error) {
 	req, err := client.getContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return ContinuousWebJobResponse{}, err
+		return WebAppsGetContinuousWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ContinuousWebJobResponse{}, err
+		return WebAppsGetContinuousWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ContinuousWebJobResponse{}, client.getContinuousWebJobSlotHandleError(resp)
+		return WebAppsGetContinuousWebJobSlotResponse{}, client.getContinuousWebJobSlotHandleError(resp)
 	}
 	return client.getContinuousWebJobSlotHandleResponse(resp)
 }
@@ -8449,12 +8443,12 @@ func (client *WebAppsClient) getContinuousWebJobSlotCreateRequest(ctx context.Co
 }
 
 // getContinuousWebJobSlotHandleResponse handles the GetContinuousWebJobSlot response.
-func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *azcore.Response) (ContinuousWebJobResponse, error) {
-	var val *ContinuousWebJob
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ContinuousWebJobResponse{}, err
+func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *azcore.Response) (WebAppsGetContinuousWebJobSlotResponse, error) {
+	result := WebAppsGetContinuousWebJobSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ContinuousWebJob); err != nil {
+		return WebAppsGetContinuousWebJobSlotResponse{}, err
 	}
-	return ContinuousWebJobResponse{RawResponse: resp.Response, ContinuousWebJob: val}, nil
+	return result, nil
 }
 
 // getContinuousWebJobSlotHandleError handles the GetContinuousWebJobSlot error response.
@@ -8480,17 +8474,17 @@ func (client *WebAppsClient) getContinuousWebJobSlotHandleError(resp *azcore.Res
 
 // GetDeployment - Description for Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetDeployment(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsGetDeploymentOptions) (DeploymentResponse, error) {
+func (client *WebAppsClient) GetDeployment(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsGetDeploymentOptions) (WebAppsGetDeploymentResponse, error) {
 	req, err := client.getDeploymentCreateRequest(ctx, resourceGroupName, name, id, options)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsGetDeploymentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsGetDeploymentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentResponse{}, client.getDeploymentHandleError(resp)
+		return WebAppsGetDeploymentResponse{}, client.getDeploymentHandleError(resp)
 	}
 	return client.getDeploymentHandleResponse(resp)
 }
@@ -8527,12 +8521,12 @@ func (client *WebAppsClient) getDeploymentCreateRequest(ctx context.Context, res
 }
 
 // getDeploymentHandleResponse handles the GetDeployment response.
-func (client *WebAppsClient) getDeploymentHandleResponse(resp *azcore.Response) (DeploymentResponse, error) {
-	var val *Deployment
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentResponse{}, err
+func (client *WebAppsClient) getDeploymentHandleResponse(resp *azcore.Response) (WebAppsGetDeploymentResponse, error) {
+	result := WebAppsGetDeploymentResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Deployment); err != nil {
+		return WebAppsGetDeploymentResponse{}, err
 	}
-	return DeploymentResponse{RawResponse: resp.Response, Deployment: val}, nil
+	return result, nil
 }
 
 // getDeploymentHandleError handles the GetDeployment error response.
@@ -8550,17 +8544,17 @@ func (client *WebAppsClient) getDeploymentHandleError(resp *azcore.Response) err
 
 // GetDeploymentSlot - Description for Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsGetDeploymentSlotOptions) (DeploymentResponse, error) {
+func (client *WebAppsClient) GetDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsGetDeploymentSlotOptions) (WebAppsGetDeploymentSlotResponse, error) {
 	req, err := client.getDeploymentSlotCreateRequest(ctx, resourceGroupName, name, id, slot, options)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsGetDeploymentSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsGetDeploymentSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentResponse{}, client.getDeploymentSlotHandleError(resp)
+		return WebAppsGetDeploymentSlotResponse{}, client.getDeploymentSlotHandleError(resp)
 	}
 	return client.getDeploymentSlotHandleResponse(resp)
 }
@@ -8601,12 +8595,12 @@ func (client *WebAppsClient) getDeploymentSlotCreateRequest(ctx context.Context,
 }
 
 // getDeploymentSlotHandleResponse handles the GetDeploymentSlot response.
-func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *azcore.Response) (DeploymentResponse, error) {
-	var val *Deployment
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentResponse{}, err
+func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *azcore.Response) (WebAppsGetDeploymentSlotResponse, error) {
+	result := WebAppsGetDeploymentSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Deployment); err != nil {
+		return WebAppsGetDeploymentSlotResponse{}, err
 	}
-	return DeploymentResponse{RawResponse: resp.Response, Deployment: val}, nil
+	return result, nil
 }
 
 // getDeploymentSlotHandleError handles the GetDeploymentSlot error response.
@@ -8624,17 +8618,17 @@ func (client *WebAppsClient) getDeploymentSlotHandleError(resp *azcore.Response)
 
 // GetDiagnosticLogsConfiguration - Description for Gets the logging configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetDiagnosticLogsConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetDiagnosticLogsConfigurationOptions) (SiteLogsConfigResponse, error) {
+func (client *WebAppsClient) GetDiagnosticLogsConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetDiagnosticLogsConfigurationOptions) (WebAppsGetDiagnosticLogsConfigurationResponse, error) {
 	req, err := client.getDiagnosticLogsConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsGetDiagnosticLogsConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsGetDiagnosticLogsConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteLogsConfigResponse{}, client.getDiagnosticLogsConfigurationHandleError(resp)
+		return WebAppsGetDiagnosticLogsConfigurationResponse{}, client.getDiagnosticLogsConfigurationHandleError(resp)
 	}
 	return client.getDiagnosticLogsConfigurationHandleResponse(resp)
 }
@@ -8667,12 +8661,12 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationCreateRequest(ctx con
 }
 
 // getDiagnosticLogsConfigurationHandleResponse handles the GetDiagnosticLogsConfiguration response.
-func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *azcore.Response) (SiteLogsConfigResponse, error) {
-	var val *SiteLogsConfig
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteLogsConfigResponse{}, err
+func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *azcore.Response) (WebAppsGetDiagnosticLogsConfigurationResponse, error) {
+	result := WebAppsGetDiagnosticLogsConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteLogsConfig); err != nil {
+		return WebAppsGetDiagnosticLogsConfigurationResponse{}, err
 	}
-	return SiteLogsConfigResponse{RawResponse: resp.Response, SiteLogsConfig: val}, nil
+	return result, nil
 }
 
 // getDiagnosticLogsConfigurationHandleError handles the GetDiagnosticLogsConfiguration error response.
@@ -8690,17 +8684,17 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleError(resp *azc
 
 // GetDiagnosticLogsConfigurationSlot - Description for Gets the logging configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetDiagnosticLogsConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetDiagnosticLogsConfigurationSlotOptions) (SiteLogsConfigResponse, error) {
+func (client *WebAppsClient) GetDiagnosticLogsConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetDiagnosticLogsConfigurationSlotOptions) (WebAppsGetDiagnosticLogsConfigurationSlotResponse, error) {
 	req, err := client.getDiagnosticLogsConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteLogsConfigResponse{}, client.getDiagnosticLogsConfigurationSlotHandleError(resp)
+		return WebAppsGetDiagnosticLogsConfigurationSlotResponse{}, client.getDiagnosticLogsConfigurationSlotHandleError(resp)
 	}
 	return client.getDiagnosticLogsConfigurationSlotHandleResponse(resp)
 }
@@ -8737,12 +8731,12 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotCreateRequest(ctx
 }
 
 // getDiagnosticLogsConfigurationSlotHandleResponse handles the GetDiagnosticLogsConfigurationSlot response.
-func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(resp *azcore.Response) (SiteLogsConfigResponse, error) {
-	var val *SiteLogsConfig
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteLogsConfigResponse{}, err
+func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(resp *azcore.Response) (WebAppsGetDiagnosticLogsConfigurationSlotResponse, error) {
+	result := WebAppsGetDiagnosticLogsConfigurationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteLogsConfig); err != nil {
+		return WebAppsGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
-	return SiteLogsConfigResponse{RawResponse: resp.Response, SiteLogsConfig: val}, nil
+	return result, nil
 }
 
 // getDiagnosticLogsConfigurationSlotHandleError handles the GetDiagnosticLogsConfigurationSlot error response.
@@ -8760,17 +8754,17 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleError(resp 
 
 // GetDomainOwnershipIdentifier - Description for Get domain ownership identifier for web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *WebAppsGetDomainOwnershipIdentifierOptions) (IdentifierResponse, error) {
+func (client *WebAppsClient) GetDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *WebAppsGetDomainOwnershipIdentifierOptions) (WebAppsGetDomainOwnershipIdentifierResponse, error) {
 	req, err := client.getDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, options)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsGetDomainOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsGetDomainOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IdentifierResponse{}, client.getDomainOwnershipIdentifierHandleError(resp)
+		return WebAppsGetDomainOwnershipIdentifierResponse{}, client.getDomainOwnershipIdentifierHandleError(resp)
 	}
 	return client.getDomainOwnershipIdentifierHandleResponse(resp)
 }
@@ -8807,12 +8801,12 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierCreateRequest(ctx conte
 }
 
 // getDomainOwnershipIdentifierHandleResponse handles the GetDomainOwnershipIdentifier response.
-func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (IdentifierResponse, error) {
-	var val *Identifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierResponse{}, err
+func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (WebAppsGetDomainOwnershipIdentifierResponse, error) {
+	result := WebAppsGetDomainOwnershipIdentifierResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Identifier); err != nil {
+		return WebAppsGetDomainOwnershipIdentifierResponse{}, err
 	}
-	return IdentifierResponse{RawResponse: resp.Response, Identifier: val}, nil
+	return result, nil
 }
 
 // getDomainOwnershipIdentifierHandleError handles the GetDomainOwnershipIdentifier error response.
@@ -8830,17 +8824,17 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierHandleError(resp *azcor
 
 // GetDomainOwnershipIdentifierSlot - Description for Get domain ownership identifier for web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *WebAppsGetDomainOwnershipIdentifierSlotOptions) (IdentifierResponse, error) {
+func (client *WebAppsClient) GetDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *WebAppsGetDomainOwnershipIdentifierSlotOptions) (WebAppsGetDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.getDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, options)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IdentifierResponse{}, client.getDomainOwnershipIdentifierSlotHandleError(resp)
+		return WebAppsGetDomainOwnershipIdentifierSlotResponse{}, client.getDomainOwnershipIdentifierSlotHandleError(resp)
 	}
 	return client.getDomainOwnershipIdentifierSlotHandleResponse(resp)
 }
@@ -8881,12 +8875,12 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotCreateRequest(ctx c
 }
 
 // getDomainOwnershipIdentifierSlotHandleResponse handles the GetDomainOwnershipIdentifierSlot response.
-func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp *azcore.Response) (IdentifierResponse, error) {
-	var val *Identifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierResponse{}, err
+func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp *azcore.Response) (WebAppsGetDomainOwnershipIdentifierSlotResponse, error) {
+	result := WebAppsGetDomainOwnershipIdentifierSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Identifier); err != nil {
+		return WebAppsGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	return IdentifierResponse{RawResponse: resp.Response, Identifier: val}, nil
+	return result, nil
 }
 
 // getDomainOwnershipIdentifierSlotHandleError handles the GetDomainOwnershipIdentifierSlot error response.
@@ -8904,17 +8898,17 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleError(resp *a
 
 // GetFtpAllowed - Description for Returns whether FTP is allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetFtpAllowed(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetFtpAllowedOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) GetFtpAllowed(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetFtpAllowedOptions) (WebAppsGetFtpAllowedResponse, error) {
 	req, err := client.getFtpAllowedCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetFtpAllowedResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetFtpAllowedResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.getFtpAllowedHandleError(resp)
+		return WebAppsGetFtpAllowedResponse{}, client.getFtpAllowedHandleError(resp)
 	}
 	return client.getFtpAllowedHandleResponse(resp)
 }
@@ -8947,12 +8941,12 @@ func (client *WebAppsClient) getFtpAllowedCreateRequest(ctx context.Context, res
 }
 
 // getFtpAllowedHandleResponse handles the GetFtpAllowed response.
-func (client *WebAppsClient) getFtpAllowedHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) getFtpAllowedHandleResponse(resp *azcore.Response) (WebAppsGetFtpAllowedResponse, error) {
+	result := WebAppsGetFtpAllowedResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsGetFtpAllowedResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // getFtpAllowedHandleError handles the GetFtpAllowed error response.
@@ -8970,17 +8964,17 @@ func (client *WebAppsClient) getFtpAllowedHandleError(resp *azcore.Response) err
 
 // GetFtpAllowedSlot - Description for Returns whether FTP is allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetFtpAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetFtpAllowedSlotOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) GetFtpAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetFtpAllowedSlotOptions) (WebAppsGetFtpAllowedSlotResponse, error) {
 	req, err := client.getFtpAllowedSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetFtpAllowedSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetFtpAllowedSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.getFtpAllowedSlotHandleError(resp)
+		return WebAppsGetFtpAllowedSlotResponse{}, client.getFtpAllowedSlotHandleError(resp)
 	}
 	return client.getFtpAllowedSlotHandleResponse(resp)
 }
@@ -9017,12 +9011,12 @@ func (client *WebAppsClient) getFtpAllowedSlotCreateRequest(ctx context.Context,
 }
 
 // getFtpAllowedSlotHandleResponse handles the GetFtpAllowedSlot response.
-func (client *WebAppsClient) getFtpAllowedSlotHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) getFtpAllowedSlotHandleResponse(resp *azcore.Response) (WebAppsGetFtpAllowedSlotResponse, error) {
+	result := WebAppsGetFtpAllowedSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsGetFtpAllowedSlotResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // getFtpAllowedSlotHandleError handles the GetFtpAllowedSlot error response.
@@ -9040,17 +9034,17 @@ func (client *WebAppsClient) getFtpAllowedSlotHandleError(resp *azcore.Response)
 
 // GetFunction - Description for Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetFunction(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsGetFunctionOptions) (FunctionEnvelopeResponse, error) {
+func (client *WebAppsClient) GetFunction(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsGetFunctionOptions) (WebAppsGetFunctionResponse, error) {
 	req, err := client.getFunctionCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
-		return FunctionEnvelopeResponse{}, err
+		return WebAppsGetFunctionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FunctionEnvelopeResponse{}, err
+		return WebAppsGetFunctionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FunctionEnvelopeResponse{}, client.getFunctionHandleError(resp)
+		return WebAppsGetFunctionResponse{}, client.getFunctionHandleError(resp)
 	}
 	return client.getFunctionHandleResponse(resp)
 }
@@ -9087,12 +9081,12 @@ func (client *WebAppsClient) getFunctionCreateRequest(ctx context.Context, resou
 }
 
 // getFunctionHandleResponse handles the GetFunction response.
-func (client *WebAppsClient) getFunctionHandleResponse(resp *azcore.Response) (FunctionEnvelopeResponse, error) {
-	var val *FunctionEnvelope
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionEnvelopeResponse{}, err
+func (client *WebAppsClient) getFunctionHandleResponse(resp *azcore.Response) (WebAppsGetFunctionResponse, error) {
+	result := WebAppsGetFunctionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionEnvelope); err != nil {
+		return WebAppsGetFunctionResponse{}, err
 	}
-	return FunctionEnvelopeResponse{RawResponse: resp.Response, FunctionEnvelope: val}, nil
+	return result, nil
 }
 
 // getFunctionHandleError handles the GetFunction error response.
@@ -9118,17 +9112,17 @@ func (client *WebAppsClient) getFunctionHandleError(resp *azcore.Response) error
 
 // GetFunctionsAdminToken - Description for Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetFunctionsAdminToken(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetFunctionsAdminTokenOptions) (StringResponse, error) {
+func (client *WebAppsClient) GetFunctionsAdminToken(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetFunctionsAdminTokenOptions) (WebAppsGetFunctionsAdminTokenResponse, error) {
 	req, err := client.getFunctionsAdminTokenCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsGetFunctionsAdminTokenResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsGetFunctionsAdminTokenResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringResponse{}, client.getFunctionsAdminTokenHandleError(resp)
+		return WebAppsGetFunctionsAdminTokenResponse{}, client.getFunctionsAdminTokenHandleError(resp)
 	}
 	return client.getFunctionsAdminTokenHandleResponse(resp)
 }
@@ -9161,12 +9155,12 @@ func (client *WebAppsClient) getFunctionsAdminTokenCreateRequest(ctx context.Con
 }
 
 // getFunctionsAdminTokenHandleResponse handles the GetFunctionsAdminToken response.
-func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *azcore.Response) (StringResponse, error) {
-	var val *string
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringResponse{}, err
+func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *azcore.Response) (WebAppsGetFunctionsAdminTokenResponse, error) {
+	result := WebAppsGetFunctionsAdminTokenResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Value); err != nil {
+		return WebAppsGetFunctionsAdminTokenResponse{}, err
 	}
-	return StringResponse{RawResponse: resp.Response, Value: val}, nil
+	return result, nil
 }
 
 // getFunctionsAdminTokenHandleError handles the GetFunctionsAdminToken error response.
@@ -9184,17 +9178,17 @@ func (client *WebAppsClient) getFunctionsAdminTokenHandleError(resp *azcore.Resp
 
 // GetFunctionsAdminTokenSlot - Description for Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetFunctionsAdminTokenSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetFunctionsAdminTokenSlotOptions) (StringResponse, error) {
+func (client *WebAppsClient) GetFunctionsAdminTokenSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetFunctionsAdminTokenSlotOptions) (WebAppsGetFunctionsAdminTokenSlotResponse, error) {
 	req, err := client.getFunctionsAdminTokenSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsGetFunctionsAdminTokenSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsGetFunctionsAdminTokenSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringResponse{}, client.getFunctionsAdminTokenSlotHandleError(resp)
+		return WebAppsGetFunctionsAdminTokenSlotResponse{}, client.getFunctionsAdminTokenSlotHandleError(resp)
 	}
 	return client.getFunctionsAdminTokenSlotHandleResponse(resp)
 }
@@ -9231,12 +9225,12 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotCreateRequest(ctx context
 }
 
 // getFunctionsAdminTokenSlotHandleResponse handles the GetFunctionsAdminTokenSlot response.
-func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *azcore.Response) (StringResponse, error) {
-	var val *string
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringResponse{}, err
+func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *azcore.Response) (WebAppsGetFunctionsAdminTokenSlotResponse, error) {
+	result := WebAppsGetFunctionsAdminTokenSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Value); err != nil {
+		return WebAppsGetFunctionsAdminTokenSlotResponse{}, err
 	}
-	return StringResponse{RawResponse: resp.Response, Value: val}, nil
+	return result, nil
 }
 
 // getFunctionsAdminTokenSlotHandleError handles the GetFunctionsAdminTokenSlot error response.
@@ -9254,17 +9248,17 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleError(resp *azcore.
 
 // GetHostNameBinding - Description for Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, options *WebAppsGetHostNameBindingOptions) (HostNameBindingResponse, error) {
+func (client *WebAppsClient) GetHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, options *WebAppsGetHostNameBindingOptions) (WebAppsGetHostNameBindingResponse, error) {
 	req, err := client.getHostNameBindingCreateRequest(ctx, resourceGroupName, name, hostName, options)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsGetHostNameBindingResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsGetHostNameBindingResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostNameBindingResponse{}, client.getHostNameBindingHandleError(resp)
+		return WebAppsGetHostNameBindingResponse{}, client.getHostNameBindingHandleError(resp)
 	}
 	return client.getHostNameBindingHandleResponse(resp)
 }
@@ -9301,12 +9295,12 @@ func (client *WebAppsClient) getHostNameBindingCreateRequest(ctx context.Context
 }
 
 // getHostNameBindingHandleResponse handles the GetHostNameBinding response.
-func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *azcore.Response) (HostNameBindingResponse, error) {
-	var val *HostNameBinding
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostNameBindingResponse{}, err
+func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *azcore.Response) (WebAppsGetHostNameBindingResponse, error) {
+	result := WebAppsGetHostNameBindingResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostNameBinding); err != nil {
+		return WebAppsGetHostNameBindingResponse{}, err
 	}
-	return HostNameBindingResponse{RawResponse: resp.Response, HostNameBinding: val}, nil
+	return result, nil
 }
 
 // getHostNameBindingHandleError handles the GetHostNameBinding error response.
@@ -9324,17 +9318,17 @@ func (client *WebAppsClient) getHostNameBindingHandleError(resp *azcore.Response
 
 // GetHostNameBindingSlot - Description for Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *WebAppsGetHostNameBindingSlotOptions) (HostNameBindingResponse, error) {
+func (client *WebAppsClient) GetHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *WebAppsGetHostNameBindingSlotOptions) (WebAppsGetHostNameBindingSlotResponse, error) {
 	req, err := client.getHostNameBindingSlotCreateRequest(ctx, resourceGroupName, name, slot, hostName, options)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsGetHostNameBindingSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostNameBindingResponse{}, err
+		return WebAppsGetHostNameBindingSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostNameBindingResponse{}, client.getHostNameBindingSlotHandleError(resp)
+		return WebAppsGetHostNameBindingSlotResponse{}, client.getHostNameBindingSlotHandleError(resp)
 	}
 	return client.getHostNameBindingSlotHandleResponse(resp)
 }
@@ -9375,12 +9369,12 @@ func (client *WebAppsClient) getHostNameBindingSlotCreateRequest(ctx context.Con
 }
 
 // getHostNameBindingSlotHandleResponse handles the GetHostNameBindingSlot response.
-func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *azcore.Response) (HostNameBindingResponse, error) {
-	var val *HostNameBinding
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostNameBindingResponse{}, err
+func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *azcore.Response) (WebAppsGetHostNameBindingSlotResponse, error) {
+	result := WebAppsGetHostNameBindingSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostNameBinding); err != nil {
+		return WebAppsGetHostNameBindingSlotResponse{}, err
 	}
-	return HostNameBindingResponse{RawResponse: resp.Response, HostNameBinding: val}, nil
+	return result, nil
 }
 
 // getHostNameBindingSlotHandleError handles the GetHostNameBindingSlot error response.
@@ -9398,17 +9392,17 @@ func (client *WebAppsClient) getHostNameBindingSlotHandleError(resp *azcore.Resp
 
 // GetHybridConnection - Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsGetHybridConnectionOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsGetHybridConnectionOptions) (WebAppsGetHybridConnectionResponse, error) {
 	req, err := client.getHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsGetHybridConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsGetHybridConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.getHybridConnectionHandleError(resp)
+		return WebAppsGetHybridConnectionResponse{}, client.getHybridConnectionHandleError(resp)
 	}
 	return client.getHybridConnectionHandleResponse(resp)
 }
@@ -9449,12 +9443,12 @@ func (client *WebAppsClient) getHybridConnectionCreateRequest(ctx context.Contex
 }
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
-func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *azcore.Response) (WebAppsGetHybridConnectionResponse, error) {
+	result := WebAppsGetHybridConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsGetHybridConnectionResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // getHybridConnectionHandleError handles the GetHybridConnection error response.
@@ -9472,17 +9466,17 @@ func (client *WebAppsClient) getHybridConnectionHandleError(resp *azcore.Respons
 
 // GetHybridConnectionSlot - Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsGetHybridConnectionSlotOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) GetHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsGetHybridConnectionSlotOptions) (WebAppsGetHybridConnectionSlotResponse, error) {
 	req, err := client.getHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsGetHybridConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsGetHybridConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.getHybridConnectionSlotHandleError(resp)
+		return WebAppsGetHybridConnectionSlotResponse{}, client.getHybridConnectionSlotHandleError(resp)
 	}
 	return client.getHybridConnectionSlotHandleResponse(resp)
 }
@@ -9527,12 +9521,12 @@ func (client *WebAppsClient) getHybridConnectionSlotCreateRequest(ctx context.Co
 }
 
 // getHybridConnectionSlotHandleResponse handles the GetHybridConnectionSlot response.
-func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsGetHybridConnectionSlotResponse, error) {
+	result := WebAppsGetHybridConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsGetHybridConnectionSlotResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // getHybridConnectionSlotHandleError handles the GetHybridConnectionSlot error response.
@@ -9550,17 +9544,17 @@ func (client *WebAppsClient) getHybridConnectionSlotHandleError(resp *azcore.Res
 
 // GetInstanceFunctionSlot - Description for Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsGetInstanceFunctionSlotOptions) (FunctionEnvelopeResponse, error) {
+func (client *WebAppsClient) GetInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsGetInstanceFunctionSlotOptions) (WebAppsGetInstanceFunctionSlotResponse, error) {
 	req, err := client.getInstanceFunctionSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
-		return FunctionEnvelopeResponse{}, err
+		return WebAppsGetInstanceFunctionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FunctionEnvelopeResponse{}, err
+		return WebAppsGetInstanceFunctionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FunctionEnvelopeResponse{}, client.getInstanceFunctionSlotHandleError(resp)
+		return WebAppsGetInstanceFunctionSlotResponse{}, client.getInstanceFunctionSlotHandleError(resp)
 	}
 	return client.getInstanceFunctionSlotHandleResponse(resp)
 }
@@ -9601,12 +9595,12 @@ func (client *WebAppsClient) getInstanceFunctionSlotCreateRequest(ctx context.Co
 }
 
 // getInstanceFunctionSlotHandleResponse handles the GetInstanceFunctionSlot response.
-func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *azcore.Response) (FunctionEnvelopeResponse, error) {
-	var val *FunctionEnvelope
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionEnvelopeResponse{}, err
+func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *azcore.Response) (WebAppsGetInstanceFunctionSlotResponse, error) {
+	result := WebAppsGetInstanceFunctionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionEnvelope); err != nil {
+		return WebAppsGetInstanceFunctionSlotResponse{}, err
 	}
-	return FunctionEnvelopeResponse{RawResponse: resp.Response, FunctionEnvelope: val}, nil
+	return result, nil
 }
 
 // getInstanceFunctionSlotHandleError handles the GetInstanceFunctionSlot error response.
@@ -9632,17 +9626,17 @@ func (client *WebAppsClient) getInstanceFunctionSlotHandleError(resp *azcore.Res
 
 // GetInstanceInfo - Description for Gets all scale-out instances of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceInfo(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsGetInstanceInfoOptions) (WebSiteInstanceStatusResponse, error) {
+func (client *WebAppsClient) GetInstanceInfo(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsGetInstanceInfoOptions) (WebAppsGetInstanceInfoResponse, error) {
 	req, err := client.getInstanceInfoCreateRequest(ctx, resourceGroupName, name, instanceID, options)
 	if err != nil {
-		return WebSiteInstanceStatusResponse{}, err
+		return WebAppsGetInstanceInfoResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WebSiteInstanceStatusResponse{}, err
+		return WebAppsGetInstanceInfoResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return WebSiteInstanceStatusResponse{}, client.getInstanceInfoHandleError(resp)
+		return WebAppsGetInstanceInfoResponse{}, client.getInstanceInfoHandleError(resp)
 	}
 	return client.getInstanceInfoHandleResponse(resp)
 }
@@ -9679,12 +9673,12 @@ func (client *WebAppsClient) getInstanceInfoCreateRequest(ctx context.Context, r
 }
 
 // getInstanceInfoHandleResponse handles the GetInstanceInfo response.
-func (client *WebAppsClient) getInstanceInfoHandleResponse(resp *azcore.Response) (WebSiteInstanceStatusResponse, error) {
-	var val *WebSiteInstanceStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebSiteInstanceStatusResponse{}, err
+func (client *WebAppsClient) getInstanceInfoHandleResponse(resp *azcore.Response) (WebAppsGetInstanceInfoResponse, error) {
+	result := WebAppsGetInstanceInfoResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebSiteInstanceStatus); err != nil {
+		return WebAppsGetInstanceInfoResponse{}, err
 	}
-	return WebSiteInstanceStatusResponse{RawResponse: resp.Response, WebSiteInstanceStatus: val}, nil
+	return result, nil
 }
 
 // getInstanceInfoHandleError handles the GetInstanceInfo error response.
@@ -9702,17 +9696,17 @@ func (client *WebAppsClient) getInstanceInfoHandleError(resp *azcore.Response) e
 
 // GetInstanceInfoSlot - Description for Gets all scale-out instances of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceInfoSlot(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string, options *WebAppsGetInstanceInfoSlotOptions) (WebSiteInstanceStatusResponse, error) {
+func (client *WebAppsClient) GetInstanceInfoSlot(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string, options *WebAppsGetInstanceInfoSlotOptions) (WebAppsGetInstanceInfoSlotResponse, error) {
 	req, err := client.getInstanceInfoSlotCreateRequest(ctx, resourceGroupName, name, instanceID, slot, options)
 	if err != nil {
-		return WebSiteInstanceStatusResponse{}, err
+		return WebAppsGetInstanceInfoSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WebSiteInstanceStatusResponse{}, err
+		return WebAppsGetInstanceInfoSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return WebSiteInstanceStatusResponse{}, client.getInstanceInfoSlotHandleError(resp)
+		return WebAppsGetInstanceInfoSlotResponse{}, client.getInstanceInfoSlotHandleError(resp)
 	}
 	return client.getInstanceInfoSlotHandleResponse(resp)
 }
@@ -9753,12 +9747,12 @@ func (client *WebAppsClient) getInstanceInfoSlotCreateRequest(ctx context.Contex
 }
 
 // getInstanceInfoSlotHandleResponse handles the GetInstanceInfoSlot response.
-func (client *WebAppsClient) getInstanceInfoSlotHandleResponse(resp *azcore.Response) (WebSiteInstanceStatusResponse, error) {
-	var val *WebSiteInstanceStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebSiteInstanceStatusResponse{}, err
+func (client *WebAppsClient) getInstanceInfoSlotHandleResponse(resp *azcore.Response) (WebAppsGetInstanceInfoSlotResponse, error) {
+	result := WebAppsGetInstanceInfoSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebSiteInstanceStatus); err != nil {
+		return WebAppsGetInstanceInfoSlotResponse{}, err
 	}
-	return WebSiteInstanceStatusResponse{RawResponse: resp.Response, WebSiteInstanceStatus: val}, nil
+	return result, nil
 }
 
 // getInstanceInfoSlotHandleError handles the GetInstanceInfoSlot error response.
@@ -9776,17 +9770,17 @@ func (client *WebAppsClient) getInstanceInfoSlotHandleError(resp *azcore.Respons
 
 // GetInstanceMSDeployLog - Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsGetInstanceMSDeployLogOptions) (MSDeployLogResponse, error) {
+func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsGetInstanceMSDeployLogOptions) (WebAppsGetInstanceMSDeployLogResponse, error) {
 	req, err := client.getInstanceMSDeployLogCreateRequest(ctx, resourceGroupName, name, instanceID, options)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetInstanceMSDeployLogResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetInstanceMSDeployLogResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployLogResponse{}, client.getInstanceMSDeployLogHandleError(resp)
+		return WebAppsGetInstanceMSDeployLogResponse{}, client.getInstanceMSDeployLogHandleError(resp)
 	}
 	return client.getInstanceMSDeployLogHandleResponse(resp)
 }
@@ -9823,12 +9817,12 @@ func (client *WebAppsClient) getInstanceMSDeployLogCreateRequest(ctx context.Con
 }
 
 // getInstanceMSDeployLogHandleResponse handles the GetInstanceMSDeployLog response.
-func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *azcore.Response) (MSDeployLogResponse, error) {
-	var val *MSDeployLog
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployLogResponse{}, err
+func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *azcore.Response) (WebAppsGetInstanceMSDeployLogResponse, error) {
+	result := WebAppsGetInstanceMSDeployLogResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployLog); err != nil {
+		return WebAppsGetInstanceMSDeployLogResponse{}, err
 	}
-	return MSDeployLogResponse{RawResponse: resp.Response, MSDeployLog: val}, nil
+	return result, nil
 }
 
 // getInstanceMSDeployLogHandleError handles the GetInstanceMSDeployLog error response.
@@ -9854,17 +9848,17 @@ func (client *WebAppsClient) getInstanceMSDeployLogHandleError(resp *azcore.Resp
 
 // GetInstanceMSDeployLogSlot - Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *WebAppsGetInstanceMSDeployLogSlotOptions) (MSDeployLogResponse, error) {
+func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *WebAppsGetInstanceMSDeployLogSlotOptions) (WebAppsGetInstanceMSDeployLogSlotResponse, error) {
 	req, err := client.getInstanceMSDeployLogSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, options)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetInstanceMSDeployLogSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetInstanceMSDeployLogSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployLogResponse{}, client.getInstanceMSDeployLogSlotHandleError(resp)
+		return WebAppsGetInstanceMSDeployLogSlotResponse{}, client.getInstanceMSDeployLogSlotHandleError(resp)
 	}
 	return client.getInstanceMSDeployLogSlotHandleResponse(resp)
 }
@@ -9905,12 +9899,12 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotCreateRequest(ctx context
 }
 
 // getInstanceMSDeployLogSlotHandleResponse handles the GetInstanceMSDeployLogSlot response.
-func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *azcore.Response) (MSDeployLogResponse, error) {
-	var val *MSDeployLog
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployLogResponse{}, err
+func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *azcore.Response) (WebAppsGetInstanceMSDeployLogSlotResponse, error) {
+	result := WebAppsGetInstanceMSDeployLogSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployLog); err != nil {
+		return WebAppsGetInstanceMSDeployLogSlotResponse{}, err
 	}
-	return MSDeployLogResponse{RawResponse: resp.Response, MSDeployLog: val}, nil
+	return result, nil
 }
 
 // getInstanceMSDeployLogSlotHandleError handles the GetInstanceMSDeployLogSlot error response.
@@ -9936,17 +9930,17 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleError(resp *azcore.
 
 // GetInstanceMsDeployStatus - Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsGetInstanceMsDeployStatusOptions) (MSDeployStatusResponse, error) {
+func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsGetInstanceMsDeployStatusOptions) (WebAppsGetInstanceMsDeployStatusResponse, error) {
 	req, err := client.getInstanceMsDeployStatusCreateRequest(ctx, resourceGroupName, name, instanceID, options)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetInstanceMsDeployStatusResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetInstanceMsDeployStatusResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployStatusResponse{}, client.getInstanceMsDeployStatusHandleError(resp)
+		return WebAppsGetInstanceMsDeployStatusResponse{}, client.getInstanceMsDeployStatusHandleError(resp)
 	}
 	return client.getInstanceMsDeployStatusHandleResponse(resp)
 }
@@ -9983,12 +9977,12 @@ func (client *WebAppsClient) getInstanceMsDeployStatusCreateRequest(ctx context.
 }
 
 // getInstanceMsDeployStatusHandleResponse handles the GetInstanceMsDeployStatus response.
-func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *azcore.Response) (MSDeployStatusResponse, error) {
-	var val *MSDeployStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployStatusResponse{}, err
+func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *azcore.Response) (WebAppsGetInstanceMsDeployStatusResponse, error) {
+	result := WebAppsGetInstanceMsDeployStatusResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployStatus); err != nil {
+		return WebAppsGetInstanceMsDeployStatusResponse{}, err
 	}
-	return MSDeployStatusResponse{RawResponse: resp.Response, MSDeployStatus: val}, nil
+	return result, nil
 }
 
 // getInstanceMsDeployStatusHandleError handles the GetInstanceMsDeployStatus error response.
@@ -10006,17 +10000,17 @@ func (client *WebAppsClient) getInstanceMsDeployStatusHandleError(resp *azcore.R
 
 // GetInstanceMsDeployStatusSlot - Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *WebAppsGetInstanceMsDeployStatusSlotOptions) (MSDeployStatusResponse, error) {
+func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *WebAppsGetInstanceMsDeployStatusSlotOptions) (WebAppsGetInstanceMsDeployStatusSlotResponse, error) {
 	req, err := client.getInstanceMsDeployStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, options)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetInstanceMsDeployStatusSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetInstanceMsDeployStatusSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployStatusResponse{}, client.getInstanceMsDeployStatusSlotHandleError(resp)
+		return WebAppsGetInstanceMsDeployStatusSlotResponse{}, client.getInstanceMsDeployStatusSlotHandleError(resp)
 	}
 	return client.getInstanceMsDeployStatusSlotHandleResponse(resp)
 }
@@ -10057,12 +10051,12 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotCreateRequest(ctx cont
 }
 
 // getInstanceMsDeployStatusSlotHandleResponse handles the GetInstanceMsDeployStatusSlot response.
-func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *azcore.Response) (MSDeployStatusResponse, error) {
-	var val *MSDeployStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployStatusResponse{}, err
+func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *azcore.Response) (WebAppsGetInstanceMsDeployStatusSlotResponse, error) {
+	result := WebAppsGetInstanceMsDeployStatusSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployStatus); err != nil {
+		return WebAppsGetInstanceMsDeployStatusSlotResponse{}, err
 	}
-	return MSDeployStatusResponse{RawResponse: resp.Response, MSDeployStatus: val}, nil
+	return result, nil
 }
 
 // getInstanceMsDeployStatusSlotHandleError handles the GetInstanceMsDeployStatusSlot error response.
@@ -10080,17 +10074,17 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleError(resp *azco
 
 // GetInstanceProcess - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceProcess(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsGetInstanceProcessOptions) (ProcessInfoResponse, error) {
+func (client *WebAppsClient) GetInstanceProcess(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsGetInstanceProcessOptions) (WebAppsGetInstanceProcessResponse, error) {
 	req, err := client.getInstanceProcessCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetInstanceProcessResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetInstanceProcessResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessInfoResponse{}, client.getInstanceProcessHandleError(resp)
+		return WebAppsGetInstanceProcessResponse{}, client.getInstanceProcessHandleError(resp)
 	}
 	return client.getInstanceProcessHandleResponse(resp)
 }
@@ -10131,12 +10125,12 @@ func (client *WebAppsClient) getInstanceProcessCreateRequest(ctx context.Context
 }
 
 // getInstanceProcessHandleResponse handles the GetInstanceProcess response.
-func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *azcore.Response) (ProcessInfoResponse, error) {
-	var val *ProcessInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoResponse{}, err
+func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *azcore.Response) (WebAppsGetInstanceProcessResponse, error) {
+	result := WebAppsGetInstanceProcessResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfo); err != nil {
+		return WebAppsGetInstanceProcessResponse{}, err
 	}
-	return ProcessInfoResponse{RawResponse: resp.Response, ProcessInfo: val}, nil
+	return result, nil
 }
 
 // getInstanceProcessHandleError handles the GetInstanceProcess error response.
@@ -10162,19 +10156,19 @@ func (client *WebAppsClient) getInstanceProcessHandleError(resp *azcore.Response
 
 // GetInstanceProcessDump - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceProcessDump(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsGetInstanceProcessDumpOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetInstanceProcessDump(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsGetInstanceProcessDumpOptions) (WebAppsGetInstanceProcessDumpResponse, error) {
 	req, err := client.getInstanceProcessDumpCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetInstanceProcessDumpResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetInstanceProcessDumpResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getInstanceProcessDumpHandleError(resp)
+		return WebAppsGetInstanceProcessDumpResponse{}, client.getInstanceProcessDumpHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetInstanceProcessDumpResponse{RawResponse: resp.Response}, nil
 }
 
 // getInstanceProcessDumpCreateRequest creates the GetInstanceProcessDump request.
@@ -10236,19 +10230,19 @@ func (client *WebAppsClient) getInstanceProcessDumpHandleError(resp *azcore.Resp
 
 // GetInstanceProcessDumpSlot - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceProcessDumpSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsGetInstanceProcessDumpSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetInstanceProcessDumpSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsGetInstanceProcessDumpSlotOptions) (WebAppsGetInstanceProcessDumpSlotResponse, error) {
 	req, err := client.getInstanceProcessDumpSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetInstanceProcessDumpSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetInstanceProcessDumpSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getInstanceProcessDumpSlotHandleError(resp)
+		return WebAppsGetInstanceProcessDumpSlotResponse{}, client.getInstanceProcessDumpSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetInstanceProcessDumpSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // getInstanceProcessDumpSlotCreateRequest creates the GetInstanceProcessDumpSlot request.
@@ -10314,17 +10308,17 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotHandleError(resp *azcore.
 
 // GetInstanceProcessModule - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceProcessModule(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, instanceID string, options *WebAppsGetInstanceProcessModuleOptions) (ProcessModuleInfoResponse, error) {
+func (client *WebAppsClient) GetInstanceProcessModule(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, instanceID string, options *WebAppsGetInstanceProcessModuleOptions) (WebAppsGetInstanceProcessModuleResponse, error) {
 	req, err := client.getInstanceProcessModuleCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, instanceID, options)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetInstanceProcessModuleResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetInstanceProcessModuleResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessModuleInfoResponse{}, client.getInstanceProcessModuleHandleError(resp)
+		return WebAppsGetInstanceProcessModuleResponse{}, client.getInstanceProcessModuleHandleError(resp)
 	}
 	return client.getInstanceProcessModuleHandleResponse(resp)
 }
@@ -10369,12 +10363,12 @@ func (client *WebAppsClient) getInstanceProcessModuleCreateRequest(ctx context.C
 }
 
 // getInstanceProcessModuleHandleResponse handles the GetInstanceProcessModule response.
-func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *azcore.Response) (ProcessModuleInfoResponse, error) {
-	var val *ProcessModuleInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoResponse{}, err
+func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *azcore.Response) (WebAppsGetInstanceProcessModuleResponse, error) {
+	result := WebAppsGetInstanceProcessModuleResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfo); err != nil {
+		return WebAppsGetInstanceProcessModuleResponse{}, err
 	}
-	return ProcessModuleInfoResponse{RawResponse: resp.Response, ProcessModuleInfo: val}, nil
+	return result, nil
 }
 
 // getInstanceProcessModuleHandleError handles the GetInstanceProcessModule error response.
@@ -10400,17 +10394,17 @@ func (client *WebAppsClient) getInstanceProcessModuleHandleError(resp *azcore.Re
 
 // GetInstanceProcessModuleSlot - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceProcessModuleSlot(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, options *WebAppsGetInstanceProcessModuleSlotOptions) (ProcessModuleInfoResponse, error) {
+func (client *WebAppsClient) GetInstanceProcessModuleSlot(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, options *WebAppsGetInstanceProcessModuleSlotOptions) (WebAppsGetInstanceProcessModuleSlotResponse, error) {
 	req, err := client.getInstanceProcessModuleSlotCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, slot, instanceID, options)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetInstanceProcessModuleSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetInstanceProcessModuleSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessModuleInfoResponse{}, client.getInstanceProcessModuleSlotHandleError(resp)
+		return WebAppsGetInstanceProcessModuleSlotResponse{}, client.getInstanceProcessModuleSlotHandleError(resp)
 	}
 	return client.getInstanceProcessModuleSlotHandleResponse(resp)
 }
@@ -10459,12 +10453,12 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotCreateRequest(ctx conte
 }
 
 // getInstanceProcessModuleSlotHandleResponse handles the GetInstanceProcessModuleSlot response.
-func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *azcore.Response) (ProcessModuleInfoResponse, error) {
-	var val *ProcessModuleInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoResponse{}, err
+func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *azcore.Response) (WebAppsGetInstanceProcessModuleSlotResponse, error) {
+	result := WebAppsGetInstanceProcessModuleSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfo); err != nil {
+		return WebAppsGetInstanceProcessModuleSlotResponse{}, err
 	}
-	return ProcessModuleInfoResponse{RawResponse: resp.Response, ProcessModuleInfo: val}, nil
+	return result, nil
 }
 
 // getInstanceProcessModuleSlotHandleError handles the GetInstanceProcessModuleSlot error response.
@@ -10490,17 +10484,17 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotHandleError(resp *azcor
 
 // GetInstanceProcessSlot - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetInstanceProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsGetInstanceProcessSlotOptions) (ProcessInfoResponse, error) {
+func (client *WebAppsClient) GetInstanceProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsGetInstanceProcessSlotOptions) (WebAppsGetInstanceProcessSlotResponse, error) {
 	req, err := client.getInstanceProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetInstanceProcessSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetInstanceProcessSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessInfoResponse{}, client.getInstanceProcessSlotHandleError(resp)
+		return WebAppsGetInstanceProcessSlotResponse{}, client.getInstanceProcessSlotHandleError(resp)
 	}
 	return client.getInstanceProcessSlotHandleResponse(resp)
 }
@@ -10545,12 +10539,12 @@ func (client *WebAppsClient) getInstanceProcessSlotCreateRequest(ctx context.Con
 }
 
 // getInstanceProcessSlotHandleResponse handles the GetInstanceProcessSlot response.
-func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *azcore.Response) (ProcessInfoResponse, error) {
-	var val *ProcessInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoResponse{}, err
+func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *azcore.Response) (WebAppsGetInstanceProcessSlotResponse, error) {
+	result := WebAppsGetInstanceProcessSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfo); err != nil {
+		return WebAppsGetInstanceProcessSlotResponse{}, err
 	}
-	return ProcessInfoResponse{RawResponse: resp.Response, ProcessInfo: val}, nil
+	return result, nil
 }
 
 // getInstanceProcessSlotHandleError handles the GetInstanceProcessSlot error response.
@@ -10576,17 +10570,17 @@ func (client *WebAppsClient) getInstanceProcessSlotHandleError(resp *azcore.Resp
 
 // GetMSDeployLog - Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetMSDeployLogOptions) (MSDeployLogResponse, error) {
+func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetMSDeployLogOptions) (WebAppsGetMSDeployLogResponse, error) {
 	req, err := client.getMSDeployLogCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetMSDeployLogResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetMSDeployLogResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployLogResponse{}, client.getMSDeployLogHandleError(resp)
+		return WebAppsGetMSDeployLogResponse{}, client.getMSDeployLogHandleError(resp)
 	}
 	return client.getMSDeployLogHandleResponse(resp)
 }
@@ -10619,12 +10613,12 @@ func (client *WebAppsClient) getMSDeployLogCreateRequest(ctx context.Context, re
 }
 
 // getMSDeployLogHandleResponse handles the GetMSDeployLog response.
-func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *azcore.Response) (MSDeployLogResponse, error) {
-	var val *MSDeployLog
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployLogResponse{}, err
+func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *azcore.Response) (WebAppsGetMSDeployLogResponse, error) {
+	result := WebAppsGetMSDeployLogResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployLog); err != nil {
+		return WebAppsGetMSDeployLogResponse{}, err
 	}
-	return MSDeployLogResponse{RawResponse: resp.Response, MSDeployLog: val}, nil
+	return result, nil
 }
 
 // getMSDeployLogHandleError handles the GetMSDeployLog error response.
@@ -10650,17 +10644,17 @@ func (client *WebAppsClient) getMSDeployLogHandleError(resp *azcore.Response) er
 
 // GetMSDeployLogSlot - Description for Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetMSDeployLogSlotOptions) (MSDeployLogResponse, error) {
+func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetMSDeployLogSlotOptions) (WebAppsGetMSDeployLogSlotResponse, error) {
 	req, err := client.getMSDeployLogSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetMSDeployLogSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployLogResponse{}, err
+		return WebAppsGetMSDeployLogSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployLogResponse{}, client.getMSDeployLogSlotHandleError(resp)
+		return WebAppsGetMSDeployLogSlotResponse{}, client.getMSDeployLogSlotHandleError(resp)
 	}
 	return client.getMSDeployLogSlotHandleResponse(resp)
 }
@@ -10697,12 +10691,12 @@ func (client *WebAppsClient) getMSDeployLogSlotCreateRequest(ctx context.Context
 }
 
 // getMSDeployLogSlotHandleResponse handles the GetMSDeployLogSlot response.
-func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *azcore.Response) (MSDeployLogResponse, error) {
-	var val *MSDeployLog
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployLogResponse{}, err
+func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *azcore.Response) (WebAppsGetMSDeployLogSlotResponse, error) {
+	result := WebAppsGetMSDeployLogSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployLog); err != nil {
+		return WebAppsGetMSDeployLogSlotResponse{}, err
 	}
-	return MSDeployLogResponse{RawResponse: resp.Response, MSDeployLog: val}, nil
+	return result, nil
 }
 
 // getMSDeployLogSlotHandleError handles the GetMSDeployLogSlot error response.
@@ -10728,17 +10722,17 @@ func (client *WebAppsClient) getMSDeployLogSlotHandleError(resp *azcore.Response
 
 // GetMSDeployStatus - Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetMSDeployStatusOptions) (MSDeployStatusResponse, error) {
+func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetMSDeployStatusOptions) (WebAppsGetMSDeployStatusResponse, error) {
 	req, err := client.getMSDeployStatusCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetMSDeployStatusResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetMSDeployStatusResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployStatusResponse{}, client.getMSDeployStatusHandleError(resp)
+		return WebAppsGetMSDeployStatusResponse{}, client.getMSDeployStatusHandleError(resp)
 	}
 	return client.getMSDeployStatusHandleResponse(resp)
 }
@@ -10771,12 +10765,12 @@ func (client *WebAppsClient) getMSDeployStatusCreateRequest(ctx context.Context,
 }
 
 // getMSDeployStatusHandleResponse handles the GetMSDeployStatus response.
-func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *azcore.Response) (MSDeployStatusResponse, error) {
-	var val *MSDeployStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployStatusResponse{}, err
+func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *azcore.Response) (WebAppsGetMSDeployStatusResponse, error) {
+	result := WebAppsGetMSDeployStatusResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployStatus); err != nil {
+		return WebAppsGetMSDeployStatusResponse{}, err
 	}
-	return MSDeployStatusResponse{RawResponse: resp.Response, MSDeployStatus: val}, nil
+	return result, nil
 }
 
 // getMSDeployStatusHandleError handles the GetMSDeployStatus error response.
@@ -10794,17 +10788,17 @@ func (client *WebAppsClient) getMSDeployStatusHandleError(resp *azcore.Response)
 
 // GetMSDeployStatusSlot - Description for Get the status of the last MSDeploy operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetMSDeployStatusSlotOptions) (MSDeployStatusResponse, error) {
+func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetMSDeployStatusSlotOptions) (WebAppsGetMSDeployStatusSlotResponse, error) {
 	req, err := client.getMSDeployStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetMSDeployStatusSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return WebAppsGetMSDeployStatusSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MSDeployStatusResponse{}, client.getMSDeployStatusSlotHandleError(resp)
+		return WebAppsGetMSDeployStatusSlotResponse{}, client.getMSDeployStatusSlotHandleError(resp)
 	}
 	return client.getMSDeployStatusSlotHandleResponse(resp)
 }
@@ -10841,12 +10835,12 @@ func (client *WebAppsClient) getMSDeployStatusSlotCreateRequest(ctx context.Cont
 }
 
 // getMSDeployStatusSlotHandleResponse handles the GetMSDeployStatusSlot response.
-func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *azcore.Response) (MSDeployStatusResponse, error) {
-	var val *MSDeployStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MSDeployStatusResponse{}, err
+func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *azcore.Response) (WebAppsGetMSDeployStatusSlotResponse, error) {
+	result := WebAppsGetMSDeployStatusSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MSDeployStatus); err != nil {
+		return WebAppsGetMSDeployStatusSlotResponse{}, err
 	}
-	return MSDeployStatusResponse{RawResponse: resp.Response, MSDeployStatus: val}, nil
+	return result, nil
 }
 
 // getMSDeployStatusSlotHandleError handles the GetMSDeployStatusSlot error response.
@@ -10864,17 +10858,17 @@ func (client *WebAppsClient) getMSDeployStatusSlotHandleError(resp *azcore.Respo
 
 // GetMigrateMySQLStatus - Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetMigrateMySQLStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetMigrateMySQLStatusOptions) (MigrateMySQLStatusResponse, error) {
+func (client *WebAppsClient) GetMigrateMySQLStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetMigrateMySQLStatusOptions) (WebAppsGetMigrateMySQLStatusResponse, error) {
 	req, err := client.getMigrateMySQLStatusCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return MigrateMySQLStatusResponse{}, err
+		return WebAppsGetMigrateMySQLStatusResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MigrateMySQLStatusResponse{}, err
+		return WebAppsGetMigrateMySQLStatusResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MigrateMySQLStatusResponse{}, client.getMigrateMySQLStatusHandleError(resp)
+		return WebAppsGetMigrateMySQLStatusResponse{}, client.getMigrateMySQLStatusHandleError(resp)
 	}
 	return client.getMigrateMySQLStatusHandleResponse(resp)
 }
@@ -10907,12 +10901,12 @@ func (client *WebAppsClient) getMigrateMySQLStatusCreateRequest(ctx context.Cont
 }
 
 // getMigrateMySQLStatusHandleResponse handles the GetMigrateMySQLStatus response.
-func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *azcore.Response) (MigrateMySQLStatusResponse, error) {
-	var val *MigrateMySQLStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MigrateMySQLStatusResponse{}, err
+func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *azcore.Response) (WebAppsGetMigrateMySQLStatusResponse, error) {
+	result := WebAppsGetMigrateMySQLStatusResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MigrateMySQLStatus); err != nil {
+		return WebAppsGetMigrateMySQLStatusResponse{}, err
 	}
-	return MigrateMySQLStatusResponse{RawResponse: resp.Response, MigrateMySQLStatus: val}, nil
+	return result, nil
 }
 
 // getMigrateMySQLStatusHandleError handles the GetMigrateMySQLStatus error response.
@@ -10930,17 +10924,17 @@ func (client *WebAppsClient) getMigrateMySQLStatusHandleError(resp *azcore.Respo
 
 // GetMigrateMySQLStatusSlot - Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetMigrateMySQLStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetMigrateMySQLStatusSlotOptions) (MigrateMySQLStatusResponse, error) {
+func (client *WebAppsClient) GetMigrateMySQLStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetMigrateMySQLStatusSlotOptions) (WebAppsGetMigrateMySQLStatusSlotResponse, error) {
 	req, err := client.getMigrateMySQLStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return MigrateMySQLStatusResponse{}, err
+		return WebAppsGetMigrateMySQLStatusSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MigrateMySQLStatusResponse{}, err
+		return WebAppsGetMigrateMySQLStatusSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MigrateMySQLStatusResponse{}, client.getMigrateMySQLStatusSlotHandleError(resp)
+		return WebAppsGetMigrateMySQLStatusSlotResponse{}, client.getMigrateMySQLStatusSlotHandleError(resp)
 	}
 	return client.getMigrateMySQLStatusSlotHandleResponse(resp)
 }
@@ -10977,12 +10971,12 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotCreateRequest(ctx context.
 }
 
 // getMigrateMySQLStatusSlotHandleResponse handles the GetMigrateMySQLStatusSlot response.
-func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *azcore.Response) (MigrateMySQLStatusResponse, error) {
-	var val *MigrateMySQLStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MigrateMySQLStatusResponse{}, err
+func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *azcore.Response) (WebAppsGetMigrateMySQLStatusSlotResponse, error) {
+	result := WebAppsGetMigrateMySQLStatusSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MigrateMySQLStatus); err != nil {
+		return WebAppsGetMigrateMySQLStatusSlotResponse{}, err
 	}
-	return MigrateMySQLStatusResponse{RawResponse: resp.Response, MigrateMySQLStatus: val}, nil
+	return result, nil
 }
 
 // getMigrateMySQLStatusSlotHandleError handles the GetMigrateMySQLStatusSlot error response.
@@ -11000,17 +10994,17 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleError(resp *azcore.R
 
 // GetNetworkTraceOperation - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTraceOperationOptions) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTraceOperationOptions) (WebAppsGetNetworkTraceOperationResponse, error) {
 	req, err := client.getNetworkTraceOperationCreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTraceOperationHandleError(resp)
+		return WebAppsGetNetworkTraceOperationResponse{}, client.getNetworkTraceOperationHandleError(resp)
 	}
 	return client.getNetworkTraceOperationHandleResponse(resp)
 }
@@ -11047,12 +11041,12 @@ func (client *WebAppsClient) getNetworkTraceOperationCreateRequest(ctx context.C
 }
 
 // getNetworkTraceOperationHandleResponse handles the GetNetworkTraceOperation response.
-func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *azcore.Response) (WebAppsGetNetworkTraceOperationResponse, error) {
+	result := WebAppsGetNetworkTraceOperationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTraceOperationResponse{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTraceOperationHandleError handles the GetNetworkTraceOperation error response.
@@ -11070,17 +11064,17 @@ func (client *WebAppsClient) getNetworkTraceOperationHandleError(resp *azcore.Re
 
 // GetNetworkTraceOperationSlot - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTraceOperationSlotOptions) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTraceOperationSlotOptions) (WebAppsGetNetworkTraceOperationSlotResponse, error) {
 	req, err := client.getNetworkTraceOperationSlotCreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTraceOperationSlotHandleError(resp)
+		return WebAppsGetNetworkTraceOperationSlotResponse{}, client.getNetworkTraceOperationSlotHandleError(resp)
 	}
 	return client.getNetworkTraceOperationSlotHandleResponse(resp)
 }
@@ -11121,12 +11115,12 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotCreateRequest(ctx conte
 }
 
 // getNetworkTraceOperationSlotHandleResponse handles the GetNetworkTraceOperationSlot response.
-func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *azcore.Response) (WebAppsGetNetworkTraceOperationSlotResponse, error) {
+	result := WebAppsGetNetworkTraceOperationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTraceOperationSlotResponse{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTraceOperationSlotHandleError handles the GetNetworkTraceOperationSlot error response.
@@ -11144,17 +11138,17 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotHandleError(resp *azcor
 
 // GetNetworkTraceOperationSlotV2 - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTraceOperationSlotV2Options) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTraceOperationSlotV2Options) (WebAppsGetNetworkTraceOperationSlotV2Response, error) {
 	req, err := client.getNetworkTraceOperationSlotV2CreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationSlotV2Response{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationSlotV2Response{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTraceOperationSlotV2HandleError(resp)
+		return WebAppsGetNetworkTraceOperationSlotV2Response{}, client.getNetworkTraceOperationSlotV2HandleError(resp)
 	}
 	return client.getNetworkTraceOperationSlotV2HandleResponse(resp)
 }
@@ -11195,12 +11189,12 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2CreateRequest(ctx con
 }
 
 // getNetworkTraceOperationSlotV2HandleResponse handles the GetNetworkTraceOperationSlotV2 response.
-func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *azcore.Response) (WebAppsGetNetworkTraceOperationSlotV2Response, error) {
+	result := WebAppsGetNetworkTraceOperationSlotV2Response{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTraceOperationSlotV2Response{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTraceOperationSlotV2HandleError handles the GetNetworkTraceOperationSlotV2 error response.
@@ -11218,17 +11212,17 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleError(resp *azc
 
 // GetNetworkTraceOperationV2 - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTraceOperationV2Options) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTraceOperationV2Options) (WebAppsGetNetworkTraceOperationV2Response, error) {
 	req, err := client.getNetworkTraceOperationV2CreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationV2Response{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTraceOperationV2Response{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTraceOperationV2HandleError(resp)
+		return WebAppsGetNetworkTraceOperationV2Response{}, client.getNetworkTraceOperationV2HandleError(resp)
 	}
 	return client.getNetworkTraceOperationV2HandleResponse(resp)
 }
@@ -11265,12 +11259,12 @@ func (client *WebAppsClient) getNetworkTraceOperationV2CreateRequest(ctx context
 }
 
 // getNetworkTraceOperationV2HandleResponse handles the GetNetworkTraceOperationV2 response.
-func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *azcore.Response) (WebAppsGetNetworkTraceOperationV2Response, error) {
+	result := WebAppsGetNetworkTraceOperationV2Response{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTraceOperationV2Response{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTraceOperationV2HandleError handles the GetNetworkTraceOperationV2 error response.
@@ -11288,17 +11282,17 @@ func (client *WebAppsClient) getNetworkTraceOperationV2HandleError(resp *azcore.
 
 // GetNetworkTraces - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTraces(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTracesOptions) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTraces(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTracesOptions) (WebAppsGetNetworkTracesResponse, error) {
 	req, err := client.getNetworkTracesCreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTracesHandleError(resp)
+		return WebAppsGetNetworkTracesResponse{}, client.getNetworkTracesHandleError(resp)
 	}
 	return client.getNetworkTracesHandleResponse(resp)
 }
@@ -11335,12 +11329,12 @@ func (client *WebAppsClient) getNetworkTracesCreateRequest(ctx context.Context, 
 }
 
 // getNetworkTracesHandleResponse handles the GetNetworkTraces response.
-func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *azcore.Response) (WebAppsGetNetworkTracesResponse, error) {
+	result := WebAppsGetNetworkTracesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTracesResponse{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTracesHandleError handles the GetNetworkTraces error response.
@@ -11358,17 +11352,17 @@ func (client *WebAppsClient) getNetworkTracesHandleError(resp *azcore.Response) 
 
 // GetNetworkTracesSlot - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTracesSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTracesSlotOptions) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTracesSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTracesSlotOptions) (WebAppsGetNetworkTracesSlotResponse, error) {
 	req, err := client.getNetworkTracesSlotCreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTracesSlotHandleError(resp)
+		return WebAppsGetNetworkTracesSlotResponse{}, client.getNetworkTracesSlotHandleError(resp)
 	}
 	return client.getNetworkTracesSlotHandleResponse(resp)
 }
@@ -11409,12 +11403,12 @@ func (client *WebAppsClient) getNetworkTracesSlotCreateRequest(ctx context.Conte
 }
 
 // getNetworkTracesSlotHandleResponse handles the GetNetworkTracesSlot response.
-func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *azcore.Response) (WebAppsGetNetworkTracesSlotResponse, error) {
+	result := WebAppsGetNetworkTracesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTracesSlotResponse{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTracesSlotHandleError handles the GetNetworkTracesSlot error response.
@@ -11432,17 +11426,17 @@ func (client *WebAppsClient) getNetworkTracesSlotHandleError(resp *azcore.Respon
 
 // GetNetworkTracesSlotV2 - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTracesSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTracesSlotV2Options) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTracesSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsGetNetworkTracesSlotV2Options) (WebAppsGetNetworkTracesSlotV2Response, error) {
 	req, err := client.getNetworkTracesSlotV2CreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesSlotV2Response{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesSlotV2Response{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTracesSlotV2HandleError(resp)
+		return WebAppsGetNetworkTracesSlotV2Response{}, client.getNetworkTracesSlotV2HandleError(resp)
 	}
 	return client.getNetworkTracesSlotV2HandleResponse(resp)
 }
@@ -11483,12 +11477,12 @@ func (client *WebAppsClient) getNetworkTracesSlotV2CreateRequest(ctx context.Con
 }
 
 // getNetworkTracesSlotV2HandleResponse handles the GetNetworkTracesSlotV2 response.
-func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *azcore.Response) (WebAppsGetNetworkTracesSlotV2Response, error) {
+	result := WebAppsGetNetworkTracesSlotV2Response{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTracesSlotV2Response{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTracesSlotV2HandleError handles the GetNetworkTracesSlotV2 error response.
@@ -11506,17 +11500,17 @@ func (client *WebAppsClient) getNetworkTracesSlotV2HandleError(resp *azcore.Resp
 
 // GetNetworkTracesV2 - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetNetworkTracesV2(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTracesV2Options) (NetworkTraceArrayResponse, error) {
+func (client *WebAppsClient) GetNetworkTracesV2(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsGetNetworkTracesV2Options) (WebAppsGetNetworkTracesV2Response, error) {
 	req, err := client.getNetworkTracesV2CreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesV2Response{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsGetNetworkTracesV2Response{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkTraceArrayResponse{}, client.getNetworkTracesV2HandleError(resp)
+		return WebAppsGetNetworkTracesV2Response{}, client.getNetworkTracesV2HandleError(resp)
 	}
 	return client.getNetworkTracesV2HandleResponse(resp)
 }
@@ -11553,12 +11547,12 @@ func (client *WebAppsClient) getNetworkTracesV2CreateRequest(ctx context.Context
 }
 
 // getNetworkTracesV2HandleResponse handles the GetNetworkTracesV2 response.
-func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *azcore.Response) (NetworkTraceArrayResponse, error) {
-	var val []*NetworkTrace
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkTraceArrayResponse{}, err
+func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *azcore.Response) (WebAppsGetNetworkTracesV2Response, error) {
+	result := WebAppsGetNetworkTracesV2Response{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkTraceArray); err != nil {
+		return WebAppsGetNetworkTracesV2Response{}, err
 	}
-	return NetworkTraceArrayResponse{RawResponse: resp.Response, NetworkTraceArray: val}, nil
+	return result, nil
 }
 
 // getNetworkTracesV2HandleError handles the GetNetworkTracesV2 error response.
@@ -11576,17 +11570,17 @@ func (client *WebAppsClient) getNetworkTracesV2HandleError(resp *azcore.Response
 
 // GetPremierAddOn - Description for Gets a named add-on of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *WebAppsGetPremierAddOnOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) GetPremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *WebAppsGetPremierAddOnOptions) (WebAppsGetPremierAddOnResponse, error) {
 	req, err := client.getPremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsGetPremierAddOnResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsGetPremierAddOnResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.getPremierAddOnHandleError(resp)
+		return WebAppsGetPremierAddOnResponse{}, client.getPremierAddOnHandleError(resp)
 	}
 	return client.getPremierAddOnHandleResponse(resp)
 }
@@ -11623,12 +11617,12 @@ func (client *WebAppsClient) getPremierAddOnCreateRequest(ctx context.Context, r
 }
 
 // getPremierAddOnHandleResponse handles the GetPremierAddOn response.
-func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *azcore.Response) (WebAppsGetPremierAddOnResponse, error) {
+	result := WebAppsGetPremierAddOnResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsGetPremierAddOnResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // getPremierAddOnHandleError handles the GetPremierAddOn error response.
@@ -11646,17 +11640,17 @@ func (client *WebAppsClient) getPremierAddOnHandleError(resp *azcore.Response) e
 
 // GetPremierAddOnSlot - Description for Gets a named add-on of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *WebAppsGetPremierAddOnSlotOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) GetPremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *WebAppsGetPremierAddOnSlotOptions) (WebAppsGetPremierAddOnSlotResponse, error) {
 	req, err := client.getPremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsGetPremierAddOnSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsGetPremierAddOnSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.getPremierAddOnSlotHandleError(resp)
+		return WebAppsGetPremierAddOnSlotResponse{}, client.getPremierAddOnSlotHandleError(resp)
 	}
 	return client.getPremierAddOnSlotHandleResponse(resp)
 }
@@ -11697,12 +11691,12 @@ func (client *WebAppsClient) getPremierAddOnSlotCreateRequest(ctx context.Contex
 }
 
 // getPremierAddOnSlotHandleResponse handles the GetPremierAddOnSlot response.
-func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *azcore.Response) (WebAppsGetPremierAddOnSlotResponse, error) {
+	result := WebAppsGetPremierAddOnSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsGetPremierAddOnSlotResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // getPremierAddOnSlotHandleError handles the GetPremierAddOnSlot error response.
@@ -11720,17 +11714,17 @@ func (client *WebAppsClient) getPremierAddOnSlotHandleError(resp *azcore.Respons
 
 // GetPrivateAccess - Description for Gets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateAccess(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetPrivateAccessOptions) (PrivateAccessResponse, error) {
+func (client *WebAppsClient) GetPrivateAccess(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetPrivateAccessOptions) (WebAppsGetPrivateAccessResponse, error) {
 	req, err := client.getPrivateAccessCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsGetPrivateAccessResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsGetPrivateAccessResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateAccessResponse{}, client.getPrivateAccessHandleError(resp)
+		return WebAppsGetPrivateAccessResponse{}, client.getPrivateAccessHandleError(resp)
 	}
 	return client.getPrivateAccessHandleResponse(resp)
 }
@@ -11763,12 +11757,12 @@ func (client *WebAppsClient) getPrivateAccessCreateRequest(ctx context.Context, 
 }
 
 // getPrivateAccessHandleResponse handles the GetPrivateAccess response.
-func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *azcore.Response) (PrivateAccessResponse, error) {
-	var val *PrivateAccess
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateAccessResponse{}, err
+func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *azcore.Response) (WebAppsGetPrivateAccessResponse, error) {
+	result := WebAppsGetPrivateAccessResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateAccess); err != nil {
+		return WebAppsGetPrivateAccessResponse{}, err
 	}
-	return PrivateAccessResponse{RawResponse: resp.Response, PrivateAccess: val}, nil
+	return result, nil
 }
 
 // getPrivateAccessHandleError handles the GetPrivateAccess error response.
@@ -11786,17 +11780,17 @@ func (client *WebAppsClient) getPrivateAccessHandleError(resp *azcore.Response) 
 
 // GetPrivateAccessSlot - Description for Gets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateAccessSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetPrivateAccessSlotOptions) (PrivateAccessResponse, error) {
+func (client *WebAppsClient) GetPrivateAccessSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetPrivateAccessSlotOptions) (WebAppsGetPrivateAccessSlotResponse, error) {
 	req, err := client.getPrivateAccessSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsGetPrivateAccessSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsGetPrivateAccessSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateAccessResponse{}, client.getPrivateAccessSlotHandleError(resp)
+		return WebAppsGetPrivateAccessSlotResponse{}, client.getPrivateAccessSlotHandleError(resp)
 	}
 	return client.getPrivateAccessSlotHandleResponse(resp)
 }
@@ -11833,12 +11827,12 @@ func (client *WebAppsClient) getPrivateAccessSlotCreateRequest(ctx context.Conte
 }
 
 // getPrivateAccessSlotHandleResponse handles the GetPrivateAccessSlot response.
-func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *azcore.Response) (PrivateAccessResponse, error) {
-	var val *PrivateAccess
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateAccessResponse{}, err
+func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *azcore.Response) (WebAppsGetPrivateAccessSlotResponse, error) {
+	result := WebAppsGetPrivateAccessSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateAccess); err != nil {
+		return WebAppsGetPrivateAccessSlotResponse{}, err
 	}
-	return PrivateAccessResponse{RawResponse: resp.Response, PrivateAccess: val}, nil
+	return result, nil
 }
 
 // getPrivateAccessSlotHandleError handles the GetPrivateAccessSlot error response.
@@ -11856,17 +11850,17 @@ func (client *WebAppsClient) getPrivateAccessSlotHandleError(resp *azcore.Respon
 
 // GetPrivateEndpointConnection - Description for Gets a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *WebAppsGetPrivateEndpointConnectionOptions) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+func (client *WebAppsClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *WebAppsGetPrivateEndpointConnectionOptions) (WebAppsGetPrivateEndpointConnectionResponse, error) {
 	req, err := client.getPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return WebAppsGetPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return WebAppsGetPrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
+		return WebAppsGetPrivateEndpointConnectionResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
 	}
 	return client.getPrivateEndpointConnectionHandleResponse(resp)
 }
@@ -11903,12 +11897,12 @@ func (client *WebAppsClient) getPrivateEndpointConnectionCreateRequest(ctx conte
 }
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
-func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
-	var val *RemotePrivateEndpointConnectionARMResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (WebAppsGetPrivateEndpointConnectionResponse, error) {
+	result := WebAppsGetPrivateEndpointConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RemotePrivateEndpointConnectionARMResource); err != nil {
+		return WebAppsGetPrivateEndpointConnectionResponse{}, err
 	}
-	return RemotePrivateEndpointConnectionARMResourceResponse{RawResponse: resp.Response, RemotePrivateEndpointConnectionARMResource: val}, nil
+	return result, nil
 }
 
 // getPrivateEndpointConnectionHandleError handles the GetPrivateEndpointConnection error response.
@@ -11926,18 +11920,15 @@ func (client *WebAppsClient) getPrivateEndpointConnectionHandleError(resp *azcor
 
 // GetPrivateEndpointConnectionList - Description for Gets the list of private endpoint connections associated with a site
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *WebAppsGetPrivateEndpointConnectionListOptions) PrivateEndpointConnectionCollectionPager {
-	return &privateEndpointConnectionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *WebAppsGetPrivateEndpointConnectionListOptions) WebAppsGetPrivateEndpointConnectionListPager {
+	return &webAppsGetPrivateEndpointConnectionListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.getPrivateEndpointConnectionListHandleResponse,
-		errorer:   client.getPrivateEndpointConnectionListHandleError,
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsGetPrivateEndpointConnectionListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -11969,12 +11960,12 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListCreateRequest(ctx c
 }
 
 // getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
-func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionCollectionResponse, error) {
-	var val *PrivateEndpointConnectionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionCollectionResponse{}, err
+func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp *azcore.Response) (WebAppsGetPrivateEndpointConnectionListResponse, error) {
+	result := WebAppsGetPrivateEndpointConnectionListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionCollection); err != nil {
+		return WebAppsGetPrivateEndpointConnectionListResponse{}, err
 	}
-	return PrivateEndpointConnectionCollectionResponse{RawResponse: resp.Response, PrivateEndpointConnectionCollection: val}, nil
+	return result, nil
 }
 
 // getPrivateEndpointConnectionListHandleError handles the GetPrivateEndpointConnectionList error response.
@@ -11992,18 +11983,15 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListHandleError(resp *a
 
 // GetPrivateEndpointConnectionListSlot - Description for Gets the list of private endpoint connections associated with a site
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateEndpointConnectionListSlot(resourceGroupName string, name string, slot string, options *WebAppsGetPrivateEndpointConnectionListSlotOptions) PrivateEndpointConnectionCollectionPager {
-	return &privateEndpointConnectionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) GetPrivateEndpointConnectionListSlot(resourceGroupName string, name string, slot string, options *WebAppsGetPrivateEndpointConnectionListSlotOptions) WebAppsGetPrivateEndpointConnectionListSlotPager {
+	return &webAppsGetPrivateEndpointConnectionListSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getPrivateEndpointConnectionListSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.getPrivateEndpointConnectionListSlotHandleResponse,
-		errorer:   client.getPrivateEndpointConnectionListSlotHandleError,
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsGetPrivateEndpointConnectionListSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -12039,12 +12027,12 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListSlotCreateRequest(c
 }
 
 // getPrivateEndpointConnectionListSlotHandleResponse handles the GetPrivateEndpointConnectionListSlot response.
-func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionCollectionResponse, error) {
-	var val *PrivateEndpointConnectionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionCollectionResponse{}, err
+func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleResponse(resp *azcore.Response) (WebAppsGetPrivateEndpointConnectionListSlotResponse, error) {
+	result := WebAppsGetPrivateEndpointConnectionListSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionCollection); err != nil {
+		return WebAppsGetPrivateEndpointConnectionListSlotResponse{}, err
 	}
-	return PrivateEndpointConnectionCollectionResponse{RawResponse: resp.Response, PrivateEndpointConnectionCollection: val}, nil
+	return result, nil
 }
 
 // getPrivateEndpointConnectionListSlotHandleError handles the GetPrivateEndpointConnectionListSlot error response.
@@ -12062,17 +12050,17 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleError(res
 
 // GetPrivateEndpointConnectionSlot - Description for Gets a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *WebAppsGetPrivateEndpointConnectionSlotOptions) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+func (client *WebAppsClient) GetPrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *WebAppsGetPrivateEndpointConnectionSlotOptions) (WebAppsGetPrivateEndpointConnectionSlotResponse, error) {
 	req, err := client.getPrivateEndpointConnectionSlotCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, slot, options)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return WebAppsGetPrivateEndpointConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return WebAppsGetPrivateEndpointConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, client.getPrivateEndpointConnectionSlotHandleError(resp)
+		return WebAppsGetPrivateEndpointConnectionSlotResponse{}, client.getPrivateEndpointConnectionSlotHandleError(resp)
 	}
 	return client.getPrivateEndpointConnectionSlotHandleResponse(resp)
 }
@@ -12113,12 +12101,12 @@ func (client *WebAppsClient) getPrivateEndpointConnectionSlotCreateRequest(ctx c
 }
 
 // getPrivateEndpointConnectionSlotHandleResponse handles the GetPrivateEndpointConnectionSlot response.
-func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleResponse(resp *azcore.Response) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
-	var val *RemotePrivateEndpointConnectionARMResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsGetPrivateEndpointConnectionSlotResponse, error) {
+	result := WebAppsGetPrivateEndpointConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RemotePrivateEndpointConnectionARMResource); err != nil {
+		return WebAppsGetPrivateEndpointConnectionSlotResponse{}, err
 	}
-	return RemotePrivateEndpointConnectionARMResourceResponse{RawResponse: resp.Response, RemotePrivateEndpointConnectionARMResource: val}, nil
+	return result, nil
 }
 
 // getPrivateEndpointConnectionSlotHandleError handles the GetPrivateEndpointConnectionSlot error response.
@@ -12136,17 +12124,17 @@ func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleError(resp *a
 
 // GetPrivateLinkResources - Description for Gets the private link resources
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetPrivateLinkResourcesOptions) (PrivateLinkResourcesWrapperResponse, error) {
+func (client *WebAppsClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetPrivateLinkResourcesOptions) (WebAppsGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+		return WebAppsGetPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+		return WebAppsGetPrivateLinkResourcesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourcesWrapperResponse{}, client.getPrivateLinkResourcesHandleError(resp)
+		return WebAppsGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
@@ -12179,12 +12167,12 @@ func (client *WebAppsClient) getPrivateLinkResourcesCreateRequest(ctx context.Co
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *WebAppsClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (PrivateLinkResourcesWrapperResponse, error) {
-	var val *PrivateLinkResourcesWrapper
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+func (client *WebAppsClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (WebAppsGetPrivateLinkResourcesResponse, error) {
+	result := WebAppsGetPrivateLinkResourcesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourcesWrapper); err != nil {
+		return WebAppsGetPrivateLinkResourcesResponse{}, err
 	}
-	return PrivateLinkResourcesWrapperResponse{RawResponse: resp.Response, PrivateLinkResourcesWrapper: val}, nil
+	return result, nil
 }
 
 // getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
@@ -12202,17 +12190,17 @@ func (client *WebAppsClient) getPrivateLinkResourcesHandleError(resp *azcore.Res
 
 // GetPrivateLinkResourcesSlot - Description for Gets the private link resources
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPrivateLinkResourcesSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetPrivateLinkResourcesSlotOptions) (PrivateLinkResourcesWrapperResponse, error) {
+func (client *WebAppsClient) GetPrivateLinkResourcesSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetPrivateLinkResourcesSlotOptions) (WebAppsGetPrivateLinkResourcesSlotResponse, error) {
 	req, err := client.getPrivateLinkResourcesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+		return WebAppsGetPrivateLinkResourcesSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+		return WebAppsGetPrivateLinkResourcesSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourcesWrapperResponse{}, client.getPrivateLinkResourcesSlotHandleError(resp)
+		return WebAppsGetPrivateLinkResourcesSlotResponse{}, client.getPrivateLinkResourcesSlotHandleError(resp)
 	}
 	return client.getPrivateLinkResourcesSlotHandleResponse(resp)
 }
@@ -12249,12 +12237,12 @@ func (client *WebAppsClient) getPrivateLinkResourcesSlotCreateRequest(ctx contex
 }
 
 // getPrivateLinkResourcesSlotHandleResponse handles the GetPrivateLinkResourcesSlot response.
-func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleResponse(resp *azcore.Response) (PrivateLinkResourcesWrapperResponse, error) {
-	var val *PrivateLinkResourcesWrapper
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleResponse(resp *azcore.Response) (WebAppsGetPrivateLinkResourcesSlotResponse, error) {
+	result := WebAppsGetPrivateLinkResourcesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourcesWrapper); err != nil {
+		return WebAppsGetPrivateLinkResourcesSlotResponse{}, err
 	}
-	return PrivateLinkResourcesWrapperResponse{RawResponse: resp.Response, PrivateLinkResourcesWrapper: val}, nil
+	return result, nil
 }
 
 // getPrivateLinkResourcesSlotHandleError handles the GetPrivateLinkResourcesSlot error response.
@@ -12272,17 +12260,17 @@ func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleError(resp *azcore
 
 // GetProcess - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetProcess(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsGetProcessOptions) (ProcessInfoResponse, error) {
+func (client *WebAppsClient) GetProcess(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsGetProcessOptions) (WebAppsGetProcessResponse, error) {
 	req, err := client.getProcessCreateRequest(ctx, resourceGroupName, name, processID, options)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetProcessResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetProcessResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessInfoResponse{}, client.getProcessHandleError(resp)
+		return WebAppsGetProcessResponse{}, client.getProcessHandleError(resp)
 	}
 	return client.getProcessHandleResponse(resp)
 }
@@ -12319,12 +12307,12 @@ func (client *WebAppsClient) getProcessCreateRequest(ctx context.Context, resour
 }
 
 // getProcessHandleResponse handles the GetProcess response.
-func (client *WebAppsClient) getProcessHandleResponse(resp *azcore.Response) (ProcessInfoResponse, error) {
-	var val *ProcessInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoResponse{}, err
+func (client *WebAppsClient) getProcessHandleResponse(resp *azcore.Response) (WebAppsGetProcessResponse, error) {
+	result := WebAppsGetProcessResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfo); err != nil {
+		return WebAppsGetProcessResponse{}, err
 	}
-	return ProcessInfoResponse{RawResponse: resp.Response, ProcessInfo: val}, nil
+	return result, nil
 }
 
 // getProcessHandleError handles the GetProcess error response.
@@ -12350,19 +12338,19 @@ func (client *WebAppsClient) getProcessHandleError(resp *azcore.Response) error 
 
 // GetProcessDump - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetProcessDump(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsGetProcessDumpOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetProcessDump(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsGetProcessDumpOptions) (WebAppsGetProcessDumpResponse, error) {
 	req, err := client.getProcessDumpCreateRequest(ctx, resourceGroupName, name, processID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetProcessDumpResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetProcessDumpResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getProcessDumpHandleError(resp)
+		return WebAppsGetProcessDumpResponse{}, client.getProcessDumpHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetProcessDumpResponse{RawResponse: resp.Response}, nil
 }
 
 // getProcessDumpCreateRequest creates the GetProcessDump request.
@@ -12420,19 +12408,19 @@ func (client *WebAppsClient) getProcessDumpHandleError(resp *azcore.Response) er
 
 // GetProcessDumpSlot - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetProcessDumpSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsGetProcessDumpSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetProcessDumpSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsGetProcessDumpSlotOptions) (WebAppsGetProcessDumpSlotResponse, error) {
 	req, err := client.getProcessDumpSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetProcessDumpSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetProcessDumpSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getProcessDumpSlotHandleError(resp)
+		return WebAppsGetProcessDumpSlotResponse{}, client.getProcessDumpSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetProcessDumpSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // getProcessDumpSlotCreateRequest creates the GetProcessDumpSlot request.
@@ -12494,17 +12482,17 @@ func (client *WebAppsClient) getProcessDumpSlotHandleError(resp *azcore.Response
 
 // GetProcessModule - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetProcessModule(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, options *WebAppsGetProcessModuleOptions) (ProcessModuleInfoResponse, error) {
+func (client *WebAppsClient) GetProcessModule(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, options *WebAppsGetProcessModuleOptions) (WebAppsGetProcessModuleResponse, error) {
 	req, err := client.getProcessModuleCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, options)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetProcessModuleResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetProcessModuleResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessModuleInfoResponse{}, client.getProcessModuleHandleError(resp)
+		return WebAppsGetProcessModuleResponse{}, client.getProcessModuleHandleError(resp)
 	}
 	return client.getProcessModuleHandleResponse(resp)
 }
@@ -12545,12 +12533,12 @@ func (client *WebAppsClient) getProcessModuleCreateRequest(ctx context.Context, 
 }
 
 // getProcessModuleHandleResponse handles the GetProcessModule response.
-func (client *WebAppsClient) getProcessModuleHandleResponse(resp *azcore.Response) (ProcessModuleInfoResponse, error) {
-	var val *ProcessModuleInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoResponse{}, err
+func (client *WebAppsClient) getProcessModuleHandleResponse(resp *azcore.Response) (WebAppsGetProcessModuleResponse, error) {
+	result := WebAppsGetProcessModuleResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfo); err != nil {
+		return WebAppsGetProcessModuleResponse{}, err
 	}
-	return ProcessModuleInfoResponse{RawResponse: resp.Response, ProcessModuleInfo: val}, nil
+	return result, nil
 }
 
 // getProcessModuleHandleError handles the GetProcessModule error response.
@@ -12576,17 +12564,17 @@ func (client *WebAppsClient) getProcessModuleHandleError(resp *azcore.Response) 
 
 // GetProcessModuleSlot - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetProcessModuleSlot(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, options *WebAppsGetProcessModuleSlotOptions) (ProcessModuleInfoResponse, error) {
+func (client *WebAppsClient) GetProcessModuleSlot(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, options *WebAppsGetProcessModuleSlotOptions) (WebAppsGetProcessModuleSlotResponse, error) {
 	req, err := client.getProcessModuleSlotCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, slot, options)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetProcessModuleSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessModuleInfoResponse{}, err
+		return WebAppsGetProcessModuleSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessModuleInfoResponse{}, client.getProcessModuleSlotHandleError(resp)
+		return WebAppsGetProcessModuleSlotResponse{}, client.getProcessModuleSlotHandleError(resp)
 	}
 	return client.getProcessModuleSlotHandleResponse(resp)
 }
@@ -12631,12 +12619,12 @@ func (client *WebAppsClient) getProcessModuleSlotCreateRequest(ctx context.Conte
 }
 
 // getProcessModuleSlotHandleResponse handles the GetProcessModuleSlot response.
-func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *azcore.Response) (ProcessModuleInfoResponse, error) {
-	var val *ProcessModuleInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoResponse{}, err
+func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *azcore.Response) (WebAppsGetProcessModuleSlotResponse, error) {
+	result := WebAppsGetProcessModuleSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfo); err != nil {
+		return WebAppsGetProcessModuleSlotResponse{}, err
 	}
-	return ProcessModuleInfoResponse{RawResponse: resp.Response, ProcessModuleInfo: val}, nil
+	return result, nil
 }
 
 // getProcessModuleSlotHandleError handles the GetProcessModuleSlot error response.
@@ -12662,17 +12650,17 @@ func (client *WebAppsClient) getProcessModuleSlotHandleError(resp *azcore.Respon
 
 // GetProcessSlot - Description for Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsGetProcessSlotOptions) (ProcessInfoResponse, error) {
+func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsGetProcessSlotOptions) (WebAppsGetProcessSlotResponse, error) {
 	req, err := client.getProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetProcessSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ProcessInfoResponse{}, err
+		return WebAppsGetProcessSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ProcessInfoResponse{}, client.getProcessSlotHandleError(resp)
+		return WebAppsGetProcessSlotResponse{}, client.getProcessSlotHandleError(resp)
 	}
 	return client.getProcessSlotHandleResponse(resp)
 }
@@ -12713,12 +12701,12 @@ func (client *WebAppsClient) getProcessSlotCreateRequest(ctx context.Context, re
 }
 
 // getProcessSlotHandleResponse handles the GetProcessSlot response.
-func (client *WebAppsClient) getProcessSlotHandleResponse(resp *azcore.Response) (ProcessInfoResponse, error) {
-	var val *ProcessInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoResponse{}, err
+func (client *WebAppsClient) getProcessSlotHandleResponse(resp *azcore.Response) (WebAppsGetProcessSlotResponse, error) {
+	result := WebAppsGetProcessSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfo); err != nil {
+		return WebAppsGetProcessSlotResponse{}, err
 	}
-	return ProcessInfoResponse{RawResponse: resp.Response, ProcessInfo: val}, nil
+	return result, nil
 }
 
 // getProcessSlotHandleError handles the GetProcessSlot error response.
@@ -12744,17 +12732,17 @@ func (client *WebAppsClient) getProcessSlotHandleError(resp *azcore.Response) er
 
 // GetPublicCertificate - Description for Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *WebAppsGetPublicCertificateOptions) (PublicCertificateResponse, error) {
+func (client *WebAppsClient) GetPublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *WebAppsGetPublicCertificateOptions) (WebAppsGetPublicCertificateResponse, error) {
 	req, err := client.getPublicCertificateCreateRequest(ctx, resourceGroupName, name, publicCertificateName, options)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsGetPublicCertificateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsGetPublicCertificateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PublicCertificateResponse{}, client.getPublicCertificateHandleError(resp)
+		return WebAppsGetPublicCertificateResponse{}, client.getPublicCertificateHandleError(resp)
 	}
 	return client.getPublicCertificateHandleResponse(resp)
 }
@@ -12791,12 +12779,12 @@ func (client *WebAppsClient) getPublicCertificateCreateRequest(ctx context.Conte
 }
 
 // getPublicCertificateHandleResponse handles the GetPublicCertificate response.
-func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *azcore.Response) (PublicCertificateResponse, error) {
-	var val *PublicCertificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublicCertificateResponse{}, err
+func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *azcore.Response) (WebAppsGetPublicCertificateResponse, error) {
+	result := WebAppsGetPublicCertificateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublicCertificate); err != nil {
+		return WebAppsGetPublicCertificateResponse{}, err
 	}
-	return PublicCertificateResponse{RawResponse: resp.Response, PublicCertificate: val}, nil
+	return result, nil
 }
 
 // getPublicCertificateHandleError handles the GetPublicCertificate error response.
@@ -12814,17 +12802,17 @@ func (client *WebAppsClient) getPublicCertificateHandleError(resp *azcore.Respon
 
 // GetPublicCertificateSlot - Description for Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetPublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *WebAppsGetPublicCertificateSlotOptions) (PublicCertificateResponse, error) {
+func (client *WebAppsClient) GetPublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *WebAppsGetPublicCertificateSlotOptions) (WebAppsGetPublicCertificateSlotResponse, error) {
 	req, err := client.getPublicCertificateSlotCreateRequest(ctx, resourceGroupName, name, slot, publicCertificateName, options)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsGetPublicCertificateSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PublicCertificateResponse{}, err
+		return WebAppsGetPublicCertificateSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PublicCertificateResponse{}, client.getPublicCertificateSlotHandleError(resp)
+		return WebAppsGetPublicCertificateSlotResponse{}, client.getPublicCertificateSlotHandleError(resp)
 	}
 	return client.getPublicCertificateSlotHandleResponse(resp)
 }
@@ -12865,12 +12853,12 @@ func (client *WebAppsClient) getPublicCertificateSlotCreateRequest(ctx context.C
 }
 
 // getPublicCertificateSlotHandleResponse handles the GetPublicCertificateSlot response.
-func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *azcore.Response) (PublicCertificateResponse, error) {
-	var val *PublicCertificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublicCertificateResponse{}, err
+func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *azcore.Response) (WebAppsGetPublicCertificateSlotResponse, error) {
+	result := WebAppsGetPublicCertificateSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublicCertificate); err != nil {
+		return WebAppsGetPublicCertificateSlotResponse{}, err
 	}
-	return PublicCertificateResponse{RawResponse: resp.Response, PublicCertificate: val}, nil
+	return result, nil
 }
 
 // getPublicCertificateSlotHandleError handles the GetPublicCertificateSlot error response.
@@ -12888,17 +12876,17 @@ func (client *WebAppsClient) getPublicCertificateSlotHandleError(resp *azcore.Re
 
 // GetRelayServiceConnection - Description for Gets a hybrid connection configuration by its name.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, options *WebAppsGetRelayServiceConnectionOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) GetRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, options *WebAppsGetRelayServiceConnectionOptions) (WebAppsGetRelayServiceConnectionResponse, error) {
 	req, err := client.getRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsGetRelayServiceConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsGetRelayServiceConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.getRelayServiceConnectionHandleError(resp)
+		return WebAppsGetRelayServiceConnectionResponse{}, client.getRelayServiceConnectionHandleError(resp)
 	}
 	return client.getRelayServiceConnectionHandleResponse(resp)
 }
@@ -12935,12 +12923,12 @@ func (client *WebAppsClient) getRelayServiceConnectionCreateRequest(ctx context.
 }
 
 // getRelayServiceConnectionHandleResponse handles the GetRelayServiceConnection response.
-func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *azcore.Response) (WebAppsGetRelayServiceConnectionResponse, error) {
+	result := WebAppsGetRelayServiceConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsGetRelayServiceConnectionResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // getRelayServiceConnectionHandleError handles the GetRelayServiceConnection error response.
@@ -12958,17 +12946,17 @@ func (client *WebAppsClient) getRelayServiceConnectionHandleError(resp *azcore.R
 
 // GetRelayServiceConnectionSlot - Description for Gets a hybrid connection configuration by its name.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *WebAppsGetRelayServiceConnectionSlotOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) GetRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *WebAppsGetRelayServiceConnectionSlotOptions) (WebAppsGetRelayServiceConnectionSlotResponse, error) {
 	req, err := client.getRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsGetRelayServiceConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsGetRelayServiceConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.getRelayServiceConnectionSlotHandleError(resp)
+		return WebAppsGetRelayServiceConnectionSlotResponse{}, client.getRelayServiceConnectionSlotHandleError(resp)
 	}
 	return client.getRelayServiceConnectionSlotHandleResponse(resp)
 }
@@ -13009,12 +12997,12 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotCreateRequest(ctx cont
 }
 
 // getRelayServiceConnectionSlotHandleResponse handles the GetRelayServiceConnectionSlot response.
-func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsGetRelayServiceConnectionSlotResponse, error) {
+	result := WebAppsGetRelayServiceConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsGetRelayServiceConnectionSlotResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // getRelayServiceConnectionSlotHandleError handles the GetRelayServiceConnectionSlot error response.
@@ -13032,17 +13020,17 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotHandleError(resp *azco
 
 // GetScmAllowed - Description for Returns whether Scm basic auth is allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetScmAllowed(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetScmAllowedOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) GetScmAllowed(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetScmAllowedOptions) (WebAppsGetScmAllowedResponse, error) {
 	req, err := client.getScmAllowedCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetScmAllowedResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetScmAllowedResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.getScmAllowedHandleError(resp)
+		return WebAppsGetScmAllowedResponse{}, client.getScmAllowedHandleError(resp)
 	}
 	return client.getScmAllowedHandleResponse(resp)
 }
@@ -13075,12 +13063,12 @@ func (client *WebAppsClient) getScmAllowedCreateRequest(ctx context.Context, res
 }
 
 // getScmAllowedHandleResponse handles the GetScmAllowed response.
-func (client *WebAppsClient) getScmAllowedHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) getScmAllowedHandleResponse(resp *azcore.Response) (WebAppsGetScmAllowedResponse, error) {
+	result := WebAppsGetScmAllowedResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsGetScmAllowedResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // getScmAllowedHandleError handles the GetScmAllowed error response.
@@ -13098,17 +13086,17 @@ func (client *WebAppsClient) getScmAllowedHandleError(resp *azcore.Response) err
 
 // GetScmAllowedSlot - Description for Returns whether Scm basic auth is allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetScmAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetScmAllowedSlotOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) GetScmAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetScmAllowedSlotOptions) (WebAppsGetScmAllowedSlotResponse, error) {
 	req, err := client.getScmAllowedSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetScmAllowedSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsGetScmAllowedSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.getScmAllowedSlotHandleError(resp)
+		return WebAppsGetScmAllowedSlotResponse{}, client.getScmAllowedSlotHandleError(resp)
 	}
 	return client.getScmAllowedSlotHandleResponse(resp)
 }
@@ -13145,12 +13133,12 @@ func (client *WebAppsClient) getScmAllowedSlotCreateRequest(ctx context.Context,
 }
 
 // getScmAllowedSlotHandleResponse handles the GetScmAllowedSlot response.
-func (client *WebAppsClient) getScmAllowedSlotHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) getScmAllowedSlotHandleResponse(resp *azcore.Response) (WebAppsGetScmAllowedSlotResponse, error) {
+	result := WebAppsGetScmAllowedSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsGetScmAllowedSlotResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // getScmAllowedSlotHandleError handles the GetScmAllowedSlot error response.
@@ -13168,17 +13156,17 @@ func (client *WebAppsClient) getScmAllowedSlotHandleError(resp *azcore.Response)
 
 // GetSiteConnectionStringKeyVaultReference - Description for Gets the config reference and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReference(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, options *WebAppsGetSiteConnectionStringKeyVaultReferenceOptions) (APIKVReferenceResponse, error) {
+func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReference(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, options *WebAppsGetSiteConnectionStringKeyVaultReferenceOptions) (WebAppsGetSiteConnectionStringKeyVaultReferenceResponse, error) {
 	req, err := client.getSiteConnectionStringKeyVaultReferenceCreateRequest(ctx, resourceGroupName, name, connectionStringKey, options)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return APIKVReferenceResponse{}, client.getSiteConnectionStringKeyVaultReferenceHandleError(resp)
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceResponse{}, client.getSiteConnectionStringKeyVaultReferenceHandleError(resp)
 	}
 	return client.getSiteConnectionStringKeyVaultReferenceHandleResponse(resp)
 }
@@ -13215,12 +13203,12 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceCreateReque
 }
 
 // getSiteConnectionStringKeyVaultReferenceHandleResponse handles the GetSiteConnectionStringKeyVaultReference response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleResponse(resp *azcore.Response) (APIKVReferenceResponse, error) {
-	var val *APIKVReference
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceResponse{}, err
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleResponse(resp *azcore.Response) (WebAppsGetSiteConnectionStringKeyVaultReferenceResponse, error) {
+	result := WebAppsGetSiteConnectionStringKeyVaultReferenceResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReference); err != nil {
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceResponse{}, err
 	}
-	return APIKVReferenceResponse{RawResponse: resp.Response, APIKVReference: val}, nil
+	return result, nil
 }
 
 // getSiteConnectionStringKeyVaultReferenceHandleError handles the GetSiteConnectionStringKeyVaultReference error response.
@@ -13238,17 +13226,17 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleError
 
 // GetSiteConnectionStringKeyVaultReferenceSlot - Description for Gets the config reference and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferenceSlot(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, slot string, options *WebAppsGetSiteConnectionStringKeyVaultReferenceSlotOptions) (APIKVReferenceResponse, error) {
+func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferenceSlot(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, slot string, options *WebAppsGetSiteConnectionStringKeyVaultReferenceSlotOptions) (WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse, error) {
 	req, err := client.getSiteConnectionStringKeyVaultReferenceSlotCreateRequest(ctx, resourceGroupName, name, connectionStringKey, slot, options)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return APIKVReferenceResponse{}, err
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return APIKVReferenceResponse{}, client.getSiteConnectionStringKeyVaultReferenceSlotHandleError(resp)
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, client.getSiteConnectionStringKeyVaultReferenceSlotHandleError(resp)
 	}
 	return client.getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(resp)
 }
@@ -13289,12 +13277,12 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotCreateR
 }
 
 // getSiteConnectionStringKeyVaultReferenceSlotHandleResponse handles the GetSiteConnectionStringKeyVaultReferenceSlot response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(resp *azcore.Response) (APIKVReferenceResponse, error) {
-	var val *APIKVReference
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceResponse{}, err
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(resp *azcore.Response) (WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse, error) {
+	result := WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReference); err != nil {
+		return WebAppsGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
 	}
-	return APIKVReferenceResponse{RawResponse: resp.Response, APIKVReference: val}, nil
+	return result, nil
 }
 
 // getSiteConnectionStringKeyVaultReferenceSlotHandleError handles the GetSiteConnectionStringKeyVaultReferenceSlot error response.
@@ -13312,18 +13300,15 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleE
 
 // GetSiteConnectionStringKeyVaultReferences - Description for Gets the config reference app settings and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferences(resourceGroupName string, name string, options *WebAppsGetSiteConnectionStringKeyVaultReferencesOptions) APIKVReferenceCollectionPager {
-	return &apikvReferenceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferences(resourceGroupName string, name string, options *WebAppsGetSiteConnectionStringKeyVaultReferencesOptions) WebAppsGetSiteConnectionStringKeyVaultReferencesPager {
+	return &webAppsGetSiteConnectionStringKeyVaultReferencesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getSiteConnectionStringKeyVaultReferencesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.getSiteConnectionStringKeyVaultReferencesHandleResponse,
-		errorer:   client.getSiteConnectionStringKeyVaultReferencesHandleError,
-		advancer: func(ctx context.Context, resp APIKVReferenceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsGetSiteConnectionStringKeyVaultReferencesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIKVReferenceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -13355,12 +13340,12 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesCreateRequ
 }
 
 // getSiteConnectionStringKeyVaultReferencesHandleResponse handles the GetSiteConnectionStringKeyVaultReferences response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResponse(resp *azcore.Response) (APIKVReferenceCollectionResponse, error) {
-	var val *APIKVReferenceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceCollectionResponse{}, err
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResponse(resp *azcore.Response) (WebAppsGetSiteConnectionStringKeyVaultReferencesResponse, error) {
+	result := WebAppsGetSiteConnectionStringKeyVaultReferencesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReferenceCollection); err != nil {
+		return WebAppsGetSiteConnectionStringKeyVaultReferencesResponse{}, err
 	}
-	return APIKVReferenceCollectionResponse{RawResponse: resp.Response, APIKVReferenceCollection: val}, nil
+	return result, nil
 }
 
 // getSiteConnectionStringKeyVaultReferencesHandleError handles the GetSiteConnectionStringKeyVaultReferences error response.
@@ -13378,18 +13363,15 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleErro
 
 // GetSiteConnectionStringKeyVaultReferencesSlot - Description for Gets the config reference app settings and status of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferencesSlot(resourceGroupName string, name string, slot string, options *WebAppsGetSiteConnectionStringKeyVaultReferencesSlotOptions) APIKVReferenceCollectionPager {
-	return &apikvReferenceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferencesSlot(resourceGroupName string, name string, slot string, options *WebAppsGetSiteConnectionStringKeyVaultReferencesSlotOptions) WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager {
+	return &webAppsGetSiteConnectionStringKeyVaultReferencesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getSiteConnectionStringKeyVaultReferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.getSiteConnectionStringKeyVaultReferencesSlotHandleResponse,
-		errorer:   client.getSiteConnectionStringKeyVaultReferencesSlotHandleError,
-		advancer: func(ctx context.Context, resp APIKVReferenceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIKVReferenceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -13425,12 +13407,12 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotCreate
 }
 
 // getSiteConnectionStringKeyVaultReferencesSlotHandleResponse handles the GetSiteConnectionStringKeyVaultReferencesSlot response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp *azcore.Response) (APIKVReferenceCollectionResponse, error) {
-	var val *APIKVReferenceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return APIKVReferenceCollectionResponse{}, err
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp *azcore.Response) (WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse, error) {
+	result := WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.APIKVReferenceCollection); err != nil {
+		return WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse{}, err
 	}
-	return APIKVReferenceCollectionResponse{RawResponse: resp.Response, APIKVReferenceCollection: val}, nil
+	return result, nil
 }
 
 // getSiteConnectionStringKeyVaultReferencesSlotHandleError handles the GetSiteConnectionStringKeyVaultReferencesSlot error response.
@@ -13448,17 +13430,17 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandle
 
 // GetSiteExtension - Description for Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsGetSiteExtensionOptions) (SiteExtensionInfoResponse, error) {
+func (client *WebAppsClient) GetSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsGetSiteExtensionOptions) (WebAppsGetSiteExtensionResponse, error) {
 	req, err := client.getSiteExtensionCreateRequest(ctx, resourceGroupName, name, siteExtensionID, options)
 	if err != nil {
-		return SiteExtensionInfoResponse{}, err
+		return WebAppsGetSiteExtensionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteExtensionInfoResponse{}, err
+		return WebAppsGetSiteExtensionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteExtensionInfoResponse{}, client.getSiteExtensionHandleError(resp)
+		return WebAppsGetSiteExtensionResponse{}, client.getSiteExtensionHandleError(resp)
 	}
 	return client.getSiteExtensionHandleResponse(resp)
 }
@@ -13495,12 +13477,12 @@ func (client *WebAppsClient) getSiteExtensionCreateRequest(ctx context.Context, 
 }
 
 // getSiteExtensionHandleResponse handles the GetSiteExtension response.
-func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *azcore.Response) (SiteExtensionInfoResponse, error) {
-	var val *SiteExtensionInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteExtensionInfoResponse{}, err
+func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *azcore.Response) (WebAppsGetSiteExtensionResponse, error) {
+	result := WebAppsGetSiteExtensionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteExtensionInfo); err != nil {
+		return WebAppsGetSiteExtensionResponse{}, err
 	}
-	return SiteExtensionInfoResponse{RawResponse: resp.Response, SiteExtensionInfo: val}, nil
+	return result, nil
 }
 
 // getSiteExtensionHandleError handles the GetSiteExtension error response.
@@ -13526,17 +13508,17 @@ func (client *WebAppsClient) getSiteExtensionHandleError(resp *azcore.Response) 
 
 // GetSiteExtensionSlot - Description for Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsGetSiteExtensionSlotOptions) (SiteExtensionInfoResponse, error) {
+func (client *WebAppsClient) GetSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsGetSiteExtensionSlotOptions) (WebAppsGetSiteExtensionSlotResponse, error) {
 	req, err := client.getSiteExtensionSlotCreateRequest(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 	if err != nil {
-		return SiteExtensionInfoResponse{}, err
+		return WebAppsGetSiteExtensionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteExtensionInfoResponse{}, err
+		return WebAppsGetSiteExtensionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteExtensionInfoResponse{}, client.getSiteExtensionSlotHandleError(resp)
+		return WebAppsGetSiteExtensionSlotResponse{}, client.getSiteExtensionSlotHandleError(resp)
 	}
 	return client.getSiteExtensionSlotHandleResponse(resp)
 }
@@ -13577,12 +13559,12 @@ func (client *WebAppsClient) getSiteExtensionSlotCreateRequest(ctx context.Conte
 }
 
 // getSiteExtensionSlotHandleResponse handles the GetSiteExtensionSlot response.
-func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *azcore.Response) (SiteExtensionInfoResponse, error) {
-	var val *SiteExtensionInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteExtensionInfoResponse{}, err
+func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *azcore.Response) (WebAppsGetSiteExtensionSlotResponse, error) {
+	result := WebAppsGetSiteExtensionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteExtensionInfo); err != nil {
+		return WebAppsGetSiteExtensionSlotResponse{}, err
 	}
-	return SiteExtensionInfoResponse{RawResponse: resp.Response, SiteExtensionInfo: val}, nil
+	return result, nil
 }
 
 // getSiteExtensionSlotHandleError handles the GetSiteExtensionSlot error response.
@@ -13608,17 +13590,17 @@ func (client *WebAppsClient) getSiteExtensionSlotHandleError(resp *azcore.Respon
 
 // GetSitePhpErrorLogFlag - Description for Gets web app's event logs.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSitePhpErrorLogFlag(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetSitePhpErrorLogFlagOptions) (SitePhpErrorLogFlagResponse, error) {
+func (client *WebAppsClient) GetSitePhpErrorLogFlag(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetSitePhpErrorLogFlagOptions) (WebAppsGetSitePhpErrorLogFlagResponse, error) {
 	req, err := client.getSitePhpErrorLogFlagCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SitePhpErrorLogFlagResponse{}, err
+		return WebAppsGetSitePhpErrorLogFlagResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SitePhpErrorLogFlagResponse{}, err
+		return WebAppsGetSitePhpErrorLogFlagResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SitePhpErrorLogFlagResponse{}, client.getSitePhpErrorLogFlagHandleError(resp)
+		return WebAppsGetSitePhpErrorLogFlagResponse{}, client.getSitePhpErrorLogFlagHandleError(resp)
 	}
 	return client.getSitePhpErrorLogFlagHandleResponse(resp)
 }
@@ -13651,12 +13633,12 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagCreateRequest(ctx context.Con
 }
 
 // getSitePhpErrorLogFlagHandleResponse handles the GetSitePhpErrorLogFlag response.
-func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *azcore.Response) (SitePhpErrorLogFlagResponse, error) {
-	var val *SitePhpErrorLogFlag
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SitePhpErrorLogFlagResponse{}, err
+func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *azcore.Response) (WebAppsGetSitePhpErrorLogFlagResponse, error) {
+	result := WebAppsGetSitePhpErrorLogFlagResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SitePhpErrorLogFlag); err != nil {
+		return WebAppsGetSitePhpErrorLogFlagResponse{}, err
 	}
-	return SitePhpErrorLogFlagResponse{RawResponse: resp.Response, SitePhpErrorLogFlag: val}, nil
+	return result, nil
 }
 
 // getSitePhpErrorLogFlagHandleError handles the GetSitePhpErrorLogFlag error response.
@@ -13674,17 +13656,17 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagHandleError(resp *azcore.Resp
 
 // GetSitePhpErrorLogFlagSlot - Description for Gets web app's event logs.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSitePhpErrorLogFlagSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSitePhpErrorLogFlagSlotOptions) (SitePhpErrorLogFlagResponse, error) {
+func (client *WebAppsClient) GetSitePhpErrorLogFlagSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSitePhpErrorLogFlagSlotOptions) (WebAppsGetSitePhpErrorLogFlagSlotResponse, error) {
 	req, err := client.getSitePhpErrorLogFlagSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SitePhpErrorLogFlagResponse{}, err
+		return WebAppsGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SitePhpErrorLogFlagResponse{}, err
+		return WebAppsGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SitePhpErrorLogFlagResponse{}, client.getSitePhpErrorLogFlagSlotHandleError(resp)
+		return WebAppsGetSitePhpErrorLogFlagSlotResponse{}, client.getSitePhpErrorLogFlagSlotHandleError(resp)
 	}
 	return client.getSitePhpErrorLogFlagSlotHandleResponse(resp)
 }
@@ -13721,12 +13703,12 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotCreateRequest(ctx context
 }
 
 // getSitePhpErrorLogFlagSlotHandleResponse handles the GetSitePhpErrorLogFlagSlot response.
-func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *azcore.Response) (SitePhpErrorLogFlagResponse, error) {
-	var val *SitePhpErrorLogFlag
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SitePhpErrorLogFlagResponse{}, err
+func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *azcore.Response) (WebAppsGetSitePhpErrorLogFlagSlotResponse, error) {
+	result := WebAppsGetSitePhpErrorLogFlagSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SitePhpErrorLogFlag); err != nil {
+		return WebAppsGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
-	return SitePhpErrorLogFlagResponse{RawResponse: resp.Response, SitePhpErrorLogFlag: val}, nil
+	return result, nil
 }
 
 // getSitePhpErrorLogFlagSlotHandleError handles the GetSitePhpErrorLogFlagSlot error response.
@@ -13744,17 +13726,17 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleError(resp *azcore.
 
 // GetSlot - Description for Gets the details of a web, mobile, or API app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSlotOptions) (SiteResponse, error) {
+func (client *WebAppsClient) GetSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSlotOptions) (WebAppsGetSlotResponse, error) {
 	req, err := client.getSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsGetSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsGetSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteResponse{}, client.getSlotHandleError(resp)
+		return WebAppsGetSlotResponse{}, client.getSlotHandleError(resp)
 	}
 	return client.getSlotHandleResponse(resp)
 }
@@ -13791,12 +13773,12 @@ func (client *WebAppsClient) getSlotCreateRequest(ctx context.Context, resourceG
 }
 
 // getSlotHandleResponse handles the GetSlot response.
-func (client *WebAppsClient) getSlotHandleResponse(resp *azcore.Response) (SiteResponse, error) {
-	var val *Site
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteResponse{}, err
+func (client *WebAppsClient) getSlotHandleResponse(resp *azcore.Response) (WebAppsGetSlotResponse, error) {
+	result := WebAppsGetSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Site); err != nil {
+		return WebAppsGetSlotResponse{}, err
 	}
-	return SiteResponse{RawResponse: resp.Response, Site: val}, nil
+	return result, nil
 }
 
 // getSlotHandleError handles the GetSlot error response.
@@ -13822,17 +13804,17 @@ func (client *WebAppsClient) getSlotHandleError(resp *azcore.Response) error {
 
 // GetSourceControl - Description for Gets the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSourceControl(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetSourceControlOptions) (SiteSourceControlResponse, error) {
+func (client *WebAppsClient) GetSourceControl(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetSourceControlOptions) (WebAppsGetSourceControlResponse, error) {
 	req, err := client.getSourceControlCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsGetSourceControlResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsGetSourceControlResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return SiteSourceControlResponse{}, client.getSourceControlHandleError(resp)
+		return WebAppsGetSourceControlResponse{}, client.getSourceControlHandleError(resp)
 	}
 	return client.getSourceControlHandleResponse(resp)
 }
@@ -13865,12 +13847,12 @@ func (client *WebAppsClient) getSourceControlCreateRequest(ctx context.Context, 
 }
 
 // getSourceControlHandleResponse handles the GetSourceControl response.
-func (client *WebAppsClient) getSourceControlHandleResponse(resp *azcore.Response) (SiteSourceControlResponse, error) {
-	var val *SiteSourceControl
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteSourceControlResponse{}, err
+func (client *WebAppsClient) getSourceControlHandleResponse(resp *azcore.Response) (WebAppsGetSourceControlResponse, error) {
+	result := WebAppsGetSourceControlResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteSourceControl); err != nil {
+		return WebAppsGetSourceControlResponse{}, err
 	}
-	return SiteSourceControlResponse{RawResponse: resp.Response, SiteSourceControl: val}, nil
+	return result, nil
 }
 
 // getSourceControlHandleError handles the GetSourceControl error response.
@@ -13888,17 +13870,17 @@ func (client *WebAppsClient) getSourceControlHandleError(resp *azcore.Response) 
 
 // GetSourceControlSlot - Description for Gets the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSourceControlSlotOptions) (SiteSourceControlResponse, error) {
+func (client *WebAppsClient) GetSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSourceControlSlotOptions) (WebAppsGetSourceControlSlotResponse, error) {
 	req, err := client.getSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsGetSourceControlSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsGetSourceControlSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return SiteSourceControlResponse{}, client.getSourceControlSlotHandleError(resp)
+		return WebAppsGetSourceControlSlotResponse{}, client.getSourceControlSlotHandleError(resp)
 	}
 	return client.getSourceControlSlotHandleResponse(resp)
 }
@@ -13935,12 +13917,12 @@ func (client *WebAppsClient) getSourceControlSlotCreateRequest(ctx context.Conte
 }
 
 // getSourceControlSlotHandleResponse handles the GetSourceControlSlot response.
-func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *azcore.Response) (SiteSourceControlResponse, error) {
-	var val *SiteSourceControl
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteSourceControlResponse{}, err
+func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *azcore.Response) (WebAppsGetSourceControlSlotResponse, error) {
+	result := WebAppsGetSourceControlSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteSourceControl); err != nil {
+		return WebAppsGetSourceControlSlotResponse{}, err
 	}
-	return SiteSourceControlResponse{RawResponse: resp.Response, SiteSourceControl: val}, nil
+	return result, nil
 }
 
 // getSourceControlSlotHandleError handles the GetSourceControlSlot error response.
@@ -13958,17 +13940,17 @@ func (client *WebAppsClient) getSourceControlSlotHandleError(resp *azcore.Respon
 
 // GetSwiftVirtualNetworkConnection - Description for Gets a Swift Virtual Network connection.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSwiftVirtualNetworkConnection(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetSwiftVirtualNetworkConnectionOptions) (SwiftVirtualNetworkResponse, error) {
+func (client *WebAppsClient) GetSwiftVirtualNetworkConnection(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetSwiftVirtualNetworkConnectionOptions) (WebAppsGetSwiftVirtualNetworkConnectionResponse, error) {
 	req, err := client.getSwiftVirtualNetworkConnectionCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SwiftVirtualNetworkResponse{}, client.getSwiftVirtualNetworkConnectionHandleError(resp)
+		return WebAppsGetSwiftVirtualNetworkConnectionResponse{}, client.getSwiftVirtualNetworkConnectionHandleError(resp)
 	}
 	return client.getSwiftVirtualNetworkConnectionHandleResponse(resp)
 }
@@ -14001,12 +13983,12 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionCreateRequest(ctx c
 }
 
 // getSwiftVirtualNetworkConnectionHandleResponse handles the GetSwiftVirtualNetworkConnection response.
-func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp *azcore.Response) (SwiftVirtualNetworkResponse, error) {
-	var val *SwiftVirtualNetwork
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp *azcore.Response) (WebAppsGetSwiftVirtualNetworkConnectionResponse, error) {
+	result := WebAppsGetSwiftVirtualNetworkConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SwiftVirtualNetwork); err != nil {
+		return WebAppsGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
-	return SwiftVirtualNetworkResponse{RawResponse: resp.Response, SwiftVirtualNetwork: val}, nil
+	return result, nil
 }
 
 // getSwiftVirtualNetworkConnectionHandleError handles the GetSwiftVirtualNetworkConnection error response.
@@ -14024,17 +14006,17 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleError(resp *a
 
 // GetSwiftVirtualNetworkConnectionSlot - Description for Gets a Swift Virtual Network connection.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetSwiftVirtualNetworkConnectionSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSwiftVirtualNetworkConnectionSlotOptions) (SwiftVirtualNetworkResponse, error) {
+func (client *WebAppsClient) GetSwiftVirtualNetworkConnectionSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetSwiftVirtualNetworkConnectionSlotOptions) (WebAppsGetSwiftVirtualNetworkConnectionSlotResponse, error) {
 	req, err := client.getSwiftVirtualNetworkConnectionSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SwiftVirtualNetworkResponse{}, client.getSwiftVirtualNetworkConnectionSlotHandleError(resp)
+		return WebAppsGetSwiftVirtualNetworkConnectionSlotResponse{}, client.getSwiftVirtualNetworkConnectionSlotHandleError(resp)
 	}
 	return client.getSwiftVirtualNetworkConnectionSlotHandleResponse(resp)
 }
@@ -14071,12 +14053,12 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotCreateRequest(c
 }
 
 // getSwiftVirtualNetworkConnectionSlotHandleResponse handles the GetSwiftVirtualNetworkConnectionSlot response.
-func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(resp *azcore.Response) (SwiftVirtualNetworkResponse, error) {
-	var val *SwiftVirtualNetwork
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsGetSwiftVirtualNetworkConnectionSlotResponse, error) {
+	result := WebAppsGetSwiftVirtualNetworkConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SwiftVirtualNetwork); err != nil {
+		return WebAppsGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
-	return SwiftVirtualNetworkResponse{RawResponse: resp.Response, SwiftVirtualNetwork: val}, nil
+	return result, nil
 }
 
 // getSwiftVirtualNetworkConnectionSlotHandleError handles the GetSwiftVirtualNetworkConnectionSlot error response.
@@ -14094,17 +14076,17 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleError(res
 
 // GetTriggeredWebJob - Description for Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsGetTriggeredWebJobOptions) (TriggeredWebJobResponse, error) {
+func (client *WebAppsClient) GetTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsGetTriggeredWebJobOptions) (WebAppsGetTriggeredWebJobResponse, error) {
 	req, err := client.getTriggeredWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return TriggeredWebJobResponse{}, err
+		return WebAppsGetTriggeredWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return TriggeredWebJobResponse{}, err
+		return WebAppsGetTriggeredWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return TriggeredWebJobResponse{}, client.getTriggeredWebJobHandleError(resp)
+		return WebAppsGetTriggeredWebJobResponse{}, client.getTriggeredWebJobHandleError(resp)
 	}
 	return client.getTriggeredWebJobHandleResponse(resp)
 }
@@ -14141,12 +14123,12 @@ func (client *WebAppsClient) getTriggeredWebJobCreateRequest(ctx context.Context
 }
 
 // getTriggeredWebJobHandleResponse handles the GetTriggeredWebJob response.
-func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *azcore.Response) (TriggeredWebJobResponse, error) {
-	var val *TriggeredWebJob
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredWebJobResponse{}, err
+func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *azcore.Response) (WebAppsGetTriggeredWebJobResponse, error) {
+	result := WebAppsGetTriggeredWebJobResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredWebJob); err != nil {
+		return WebAppsGetTriggeredWebJobResponse{}, err
 	}
-	return TriggeredWebJobResponse{RawResponse: resp.Response, TriggeredWebJob: val}, nil
+	return result, nil
 }
 
 // getTriggeredWebJobHandleError handles the GetTriggeredWebJob error response.
@@ -14172,17 +14154,17 @@ func (client *WebAppsClient) getTriggeredWebJobHandleError(resp *azcore.Response
 
 // GetTriggeredWebJobHistory - Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetTriggeredWebJobHistory(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, options *WebAppsGetTriggeredWebJobHistoryOptions) (TriggeredJobHistoryResponse, error) {
+func (client *WebAppsClient) GetTriggeredWebJobHistory(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, options *WebAppsGetTriggeredWebJobHistoryOptions) (WebAppsGetTriggeredWebJobHistoryResponse, error) {
 	req, err := client.getTriggeredWebJobHistoryCreateRequest(ctx, resourceGroupName, name, webJobName, id, options)
 	if err != nil {
-		return TriggeredJobHistoryResponse{}, err
+		return WebAppsGetTriggeredWebJobHistoryResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return TriggeredJobHistoryResponse{}, err
+		return WebAppsGetTriggeredWebJobHistoryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return TriggeredJobHistoryResponse{}, client.getTriggeredWebJobHistoryHandleError(resp)
+		return WebAppsGetTriggeredWebJobHistoryResponse{}, client.getTriggeredWebJobHistoryHandleError(resp)
 	}
 	return client.getTriggeredWebJobHistoryHandleResponse(resp)
 }
@@ -14223,12 +14205,12 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryCreateRequest(ctx context.
 }
 
 // getTriggeredWebJobHistoryHandleResponse handles the GetTriggeredWebJobHistory response.
-func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *azcore.Response) (TriggeredJobHistoryResponse, error) {
-	var val *TriggeredJobHistory
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredJobHistoryResponse{}, err
+func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *azcore.Response) (WebAppsGetTriggeredWebJobHistoryResponse, error) {
+	result := WebAppsGetTriggeredWebJobHistoryResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredJobHistory); err != nil {
+		return WebAppsGetTriggeredWebJobHistoryResponse{}, err
 	}
-	return TriggeredJobHistoryResponse{RawResponse: resp.Response, TriggeredJobHistory: val}, nil
+	return result, nil
 }
 
 // getTriggeredWebJobHistoryHandleError handles the GetTriggeredWebJobHistory error response.
@@ -14254,17 +14236,17 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryHandleError(resp *azcore.R
 
 // GetTriggeredWebJobHistorySlot - Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, slot string, options *WebAppsGetTriggeredWebJobHistorySlotOptions) (TriggeredJobHistoryResponse, error) {
+func (client *WebAppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, slot string, options *WebAppsGetTriggeredWebJobHistorySlotOptions) (WebAppsGetTriggeredWebJobHistorySlotResponse, error) {
 	req, err := client.getTriggeredWebJobHistorySlotCreateRequest(ctx, resourceGroupName, name, webJobName, id, slot, options)
 	if err != nil {
-		return TriggeredJobHistoryResponse{}, err
+		return WebAppsGetTriggeredWebJobHistorySlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return TriggeredJobHistoryResponse{}, err
+		return WebAppsGetTriggeredWebJobHistorySlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return TriggeredJobHistoryResponse{}, client.getTriggeredWebJobHistorySlotHandleError(resp)
+		return WebAppsGetTriggeredWebJobHistorySlotResponse{}, client.getTriggeredWebJobHistorySlotHandleError(resp)
 	}
 	return client.getTriggeredWebJobHistorySlotHandleResponse(resp)
 }
@@ -14309,12 +14291,12 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotCreateRequest(ctx cont
 }
 
 // getTriggeredWebJobHistorySlotHandleResponse handles the GetTriggeredWebJobHistorySlot response.
-func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *azcore.Response) (TriggeredJobHistoryResponse, error) {
-	var val *TriggeredJobHistory
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredJobHistoryResponse{}, err
+func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *azcore.Response) (WebAppsGetTriggeredWebJobHistorySlotResponse, error) {
+	result := WebAppsGetTriggeredWebJobHistorySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredJobHistory); err != nil {
+		return WebAppsGetTriggeredWebJobHistorySlotResponse{}, err
 	}
-	return TriggeredJobHistoryResponse{RawResponse: resp.Response, TriggeredJobHistory: val}, nil
+	return result, nil
 }
 
 // getTriggeredWebJobHistorySlotHandleError handles the GetTriggeredWebJobHistorySlot error response.
@@ -14340,17 +14322,17 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleError(resp *azco
 
 // GetTriggeredWebJobSlot - Description for Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsGetTriggeredWebJobSlotOptions) (TriggeredWebJobResponse, error) {
+func (client *WebAppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsGetTriggeredWebJobSlotOptions) (WebAppsGetTriggeredWebJobSlotResponse, error) {
 	req, err := client.getTriggeredWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return TriggeredWebJobResponse{}, err
+		return WebAppsGetTriggeredWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return TriggeredWebJobResponse{}, err
+		return WebAppsGetTriggeredWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return TriggeredWebJobResponse{}, client.getTriggeredWebJobSlotHandleError(resp)
+		return WebAppsGetTriggeredWebJobSlotResponse{}, client.getTriggeredWebJobSlotHandleError(resp)
 	}
 	return client.getTriggeredWebJobSlotHandleResponse(resp)
 }
@@ -14391,12 +14373,12 @@ func (client *WebAppsClient) getTriggeredWebJobSlotCreateRequest(ctx context.Con
 }
 
 // getTriggeredWebJobSlotHandleResponse handles the GetTriggeredWebJobSlot response.
-func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *azcore.Response) (TriggeredWebJobResponse, error) {
-	var val *TriggeredWebJob
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredWebJobResponse{}, err
+func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *azcore.Response) (WebAppsGetTriggeredWebJobSlotResponse, error) {
+	result := WebAppsGetTriggeredWebJobSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredWebJob); err != nil {
+		return WebAppsGetTriggeredWebJobSlotResponse{}, err
 	}
-	return TriggeredWebJobResponse{RawResponse: resp.Response, TriggeredWebJob: val}, nil
+	return result, nil
 }
 
 // getTriggeredWebJobSlotHandleError handles the GetTriggeredWebJobSlot error response.
@@ -14422,17 +14404,17 @@ func (client *WebAppsClient) getTriggeredWebJobSlotHandleError(resp *azcore.Resp
 
 // GetVnetConnection - Description for Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, options *WebAppsGetVnetConnectionOptions) (VnetInfoResponse, error) {
+func (client *WebAppsClient) GetVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, options *WebAppsGetVnetConnectionOptions) (WebAppsGetVnetConnectionResponse, error) {
 	req, err := client.getVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsGetVnetConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsGetVnetConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.getVnetConnectionHandleError(resp)
+		return WebAppsGetVnetConnectionResponse{}, client.getVnetConnectionHandleError(resp)
 	}
 	return client.getVnetConnectionHandleResponse(resp)
 }
@@ -14469,12 +14451,12 @@ func (client *WebAppsClient) getVnetConnectionCreateRequest(ctx context.Context,
 }
 
 // getVnetConnectionHandleResponse handles the GetVnetConnection response.
-func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *azcore.Response) (WebAppsGetVnetConnectionResponse, error) {
+	result := WebAppsGetVnetConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return WebAppsGetVnetConnectionResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // getVnetConnectionHandleError handles the GetVnetConnection error response.
@@ -14492,17 +14474,17 @@ func (client *WebAppsClient) getVnetConnectionHandleError(resp *azcore.Response)
 
 // GetVnetConnectionGateway - Description for Gets an app's Virtual Network gateway.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *WebAppsGetVnetConnectionGatewayOptions) (VnetGatewayResponse, error) {
+func (client *WebAppsClient) GetVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *WebAppsGetVnetConnectionGatewayOptions) (WebAppsGetVnetConnectionGatewayResponse, error) {
 	req, err := client.getVnetConnectionGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsGetVnetConnectionGatewayResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsGetVnetConnectionGatewayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.getVnetConnectionGatewayHandleError(resp)
+		return WebAppsGetVnetConnectionGatewayResponse{}, client.getVnetConnectionGatewayHandleError(resp)
 	}
 	return client.getVnetConnectionGatewayHandleResponse(resp)
 }
@@ -14543,12 +14525,12 @@ func (client *WebAppsClient) getVnetConnectionGatewayCreateRequest(ctx context.C
 }
 
 // getVnetConnectionGatewayHandleResponse handles the GetVnetConnectionGateway response.
-func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *azcore.Response) (WebAppsGetVnetConnectionGatewayResponse, error) {
+	result := WebAppsGetVnetConnectionGatewayResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return WebAppsGetVnetConnectionGatewayResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // getVnetConnectionGatewayHandleError handles the GetVnetConnectionGateway error response.
@@ -14574,17 +14556,17 @@ func (client *WebAppsClient) getVnetConnectionGatewayHandleError(resp *azcore.Re
 
 // GetVnetConnectionGatewaySlot - Description for Gets an app's Virtual Network gateway.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, options *WebAppsGetVnetConnectionGatewaySlotOptions) (VnetGatewayResponse, error) {
+func (client *WebAppsClient) GetVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, options *WebAppsGetVnetConnectionGatewaySlotOptions) (WebAppsGetVnetConnectionGatewaySlotResponse, error) {
 	req, err := client.getVnetConnectionGatewaySlotCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, slot, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsGetVnetConnectionGatewaySlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsGetVnetConnectionGatewaySlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.getVnetConnectionGatewaySlotHandleError(resp)
+		return WebAppsGetVnetConnectionGatewaySlotResponse{}, client.getVnetConnectionGatewaySlotHandleError(resp)
 	}
 	return client.getVnetConnectionGatewaySlotHandleResponse(resp)
 }
@@ -14629,12 +14611,12 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotCreateRequest(ctx conte
 }
 
 // getVnetConnectionGatewaySlotHandleResponse handles the GetVnetConnectionGatewaySlot response.
-func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *azcore.Response) (WebAppsGetVnetConnectionGatewaySlotResponse, error) {
+	result := WebAppsGetVnetConnectionGatewaySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return WebAppsGetVnetConnectionGatewaySlotResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // getVnetConnectionGatewaySlotHandleError handles the GetVnetConnectionGatewaySlot error response.
@@ -14660,17 +14642,17 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleError(resp *azcor
 
 // GetVnetConnectionSlot - Description for Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *WebAppsGetVnetConnectionSlotOptions) (VnetInfoResponse, error) {
+func (client *WebAppsClient) GetVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *WebAppsGetVnetConnectionSlotOptions) (WebAppsGetVnetConnectionSlotResponse, error) {
 	req, err := client.getVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsGetVnetConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsGetVnetConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.getVnetConnectionSlotHandleError(resp)
+		return WebAppsGetVnetConnectionSlotResponse{}, client.getVnetConnectionSlotHandleError(resp)
 	}
 	return client.getVnetConnectionSlotHandleResponse(resp)
 }
@@ -14711,12 +14693,12 @@ func (client *WebAppsClient) getVnetConnectionSlotCreateRequest(ctx context.Cont
 }
 
 // getVnetConnectionSlotHandleResponse handles the GetVnetConnectionSlot response.
-func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsGetVnetConnectionSlotResponse, error) {
+	result := WebAppsGetVnetConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return WebAppsGetVnetConnectionSlotResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // getVnetConnectionSlotHandleError handles the GetVnetConnectionSlot error response.
@@ -14734,17 +14716,17 @@ func (client *WebAppsClient) getVnetConnectionSlotHandleError(resp *azcore.Respo
 
 // GetWebJob - Description for Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsGetWebJobOptions) (WebJobResponse, error) {
+func (client *WebAppsClient) GetWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsGetWebJobOptions) (WebAppsGetWebJobResponse, error) {
 	req, err := client.getWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return WebJobResponse{}, err
+		return WebAppsGetWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WebJobResponse{}, err
+		return WebAppsGetWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return WebJobResponse{}, client.getWebJobHandleError(resp)
+		return WebAppsGetWebJobResponse{}, client.getWebJobHandleError(resp)
 	}
 	return client.getWebJobHandleResponse(resp)
 }
@@ -14781,12 +14763,12 @@ func (client *WebAppsClient) getWebJobCreateRequest(ctx context.Context, resourc
 }
 
 // getWebJobHandleResponse handles the GetWebJob response.
-func (client *WebAppsClient) getWebJobHandleResponse(resp *azcore.Response) (WebJobResponse, error) {
-	var val *WebJob
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebJobResponse{}, err
+func (client *WebAppsClient) getWebJobHandleResponse(resp *azcore.Response) (WebAppsGetWebJobResponse, error) {
+	result := WebAppsGetWebJobResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebJob); err != nil {
+		return WebAppsGetWebJobResponse{}, err
 	}
-	return WebJobResponse{RawResponse: resp.Response, WebJob: val}, nil
+	return result, nil
 }
 
 // getWebJobHandleError handles the GetWebJob error response.
@@ -14804,17 +14786,17 @@ func (client *WebAppsClient) getWebJobHandleError(resp *azcore.Response) error {
 
 // GetWebJobSlot - Description for Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsGetWebJobSlotOptions) (WebJobResponse, error) {
+func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsGetWebJobSlotOptions) (WebAppsGetWebJobSlotResponse, error) {
 	req, err := client.getWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return WebJobResponse{}, err
+		return WebAppsGetWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WebJobResponse{}, err
+		return WebAppsGetWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return WebJobResponse{}, client.getWebJobSlotHandleError(resp)
+		return WebAppsGetWebJobSlotResponse{}, client.getWebJobSlotHandleError(resp)
 	}
 	return client.getWebJobSlotHandleResponse(resp)
 }
@@ -14855,12 +14837,12 @@ func (client *WebAppsClient) getWebJobSlotCreateRequest(ctx context.Context, res
 }
 
 // getWebJobSlotHandleResponse handles the GetWebJobSlot response.
-func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *azcore.Response) (WebJobResponse, error) {
-	var val *WebJob
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebJobResponse{}, err
+func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *azcore.Response) (WebAppsGetWebJobSlotResponse, error) {
+	result := WebAppsGetWebJobSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebJob); err != nil {
+		return WebAppsGetWebJobSlotResponse{}, err
 	}
-	return WebJobResponse{RawResponse: resp.Response, WebJob: val}, nil
+	return result, nil
 }
 
 // getWebJobSlotHandleError handles the GetWebJobSlot error response.
@@ -14878,19 +14860,19 @@ func (client *WebAppsClient) getWebJobSlotHandleError(resp *azcore.Response) err
 
 // GetWebSiteContainerLogs - Description for Gets the last lines of docker logs for the given site
 // If the operation fails it returns a generic error.
-func (client *WebAppsClient) GetWebSiteContainerLogs(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetWebSiteContainerLogsOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetWebSiteContainerLogs(ctx context.Context, resourceGroupName string, name string, options *WebAppsGetWebSiteContainerLogsOptions) (WebAppsGetWebSiteContainerLogsResponse, error) {
 	req, err := client.getWebSiteContainerLogsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetWebSiteContainerLogsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetWebSiteContainerLogsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.getWebSiteContainerLogsHandleError(resp)
+		return WebAppsGetWebSiteContainerLogsResponse{}, client.getWebSiteContainerLogsHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetWebSiteContainerLogsResponse{RawResponse: resp.Response}, nil
 }
 
 // getWebSiteContainerLogsCreateRequest creates the GetWebSiteContainerLogs request.
@@ -14935,19 +14917,19 @@ func (client *WebAppsClient) getWebSiteContainerLogsHandleError(resp *azcore.Res
 
 // GetWebSiteContainerLogsSlot - Description for Gets the last lines of docker logs for the given site
 // If the operation fails it returns a generic error.
-func (client *WebAppsClient) GetWebSiteContainerLogsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetWebSiteContainerLogsSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) GetWebSiteContainerLogsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsGetWebSiteContainerLogsSlotOptions) (WebAppsGetWebSiteContainerLogsSlotResponse, error) {
 	req, err := client.getWebSiteContainerLogsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsGetWebSiteContainerLogsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsGetWebSiteContainerLogsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.getWebSiteContainerLogsSlotHandleError(resp)
+		return WebAppsGetWebSiteContainerLogsSlotResponse{}, client.getWebSiteContainerLogsSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsGetWebSiteContainerLogsSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // getWebSiteContainerLogsSlotCreateRequest creates the GetWebSiteContainerLogsSlot request.
@@ -14996,47 +14978,47 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotHandleError(resp *azcore
 
 // BeginInstallSiteExtension - Description for Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginInstallSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsBeginInstallSiteExtensionOptions) (SiteExtensionInfoPollerResponse, error) {
+func (client *WebAppsClient) BeginInstallSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsBeginInstallSiteExtensionOptions) (WebAppsInstallSiteExtensionPollerResponse, error) {
 	resp, err := client.installSiteExtension(ctx, resourceGroupName, name, siteExtensionID, options)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionPollerResponse{}, err
 	}
-	result := SiteExtensionInfoPollerResponse{
+	result := WebAppsInstallSiteExtensionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.InstallSiteExtension", "", resp, client.con.Pipeline(), client.installSiteExtensionHandleError)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionPollerResponse{}, err
 	}
-	poller := &siteExtensionInfoPoller{
+	poller := &webAppsInstallSiteExtensionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteExtensionInfoResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsInstallSiteExtensionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeInstallSiteExtension creates a new SiteExtensionInfoPoller from the specified resume token.
-// token - The value must come from a previous call to SiteExtensionInfoPoller.ResumeToken().
-func (client *WebAppsClient) ResumeInstallSiteExtension(ctx context.Context, token string) (SiteExtensionInfoPollerResponse, error) {
+// ResumeInstallSiteExtension creates a new WebAppsInstallSiteExtensionPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsInstallSiteExtensionPoller.ResumeToken().
+func (client *WebAppsClient) ResumeInstallSiteExtension(ctx context.Context, token string) (WebAppsInstallSiteExtensionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.InstallSiteExtension", token, client.con.Pipeline(), client.installSiteExtensionHandleError)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionPollerResponse{}, err
 	}
-	poller := &siteExtensionInfoPoller{
+	poller := &webAppsInstallSiteExtensionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionPollerResponse{}, err
 	}
-	result := SiteExtensionInfoPollerResponse{
+	result := WebAppsInstallSiteExtensionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteExtensionInfoResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsInstallSiteExtensionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -15113,47 +15095,47 @@ func (client *WebAppsClient) installSiteExtensionHandleError(resp *azcore.Respon
 
 // BeginInstallSiteExtensionSlot - Description for Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginInstallSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsBeginInstallSiteExtensionSlotOptions) (SiteExtensionInfoPollerResponse, error) {
+func (client *WebAppsClient) BeginInstallSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsBeginInstallSiteExtensionSlotOptions) (WebAppsInstallSiteExtensionSlotPollerResponse, error) {
 	resp, err := client.installSiteExtensionSlot(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionSlotPollerResponse{}, err
 	}
-	result := SiteExtensionInfoPollerResponse{
+	result := WebAppsInstallSiteExtensionSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.InstallSiteExtensionSlot", "", resp, client.con.Pipeline(), client.installSiteExtensionSlotHandleError)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionSlotPollerResponse{}, err
 	}
-	poller := &siteExtensionInfoPoller{
+	poller := &webAppsInstallSiteExtensionSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteExtensionInfoResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsInstallSiteExtensionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeInstallSiteExtensionSlot creates a new SiteExtensionInfoPoller from the specified resume token.
-// token - The value must come from a previous call to SiteExtensionInfoPoller.ResumeToken().
-func (client *WebAppsClient) ResumeInstallSiteExtensionSlot(ctx context.Context, token string) (SiteExtensionInfoPollerResponse, error) {
+// ResumeInstallSiteExtensionSlot creates a new WebAppsInstallSiteExtensionSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsInstallSiteExtensionSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeInstallSiteExtensionSlot(ctx context.Context, token string) (WebAppsInstallSiteExtensionSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.InstallSiteExtensionSlot", token, client.con.Pipeline(), client.installSiteExtensionSlotHandleError)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionSlotPollerResponse{}, err
 	}
-	poller := &siteExtensionInfoPoller{
+	poller := &webAppsInstallSiteExtensionSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SiteExtensionInfoPollerResponse{}, err
+		return WebAppsInstallSiteExtensionSlotPollerResponse{}, err
 	}
-	result := SiteExtensionInfoPollerResponse{
+	result := WebAppsInstallSiteExtensionSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SiteExtensionInfoResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsInstallSiteExtensionSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -15234,17 +15216,17 @@ func (client *WebAppsClient) installSiteExtensionSlotHandleError(resp *azcore.Re
 
 // IsCloneable - Description for Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) IsCloneable(ctx context.Context, resourceGroupName string, name string, options *WebAppsIsCloneableOptions) (SiteCloneabilityResponse, error) {
+func (client *WebAppsClient) IsCloneable(ctx context.Context, resourceGroupName string, name string, options *WebAppsIsCloneableOptions) (WebAppsIsCloneableResponse, error) {
 	req, err := client.isCloneableCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SiteCloneabilityResponse{}, err
+		return WebAppsIsCloneableResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteCloneabilityResponse{}, err
+		return WebAppsIsCloneableResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteCloneabilityResponse{}, client.isCloneableHandleError(resp)
+		return WebAppsIsCloneableResponse{}, client.isCloneableHandleError(resp)
 	}
 	return client.isCloneableHandleResponse(resp)
 }
@@ -15277,12 +15259,12 @@ func (client *WebAppsClient) isCloneableCreateRequest(ctx context.Context, resou
 }
 
 // isCloneableHandleResponse handles the IsCloneable response.
-func (client *WebAppsClient) isCloneableHandleResponse(resp *azcore.Response) (SiteCloneabilityResponse, error) {
-	var val *SiteCloneability
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteCloneabilityResponse{}, err
+func (client *WebAppsClient) isCloneableHandleResponse(resp *azcore.Response) (WebAppsIsCloneableResponse, error) {
+	result := WebAppsIsCloneableResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteCloneability); err != nil {
+		return WebAppsIsCloneableResponse{}, err
 	}
-	return SiteCloneabilityResponse{RawResponse: resp.Response, SiteCloneability: val}, nil
+	return result, nil
 }
 
 // isCloneableHandleError handles the IsCloneable error response.
@@ -15300,17 +15282,17 @@ func (client *WebAppsClient) isCloneableHandleError(resp *azcore.Response) error
 
 // IsCloneableSlot - Description for Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) IsCloneableSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsIsCloneableSlotOptions) (SiteCloneabilityResponse, error) {
+func (client *WebAppsClient) IsCloneableSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsIsCloneableSlotOptions) (WebAppsIsCloneableSlotResponse, error) {
 	req, err := client.isCloneableSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return SiteCloneabilityResponse{}, err
+		return WebAppsIsCloneableSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteCloneabilityResponse{}, err
+		return WebAppsIsCloneableSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteCloneabilityResponse{}, client.isCloneableSlotHandleError(resp)
+		return WebAppsIsCloneableSlotResponse{}, client.isCloneableSlotHandleError(resp)
 	}
 	return client.isCloneableSlotHandleResponse(resp)
 }
@@ -15347,12 +15329,12 @@ func (client *WebAppsClient) isCloneableSlotCreateRequest(ctx context.Context, r
 }
 
 // isCloneableSlotHandleResponse handles the IsCloneableSlot response.
-func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *azcore.Response) (SiteCloneabilityResponse, error) {
-	var val *SiteCloneability
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteCloneabilityResponse{}, err
+func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *azcore.Response) (WebAppsIsCloneableSlotResponse, error) {
+	result := WebAppsIsCloneableSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteCloneability); err != nil {
+		return WebAppsIsCloneableSlotResponse{}, err
 	}
-	return SiteCloneabilityResponse{RawResponse: resp.Response, SiteCloneability: val}, nil
+	return result, nil
 }
 
 // isCloneableSlotHandleError handles the IsCloneableSlot error response.
@@ -15370,18 +15352,15 @@ func (client *WebAppsClient) isCloneableSlotHandleError(resp *azcore.Response) e
 
 // List - Description for Get all apps for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) List(options *WebAppsListOptions) WebAppCollectionPager {
-	return &webAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) List(options *WebAppsListOptions) WebAppsListPager {
+	return &webAppsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp WebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -15405,12 +15384,12 @@ func (client *WebAppsClient) listCreateRequest(ctx context.Context, options *Web
 }
 
 // listHandleResponse handles the List response.
-func (client *WebAppsClient) listHandleResponse(resp *azcore.Response) (WebAppCollectionResponse, error) {
-	var val *WebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppCollectionResponse{}, err
+func (client *WebAppsClient) listHandleResponse(resp *azcore.Response) (WebAppsListResponse, error) {
+	result := WebAppsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return WebAppsListResponse{}, err
 	}
-	return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -15428,17 +15407,17 @@ func (client *WebAppsClient) listHandleError(resp *azcore.Response) error {
 
 // ListApplicationSettings - Description for Gets the application settings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListApplicationSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsListApplicationSettingsOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) ListApplicationSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsListApplicationSettingsOptions) (WebAppsListApplicationSettingsResponse, error) {
 	req, err := client.listApplicationSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListApplicationSettingsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListApplicationSettingsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.listApplicationSettingsHandleError(resp)
+		return WebAppsListApplicationSettingsResponse{}, client.listApplicationSettingsHandleError(resp)
 	}
 	return client.listApplicationSettingsHandleResponse(resp)
 }
@@ -15471,12 +15450,12 @@ func (client *WebAppsClient) listApplicationSettingsCreateRequest(ctx context.Co
 }
 
 // listApplicationSettingsHandleResponse handles the ListApplicationSettings response.
-func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *azcore.Response) (WebAppsListApplicationSettingsResponse, error) {
+	result := WebAppsListApplicationSettingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsListApplicationSettingsResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // listApplicationSettingsHandleError handles the ListApplicationSettings error response.
@@ -15494,17 +15473,17 @@ func (client *WebAppsClient) listApplicationSettingsHandleError(resp *azcore.Res
 
 // ListApplicationSettingsSlot - Description for Gets the application settings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListApplicationSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListApplicationSettingsSlotOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) ListApplicationSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListApplicationSettingsSlotOptions) (WebAppsListApplicationSettingsSlotResponse, error) {
 	req, err := client.listApplicationSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListApplicationSettingsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListApplicationSettingsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.listApplicationSettingsSlotHandleError(resp)
+		return WebAppsListApplicationSettingsSlotResponse{}, client.listApplicationSettingsSlotHandleError(resp)
 	}
 	return client.listApplicationSettingsSlotHandleResponse(resp)
 }
@@ -15541,12 +15520,12 @@ func (client *WebAppsClient) listApplicationSettingsSlotCreateRequest(ctx contex
 }
 
 // listApplicationSettingsSlotHandleResponse handles the ListApplicationSettingsSlot response.
-func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *azcore.Response) (WebAppsListApplicationSettingsSlotResponse, error) {
+	result := WebAppsListApplicationSettingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsListApplicationSettingsSlotResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // listApplicationSettingsSlotHandleError handles the ListApplicationSettingsSlot error response.
@@ -15564,17 +15543,17 @@ func (client *WebAppsClient) listApplicationSettingsSlotHandleError(resp *azcore
 
 // ListAzureStorageAccounts - Description for Gets the Azure storage account configurations of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, options *WebAppsListAzureStorageAccountsOptions) (AzureStoragePropertyDictionaryResourceResponse, error) {
+func (client *WebAppsClient) ListAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, options *WebAppsListAzureStorageAccountsOptions) (WebAppsListAzureStorageAccountsResponse, error) {
 	req, err := client.listAzureStorageAccountsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsListAzureStorageAccountsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsListAzureStorageAccountsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AzureStoragePropertyDictionaryResourceResponse{}, client.listAzureStorageAccountsHandleError(resp)
+		return WebAppsListAzureStorageAccountsResponse{}, client.listAzureStorageAccountsHandleError(resp)
 	}
 	return client.listAzureStorageAccountsHandleResponse(resp)
 }
@@ -15607,12 +15586,12 @@ func (client *WebAppsClient) listAzureStorageAccountsCreateRequest(ctx context.C
 }
 
 // listAzureStorageAccountsHandleResponse handles the ListAzureStorageAccounts response.
-func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *azcore.Response) (AzureStoragePropertyDictionaryResourceResponse, error) {
-	var val *AzureStoragePropertyDictionaryResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *azcore.Response) (WebAppsListAzureStorageAccountsResponse, error) {
+	result := WebAppsListAzureStorageAccountsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AzureStoragePropertyDictionaryResource); err != nil {
+		return WebAppsListAzureStorageAccountsResponse{}, err
 	}
-	return AzureStoragePropertyDictionaryResourceResponse{RawResponse: resp.Response, AzureStoragePropertyDictionaryResource: val}, nil
+	return result, nil
 }
 
 // listAzureStorageAccountsHandleError handles the ListAzureStorageAccounts error response.
@@ -15630,17 +15609,17 @@ func (client *WebAppsClient) listAzureStorageAccountsHandleError(resp *azcore.Re
 
 // ListAzureStorageAccountsSlot - Description for Gets the Azure storage account configurations of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListAzureStorageAccountsSlotOptions) (AzureStoragePropertyDictionaryResourceResponse, error) {
+func (client *WebAppsClient) ListAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListAzureStorageAccountsSlotOptions) (WebAppsListAzureStorageAccountsSlotResponse, error) {
 	req, err := client.listAzureStorageAccountsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsListAzureStorageAccountsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsListAzureStorageAccountsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AzureStoragePropertyDictionaryResourceResponse{}, client.listAzureStorageAccountsSlotHandleError(resp)
+		return WebAppsListAzureStorageAccountsSlotResponse{}, client.listAzureStorageAccountsSlotHandleError(resp)
 	}
 	return client.listAzureStorageAccountsSlotHandleResponse(resp)
 }
@@ -15677,12 +15656,12 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotCreateRequest(ctx conte
 }
 
 // listAzureStorageAccountsSlotHandleResponse handles the ListAzureStorageAccountsSlot response.
-func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *azcore.Response) (AzureStoragePropertyDictionaryResourceResponse, error) {
-	var val *AzureStoragePropertyDictionaryResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *azcore.Response) (WebAppsListAzureStorageAccountsSlotResponse, error) {
+	result := WebAppsListAzureStorageAccountsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AzureStoragePropertyDictionaryResource); err != nil {
+		return WebAppsListAzureStorageAccountsSlotResponse{}, err
 	}
-	return AzureStoragePropertyDictionaryResourceResponse{RawResponse: resp.Response, AzureStoragePropertyDictionaryResource: val}, nil
+	return result, nil
 }
 
 // listAzureStorageAccountsSlotHandleError handles the ListAzureStorageAccountsSlot error response.
@@ -15702,17 +15681,17 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotHandleError(resp *azcor
 // as the Azure Storage SAS URL. Also can be used to update the SAS URL for the
 // backup if a new URL is passed in the request body.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListBackupStatusSecrets(ctx context.Context, resourceGroupName string, name string, backupID string, request BackupRequest, options *WebAppsListBackupStatusSecretsOptions) (BackupItemResponse, error) {
+func (client *WebAppsClient) ListBackupStatusSecrets(ctx context.Context, resourceGroupName string, name string, backupID string, request BackupRequest, options *WebAppsListBackupStatusSecretsOptions) (WebAppsListBackupStatusSecretsResponse, error) {
 	req, err := client.listBackupStatusSecretsCreateRequest(ctx, resourceGroupName, name, backupID, request, options)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsListBackupStatusSecretsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsListBackupStatusSecretsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupItemResponse{}, client.listBackupStatusSecretsHandleError(resp)
+		return WebAppsListBackupStatusSecretsResponse{}, client.listBackupStatusSecretsHandleError(resp)
 	}
 	return client.listBackupStatusSecretsHandleResponse(resp)
 }
@@ -15749,12 +15728,12 @@ func (client *WebAppsClient) listBackupStatusSecretsCreateRequest(ctx context.Co
 }
 
 // listBackupStatusSecretsHandleResponse handles the ListBackupStatusSecrets response.
-func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *azcore.Response) (BackupItemResponse, error) {
-	var val *BackupItem
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemResponse{}, err
+func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *azcore.Response) (WebAppsListBackupStatusSecretsResponse, error) {
+	result := WebAppsListBackupStatusSecretsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItem); err != nil {
+		return WebAppsListBackupStatusSecretsResponse{}, err
 	}
-	return BackupItemResponse{RawResponse: resp.Response, BackupItem: val}, nil
+	return result, nil
 }
 
 // listBackupStatusSecretsHandleError handles the ListBackupStatusSecrets error response.
@@ -15774,17 +15753,17 @@ func (client *WebAppsClient) listBackupStatusSecretsHandleError(resp *azcore.Res
 // such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the
 // backup if a new URL is passed in the request body.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListBackupStatusSecretsSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request BackupRequest, options *WebAppsListBackupStatusSecretsSlotOptions) (BackupItemResponse, error) {
+func (client *WebAppsClient) ListBackupStatusSecretsSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request BackupRequest, options *WebAppsListBackupStatusSecretsSlotOptions) (WebAppsListBackupStatusSecretsSlotResponse, error) {
 	req, err := client.listBackupStatusSecretsSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, request, options)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsListBackupStatusSecretsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupItemResponse{}, err
+		return WebAppsListBackupStatusSecretsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupItemResponse{}, client.listBackupStatusSecretsSlotHandleError(resp)
+		return WebAppsListBackupStatusSecretsSlotResponse{}, client.listBackupStatusSecretsSlotHandleError(resp)
 	}
 	return client.listBackupStatusSecretsSlotHandleResponse(resp)
 }
@@ -15825,12 +15804,12 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotCreateRequest(ctx contex
 }
 
 // listBackupStatusSecretsSlotHandleResponse handles the ListBackupStatusSecretsSlot response.
-func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *azcore.Response) (BackupItemResponse, error) {
-	var val *BackupItem
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemResponse{}, err
+func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *azcore.Response) (WebAppsListBackupStatusSecretsSlotResponse, error) {
+	result := WebAppsListBackupStatusSecretsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItem); err != nil {
+		return WebAppsListBackupStatusSecretsSlotResponse{}, err
 	}
-	return BackupItemResponse{RawResponse: resp.Response, BackupItem: val}, nil
+	return result, nil
 }
 
 // listBackupStatusSecretsSlotHandleError handles the ListBackupStatusSecretsSlot error response.
@@ -15848,18 +15827,15 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotHandleError(resp *azcore
 
 // ListBackups - Description for Gets existing backups of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListBackups(resourceGroupName string, name string, options *WebAppsListBackupsOptions) BackupItemCollectionPager {
-	return &backupItemCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListBackups(resourceGroupName string, name string, options *WebAppsListBackupsOptions) WebAppsListBackupsPager {
+	return &webAppsListBackupsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBackupsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listBackupsHandleResponse,
-		errorer:   client.listBackupsHandleError,
-		advancer: func(ctx context.Context, resp BackupItemCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListBackupsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BackupItemCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -15891,12 +15867,12 @@ func (client *WebAppsClient) listBackupsCreateRequest(ctx context.Context, resou
 }
 
 // listBackupsHandleResponse handles the ListBackups response.
-func (client *WebAppsClient) listBackupsHandleResponse(resp *azcore.Response) (BackupItemCollectionResponse, error) {
-	var val *BackupItemCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemCollectionResponse{}, err
+func (client *WebAppsClient) listBackupsHandleResponse(resp *azcore.Response) (WebAppsListBackupsResponse, error) {
+	result := WebAppsListBackupsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItemCollection); err != nil {
+		return WebAppsListBackupsResponse{}, err
 	}
-	return BackupItemCollectionResponse{RawResponse: resp.Response, BackupItemCollection: val}, nil
+	return result, nil
 }
 
 // listBackupsHandleError handles the ListBackups error response.
@@ -15914,18 +15890,15 @@ func (client *WebAppsClient) listBackupsHandleError(resp *azcore.Response) error
 
 // ListBackupsSlot - Description for Gets existing backups of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListBackupsSlot(resourceGroupName string, name string, slot string, options *WebAppsListBackupsSlotOptions) BackupItemCollectionPager {
-	return &backupItemCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListBackupsSlot(resourceGroupName string, name string, slot string, options *WebAppsListBackupsSlotOptions) WebAppsListBackupsSlotPager {
+	return &webAppsListBackupsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBackupsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listBackupsSlotHandleResponse,
-		errorer:   client.listBackupsSlotHandleError,
-		advancer: func(ctx context.Context, resp BackupItemCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListBackupsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BackupItemCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -15961,12 +15934,12 @@ func (client *WebAppsClient) listBackupsSlotCreateRequest(ctx context.Context, r
 }
 
 // listBackupsSlotHandleResponse handles the ListBackupsSlot response.
-func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *azcore.Response) (BackupItemCollectionResponse, error) {
-	var val *BackupItemCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemCollectionResponse{}, err
+func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *azcore.Response) (WebAppsListBackupsSlotResponse, error) {
+	result := WebAppsListBackupsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItemCollection); err != nil {
+		return WebAppsListBackupsSlotResponse{}, err
 	}
-	return BackupItemCollectionResponse{RawResponse: resp.Response, BackupItemCollection: val}, nil
+	return result, nil
 }
 
 // listBackupsSlotHandleError handles the ListBackupsSlot error response.
@@ -15984,18 +15957,15 @@ func (client *WebAppsClient) listBackupsSlotHandleError(resp *azcore.Response) e
 
 // ListBasicPublishingCredentialsPolicies - Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListBasicPublishingCredentialsPolicies(resourceGroupName string, name string, options *WebAppsListBasicPublishingCredentialsPoliciesOptions) PublishingCredentialsPoliciesCollectionPager {
-	return &publishingCredentialsPoliciesCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListBasicPublishingCredentialsPolicies(resourceGroupName string, name string, options *WebAppsListBasicPublishingCredentialsPoliciesOptions) WebAppsListBasicPublishingCredentialsPoliciesPager {
+	return &webAppsListBasicPublishingCredentialsPoliciesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBasicPublishingCredentialsPoliciesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listBasicPublishingCredentialsPoliciesHandleResponse,
-		errorer:   client.listBasicPublishingCredentialsPoliciesHandleError,
-		advancer: func(ctx context.Context, resp PublishingCredentialsPoliciesCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListBasicPublishingCredentialsPoliciesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublishingCredentialsPoliciesCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16027,12 +15997,12 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesCreateRequest
 }
 
 // listBasicPublishingCredentialsPoliciesHandleResponse handles the ListBasicPublishingCredentialsPolicies response.
-func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleResponse(resp *azcore.Response) (PublishingCredentialsPoliciesCollectionResponse, error) {
-	var val *PublishingCredentialsPoliciesCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublishingCredentialsPoliciesCollectionResponse{}, err
+func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleResponse(resp *azcore.Response) (WebAppsListBasicPublishingCredentialsPoliciesResponse, error) {
+	result := WebAppsListBasicPublishingCredentialsPoliciesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublishingCredentialsPoliciesCollection); err != nil {
+		return WebAppsListBasicPublishingCredentialsPoliciesResponse{}, err
 	}
-	return PublishingCredentialsPoliciesCollectionResponse{RawResponse: resp.Response, PublishingCredentialsPoliciesCollection: val}, nil
+	return result, nil
 }
 
 // listBasicPublishingCredentialsPoliciesHandleError handles the ListBasicPublishingCredentialsPolicies error response.
@@ -16050,18 +16020,15 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleError(r
 
 // ListBasicPublishingCredentialsPoliciesSlot - Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListBasicPublishingCredentialsPoliciesSlot(resourceGroupName string, name string, slot string, options *WebAppsListBasicPublishingCredentialsPoliciesSlotOptions) PublishingCredentialsPoliciesCollectionPager {
-	return &publishingCredentialsPoliciesCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListBasicPublishingCredentialsPoliciesSlot(resourceGroupName string, name string, slot string, options *WebAppsListBasicPublishingCredentialsPoliciesSlotOptions) WebAppsListBasicPublishingCredentialsPoliciesSlotPager {
+	return &webAppsListBasicPublishingCredentialsPoliciesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBasicPublishingCredentialsPoliciesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listBasicPublishingCredentialsPoliciesSlotHandleResponse,
-		errorer:   client.listBasicPublishingCredentialsPoliciesSlotHandleError,
-		advancer: func(ctx context.Context, resp PublishingCredentialsPoliciesCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListBasicPublishingCredentialsPoliciesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublishingCredentialsPoliciesCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16097,12 +16064,12 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotCreateReq
 }
 
 // listBasicPublishingCredentialsPoliciesSlotHandleResponse handles the ListBasicPublishingCredentialsPoliciesSlot response.
-func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp *azcore.Response) (PublishingCredentialsPoliciesCollectionResponse, error) {
-	var val *PublishingCredentialsPoliciesCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublishingCredentialsPoliciesCollectionResponse{}, err
+func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp *azcore.Response) (WebAppsListBasicPublishingCredentialsPoliciesSlotResponse, error) {
+	result := WebAppsListBasicPublishingCredentialsPoliciesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublishingCredentialsPoliciesCollection); err != nil {
+		return WebAppsListBasicPublishingCredentialsPoliciesSlotResponse{}, err
 	}
-	return PublishingCredentialsPoliciesCollectionResponse{RawResponse: resp.Response, PublishingCredentialsPoliciesCollection: val}, nil
+	return result, nil
 }
 
 // listBasicPublishingCredentialsPoliciesSlotHandleError handles the ListBasicPublishingCredentialsPoliciesSlot error response.
@@ -16120,18 +16087,15 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleErr
 
 // ListByResourceGroup - Description for Gets all web, mobile, and API apps in the specified resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListByResourceGroup(resourceGroupName string, options *WebAppsListByResourceGroupOptions) WebAppCollectionPager {
-	return &webAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListByResourceGroup(resourceGroupName string, options *WebAppsListByResourceGroupOptions) WebAppsListByResourceGroupPager {
+	return &webAppsListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp WebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16162,12 +16126,12 @@ func (client *WebAppsClient) listByResourceGroupCreateRequest(ctx context.Contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (WebAppCollectionResponse, error) {
-	var val *WebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppCollectionResponse{}, err
+func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (WebAppsListByResourceGroupResponse, error) {
+	result := WebAppsListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return WebAppsListByResourceGroupResponse{}, err
 	}
-	return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -16186,18 +16150,15 @@ func (client *WebAppsClient) listByResourceGroupHandleError(resp *azcore.Respons
 // ListConfigurationSnapshotInfo - Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp
 // and the ID of the snapshot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListConfigurationSnapshotInfo(resourceGroupName string, name string, options *WebAppsListConfigurationSnapshotInfoOptions) SiteConfigurationSnapshotInfoCollectionPager {
-	return &siteConfigurationSnapshotInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListConfigurationSnapshotInfo(resourceGroupName string, name string, options *WebAppsListConfigurationSnapshotInfoOptions) WebAppsListConfigurationSnapshotInfoPager {
+	return &webAppsListConfigurationSnapshotInfoPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listConfigurationSnapshotInfoCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listConfigurationSnapshotInfoHandleResponse,
-		errorer:   client.listConfigurationSnapshotInfoHandleError,
-		advancer: func(ctx context.Context, resp SiteConfigurationSnapshotInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListConfigurationSnapshotInfoResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SiteConfigurationSnapshotInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16229,12 +16190,12 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoCreateRequest(ctx cont
 }
 
 // listConfigurationSnapshotInfoHandleResponse handles the ListConfigurationSnapshotInfo response.
-func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *azcore.Response) (SiteConfigurationSnapshotInfoCollectionResponse, error) {
-	var val *SiteConfigurationSnapshotInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigurationSnapshotInfoCollectionResponse{}, err
+func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *azcore.Response) (WebAppsListConfigurationSnapshotInfoResponse, error) {
+	result := WebAppsListConfigurationSnapshotInfoResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigurationSnapshotInfoCollection); err != nil {
+		return WebAppsListConfigurationSnapshotInfoResponse{}, err
 	}
-	return SiteConfigurationSnapshotInfoCollectionResponse{RawResponse: resp.Response, SiteConfigurationSnapshotInfoCollection: val}, nil
+	return result, nil
 }
 
 // listConfigurationSnapshotInfoHandleError handles the ListConfigurationSnapshotInfo error response.
@@ -16253,18 +16214,15 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoHandleError(resp *azco
 // ListConfigurationSnapshotInfoSlot - Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp
 // and the ID of the snapshot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListConfigurationSnapshotInfoSlot(resourceGroupName string, name string, slot string, options *WebAppsListConfigurationSnapshotInfoSlotOptions) SiteConfigurationSnapshotInfoCollectionPager {
-	return &siteConfigurationSnapshotInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListConfigurationSnapshotInfoSlot(resourceGroupName string, name string, slot string, options *WebAppsListConfigurationSnapshotInfoSlotOptions) WebAppsListConfigurationSnapshotInfoSlotPager {
+	return &webAppsListConfigurationSnapshotInfoSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listConfigurationSnapshotInfoSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listConfigurationSnapshotInfoSlotHandleResponse,
-		errorer:   client.listConfigurationSnapshotInfoSlotHandleError,
-		advancer: func(ctx context.Context, resp SiteConfigurationSnapshotInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListConfigurationSnapshotInfoSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SiteConfigurationSnapshotInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16300,12 +16258,12 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotCreateRequest(ctx 
 }
 
 // listConfigurationSnapshotInfoSlotHandleResponse handles the ListConfigurationSnapshotInfoSlot response.
-func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(resp *azcore.Response) (SiteConfigurationSnapshotInfoCollectionResponse, error) {
-	var val *SiteConfigurationSnapshotInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigurationSnapshotInfoCollectionResponse{}, err
+func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(resp *azcore.Response) (WebAppsListConfigurationSnapshotInfoSlotResponse, error) {
+	result := WebAppsListConfigurationSnapshotInfoSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigurationSnapshotInfoCollection); err != nil {
+		return WebAppsListConfigurationSnapshotInfoSlotResponse{}, err
 	}
-	return SiteConfigurationSnapshotInfoCollectionResponse{RawResponse: resp.Response, SiteConfigurationSnapshotInfoCollection: val}, nil
+	return result, nil
 }
 
 // listConfigurationSnapshotInfoSlotHandleError handles the ListConfigurationSnapshotInfoSlot error response.
@@ -16323,18 +16281,15 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleError(resp *
 
 // ListConfigurations - Description for List the configurations of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListConfigurations(resourceGroupName string, name string, options *WebAppsListConfigurationsOptions) SiteConfigResourceCollectionPager {
-	return &siteConfigResourceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListConfigurations(resourceGroupName string, name string, options *WebAppsListConfigurationsOptions) WebAppsListConfigurationsPager {
+	return &webAppsListConfigurationsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listConfigurationsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listConfigurationsHandleResponse,
-		errorer:   client.listConfigurationsHandleError,
-		advancer: func(ctx context.Context, resp SiteConfigResourceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListConfigurationsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SiteConfigResourceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16366,12 +16321,12 @@ func (client *WebAppsClient) listConfigurationsCreateRequest(ctx context.Context
 }
 
 // listConfigurationsHandleResponse handles the ListConfigurations response.
-func (client *WebAppsClient) listConfigurationsHandleResponse(resp *azcore.Response) (SiteConfigResourceCollectionResponse, error) {
-	var val *SiteConfigResourceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceCollectionResponse{}, err
+func (client *WebAppsClient) listConfigurationsHandleResponse(resp *azcore.Response) (WebAppsListConfigurationsResponse, error) {
+	result := WebAppsListConfigurationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResourceCollection); err != nil {
+		return WebAppsListConfigurationsResponse{}, err
 	}
-	return SiteConfigResourceCollectionResponse{RawResponse: resp.Response, SiteConfigResourceCollection: val}, nil
+	return result, nil
 }
 
 // listConfigurationsHandleError handles the ListConfigurations error response.
@@ -16389,18 +16344,15 @@ func (client *WebAppsClient) listConfigurationsHandleError(resp *azcore.Response
 
 // ListConfigurationsSlot - Description for List the configurations of an app
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListConfigurationsSlot(resourceGroupName string, name string, slot string, options *WebAppsListConfigurationsSlotOptions) SiteConfigResourceCollectionPager {
-	return &siteConfigResourceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListConfigurationsSlot(resourceGroupName string, name string, slot string, options *WebAppsListConfigurationsSlotOptions) WebAppsListConfigurationsSlotPager {
+	return &webAppsListConfigurationsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listConfigurationsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listConfigurationsSlotHandleResponse,
-		errorer:   client.listConfigurationsSlotHandleError,
-		advancer: func(ctx context.Context, resp SiteConfigResourceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListConfigurationsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SiteConfigResourceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16436,12 +16388,12 @@ func (client *WebAppsClient) listConfigurationsSlotCreateRequest(ctx context.Con
 }
 
 // listConfigurationsSlotHandleResponse handles the ListConfigurationsSlot response.
-func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *azcore.Response) (SiteConfigResourceCollectionResponse, error) {
-	var val *SiteConfigResourceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceCollectionResponse{}, err
+func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *azcore.Response) (WebAppsListConfigurationsSlotResponse, error) {
+	result := WebAppsListConfigurationsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResourceCollection); err != nil {
+		return WebAppsListConfigurationsSlotResponse{}, err
 	}
-	return SiteConfigResourceCollectionResponse{RawResponse: resp.Response, SiteConfigResourceCollection: val}, nil
+	return result, nil
 }
 
 // listConfigurationsSlotHandleError handles the ListConfigurationsSlot error response.
@@ -16459,17 +16411,17 @@ func (client *WebAppsClient) listConfigurationsSlotHandleError(resp *azcore.Resp
 
 // ListConnectionStrings - Description for Gets the connection strings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, name string, options *WebAppsListConnectionStringsOptions) (ConnectionStringDictionaryResponse, error) {
+func (client *WebAppsClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, name string, options *WebAppsListConnectionStringsOptions) (WebAppsListConnectionStringsResponse, error) {
 	req, err := client.listConnectionStringsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsListConnectionStringsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsListConnectionStringsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ConnectionStringDictionaryResponse{}, client.listConnectionStringsHandleError(resp)
+		return WebAppsListConnectionStringsResponse{}, client.listConnectionStringsHandleError(resp)
 	}
 	return client.listConnectionStringsHandleResponse(resp)
 }
@@ -16502,12 +16454,12 @@ func (client *WebAppsClient) listConnectionStringsCreateRequest(ctx context.Cont
 }
 
 // listConnectionStringsHandleResponse handles the ListConnectionStrings response.
-func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *azcore.Response) (ConnectionStringDictionaryResponse, error) {
-	var val *ConnectionStringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *azcore.Response) (WebAppsListConnectionStringsResponse, error) {
+	result := WebAppsListConnectionStringsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ConnectionStringDictionary); err != nil {
+		return WebAppsListConnectionStringsResponse{}, err
 	}
-	return ConnectionStringDictionaryResponse{RawResponse: resp.Response, ConnectionStringDictionary: val}, nil
+	return result, nil
 }
 
 // listConnectionStringsHandleError handles the ListConnectionStrings error response.
@@ -16525,17 +16477,17 @@ func (client *WebAppsClient) listConnectionStringsHandleError(resp *azcore.Respo
 
 // ListConnectionStringsSlot - Description for Gets the connection strings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListConnectionStringsSlotOptions) (ConnectionStringDictionaryResponse, error) {
+func (client *WebAppsClient) ListConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListConnectionStringsSlotOptions) (WebAppsListConnectionStringsSlotResponse, error) {
 	req, err := client.listConnectionStringsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsListConnectionStringsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsListConnectionStringsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ConnectionStringDictionaryResponse{}, client.listConnectionStringsSlotHandleError(resp)
+		return WebAppsListConnectionStringsSlotResponse{}, client.listConnectionStringsSlotHandleError(resp)
 	}
 	return client.listConnectionStringsSlotHandleResponse(resp)
 }
@@ -16572,12 +16524,12 @@ func (client *WebAppsClient) listConnectionStringsSlotCreateRequest(ctx context.
 }
 
 // listConnectionStringsSlotHandleResponse handles the ListConnectionStringsSlot response.
-func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *azcore.Response) (ConnectionStringDictionaryResponse, error) {
-	var val *ConnectionStringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *azcore.Response) (WebAppsListConnectionStringsSlotResponse, error) {
+	result := WebAppsListConnectionStringsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ConnectionStringDictionary); err != nil {
+		return WebAppsListConnectionStringsSlotResponse{}, err
 	}
-	return ConnectionStringDictionaryResponse{RawResponse: resp.Response, ConnectionStringDictionary: val}, nil
+	return result, nil
 }
 
 // listConnectionStringsSlotHandleError handles the ListConnectionStringsSlot error response.
@@ -16595,18 +16547,15 @@ func (client *WebAppsClient) listConnectionStringsSlotHandleError(resp *azcore.R
 
 // ListContinuousWebJobs - Description for List continuous web jobs for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListContinuousWebJobs(resourceGroupName string, name string, options *WebAppsListContinuousWebJobsOptions) ContinuousWebJobCollectionPager {
-	return &continuousWebJobCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListContinuousWebJobs(resourceGroupName string, name string, options *WebAppsListContinuousWebJobsOptions) WebAppsListContinuousWebJobsPager {
+	return &webAppsListContinuousWebJobsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listContinuousWebJobsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listContinuousWebJobsHandleResponse,
-		errorer:   client.listContinuousWebJobsHandleError,
-		advancer: func(ctx context.Context, resp ContinuousWebJobCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListContinuousWebJobsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContinuousWebJobCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16638,12 +16587,12 @@ func (client *WebAppsClient) listContinuousWebJobsCreateRequest(ctx context.Cont
 }
 
 // listContinuousWebJobsHandleResponse handles the ListContinuousWebJobs response.
-func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *azcore.Response) (ContinuousWebJobCollectionResponse, error) {
-	var val *ContinuousWebJobCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ContinuousWebJobCollectionResponse{}, err
+func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *azcore.Response) (WebAppsListContinuousWebJobsResponse, error) {
+	result := WebAppsListContinuousWebJobsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ContinuousWebJobCollection); err != nil {
+		return WebAppsListContinuousWebJobsResponse{}, err
 	}
-	return ContinuousWebJobCollectionResponse{RawResponse: resp.Response, ContinuousWebJobCollection: val}, nil
+	return result, nil
 }
 
 // listContinuousWebJobsHandleError handles the ListContinuousWebJobs error response.
@@ -16661,18 +16610,15 @@ func (client *WebAppsClient) listContinuousWebJobsHandleError(resp *azcore.Respo
 
 // ListContinuousWebJobsSlot - Description for List continuous web jobs for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListContinuousWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsListContinuousWebJobsSlotOptions) ContinuousWebJobCollectionPager {
-	return &continuousWebJobCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListContinuousWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsListContinuousWebJobsSlotOptions) WebAppsListContinuousWebJobsSlotPager {
+	return &webAppsListContinuousWebJobsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listContinuousWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listContinuousWebJobsSlotHandleResponse,
-		errorer:   client.listContinuousWebJobsSlotHandleError,
-		advancer: func(ctx context.Context, resp ContinuousWebJobCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListContinuousWebJobsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContinuousWebJobCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16708,12 +16654,12 @@ func (client *WebAppsClient) listContinuousWebJobsSlotCreateRequest(ctx context.
 }
 
 // listContinuousWebJobsSlotHandleResponse handles the ListContinuousWebJobsSlot response.
-func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *azcore.Response) (ContinuousWebJobCollectionResponse, error) {
-	var val *ContinuousWebJobCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ContinuousWebJobCollectionResponse{}, err
+func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *azcore.Response) (WebAppsListContinuousWebJobsSlotResponse, error) {
+	result := WebAppsListContinuousWebJobsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ContinuousWebJobCollection); err != nil {
+		return WebAppsListContinuousWebJobsSlotResponse{}, err
 	}
-	return ContinuousWebJobCollectionResponse{RawResponse: resp.Response, ContinuousWebJobCollection: val}, nil
+	return result, nil
 }
 
 // listContinuousWebJobsSlotHandleError handles the ListContinuousWebJobsSlot error response.
@@ -16731,17 +16677,17 @@ func (client *WebAppsClient) listContinuousWebJobsSlotHandleError(resp *azcore.R
 
 // ListDeploymentLog - Description for List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListDeploymentLog(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsListDeploymentLogOptions) (DeploymentResponse, error) {
+func (client *WebAppsClient) ListDeploymentLog(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsListDeploymentLogOptions) (WebAppsListDeploymentLogResponse, error) {
 	req, err := client.listDeploymentLogCreateRequest(ctx, resourceGroupName, name, id, options)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsListDeploymentLogResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsListDeploymentLogResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentResponse{}, client.listDeploymentLogHandleError(resp)
+		return WebAppsListDeploymentLogResponse{}, client.listDeploymentLogHandleError(resp)
 	}
 	return client.listDeploymentLogHandleResponse(resp)
 }
@@ -16778,12 +16724,12 @@ func (client *WebAppsClient) listDeploymentLogCreateRequest(ctx context.Context,
 }
 
 // listDeploymentLogHandleResponse handles the ListDeploymentLog response.
-func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *azcore.Response) (DeploymentResponse, error) {
-	var val *Deployment
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentResponse{}, err
+func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *azcore.Response) (WebAppsListDeploymentLogResponse, error) {
+	result := WebAppsListDeploymentLogResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Deployment); err != nil {
+		return WebAppsListDeploymentLogResponse{}, err
 	}
-	return DeploymentResponse{RawResponse: resp.Response, Deployment: val}, nil
+	return result, nil
 }
 
 // listDeploymentLogHandleError handles the ListDeploymentLog error response.
@@ -16801,17 +16747,17 @@ func (client *WebAppsClient) listDeploymentLogHandleError(resp *azcore.Response)
 
 // ListDeploymentLogSlot - Description for List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListDeploymentLogSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsListDeploymentLogSlotOptions) (DeploymentResponse, error) {
+func (client *WebAppsClient) ListDeploymentLogSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsListDeploymentLogSlotOptions) (WebAppsListDeploymentLogSlotResponse, error) {
 	req, err := client.listDeploymentLogSlotCreateRequest(ctx, resourceGroupName, name, id, slot, options)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsListDeploymentLogSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentResponse{}, err
+		return WebAppsListDeploymentLogSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentResponse{}, client.listDeploymentLogSlotHandleError(resp)
+		return WebAppsListDeploymentLogSlotResponse{}, client.listDeploymentLogSlotHandleError(resp)
 	}
 	return client.listDeploymentLogSlotHandleResponse(resp)
 }
@@ -16852,12 +16798,12 @@ func (client *WebAppsClient) listDeploymentLogSlotCreateRequest(ctx context.Cont
 }
 
 // listDeploymentLogSlotHandleResponse handles the ListDeploymentLogSlot response.
-func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *azcore.Response) (DeploymentResponse, error) {
-	var val *Deployment
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentResponse{}, err
+func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *azcore.Response) (WebAppsListDeploymentLogSlotResponse, error) {
+	result := WebAppsListDeploymentLogSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Deployment); err != nil {
+		return WebAppsListDeploymentLogSlotResponse{}, err
 	}
-	return DeploymentResponse{RawResponse: resp.Response, Deployment: val}, nil
+	return result, nil
 }
 
 // listDeploymentLogSlotHandleError handles the ListDeploymentLogSlot error response.
@@ -16875,18 +16821,15 @@ func (client *WebAppsClient) listDeploymentLogSlotHandleError(resp *azcore.Respo
 
 // ListDeployments - Description for List deployments for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListDeployments(resourceGroupName string, name string, options *WebAppsListDeploymentsOptions) DeploymentCollectionPager {
-	return &deploymentCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListDeployments(resourceGroupName string, name string, options *WebAppsListDeploymentsOptions) WebAppsListDeploymentsPager {
+	return &webAppsListDeploymentsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listDeploymentsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listDeploymentsHandleResponse,
-		errorer:   client.listDeploymentsHandleError,
-		advancer: func(ctx context.Context, resp DeploymentCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListDeploymentsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeploymentCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16918,12 +16861,12 @@ func (client *WebAppsClient) listDeploymentsCreateRequest(ctx context.Context, r
 }
 
 // listDeploymentsHandleResponse handles the ListDeployments response.
-func (client *WebAppsClient) listDeploymentsHandleResponse(resp *azcore.Response) (DeploymentCollectionResponse, error) {
-	var val *DeploymentCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentCollectionResponse{}, err
+func (client *WebAppsClient) listDeploymentsHandleResponse(resp *azcore.Response) (WebAppsListDeploymentsResponse, error) {
+	result := WebAppsListDeploymentsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeploymentCollection); err != nil {
+		return WebAppsListDeploymentsResponse{}, err
 	}
-	return DeploymentCollectionResponse{RawResponse: resp.Response, DeploymentCollection: val}, nil
+	return result, nil
 }
 
 // listDeploymentsHandleError handles the ListDeployments error response.
@@ -16941,18 +16884,15 @@ func (client *WebAppsClient) listDeploymentsHandleError(resp *azcore.Response) e
 
 // ListDeploymentsSlot - Description for List deployments for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListDeploymentsSlot(resourceGroupName string, name string, slot string, options *WebAppsListDeploymentsSlotOptions) DeploymentCollectionPager {
-	return &deploymentCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListDeploymentsSlot(resourceGroupName string, name string, slot string, options *WebAppsListDeploymentsSlotOptions) WebAppsListDeploymentsSlotPager {
+	return &webAppsListDeploymentsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listDeploymentsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listDeploymentsSlotHandleResponse,
-		errorer:   client.listDeploymentsSlotHandleError,
-		advancer: func(ctx context.Context, resp DeploymentCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListDeploymentsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeploymentCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -16988,12 +16928,12 @@ func (client *WebAppsClient) listDeploymentsSlotCreateRequest(ctx context.Contex
 }
 
 // listDeploymentsSlotHandleResponse handles the ListDeploymentsSlot response.
-func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *azcore.Response) (DeploymentCollectionResponse, error) {
-	var val *DeploymentCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentCollectionResponse{}, err
+func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *azcore.Response) (WebAppsListDeploymentsSlotResponse, error) {
+	result := WebAppsListDeploymentsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeploymentCollection); err != nil {
+		return WebAppsListDeploymentsSlotResponse{}, err
 	}
-	return DeploymentCollectionResponse{RawResponse: resp.Response, DeploymentCollection: val}, nil
+	return result, nil
 }
 
 // listDeploymentsSlotHandleError handles the ListDeploymentsSlot error response.
@@ -17011,18 +16951,15 @@ func (client *WebAppsClient) listDeploymentsSlotHandleError(resp *azcore.Respons
 
 // ListDomainOwnershipIdentifiers - Description for Lists ownership identifiers for domain associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListDomainOwnershipIdentifiers(resourceGroupName string, name string, options *WebAppsListDomainOwnershipIdentifiersOptions) IdentifierCollectionPager {
-	return &identifierCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListDomainOwnershipIdentifiers(resourceGroupName string, name string, options *WebAppsListDomainOwnershipIdentifiersOptions) WebAppsListDomainOwnershipIdentifiersPager {
+	return &webAppsListDomainOwnershipIdentifiersPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listDomainOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listDomainOwnershipIdentifiersHandleResponse,
-		errorer:   client.listDomainOwnershipIdentifiersHandleError,
-		advancer: func(ctx context.Context, resp IdentifierCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListDomainOwnershipIdentifiersResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.IdentifierCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -17054,12 +16991,12 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersCreateRequest(ctx con
 }
 
 // listDomainOwnershipIdentifiersHandleResponse handles the ListDomainOwnershipIdentifiers response.
-func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *azcore.Response) (IdentifierCollectionResponse, error) {
-	var val *IdentifierCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierCollectionResponse{}, err
+func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *azcore.Response) (WebAppsListDomainOwnershipIdentifiersResponse, error) {
+	result := WebAppsListDomainOwnershipIdentifiersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.IdentifierCollection); err != nil {
+		return WebAppsListDomainOwnershipIdentifiersResponse{}, err
 	}
-	return IdentifierCollectionResponse{RawResponse: resp.Response, IdentifierCollection: val}, nil
+	return result, nil
 }
 
 // listDomainOwnershipIdentifiersHandleError handles the ListDomainOwnershipIdentifiers error response.
@@ -17077,18 +17014,15 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleError(resp *azc
 
 // ListDomainOwnershipIdentifiersSlot - Description for Lists ownership identifiers for domain associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListDomainOwnershipIdentifiersSlot(resourceGroupName string, name string, slot string, options *WebAppsListDomainOwnershipIdentifiersSlotOptions) IdentifierCollectionPager {
-	return &identifierCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListDomainOwnershipIdentifiersSlot(resourceGroupName string, name string, slot string, options *WebAppsListDomainOwnershipIdentifiersSlotOptions) WebAppsListDomainOwnershipIdentifiersSlotPager {
+	return &webAppsListDomainOwnershipIdentifiersSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listDomainOwnershipIdentifiersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listDomainOwnershipIdentifiersSlotHandleResponse,
-		errorer:   client.listDomainOwnershipIdentifiersSlotHandleError,
-		advancer: func(ctx context.Context, resp IdentifierCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListDomainOwnershipIdentifiersSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.IdentifierCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -17124,12 +17058,12 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotCreateRequest(ctx
 }
 
 // listDomainOwnershipIdentifiersSlotHandleResponse handles the ListDomainOwnershipIdentifiersSlot response.
-func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(resp *azcore.Response) (IdentifierCollectionResponse, error) {
-	var val *IdentifierCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierCollectionResponse{}, err
+func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(resp *azcore.Response) (WebAppsListDomainOwnershipIdentifiersSlotResponse, error) {
+	result := WebAppsListDomainOwnershipIdentifiersSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.IdentifierCollection); err != nil {
+		return WebAppsListDomainOwnershipIdentifiersSlotResponse{}, err
 	}
-	return IdentifierCollectionResponse{RawResponse: resp.Response, IdentifierCollection: val}, nil
+	return result, nil
 }
 
 // listDomainOwnershipIdentifiersSlotHandleError handles the ListDomainOwnershipIdentifiersSlot error response.
@@ -17147,17 +17081,17 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleError(resp 
 
 // ListFunctionKeys - Description for Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListFunctionKeys(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsListFunctionKeysOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) ListFunctionKeys(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsListFunctionKeysOptions) (WebAppsListFunctionKeysResponse, error) {
 	req, err := client.listFunctionKeysCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListFunctionKeysResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListFunctionKeysResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.listFunctionKeysHandleError(resp)
+		return WebAppsListFunctionKeysResponse{}, client.listFunctionKeysHandleError(resp)
 	}
 	return client.listFunctionKeysHandleResponse(resp)
 }
@@ -17194,12 +17128,12 @@ func (client *WebAppsClient) listFunctionKeysCreateRequest(ctx context.Context, 
 }
 
 // listFunctionKeysHandleResponse handles the ListFunctionKeys response.
-func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *azcore.Response) (WebAppsListFunctionKeysResponse, error) {
+	result := WebAppsListFunctionKeysResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsListFunctionKeysResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // listFunctionKeysHandleError handles the ListFunctionKeys error response.
@@ -17217,17 +17151,17 @@ func (client *WebAppsClient) listFunctionKeysHandleError(resp *azcore.Response) 
 
 // ListFunctionKeysSlot - Description for Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListFunctionKeysSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsListFunctionKeysSlotOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) ListFunctionKeysSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsListFunctionKeysSlotOptions) (WebAppsListFunctionKeysSlotResponse, error) {
 	req, err := client.listFunctionKeysSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListFunctionKeysSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListFunctionKeysSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.listFunctionKeysSlotHandleError(resp)
+		return WebAppsListFunctionKeysSlotResponse{}, client.listFunctionKeysSlotHandleError(resp)
 	}
 	return client.listFunctionKeysSlotHandleResponse(resp)
 }
@@ -17268,12 +17202,12 @@ func (client *WebAppsClient) listFunctionKeysSlotCreateRequest(ctx context.Conte
 }
 
 // listFunctionKeysSlotHandleResponse handles the ListFunctionKeysSlot response.
-func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *azcore.Response) (WebAppsListFunctionKeysSlotResponse, error) {
+	result := WebAppsListFunctionKeysSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsListFunctionKeysSlotResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // listFunctionKeysSlotHandleError handles the ListFunctionKeysSlot error response.
@@ -17291,17 +17225,17 @@ func (client *WebAppsClient) listFunctionKeysSlotHandleError(resp *azcore.Respon
 
 // ListFunctionSecrets - Description for Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListFunctionSecrets(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsListFunctionSecretsOptions) (FunctionSecretsResponse, error) {
+func (client *WebAppsClient) ListFunctionSecrets(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsListFunctionSecretsOptions) (WebAppsListFunctionSecretsResponse, error) {
 	req, err := client.listFunctionSecretsCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListFunctionSecretsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListFunctionSecretsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FunctionSecretsResponse{}, client.listFunctionSecretsHandleError(resp)
+		return WebAppsListFunctionSecretsResponse{}, client.listFunctionSecretsHandleError(resp)
 	}
 	return client.listFunctionSecretsHandleResponse(resp)
 }
@@ -17338,12 +17272,12 @@ func (client *WebAppsClient) listFunctionSecretsCreateRequest(ctx context.Contex
 }
 
 // listFunctionSecretsHandleResponse handles the ListFunctionSecrets response.
-func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *azcore.Response) (FunctionSecretsResponse, error) {
-	var val *FunctionSecrets
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionSecretsResponse{}, err
+func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *azcore.Response) (WebAppsListFunctionSecretsResponse, error) {
+	result := WebAppsListFunctionSecretsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionSecrets); err != nil {
+		return WebAppsListFunctionSecretsResponse{}, err
 	}
-	return FunctionSecretsResponse{RawResponse: resp.Response, FunctionSecrets: val}, nil
+	return result, nil
 }
 
 // listFunctionSecretsHandleError handles the ListFunctionSecrets error response.
@@ -17361,17 +17295,17 @@ func (client *WebAppsClient) listFunctionSecretsHandleError(resp *azcore.Respons
 
 // ListFunctionSecretsSlot - Description for Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListFunctionSecretsSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsListFunctionSecretsSlotOptions) (FunctionSecretsResponse, error) {
+func (client *WebAppsClient) ListFunctionSecretsSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsListFunctionSecretsSlotOptions) (WebAppsListFunctionSecretsSlotResponse, error) {
 	req, err := client.listFunctionSecretsSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListFunctionSecretsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListFunctionSecretsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FunctionSecretsResponse{}, client.listFunctionSecretsSlotHandleError(resp)
+		return WebAppsListFunctionSecretsSlotResponse{}, client.listFunctionSecretsSlotHandleError(resp)
 	}
 	return client.listFunctionSecretsSlotHandleResponse(resp)
 }
@@ -17412,12 +17346,12 @@ func (client *WebAppsClient) listFunctionSecretsSlotCreateRequest(ctx context.Co
 }
 
 // listFunctionSecretsSlotHandleResponse handles the ListFunctionSecretsSlot response.
-func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *azcore.Response) (FunctionSecretsResponse, error) {
-	var val *FunctionSecrets
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionSecretsResponse{}, err
+func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *azcore.Response) (WebAppsListFunctionSecretsSlotResponse, error) {
+	result := WebAppsListFunctionSecretsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionSecrets); err != nil {
+		return WebAppsListFunctionSecretsSlotResponse{}, err
 	}
-	return FunctionSecretsResponse{RawResponse: resp.Response, FunctionSecrets: val}, nil
+	return result, nil
 }
 
 // listFunctionSecretsSlotHandleError handles the ListFunctionSecretsSlot error response.
@@ -17435,18 +17369,15 @@ func (client *WebAppsClient) listFunctionSecretsSlotHandleError(resp *azcore.Res
 
 // ListFunctions - Description for List the functions for a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListFunctions(resourceGroupName string, name string, options *WebAppsListFunctionsOptions) FunctionEnvelopeCollectionPager {
-	return &functionEnvelopeCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListFunctions(resourceGroupName string, name string, options *WebAppsListFunctionsOptions) WebAppsListFunctionsPager {
+	return &webAppsListFunctionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listFunctionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listFunctionsHandleResponse,
-		errorer:   client.listFunctionsHandleError,
-		advancer: func(ctx context.Context, resp FunctionEnvelopeCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListFunctionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FunctionEnvelopeCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -17478,12 +17409,12 @@ func (client *WebAppsClient) listFunctionsCreateRequest(ctx context.Context, res
 }
 
 // listFunctionsHandleResponse handles the ListFunctions response.
-func (client *WebAppsClient) listFunctionsHandleResponse(resp *azcore.Response) (FunctionEnvelopeCollectionResponse, error) {
-	var val *FunctionEnvelopeCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionEnvelopeCollectionResponse{}, err
+func (client *WebAppsClient) listFunctionsHandleResponse(resp *azcore.Response) (WebAppsListFunctionsResponse, error) {
+	result := WebAppsListFunctionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionEnvelopeCollection); err != nil {
+		return WebAppsListFunctionsResponse{}, err
 	}
-	return FunctionEnvelopeCollectionResponse{RawResponse: resp.Response, FunctionEnvelopeCollection: val}, nil
+	return result, nil
 }
 
 // listFunctionsHandleError handles the ListFunctions error response.
@@ -17509,17 +17440,17 @@ func (client *WebAppsClient) listFunctionsHandleError(resp *azcore.Response) err
 
 // ListHostKeys - Description for Get host secrets for a function app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListHostKeys(ctx context.Context, resourceGroupName string, name string, options *WebAppsListHostKeysOptions) (HostKeysResponse, error) {
+func (client *WebAppsClient) ListHostKeys(ctx context.Context, resourceGroupName string, name string, options *WebAppsListHostKeysOptions) (WebAppsListHostKeysResponse, error) {
 	req, err := client.listHostKeysCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return HostKeysResponse{}, err
+		return WebAppsListHostKeysResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostKeysResponse{}, err
+		return WebAppsListHostKeysResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostKeysResponse{}, client.listHostKeysHandleError(resp)
+		return WebAppsListHostKeysResponse{}, client.listHostKeysHandleError(resp)
 	}
 	return client.listHostKeysHandleResponse(resp)
 }
@@ -17552,12 +17483,12 @@ func (client *WebAppsClient) listHostKeysCreateRequest(ctx context.Context, reso
 }
 
 // listHostKeysHandleResponse handles the ListHostKeys response.
-func (client *WebAppsClient) listHostKeysHandleResponse(resp *azcore.Response) (HostKeysResponse, error) {
-	var val *HostKeys
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostKeysResponse{}, err
+func (client *WebAppsClient) listHostKeysHandleResponse(resp *azcore.Response) (WebAppsListHostKeysResponse, error) {
+	result := WebAppsListHostKeysResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostKeys); err != nil {
+		return WebAppsListHostKeysResponse{}, err
 	}
-	return HostKeysResponse{RawResponse: resp.Response, HostKeys: val}, nil
+	return result, nil
 }
 
 // listHostKeysHandleError handles the ListHostKeys error response.
@@ -17575,17 +17506,17 @@ func (client *WebAppsClient) listHostKeysHandleError(resp *azcore.Response) erro
 
 // ListHostKeysSlot - Description for Get host secrets for a function app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListHostKeysSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListHostKeysSlotOptions) (HostKeysResponse, error) {
+func (client *WebAppsClient) ListHostKeysSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListHostKeysSlotOptions) (WebAppsListHostKeysSlotResponse, error) {
 	req, err := client.listHostKeysSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return HostKeysResponse{}, err
+		return WebAppsListHostKeysSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostKeysResponse{}, err
+		return WebAppsListHostKeysSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostKeysResponse{}, client.listHostKeysSlotHandleError(resp)
+		return WebAppsListHostKeysSlotResponse{}, client.listHostKeysSlotHandleError(resp)
 	}
 	return client.listHostKeysSlotHandleResponse(resp)
 }
@@ -17622,12 +17553,12 @@ func (client *WebAppsClient) listHostKeysSlotCreateRequest(ctx context.Context, 
 }
 
 // listHostKeysSlotHandleResponse handles the ListHostKeysSlot response.
-func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *azcore.Response) (HostKeysResponse, error) {
-	var val *HostKeys
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostKeysResponse{}, err
+func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *azcore.Response) (WebAppsListHostKeysSlotResponse, error) {
+	result := WebAppsListHostKeysSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostKeys); err != nil {
+		return WebAppsListHostKeysSlotResponse{}, err
 	}
-	return HostKeysResponse{RawResponse: resp.Response, HostKeys: val}, nil
+	return result, nil
 }
 
 // listHostKeysSlotHandleError handles the ListHostKeysSlot error response.
@@ -17645,18 +17576,15 @@ func (client *WebAppsClient) listHostKeysSlotHandleError(resp *azcore.Response) 
 
 // ListHostNameBindings - Description for Get hostname bindings for an app or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListHostNameBindings(resourceGroupName string, name string, options *WebAppsListHostNameBindingsOptions) HostNameBindingCollectionPager {
-	return &hostNameBindingCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListHostNameBindings(resourceGroupName string, name string, options *WebAppsListHostNameBindingsOptions) WebAppsListHostNameBindingsPager {
+	return &webAppsListHostNameBindingsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listHostNameBindingsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listHostNameBindingsHandleResponse,
-		errorer:   client.listHostNameBindingsHandleError,
-		advancer: func(ctx context.Context, resp HostNameBindingCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListHostNameBindingsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.HostNameBindingCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -17688,12 +17616,12 @@ func (client *WebAppsClient) listHostNameBindingsCreateRequest(ctx context.Conte
 }
 
 // listHostNameBindingsHandleResponse handles the ListHostNameBindings response.
-func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *azcore.Response) (HostNameBindingCollectionResponse, error) {
-	var val *HostNameBindingCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostNameBindingCollectionResponse{}, err
+func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *azcore.Response) (WebAppsListHostNameBindingsResponse, error) {
+	result := WebAppsListHostNameBindingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostNameBindingCollection); err != nil {
+		return WebAppsListHostNameBindingsResponse{}, err
 	}
-	return HostNameBindingCollectionResponse{RawResponse: resp.Response, HostNameBindingCollection: val}, nil
+	return result, nil
 }
 
 // listHostNameBindingsHandleError handles the ListHostNameBindings error response.
@@ -17711,18 +17639,15 @@ func (client *WebAppsClient) listHostNameBindingsHandleError(resp *azcore.Respon
 
 // ListHostNameBindingsSlot - Description for Get hostname bindings for an app or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListHostNameBindingsSlot(resourceGroupName string, name string, slot string, options *WebAppsListHostNameBindingsSlotOptions) HostNameBindingCollectionPager {
-	return &hostNameBindingCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListHostNameBindingsSlot(resourceGroupName string, name string, slot string, options *WebAppsListHostNameBindingsSlotOptions) WebAppsListHostNameBindingsSlotPager {
+	return &webAppsListHostNameBindingsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listHostNameBindingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listHostNameBindingsSlotHandleResponse,
-		errorer:   client.listHostNameBindingsSlotHandleError,
-		advancer: func(ctx context.Context, resp HostNameBindingCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListHostNameBindingsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.HostNameBindingCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -17758,12 +17683,12 @@ func (client *WebAppsClient) listHostNameBindingsSlotCreateRequest(ctx context.C
 }
 
 // listHostNameBindingsSlotHandleResponse handles the ListHostNameBindingsSlot response.
-func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *azcore.Response) (HostNameBindingCollectionResponse, error) {
-	var val *HostNameBindingCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostNameBindingCollectionResponse{}, err
+func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *azcore.Response) (WebAppsListHostNameBindingsSlotResponse, error) {
+	result := WebAppsListHostNameBindingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostNameBindingCollection); err != nil {
+		return WebAppsListHostNameBindingsSlotResponse{}, err
 	}
-	return HostNameBindingCollectionResponse{RawResponse: resp.Response, HostNameBindingCollection: val}, nil
+	return result, nil
 }
 
 // listHostNameBindingsSlotHandleError handles the ListHostNameBindingsSlot error response.
@@ -17781,17 +17706,17 @@ func (client *WebAppsClient) listHostNameBindingsSlotHandleError(resp *azcore.Re
 
 // ListHybridConnections - Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListHybridConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsListHybridConnectionsOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) ListHybridConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsListHybridConnectionsOptions) (WebAppsListHybridConnectionsResponse, error) {
 	req, err := client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsListHybridConnectionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsListHybridConnectionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.listHybridConnectionsHandleError(resp)
+		return WebAppsListHybridConnectionsResponse{}, client.listHybridConnectionsHandleError(resp)
 	}
 	return client.listHybridConnectionsHandleResponse(resp)
 }
@@ -17824,12 +17749,12 @@ func (client *WebAppsClient) listHybridConnectionsCreateRequest(ctx context.Cont
 }
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
-func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *azcore.Response) (WebAppsListHybridConnectionsResponse, error) {
+	result := WebAppsListHybridConnectionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsListHybridConnectionsResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // listHybridConnectionsHandleError handles the ListHybridConnections error response.
@@ -17847,17 +17772,17 @@ func (client *WebAppsClient) listHybridConnectionsHandleError(resp *azcore.Respo
 
 // ListHybridConnectionsSlot - Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListHybridConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListHybridConnectionsSlotOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) ListHybridConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListHybridConnectionsSlotOptions) (WebAppsListHybridConnectionsSlotResponse, error) {
 	req, err := client.listHybridConnectionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsListHybridConnectionsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsListHybridConnectionsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.listHybridConnectionsSlotHandleError(resp)
+		return WebAppsListHybridConnectionsSlotResponse{}, client.listHybridConnectionsSlotHandleError(resp)
 	}
 	return client.listHybridConnectionsSlotHandleResponse(resp)
 }
@@ -17894,12 +17819,12 @@ func (client *WebAppsClient) listHybridConnectionsSlotCreateRequest(ctx context.
 }
 
 // listHybridConnectionsSlotHandleResponse handles the ListHybridConnectionsSlot response.
-func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *azcore.Response) (WebAppsListHybridConnectionsSlotResponse, error) {
+	result := WebAppsListHybridConnectionsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsListHybridConnectionsSlotResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // listHybridConnectionsSlotHandleError handles the ListHybridConnectionsSlot error response.
@@ -17917,18 +17842,15 @@ func (client *WebAppsClient) listHybridConnectionsSlotHandleError(resp *azcore.R
 
 // ListInstanceFunctionsSlot - Description for List the functions for a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceFunctionsSlot(resourceGroupName string, name string, slot string, options *WebAppsListInstanceFunctionsSlotOptions) FunctionEnvelopeCollectionPager {
-	return &functionEnvelopeCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceFunctionsSlot(resourceGroupName string, name string, slot string, options *WebAppsListInstanceFunctionsSlotOptions) WebAppsListInstanceFunctionsSlotPager {
+	return &webAppsListInstanceFunctionsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceFunctionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listInstanceFunctionsSlotHandleResponse,
-		errorer:   client.listInstanceFunctionsSlotHandleError,
-		advancer: func(ctx context.Context, resp FunctionEnvelopeCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceFunctionsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FunctionEnvelopeCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -17964,12 +17886,12 @@ func (client *WebAppsClient) listInstanceFunctionsSlotCreateRequest(ctx context.
 }
 
 // listInstanceFunctionsSlotHandleResponse handles the ListInstanceFunctionsSlot response.
-func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *azcore.Response) (FunctionEnvelopeCollectionResponse, error) {
-	var val *FunctionEnvelopeCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionEnvelopeCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *azcore.Response) (WebAppsListInstanceFunctionsSlotResponse, error) {
+	result := WebAppsListInstanceFunctionsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionEnvelopeCollection); err != nil {
+		return WebAppsListInstanceFunctionsSlotResponse{}, err
 	}
-	return FunctionEnvelopeCollectionResponse{RawResponse: resp.Response, FunctionEnvelopeCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceFunctionsSlotHandleError handles the ListInstanceFunctionsSlot error response.
@@ -17995,18 +17917,15 @@ func (client *WebAppsClient) listInstanceFunctionsSlotHandleError(resp *azcore.R
 
 // ListInstanceIdentifiers - Description for Gets all scale-out instances of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceIdentifiers(resourceGroupName string, name string, options *WebAppsListInstanceIdentifiersOptions) WebAppInstanceStatusCollectionPager {
-	return &webAppInstanceStatusCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceIdentifiers(resourceGroupName string, name string, options *WebAppsListInstanceIdentifiersOptions) WebAppsListInstanceIdentifiersPager {
+	return &webAppsListInstanceIdentifiersPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceIdentifiersCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listInstanceIdentifiersHandleResponse,
-		errorer:   client.listInstanceIdentifiersHandleError,
-		advancer: func(ctx context.Context, resp WebAppInstanceStatusCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceIdentifiersResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppInstanceStatusCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18038,12 +17957,12 @@ func (client *WebAppsClient) listInstanceIdentifiersCreateRequest(ctx context.Co
 }
 
 // listInstanceIdentifiersHandleResponse handles the ListInstanceIdentifiers response.
-func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *azcore.Response) (WebAppInstanceStatusCollectionResponse, error) {
-	var val *WebAppInstanceStatusCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppInstanceStatusCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *azcore.Response) (WebAppsListInstanceIdentifiersResponse, error) {
+	result := WebAppsListInstanceIdentifiersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppInstanceStatusCollection); err != nil {
+		return WebAppsListInstanceIdentifiersResponse{}, err
 	}
-	return WebAppInstanceStatusCollectionResponse{RawResponse: resp.Response, WebAppInstanceStatusCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceIdentifiersHandleError handles the ListInstanceIdentifiers error response.
@@ -18061,18 +17980,15 @@ func (client *WebAppsClient) listInstanceIdentifiersHandleError(resp *azcore.Res
 
 // ListInstanceIdentifiersSlot - Description for Gets all scale-out instances of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceIdentifiersSlot(resourceGroupName string, name string, slot string, options *WebAppsListInstanceIdentifiersSlotOptions) WebAppInstanceStatusCollectionPager {
-	return &webAppInstanceStatusCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceIdentifiersSlot(resourceGroupName string, name string, slot string, options *WebAppsListInstanceIdentifiersSlotOptions) WebAppsListInstanceIdentifiersSlotPager {
+	return &webAppsListInstanceIdentifiersSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceIdentifiersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listInstanceIdentifiersSlotHandleResponse,
-		errorer:   client.listInstanceIdentifiersSlotHandleError,
-		advancer: func(ctx context.Context, resp WebAppInstanceStatusCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceIdentifiersSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppInstanceStatusCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18108,12 +18024,12 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotCreateRequest(ctx contex
 }
 
 // listInstanceIdentifiersSlotHandleResponse handles the ListInstanceIdentifiersSlot response.
-func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *azcore.Response) (WebAppInstanceStatusCollectionResponse, error) {
-	var val *WebAppInstanceStatusCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppInstanceStatusCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *azcore.Response) (WebAppsListInstanceIdentifiersSlotResponse, error) {
+	result := WebAppsListInstanceIdentifiersSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppInstanceStatusCollection); err != nil {
+		return WebAppsListInstanceIdentifiersSlotResponse{}, err
 	}
-	return WebAppInstanceStatusCollectionResponse{RawResponse: resp.Response, WebAppInstanceStatusCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceIdentifiersSlotHandleError handles the ListInstanceIdentifiersSlot error response.
@@ -18131,18 +18047,15 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotHandleError(resp *azcore
 
 // ListInstanceProcessModules - Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceProcessModules(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsListInstanceProcessModulesOptions) ProcessModuleInfoCollectionPager {
-	return &processModuleInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceProcessModules(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsListInstanceProcessModulesOptions) WebAppsListInstanceProcessModulesPager {
+	return &webAppsListInstanceProcessModulesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceProcessModulesCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 		},
-		responder: client.listInstanceProcessModulesHandleResponse,
-		errorer:   client.listInstanceProcessModulesHandleError,
-		advancer: func(ctx context.Context, resp ProcessModuleInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceProcessModulesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessModuleInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18182,12 +18095,12 @@ func (client *WebAppsClient) listInstanceProcessModulesCreateRequest(ctx context
 }
 
 // listInstanceProcessModulesHandleResponse handles the ListInstanceProcessModules response.
-func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *azcore.Response) (ProcessModuleInfoCollectionResponse, error) {
-	var val *ProcessModuleInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *azcore.Response) (WebAppsListInstanceProcessModulesResponse, error) {
+	result := WebAppsListInstanceProcessModulesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfoCollection); err != nil {
+		return WebAppsListInstanceProcessModulesResponse{}, err
 	}
-	return ProcessModuleInfoCollectionResponse{RawResponse: resp.Response, ProcessModuleInfoCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceProcessModulesHandleError handles the ListInstanceProcessModules error response.
@@ -18213,18 +18126,15 @@ func (client *WebAppsClient) listInstanceProcessModulesHandleError(resp *azcore.
 
 // ListInstanceProcessModulesSlot - Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceProcessModulesSlot(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsListInstanceProcessModulesSlotOptions) ProcessModuleInfoCollectionPager {
-	return &processModuleInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceProcessModulesSlot(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsListInstanceProcessModulesSlotOptions) WebAppsListInstanceProcessModulesSlotPager {
+	return &webAppsListInstanceProcessModulesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceProcessModulesSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 		},
-		responder: client.listInstanceProcessModulesSlotHandleResponse,
-		errorer:   client.listInstanceProcessModulesSlotHandleError,
-		advancer: func(ctx context.Context, resp ProcessModuleInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceProcessModulesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessModuleInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18268,12 +18178,12 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotCreateRequest(ctx con
 }
 
 // listInstanceProcessModulesSlotHandleResponse handles the ListInstanceProcessModulesSlot response.
-func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *azcore.Response) (ProcessModuleInfoCollectionResponse, error) {
-	var val *ProcessModuleInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *azcore.Response) (WebAppsListInstanceProcessModulesSlotResponse, error) {
+	result := WebAppsListInstanceProcessModulesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfoCollection); err != nil {
+		return WebAppsListInstanceProcessModulesSlotResponse{}, err
 	}
-	return ProcessModuleInfoCollectionResponse{RawResponse: resp.Response, ProcessModuleInfoCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceProcessModulesSlotHandleError handles the ListInstanceProcessModulesSlot error response.
@@ -18299,18 +18209,15 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotHandleError(resp *azc
 
 // ListInstanceProcessThreads - Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceProcessThreads(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsListInstanceProcessThreadsOptions) ProcessThreadInfoCollectionPager {
-	return &processThreadInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceProcessThreads(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsListInstanceProcessThreadsOptions) WebAppsListInstanceProcessThreadsPager {
+	return &webAppsListInstanceProcessThreadsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceProcessThreadsCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 		},
-		responder: client.listInstanceProcessThreadsHandleResponse,
-		errorer:   client.listInstanceProcessThreadsHandleError,
-		advancer: func(ctx context.Context, resp ProcessThreadInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceProcessThreadsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessThreadInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18350,12 +18257,12 @@ func (client *WebAppsClient) listInstanceProcessThreadsCreateRequest(ctx context
 }
 
 // listInstanceProcessThreadsHandleResponse handles the ListInstanceProcessThreads response.
-func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *azcore.Response) (ProcessThreadInfoCollectionResponse, error) {
-	var val *ProcessThreadInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessThreadInfoCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *azcore.Response) (WebAppsListInstanceProcessThreadsResponse, error) {
+	result := WebAppsListInstanceProcessThreadsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessThreadInfoCollection); err != nil {
+		return WebAppsListInstanceProcessThreadsResponse{}, err
 	}
-	return ProcessThreadInfoCollectionResponse{RawResponse: resp.Response, ProcessThreadInfoCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceProcessThreadsHandleError handles the ListInstanceProcessThreads error response.
@@ -18381,18 +18288,15 @@ func (client *WebAppsClient) listInstanceProcessThreadsHandleError(resp *azcore.
 
 // ListInstanceProcessThreadsSlot - Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceProcessThreadsSlot(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsListInstanceProcessThreadsSlotOptions) ProcessThreadInfoCollectionPager {
-	return &processThreadInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceProcessThreadsSlot(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsListInstanceProcessThreadsSlotOptions) WebAppsListInstanceProcessThreadsSlotPager {
+	return &webAppsListInstanceProcessThreadsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceProcessThreadsSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 		},
-		responder: client.listInstanceProcessThreadsSlotHandleResponse,
-		errorer:   client.listInstanceProcessThreadsSlotHandleError,
-		advancer: func(ctx context.Context, resp ProcessThreadInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceProcessThreadsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessThreadInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18436,12 +18340,12 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotCreateRequest(ctx con
 }
 
 // listInstanceProcessThreadsSlotHandleResponse handles the ListInstanceProcessThreadsSlot response.
-func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *azcore.Response) (ProcessThreadInfoCollectionResponse, error) {
-	var val *ProcessThreadInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessThreadInfoCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *azcore.Response) (WebAppsListInstanceProcessThreadsSlotResponse, error) {
+	result := WebAppsListInstanceProcessThreadsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessThreadInfoCollection); err != nil {
+		return WebAppsListInstanceProcessThreadsSlotResponse{}, err
 	}
-	return ProcessThreadInfoCollectionResponse{RawResponse: resp.Response, ProcessThreadInfoCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceProcessThreadsSlotHandleError handles the ListInstanceProcessThreadsSlot error response.
@@ -18467,18 +18371,15 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleError(resp *azc
 
 // ListInstanceProcesses - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceProcesses(resourceGroupName string, name string, instanceID string, options *WebAppsListInstanceProcessesOptions) ProcessInfoCollectionPager {
-	return &processInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceProcesses(resourceGroupName string, name string, instanceID string, options *WebAppsListInstanceProcessesOptions) WebAppsListInstanceProcessesPager {
+	return &webAppsListInstanceProcessesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceProcessesCreateRequest(ctx, resourceGroupName, name, instanceID, options)
 		},
-		responder: client.listInstanceProcessesHandleResponse,
-		errorer:   client.listInstanceProcessesHandleError,
-		advancer: func(ctx context.Context, resp ProcessInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceProcessesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18514,12 +18415,12 @@ func (client *WebAppsClient) listInstanceProcessesCreateRequest(ctx context.Cont
 }
 
 // listInstanceProcessesHandleResponse handles the ListInstanceProcesses response.
-func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *azcore.Response) (ProcessInfoCollectionResponse, error) {
-	var val *ProcessInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *azcore.Response) (WebAppsListInstanceProcessesResponse, error) {
+	result := WebAppsListInstanceProcessesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfoCollection); err != nil {
+		return WebAppsListInstanceProcessesResponse{}, err
 	}
-	return ProcessInfoCollectionResponse{RawResponse: resp.Response, ProcessInfoCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceProcessesHandleError handles the ListInstanceProcesses error response.
@@ -18546,18 +18447,15 @@ func (client *WebAppsClient) listInstanceProcessesHandleError(resp *azcore.Respo
 // ListInstanceProcessesSlot - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web
 // site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListInstanceProcessesSlot(resourceGroupName string, name string, slot string, instanceID string, options *WebAppsListInstanceProcessesSlotOptions) ProcessInfoCollectionPager {
-	return &processInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListInstanceProcessesSlot(resourceGroupName string, name string, slot string, instanceID string, options *WebAppsListInstanceProcessesSlotOptions) WebAppsListInstanceProcessesSlotPager {
+	return &webAppsListInstanceProcessesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listInstanceProcessesSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, options)
 		},
-		responder: client.listInstanceProcessesSlotHandleResponse,
-		errorer:   client.listInstanceProcessesSlotHandleError,
-		advancer: func(ctx context.Context, resp ProcessInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListInstanceProcessesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18597,12 +18495,12 @@ func (client *WebAppsClient) listInstanceProcessesSlotCreateRequest(ctx context.
 }
 
 // listInstanceProcessesSlotHandleResponse handles the ListInstanceProcessesSlot response.
-func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *azcore.Response) (ProcessInfoCollectionResponse, error) {
-	var val *ProcessInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoCollectionResponse{}, err
+func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *azcore.Response) (WebAppsListInstanceProcessesSlotResponse, error) {
+	result := WebAppsListInstanceProcessesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfoCollection); err != nil {
+		return WebAppsListInstanceProcessesSlotResponse{}, err
 	}
-	return ProcessInfoCollectionResponse{RawResponse: resp.Response, ProcessInfoCollection: val}, nil
+	return result, nil
 }
 
 // listInstanceProcessesSlotHandleError handles the ListInstanceProcessesSlot error response.
@@ -18628,17 +18526,17 @@ func (client *WebAppsClient) listInstanceProcessesSlotHandleError(resp *azcore.R
 
 // ListMetadata - Description for Gets the metadata of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListMetadata(ctx context.Context, resourceGroupName string, name string, options *WebAppsListMetadataOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) ListMetadata(ctx context.Context, resourceGroupName string, name string, options *WebAppsListMetadataOptions) (WebAppsListMetadataResponse, error) {
 	req, err := client.listMetadataCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListMetadataResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListMetadataResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.listMetadataHandleError(resp)
+		return WebAppsListMetadataResponse{}, client.listMetadataHandleError(resp)
 	}
 	return client.listMetadataHandleResponse(resp)
 }
@@ -18671,12 +18569,12 @@ func (client *WebAppsClient) listMetadataCreateRequest(ctx context.Context, reso
 }
 
 // listMetadataHandleResponse handles the ListMetadata response.
-func (client *WebAppsClient) listMetadataHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) listMetadataHandleResponse(resp *azcore.Response) (WebAppsListMetadataResponse, error) {
+	result := WebAppsListMetadataResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsListMetadataResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // listMetadataHandleError handles the ListMetadata error response.
@@ -18694,17 +18592,17 @@ func (client *WebAppsClient) listMetadataHandleError(resp *azcore.Response) erro
 
 // ListMetadataSlot - Description for Gets the metadata of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListMetadataSlotOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) ListMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListMetadataSlotOptions) (WebAppsListMetadataSlotResponse, error) {
 	req, err := client.listMetadataSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListMetadataSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsListMetadataSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.listMetadataSlotHandleError(resp)
+		return WebAppsListMetadataSlotResponse{}, client.listMetadataSlotHandleError(resp)
 	}
 	return client.listMetadataSlotHandleResponse(resp)
 }
@@ -18741,12 +18639,12 @@ func (client *WebAppsClient) listMetadataSlotCreateRequest(ctx context.Context, 
 }
 
 // listMetadataSlotHandleResponse handles the ListMetadataSlot response.
-func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *azcore.Response) (WebAppsListMetadataSlotResponse, error) {
+	result := WebAppsListMetadataSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsListMetadataSlotResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // listMetadataSlotHandleError handles the ListMetadataSlot error response.
@@ -18764,17 +18662,17 @@ func (client *WebAppsClient) listMetadataSlotHandleError(resp *azcore.Response) 
 
 // ListNetworkFeatures - Description for Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListNetworkFeatures(ctx context.Context, resourceGroupName string, name string, view string, options *WebAppsListNetworkFeaturesOptions) (NetworkFeaturesResponse, error) {
+func (client *WebAppsClient) ListNetworkFeatures(ctx context.Context, resourceGroupName string, name string, view string, options *WebAppsListNetworkFeaturesOptions) (WebAppsListNetworkFeaturesResponse, error) {
 	req, err := client.listNetworkFeaturesCreateRequest(ctx, resourceGroupName, name, view, options)
 	if err != nil {
-		return NetworkFeaturesResponse{}, err
+		return WebAppsListNetworkFeaturesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkFeaturesResponse{}, err
+		return WebAppsListNetworkFeaturesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkFeaturesResponse{}, client.listNetworkFeaturesHandleError(resp)
+		return WebAppsListNetworkFeaturesResponse{}, client.listNetworkFeaturesHandleError(resp)
 	}
 	return client.listNetworkFeaturesHandleResponse(resp)
 }
@@ -18811,12 +18709,12 @@ func (client *WebAppsClient) listNetworkFeaturesCreateRequest(ctx context.Contex
 }
 
 // listNetworkFeaturesHandleResponse handles the ListNetworkFeatures response.
-func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *azcore.Response) (NetworkFeaturesResponse, error) {
-	var val *NetworkFeatures
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkFeaturesResponse{}, err
+func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *azcore.Response) (WebAppsListNetworkFeaturesResponse, error) {
+	result := WebAppsListNetworkFeaturesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkFeatures); err != nil {
+		return WebAppsListNetworkFeaturesResponse{}, err
 	}
-	return NetworkFeaturesResponse{RawResponse: resp.Response, NetworkFeatures: val}, nil
+	return result, nil
 }
 
 // listNetworkFeaturesHandleError handles the ListNetworkFeatures error response.
@@ -18842,17 +18740,17 @@ func (client *WebAppsClient) listNetworkFeaturesHandleError(resp *azcore.Respons
 
 // ListNetworkFeaturesSlot - Description for Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListNetworkFeaturesSlot(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *WebAppsListNetworkFeaturesSlotOptions) (NetworkFeaturesResponse, error) {
+func (client *WebAppsClient) ListNetworkFeaturesSlot(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *WebAppsListNetworkFeaturesSlotOptions) (WebAppsListNetworkFeaturesSlotResponse, error) {
 	req, err := client.listNetworkFeaturesSlotCreateRequest(ctx, resourceGroupName, name, view, slot, options)
 	if err != nil {
-		return NetworkFeaturesResponse{}, err
+		return WebAppsListNetworkFeaturesSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return NetworkFeaturesResponse{}, err
+		return WebAppsListNetworkFeaturesSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkFeaturesResponse{}, client.listNetworkFeaturesSlotHandleError(resp)
+		return WebAppsListNetworkFeaturesSlotResponse{}, client.listNetworkFeaturesSlotHandleError(resp)
 	}
 	return client.listNetworkFeaturesSlotHandleResponse(resp)
 }
@@ -18893,12 +18791,12 @@ func (client *WebAppsClient) listNetworkFeaturesSlotCreateRequest(ctx context.Co
 }
 
 // listNetworkFeaturesSlotHandleResponse handles the ListNetworkFeaturesSlot response.
-func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *azcore.Response) (NetworkFeaturesResponse, error) {
-	var val *NetworkFeatures
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkFeaturesResponse{}, err
+func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *azcore.Response) (WebAppsListNetworkFeaturesSlotResponse, error) {
+	result := WebAppsListNetworkFeaturesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NetworkFeatures); err != nil {
+		return WebAppsListNetworkFeaturesSlotResponse{}, err
 	}
-	return NetworkFeaturesResponse{RawResponse: resp.Response, NetworkFeatures: val}, nil
+	return result, nil
 }
 
 // listNetworkFeaturesSlotHandleError handles the ListNetworkFeaturesSlot error response.
@@ -18924,18 +18822,15 @@ func (client *WebAppsClient) listNetworkFeaturesSlotHandleError(resp *azcore.Res
 
 // ListPerfMonCounters - Description for Gets perfmon counters for web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPerfMonCounters(resourceGroupName string, name string, options *WebAppsListPerfMonCountersOptions) PerfMonCounterCollectionPager {
-	return &perfMonCounterCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListPerfMonCounters(resourceGroupName string, name string, options *WebAppsListPerfMonCountersOptions) WebAppsListPerfMonCountersPager {
+	return &webAppsListPerfMonCountersPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listPerfMonCountersCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listPerfMonCountersHandleResponse,
-		errorer:   client.listPerfMonCountersHandleError,
-		advancer: func(ctx context.Context, resp PerfMonCounterCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListPerfMonCountersResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PerfMonCounterCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -18972,12 +18867,12 @@ func (client *WebAppsClient) listPerfMonCountersCreateRequest(ctx context.Contex
 }
 
 // listPerfMonCountersHandleResponse handles the ListPerfMonCounters response.
-func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *azcore.Response) (PerfMonCounterCollectionResponse, error) {
-	var val *PerfMonCounterCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PerfMonCounterCollectionResponse{}, err
+func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *azcore.Response) (WebAppsListPerfMonCountersResponse, error) {
+	result := WebAppsListPerfMonCountersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PerfMonCounterCollection); err != nil {
+		return WebAppsListPerfMonCountersResponse{}, err
 	}
-	return PerfMonCounterCollectionResponse{RawResponse: resp.Response, PerfMonCounterCollection: val}, nil
+	return result, nil
 }
 
 // listPerfMonCountersHandleError handles the ListPerfMonCounters error response.
@@ -18995,18 +18890,15 @@ func (client *WebAppsClient) listPerfMonCountersHandleError(resp *azcore.Respons
 
 // ListPerfMonCountersSlot - Description for Gets perfmon counters for web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPerfMonCountersSlot(resourceGroupName string, name string, slot string, options *WebAppsListPerfMonCountersSlotOptions) PerfMonCounterCollectionPager {
-	return &perfMonCounterCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListPerfMonCountersSlot(resourceGroupName string, name string, slot string, options *WebAppsListPerfMonCountersSlotOptions) WebAppsListPerfMonCountersSlotPager {
+	return &webAppsListPerfMonCountersSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listPerfMonCountersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listPerfMonCountersSlotHandleResponse,
-		errorer:   client.listPerfMonCountersSlotHandleError,
-		advancer: func(ctx context.Context, resp PerfMonCounterCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListPerfMonCountersSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PerfMonCounterCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19047,12 +18939,12 @@ func (client *WebAppsClient) listPerfMonCountersSlotCreateRequest(ctx context.Co
 }
 
 // listPerfMonCountersSlotHandleResponse handles the ListPerfMonCountersSlot response.
-func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *azcore.Response) (PerfMonCounterCollectionResponse, error) {
-	var val *PerfMonCounterCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PerfMonCounterCollectionResponse{}, err
+func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *azcore.Response) (WebAppsListPerfMonCountersSlotResponse, error) {
+	result := WebAppsListPerfMonCountersSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PerfMonCounterCollection); err != nil {
+		return WebAppsListPerfMonCountersSlotResponse{}, err
 	}
-	return PerfMonCounterCollectionResponse{RawResponse: resp.Response, PerfMonCounterCollection: val}, nil
+	return result, nil
 }
 
 // listPerfMonCountersSlotHandleError handles the ListPerfMonCountersSlot error response.
@@ -19070,17 +18962,17 @@ func (client *WebAppsClient) listPerfMonCountersSlotHandleError(resp *azcore.Res
 
 // ListPremierAddOns - Description for Gets the premier add-ons of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPremierAddOns(ctx context.Context, resourceGroupName string, name string, options *WebAppsListPremierAddOnsOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) ListPremierAddOns(ctx context.Context, resourceGroupName string, name string, options *WebAppsListPremierAddOnsOptions) (WebAppsListPremierAddOnsResponse, error) {
 	req, err := client.listPremierAddOnsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsListPremierAddOnsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsListPremierAddOnsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.listPremierAddOnsHandleError(resp)
+		return WebAppsListPremierAddOnsResponse{}, client.listPremierAddOnsHandleError(resp)
 	}
 	return client.listPremierAddOnsHandleResponse(resp)
 }
@@ -19113,12 +19005,12 @@ func (client *WebAppsClient) listPremierAddOnsCreateRequest(ctx context.Context,
 }
 
 // listPremierAddOnsHandleResponse handles the ListPremierAddOns response.
-func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *azcore.Response) (WebAppsListPremierAddOnsResponse, error) {
+	result := WebAppsListPremierAddOnsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsListPremierAddOnsResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // listPremierAddOnsHandleError handles the ListPremierAddOns error response.
@@ -19136,17 +19028,17 @@ func (client *WebAppsClient) listPremierAddOnsHandleError(resp *azcore.Response)
 
 // ListPremierAddOnsSlot - Description for Gets the premier add-ons of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPremierAddOnsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListPremierAddOnsSlotOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) ListPremierAddOnsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListPremierAddOnsSlotOptions) (WebAppsListPremierAddOnsSlotResponse, error) {
 	req, err := client.listPremierAddOnsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsListPremierAddOnsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsListPremierAddOnsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.listPremierAddOnsSlotHandleError(resp)
+		return WebAppsListPremierAddOnsSlotResponse{}, client.listPremierAddOnsSlotHandleError(resp)
 	}
 	return client.listPremierAddOnsSlotHandleResponse(resp)
 }
@@ -19183,12 +19075,12 @@ func (client *WebAppsClient) listPremierAddOnsSlotCreateRequest(ctx context.Cont
 }
 
 // listPremierAddOnsSlotHandleResponse handles the ListPremierAddOnsSlot response.
-func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *azcore.Response) (WebAppsListPremierAddOnsSlotResponse, error) {
+	result := WebAppsListPremierAddOnsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsListPremierAddOnsSlotResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // listPremierAddOnsSlotHandleError handles the ListPremierAddOnsSlot error response.
@@ -19206,18 +19098,15 @@ func (client *WebAppsClient) listPremierAddOnsSlotHandleError(resp *azcore.Respo
 
 // ListProcessModules - Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListProcessModules(resourceGroupName string, name string, processID string, options *WebAppsListProcessModulesOptions) ProcessModuleInfoCollectionPager {
-	return &processModuleInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListProcessModules(resourceGroupName string, name string, processID string, options *WebAppsListProcessModulesOptions) WebAppsListProcessModulesPager {
+	return &webAppsListProcessModulesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listProcessModulesCreateRequest(ctx, resourceGroupName, name, processID, options)
 		},
-		responder: client.listProcessModulesHandleResponse,
-		errorer:   client.listProcessModulesHandleError,
-		advancer: func(ctx context.Context, resp ProcessModuleInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListProcessModulesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessModuleInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19253,12 +19142,12 @@ func (client *WebAppsClient) listProcessModulesCreateRequest(ctx context.Context
 }
 
 // listProcessModulesHandleResponse handles the ListProcessModules response.
-func (client *WebAppsClient) listProcessModulesHandleResponse(resp *azcore.Response) (ProcessModuleInfoCollectionResponse, error) {
-	var val *ProcessModuleInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoCollectionResponse{}, err
+func (client *WebAppsClient) listProcessModulesHandleResponse(resp *azcore.Response) (WebAppsListProcessModulesResponse, error) {
+	result := WebAppsListProcessModulesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfoCollection); err != nil {
+		return WebAppsListProcessModulesResponse{}, err
 	}
-	return ProcessModuleInfoCollectionResponse{RawResponse: resp.Response, ProcessModuleInfoCollection: val}, nil
+	return result, nil
 }
 
 // listProcessModulesHandleError handles the ListProcessModules error response.
@@ -19284,18 +19173,15 @@ func (client *WebAppsClient) listProcessModulesHandleError(resp *azcore.Response
 
 // ListProcessModulesSlot - Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListProcessModulesSlot(resourceGroupName string, name string, processID string, slot string, options *WebAppsListProcessModulesSlotOptions) ProcessModuleInfoCollectionPager {
-	return &processModuleInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListProcessModulesSlot(resourceGroupName string, name string, processID string, slot string, options *WebAppsListProcessModulesSlotOptions) WebAppsListProcessModulesSlotPager {
+	return &webAppsListProcessModulesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listProcessModulesSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 		},
-		responder: client.listProcessModulesSlotHandleResponse,
-		errorer:   client.listProcessModulesSlotHandleError,
-		advancer: func(ctx context.Context, resp ProcessModuleInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListProcessModulesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessModuleInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19335,12 +19221,12 @@ func (client *WebAppsClient) listProcessModulesSlotCreateRequest(ctx context.Con
 }
 
 // listProcessModulesSlotHandleResponse handles the ListProcessModulesSlot response.
-func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *azcore.Response) (ProcessModuleInfoCollectionResponse, error) {
-	var val *ProcessModuleInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessModuleInfoCollectionResponse{}, err
+func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *azcore.Response) (WebAppsListProcessModulesSlotResponse, error) {
+	result := WebAppsListProcessModulesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessModuleInfoCollection); err != nil {
+		return WebAppsListProcessModulesSlotResponse{}, err
 	}
-	return ProcessModuleInfoCollectionResponse{RawResponse: resp.Response, ProcessModuleInfoCollection: val}, nil
+	return result, nil
 }
 
 // listProcessModulesSlotHandleError handles the ListProcessModulesSlot error response.
@@ -19366,18 +19252,15 @@ func (client *WebAppsClient) listProcessModulesSlotHandleError(resp *azcore.Resp
 
 // ListProcessThreads - Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListProcessThreads(resourceGroupName string, name string, processID string, options *WebAppsListProcessThreadsOptions) ProcessThreadInfoCollectionPager {
-	return &processThreadInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListProcessThreads(resourceGroupName string, name string, processID string, options *WebAppsListProcessThreadsOptions) WebAppsListProcessThreadsPager {
+	return &webAppsListProcessThreadsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listProcessThreadsCreateRequest(ctx, resourceGroupName, name, processID, options)
 		},
-		responder: client.listProcessThreadsHandleResponse,
-		errorer:   client.listProcessThreadsHandleError,
-		advancer: func(ctx context.Context, resp ProcessThreadInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListProcessThreadsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessThreadInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19413,12 +19296,12 @@ func (client *WebAppsClient) listProcessThreadsCreateRequest(ctx context.Context
 }
 
 // listProcessThreadsHandleResponse handles the ListProcessThreads response.
-func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *azcore.Response) (ProcessThreadInfoCollectionResponse, error) {
-	var val *ProcessThreadInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessThreadInfoCollectionResponse{}, err
+func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *azcore.Response) (WebAppsListProcessThreadsResponse, error) {
+	result := WebAppsListProcessThreadsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessThreadInfoCollection); err != nil {
+		return WebAppsListProcessThreadsResponse{}, err
 	}
-	return ProcessThreadInfoCollectionResponse{RawResponse: resp.Response, ProcessThreadInfoCollection: val}, nil
+	return result, nil
 }
 
 // listProcessThreadsHandleError handles the ListProcessThreads error response.
@@ -19444,18 +19327,15 @@ func (client *WebAppsClient) listProcessThreadsHandleError(resp *azcore.Response
 
 // ListProcessThreadsSlot - Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListProcessThreadsSlot(resourceGroupName string, name string, processID string, slot string, options *WebAppsListProcessThreadsSlotOptions) ProcessThreadInfoCollectionPager {
-	return &processThreadInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListProcessThreadsSlot(resourceGroupName string, name string, processID string, slot string, options *WebAppsListProcessThreadsSlotOptions) WebAppsListProcessThreadsSlotPager {
+	return &webAppsListProcessThreadsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listProcessThreadsSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 		},
-		responder: client.listProcessThreadsSlotHandleResponse,
-		errorer:   client.listProcessThreadsSlotHandleError,
-		advancer: func(ctx context.Context, resp ProcessThreadInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListProcessThreadsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessThreadInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19495,12 +19375,12 @@ func (client *WebAppsClient) listProcessThreadsSlotCreateRequest(ctx context.Con
 }
 
 // listProcessThreadsSlotHandleResponse handles the ListProcessThreadsSlot response.
-func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *azcore.Response) (ProcessThreadInfoCollectionResponse, error) {
-	var val *ProcessThreadInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessThreadInfoCollectionResponse{}, err
+func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *azcore.Response) (WebAppsListProcessThreadsSlotResponse, error) {
+	result := WebAppsListProcessThreadsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessThreadInfoCollection); err != nil {
+		return WebAppsListProcessThreadsSlotResponse{}, err
 	}
-	return ProcessThreadInfoCollectionResponse{RawResponse: resp.Response, ProcessThreadInfoCollection: val}, nil
+	return result, nil
 }
 
 // listProcessThreadsSlotHandleError handles the ListProcessThreadsSlot error response.
@@ -19526,18 +19406,15 @@ func (client *WebAppsClient) listProcessThreadsSlotHandleError(resp *azcore.Resp
 
 // ListProcesses - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListProcesses(resourceGroupName string, name string, options *WebAppsListProcessesOptions) ProcessInfoCollectionPager {
-	return &processInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListProcesses(resourceGroupName string, name string, options *WebAppsListProcessesOptions) WebAppsListProcessesPager {
+	return &webAppsListProcessesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listProcessesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listProcessesHandleResponse,
-		errorer:   client.listProcessesHandleError,
-		advancer: func(ctx context.Context, resp ProcessInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListProcessesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19569,12 +19446,12 @@ func (client *WebAppsClient) listProcessesCreateRequest(ctx context.Context, res
 }
 
 // listProcessesHandleResponse handles the ListProcesses response.
-func (client *WebAppsClient) listProcessesHandleResponse(resp *azcore.Response) (ProcessInfoCollectionResponse, error) {
-	var val *ProcessInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoCollectionResponse{}, err
+func (client *WebAppsClient) listProcessesHandleResponse(resp *azcore.Response) (WebAppsListProcessesResponse, error) {
+	result := WebAppsListProcessesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfoCollection); err != nil {
+		return WebAppsListProcessesResponse{}, err
 	}
-	return ProcessInfoCollectionResponse{RawResponse: resp.Response, ProcessInfoCollection: val}, nil
+	return result, nil
 }
 
 // listProcessesHandleError handles the ListProcesses error response.
@@ -19600,18 +19477,15 @@ func (client *WebAppsClient) listProcessesHandleError(resp *azcore.Response) err
 
 // ListProcessesSlot - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListProcessesSlot(resourceGroupName string, name string, slot string, options *WebAppsListProcessesSlotOptions) ProcessInfoCollectionPager {
-	return &processInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListProcessesSlot(resourceGroupName string, name string, slot string, options *WebAppsListProcessesSlotOptions) WebAppsListProcessesSlotPager {
+	return &webAppsListProcessesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listProcessesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listProcessesSlotHandleResponse,
-		errorer:   client.listProcessesSlotHandleError,
-		advancer: func(ctx context.Context, resp ProcessInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListProcessesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProcessInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19647,12 +19521,12 @@ func (client *WebAppsClient) listProcessesSlotCreateRequest(ctx context.Context,
 }
 
 // listProcessesSlotHandleResponse handles the ListProcessesSlot response.
-func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *azcore.Response) (ProcessInfoCollectionResponse, error) {
-	var val *ProcessInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProcessInfoCollectionResponse{}, err
+func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *azcore.Response) (WebAppsListProcessesSlotResponse, error) {
+	result := WebAppsListProcessesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ProcessInfoCollection); err != nil {
+		return WebAppsListProcessesSlotResponse{}, err
 	}
-	return ProcessInfoCollectionResponse{RawResponse: resp.Response, ProcessInfoCollection: val}, nil
+	return result, nil
 }
 
 // listProcessesSlotHandleError handles the ListProcessesSlot error response.
@@ -19678,18 +19552,15 @@ func (client *WebAppsClient) listProcessesSlotHandleError(resp *azcore.Response)
 
 // ListPublicCertificates - Description for Get public certificates for an app or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPublicCertificates(resourceGroupName string, name string, options *WebAppsListPublicCertificatesOptions) PublicCertificateCollectionPager {
-	return &publicCertificateCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListPublicCertificates(resourceGroupName string, name string, options *WebAppsListPublicCertificatesOptions) WebAppsListPublicCertificatesPager {
+	return &webAppsListPublicCertificatesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listPublicCertificatesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listPublicCertificatesHandleResponse,
-		errorer:   client.listPublicCertificatesHandleError,
-		advancer: func(ctx context.Context, resp PublicCertificateCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListPublicCertificatesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicCertificateCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19721,12 +19592,12 @@ func (client *WebAppsClient) listPublicCertificatesCreateRequest(ctx context.Con
 }
 
 // listPublicCertificatesHandleResponse handles the ListPublicCertificates response.
-func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *azcore.Response) (PublicCertificateCollectionResponse, error) {
-	var val *PublicCertificateCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublicCertificateCollectionResponse{}, err
+func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *azcore.Response) (WebAppsListPublicCertificatesResponse, error) {
+	result := WebAppsListPublicCertificatesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublicCertificateCollection); err != nil {
+		return WebAppsListPublicCertificatesResponse{}, err
 	}
-	return PublicCertificateCollectionResponse{RawResponse: resp.Response, PublicCertificateCollection: val}, nil
+	return result, nil
 }
 
 // listPublicCertificatesHandleError handles the ListPublicCertificates error response.
@@ -19744,18 +19615,15 @@ func (client *WebAppsClient) listPublicCertificatesHandleError(resp *azcore.Resp
 
 // ListPublicCertificatesSlot - Description for Get public certificates for an app or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPublicCertificatesSlot(resourceGroupName string, name string, slot string, options *WebAppsListPublicCertificatesSlotOptions) PublicCertificateCollectionPager {
-	return &publicCertificateCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListPublicCertificatesSlot(resourceGroupName string, name string, slot string, options *WebAppsListPublicCertificatesSlotOptions) WebAppsListPublicCertificatesSlotPager {
+	return &webAppsListPublicCertificatesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listPublicCertificatesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listPublicCertificatesSlotHandleResponse,
-		errorer:   client.listPublicCertificatesSlotHandleError,
-		advancer: func(ctx context.Context, resp PublicCertificateCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListPublicCertificatesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicCertificateCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -19791,12 +19659,12 @@ func (client *WebAppsClient) listPublicCertificatesSlotCreateRequest(ctx context
 }
 
 // listPublicCertificatesSlotHandleResponse handles the ListPublicCertificatesSlot response.
-func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *azcore.Response) (PublicCertificateCollectionResponse, error) {
-	var val *PublicCertificateCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PublicCertificateCollectionResponse{}, err
+func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *azcore.Response) (WebAppsListPublicCertificatesSlotResponse, error) {
+	result := WebAppsListPublicCertificatesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PublicCertificateCollection); err != nil {
+		return WebAppsListPublicCertificatesSlotResponse{}, err
 	}
-	return PublicCertificateCollectionResponse{RawResponse: resp.Response, PublicCertificateCollection: val}, nil
+	return result, nil
 }
 
 // listPublicCertificatesSlotHandleError handles the ListPublicCertificatesSlot error response.
@@ -19814,47 +19682,47 @@ func (client *WebAppsClient) listPublicCertificatesSlotHandleError(resp *azcore.
 
 // BeginListPublishingCredentials - Description for Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginListPublishingCredentials(ctx context.Context, resourceGroupName string, name string, options *WebAppsBeginListPublishingCredentialsOptions) (UserPollerResponse, error) {
+func (client *WebAppsClient) BeginListPublishingCredentials(ctx context.Context, resourceGroupName string, name string, options *WebAppsBeginListPublishingCredentialsOptions) (WebAppsListPublishingCredentialsPollerResponse, error) {
 	resp, err := client.listPublishingCredentials(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsPollerResponse{}, err
 	}
-	result := UserPollerResponse{
+	result := WebAppsListPublishingCredentialsPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.ListPublishingCredentials", "", resp, client.con.Pipeline(), client.listPublishingCredentialsHandleError)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsPollerResponse{}, err
 	}
-	poller := &userPoller{
+	poller := &webAppsListPublishingCredentialsPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (UserResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsListPublishingCredentialsResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeListPublishingCredentials creates a new UserPoller from the specified resume token.
-// token - The value must come from a previous call to UserPoller.ResumeToken().
-func (client *WebAppsClient) ResumeListPublishingCredentials(ctx context.Context, token string) (UserPollerResponse, error) {
+// ResumeListPublishingCredentials creates a new WebAppsListPublishingCredentialsPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsListPublishingCredentialsPoller.ResumeToken().
+func (client *WebAppsClient) ResumeListPublishingCredentials(ctx context.Context, token string) (WebAppsListPublishingCredentialsPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.ListPublishingCredentials", token, client.con.Pipeline(), client.listPublishingCredentialsHandleError)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsPollerResponse{}, err
 	}
-	poller := &userPoller{
+	poller := &webAppsListPublishingCredentialsPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsPollerResponse{}, err
 	}
-	result := UserPollerResponse{
+	result := WebAppsListPublishingCredentialsPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (UserResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsListPublishingCredentialsResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -19919,47 +19787,47 @@ func (client *WebAppsClient) listPublishingCredentialsHandleError(resp *azcore.R
 
 // BeginListPublishingCredentialsSlot - Description for Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginListPublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsBeginListPublishingCredentialsSlotOptions) (UserPollerResponse, error) {
+func (client *WebAppsClient) BeginListPublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsBeginListPublishingCredentialsSlotOptions) (WebAppsListPublishingCredentialsSlotPollerResponse, error) {
 	resp, err := client.listPublishingCredentialsSlot(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsSlotPollerResponse{}, err
 	}
-	result := UserPollerResponse{
+	result := WebAppsListPublishingCredentialsSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.ListPublishingCredentialsSlot", "", resp, client.con.Pipeline(), client.listPublishingCredentialsSlotHandleError)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsSlotPollerResponse{}, err
 	}
-	poller := &userPoller{
+	poller := &webAppsListPublishingCredentialsSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (UserResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsListPublishingCredentialsSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeListPublishingCredentialsSlot creates a new UserPoller from the specified resume token.
-// token - The value must come from a previous call to UserPoller.ResumeToken().
-func (client *WebAppsClient) ResumeListPublishingCredentialsSlot(ctx context.Context, token string) (UserPollerResponse, error) {
+// ResumeListPublishingCredentialsSlot creates a new WebAppsListPublishingCredentialsSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsListPublishingCredentialsSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeListPublishingCredentialsSlot(ctx context.Context, token string) (WebAppsListPublishingCredentialsSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.ListPublishingCredentialsSlot", token, client.con.Pipeline(), client.listPublishingCredentialsSlotHandleError)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsSlotPollerResponse{}, err
 	}
-	poller := &userPoller{
+	poller := &webAppsListPublishingCredentialsSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return UserPollerResponse{}, err
+		return WebAppsListPublishingCredentialsSlotPollerResponse{}, err
 	}
-	result := UserPollerResponse{
+	result := WebAppsListPublishingCredentialsSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (UserResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsListPublishingCredentialsSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -20028,19 +19896,19 @@ func (client *WebAppsClient) listPublishingCredentialsSlotHandleError(resp *azco
 
 // ListPublishingProfileXMLWithSecrets - Description for Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPublishingProfileXMLWithSecrets(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions CsmPublishingProfileOptions, options *WebAppsListPublishingProfileXMLWithSecretsOptions) (*http.Response, error) {
+func (client *WebAppsClient) ListPublishingProfileXMLWithSecrets(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions CsmPublishingProfileOptions, options *WebAppsListPublishingProfileXMLWithSecretsOptions) (WebAppsListPublishingProfileXMLWithSecretsResponse, error) {
 	req, err := client.listPublishingProfileXMLWithSecretsCreateRequest(ctx, resourceGroupName, name, publishingProfileOptions, options)
 	if err != nil {
-		return nil, err
+		return WebAppsListPublishingProfileXMLWithSecretsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsListPublishingProfileXMLWithSecretsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listPublishingProfileXMLWithSecretsHandleError(resp)
+		return WebAppsListPublishingProfileXMLWithSecretsResponse{}, client.listPublishingProfileXMLWithSecretsHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsListPublishingProfileXMLWithSecretsResponse{RawResponse: resp.Response}, nil
 }
 
 // listPublishingProfileXMLWithSecretsCreateRequest creates the ListPublishingProfileXMLWithSecrets request.
@@ -20086,19 +19954,19 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsHandleError(resp
 
 // ListPublishingProfileXMLWithSecretsSlot - Description for Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListPublishingProfileXMLWithSecretsSlot(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions CsmPublishingProfileOptions, options *WebAppsListPublishingProfileXMLWithSecretsSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) ListPublishingProfileXMLWithSecretsSlot(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions CsmPublishingProfileOptions, options *WebAppsListPublishingProfileXMLWithSecretsSlotOptions) (WebAppsListPublishingProfileXMLWithSecretsSlotResponse, error) {
 	req, err := client.listPublishingProfileXMLWithSecretsSlotCreateRequest(ctx, resourceGroupName, name, slot, publishingProfileOptions, options)
 	if err != nil {
-		return nil, err
+		return WebAppsListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.listPublishingProfileXMLWithSecretsSlotHandleError(resp)
+		return WebAppsListPublishingProfileXMLWithSecretsSlotResponse{}, client.listPublishingProfileXMLWithSecretsSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsListPublishingProfileXMLWithSecretsSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // listPublishingProfileXMLWithSecretsSlotCreateRequest creates the ListPublishingProfileXMLWithSecretsSlot request.
@@ -20148,17 +20016,17 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotHandleError(
 
 // ListRelayServiceConnections - Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListRelayServiceConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsListRelayServiceConnectionsOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) ListRelayServiceConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsListRelayServiceConnectionsOptions) (WebAppsListRelayServiceConnectionsResponse, error) {
 	req, err := client.listRelayServiceConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsListRelayServiceConnectionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsListRelayServiceConnectionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.listRelayServiceConnectionsHandleError(resp)
+		return WebAppsListRelayServiceConnectionsResponse{}, client.listRelayServiceConnectionsHandleError(resp)
 	}
 	return client.listRelayServiceConnectionsHandleResponse(resp)
 }
@@ -20191,12 +20059,12 @@ func (client *WebAppsClient) listRelayServiceConnectionsCreateRequest(ctx contex
 }
 
 // listRelayServiceConnectionsHandleResponse handles the ListRelayServiceConnections response.
-func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *azcore.Response) (WebAppsListRelayServiceConnectionsResponse, error) {
+	result := WebAppsListRelayServiceConnectionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsListRelayServiceConnectionsResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // listRelayServiceConnectionsHandleError handles the ListRelayServiceConnections error response.
@@ -20214,17 +20082,17 @@ func (client *WebAppsClient) listRelayServiceConnectionsHandleError(resp *azcore
 
 // ListRelayServiceConnectionsSlot - Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListRelayServiceConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListRelayServiceConnectionsSlotOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) ListRelayServiceConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListRelayServiceConnectionsSlotOptions) (WebAppsListRelayServiceConnectionsSlotResponse, error) {
 	req, err := client.listRelayServiceConnectionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsListRelayServiceConnectionsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsListRelayServiceConnectionsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.listRelayServiceConnectionsSlotHandleError(resp)
+		return WebAppsListRelayServiceConnectionsSlotResponse{}, client.listRelayServiceConnectionsSlotHandleError(resp)
 	}
 	return client.listRelayServiceConnectionsSlotHandleResponse(resp)
 }
@@ -20261,12 +20129,12 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotCreateRequest(ctx co
 }
 
 // listRelayServiceConnectionsSlotHandleResponse handles the ListRelayServiceConnectionsSlot response.
-func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp *azcore.Response) (WebAppsListRelayServiceConnectionsSlotResponse, error) {
+	result := WebAppsListRelayServiceConnectionsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsListRelayServiceConnectionsSlotResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // listRelayServiceConnectionsSlotHandleError handles the ListRelayServiceConnectionsSlot error response.
@@ -20284,18 +20152,15 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleError(resp *az
 
 // ListSiteBackups - Description for Gets existing backups of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSiteBackups(resourceGroupName string, name string, options *WebAppsListSiteBackupsOptions) BackupItemCollectionPager {
-	return &backupItemCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSiteBackups(resourceGroupName string, name string, options *WebAppsListSiteBackupsOptions) WebAppsListSiteBackupsPager {
+	return &webAppsListSiteBackupsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteBackupsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listSiteBackupsHandleResponse,
-		errorer:   client.listSiteBackupsHandleError,
-		advancer: func(ctx context.Context, resp BackupItemCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSiteBackupsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BackupItemCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20327,12 +20192,12 @@ func (client *WebAppsClient) listSiteBackupsCreateRequest(ctx context.Context, r
 }
 
 // listSiteBackupsHandleResponse handles the ListSiteBackups response.
-func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *azcore.Response) (BackupItemCollectionResponse, error) {
-	var val *BackupItemCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemCollectionResponse{}, err
+func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *azcore.Response) (WebAppsListSiteBackupsResponse, error) {
+	result := WebAppsListSiteBackupsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItemCollection); err != nil {
+		return WebAppsListSiteBackupsResponse{}, err
 	}
-	return BackupItemCollectionResponse{RawResponse: resp.Response, BackupItemCollection: val}, nil
+	return result, nil
 }
 
 // listSiteBackupsHandleError handles the ListSiteBackups error response.
@@ -20350,18 +20215,15 @@ func (client *WebAppsClient) listSiteBackupsHandleError(resp *azcore.Response) e
 
 // ListSiteBackupsSlot - Description for Gets existing backups of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSiteBackupsSlot(resourceGroupName string, name string, slot string, options *WebAppsListSiteBackupsSlotOptions) BackupItemCollectionPager {
-	return &backupItemCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSiteBackupsSlot(resourceGroupName string, name string, slot string, options *WebAppsListSiteBackupsSlotOptions) WebAppsListSiteBackupsSlotPager {
+	return &webAppsListSiteBackupsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteBackupsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listSiteBackupsSlotHandleResponse,
-		errorer:   client.listSiteBackupsSlotHandleError,
-		advancer: func(ctx context.Context, resp BackupItemCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSiteBackupsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BackupItemCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20397,12 +20259,12 @@ func (client *WebAppsClient) listSiteBackupsSlotCreateRequest(ctx context.Contex
 }
 
 // listSiteBackupsSlotHandleResponse handles the ListSiteBackupsSlot response.
-func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *azcore.Response) (BackupItemCollectionResponse, error) {
-	var val *BackupItemCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupItemCollectionResponse{}, err
+func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *azcore.Response) (WebAppsListSiteBackupsSlotResponse, error) {
+	result := WebAppsListSiteBackupsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupItemCollection); err != nil {
+		return WebAppsListSiteBackupsSlotResponse{}, err
 	}
-	return BackupItemCollectionResponse{RawResponse: resp.Response, BackupItemCollection: val}, nil
+	return result, nil
 }
 
 // listSiteBackupsSlotHandleError handles the ListSiteBackupsSlot error response.
@@ -20420,18 +20282,15 @@ func (client *WebAppsClient) listSiteBackupsSlotHandleError(resp *azcore.Respons
 
 // ListSiteExtensions - Description for Get list of siteextensions for a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSiteExtensions(resourceGroupName string, name string, options *WebAppsListSiteExtensionsOptions) SiteExtensionInfoCollectionPager {
-	return &siteExtensionInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSiteExtensions(resourceGroupName string, name string, options *WebAppsListSiteExtensionsOptions) WebAppsListSiteExtensionsPager {
+	return &webAppsListSiteExtensionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteExtensionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listSiteExtensionsHandleResponse,
-		errorer:   client.listSiteExtensionsHandleError,
-		advancer: func(ctx context.Context, resp SiteExtensionInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSiteExtensionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SiteExtensionInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20463,12 +20322,12 @@ func (client *WebAppsClient) listSiteExtensionsCreateRequest(ctx context.Context
 }
 
 // listSiteExtensionsHandleResponse handles the ListSiteExtensions response.
-func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *azcore.Response) (SiteExtensionInfoCollectionResponse, error) {
-	var val *SiteExtensionInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteExtensionInfoCollectionResponse{}, err
+func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *azcore.Response) (WebAppsListSiteExtensionsResponse, error) {
+	result := WebAppsListSiteExtensionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteExtensionInfoCollection); err != nil {
+		return WebAppsListSiteExtensionsResponse{}, err
 	}
-	return SiteExtensionInfoCollectionResponse{RawResponse: resp.Response, SiteExtensionInfoCollection: val}, nil
+	return result, nil
 }
 
 // listSiteExtensionsHandleError handles the ListSiteExtensions error response.
@@ -20494,18 +20353,15 @@ func (client *WebAppsClient) listSiteExtensionsHandleError(resp *azcore.Response
 
 // ListSiteExtensionsSlot - Description for Get list of siteextensions for a web site, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSiteExtensionsSlot(resourceGroupName string, name string, slot string, options *WebAppsListSiteExtensionsSlotOptions) SiteExtensionInfoCollectionPager {
-	return &siteExtensionInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSiteExtensionsSlot(resourceGroupName string, name string, slot string, options *WebAppsListSiteExtensionsSlotOptions) WebAppsListSiteExtensionsSlotPager {
+	return &webAppsListSiteExtensionsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteExtensionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listSiteExtensionsSlotHandleResponse,
-		errorer:   client.listSiteExtensionsSlotHandleError,
-		advancer: func(ctx context.Context, resp SiteExtensionInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSiteExtensionsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SiteExtensionInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20541,12 +20397,12 @@ func (client *WebAppsClient) listSiteExtensionsSlotCreateRequest(ctx context.Con
 }
 
 // listSiteExtensionsSlotHandleResponse handles the ListSiteExtensionsSlot response.
-func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *azcore.Response) (SiteExtensionInfoCollectionResponse, error) {
-	var val *SiteExtensionInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteExtensionInfoCollectionResponse{}, err
+func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *azcore.Response) (WebAppsListSiteExtensionsSlotResponse, error) {
+	result := WebAppsListSiteExtensionsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteExtensionInfoCollection); err != nil {
+		return WebAppsListSiteExtensionsSlotResponse{}, err
 	}
-	return SiteExtensionInfoCollectionResponse{RawResponse: resp.Response, SiteExtensionInfoCollection: val}, nil
+	return result, nil
 }
 
 // listSiteExtensionsSlotHandleError handles the ListSiteExtensionsSlot error response.
@@ -20572,17 +20428,17 @@ func (client *WebAppsClient) listSiteExtensionsSlotHandleError(resp *azcore.Resp
 
 // ListSitePushSettings - Description for Gets the Push settings associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSitePushSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSitePushSettingsOptions) (PushSettingsResponse, error) {
+func (client *WebAppsClient) ListSitePushSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSitePushSettingsOptions) (WebAppsListSitePushSettingsResponse, error) {
 	req, err := client.listSitePushSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsListSitePushSettingsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsListSitePushSettingsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PushSettingsResponse{}, client.listSitePushSettingsHandleError(resp)
+		return WebAppsListSitePushSettingsResponse{}, client.listSitePushSettingsHandleError(resp)
 	}
 	return client.listSitePushSettingsHandleResponse(resp)
 }
@@ -20615,12 +20471,12 @@ func (client *WebAppsClient) listSitePushSettingsCreateRequest(ctx context.Conte
 }
 
 // listSitePushSettingsHandleResponse handles the ListSitePushSettings response.
-func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *azcore.Response) (PushSettingsResponse, error) {
-	var val *PushSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PushSettingsResponse{}, err
+func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *azcore.Response) (WebAppsListSitePushSettingsResponse, error) {
+	result := WebAppsListSitePushSettingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PushSettings); err != nil {
+		return WebAppsListSitePushSettingsResponse{}, err
 	}
-	return PushSettingsResponse{RawResponse: resp.Response, PushSettings: val}, nil
+	return result, nil
 }
 
 // listSitePushSettingsHandleError handles the ListSitePushSettings error response.
@@ -20638,17 +20494,17 @@ func (client *WebAppsClient) listSitePushSettingsHandleError(resp *azcore.Respon
 
 // ListSitePushSettingsSlot - Description for Gets the Push settings associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSitePushSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListSitePushSettingsSlotOptions) (PushSettingsResponse, error) {
+func (client *WebAppsClient) ListSitePushSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListSitePushSettingsSlotOptions) (WebAppsListSitePushSettingsSlotResponse, error) {
 	req, err := client.listSitePushSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsListSitePushSettingsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsListSitePushSettingsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PushSettingsResponse{}, client.listSitePushSettingsSlotHandleError(resp)
+		return WebAppsListSitePushSettingsSlotResponse{}, client.listSitePushSettingsSlotHandleError(resp)
 	}
 	return client.listSitePushSettingsSlotHandleResponse(resp)
 }
@@ -20685,12 +20541,12 @@ func (client *WebAppsClient) listSitePushSettingsSlotCreateRequest(ctx context.C
 }
 
 // listSitePushSettingsSlotHandleResponse handles the ListSitePushSettingsSlot response.
-func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *azcore.Response) (PushSettingsResponse, error) {
-	var val *PushSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PushSettingsResponse{}, err
+func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *azcore.Response) (WebAppsListSitePushSettingsSlotResponse, error) {
+	result := WebAppsListSitePushSettingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PushSettings); err != nil {
+		return WebAppsListSitePushSettingsSlotResponse{}, err
 	}
-	return PushSettingsResponse{RawResponse: resp.Response, PushSettings: val}, nil
+	return result, nil
 }
 
 // listSitePushSettingsSlotHandleError handles the ListSitePushSettingsSlot error response.
@@ -20708,17 +20564,17 @@ func (client *WebAppsClient) listSitePushSettingsSlotHandleError(resp *azcore.Re
 
 // ListSlotConfigurationNames - Description for Gets the names of app settings and connection strings that stick to the slot (not swapped).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSlotConfigurationNames(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSlotConfigurationNamesOptions) (SlotConfigNamesResourceResponse, error) {
+func (client *WebAppsClient) ListSlotConfigurationNames(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSlotConfigurationNamesOptions) (WebAppsListSlotConfigurationNamesResponse, error) {
 	req, err := client.listSlotConfigurationNamesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return SlotConfigNamesResourceResponse{}, err
+		return WebAppsListSlotConfigurationNamesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SlotConfigNamesResourceResponse{}, err
+		return WebAppsListSlotConfigurationNamesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SlotConfigNamesResourceResponse{}, client.listSlotConfigurationNamesHandleError(resp)
+		return WebAppsListSlotConfigurationNamesResponse{}, client.listSlotConfigurationNamesHandleError(resp)
 	}
 	return client.listSlotConfigurationNamesHandleResponse(resp)
 }
@@ -20751,12 +20607,12 @@ func (client *WebAppsClient) listSlotConfigurationNamesCreateRequest(ctx context
 }
 
 // listSlotConfigurationNamesHandleResponse handles the ListSlotConfigurationNames response.
-func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *azcore.Response) (SlotConfigNamesResourceResponse, error) {
-	var val *SlotConfigNamesResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SlotConfigNamesResourceResponse{}, err
+func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *azcore.Response) (WebAppsListSlotConfigurationNamesResponse, error) {
+	result := WebAppsListSlotConfigurationNamesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SlotConfigNamesResource); err != nil {
+		return WebAppsListSlotConfigurationNamesResponse{}, err
 	}
-	return SlotConfigNamesResourceResponse{RawResponse: resp.Response, SlotConfigNamesResource: val}, nil
+	return result, nil
 }
 
 // listSlotConfigurationNamesHandleError handles the ListSlotConfigurationNames error response.
@@ -20774,18 +20630,15 @@ func (client *WebAppsClient) listSlotConfigurationNamesHandleError(resp *azcore.
 
 // ListSlotDifferencesFromProduction - Description for Get the difference in configuration settings between two web app slots.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSlotDifferencesFromProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsListSlotDifferencesFromProductionOptions) SlotDifferenceCollectionPager {
-	return &slotDifferenceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSlotDifferencesFromProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsListSlotDifferencesFromProductionOptions) WebAppsListSlotDifferencesFromProductionPager {
+	return &webAppsListSlotDifferencesFromProductionPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSlotDifferencesFromProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, options)
 		},
-		responder: client.listSlotDifferencesFromProductionHandleResponse,
-		errorer:   client.listSlotDifferencesFromProductionHandleError,
-		advancer: func(ctx context.Context, resp SlotDifferenceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSlotDifferencesFromProductionResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SlotDifferenceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20817,12 +20670,12 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionCreateRequest(ctx 
 }
 
 // listSlotDifferencesFromProductionHandleResponse handles the ListSlotDifferencesFromProduction response.
-func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(resp *azcore.Response) (SlotDifferenceCollectionResponse, error) {
-	var val *SlotDifferenceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SlotDifferenceCollectionResponse{}, err
+func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(resp *azcore.Response) (WebAppsListSlotDifferencesFromProductionResponse, error) {
+	result := WebAppsListSlotDifferencesFromProductionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SlotDifferenceCollection); err != nil {
+		return WebAppsListSlotDifferencesFromProductionResponse{}, err
 	}
-	return SlotDifferenceCollectionResponse{RawResponse: resp.Response, SlotDifferenceCollection: val}, nil
+	return result, nil
 }
 
 // listSlotDifferencesFromProductionHandleError handles the ListSlotDifferencesFromProduction error response.
@@ -20840,18 +20693,15 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionHandleError(resp *
 
 // ListSlotDifferencesSlot - Description for Get the difference in configuration settings between two web app slots.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSlotDifferencesSlot(resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsListSlotDifferencesSlotOptions) SlotDifferenceCollectionPager {
-	return &slotDifferenceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSlotDifferencesSlot(resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsListSlotDifferencesSlotOptions) WebAppsListSlotDifferencesSlotPager {
+	return &webAppsListSlotDifferencesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSlotDifferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
 		},
-		responder: client.listSlotDifferencesSlotHandleResponse,
-		errorer:   client.listSlotDifferencesSlotHandleError,
-		advancer: func(ctx context.Context, resp SlotDifferenceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSlotDifferencesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SlotDifferenceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20887,12 +20737,12 @@ func (client *WebAppsClient) listSlotDifferencesSlotCreateRequest(ctx context.Co
 }
 
 // listSlotDifferencesSlotHandleResponse handles the ListSlotDifferencesSlot response.
-func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *azcore.Response) (SlotDifferenceCollectionResponse, error) {
-	var val *SlotDifferenceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SlotDifferenceCollectionResponse{}, err
+func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *azcore.Response) (WebAppsListSlotDifferencesSlotResponse, error) {
+	result := WebAppsListSlotDifferencesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SlotDifferenceCollection); err != nil {
+		return WebAppsListSlotDifferencesSlotResponse{}, err
 	}
-	return SlotDifferenceCollectionResponse{RawResponse: resp.Response, SlotDifferenceCollection: val}, nil
+	return result, nil
 }
 
 // listSlotDifferencesSlotHandleError handles the ListSlotDifferencesSlot error response.
@@ -20910,18 +20760,15 @@ func (client *WebAppsClient) listSlotDifferencesSlotHandleError(resp *azcore.Res
 
 // ListSlots - Description for Gets an app's deployment slots.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSlots(resourceGroupName string, name string, options *WebAppsListSlotsOptions) WebAppCollectionPager {
-	return &webAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSlots(resourceGroupName string, name string, options *WebAppsListSlotsOptions) WebAppsListSlotsPager {
+	return &webAppsListSlotsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSlotsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listSlotsHandleResponse,
-		errorer:   client.listSlotsHandleError,
-		advancer: func(ctx context.Context, resp WebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSlotsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -20953,12 +20800,12 @@ func (client *WebAppsClient) listSlotsCreateRequest(ctx context.Context, resourc
 }
 
 // listSlotsHandleResponse handles the ListSlots response.
-func (client *WebAppsClient) listSlotsHandleResponse(resp *azcore.Response) (WebAppCollectionResponse, error) {
-	var val *WebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppCollectionResponse{}, err
+func (client *WebAppsClient) listSlotsHandleResponse(resp *azcore.Response) (WebAppsListSlotsResponse, error) {
+	result := WebAppsListSlotsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return WebAppsListSlotsResponse{}, err
 	}
-	return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
+	return result, nil
 }
 
 // listSlotsHandleError handles the ListSlots error response.
@@ -20976,18 +20823,15 @@ func (client *WebAppsClient) listSlotsHandleError(resp *azcore.Response) error {
 
 // ListSnapshots - Description for Returns all Snapshots to the user.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSnapshots(resourceGroupName string, name string, options *WebAppsListSnapshotsOptions) SnapshotCollectionPager {
-	return &snapshotCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSnapshots(resourceGroupName string, name string, options *WebAppsListSnapshotsOptions) WebAppsListSnapshotsPager {
+	return &webAppsListSnapshotsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSnapshotsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listSnapshotsHandleResponse,
-		errorer:   client.listSnapshotsHandleError,
-		advancer: func(ctx context.Context, resp SnapshotCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSnapshotsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21019,12 +20863,12 @@ func (client *WebAppsClient) listSnapshotsCreateRequest(ctx context.Context, res
 }
 
 // listSnapshotsHandleResponse handles the ListSnapshots response.
-func (client *WebAppsClient) listSnapshotsHandleResponse(resp *azcore.Response) (SnapshotCollectionResponse, error) {
-	var val *SnapshotCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotCollectionResponse{}, err
+func (client *WebAppsClient) listSnapshotsHandleResponse(resp *azcore.Response) (WebAppsListSnapshotsResponse, error) {
+	result := WebAppsListSnapshotsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotCollection); err != nil {
+		return WebAppsListSnapshotsResponse{}, err
 	}
-	return SnapshotCollectionResponse{RawResponse: resp.Response, SnapshotCollection: val}, nil
+	return result, nil
 }
 
 // listSnapshotsHandleError handles the ListSnapshots error response.
@@ -21042,18 +20886,15 @@ func (client *WebAppsClient) listSnapshotsHandleError(resp *azcore.Response) err
 
 // ListSnapshotsFromDRSecondary - Description for Returns all Snapshots to the user from DRSecondary endpoint.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSnapshotsFromDRSecondary(resourceGroupName string, name string, options *WebAppsListSnapshotsFromDRSecondaryOptions) SnapshotCollectionPager {
-	return &snapshotCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSnapshotsFromDRSecondary(resourceGroupName string, name string, options *WebAppsListSnapshotsFromDRSecondaryOptions) WebAppsListSnapshotsFromDRSecondaryPager {
+	return &webAppsListSnapshotsFromDRSecondaryPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSnapshotsFromDRSecondaryCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listSnapshotsFromDRSecondaryHandleResponse,
-		errorer:   client.listSnapshotsFromDRSecondaryHandleError,
-		advancer: func(ctx context.Context, resp SnapshotCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSnapshotsFromDRSecondaryResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21085,12 +20926,12 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryCreateRequest(ctx conte
 }
 
 // listSnapshotsFromDRSecondaryHandleResponse handles the ListSnapshotsFromDRSecondary response.
-func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *azcore.Response) (SnapshotCollectionResponse, error) {
-	var val *SnapshotCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotCollectionResponse{}, err
+func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *azcore.Response) (WebAppsListSnapshotsFromDRSecondaryResponse, error) {
+	result := WebAppsListSnapshotsFromDRSecondaryResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotCollection); err != nil {
+		return WebAppsListSnapshotsFromDRSecondaryResponse{}, err
 	}
-	return SnapshotCollectionResponse{RawResponse: resp.Response, SnapshotCollection: val}, nil
+	return result, nil
 }
 
 // listSnapshotsFromDRSecondaryHandleError handles the ListSnapshotsFromDRSecondary error response.
@@ -21108,18 +20949,15 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleError(resp *azcor
 
 // ListSnapshotsFromDRSecondarySlot - Description for Returns all Snapshots to the user from DRSecondary endpoint.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSnapshotsFromDRSecondarySlot(resourceGroupName string, name string, slot string, options *WebAppsListSnapshotsFromDRSecondarySlotOptions) SnapshotCollectionPager {
-	return &snapshotCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSnapshotsFromDRSecondarySlot(resourceGroupName string, name string, slot string, options *WebAppsListSnapshotsFromDRSecondarySlotOptions) WebAppsListSnapshotsFromDRSecondarySlotPager {
+	return &webAppsListSnapshotsFromDRSecondarySlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSnapshotsFromDRSecondarySlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listSnapshotsFromDRSecondarySlotHandleResponse,
-		errorer:   client.listSnapshotsFromDRSecondarySlotHandleError,
-		advancer: func(ctx context.Context, resp SnapshotCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSnapshotsFromDRSecondarySlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21155,12 +20993,12 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotCreateRequest(ctx c
 }
 
 // listSnapshotsFromDRSecondarySlotHandleResponse handles the ListSnapshotsFromDRSecondarySlot response.
-func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp *azcore.Response) (SnapshotCollectionResponse, error) {
-	var val *SnapshotCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotCollectionResponse{}, err
+func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp *azcore.Response) (WebAppsListSnapshotsFromDRSecondarySlotResponse, error) {
+	result := WebAppsListSnapshotsFromDRSecondarySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotCollection); err != nil {
+		return WebAppsListSnapshotsFromDRSecondarySlotResponse{}, err
 	}
-	return SnapshotCollectionResponse{RawResponse: resp.Response, SnapshotCollection: val}, nil
+	return result, nil
 }
 
 // listSnapshotsFromDRSecondarySlotHandleError handles the ListSnapshotsFromDRSecondarySlot error response.
@@ -21178,18 +21016,15 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleError(resp *a
 
 // ListSnapshotsSlot - Description for Returns all Snapshots to the user.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSnapshotsSlot(resourceGroupName string, name string, slot string, options *WebAppsListSnapshotsSlotOptions) SnapshotCollectionPager {
-	return &snapshotCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListSnapshotsSlot(resourceGroupName string, name string, slot string, options *WebAppsListSnapshotsSlotOptions) WebAppsListSnapshotsSlotPager {
+	return &webAppsListSnapshotsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSnapshotsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listSnapshotsSlotHandleResponse,
-		errorer:   client.listSnapshotsSlotHandleError,
-		advancer: func(ctx context.Context, resp SnapshotCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListSnapshotsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21225,12 +21060,12 @@ func (client *WebAppsClient) listSnapshotsSlotCreateRequest(ctx context.Context,
 }
 
 // listSnapshotsSlotHandleResponse handles the ListSnapshotsSlot response.
-func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *azcore.Response) (SnapshotCollectionResponse, error) {
-	var val *SnapshotCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotCollectionResponse{}, err
+func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *azcore.Response) (WebAppsListSnapshotsSlotResponse, error) {
+	result := WebAppsListSnapshotsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotCollection); err != nil {
+		return WebAppsListSnapshotsSlotResponse{}, err
 	}
-	return SnapshotCollectionResponse{RawResponse: resp.Response, SnapshotCollection: val}, nil
+	return result, nil
 }
 
 // listSnapshotsSlotHandleError handles the ListSnapshotsSlot error response.
@@ -21248,17 +21083,17 @@ func (client *WebAppsClient) listSnapshotsSlotHandleError(resp *azcore.Response)
 
 // ListSyncFunctionTriggers - Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSyncFunctionTriggers(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSyncFunctionTriggersOptions) (FunctionSecretsResponse, error) {
+func (client *WebAppsClient) ListSyncFunctionTriggers(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSyncFunctionTriggersOptions) (WebAppsListSyncFunctionTriggersResponse, error) {
 	req, err := client.listSyncFunctionTriggersCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListSyncFunctionTriggersResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListSyncFunctionTriggersResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FunctionSecretsResponse{}, client.listSyncFunctionTriggersHandleError(resp)
+		return WebAppsListSyncFunctionTriggersResponse{}, client.listSyncFunctionTriggersHandleError(resp)
 	}
 	return client.listSyncFunctionTriggersHandleResponse(resp)
 }
@@ -21291,12 +21126,12 @@ func (client *WebAppsClient) listSyncFunctionTriggersCreateRequest(ctx context.C
 }
 
 // listSyncFunctionTriggersHandleResponse handles the ListSyncFunctionTriggers response.
-func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *azcore.Response) (FunctionSecretsResponse, error) {
-	var val *FunctionSecrets
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionSecretsResponse{}, err
+func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *azcore.Response) (WebAppsListSyncFunctionTriggersResponse, error) {
+	result := WebAppsListSyncFunctionTriggersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionSecrets); err != nil {
+		return WebAppsListSyncFunctionTriggersResponse{}, err
 	}
-	return FunctionSecretsResponse{RawResponse: resp.Response, FunctionSecrets: val}, nil
+	return result, nil
 }
 
 // listSyncFunctionTriggersHandleError handles the ListSyncFunctionTriggers error response.
@@ -21314,17 +21149,17 @@ func (client *WebAppsClient) listSyncFunctionTriggersHandleError(resp *azcore.Re
 
 // ListSyncFunctionTriggersSlot - Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListSyncFunctionTriggersSlotOptions) (FunctionSecretsResponse, error) {
+func (client *WebAppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListSyncFunctionTriggersSlotOptions) (WebAppsListSyncFunctionTriggersSlotResponse, error) {
 	req, err := client.listSyncFunctionTriggersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListSyncFunctionTriggersSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return FunctionSecretsResponse{}, err
+		return WebAppsListSyncFunctionTriggersSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return FunctionSecretsResponse{}, client.listSyncFunctionTriggersSlotHandleError(resp)
+		return WebAppsListSyncFunctionTriggersSlotResponse{}, client.listSyncFunctionTriggersSlotHandleError(resp)
 	}
 	return client.listSyncFunctionTriggersSlotHandleResponse(resp)
 }
@@ -21361,12 +21196,12 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotCreateRequest(ctx conte
 }
 
 // listSyncFunctionTriggersSlotHandleResponse handles the ListSyncFunctionTriggersSlot response.
-func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *azcore.Response) (FunctionSecretsResponse, error) {
-	var val *FunctionSecrets
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionSecretsResponse{}, err
+func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *azcore.Response) (WebAppsListSyncFunctionTriggersSlotResponse, error) {
+	result := WebAppsListSyncFunctionTriggersSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionSecrets); err != nil {
+		return WebAppsListSyncFunctionTriggersSlotResponse{}, err
 	}
-	return FunctionSecretsResponse{RawResponse: resp.Response, FunctionSecrets: val}, nil
+	return result, nil
 }
 
 // listSyncFunctionTriggersSlotHandleError handles the ListSyncFunctionTriggersSlot error response.
@@ -21384,19 +21219,19 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleError(resp *azcor
 
 // ListSyncStatus - Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSyncStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSyncStatusOptions) (*http.Response, error) {
+func (client *WebAppsClient) ListSyncStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsListSyncStatusOptions) (WebAppsListSyncStatusResponse, error) {
 	req, err := client.listSyncStatusCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsListSyncStatusResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsListSyncStatusResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.listSyncStatusHandleError(resp)
+		return WebAppsListSyncStatusResponse{}, client.listSyncStatusHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsListSyncStatusResponse{RawResponse: resp.Response}, nil
 }
 
 // listSyncStatusCreateRequest creates the ListSyncStatus request.
@@ -21441,19 +21276,19 @@ func (client *WebAppsClient) listSyncStatusHandleError(resp *azcore.Response) er
 
 // ListSyncStatusSlot - Description for This is to allow calling via powershell and ARM template.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListSyncStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListSyncStatusSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) ListSyncStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListSyncStatusSlotOptions) (WebAppsListSyncStatusSlotResponse, error) {
 	req, err := client.listSyncStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsListSyncStatusSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsListSyncStatusSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.listSyncStatusSlotHandleError(resp)
+		return WebAppsListSyncStatusSlotResponse{}, client.listSyncStatusSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsListSyncStatusSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // listSyncStatusSlotCreateRequest creates the ListSyncStatusSlot request.
@@ -21502,18 +21337,15 @@ func (client *WebAppsClient) listSyncStatusSlotHandleError(resp *azcore.Response
 
 // ListTriggeredWebJobHistory - Description for List a triggered web job's history for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListTriggeredWebJobHistory(resourceGroupName string, name string, webJobName string, options *WebAppsListTriggeredWebJobHistoryOptions) TriggeredJobHistoryCollectionPager {
-	return &triggeredJobHistoryCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListTriggeredWebJobHistory(resourceGroupName string, name string, webJobName string, options *WebAppsListTriggeredWebJobHistoryOptions) WebAppsListTriggeredWebJobHistoryPager {
+	return &webAppsListTriggeredWebJobHistoryPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listTriggeredWebJobHistoryCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 		},
-		responder: client.listTriggeredWebJobHistoryHandleResponse,
-		errorer:   client.listTriggeredWebJobHistoryHandleError,
-		advancer: func(ctx context.Context, resp TriggeredJobHistoryCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListTriggeredWebJobHistoryResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TriggeredJobHistoryCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21549,12 +21381,12 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryCreateRequest(ctx context
 }
 
 // listTriggeredWebJobHistoryHandleResponse handles the ListTriggeredWebJobHistory response.
-func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *azcore.Response) (TriggeredJobHistoryCollectionResponse, error) {
-	var val *TriggeredJobHistoryCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredJobHistoryCollectionResponse{}, err
+func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *azcore.Response) (WebAppsListTriggeredWebJobHistoryResponse, error) {
+	result := WebAppsListTriggeredWebJobHistoryResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredJobHistoryCollection); err != nil {
+		return WebAppsListTriggeredWebJobHistoryResponse{}, err
 	}
-	return TriggeredJobHistoryCollectionResponse{RawResponse: resp.Response, TriggeredJobHistoryCollection: val}, nil
+	return result, nil
 }
 
 // listTriggeredWebJobHistoryHandleError handles the ListTriggeredWebJobHistory error response.
@@ -21580,18 +21412,15 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryHandleError(resp *azcore.
 
 // ListTriggeredWebJobHistorySlot - Description for List a triggered web job's history for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobName string, slot string, options *WebAppsListTriggeredWebJobHistorySlotOptions) TriggeredJobHistoryCollectionPager {
-	return &triggeredJobHistoryCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobName string, slot string, options *WebAppsListTriggeredWebJobHistorySlotOptions) WebAppsListTriggeredWebJobHistorySlotPager {
+	return &webAppsListTriggeredWebJobHistorySlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listTriggeredWebJobHistorySlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 		},
-		responder: client.listTriggeredWebJobHistorySlotHandleResponse,
-		errorer:   client.listTriggeredWebJobHistorySlotHandleError,
-		advancer: func(ctx context.Context, resp TriggeredJobHistoryCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListTriggeredWebJobHistorySlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TriggeredJobHistoryCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21631,12 +21460,12 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotCreateRequest(ctx con
 }
 
 // listTriggeredWebJobHistorySlotHandleResponse handles the ListTriggeredWebJobHistorySlot response.
-func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *azcore.Response) (TriggeredJobHistoryCollectionResponse, error) {
-	var val *TriggeredJobHistoryCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredJobHistoryCollectionResponse{}, err
+func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *azcore.Response) (WebAppsListTriggeredWebJobHistorySlotResponse, error) {
+	result := WebAppsListTriggeredWebJobHistorySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredJobHistoryCollection); err != nil {
+		return WebAppsListTriggeredWebJobHistorySlotResponse{}, err
 	}
-	return TriggeredJobHistoryCollectionResponse{RawResponse: resp.Response, TriggeredJobHistoryCollection: val}, nil
+	return result, nil
 }
 
 // listTriggeredWebJobHistorySlotHandleError handles the ListTriggeredWebJobHistorySlot error response.
@@ -21662,18 +21491,15 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleError(resp *azc
 
 // ListTriggeredWebJobs - Description for List triggered web jobs for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListTriggeredWebJobs(resourceGroupName string, name string, options *WebAppsListTriggeredWebJobsOptions) TriggeredWebJobCollectionPager {
-	return &triggeredWebJobCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListTriggeredWebJobs(resourceGroupName string, name string, options *WebAppsListTriggeredWebJobsOptions) WebAppsListTriggeredWebJobsPager {
+	return &webAppsListTriggeredWebJobsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listTriggeredWebJobsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listTriggeredWebJobsHandleResponse,
-		errorer:   client.listTriggeredWebJobsHandleError,
-		advancer: func(ctx context.Context, resp TriggeredWebJobCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListTriggeredWebJobsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TriggeredWebJobCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21705,12 +21531,12 @@ func (client *WebAppsClient) listTriggeredWebJobsCreateRequest(ctx context.Conte
 }
 
 // listTriggeredWebJobsHandleResponse handles the ListTriggeredWebJobs response.
-func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *azcore.Response) (TriggeredWebJobCollectionResponse, error) {
-	var val *TriggeredWebJobCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredWebJobCollectionResponse{}, err
+func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *azcore.Response) (WebAppsListTriggeredWebJobsResponse, error) {
+	result := WebAppsListTriggeredWebJobsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredWebJobCollection); err != nil {
+		return WebAppsListTriggeredWebJobsResponse{}, err
 	}
-	return TriggeredWebJobCollectionResponse{RawResponse: resp.Response, TriggeredWebJobCollection: val}, nil
+	return result, nil
 }
 
 // listTriggeredWebJobsHandleError handles the ListTriggeredWebJobs error response.
@@ -21728,18 +21554,15 @@ func (client *WebAppsClient) listTriggeredWebJobsHandleError(resp *azcore.Respon
 
 // ListTriggeredWebJobsSlot - Description for List triggered web jobs for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListTriggeredWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsListTriggeredWebJobsSlotOptions) TriggeredWebJobCollectionPager {
-	return &triggeredWebJobCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListTriggeredWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsListTriggeredWebJobsSlotOptions) WebAppsListTriggeredWebJobsSlotPager {
+	return &webAppsListTriggeredWebJobsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listTriggeredWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listTriggeredWebJobsSlotHandleResponse,
-		errorer:   client.listTriggeredWebJobsSlotHandleError,
-		advancer: func(ctx context.Context, resp TriggeredWebJobCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListTriggeredWebJobsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TriggeredWebJobCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21775,12 +21598,12 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotCreateRequest(ctx context.C
 }
 
 // listTriggeredWebJobsSlotHandleResponse handles the ListTriggeredWebJobsSlot response.
-func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *azcore.Response) (TriggeredWebJobCollectionResponse, error) {
-	var val *TriggeredWebJobCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TriggeredWebJobCollectionResponse{}, err
+func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *azcore.Response) (WebAppsListTriggeredWebJobsSlotResponse, error) {
+	result := WebAppsListTriggeredWebJobsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TriggeredWebJobCollection); err != nil {
+		return WebAppsListTriggeredWebJobsSlotResponse{}, err
 	}
-	return TriggeredWebJobCollectionResponse{RawResponse: resp.Response, TriggeredWebJobCollection: val}, nil
+	return result, nil
 }
 
 // listTriggeredWebJobsSlotHandleError handles the ListTriggeredWebJobsSlot error response.
@@ -21798,18 +21621,15 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotHandleError(resp *azcore.Re
 
 // ListUsages - Description for Gets the quota usage information of an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListUsages(resourceGroupName string, name string, options *WebAppsListUsagesOptions) CsmUsageQuotaCollectionPager {
-	return &csmUsageQuotaCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListUsages(resourceGroupName string, name string, options *WebAppsListUsagesOptions) WebAppsListUsagesPager {
+	return &webAppsListUsagesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listUsagesHandleResponse,
-		errorer:   client.listUsagesHandleError,
-		advancer: func(ctx context.Context, resp CsmUsageQuotaCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListUsagesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21846,12 +21666,12 @@ func (client *WebAppsClient) listUsagesCreateRequest(ctx context.Context, resour
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *WebAppsClient) listUsagesHandleResponse(resp *azcore.Response) (CsmUsageQuotaCollectionResponse, error) {
-	var val *CsmUsageQuotaCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmUsageQuotaCollectionResponse{}, err
+func (client *WebAppsClient) listUsagesHandleResponse(resp *azcore.Response) (WebAppsListUsagesResponse, error) {
+	result := WebAppsListUsagesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmUsageQuotaCollection); err != nil {
+		return WebAppsListUsagesResponse{}, err
 	}
-	return CsmUsageQuotaCollectionResponse{RawResponse: resp.Response, CsmUsageQuotaCollection: val}, nil
+	return result, nil
 }
 
 // listUsagesHandleError handles the ListUsages error response.
@@ -21869,18 +21689,15 @@ func (client *WebAppsClient) listUsagesHandleError(resp *azcore.Response) error 
 
 // ListUsagesSlot - Description for Gets the quota usage information of an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListUsagesSlot(resourceGroupName string, name string, slot string, options *WebAppsListUsagesSlotOptions) CsmUsageQuotaCollectionPager {
-	return &csmUsageQuotaCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListUsagesSlot(resourceGroupName string, name string, slot string, options *WebAppsListUsagesSlotOptions) WebAppsListUsagesSlotPager {
+	return &webAppsListUsagesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listUsagesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listUsagesSlotHandleResponse,
-		errorer:   client.listUsagesSlotHandleError,
-		advancer: func(ctx context.Context, resp CsmUsageQuotaCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListUsagesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -21921,12 +21738,12 @@ func (client *WebAppsClient) listUsagesSlotCreateRequest(ctx context.Context, re
 }
 
 // listUsagesSlotHandleResponse handles the ListUsagesSlot response.
-func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *azcore.Response) (CsmUsageQuotaCollectionResponse, error) {
-	var val *CsmUsageQuotaCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmUsageQuotaCollectionResponse{}, err
+func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *azcore.Response) (WebAppsListUsagesSlotResponse, error) {
+	result := WebAppsListUsagesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmUsageQuotaCollection); err != nil {
+		return WebAppsListUsagesSlotResponse{}, err
 	}
-	return CsmUsageQuotaCollectionResponse{RawResponse: resp.Response, CsmUsageQuotaCollection: val}, nil
+	return result, nil
 }
 
 // listUsagesSlotHandleError handles the ListUsagesSlot error response.
@@ -21944,17 +21761,17 @@ func (client *WebAppsClient) listUsagesSlotHandleError(resp *azcore.Response) er
 
 // ListVnetConnections - Description for Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListVnetConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsListVnetConnectionsOptions) (VnetInfoArrayResponse, error) {
+func (client *WebAppsClient) ListVnetConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsListVnetConnectionsOptions) (WebAppsListVnetConnectionsResponse, error) {
 	req, err := client.listVnetConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return VnetInfoArrayResponse{}, err
+		return WebAppsListVnetConnectionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoArrayResponse{}, err
+		return WebAppsListVnetConnectionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoArrayResponse{}, client.listVnetConnectionsHandleError(resp)
+		return WebAppsListVnetConnectionsResponse{}, client.listVnetConnectionsHandleError(resp)
 	}
 	return client.listVnetConnectionsHandleResponse(resp)
 }
@@ -21987,12 +21804,12 @@ func (client *WebAppsClient) listVnetConnectionsCreateRequest(ctx context.Contex
 }
 
 // listVnetConnectionsHandleResponse handles the ListVnetConnections response.
-func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *azcore.Response) (VnetInfoArrayResponse, error) {
-	var val []*VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoArrayResponse{}, err
+func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *azcore.Response) (WebAppsListVnetConnectionsResponse, error) {
+	result := WebAppsListVnetConnectionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfoArray); err != nil {
+		return WebAppsListVnetConnectionsResponse{}, err
 	}
-	return VnetInfoArrayResponse{RawResponse: resp.Response, VnetInfoArray: val}, nil
+	return result, nil
 }
 
 // listVnetConnectionsHandleError handles the ListVnetConnections error response.
@@ -22010,17 +21827,17 @@ func (client *WebAppsClient) listVnetConnectionsHandleError(resp *azcore.Respons
 
 // ListVnetConnectionsSlot - Description for Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListVnetConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListVnetConnectionsSlotOptions) (VnetInfoArrayResponse, error) {
+func (client *WebAppsClient) ListVnetConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsListVnetConnectionsSlotOptions) (WebAppsListVnetConnectionsSlotResponse, error) {
 	req, err := client.listVnetConnectionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return VnetInfoArrayResponse{}, err
+		return WebAppsListVnetConnectionsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoArrayResponse{}, err
+		return WebAppsListVnetConnectionsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoArrayResponse{}, client.listVnetConnectionsSlotHandleError(resp)
+		return WebAppsListVnetConnectionsSlotResponse{}, client.listVnetConnectionsSlotHandleError(resp)
 	}
 	return client.listVnetConnectionsSlotHandleResponse(resp)
 }
@@ -22057,12 +21874,12 @@ func (client *WebAppsClient) listVnetConnectionsSlotCreateRequest(ctx context.Co
 }
 
 // listVnetConnectionsSlotHandleResponse handles the ListVnetConnectionsSlot response.
-func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *azcore.Response) (VnetInfoArrayResponse, error) {
-	var val []*VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoArrayResponse{}, err
+func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *azcore.Response) (WebAppsListVnetConnectionsSlotResponse, error) {
+	result := WebAppsListVnetConnectionsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfoArray); err != nil {
+		return WebAppsListVnetConnectionsSlotResponse{}, err
 	}
-	return VnetInfoArrayResponse{RawResponse: resp.Response, VnetInfoArray: val}, nil
+	return result, nil
 }
 
 // listVnetConnectionsSlotHandleError handles the ListVnetConnectionsSlot error response.
@@ -22080,18 +21897,15 @@ func (client *WebAppsClient) listVnetConnectionsSlotHandleError(resp *azcore.Res
 
 // ListWebJobs - Description for List webjobs for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListWebJobs(resourceGroupName string, name string, options *WebAppsListWebJobsOptions) WebJobCollectionPager {
-	return &webJobCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListWebJobs(resourceGroupName string, name string, options *WebAppsListWebJobsOptions) WebAppsListWebJobsPager {
+	return &webAppsListWebJobsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebJobsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listWebJobsHandleResponse,
-		errorer:   client.listWebJobsHandleError,
-		advancer: func(ctx context.Context, resp WebJobCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListWebJobsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebJobCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -22123,12 +21937,12 @@ func (client *WebAppsClient) listWebJobsCreateRequest(ctx context.Context, resou
 }
 
 // listWebJobsHandleResponse handles the ListWebJobs response.
-func (client *WebAppsClient) listWebJobsHandleResponse(resp *azcore.Response) (WebJobCollectionResponse, error) {
-	var val *WebJobCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebJobCollectionResponse{}, err
+func (client *WebAppsClient) listWebJobsHandleResponse(resp *azcore.Response) (WebAppsListWebJobsResponse, error) {
+	result := WebAppsListWebJobsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebJobCollection); err != nil {
+		return WebAppsListWebJobsResponse{}, err
 	}
-	return WebJobCollectionResponse{RawResponse: resp.Response, WebJobCollection: val}, nil
+	return result, nil
 }
 
 // listWebJobsHandleError handles the ListWebJobs error response.
@@ -22146,18 +21960,15 @@ func (client *WebAppsClient) listWebJobsHandleError(resp *azcore.Response) error
 
 // ListWebJobsSlot - Description for List webjobs for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ListWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsListWebJobsSlotOptions) WebJobCollectionPager {
-	return &webJobCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebAppsClient) ListWebJobsSlot(resourceGroupName string, name string, slot string, options *WebAppsListWebJobsSlotOptions) WebAppsListWebJobsSlotPager {
+	return &webAppsListWebJobsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listWebJobsSlotHandleResponse,
-		errorer:   client.listWebJobsSlotHandleError,
-		advancer: func(ctx context.Context, resp WebJobCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebAppsListWebJobsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebJobCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -22193,12 +22004,12 @@ func (client *WebAppsClient) listWebJobsSlotCreateRequest(ctx context.Context, r
 }
 
 // listWebJobsSlotHandleResponse handles the ListWebJobsSlot response.
-func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *azcore.Response) (WebJobCollectionResponse, error) {
-	var val *WebJobCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebJobCollectionResponse{}, err
+func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *azcore.Response) (WebAppsListWebJobsSlotResponse, error) {
+	result := WebAppsListWebJobsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebJobCollection); err != nil {
+		return WebAppsListWebJobsSlotResponse{}, err
 	}
-	return WebJobCollectionResponse{RawResponse: resp.Response, WebJobCollection: val}, nil
+	return result, nil
 }
 
 // listWebJobsSlotHandleError handles the ListWebJobsSlot error response.
@@ -22216,47 +22027,47 @@ func (client *WebAppsClient) listWebJobsSlotHandleError(resp *azcore.Response) e
 
 // BeginMigrateMySQL - Description for Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginMigrateMySQL(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, options *WebAppsBeginMigrateMySQLOptions) (OperationPollerResponse, error) {
+func (client *WebAppsClient) BeginMigrateMySQL(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, options *WebAppsBeginMigrateMySQLOptions) (WebAppsMigrateMySQLPollerResponse, error) {
 	resp, err := client.migrateMySQL(ctx, resourceGroupName, name, migrationRequestEnvelope, options)
 	if err != nil {
-		return OperationPollerResponse{}, err
+		return WebAppsMigrateMySQLPollerResponse{}, err
 	}
-	result := OperationPollerResponse{
+	result := WebAppsMigrateMySQLPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.MigrateMySQL", "", resp, client.con.Pipeline(), client.migrateMySQLHandleError)
 	if err != nil {
-		return OperationPollerResponse{}, err
+		return WebAppsMigrateMySQLPollerResponse{}, err
 	}
-	poller := &operationPoller{
+	poller := &webAppsMigrateMySQLPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (OperationResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsMigrateMySQLResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeMigrateMySQL creates a new OperationPoller from the specified resume token.
-// token - The value must come from a previous call to OperationPoller.ResumeToken().
-func (client *WebAppsClient) ResumeMigrateMySQL(ctx context.Context, token string) (OperationPollerResponse, error) {
+// ResumeMigrateMySQL creates a new WebAppsMigrateMySQLPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsMigrateMySQLPoller.ResumeToken().
+func (client *WebAppsClient) ResumeMigrateMySQL(ctx context.Context, token string) (WebAppsMigrateMySQLPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.MigrateMySQL", token, client.con.Pipeline(), client.migrateMySQLHandleError)
 	if err != nil {
-		return OperationPollerResponse{}, err
+		return WebAppsMigrateMySQLPollerResponse{}, err
 	}
-	poller := &operationPoller{
+	poller := &webAppsMigrateMySQLPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return OperationPollerResponse{}, err
+		return WebAppsMigrateMySQLPollerResponse{}, err
 	}
-	result := OperationPollerResponse{
+	result := WebAppsMigrateMySQLPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (OperationResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsMigrateMySQLResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -22321,47 +22132,47 @@ func (client *WebAppsClient) migrateMySQLHandleError(resp *azcore.Response) erro
 
 // BeginMigrateStorage - Description for Restores a web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginMigrateStorage(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, options *WebAppsBeginMigrateStorageOptions) (StorageMigrationResponsePollerResponse, error) {
+func (client *WebAppsClient) BeginMigrateStorage(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, options *WebAppsBeginMigrateStorageOptions) (WebAppsMigrateStoragePollerResponse, error) {
 	resp, err := client.migrateStorage(ctx, subscriptionName, resourceGroupName, name, migrationOptions, options)
 	if err != nil {
-		return StorageMigrationResponsePollerResponse{}, err
+		return WebAppsMigrateStoragePollerResponse{}, err
 	}
-	result := StorageMigrationResponsePollerResponse{
+	result := WebAppsMigrateStoragePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.MigrateStorage", "", resp, client.con.Pipeline(), client.migrateStorageHandleError)
 	if err != nil {
-		return StorageMigrationResponsePollerResponse{}, err
+		return WebAppsMigrateStoragePollerResponse{}, err
 	}
-	poller := &storageMigrationResponsePoller{
+	poller := &webAppsMigrateStoragePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageMigrationResponseResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsMigrateStorageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeMigrateStorage creates a new StorageMigrationResponsePoller from the specified resume token.
-// token - The value must come from a previous call to StorageMigrationResponsePoller.ResumeToken().
-func (client *WebAppsClient) ResumeMigrateStorage(ctx context.Context, token string) (StorageMigrationResponsePollerResponse, error) {
+// ResumeMigrateStorage creates a new WebAppsMigrateStoragePoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsMigrateStoragePoller.ResumeToken().
+func (client *WebAppsClient) ResumeMigrateStorage(ctx context.Context, token string) (WebAppsMigrateStoragePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.MigrateStorage", token, client.con.Pipeline(), client.migrateStorageHandleError)
 	if err != nil {
-		return StorageMigrationResponsePollerResponse{}, err
+		return WebAppsMigrateStoragePollerResponse{}, err
 	}
-	poller := &storageMigrationResponsePoller{
+	poller := &webAppsMigrateStoragePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return StorageMigrationResponsePollerResponse{}, err
+		return WebAppsMigrateStoragePollerResponse{}, err
 	}
-	result := StorageMigrationResponsePollerResponse{
+	result := WebAppsMigrateStoragePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageMigrationResponseResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsMigrateStorageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -22427,17 +22238,17 @@ func (client *WebAppsClient) migrateStorageHandleError(resp *azcore.Response) er
 
 // PutPrivateAccessVnet - Description for Sets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) PutPrivateAccessVnet(ctx context.Context, resourceGroupName string, name string, access PrivateAccess, options *WebAppsPutPrivateAccessVnetOptions) (PrivateAccessResponse, error) {
+func (client *WebAppsClient) PutPrivateAccessVnet(ctx context.Context, resourceGroupName string, name string, access PrivateAccess, options *WebAppsPutPrivateAccessVnetOptions) (WebAppsPutPrivateAccessVnetResponse, error) {
 	req, err := client.putPrivateAccessVnetCreateRequest(ctx, resourceGroupName, name, access, options)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsPutPrivateAccessVnetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsPutPrivateAccessVnetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateAccessResponse{}, client.putPrivateAccessVnetHandleError(resp)
+		return WebAppsPutPrivateAccessVnetResponse{}, client.putPrivateAccessVnetHandleError(resp)
 	}
 	return client.putPrivateAccessVnetHandleResponse(resp)
 }
@@ -22470,12 +22281,12 @@ func (client *WebAppsClient) putPrivateAccessVnetCreateRequest(ctx context.Conte
 }
 
 // putPrivateAccessVnetHandleResponse handles the PutPrivateAccessVnet response.
-func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *azcore.Response) (PrivateAccessResponse, error) {
-	var val *PrivateAccess
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateAccessResponse{}, err
+func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *azcore.Response) (WebAppsPutPrivateAccessVnetResponse, error) {
+	result := WebAppsPutPrivateAccessVnetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateAccess); err != nil {
+		return WebAppsPutPrivateAccessVnetResponse{}, err
 	}
-	return PrivateAccessResponse{RawResponse: resp.Response, PrivateAccess: val}, nil
+	return result, nil
 }
 
 // putPrivateAccessVnetHandleError handles the PutPrivateAccessVnet error response.
@@ -22493,17 +22304,17 @@ func (client *WebAppsClient) putPrivateAccessVnetHandleError(resp *azcore.Respon
 
 // PutPrivateAccessVnetSlot - Description for Sets data around private site access enablement and authorized Virtual Networks that can access the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) PutPrivateAccessVnetSlot(ctx context.Context, resourceGroupName string, name string, slot string, access PrivateAccess, options *WebAppsPutPrivateAccessVnetSlotOptions) (PrivateAccessResponse, error) {
+func (client *WebAppsClient) PutPrivateAccessVnetSlot(ctx context.Context, resourceGroupName string, name string, slot string, access PrivateAccess, options *WebAppsPutPrivateAccessVnetSlotOptions) (WebAppsPutPrivateAccessVnetSlotResponse, error) {
 	req, err := client.putPrivateAccessVnetSlotCreateRequest(ctx, resourceGroupName, name, slot, access, options)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsPutPrivateAccessVnetSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateAccessResponse{}, err
+		return WebAppsPutPrivateAccessVnetSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateAccessResponse{}, client.putPrivateAccessVnetSlotHandleError(resp)
+		return WebAppsPutPrivateAccessVnetSlotResponse{}, client.putPrivateAccessVnetSlotHandleError(resp)
 	}
 	return client.putPrivateAccessVnetSlotHandleResponse(resp)
 }
@@ -22540,12 +22351,12 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotCreateRequest(ctx context.C
 }
 
 // putPrivateAccessVnetSlotHandleResponse handles the PutPrivateAccessVnetSlot response.
-func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *azcore.Response) (PrivateAccessResponse, error) {
-	var val *PrivateAccess
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateAccessResponse{}, err
+func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *azcore.Response) (WebAppsPutPrivateAccessVnetSlotResponse, error) {
+	result := WebAppsPutPrivateAccessVnetSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateAccess); err != nil {
+		return WebAppsPutPrivateAccessVnetSlotResponse{}, err
 	}
-	return PrivateAccessResponse{RawResponse: resp.Response, PrivateAccess: val}, nil
+	return result, nil
 }
 
 // putPrivateAccessVnetSlotHandleError handles the PutPrivateAccessVnetSlot error response.
@@ -22563,19 +22374,19 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotHandleError(resp *azcore.Re
 
 // RecoverSiteConfigurationSnapshot - Description for Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) RecoverSiteConfigurationSnapshot(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *WebAppsRecoverSiteConfigurationSnapshotOptions) (*http.Response, error) {
+func (client *WebAppsClient) RecoverSiteConfigurationSnapshot(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *WebAppsRecoverSiteConfigurationSnapshotOptions) (WebAppsRecoverSiteConfigurationSnapshotResponse, error) {
 	req, err := client.recoverSiteConfigurationSnapshotCreateRequest(ctx, resourceGroupName, name, snapshotID, options)
 	if err != nil {
-		return nil, err
+		return WebAppsRecoverSiteConfigurationSnapshotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsRecoverSiteConfigurationSnapshotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.recoverSiteConfigurationSnapshotHandleError(resp)
+		return WebAppsRecoverSiteConfigurationSnapshotResponse{}, client.recoverSiteConfigurationSnapshotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsRecoverSiteConfigurationSnapshotResponse{RawResponse: resp.Response}, nil
 }
 
 // recoverSiteConfigurationSnapshotCreateRequest creates the RecoverSiteConfigurationSnapshot request.
@@ -22624,19 +22435,19 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotHandleError(resp *a
 
 // RecoverSiteConfigurationSnapshotSlot - Description for Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) RecoverSiteConfigurationSnapshotSlot(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *WebAppsRecoverSiteConfigurationSnapshotSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) RecoverSiteConfigurationSnapshotSlot(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *WebAppsRecoverSiteConfigurationSnapshotSlotOptions) (WebAppsRecoverSiteConfigurationSnapshotSlotResponse, error) {
 	req, err := client.recoverSiteConfigurationSnapshotSlotCreateRequest(ctx, resourceGroupName, name, snapshotID, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.recoverSiteConfigurationSnapshotSlotHandleError(resp)
+		return WebAppsRecoverSiteConfigurationSnapshotSlotResponse{}, client.recoverSiteConfigurationSnapshotSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsRecoverSiteConfigurationSnapshotSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // recoverSiteConfigurationSnapshotSlotCreateRequest creates the RecoverSiteConfigurationSnapshotSlot request.
@@ -22690,19 +22501,19 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotHandleError(res
 // ResetProductionSlotConfig - Description for Resets the configuration settings of the current slot if they were previously modified by calling the API
 // with POST.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ResetProductionSlotConfig(ctx context.Context, resourceGroupName string, name string, options *WebAppsResetProductionSlotConfigOptions) (*http.Response, error) {
+func (client *WebAppsClient) ResetProductionSlotConfig(ctx context.Context, resourceGroupName string, name string, options *WebAppsResetProductionSlotConfigOptions) (WebAppsResetProductionSlotConfigResponse, error) {
 	req, err := client.resetProductionSlotConfigCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsResetProductionSlotConfigResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsResetProductionSlotConfigResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.resetProductionSlotConfigHandleError(resp)
+		return WebAppsResetProductionSlotConfigResponse{}, client.resetProductionSlotConfigHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsResetProductionSlotConfigResponse{RawResponse: resp.Response}, nil
 }
 
 // resetProductionSlotConfigCreateRequest creates the ResetProductionSlotConfig request.
@@ -22748,19 +22559,19 @@ func (client *WebAppsClient) resetProductionSlotConfigHandleError(resp *azcore.R
 // ResetSlotConfigurationSlot - Description for Resets the configuration settings of the current slot if they were previously modified by calling the API
 // with POST.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) ResetSlotConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsResetSlotConfigurationSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) ResetSlotConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsResetSlotConfigurationSlotOptions) (WebAppsResetSlotConfigurationSlotResponse, error) {
 	req, err := client.resetSlotConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsResetSlotConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsResetSlotConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.resetSlotConfigurationSlotHandleError(resp)
+		return WebAppsResetSlotConfigurationSlotResponse{}, client.resetSlotConfigurationSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsResetSlotConfigurationSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // resetSlotConfigurationSlotCreateRequest creates the ResetSlotConfigurationSlot request.
@@ -22809,19 +22620,19 @@ func (client *WebAppsClient) resetSlotConfigurationSlotHandleError(resp *azcore.
 
 // Restart - Description for Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Restart(ctx context.Context, resourceGroupName string, name string, options *WebAppsRestartOptions) (*http.Response, error) {
+func (client *WebAppsClient) Restart(ctx context.Context, resourceGroupName string, name string, options *WebAppsRestartOptions) (WebAppsRestartResponse, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsRestartResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsRestartResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.restartHandleError(resp)
+		return WebAppsRestartResponse{}, client.restartHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsRestartResponse{RawResponse: resp.Response}, nil
 }
 
 // restartCreateRequest creates the Restart request.
@@ -22872,19 +22683,19 @@ func (client *WebAppsClient) restartHandleError(resp *azcore.Response) error {
 
 // RestartSlot - Description for Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) RestartSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsRestartSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) RestartSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsRestartSlotOptions) (WebAppsRestartSlotResponse, error) {
 	req, err := client.restartSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsRestartSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsRestartSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.restartSlotHandleError(resp)
+		return WebAppsRestartSlotResponse{}, client.restartSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsRestartSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // restartSlotCreateRequest creates the RestartSlot request.
@@ -22939,47 +22750,47 @@ func (client *WebAppsClient) restartSlotHandleError(resp *azcore.Response) error
 
 // BeginRestore - Description for Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestore(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, options *WebAppsBeginRestoreOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestore(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, options *WebAppsBeginRestoreOptions) (WebAppsRestorePollerResponse, error) {
 	resp, err := client.restore(ctx, resourceGroupName, name, backupID, request, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestorePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestorePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.Restore", "", resp, client.con.Pipeline(), client.restoreHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestorePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestorePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestore creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestore(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestore creates a new WebAppsRestorePoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestorePoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestore(ctx context.Context, token string) (WebAppsRestorePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.Restore", token, client.con.Pipeline(), client.restoreHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestorePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestorePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestorePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestorePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23048,47 +22859,47 @@ func (client *WebAppsClient) restoreHandleError(resp *azcore.Response) error {
 
 // BeginRestoreFromBackupBlob - Description for Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreFromBackupBlob(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsBeginRestoreFromBackupBlobOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreFromBackupBlob(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsBeginRestoreFromBackupBlobOptions) (WebAppsRestoreFromBackupBlobPollerResponse, error) {
 	resp, err := client.restoreFromBackupBlob(ctx, resourceGroupName, name, request, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromBackupBlobPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreFromBackupBlob", "", resp, client.con.Pipeline(), client.restoreFromBackupBlobHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromBackupBlobPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromBackupBlobResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreFromBackupBlob creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreFromBackupBlob(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreFromBackupBlob creates a new WebAppsRestoreFromBackupBlobPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreFromBackupBlobPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreFromBackupBlob(ctx context.Context, token string) (WebAppsRestoreFromBackupBlobPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlob", token, client.con.Pipeline(), client.restoreFromBackupBlobHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromBackupBlobPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromBackupBlobPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromBackupBlobResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23153,47 +22964,47 @@ func (client *WebAppsClient) restoreFromBackupBlobHandleError(resp *azcore.Respo
 
 // BeginRestoreFromBackupBlobSlot - Description for Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreFromBackupBlobSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsBeginRestoreFromBackupBlobSlotOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreFromBackupBlobSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsBeginRestoreFromBackupBlobSlotOptions) (WebAppsRestoreFromBackupBlobSlotPollerResponse, error) {
 	resp, err := client.restoreFromBackupBlobSlot(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromBackupBlobSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreFromBackupBlobSlot", "", resp, client.con.Pipeline(), client.restoreFromBackupBlobSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromBackupBlobSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromBackupBlobSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreFromBackupBlobSlot creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreFromBackupBlobSlot(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreFromBackupBlobSlot creates a new WebAppsRestoreFromBackupBlobSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreFromBackupBlobSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreFromBackupBlobSlot(ctx context.Context, token string) (WebAppsRestoreFromBackupBlobSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlobSlot", token, client.con.Pipeline(), client.restoreFromBackupBlobSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromBackupBlobSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromBackupBlobSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromBackupBlobSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromBackupBlobSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23262,47 +23073,47 @@ func (client *WebAppsClient) restoreFromBackupBlobSlotHandleError(resp *azcore.R
 
 // BeginRestoreFromDeletedApp - Description for Restores a deleted web app to this web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, options *WebAppsBeginRestoreFromDeletedAppOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, options *WebAppsBeginRestoreFromDeletedAppOptions) (WebAppsRestoreFromDeletedAppPollerResponse, error) {
 	resp, err := client.restoreFromDeletedApp(ctx, resourceGroupName, name, restoreRequest, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromDeletedAppPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreFromDeletedApp", "", resp, client.con.Pipeline(), client.restoreFromDeletedAppHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromDeletedAppPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromDeletedAppResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreFromDeletedApp creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreFromDeletedApp(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreFromDeletedApp creates a new WebAppsRestoreFromDeletedAppPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreFromDeletedAppPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreFromDeletedApp(ctx context.Context, token string) (WebAppsRestoreFromDeletedAppPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreFromDeletedApp", token, client.con.Pipeline(), client.restoreFromDeletedAppHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromDeletedAppPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromDeletedAppPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromDeletedAppResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23367,47 +23178,47 @@ func (client *WebAppsClient) restoreFromDeletedAppHandleError(resp *azcore.Respo
 
 // BeginRestoreFromDeletedAppSlot - Description for Restores a deleted web app to this web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, options *WebAppsBeginRestoreFromDeletedAppSlotOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, options *WebAppsBeginRestoreFromDeletedAppSlotOptions) (WebAppsRestoreFromDeletedAppSlotPollerResponse, error) {
 	resp, err := client.restoreFromDeletedAppSlot(ctx, resourceGroupName, name, slot, restoreRequest, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromDeletedAppSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreFromDeletedAppSlot", "", resp, client.con.Pipeline(), client.restoreFromDeletedAppSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromDeletedAppSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromDeletedAppSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreFromDeletedAppSlot creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreFromDeletedAppSlot(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreFromDeletedAppSlot creates a new WebAppsRestoreFromDeletedAppSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreFromDeletedAppSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreFromDeletedAppSlot(ctx context.Context, token string) (WebAppsRestoreFromDeletedAppSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreFromDeletedAppSlot", token, client.con.Pipeline(), client.restoreFromDeletedAppSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreFromDeletedAppSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreFromDeletedAppSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreFromDeletedAppSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromDeletedAppSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23476,47 +23287,47 @@ func (client *WebAppsClient) restoreFromDeletedAppSlotHandleError(resp *azcore.R
 
 // BeginRestoreSlot - Description for Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, options *WebAppsBeginRestoreSlotOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, options *WebAppsBeginRestoreSlotOptions) (WebAppsRestoreSlotPollerResponse, error) {
 	resp, err := client.restoreSlot(ctx, resourceGroupName, name, backupID, slot, request, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreSlot", "", resp, client.con.Pipeline(), client.restoreSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreSlot creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreSlot(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreSlot creates a new WebAppsRestoreSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreSlot(ctx context.Context, token string) (WebAppsRestoreSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreSlot", token, client.con.Pipeline(), client.restoreSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23589,47 +23400,47 @@ func (client *WebAppsClient) restoreSlotHandleError(resp *azcore.Response) error
 
 // BeginRestoreSnapshot - Description for Restores a web app from a snapshot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreSnapshot(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, options *WebAppsBeginRestoreSnapshotOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreSnapshot(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, options *WebAppsBeginRestoreSnapshotOptions) (WebAppsRestoreSnapshotPollerResponse, error) {
 	resp, err := client.restoreSnapshot(ctx, resourceGroupName, name, restoreRequest, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreSnapshotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreSnapshot", "", resp, client.con.Pipeline(), client.restoreSnapshotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreSnapshotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSnapshotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreSnapshot creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreSnapshot(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreSnapshot creates a new WebAppsRestoreSnapshotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreSnapshotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreSnapshot(ctx context.Context, token string) (WebAppsRestoreSnapshotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreSnapshot", token, client.con.Pipeline(), client.restoreSnapshotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreSnapshotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreSnapshotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSnapshotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23694,47 +23505,47 @@ func (client *WebAppsClient) restoreSnapshotHandleError(resp *azcore.Response) e
 
 // BeginRestoreSnapshotSlot - Description for Restores a web app from a snapshot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginRestoreSnapshotSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, options *WebAppsBeginRestoreSnapshotSlotOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginRestoreSnapshotSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, options *WebAppsBeginRestoreSnapshotSlotOptions) (WebAppsRestoreSnapshotSlotPollerResponse, error) {
 	resp, err := client.restoreSnapshotSlot(ctx, resourceGroupName, name, slot, restoreRequest, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreSnapshotSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.RestoreSnapshotSlot", "", resp, client.con.Pipeline(), client.restoreSnapshotSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreSnapshotSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSnapshotSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestoreSnapshotSlot creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeRestoreSnapshotSlot(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestoreSnapshotSlot creates a new WebAppsRestoreSnapshotSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsRestoreSnapshotSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeRestoreSnapshotSlot(ctx context.Context, token string) (WebAppsRestoreSnapshotSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.RestoreSnapshotSlot", token, client.con.Pipeline(), client.restoreSnapshotSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsRestoreSnapshotSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsRestoreSnapshotSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsRestoreSnapshotSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSnapshotSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -23803,19 +23614,19 @@ func (client *WebAppsClient) restoreSnapshotSlotHandleError(resp *azcore.Respons
 
 // RunTriggeredWebJob - Description for Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) RunTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsRunTriggeredWebJobOptions) (*http.Response, error) {
+func (client *WebAppsClient) RunTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsRunTriggeredWebJobOptions) (WebAppsRunTriggeredWebJobResponse, error) {
 	req, err := client.runTriggeredWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsRunTriggeredWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsRunTriggeredWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.runTriggeredWebJobHandleError(resp)
+		return WebAppsRunTriggeredWebJobResponse{}, client.runTriggeredWebJobHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsRunTriggeredWebJobResponse{RawResponse: resp.Response}, nil
 }
 
 // runTriggeredWebJobCreateRequest creates the RunTriggeredWebJob request.
@@ -23872,19 +23683,19 @@ func (client *WebAppsClient) runTriggeredWebJobHandleError(resp *azcore.Response
 
 // RunTriggeredWebJobSlot - Description for Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsRunTriggeredWebJobSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsRunTriggeredWebJobSlotOptions) (WebAppsRunTriggeredWebJobSlotResponse, error) {
 	req, err := client.runTriggeredWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsRunTriggeredWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsRunTriggeredWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.runTriggeredWebJobSlotHandleError(resp)
+		return WebAppsRunTriggeredWebJobSlotResponse{}, client.runTriggeredWebJobSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsRunTriggeredWebJobSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // runTriggeredWebJobSlotCreateRequest creates the RunTriggeredWebJobSlot request.
@@ -23945,19 +23756,19 @@ func (client *WebAppsClient) runTriggeredWebJobSlotHandleError(resp *azcore.Resp
 
 // Start - Description for Starts an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Start(ctx context.Context, resourceGroupName string, name string, options *WebAppsStartOptions) (*http.Response, error) {
+func (client *WebAppsClient) Start(ctx context.Context, resourceGroupName string, name string, options *WebAppsStartOptions) (WebAppsStartResponse, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStartResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStartResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.startHandleError(resp)
+		return WebAppsStartResponse{}, client.startHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStartResponse{RawResponse: resp.Response}, nil
 }
 
 // startCreateRequest creates the Start request.
@@ -24002,19 +23813,19 @@ func (client *WebAppsClient) startHandleError(resp *azcore.Response) error {
 
 // StartContinuousWebJob - Description for Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StartContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsStartContinuousWebJobOptions) (*http.Response, error) {
+func (client *WebAppsClient) StartContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsStartContinuousWebJobOptions) (WebAppsStartContinuousWebJobResponse, error) {
 	req, err := client.startContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStartContinuousWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStartContinuousWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.startContinuousWebJobHandleError(resp)
+		return WebAppsStartContinuousWebJobResponse{}, client.startContinuousWebJobHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStartContinuousWebJobResponse{RawResponse: resp.Response}, nil
 }
 
 // startContinuousWebJobCreateRequest creates the StartContinuousWebJob request.
@@ -24071,19 +23882,19 @@ func (client *WebAppsClient) startContinuousWebJobHandleError(resp *azcore.Respo
 
 // StartContinuousWebJobSlot - Description for Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StartContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsStartContinuousWebJobSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) StartContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsStartContinuousWebJobSlotOptions) (WebAppsStartContinuousWebJobSlotResponse, error) {
 	req, err := client.startContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStartContinuousWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStartContinuousWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.startContinuousWebJobSlotHandleError(resp)
+		return WebAppsStartContinuousWebJobSlotResponse{}, client.startContinuousWebJobSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStartContinuousWebJobSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // startContinuousWebJobSlotCreateRequest creates the StartContinuousWebJobSlot request.
@@ -24144,47 +23955,47 @@ func (client *WebAppsClient) startContinuousWebJobSlotHandleError(resp *azcore.R
 
 // BeginStartNetworkTrace - Description for Start capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginStartNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsBeginStartNetworkTraceOptions) (NetworkTraceArrayPollerResponse, error) {
+func (client *WebAppsClient) BeginStartNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsBeginStartNetworkTraceOptions) (WebAppsStartNetworkTracePollerResponse, error) {
 	resp, err := client.startNetworkTrace(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTracePollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartNetworkTracePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.StartNetworkTrace", "", resp, client.con.Pipeline(), client.startNetworkTraceHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTracePollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartNetworkTracePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartNetworkTraceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStartNetworkTrace creates a new NetworkTraceArrayPoller from the specified resume token.
-// token - The value must come from a previous call to NetworkTraceArrayPoller.ResumeToken().
-func (client *WebAppsClient) ResumeStartNetworkTrace(ctx context.Context, token string) (NetworkTraceArrayPollerResponse, error) {
+// ResumeStartNetworkTrace creates a new WebAppsStartNetworkTracePoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsStartNetworkTracePoller.ResumeToken().
+func (client *WebAppsClient) ResumeStartNetworkTrace(ctx context.Context, token string) (WebAppsStartNetworkTracePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.StartNetworkTrace", token, client.con.Pipeline(), client.startNetworkTraceHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTracePollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartNetworkTracePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTracePollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartNetworkTracePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartNetworkTraceResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -24258,47 +24069,47 @@ func (client *WebAppsClient) startNetworkTraceHandleError(resp *azcore.Response)
 
 // BeginStartNetworkTraceSlot - Description for Start capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginStartNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsBeginStartNetworkTraceSlotOptions) (NetworkTraceArrayPollerResponse, error) {
+func (client *WebAppsClient) BeginStartNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsBeginStartNetworkTraceSlotOptions) (WebAppsStartNetworkTraceSlotPollerResponse, error) {
 	resp, err := client.startNetworkTraceSlot(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTraceSlotPollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartNetworkTraceSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.StartNetworkTraceSlot", "", resp, client.con.Pipeline(), client.startNetworkTraceSlotHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTraceSlotPollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartNetworkTraceSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartNetworkTraceSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStartNetworkTraceSlot creates a new NetworkTraceArrayPoller from the specified resume token.
-// token - The value must come from a previous call to NetworkTraceArrayPoller.ResumeToken().
-func (client *WebAppsClient) ResumeStartNetworkTraceSlot(ctx context.Context, token string) (NetworkTraceArrayPollerResponse, error) {
+// ResumeStartNetworkTraceSlot creates a new WebAppsStartNetworkTraceSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsStartNetworkTraceSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeStartNetworkTraceSlot(ctx context.Context, token string) (WebAppsStartNetworkTraceSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.StartNetworkTraceSlot", token, client.con.Pipeline(), client.startNetworkTraceSlotHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTraceSlotPollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartNetworkTraceSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartNetworkTraceSlotPollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartNetworkTraceSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartNetworkTraceSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -24376,19 +24187,19 @@ func (client *WebAppsClient) startNetworkTraceSlotHandleError(resp *azcore.Respo
 
 // StartSlot - Description for Starts an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StartSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStartSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) StartSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStartSlotOptions) (WebAppsStartSlotResponse, error) {
 	req, err := client.startSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStartSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStartSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.startSlotHandleError(resp)
+		return WebAppsStartSlotResponse{}, client.startSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStartSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // startSlotCreateRequest creates the StartSlot request.
@@ -24437,17 +24248,17 @@ func (client *WebAppsClient) startSlotHandleError(resp *azcore.Response) error {
 
 // StartWebSiteNetworkTrace - Description for Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StartWebSiteNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsStartWebSiteNetworkTraceOptions) (StringResponse, error) {
+func (client *WebAppsClient) StartWebSiteNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsStartWebSiteNetworkTraceOptions) (WebAppsStartWebSiteNetworkTraceResponse, error) {
 	req, err := client.startWebSiteNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringResponse{}, client.startWebSiteNetworkTraceHandleError(resp)
+		return WebAppsStartWebSiteNetworkTraceResponse{}, client.startWebSiteNetworkTraceHandleError(resp)
 	}
 	return client.startWebSiteNetworkTraceHandleResponse(resp)
 }
@@ -24489,12 +24300,12 @@ func (client *WebAppsClient) startWebSiteNetworkTraceCreateRequest(ctx context.C
 }
 
 // startWebSiteNetworkTraceHandleResponse handles the StartWebSiteNetworkTrace response.
-func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *azcore.Response) (StringResponse, error) {
-	var val *string
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringResponse{}, err
+func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *azcore.Response) (WebAppsStartWebSiteNetworkTraceResponse, error) {
+	result := WebAppsStartWebSiteNetworkTraceResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Value); err != nil {
+		return WebAppsStartWebSiteNetworkTraceResponse{}, err
 	}
-	return StringResponse{RawResponse: resp.Response, Value: val}, nil
+	return result, nil
 }
 
 // startWebSiteNetworkTraceHandleError handles the StartWebSiteNetworkTrace error response.
@@ -24512,47 +24323,47 @@ func (client *WebAppsClient) startWebSiteNetworkTraceHandleError(resp *azcore.Re
 
 // BeginStartWebSiteNetworkTraceOperation - Description for Start capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, options *WebAppsBeginStartWebSiteNetworkTraceOperationOptions) (NetworkTraceArrayPollerResponse, error) {
+func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, options *WebAppsBeginStartWebSiteNetworkTraceOperationOptions) (WebAppsStartWebSiteNetworkTraceOperationPollerResponse, error) {
 	resp, err := client.startWebSiteNetworkTraceOperation(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationPollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartWebSiteNetworkTraceOperationPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.StartWebSiteNetworkTraceOperation", "", resp, client.con.Pipeline(), client.startWebSiteNetworkTraceOperationHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationPollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartWebSiteNetworkTraceOperationPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartWebSiteNetworkTraceOperationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStartWebSiteNetworkTraceOperation creates a new NetworkTraceArrayPoller from the specified resume token.
-// token - The value must come from a previous call to NetworkTraceArrayPoller.ResumeToken().
-func (client *WebAppsClient) ResumeStartWebSiteNetworkTraceOperation(ctx context.Context, token string) (NetworkTraceArrayPollerResponse, error) {
+// ResumeStartWebSiteNetworkTraceOperation creates a new WebAppsStartWebSiteNetworkTraceOperationPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsStartWebSiteNetworkTraceOperationPoller.ResumeToken().
+func (client *WebAppsClient) ResumeStartWebSiteNetworkTraceOperation(ctx context.Context, token string) (WebAppsStartWebSiteNetworkTraceOperationPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperation", token, client.con.Pipeline(), client.startWebSiteNetworkTraceOperationHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationPollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartWebSiteNetworkTraceOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationPollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartWebSiteNetworkTraceOperationPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartWebSiteNetworkTraceOperationResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -24626,47 +24437,47 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationHandleError(resp *
 
 // BeginStartWebSiteNetworkTraceOperationSlot - Description for Start capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions) (NetworkTraceArrayPollerResponse, error) {
+func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsBeginStartWebSiteNetworkTraceOperationSlotOptions) (WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse, error) {
 	resp, err := client.startWebSiteNetworkTraceOperationSlot(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.StartWebSiteNetworkTraceOperationSlot", "", resp, client.con.Pipeline(), client.startWebSiteNetworkTraceOperationSlotHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartWebSiteNetworkTraceOperationSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStartWebSiteNetworkTraceOperationSlot creates a new NetworkTraceArrayPoller from the specified resume token.
-// token - The value must come from a previous call to NetworkTraceArrayPoller.ResumeToken().
-func (client *WebAppsClient) ResumeStartWebSiteNetworkTraceOperationSlot(ctx context.Context, token string) (NetworkTraceArrayPollerResponse, error) {
+// ResumeStartWebSiteNetworkTraceOperationSlot creates a new WebAppsStartWebSiteNetworkTraceOperationSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsStartWebSiteNetworkTraceOperationSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeStartWebSiteNetworkTraceOperationSlot(ctx context.Context, token string) (WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperationSlot", token, client.con.Pipeline(), client.startWebSiteNetworkTraceOperationSlotHandleError)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse{}, err
 	}
-	poller := &networkTraceArrayPoller{
+	poller := &webAppsStartWebSiteNetworkTraceOperationSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return NetworkTraceArrayPollerResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse{}, err
 	}
-	result := NetworkTraceArrayPollerResponse{
+	result := WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkTraceArrayResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -24744,17 +24555,17 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotHandleError(re
 
 // StartWebSiteNetworkTraceSlot - Description for Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StartWebSiteNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStartWebSiteNetworkTraceSlotOptions) (StringResponse, error) {
+func (client *WebAppsClient) StartWebSiteNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStartWebSiteNetworkTraceSlotOptions) (WebAppsStartWebSiteNetworkTraceSlotResponse, error) {
 	req, err := client.startWebSiteNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringResponse{}, client.startWebSiteNetworkTraceSlotHandleError(resp)
+		return WebAppsStartWebSiteNetworkTraceSlotResponse{}, client.startWebSiteNetworkTraceSlotHandleError(resp)
 	}
 	return client.startWebSiteNetworkTraceSlotHandleResponse(resp)
 }
@@ -24800,12 +24611,12 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotCreateRequest(ctx conte
 }
 
 // startWebSiteNetworkTraceSlotHandleResponse handles the StartWebSiteNetworkTraceSlot response.
-func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *azcore.Response) (StringResponse, error) {
-	var val *string
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringResponse{}, err
+func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *azcore.Response) (WebAppsStartWebSiteNetworkTraceSlotResponse, error) {
+	result := WebAppsStartWebSiteNetworkTraceSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Value); err != nil {
+		return WebAppsStartWebSiteNetworkTraceSlotResponse{}, err
 	}
-	return StringResponse{RawResponse: resp.Response, Value: val}, nil
+	return result, nil
 }
 
 // startWebSiteNetworkTraceSlotHandleError handles the StartWebSiteNetworkTraceSlot error response.
@@ -24823,19 +24634,19 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleError(resp *azcor
 
 // Stop - Description for Stops an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Stop(ctx context.Context, resourceGroupName string, name string, options *WebAppsStopOptions) (*http.Response, error) {
+func (client *WebAppsClient) Stop(ctx context.Context, resourceGroupName string, name string, options *WebAppsStopOptions) (WebAppsStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.stopHandleError(resp)
+		return WebAppsStopResponse{}, client.stopHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopResponse{RawResponse: resp.Response}, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -24880,19 +24691,19 @@ func (client *WebAppsClient) stopHandleError(resp *azcore.Response) error {
 
 // StopContinuousWebJob - Description for Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsStopContinuousWebJobOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsStopContinuousWebJobOptions) (WebAppsStopContinuousWebJobResponse, error) {
 	req, err := client.stopContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopContinuousWebJobResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopContinuousWebJobResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.stopContinuousWebJobHandleError(resp)
+		return WebAppsStopContinuousWebJobResponse{}, client.stopContinuousWebJobHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopContinuousWebJobResponse{RawResponse: resp.Response}, nil
 }
 
 // stopContinuousWebJobCreateRequest creates the StopContinuousWebJob request.
@@ -24949,19 +24760,19 @@ func (client *WebAppsClient) stopContinuousWebJobHandleError(resp *azcore.Respon
 
 // StopContinuousWebJobSlot - Description for Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsStopContinuousWebJobSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsStopContinuousWebJobSlotOptions) (WebAppsStopContinuousWebJobSlotResponse, error) {
 	req, err := client.stopContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopContinuousWebJobSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopContinuousWebJobSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.stopContinuousWebJobSlotHandleError(resp)
+		return WebAppsStopContinuousWebJobSlotResponse{}, client.stopContinuousWebJobSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopContinuousWebJobSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // stopContinuousWebJobSlotCreateRequest creates the StopContinuousWebJobSlot request.
@@ -25022,19 +24833,19 @@ func (client *WebAppsClient) stopContinuousWebJobSlotHandleError(resp *azcore.Re
 
 // StopNetworkTrace - Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsStopNetworkTraceOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsStopNetworkTraceOptions) (WebAppsStopNetworkTraceResponse, error) {
 	req, err := client.stopNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopNetworkTraceResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopNetworkTraceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.stopNetworkTraceHandleError(resp)
+		return WebAppsStopNetworkTraceResponse{}, client.stopNetworkTraceHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopNetworkTraceResponse{RawResponse: resp.Response}, nil
 }
 
 // stopNetworkTraceCreateRequest creates the StopNetworkTrace request.
@@ -25079,19 +24890,19 @@ func (client *WebAppsClient) stopNetworkTraceHandleError(resp *azcore.Response) 
 
 // StopNetworkTraceSlot - Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStopNetworkTraceSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStopNetworkTraceSlotOptions) (WebAppsStopNetworkTraceSlotResponse, error) {
 	req, err := client.stopNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopNetworkTraceSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopNetworkTraceSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.stopNetworkTraceSlotHandleError(resp)
+		return WebAppsStopNetworkTraceSlotResponse{}, client.stopNetworkTraceSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopNetworkTraceSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // stopNetworkTraceSlotCreateRequest creates the StopNetworkTraceSlot request.
@@ -25140,19 +24951,19 @@ func (client *WebAppsClient) stopNetworkTraceSlotHandleError(resp *azcore.Respon
 
 // StopSlot - Description for Stops an app (or deployment slot, if specified).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStopSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStopSlotOptions) (WebAppsStopSlotResponse, error) {
 	req, err := client.stopSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.stopSlotHandleError(resp)
+		return WebAppsStopSlotResponse{}, client.stopSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // stopSlotCreateRequest creates the StopSlot request.
@@ -25201,19 +25012,19 @@ func (client *WebAppsClient) stopSlotHandleError(resp *azcore.Response) error {
 
 // StopWebSiteNetworkTrace - Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopWebSiteNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsStopWebSiteNetworkTraceOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopWebSiteNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsStopWebSiteNetworkTraceOptions) (WebAppsStopWebSiteNetworkTraceResponse, error) {
 	req, err := client.stopWebSiteNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopWebSiteNetworkTraceResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopWebSiteNetworkTraceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.stopWebSiteNetworkTraceHandleError(resp)
+		return WebAppsStopWebSiteNetworkTraceResponse{}, client.stopWebSiteNetworkTraceHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopWebSiteNetworkTraceResponse{RawResponse: resp.Response}, nil
 }
 
 // stopWebSiteNetworkTraceCreateRequest creates the StopWebSiteNetworkTrace request.
@@ -25258,19 +25069,19 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceHandleError(resp *azcore.Res
 
 // StopWebSiteNetworkTraceSlot - Description for Stop ongoing capturing network packets for the site.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) StopWebSiteNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStopWebSiteNetworkTraceSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) StopWebSiteNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsStopWebSiteNetworkTraceSlotOptions) (WebAppsStopWebSiteNetworkTraceSlotResponse, error) {
 	req, err := client.stopWebSiteNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsStopWebSiteNetworkTraceSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsStopWebSiteNetworkTraceSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.stopWebSiteNetworkTraceSlotHandleError(resp)
+		return WebAppsStopWebSiteNetworkTraceSlotResponse{}, client.stopWebSiteNetworkTraceSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsStopWebSiteNetworkTraceSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // stopWebSiteNetworkTraceSlotCreateRequest creates the StopWebSiteNetworkTraceSlot request.
@@ -25319,47 +25130,47 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceSlotHandleError(resp *azcore
 
 // BeginSwapSlot - Description for Swaps two deployment slots of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginSwapSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsBeginSwapSlotOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginSwapSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsBeginSwapSlotOptions) (WebAppsSwapSlotPollerResponse, error) {
 	resp, err := client.swapSlot(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsSwapSlotPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.SwapSlot", "", resp, client.con.Pipeline(), client.swapSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsSwapSlotPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsSwapSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeSwapSlot creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeSwapSlot(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeSwapSlot creates a new WebAppsSwapSlotPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsSwapSlotPoller.ResumeToken().
+func (client *WebAppsClient) ResumeSwapSlot(ctx context.Context, token string) (WebAppsSwapSlotPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.SwapSlot", token, client.con.Pipeline(), client.swapSlotHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsSwapSlotPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsSwapSlotPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsSwapSlotResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -25428,47 +25239,47 @@ func (client *WebAppsClient) swapSlotHandleError(resp *azcore.Response) error {
 
 // BeginSwapSlotWithProduction - Description for Swaps two deployment slots of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) BeginSwapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsBeginSwapSlotWithProductionOptions) (HTTPPollerResponse, error) {
+func (client *WebAppsClient) BeginSwapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsBeginSwapSlotWithProductionOptions) (WebAppsSwapSlotWithProductionPollerResponse, error) {
 	resp, err := client.swapSlotWithProduction(ctx, resourceGroupName, name, slotSwapEntity, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotWithProductionPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsSwapSlotWithProductionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("WebAppsClient.SwapSlotWithProduction", "", resp, client.con.Pipeline(), client.swapSlotWithProductionHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotWithProductionPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsSwapSlotWithProductionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsSwapSlotWithProductionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeSwapSlotWithProduction creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *WebAppsClient) ResumeSwapSlotWithProduction(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeSwapSlotWithProduction creates a new WebAppsSwapSlotWithProductionPoller from the specified resume token.
+// token - The value must come from a previous call to WebAppsSwapSlotWithProductionPoller.ResumeToken().
+func (client *WebAppsClient) ResumeSwapSlotWithProduction(ctx context.Context, token string) (WebAppsSwapSlotWithProductionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("WebAppsClient.SwapSlotWithProduction", token, client.con.Pipeline(), client.swapSlotWithProductionHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotWithProductionPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &webAppsSwapSlotWithProductionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return WebAppsSwapSlotWithProductionPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := WebAppsSwapSlotWithProductionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppsSwapSlotWithProductionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -25533,19 +25344,19 @@ func (client *WebAppsClient) swapSlotWithProductionHandleError(resp *azcore.Resp
 
 // SyncFunctionTriggers - Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) SyncFunctionTriggers(ctx context.Context, resourceGroupName string, name string, options *WebAppsSyncFunctionTriggersOptions) (*http.Response, error) {
+func (client *WebAppsClient) SyncFunctionTriggers(ctx context.Context, resourceGroupName string, name string, options *WebAppsSyncFunctionTriggersOptions) (WebAppsSyncFunctionTriggersResponse, error) {
 	req, err := client.syncFunctionTriggersCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionTriggersResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionTriggersResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.syncFunctionTriggersHandleError(resp)
+		return WebAppsSyncFunctionTriggersResponse{}, client.syncFunctionTriggersHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsSyncFunctionTriggersResponse{RawResponse: resp.Response}, nil
 }
 
 // syncFunctionTriggersCreateRequest creates the SyncFunctionTriggers request.
@@ -25590,19 +25401,19 @@ func (client *WebAppsClient) syncFunctionTriggersHandleError(resp *azcore.Respon
 
 // SyncFunctionTriggersSlot - Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) SyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsSyncFunctionTriggersSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) SyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsSyncFunctionTriggersSlotOptions) (WebAppsSyncFunctionTriggersSlotResponse, error) {
 	req, err := client.syncFunctionTriggersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionTriggersSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionTriggersSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.syncFunctionTriggersSlotHandleError(resp)
+		return WebAppsSyncFunctionTriggersSlotResponse{}, client.syncFunctionTriggersSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsSyncFunctionTriggersSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // syncFunctionTriggersSlotCreateRequest creates the SyncFunctionTriggersSlot request.
@@ -25651,19 +25462,19 @@ func (client *WebAppsClient) syncFunctionTriggersSlotHandleError(resp *azcore.Re
 
 // SyncFunctions - Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) SyncFunctions(ctx context.Context, resourceGroupName string, name string, options *WebAppsSyncFunctionsOptions) (*http.Response, error) {
+func (client *WebAppsClient) SyncFunctions(ctx context.Context, resourceGroupName string, name string, options *WebAppsSyncFunctionsOptions) (WebAppsSyncFunctionsResponse, error) {
 	req, err := client.syncFunctionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.syncFunctionsHandleError(resp)
+		return WebAppsSyncFunctionsResponse{}, client.syncFunctionsHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsSyncFunctionsResponse{RawResponse: resp.Response}, nil
 }
 
 // syncFunctionsCreateRequest creates the SyncFunctions request.
@@ -25708,19 +25519,19 @@ func (client *WebAppsClient) syncFunctionsHandleError(resp *azcore.Response) err
 
 // SyncFunctionsSlot - Description for Syncs function trigger metadata to the management database
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) SyncFunctionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsSyncFunctionsSlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) SyncFunctionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsSyncFunctionsSlotOptions) (WebAppsSyncFunctionsSlotResponse, error) {
 	req, err := client.syncFunctionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncFunctionsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.syncFunctionsSlotHandleError(resp)
+		return WebAppsSyncFunctionsSlotResponse{}, client.syncFunctionsSlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsSyncFunctionsSlotResponse{RawResponse: resp.Response}, nil
 }
 
 // syncFunctionsSlotCreateRequest creates the SyncFunctionsSlot request.
@@ -25769,19 +25580,19 @@ func (client *WebAppsClient) syncFunctionsSlotHandleError(resp *azcore.Response)
 
 // SyncRepository - Description for Sync web app repository.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) SyncRepository(ctx context.Context, resourceGroupName string, name string, options *WebAppsSyncRepositoryOptions) (*http.Response, error) {
+func (client *WebAppsClient) SyncRepository(ctx context.Context, resourceGroupName string, name string, options *WebAppsSyncRepositoryOptions) (WebAppsSyncRepositoryResponse, error) {
 	req, err := client.syncRepositoryCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncRepositoryResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncRepositoryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.syncRepositoryHandleError(resp)
+		return WebAppsSyncRepositoryResponse{}, client.syncRepositoryHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsSyncRepositoryResponse{RawResponse: resp.Response}, nil
 }
 
 // syncRepositoryCreateRequest creates the SyncRepository request.
@@ -25826,19 +25637,19 @@ func (client *WebAppsClient) syncRepositoryHandleError(resp *azcore.Response) er
 
 // SyncRepositorySlot - Description for Sync web app repository.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) SyncRepositorySlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsSyncRepositorySlotOptions) (*http.Response, error) {
+func (client *WebAppsClient) SyncRepositorySlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsSyncRepositorySlotOptions) (WebAppsSyncRepositorySlotResponse, error) {
 	req, err := client.syncRepositorySlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncRepositorySlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebAppsSyncRepositorySlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.syncRepositorySlotHandleError(resp)
+		return WebAppsSyncRepositorySlotResponse{}, client.syncRepositorySlotHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebAppsSyncRepositorySlotResponse{RawResponse: resp.Response}, nil
 }
 
 // syncRepositorySlotCreateRequest creates the SyncRepositorySlot request.
@@ -25887,17 +25698,17 @@ func (client *WebAppsClient) syncRepositorySlotHandleError(resp *azcore.Response
 
 // Update - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) Update(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, options *WebAppsUpdateOptions) (SiteResponse, error) {
+func (client *WebAppsClient) Update(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, options *WebAppsUpdateOptions) (WebAppsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, siteEnvelope, options)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return SiteResponse{}, client.updateHandleError(resp)
+		return WebAppsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -25930,12 +25741,12 @@ func (client *WebAppsClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WebAppsClient) updateHandleResponse(resp *azcore.Response) (SiteResponse, error) {
-	var val *Site
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteResponse{}, err
+func (client *WebAppsClient) updateHandleResponse(resp *azcore.Response) (WebAppsUpdateResponse, error) {
+	result := WebAppsUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Site); err != nil {
+		return WebAppsUpdateResponse{}, err
 	}
-	return SiteResponse{RawResponse: resp.Response, Site: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -25953,17 +25764,17 @@ func (client *WebAppsClient) updateHandleError(resp *azcore.Response) error {
 
 // UpdateApplicationSettings - Description for Replaces the application settings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateApplicationSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *WebAppsUpdateApplicationSettingsOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) UpdateApplicationSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *WebAppsUpdateApplicationSettingsOptions) (WebAppsUpdateApplicationSettingsResponse, error) {
 	req, err := client.updateApplicationSettingsCreateRequest(ctx, resourceGroupName, name, appSettings, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateApplicationSettingsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateApplicationSettingsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.updateApplicationSettingsHandleError(resp)
+		return WebAppsUpdateApplicationSettingsResponse{}, client.updateApplicationSettingsHandleError(resp)
 	}
 	return client.updateApplicationSettingsHandleResponse(resp)
 }
@@ -25996,12 +25807,12 @@ func (client *WebAppsClient) updateApplicationSettingsCreateRequest(ctx context.
 }
 
 // updateApplicationSettingsHandleResponse handles the UpdateApplicationSettings response.
-func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *azcore.Response) (WebAppsUpdateApplicationSettingsResponse, error) {
+	result := WebAppsUpdateApplicationSettingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsUpdateApplicationSettingsResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // updateApplicationSettingsHandleError handles the UpdateApplicationSettings error response.
@@ -26019,17 +25830,17 @@ func (client *WebAppsClient) updateApplicationSettingsHandleError(resp *azcore.R
 
 // UpdateApplicationSettingsSlot - Description for Replaces the application settings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateApplicationSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, appSettings StringDictionary, options *WebAppsUpdateApplicationSettingsSlotOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) UpdateApplicationSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, appSettings StringDictionary, options *WebAppsUpdateApplicationSettingsSlotOptions) (WebAppsUpdateApplicationSettingsSlotResponse, error) {
 	req, err := client.updateApplicationSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, appSettings, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateApplicationSettingsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateApplicationSettingsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.updateApplicationSettingsSlotHandleError(resp)
+		return WebAppsUpdateApplicationSettingsSlotResponse{}, client.updateApplicationSettingsSlotHandleError(resp)
 	}
 	return client.updateApplicationSettingsSlotHandleResponse(resp)
 }
@@ -26066,12 +25877,12 @@ func (client *WebAppsClient) updateApplicationSettingsSlotCreateRequest(ctx cont
 }
 
 // updateApplicationSettingsSlotHandleResponse handles the UpdateApplicationSettingsSlot response.
-func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateApplicationSettingsSlotResponse, error) {
+	result := WebAppsUpdateApplicationSettingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsUpdateApplicationSettingsSlotResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // updateApplicationSettingsSlotHandleError handles the UpdateApplicationSettingsSlot error response.
@@ -26089,17 +25900,17 @@ func (client *WebAppsClient) updateApplicationSettingsSlotHandleError(resp *azco
 
 // UpdateAuthSettings - Description for Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateAuthSettings(ctx context.Context, resourceGroupName string, name string, siteAuthSettings SiteAuthSettings, options *WebAppsUpdateAuthSettingsOptions) (SiteAuthSettingsResponse, error) {
+func (client *WebAppsClient) UpdateAuthSettings(ctx context.Context, resourceGroupName string, name string, siteAuthSettings SiteAuthSettings, options *WebAppsUpdateAuthSettingsOptions) (WebAppsUpdateAuthSettingsResponse, error) {
 	req, err := client.updateAuthSettingsCreateRequest(ctx, resourceGroupName, name, siteAuthSettings, options)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsUpdateAuthSettingsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsUpdateAuthSettingsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsResponse{}, client.updateAuthSettingsHandleError(resp)
+		return WebAppsUpdateAuthSettingsResponse{}, client.updateAuthSettingsHandleError(resp)
 	}
 	return client.updateAuthSettingsHandleResponse(resp)
 }
@@ -26132,12 +25943,12 @@ func (client *WebAppsClient) updateAuthSettingsCreateRequest(ctx context.Context
 }
 
 // updateAuthSettingsHandleResponse handles the UpdateAuthSettings response.
-func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *azcore.Response) (SiteAuthSettingsResponse, error) {
-	var val *SiteAuthSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsResponse{}, err
+func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *azcore.Response) (WebAppsUpdateAuthSettingsResponse, error) {
+	result := WebAppsUpdateAuthSettingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettings); err != nil {
+		return WebAppsUpdateAuthSettingsResponse{}, err
 	}
-	return SiteAuthSettingsResponse{RawResponse: resp.Response, SiteAuthSettings: val}, nil
+	return result, nil
 }
 
 // updateAuthSettingsHandleError handles the UpdateAuthSettings error response.
@@ -26155,17 +25966,17 @@ func (client *WebAppsClient) updateAuthSettingsHandleError(resp *azcore.Response
 
 // UpdateAuthSettingsSlot - Description for Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettings SiteAuthSettings, options *WebAppsUpdateAuthSettingsSlotOptions) (SiteAuthSettingsResponse, error) {
+func (client *WebAppsClient) UpdateAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettings SiteAuthSettings, options *WebAppsUpdateAuthSettingsSlotOptions) (WebAppsUpdateAuthSettingsSlotResponse, error) {
 	req, err := client.updateAuthSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, siteAuthSettings, options)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsUpdateAuthSettingsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsResponse{}, err
+		return WebAppsUpdateAuthSettingsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsResponse{}, client.updateAuthSettingsSlotHandleError(resp)
+		return WebAppsUpdateAuthSettingsSlotResponse{}, client.updateAuthSettingsSlotHandleError(resp)
 	}
 	return client.updateAuthSettingsSlotHandleResponse(resp)
 }
@@ -26202,12 +26013,12 @@ func (client *WebAppsClient) updateAuthSettingsSlotCreateRequest(ctx context.Con
 }
 
 // updateAuthSettingsSlotHandleResponse handles the UpdateAuthSettingsSlot response.
-func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *azcore.Response) (SiteAuthSettingsResponse, error) {
-	var val *SiteAuthSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsResponse{}, err
+func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateAuthSettingsSlotResponse, error) {
+	result := WebAppsUpdateAuthSettingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettings); err != nil {
+		return WebAppsUpdateAuthSettingsSlotResponse{}, err
 	}
-	return SiteAuthSettingsResponse{RawResponse: resp.Response, SiteAuthSettings: val}, nil
+	return result, nil
 }
 
 // updateAuthSettingsSlotHandleError handles the UpdateAuthSettingsSlot error response.
@@ -26225,17 +26036,17 @@ func (client *WebAppsClient) updateAuthSettingsSlotHandleError(resp *azcore.Resp
 
 // UpdateAuthSettingsV2 - Description for Updates site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateAuthSettingsV2(ctx context.Context, resourceGroupName string, name string, siteAuthSettingsV2 SiteAuthSettingsV2, options *WebAppsUpdateAuthSettingsV2Options) (SiteAuthSettingsV2Response, error) {
+func (client *WebAppsClient) UpdateAuthSettingsV2(ctx context.Context, resourceGroupName string, name string, siteAuthSettingsV2 SiteAuthSettingsV2, options *WebAppsUpdateAuthSettingsV2Options) (WebAppsUpdateAuthSettingsV2Response, error) {
 	req, err := client.updateAuthSettingsV2CreateRequest(ctx, resourceGroupName, name, siteAuthSettingsV2, options)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsUpdateAuthSettingsV2Response{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsUpdateAuthSettingsV2Response{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsV2Response{}, client.updateAuthSettingsV2HandleError(resp)
+		return WebAppsUpdateAuthSettingsV2Response{}, client.updateAuthSettingsV2HandleError(resp)
 	}
 	return client.updateAuthSettingsV2HandleResponse(resp)
 }
@@ -26268,12 +26079,12 @@ func (client *WebAppsClient) updateAuthSettingsV2CreateRequest(ctx context.Conte
 }
 
 // updateAuthSettingsV2HandleResponse handles the UpdateAuthSettingsV2 response.
-func (client *WebAppsClient) updateAuthSettingsV2HandleResponse(resp *azcore.Response) (SiteAuthSettingsV2Response, error) {
-	var val *SiteAuthSettingsV2
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsV2Response{}, err
+func (client *WebAppsClient) updateAuthSettingsV2HandleResponse(resp *azcore.Response) (WebAppsUpdateAuthSettingsV2Response, error) {
+	result := WebAppsUpdateAuthSettingsV2Response{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettingsV2); err != nil {
+		return WebAppsUpdateAuthSettingsV2Response{}, err
 	}
-	return SiteAuthSettingsV2Response{RawResponse: resp.Response, SiteAuthSettingsV2: val}, nil
+	return result, nil
 }
 
 // updateAuthSettingsV2HandleError handles the UpdateAuthSettingsV2 error response.
@@ -26291,17 +26102,17 @@ func (client *WebAppsClient) updateAuthSettingsV2HandleError(resp *azcore.Respon
 
 // UpdateAuthSettingsV2Slot - Description for Updates site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateAuthSettingsV2Slot(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettingsV2 SiteAuthSettingsV2, options *WebAppsUpdateAuthSettingsV2SlotOptions) (SiteAuthSettingsV2Response, error) {
+func (client *WebAppsClient) UpdateAuthSettingsV2Slot(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettingsV2 SiteAuthSettingsV2, options *WebAppsUpdateAuthSettingsV2SlotOptions) (WebAppsUpdateAuthSettingsV2SlotResponse, error) {
 	req, err := client.updateAuthSettingsV2SlotCreateRequest(ctx, resourceGroupName, name, slot, siteAuthSettingsV2, options)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsUpdateAuthSettingsV2SlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteAuthSettingsV2Response{}, err
+		return WebAppsUpdateAuthSettingsV2SlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteAuthSettingsV2Response{}, client.updateAuthSettingsV2SlotHandleError(resp)
+		return WebAppsUpdateAuthSettingsV2SlotResponse{}, client.updateAuthSettingsV2SlotHandleError(resp)
 	}
 	return client.updateAuthSettingsV2SlotHandleResponse(resp)
 }
@@ -26338,12 +26149,12 @@ func (client *WebAppsClient) updateAuthSettingsV2SlotCreateRequest(ctx context.C
 }
 
 // updateAuthSettingsV2SlotHandleResponse handles the UpdateAuthSettingsV2Slot response.
-func (client *WebAppsClient) updateAuthSettingsV2SlotHandleResponse(resp *azcore.Response) (SiteAuthSettingsV2Response, error) {
-	var val *SiteAuthSettingsV2
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteAuthSettingsV2Response{}, err
+func (client *WebAppsClient) updateAuthSettingsV2SlotHandleResponse(resp *azcore.Response) (WebAppsUpdateAuthSettingsV2SlotResponse, error) {
+	result := WebAppsUpdateAuthSettingsV2SlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteAuthSettingsV2); err != nil {
+		return WebAppsUpdateAuthSettingsV2SlotResponse{}, err
 	}
-	return SiteAuthSettingsV2Response{RawResponse: resp.Response, SiteAuthSettingsV2: val}, nil
+	return result, nil
 }
 
 // updateAuthSettingsV2SlotHandleError handles the UpdateAuthSettingsV2Slot error response.
@@ -26361,17 +26172,17 @@ func (client *WebAppsClient) updateAuthSettingsV2SlotHandleError(resp *azcore.Re
 
 // UpdateAzureStorageAccounts - Description for Updates the Azure storage account configurations of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource, options *WebAppsUpdateAzureStorageAccountsOptions) (AzureStoragePropertyDictionaryResourceResponse, error) {
+func (client *WebAppsClient) UpdateAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource, options *WebAppsUpdateAzureStorageAccountsOptions) (WebAppsUpdateAzureStorageAccountsResponse, error) {
 	req, err := client.updateAzureStorageAccountsCreateRequest(ctx, resourceGroupName, name, azureStorageAccounts, options)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsUpdateAzureStorageAccountsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsUpdateAzureStorageAccountsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AzureStoragePropertyDictionaryResourceResponse{}, client.updateAzureStorageAccountsHandleError(resp)
+		return WebAppsUpdateAzureStorageAccountsResponse{}, client.updateAzureStorageAccountsHandleError(resp)
 	}
 	return client.updateAzureStorageAccountsHandleResponse(resp)
 }
@@ -26404,12 +26215,12 @@ func (client *WebAppsClient) updateAzureStorageAccountsCreateRequest(ctx context
 }
 
 // updateAzureStorageAccountsHandleResponse handles the UpdateAzureStorageAccounts response.
-func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *azcore.Response) (AzureStoragePropertyDictionaryResourceResponse, error) {
-	var val *AzureStoragePropertyDictionaryResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *azcore.Response) (WebAppsUpdateAzureStorageAccountsResponse, error) {
+	result := WebAppsUpdateAzureStorageAccountsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AzureStoragePropertyDictionaryResource); err != nil {
+		return WebAppsUpdateAzureStorageAccountsResponse{}, err
 	}
-	return AzureStoragePropertyDictionaryResourceResponse{RawResponse: resp.Response, AzureStoragePropertyDictionaryResource: val}, nil
+	return result, nil
 }
 
 // updateAzureStorageAccountsHandleError handles the UpdateAzureStorageAccounts error response.
@@ -26427,17 +26238,17 @@ func (client *WebAppsClient) updateAzureStorageAccountsHandleError(resp *azcore.
 
 // UpdateAzureStorageAccountsSlot - Description for Updates the Azure storage account configurations of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string, azureStorageAccounts AzureStoragePropertyDictionaryResource, options *WebAppsUpdateAzureStorageAccountsSlotOptions) (AzureStoragePropertyDictionaryResourceResponse, error) {
+func (client *WebAppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string, azureStorageAccounts AzureStoragePropertyDictionaryResource, options *WebAppsUpdateAzureStorageAccountsSlotOptions) (WebAppsUpdateAzureStorageAccountsSlotResponse, error) {
 	req, err := client.updateAzureStorageAccountsSlotCreateRequest(ctx, resourceGroupName, name, slot, azureStorageAccounts, options)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsUpdateAzureStorageAccountsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+		return WebAppsUpdateAzureStorageAccountsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AzureStoragePropertyDictionaryResourceResponse{}, client.updateAzureStorageAccountsSlotHandleError(resp)
+		return WebAppsUpdateAzureStorageAccountsSlotResponse{}, client.updateAzureStorageAccountsSlotHandleError(resp)
 	}
 	return client.updateAzureStorageAccountsSlotHandleResponse(resp)
 }
@@ -26474,12 +26285,12 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotCreateRequest(ctx con
 }
 
 // updateAzureStorageAccountsSlotHandleResponse handles the UpdateAzureStorageAccountsSlot response.
-func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *azcore.Response) (AzureStoragePropertyDictionaryResourceResponse, error) {
-	var val *AzureStoragePropertyDictionaryResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AzureStoragePropertyDictionaryResourceResponse{}, err
+func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateAzureStorageAccountsSlotResponse, error) {
+	result := WebAppsUpdateAzureStorageAccountsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AzureStoragePropertyDictionaryResource); err != nil {
+		return WebAppsUpdateAzureStorageAccountsSlotResponse{}, err
 	}
-	return AzureStoragePropertyDictionaryResourceResponse{RawResponse: resp.Response, AzureStoragePropertyDictionaryResource: val}, nil
+	return result, nil
 }
 
 // updateAzureStorageAccountsSlotHandleError handles the UpdateAzureStorageAccountsSlot error response.
@@ -26497,17 +26308,17 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleError(resp *azc
 
 // UpdateBackupConfiguration - Description for Updates the backup configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateBackupConfiguration(ctx context.Context, resourceGroupName string, name string, request BackupRequest, options *WebAppsUpdateBackupConfigurationOptions) (BackupRequestResponse, error) {
+func (client *WebAppsClient) UpdateBackupConfiguration(ctx context.Context, resourceGroupName string, name string, request BackupRequest, options *WebAppsUpdateBackupConfigurationOptions) (WebAppsUpdateBackupConfigurationResponse, error) {
 	req, err := client.updateBackupConfigurationCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsUpdateBackupConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsUpdateBackupConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupRequestResponse{}, client.updateBackupConfigurationHandleError(resp)
+		return WebAppsUpdateBackupConfigurationResponse{}, client.updateBackupConfigurationHandleError(resp)
 	}
 	return client.updateBackupConfigurationHandleResponse(resp)
 }
@@ -26540,12 +26351,12 @@ func (client *WebAppsClient) updateBackupConfigurationCreateRequest(ctx context.
 }
 
 // updateBackupConfigurationHandleResponse handles the UpdateBackupConfiguration response.
-func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *azcore.Response) (BackupRequestResponse, error) {
-	var val *BackupRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupRequestResponse{}, err
+func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *azcore.Response) (WebAppsUpdateBackupConfigurationResponse, error) {
+	result := WebAppsUpdateBackupConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupRequest); err != nil {
+		return WebAppsUpdateBackupConfigurationResponse{}, err
 	}
-	return BackupRequestResponse{RawResponse: resp.Response, BackupRequest: val}, nil
+	return result, nil
 }
 
 // updateBackupConfigurationHandleError handles the UpdateBackupConfiguration error response.
@@ -26563,17 +26374,17 @@ func (client *WebAppsClient) updateBackupConfigurationHandleError(resp *azcore.R
 
 // UpdateBackupConfigurationSlot - Description for Updates the backup configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, options *WebAppsUpdateBackupConfigurationSlotOptions) (BackupRequestResponse, error) {
+func (client *WebAppsClient) UpdateBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, options *WebAppsUpdateBackupConfigurationSlotOptions) (WebAppsUpdateBackupConfigurationSlotResponse, error) {
 	req, err := client.updateBackupConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsUpdateBackupConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BackupRequestResponse{}, err
+		return WebAppsUpdateBackupConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BackupRequestResponse{}, client.updateBackupConfigurationSlotHandleError(resp)
+		return WebAppsUpdateBackupConfigurationSlotResponse{}, client.updateBackupConfigurationSlotHandleError(resp)
 	}
 	return client.updateBackupConfigurationSlotHandleResponse(resp)
 }
@@ -26610,12 +26421,12 @@ func (client *WebAppsClient) updateBackupConfigurationSlotCreateRequest(ctx cont
 }
 
 // updateBackupConfigurationSlotHandleResponse handles the UpdateBackupConfigurationSlot response.
-func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *azcore.Response) (BackupRequestResponse, error) {
-	var val *BackupRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BackupRequestResponse{}, err
+func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateBackupConfigurationSlotResponse, error) {
+	result := WebAppsUpdateBackupConfigurationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BackupRequest); err != nil {
+		return WebAppsUpdateBackupConfigurationSlotResponse{}, err
 	}
-	return BackupRequestResponse{RawResponse: resp.Response, BackupRequest: val}, nil
+	return result, nil
 }
 
 // updateBackupConfigurationSlotHandleError handles the UpdateBackupConfigurationSlot error response.
@@ -26633,17 +26444,17 @@ func (client *WebAppsClient) updateBackupConfigurationSlotHandleError(resp *azco
 
 // UpdateConfiguration - Description for Updates the configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateConfiguration(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, options *WebAppsUpdateConfigurationOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) UpdateConfiguration(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, options *WebAppsUpdateConfigurationOptions) (WebAppsUpdateConfigurationResponse, error) {
 	req, err := client.updateConfigurationCreateRequest(ctx, resourceGroupName, name, siteConfig, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsUpdateConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsUpdateConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.updateConfigurationHandleError(resp)
+		return WebAppsUpdateConfigurationResponse{}, client.updateConfigurationHandleError(resp)
 	}
 	return client.updateConfigurationHandleResponse(resp)
 }
@@ -26676,12 +26487,12 @@ func (client *WebAppsClient) updateConfigurationCreateRequest(ctx context.Contex
 }
 
 // updateConfigurationHandleResponse handles the UpdateConfiguration response.
-func (client *WebAppsClient) updateConfigurationHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) updateConfigurationHandleResponse(resp *azcore.Response) (WebAppsUpdateConfigurationResponse, error) {
+	result := WebAppsUpdateConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsUpdateConfigurationResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // updateConfigurationHandleError handles the UpdateConfiguration error response.
@@ -26699,17 +26510,17 @@ func (client *WebAppsClient) updateConfigurationHandleError(resp *azcore.Respons
 
 // UpdateConfigurationSlot - Description for Updates the configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, options *WebAppsUpdateConfigurationSlotOptions) (SiteConfigResourceResponse, error) {
+func (client *WebAppsClient) UpdateConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, options *WebAppsUpdateConfigurationSlotOptions) (WebAppsUpdateConfigurationSlotResponse, error) {
 	req, err := client.updateConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, siteConfig, options)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsUpdateConfigurationSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteConfigResourceResponse{}, err
+		return WebAppsUpdateConfigurationSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteConfigResourceResponse{}, client.updateConfigurationSlotHandleError(resp)
+		return WebAppsUpdateConfigurationSlotResponse{}, client.updateConfigurationSlotHandleError(resp)
 	}
 	return client.updateConfigurationSlotHandleResponse(resp)
 }
@@ -26746,12 +26557,12 @@ func (client *WebAppsClient) updateConfigurationSlotCreateRequest(ctx context.Co
 }
 
 // updateConfigurationSlotHandleResponse handles the UpdateConfigurationSlot response.
-func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *azcore.Response) (SiteConfigResourceResponse, error) {
-	var val *SiteConfigResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteConfigResourceResponse{}, err
+func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateConfigurationSlotResponse, error) {
+	result := WebAppsUpdateConfigurationSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteConfigResource); err != nil {
+		return WebAppsUpdateConfigurationSlotResponse{}, err
 	}
-	return SiteConfigResourceResponse{RawResponse: resp.Response, SiteConfigResource: val}, nil
+	return result, nil
 }
 
 // updateConfigurationSlotHandleError handles the UpdateConfigurationSlot error response.
@@ -26769,17 +26580,17 @@ func (client *WebAppsClient) updateConfigurationSlotHandleError(resp *azcore.Res
 
 // UpdateConnectionStrings - Description for Replaces the connection strings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateConnectionStrings(ctx context.Context, resourceGroupName string, name string, connectionStrings ConnectionStringDictionary, options *WebAppsUpdateConnectionStringsOptions) (ConnectionStringDictionaryResponse, error) {
+func (client *WebAppsClient) UpdateConnectionStrings(ctx context.Context, resourceGroupName string, name string, connectionStrings ConnectionStringDictionary, options *WebAppsUpdateConnectionStringsOptions) (WebAppsUpdateConnectionStringsResponse, error) {
 	req, err := client.updateConnectionStringsCreateRequest(ctx, resourceGroupName, name, connectionStrings, options)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsUpdateConnectionStringsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsUpdateConnectionStringsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ConnectionStringDictionaryResponse{}, client.updateConnectionStringsHandleError(resp)
+		return WebAppsUpdateConnectionStringsResponse{}, client.updateConnectionStringsHandleError(resp)
 	}
 	return client.updateConnectionStringsHandleResponse(resp)
 }
@@ -26812,12 +26623,12 @@ func (client *WebAppsClient) updateConnectionStringsCreateRequest(ctx context.Co
 }
 
 // updateConnectionStringsHandleResponse handles the UpdateConnectionStrings response.
-func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *azcore.Response) (ConnectionStringDictionaryResponse, error) {
-	var val *ConnectionStringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *azcore.Response) (WebAppsUpdateConnectionStringsResponse, error) {
+	result := WebAppsUpdateConnectionStringsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ConnectionStringDictionary); err != nil {
+		return WebAppsUpdateConnectionStringsResponse{}, err
 	}
-	return ConnectionStringDictionaryResponse{RawResponse: resp.Response, ConnectionStringDictionary: val}, nil
+	return result, nil
 }
 
 // updateConnectionStringsHandleError handles the UpdateConnectionStrings error response.
@@ -26835,17 +26646,17 @@ func (client *WebAppsClient) updateConnectionStringsHandleError(resp *azcore.Res
 
 // UpdateConnectionStringsSlot - Description for Replaces the connection strings of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionStrings ConnectionStringDictionary, options *WebAppsUpdateConnectionStringsSlotOptions) (ConnectionStringDictionaryResponse, error) {
+func (client *WebAppsClient) UpdateConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionStrings ConnectionStringDictionary, options *WebAppsUpdateConnectionStringsSlotOptions) (WebAppsUpdateConnectionStringsSlotResponse, error) {
 	req, err := client.updateConnectionStringsSlotCreateRequest(ctx, resourceGroupName, name, slot, connectionStrings, options)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsUpdateConnectionStringsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+		return WebAppsUpdateConnectionStringsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ConnectionStringDictionaryResponse{}, client.updateConnectionStringsSlotHandleError(resp)
+		return WebAppsUpdateConnectionStringsSlotResponse{}, client.updateConnectionStringsSlotHandleError(resp)
 	}
 	return client.updateConnectionStringsSlotHandleResponse(resp)
 }
@@ -26882,12 +26693,12 @@ func (client *WebAppsClient) updateConnectionStringsSlotCreateRequest(ctx contex
 }
 
 // updateConnectionStringsSlotHandleResponse handles the UpdateConnectionStringsSlot response.
-func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *azcore.Response) (ConnectionStringDictionaryResponse, error) {
-	var val *ConnectionStringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ConnectionStringDictionaryResponse{}, err
+func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateConnectionStringsSlotResponse, error) {
+	result := WebAppsUpdateConnectionStringsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ConnectionStringDictionary); err != nil {
+		return WebAppsUpdateConnectionStringsSlotResponse{}, err
 	}
-	return ConnectionStringDictionaryResponse{RawResponse: resp.Response, ConnectionStringDictionary: val}, nil
+	return result, nil
 }
 
 // updateConnectionStringsSlotHandleError handles the UpdateConnectionStringsSlot error response.
@@ -26905,17 +26716,17 @@ func (client *WebAppsClient) updateConnectionStringsSlotHandleError(resp *azcore
 
 // UpdateDiagnosticLogsConfig - Description for Updates the logging configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, resourceGroupName string, name string, siteLogsConfig SiteLogsConfig, options *WebAppsUpdateDiagnosticLogsConfigOptions) (SiteLogsConfigResponse, error) {
+func (client *WebAppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, resourceGroupName string, name string, siteLogsConfig SiteLogsConfig, options *WebAppsUpdateDiagnosticLogsConfigOptions) (WebAppsUpdateDiagnosticLogsConfigResponse, error) {
 	req, err := client.updateDiagnosticLogsConfigCreateRequest(ctx, resourceGroupName, name, siteLogsConfig, options)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsUpdateDiagnosticLogsConfigResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsUpdateDiagnosticLogsConfigResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteLogsConfigResponse{}, client.updateDiagnosticLogsConfigHandleError(resp)
+		return WebAppsUpdateDiagnosticLogsConfigResponse{}, client.updateDiagnosticLogsConfigHandleError(resp)
 	}
 	return client.updateDiagnosticLogsConfigHandleResponse(resp)
 }
@@ -26948,12 +26759,12 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigCreateRequest(ctx context
 }
 
 // updateDiagnosticLogsConfigHandleResponse handles the UpdateDiagnosticLogsConfig response.
-func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *azcore.Response) (SiteLogsConfigResponse, error) {
-	var val *SiteLogsConfig
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteLogsConfigResponse{}, err
+func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *azcore.Response) (WebAppsUpdateDiagnosticLogsConfigResponse, error) {
+	result := WebAppsUpdateDiagnosticLogsConfigResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteLogsConfig); err != nil {
+		return WebAppsUpdateDiagnosticLogsConfigResponse{}, err
 	}
-	return SiteLogsConfigResponse{RawResponse: resp.Response, SiteLogsConfig: val}, nil
+	return result, nil
 }
 
 // updateDiagnosticLogsConfigHandleError handles the UpdateDiagnosticLogsConfig error response.
@@ -26971,17 +26782,17 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigHandleError(resp *azcore.
 
 // UpdateDiagnosticLogsConfigSlot - Description for Updates the logging configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteLogsConfig SiteLogsConfig, options *WebAppsUpdateDiagnosticLogsConfigSlotOptions) (SiteLogsConfigResponse, error) {
+func (client *WebAppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteLogsConfig SiteLogsConfig, options *WebAppsUpdateDiagnosticLogsConfigSlotOptions) (WebAppsUpdateDiagnosticLogsConfigSlotResponse, error) {
 	req, err := client.updateDiagnosticLogsConfigSlotCreateRequest(ctx, resourceGroupName, name, slot, siteLogsConfig, options)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteLogsConfigResponse{}, err
+		return WebAppsUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteLogsConfigResponse{}, client.updateDiagnosticLogsConfigSlotHandleError(resp)
+		return WebAppsUpdateDiagnosticLogsConfigSlotResponse{}, client.updateDiagnosticLogsConfigSlotHandleError(resp)
 	}
 	return client.updateDiagnosticLogsConfigSlotHandleResponse(resp)
 }
@@ -27018,12 +26829,12 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotCreateRequest(ctx con
 }
 
 // updateDiagnosticLogsConfigSlotHandleResponse handles the UpdateDiagnosticLogsConfigSlot response.
-func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *azcore.Response) (SiteLogsConfigResponse, error) {
-	var val *SiteLogsConfig
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteLogsConfigResponse{}, err
+func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateDiagnosticLogsConfigSlotResponse, error) {
+	result := WebAppsUpdateDiagnosticLogsConfigSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteLogsConfig); err != nil {
+		return WebAppsUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
-	return SiteLogsConfigResponse{RawResponse: resp.Response, SiteLogsConfig: val}, nil
+	return result, nil
 }
 
 // updateDiagnosticLogsConfigSlotHandleError handles the UpdateDiagnosticLogsConfigSlot error response.
@@ -27041,17 +26852,17 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleError(resp *azc
 
 // UpdateDomainOwnershipIdentifier - Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, options *WebAppsUpdateDomainOwnershipIdentifierOptions) (IdentifierResponse, error) {
+func (client *WebAppsClient) UpdateDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, options *WebAppsUpdateDomainOwnershipIdentifierOptions) (WebAppsUpdateDomainOwnershipIdentifierResponse, error) {
 	req, err := client.updateDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier, options)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsUpdateDomainOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsUpdateDomainOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IdentifierResponse{}, client.updateDomainOwnershipIdentifierHandleError(resp)
+		return WebAppsUpdateDomainOwnershipIdentifierResponse{}, client.updateDomainOwnershipIdentifierHandleError(resp)
 	}
 	return client.updateDomainOwnershipIdentifierHandleResponse(resp)
 }
@@ -27088,12 +26899,12 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierCreateRequest(ctx co
 }
 
 // updateDomainOwnershipIdentifierHandleResponse handles the UpdateDomainOwnershipIdentifier response.
-func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (IdentifierResponse, error) {
-	var val *Identifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierResponse{}, err
+func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (WebAppsUpdateDomainOwnershipIdentifierResponse, error) {
+	result := WebAppsUpdateDomainOwnershipIdentifierResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Identifier); err != nil {
+		return WebAppsUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	return IdentifierResponse{RawResponse: resp.Response, Identifier: val}, nil
+	return result, nil
 }
 
 // updateDomainOwnershipIdentifierHandleError handles the UpdateDomainOwnershipIdentifier error response.
@@ -27111,17 +26922,17 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleError(resp *az
 
 // UpdateDomainOwnershipIdentifierSlot - Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, options *WebAppsUpdateDomainOwnershipIdentifierSlotOptions) (IdentifierResponse, error) {
+func (client *WebAppsClient) UpdateDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, options *WebAppsUpdateDomainOwnershipIdentifierSlotOptions) (WebAppsUpdateDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.updateDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier, options)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IdentifierResponse{}, err
+		return WebAppsUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IdentifierResponse{}, client.updateDomainOwnershipIdentifierSlotHandleError(resp)
+		return WebAppsUpdateDomainOwnershipIdentifierSlotResponse{}, client.updateDomainOwnershipIdentifierSlotHandleError(resp)
 	}
 	return client.updateDomainOwnershipIdentifierSlotHandleResponse(resp)
 }
@@ -27162,12 +26973,12 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotCreateRequest(ct
 }
 
 // updateDomainOwnershipIdentifierSlotHandleResponse handles the UpdateDomainOwnershipIdentifierSlot response.
-func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(resp *azcore.Response) (IdentifierResponse, error) {
-	var val *Identifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierResponse{}, err
+func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateDomainOwnershipIdentifierSlotResponse, error) {
+	result := WebAppsUpdateDomainOwnershipIdentifierSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Identifier); err != nil {
+		return WebAppsUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	return IdentifierResponse{RawResponse: resp.Response, Identifier: val}, nil
+	return result, nil
 }
 
 // updateDomainOwnershipIdentifierSlotHandleError handles the UpdateDomainOwnershipIdentifierSlot error response.
@@ -27185,17 +26996,17 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleError(resp
 
 // UpdateFtpAllowed - Description for Updates whether FTP is allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateFtpAllowed(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateFtpAllowedOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) UpdateFtpAllowed(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateFtpAllowedOptions) (WebAppsUpdateFtpAllowedResponse, error) {
 	req, err := client.updateFtpAllowedCreateRequest(ctx, resourceGroupName, name, csmPublishingAccessPoliciesEntity, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateFtpAllowedResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateFtpAllowedResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.updateFtpAllowedHandleError(resp)
+		return WebAppsUpdateFtpAllowedResponse{}, client.updateFtpAllowedHandleError(resp)
 	}
 	return client.updateFtpAllowedHandleResponse(resp)
 }
@@ -27228,12 +27039,12 @@ func (client *WebAppsClient) updateFtpAllowedCreateRequest(ctx context.Context, 
 }
 
 // updateFtpAllowedHandleResponse handles the UpdateFtpAllowed response.
-func (client *WebAppsClient) updateFtpAllowedHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) updateFtpAllowedHandleResponse(resp *azcore.Response) (WebAppsUpdateFtpAllowedResponse, error) {
+	result := WebAppsUpdateFtpAllowedResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsUpdateFtpAllowedResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // updateFtpAllowedHandleError handles the UpdateFtpAllowed error response.
@@ -27251,17 +27062,17 @@ func (client *WebAppsClient) updateFtpAllowedHandleError(resp *azcore.Response) 
 
 // UpdateFtpAllowedSlot - Description for Updates whether FTP is allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateFtpAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateFtpAllowedSlotOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) UpdateFtpAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateFtpAllowedSlotOptions) (WebAppsUpdateFtpAllowedSlotResponse, error) {
 	req, err := client.updateFtpAllowedSlotCreateRequest(ctx, resourceGroupName, name, slot, csmPublishingAccessPoliciesEntity, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateFtpAllowedSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateFtpAllowedSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.updateFtpAllowedSlotHandleError(resp)
+		return WebAppsUpdateFtpAllowedSlotResponse{}, client.updateFtpAllowedSlotHandleError(resp)
 	}
 	return client.updateFtpAllowedSlotHandleResponse(resp)
 }
@@ -27298,12 +27109,12 @@ func (client *WebAppsClient) updateFtpAllowedSlotCreateRequest(ctx context.Conte
 }
 
 // updateFtpAllowedSlotHandleResponse handles the UpdateFtpAllowedSlot response.
-func (client *WebAppsClient) updateFtpAllowedSlotHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) updateFtpAllowedSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateFtpAllowedSlotResponse, error) {
+	result := WebAppsUpdateFtpAllowedSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsUpdateFtpAllowedSlotResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // updateFtpAllowedSlotHandleError handles the UpdateFtpAllowedSlot error response.
@@ -27321,17 +27132,17 @@ func (client *WebAppsClient) updateFtpAllowedSlotHandleError(resp *azcore.Respon
 
 // UpdateHybridConnection - Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, options *WebAppsUpdateHybridConnectionOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) UpdateHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, options *WebAppsUpdateHybridConnectionOptions) (WebAppsUpdateHybridConnectionResponse, error) {
 	req, err := client.updateHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, connectionEnvelope, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsUpdateHybridConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsUpdateHybridConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.updateHybridConnectionHandleError(resp)
+		return WebAppsUpdateHybridConnectionResponse{}, client.updateHybridConnectionHandleError(resp)
 	}
 	return client.updateHybridConnectionHandleResponse(resp)
 }
@@ -27372,12 +27183,12 @@ func (client *WebAppsClient) updateHybridConnectionCreateRequest(ctx context.Con
 }
 
 // updateHybridConnectionHandleResponse handles the UpdateHybridConnection response.
-func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *azcore.Response) (WebAppsUpdateHybridConnectionResponse, error) {
+	result := WebAppsUpdateHybridConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsUpdateHybridConnectionResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // updateHybridConnectionHandleError handles the UpdateHybridConnection error response.
@@ -27395,17 +27206,17 @@ func (client *WebAppsClient) updateHybridConnectionHandleError(resp *azcore.Resp
 
 // UpdateHybridConnectionSlot - Description for Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, options *WebAppsUpdateHybridConnectionSlotOptions) (HybridConnectionResponse, error) {
+func (client *WebAppsClient) UpdateHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, options *WebAppsUpdateHybridConnectionSlotOptions) (WebAppsUpdateHybridConnectionSlotResponse, error) {
 	req, err := client.updateHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsUpdateHybridConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return WebAppsUpdateHybridConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.updateHybridConnectionSlotHandleError(resp)
+		return WebAppsUpdateHybridConnectionSlotResponse{}, client.updateHybridConnectionSlotHandleError(resp)
 	}
 	return client.updateHybridConnectionSlotHandleResponse(resp)
 }
@@ -27450,12 +27261,12 @@ func (client *WebAppsClient) updateHybridConnectionSlotCreateRequest(ctx context
 }
 
 // updateHybridConnectionSlotHandleResponse handles the UpdateHybridConnectionSlot response.
-func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateHybridConnectionSlotResponse, error) {
+	result := WebAppsUpdateHybridConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return WebAppsUpdateHybridConnectionSlotResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // updateHybridConnectionSlotHandleError handles the UpdateHybridConnectionSlot error response.
@@ -27473,17 +27284,17 @@ func (client *WebAppsClient) updateHybridConnectionSlotHandleError(resp *azcore.
 
 // UpdateMetadata - Description for Replaces the metadata of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateMetadata(ctx context.Context, resourceGroupName string, name string, metadata StringDictionary, options *WebAppsUpdateMetadataOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) UpdateMetadata(ctx context.Context, resourceGroupName string, name string, metadata StringDictionary, options *WebAppsUpdateMetadataOptions) (WebAppsUpdateMetadataResponse, error) {
 	req, err := client.updateMetadataCreateRequest(ctx, resourceGroupName, name, metadata, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateMetadataResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateMetadataResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.updateMetadataHandleError(resp)
+		return WebAppsUpdateMetadataResponse{}, client.updateMetadataHandleError(resp)
 	}
 	return client.updateMetadataHandleResponse(resp)
 }
@@ -27516,12 +27327,12 @@ func (client *WebAppsClient) updateMetadataCreateRequest(ctx context.Context, re
 }
 
 // updateMetadataHandleResponse handles the UpdateMetadata response.
-func (client *WebAppsClient) updateMetadataHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) updateMetadataHandleResponse(resp *azcore.Response) (WebAppsUpdateMetadataResponse, error) {
+	result := WebAppsUpdateMetadataResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsUpdateMetadataResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // updateMetadataHandleError handles the UpdateMetadata error response.
@@ -27539,17 +27350,17 @@ func (client *WebAppsClient) updateMetadataHandleError(resp *azcore.Response) er
 
 // UpdateMetadataSlot - Description for Replaces the metadata of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string, metadata StringDictionary, options *WebAppsUpdateMetadataSlotOptions) (StringDictionaryResponse, error) {
+func (client *WebAppsClient) UpdateMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string, metadata StringDictionary, options *WebAppsUpdateMetadataSlotOptions) (WebAppsUpdateMetadataSlotResponse, error) {
 	req, err := client.updateMetadataSlotCreateRequest(ctx, resourceGroupName, name, slot, metadata, options)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateMetadataSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return StringDictionaryResponse{}, err
+		return WebAppsUpdateMetadataSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return StringDictionaryResponse{}, client.updateMetadataSlotHandleError(resp)
+		return WebAppsUpdateMetadataSlotResponse{}, client.updateMetadataSlotHandleError(resp)
 	}
 	return client.updateMetadataSlotHandleResponse(resp)
 }
@@ -27586,12 +27397,12 @@ func (client *WebAppsClient) updateMetadataSlotCreateRequest(ctx context.Context
 }
 
 // updateMetadataSlotHandleResponse handles the UpdateMetadataSlot response.
-func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *azcore.Response) (StringDictionaryResponse, error) {
-	var val *StringDictionary
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StringDictionaryResponse{}, err
+func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateMetadataSlotResponse, error) {
+	result := WebAppsUpdateMetadataSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StringDictionary); err != nil {
+		return WebAppsUpdateMetadataSlotResponse{}, err
 	}
-	return StringDictionaryResponse{RawResponse: resp.Response, StringDictionary: val}, nil
+	return result, nil
 }
 
 // updateMetadataSlotHandleError handles the UpdateMetadataSlot error response.
@@ -27609,17 +27420,17 @@ func (client *WebAppsClient) updateMetadataSlotHandleError(resp *azcore.Response
 
 // UpdatePremierAddOn - Description for Updates a named add-on of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdatePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnPatchResource, options *WebAppsUpdatePremierAddOnOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) UpdatePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnPatchResource, options *WebAppsUpdatePremierAddOnOptions) (WebAppsUpdatePremierAddOnResponse, error) {
 	req, err := client.updatePremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, premierAddOn, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsUpdatePremierAddOnResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsUpdatePremierAddOnResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.updatePremierAddOnHandleError(resp)
+		return WebAppsUpdatePremierAddOnResponse{}, client.updatePremierAddOnHandleError(resp)
 	}
 	return client.updatePremierAddOnHandleResponse(resp)
 }
@@ -27656,12 +27467,12 @@ func (client *WebAppsClient) updatePremierAddOnCreateRequest(ctx context.Context
 }
 
 // updatePremierAddOnHandleResponse handles the UpdatePremierAddOn response.
-func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *azcore.Response) (WebAppsUpdatePremierAddOnResponse, error) {
+	result := WebAppsUpdatePremierAddOnResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsUpdatePremierAddOnResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // updatePremierAddOnHandleError handles the UpdatePremierAddOn error response.
@@ -27679,17 +27490,17 @@ func (client *WebAppsClient) updatePremierAddOnHandleError(resp *azcore.Response
 
 // UpdatePremierAddOnSlot - Description for Updates a named add-on of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdatePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOnPatchResource, options *WebAppsUpdatePremierAddOnSlotOptions) (PremierAddOnResponse, error) {
+func (client *WebAppsClient) UpdatePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOnPatchResource, options *WebAppsUpdatePremierAddOnSlotOptions) (WebAppsUpdatePremierAddOnSlotResponse, error) {
 	req, err := client.updatePremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, premierAddOn, options)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsUpdatePremierAddOnSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PremierAddOnResponse{}, err
+		return WebAppsUpdatePremierAddOnSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PremierAddOnResponse{}, client.updatePremierAddOnSlotHandleError(resp)
+		return WebAppsUpdatePremierAddOnSlotResponse{}, client.updatePremierAddOnSlotHandleError(resp)
 	}
 	return client.updatePremierAddOnSlotHandleResponse(resp)
 }
@@ -27730,12 +27541,12 @@ func (client *WebAppsClient) updatePremierAddOnSlotCreateRequest(ctx context.Con
 }
 
 // updatePremierAddOnSlotHandleResponse handles the UpdatePremierAddOnSlot response.
-func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *azcore.Response) (PremierAddOnResponse, error) {
-	var val *PremierAddOn
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnResponse{}, err
+func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *azcore.Response) (WebAppsUpdatePremierAddOnSlotResponse, error) {
+	result := WebAppsUpdatePremierAddOnSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOn); err != nil {
+		return WebAppsUpdatePremierAddOnSlotResponse{}, err
 	}
-	return PremierAddOnResponse{RawResponse: resp.Response, PremierAddOn: val}, nil
+	return result, nil
 }
 
 // updatePremierAddOnSlotHandleError handles the UpdatePremierAddOnSlot error response.
@@ -27753,17 +27564,17 @@ func (client *WebAppsClient) updatePremierAddOnSlotHandleError(resp *azcore.Resp
 
 // UpdateRelayServiceConnection - Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsUpdateRelayServiceConnectionOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) UpdateRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsUpdateRelayServiceConnectionOptions) (WebAppsUpdateRelayServiceConnectionResponse, error) {
 	req, err := client.updateRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, connectionEnvelope, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsUpdateRelayServiceConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsUpdateRelayServiceConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.updateRelayServiceConnectionHandleError(resp)
+		return WebAppsUpdateRelayServiceConnectionResponse{}, client.updateRelayServiceConnectionHandleError(resp)
 	}
 	return client.updateRelayServiceConnectionHandleResponse(resp)
 }
@@ -27800,12 +27611,12 @@ func (client *WebAppsClient) updateRelayServiceConnectionCreateRequest(ctx conte
 }
 
 // updateRelayServiceConnectionHandleResponse handles the UpdateRelayServiceConnection response.
-func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *azcore.Response) (WebAppsUpdateRelayServiceConnectionResponse, error) {
+	result := WebAppsUpdateRelayServiceConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsUpdateRelayServiceConnectionResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // updateRelayServiceConnectionHandleError handles the UpdateRelayServiceConnection error response.
@@ -27823,17 +27634,17 @@ func (client *WebAppsClient) updateRelayServiceConnectionHandleError(resp *azcor
 
 // UpdateRelayServiceConnectionSlot - Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsUpdateRelayServiceConnectionSlotOptions) (RelayServiceConnectionEntityResponse, error) {
+func (client *WebAppsClient) UpdateRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsUpdateRelayServiceConnectionSlotOptions) (WebAppsUpdateRelayServiceConnectionSlotResponse, error) {
 	req, err := client.updateRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, connectionEnvelope, options)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsUpdateRelayServiceConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+		return WebAppsUpdateRelayServiceConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RelayServiceConnectionEntityResponse{}, client.updateRelayServiceConnectionSlotHandleError(resp)
+		return WebAppsUpdateRelayServiceConnectionSlotResponse{}, client.updateRelayServiceConnectionSlotHandleError(resp)
 	}
 	return client.updateRelayServiceConnectionSlotHandleResponse(resp)
 }
@@ -27874,12 +27685,12 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotCreateRequest(ctx c
 }
 
 // updateRelayServiceConnectionSlotHandleResponse handles the UpdateRelayServiceConnectionSlot response.
-func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp *azcore.Response) (RelayServiceConnectionEntityResponse, error) {
-	var val *RelayServiceConnectionEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RelayServiceConnectionEntityResponse{}, err
+func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateRelayServiceConnectionSlotResponse, error) {
+	result := WebAppsUpdateRelayServiceConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RelayServiceConnectionEntity); err != nil {
+		return WebAppsUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	return RelayServiceConnectionEntityResponse{RawResponse: resp.Response, RelayServiceConnectionEntity: val}, nil
+	return result, nil
 }
 
 // updateRelayServiceConnectionSlotHandleError handles the UpdateRelayServiceConnectionSlot error response.
@@ -27897,17 +27708,17 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleError(resp *a
 
 // UpdateScmAllowed - Description for Updates whether user publishing credentials are allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateScmAllowed(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateScmAllowedOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) UpdateScmAllowed(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateScmAllowedOptions) (WebAppsUpdateScmAllowedResponse, error) {
 	req, err := client.updateScmAllowedCreateRequest(ctx, resourceGroupName, name, csmPublishingAccessPoliciesEntity, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateScmAllowedResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateScmAllowedResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.updateScmAllowedHandleError(resp)
+		return WebAppsUpdateScmAllowedResponse{}, client.updateScmAllowedHandleError(resp)
 	}
 	return client.updateScmAllowedHandleResponse(resp)
 }
@@ -27940,12 +27751,12 @@ func (client *WebAppsClient) updateScmAllowedCreateRequest(ctx context.Context, 
 }
 
 // updateScmAllowedHandleResponse handles the UpdateScmAllowed response.
-func (client *WebAppsClient) updateScmAllowedHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) updateScmAllowedHandleResponse(resp *azcore.Response) (WebAppsUpdateScmAllowedResponse, error) {
+	result := WebAppsUpdateScmAllowedResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsUpdateScmAllowedResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // updateScmAllowedHandleError handles the UpdateScmAllowed error response.
@@ -27963,17 +27774,17 @@ func (client *WebAppsClient) updateScmAllowedHandleError(resp *azcore.Response) 
 
 // UpdateScmAllowedSlot - Description for Updates whether user publishing credentials are allowed on the site or not.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateScmAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateScmAllowedSlotOptions) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
+func (client *WebAppsClient) UpdateScmAllowedSlot(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, options *WebAppsUpdateScmAllowedSlotOptions) (WebAppsUpdateScmAllowedSlotResponse, error) {
 	req, err := client.updateScmAllowedSlotCreateRequest(ctx, resourceGroupName, name, slot, csmPublishingAccessPoliciesEntity, options)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateScmAllowedSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+		return WebAppsUpdateScmAllowedSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, client.updateScmAllowedSlotHandleError(resp)
+		return WebAppsUpdateScmAllowedSlotResponse{}, client.updateScmAllowedSlotHandleError(resp)
 	}
 	return client.updateScmAllowedSlotHandleResponse(resp)
 }
@@ -28010,12 +27821,12 @@ func (client *WebAppsClient) updateScmAllowedSlotCreateRequest(ctx context.Conte
 }
 
 // updateScmAllowedSlotHandleResponse handles the UpdateScmAllowedSlot response.
-func (client *WebAppsClient) updateScmAllowedSlotHandleResponse(resp *azcore.Response) (CsmPublishingCredentialsPoliciesEntityResponse, error) {
-	var val *CsmPublishingCredentialsPoliciesEntity
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmPublishingCredentialsPoliciesEntityResponse{}, err
+func (client *WebAppsClient) updateScmAllowedSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateScmAllowedSlotResponse, error) {
+	result := WebAppsUpdateScmAllowedSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmPublishingCredentialsPoliciesEntity); err != nil {
+		return WebAppsUpdateScmAllowedSlotResponse{}, err
 	}
-	return CsmPublishingCredentialsPoliciesEntityResponse{RawResponse: resp.Response, CsmPublishingCredentialsPoliciesEntity: val}, nil
+	return result, nil
 }
 
 // updateScmAllowedSlotHandleError handles the UpdateScmAllowedSlot error response.
@@ -28033,17 +27844,17 @@ func (client *WebAppsClient) updateScmAllowedSlotHandleError(resp *azcore.Respon
 
 // UpdateSitePushSettings - Description for Updates the Push settings associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSitePushSettings(ctx context.Context, resourceGroupName string, name string, pushSettings PushSettings, options *WebAppsUpdateSitePushSettingsOptions) (PushSettingsResponse, error) {
+func (client *WebAppsClient) UpdateSitePushSettings(ctx context.Context, resourceGroupName string, name string, pushSettings PushSettings, options *WebAppsUpdateSitePushSettingsOptions) (WebAppsUpdateSitePushSettingsResponse, error) {
 	req, err := client.updateSitePushSettingsCreateRequest(ctx, resourceGroupName, name, pushSettings, options)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsUpdateSitePushSettingsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsUpdateSitePushSettingsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PushSettingsResponse{}, client.updateSitePushSettingsHandleError(resp)
+		return WebAppsUpdateSitePushSettingsResponse{}, client.updateSitePushSettingsHandleError(resp)
 	}
 	return client.updateSitePushSettingsHandleResponse(resp)
 }
@@ -28076,12 +27887,12 @@ func (client *WebAppsClient) updateSitePushSettingsCreateRequest(ctx context.Con
 }
 
 // updateSitePushSettingsHandleResponse handles the UpdateSitePushSettings response.
-func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *azcore.Response) (PushSettingsResponse, error) {
-	var val *PushSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PushSettingsResponse{}, err
+func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *azcore.Response) (WebAppsUpdateSitePushSettingsResponse, error) {
+	result := WebAppsUpdateSitePushSettingsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PushSettings); err != nil {
+		return WebAppsUpdateSitePushSettingsResponse{}, err
 	}
-	return PushSettingsResponse{RawResponse: resp.Response, PushSettings: val}, nil
+	return result, nil
 }
 
 // updateSitePushSettingsHandleError handles the UpdateSitePushSettings error response.
@@ -28099,17 +27910,17 @@ func (client *WebAppsClient) updateSitePushSettingsHandleError(resp *azcore.Resp
 
 // UpdateSitePushSettingsSlot - Description for Updates the Push settings associated with web app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSitePushSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, pushSettings PushSettings, options *WebAppsUpdateSitePushSettingsSlotOptions) (PushSettingsResponse, error) {
+func (client *WebAppsClient) UpdateSitePushSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, pushSettings PushSettings, options *WebAppsUpdateSitePushSettingsSlotOptions) (WebAppsUpdateSitePushSettingsSlotResponse, error) {
 	req, err := client.updateSitePushSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, pushSettings, options)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsUpdateSitePushSettingsSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PushSettingsResponse{}, err
+		return WebAppsUpdateSitePushSettingsSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PushSettingsResponse{}, client.updateSitePushSettingsSlotHandleError(resp)
+		return WebAppsUpdateSitePushSettingsSlotResponse{}, client.updateSitePushSettingsSlotHandleError(resp)
 	}
 	return client.updateSitePushSettingsSlotHandleResponse(resp)
 }
@@ -28146,12 +27957,12 @@ func (client *WebAppsClient) updateSitePushSettingsSlotCreateRequest(ctx context
 }
 
 // updateSitePushSettingsSlotHandleResponse handles the UpdateSitePushSettingsSlot response.
-func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *azcore.Response) (PushSettingsResponse, error) {
-	var val *PushSettings
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PushSettingsResponse{}, err
+func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateSitePushSettingsSlotResponse, error) {
+	result := WebAppsUpdateSitePushSettingsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PushSettings); err != nil {
+		return WebAppsUpdateSitePushSettingsSlotResponse{}, err
 	}
-	return PushSettingsResponse{RawResponse: resp.Response, PushSettings: val}, nil
+	return result, nil
 }
 
 // updateSitePushSettingsSlotHandleError handles the UpdateSitePushSettingsSlot error response.
@@ -28169,17 +27980,17 @@ func (client *WebAppsClient) updateSitePushSettingsSlotHandleError(resp *azcore.
 
 // UpdateSlot - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope SitePatchResource, options *WebAppsUpdateSlotOptions) (SiteResponse, error) {
+func (client *WebAppsClient) UpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope SitePatchResource, options *WebAppsUpdateSlotOptions) (WebAppsUpdateSlotResponse, error) {
 	req, err := client.updateSlotCreateRequest(ctx, resourceGroupName, name, slot, siteEnvelope, options)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsUpdateSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsUpdateSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return SiteResponse{}, client.updateSlotHandleError(resp)
+		return WebAppsUpdateSlotResponse{}, client.updateSlotHandleError(resp)
 	}
 	return client.updateSlotHandleResponse(resp)
 }
@@ -28216,12 +28027,12 @@ func (client *WebAppsClient) updateSlotCreateRequest(ctx context.Context, resour
 }
 
 // updateSlotHandleResponse handles the UpdateSlot response.
-func (client *WebAppsClient) updateSlotHandleResponse(resp *azcore.Response) (SiteResponse, error) {
-	var val *Site
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteResponse{}, err
+func (client *WebAppsClient) updateSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateSlotResponse, error) {
+	result := WebAppsUpdateSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Site); err != nil {
+		return WebAppsUpdateSlotResponse{}, err
 	}
-	return SiteResponse{RawResponse: resp.Response, Site: val}, nil
+	return result, nil
 }
 
 // updateSlotHandleError handles the UpdateSlot error response.
@@ -28240,17 +28051,17 @@ func (client *WebAppsClient) updateSlotHandleError(resp *azcore.Response) error 
 // UpdateSlotConfigurationNames - Description for Updates the names of application settings and connection string that remain with the slot during swap
 // operation.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSlotConfigurationNames(ctx context.Context, resourceGroupName string, name string, slotConfigNames SlotConfigNamesResource, options *WebAppsUpdateSlotConfigurationNamesOptions) (SlotConfigNamesResourceResponse, error) {
+func (client *WebAppsClient) UpdateSlotConfigurationNames(ctx context.Context, resourceGroupName string, name string, slotConfigNames SlotConfigNamesResource, options *WebAppsUpdateSlotConfigurationNamesOptions) (WebAppsUpdateSlotConfigurationNamesResponse, error) {
 	req, err := client.updateSlotConfigurationNamesCreateRequest(ctx, resourceGroupName, name, slotConfigNames, options)
 	if err != nil {
-		return SlotConfigNamesResourceResponse{}, err
+		return WebAppsUpdateSlotConfigurationNamesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SlotConfigNamesResourceResponse{}, err
+		return WebAppsUpdateSlotConfigurationNamesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SlotConfigNamesResourceResponse{}, client.updateSlotConfigurationNamesHandleError(resp)
+		return WebAppsUpdateSlotConfigurationNamesResponse{}, client.updateSlotConfigurationNamesHandleError(resp)
 	}
 	return client.updateSlotConfigurationNamesHandleResponse(resp)
 }
@@ -28283,12 +28094,12 @@ func (client *WebAppsClient) updateSlotConfigurationNamesCreateRequest(ctx conte
 }
 
 // updateSlotConfigurationNamesHandleResponse handles the UpdateSlotConfigurationNames response.
-func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *azcore.Response) (SlotConfigNamesResourceResponse, error) {
-	var val *SlotConfigNamesResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SlotConfigNamesResourceResponse{}, err
+func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *azcore.Response) (WebAppsUpdateSlotConfigurationNamesResponse, error) {
+	result := WebAppsUpdateSlotConfigurationNamesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SlotConfigNamesResource); err != nil {
+		return WebAppsUpdateSlotConfigurationNamesResponse{}, err
 	}
-	return SlotConfigNamesResourceResponse{RawResponse: resp.Response, SlotConfigNamesResource: val}, nil
+	return result, nil
 }
 
 // updateSlotConfigurationNamesHandleError handles the UpdateSlotConfigurationNames error response.
@@ -28306,17 +28117,17 @@ func (client *WebAppsClient) updateSlotConfigurationNamesHandleError(resp *azcor
 
 // UpdateSourceControl - Description for Updates the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsUpdateSourceControlOptions) (SiteSourceControlResponse, error) {
+func (client *WebAppsClient) UpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsUpdateSourceControlOptions) (WebAppsUpdateSourceControlResponse, error) {
 	req, err := client.updateSourceControlCreateRequest(ctx, resourceGroupName, name, siteSourceControl, options)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsUpdateSourceControlResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsUpdateSourceControlResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return SiteSourceControlResponse{}, client.updateSourceControlHandleError(resp)
+		return WebAppsUpdateSourceControlResponse{}, client.updateSourceControlHandleError(resp)
 	}
 	return client.updateSourceControlHandleResponse(resp)
 }
@@ -28349,12 +28160,12 @@ func (client *WebAppsClient) updateSourceControlCreateRequest(ctx context.Contex
 }
 
 // updateSourceControlHandleResponse handles the UpdateSourceControl response.
-func (client *WebAppsClient) updateSourceControlHandleResponse(resp *azcore.Response) (SiteSourceControlResponse, error) {
-	var val *SiteSourceControl
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteSourceControlResponse{}, err
+func (client *WebAppsClient) updateSourceControlHandleResponse(resp *azcore.Response) (WebAppsUpdateSourceControlResponse, error) {
+	result := WebAppsUpdateSourceControlResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteSourceControl); err != nil {
+		return WebAppsUpdateSourceControlResponse{}, err
 	}
-	return SiteSourceControlResponse{RawResponse: resp.Response, SiteSourceControl: val}, nil
+	return result, nil
 }
 
 // updateSourceControlHandleError handles the UpdateSourceControl error response.
@@ -28372,17 +28183,17 @@ func (client *WebAppsClient) updateSourceControlHandleError(resp *azcore.Respons
 
 // UpdateSourceControlSlot - Description for Updates the source control configuration of an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsUpdateSourceControlSlotOptions) (SiteSourceControlResponse, error) {
+func (client *WebAppsClient) UpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsUpdateSourceControlSlotOptions) (WebAppsUpdateSourceControlSlotResponse, error) {
 	req, err := client.updateSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, siteSourceControl, options)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsUpdateSourceControlSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteSourceControlResponse{}, err
+		return WebAppsUpdateSourceControlSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return SiteSourceControlResponse{}, client.updateSourceControlSlotHandleError(resp)
+		return WebAppsUpdateSourceControlSlotResponse{}, client.updateSourceControlSlotHandleError(resp)
 	}
 	return client.updateSourceControlSlotHandleResponse(resp)
 }
@@ -28419,12 +28230,12 @@ func (client *WebAppsClient) updateSourceControlSlotCreateRequest(ctx context.Co
 }
 
 // updateSourceControlSlotHandleResponse handles the UpdateSourceControlSlot response.
-func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *azcore.Response) (SiteSourceControlResponse, error) {
-	var val *SiteSourceControl
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteSourceControlResponse{}, err
+func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateSourceControlSlotResponse, error) {
+	result := WebAppsUpdateSourceControlSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteSourceControl); err != nil {
+		return WebAppsUpdateSourceControlSlotResponse{}, err
 	}
-	return SiteSourceControlResponse{RawResponse: resp.Response, SiteSourceControl: val}, nil
+	return result, nil
 }
 
 // updateSourceControlSlotHandleError handles the UpdateSourceControlSlot error response.
@@ -28444,17 +28255,17 @@ func (client *WebAppsClient) updateSourceControlSlotHandleError(resp *azcore.Res
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been
 // delegated, and is not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheck(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (SwiftVirtualNetworkResponse, error) {
+func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheck(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
 	req, err := client.updateSwiftVirtualNetworkConnectionWithCheckCreateRequest(ctx, resourceGroupName, name, connectionEnvelope, options)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SwiftVirtualNetworkResponse{}, client.updateSwiftVirtualNetworkConnectionWithCheckHandleError(resp)
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, client.updateSwiftVirtualNetworkConnectionWithCheckHandleError(resp)
 	}
 	return client.updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp)
 }
@@ -28487,12 +28298,12 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckCreateR
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckHandleResponse handles the UpdateSwiftVirtualNetworkConnectionWithCheck response.
-func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *azcore.Response) (SwiftVirtualNetworkResponse, error) {
-	var val *SwiftVirtualNetwork
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *azcore.Response) (WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
+	result := WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SwiftVirtualNetwork); err != nil {
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
-	return SwiftVirtualNetworkResponse{RawResponse: resp.Response, SwiftVirtualNetwork: val}, nil
+	return result, nil
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckHandleError handles the UpdateSwiftVirtualNetworkConnectionWithCheck error response.
@@ -28512,17 +28323,17 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleE
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been
 // delegated, and is not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheckSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (SwiftVirtualNetworkResponse, error) {
+func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheckSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
 	req, err := client.updateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest(ctx, resourceGroupName, name, slot, connectionEnvelope, options)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SwiftVirtualNetworkResponse{}, client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleError(resp)
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleError(resp)
 	}
 	return client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp)
 }
@@ -28559,12 +28370,12 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotCre
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse handles the UpdateSwiftVirtualNetworkConnectionWithCheckSlot response.
-func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *azcore.Response) (SwiftVirtualNetworkResponse, error) {
-	var val *SwiftVirtualNetwork
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SwiftVirtualNetworkResponse{}, err
+func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
+	result := WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SwiftVirtualNetwork); err != nil {
+		return WebAppsUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
-	return SwiftVirtualNetworkResponse{RawResponse: resp.Response, SwiftVirtualNetwork: val}, nil
+	return result, nil
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckSlotHandleError handles the UpdateSwiftVirtualNetworkConnectionWithCheckSlot error response.
@@ -28582,17 +28393,17 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHan
 
 // UpdateVnetConnection - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, options *WebAppsUpdateVnetConnectionOptions) (VnetInfoResponse, error) {
+func (client *WebAppsClient) UpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, options *WebAppsUpdateVnetConnectionOptions) (WebAppsUpdateVnetConnectionResponse, error) {
 	req, err := client.updateVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, connectionEnvelope, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsUpdateVnetConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsUpdateVnetConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.updateVnetConnectionHandleError(resp)
+		return WebAppsUpdateVnetConnectionResponse{}, client.updateVnetConnectionHandleError(resp)
 	}
 	return client.updateVnetConnectionHandleResponse(resp)
 }
@@ -28629,12 +28440,12 @@ func (client *WebAppsClient) updateVnetConnectionCreateRequest(ctx context.Conte
 }
 
 // updateVnetConnectionHandleResponse handles the UpdateVnetConnection response.
-func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *azcore.Response) (WebAppsUpdateVnetConnectionResponse, error) {
+	result := WebAppsUpdateVnetConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return WebAppsUpdateVnetConnectionResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // updateVnetConnectionHandleError handles the UpdateVnetConnection error response.
@@ -28652,17 +28463,17 @@ func (client *WebAppsClient) updateVnetConnectionHandleError(resp *azcore.Respon
 
 // UpdateVnetConnectionGateway - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *WebAppsUpdateVnetConnectionGatewayOptions) (VnetGatewayResponse, error) {
+func (client *WebAppsClient) UpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *WebAppsUpdateVnetConnectionGatewayOptions) (WebAppsUpdateVnetConnectionGatewayResponse, error) {
 	req, err := client.updateVnetConnectionGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsUpdateVnetConnectionGatewayResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsUpdateVnetConnectionGatewayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.updateVnetConnectionGatewayHandleError(resp)
+		return WebAppsUpdateVnetConnectionGatewayResponse{}, client.updateVnetConnectionGatewayHandleError(resp)
 	}
 	return client.updateVnetConnectionGatewayHandleResponse(resp)
 }
@@ -28703,12 +28514,12 @@ func (client *WebAppsClient) updateVnetConnectionGatewayCreateRequest(ctx contex
 }
 
 // updateVnetConnectionGatewayHandleResponse handles the UpdateVnetConnectionGateway response.
-func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *azcore.Response) (WebAppsUpdateVnetConnectionGatewayResponse, error) {
+	result := WebAppsUpdateVnetConnectionGatewayResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return WebAppsUpdateVnetConnectionGatewayResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // updateVnetConnectionGatewayHandleError handles the UpdateVnetConnectionGateway error response.
@@ -28726,17 +28537,17 @@ func (client *WebAppsClient) updateVnetConnectionGatewayHandleError(resp *azcore
 
 // UpdateVnetConnectionGatewaySlot - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, options *WebAppsUpdateVnetConnectionGatewaySlotOptions) (VnetGatewayResponse, error) {
+func (client *WebAppsClient) UpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, options *WebAppsUpdateVnetConnectionGatewaySlotOptions) (WebAppsUpdateVnetConnectionGatewaySlotResponse, error) {
 	req, err := client.updateVnetConnectionGatewaySlotCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return WebAppsUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.updateVnetConnectionGatewaySlotHandleError(resp)
+		return WebAppsUpdateVnetConnectionGatewaySlotResponse{}, client.updateVnetConnectionGatewaySlotHandleError(resp)
 	}
 	return client.updateVnetConnectionGatewaySlotHandleResponse(resp)
 }
@@ -28781,12 +28592,12 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotCreateRequest(ctx co
 }
 
 // updateVnetConnectionGatewaySlotHandleResponse handles the UpdateVnetConnectionGatewaySlot response.
-func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp *azcore.Response) (WebAppsUpdateVnetConnectionGatewaySlotResponse, error) {
+	result := WebAppsUpdateVnetConnectionGatewaySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return WebAppsUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // updateVnetConnectionGatewaySlotHandleError handles the UpdateVnetConnectionGatewaySlot error response.
@@ -28804,17 +28615,17 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleError(resp *az
 
 // UpdateVnetConnectionSlot - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebAppsClient) UpdateVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfo, options *WebAppsUpdateVnetConnectionSlotOptions) (VnetInfoResponse, error) {
+func (client *WebAppsClient) UpdateVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfo, options *WebAppsUpdateVnetConnectionSlotOptions) (WebAppsUpdateVnetConnectionSlotResponse, error) {
 	req, err := client.updateVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, connectionEnvelope, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsUpdateVnetConnectionSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return WebAppsUpdateVnetConnectionSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.updateVnetConnectionSlotHandleError(resp)
+		return WebAppsUpdateVnetConnectionSlotResponse{}, client.updateVnetConnectionSlotHandleError(resp)
 	}
 	return client.updateVnetConnectionSlotHandleResponse(resp)
 }
@@ -28855,12 +28666,12 @@ func (client *WebAppsClient) updateVnetConnectionSlotCreateRequest(ctx context.C
 }
 
 // updateVnetConnectionSlotHandleResponse handles the UpdateVnetConnectionSlot response.
-func (client *WebAppsClient) updateVnetConnectionSlotHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *WebAppsClient) updateVnetConnectionSlotHandleResponse(resp *azcore.Response) (WebAppsUpdateVnetConnectionSlotResponse, error) {
+	result := WebAppsUpdateVnetConnectionSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return WebAppsUpdateVnetConnectionSlotResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // updateVnetConnectionSlotHandleError handles the UpdateVnetConnectionSlot error response.

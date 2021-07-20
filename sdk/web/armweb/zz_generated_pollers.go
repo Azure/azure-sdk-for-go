@@ -15,1038 +15,2782 @@ import (
 	"time"
 )
 
-// AppServiceCertificateOrderPoller provides polling facilities until the operation reaches a terminal state.
-type AppServiceCertificateOrderPoller interface {
+// AppServiceCertificateOrdersCreateOrUpdateCertificatePoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceCertificateOrdersCreateOrUpdateCertificatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final AppServiceCertificateOrderResponse will be returned.
-	FinalResponse(ctx context.Context) (AppServiceCertificateOrderResponse, error)
+	// If the final GET succeeded then the final AppServiceCertificateOrdersCreateOrUpdateCertificateResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error)
 }
 
-type appServiceCertificateOrderPoller struct {
+type appServiceCertificateOrdersCreateOrUpdateCertificatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *appServiceCertificateOrderPoller) Done() bool {
+func (p *appServiceCertificateOrdersCreateOrUpdateCertificatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *appServiceCertificateOrderPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceCertificateOrdersCreateOrUpdateCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *appServiceCertificateOrderPoller) FinalResponse(ctx context.Context) (AppServiceCertificateOrderResponse, error) {
-	respType := AppServiceCertificateOrderResponse{AppServiceCertificateOrder: &AppServiceCertificateOrder{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.AppServiceCertificateOrder)
+func (p *appServiceCertificateOrdersCreateOrUpdateCertificatePoller) FinalResponse(ctx context.Context) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error) {
+	respType := AppServiceCertificateOrdersCreateOrUpdateCertificateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AppServiceCertificateResource)
 	if err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateCertificateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *appServiceCertificateOrderPoller) ResumeToken() (string, error) {
+func (p *appServiceCertificateOrdersCreateOrUpdateCertificatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *appServiceCertificateOrderPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrderResponse, error) {
-	respType := AppServiceCertificateOrderResponse{AppServiceCertificateOrder: &AppServiceCertificateOrder{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AppServiceCertificateOrder)
+func (p *appServiceCertificateOrdersCreateOrUpdateCertificatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error) {
+	respType := AppServiceCertificateOrdersCreateOrUpdateCertificateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.AppServiceCertificateResource)
 	if err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateCertificateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// AppServiceCertificateResourcePoller provides polling facilities until the operation reaches a terminal state.
-type AppServiceCertificateResourcePoller interface {
+// AppServiceCertificateOrdersCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceCertificateOrdersCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final AppServiceCertificateResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (AppServiceCertificateResourceResponse, error)
+	// If the final GET succeeded then the final AppServiceCertificateOrdersCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceCertificateOrdersCreateOrUpdateResponse, error)
 }
 
-type appServiceCertificateResourcePoller struct {
+type appServiceCertificateOrdersCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *appServiceCertificateResourcePoller) Done() bool {
+func (p *appServiceCertificateOrdersCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *appServiceCertificateResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceCertificateOrdersCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *appServiceCertificateResourcePoller) FinalResponse(ctx context.Context) (AppServiceCertificateResourceResponse, error) {
-	respType := AppServiceCertificateResourceResponse{AppServiceCertificateResource: &AppServiceCertificateResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.AppServiceCertificateResource)
+func (p *appServiceCertificateOrdersCreateOrUpdatePoller) FinalResponse(ctx context.Context) (AppServiceCertificateOrdersCreateOrUpdateResponse, error) {
+	respType := AppServiceCertificateOrdersCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AppServiceCertificateOrder)
 	if err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *appServiceCertificateResourcePoller) ResumeToken() (string, error) {
+func (p *appServiceCertificateOrdersCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *appServiceCertificateResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateResourceResponse, error) {
-	respType := AppServiceCertificateResourceResponse{AppServiceCertificateResource: &AppServiceCertificateResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AppServiceCertificateResource)
+func (p *appServiceCertificateOrdersCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrdersCreateOrUpdateResponse, error) {
+	respType := AppServiceCertificateOrdersCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.AppServiceCertificateOrder)
 	if err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// AppServiceEnvironmentResourcePoller provides polling facilities until the operation reaches a terminal state.
-type AppServiceEnvironmentResourcePoller interface {
+// AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final AppServiceEnvironmentResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (AppServiceEnvironmentResourceResponse, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error)
 }
 
-type appServiceEnvironmentResourcePoller struct {
+type appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *appServiceEnvironmentResourcePoller) Done() bool {
+func (p *appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *appServiceEnvironmentResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *appServiceEnvironmentResourcePoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentResourceResponse, error) {
-	respType := AppServiceEnvironmentResourceResponse{AppServiceEnvironmentResource: &AppServiceEnvironmentResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.AppServiceEnvironmentResource)
+func (p *appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RemotePrivateEndpointConnectionARMResource)
 	if err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *appServiceEnvironmentResourcePoller) ResumeToken() (string, error) {
+func (p *appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *appServiceEnvironmentResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentResourceResponse, error) {
-	respType := AppServiceEnvironmentResourceResponse{AppServiceEnvironmentResource: &AppServiceEnvironmentResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AppServiceEnvironmentResource)
+func (p *appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
 	if err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// AppServicePlanPoller provides polling facilities until the operation reaches a terminal state.
-type AppServicePlanPoller interface {
+// AppServiceEnvironmentsChangeVnetPoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsChangeVnetPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final AppServicePlanResponse will be returned.
-	FinalResponse(ctx context.Context) (AppServicePlanResponse, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsChangeVnetPager will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsChangeVnetPager, error)
 }
 
-type appServicePlanPoller struct {
-	pt *armcore.LROPoller
+type appServiceEnvironmentsChangeVnetPoller struct {
+	pt     *armcore.LROPoller
+	client *AppServiceEnvironmentsClient
 }
 
-func (p *appServicePlanPoller) Done() bool {
+func (p *appServiceEnvironmentsChangeVnetPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *appServicePlanPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsChangeVnetPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *appServicePlanPoller) FinalResponse(ctx context.Context) (AppServicePlanResponse, error) {
-	respType := AppServicePlanResponse{AppServicePlan: &AppServicePlan{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.AppServicePlan)
-	if err != nil {
-		return AppServicePlanResponse{}, err
+func (p *appServiceEnvironmentsChangeVnetPoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsChangeVnetPager, error) {
+	respType := &appServiceEnvironmentsChangeVnetPager{client: p.client}
+	if _, err := p.pt.FinalResponse(ctx, &respType.current.WebAppCollection); err != nil {
+		return nil, err
 	}
-	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *appServicePlanPoller) ResumeToken() (string, error) {
+func (p *appServiceEnvironmentsChangeVnetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *appServicePlanPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServicePlanResponse, error) {
-	respType := AppServicePlanResponse{AppServicePlan: &AppServicePlan{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AppServicePlan)
-	if err != nil {
-		return AppServicePlanResponse{}, err
+func (p *appServiceEnvironmentsChangeVnetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsChangeVnetPager, error) {
+	respType := &appServiceEnvironmentsChangeVnetPager{client: p.client}
+	if _, err := p.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection); err != nil {
+		return nil, err
 	}
-	respType.RawResponse = resp
 	return respType, nil
 }
 
-// DomainPoller provides polling facilities until the operation reaches a terminal state.
-type DomainPoller interface {
+// AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final DomainResponse will be returned.
-	FinalResponse(ctx context.Context) (DomainResponse, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error)
 }
 
-type domainPoller struct {
+type appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *domainPoller) Done() bool {
+func (p *appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *domainPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *domainPoller) FinalResponse(ctx context.Context) (DomainResponse, error) {
-	respType := DomainResponse{Domain: &Domain{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Domain)
+func (p *appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.WorkerPoolResource)
 	if err != nil {
-		return DomainResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *domainPoller) ResumeToken() (string, error) {
+func (p *appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *domainPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DomainResponse, error) {
-	respType := DomainResponse{Domain: &Domain{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Domain)
+func (p *appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
 	if err != nil {
-		return DomainResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// FunctionEnvelopePoller provides polling facilities until the operation reaches a terminal state.
-type FunctionEnvelopePoller interface {
+// AppServiceEnvironmentsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final FunctionEnvelopeResponse will be returned.
-	FinalResponse(ctx context.Context) (FunctionEnvelopeResponse, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsCreateOrUpdateResponse, error)
 }
 
-type functionEnvelopePoller struct {
+type appServiceEnvironmentsCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *functionEnvelopePoller) Done() bool {
+func (p *appServiceEnvironmentsCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *functionEnvelopePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *functionEnvelopePoller) FinalResponse(ctx context.Context) (FunctionEnvelopeResponse, error) {
-	respType := FunctionEnvelopeResponse{FunctionEnvelope: &FunctionEnvelope{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.FunctionEnvelope)
+func (p *appServiceEnvironmentsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AppServiceEnvironmentResource)
 	if err != nil {
-		return FunctionEnvelopeResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *functionEnvelopePoller) ResumeToken() (string, error) {
+func (p *appServiceEnvironmentsCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *functionEnvelopePoller) pollUntilDone(ctx context.Context, freq time.Duration) (FunctionEnvelopeResponse, error) {
-	respType := FunctionEnvelopeResponse{FunctionEnvelope: &FunctionEnvelope{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.FunctionEnvelope)
+func (p *appServiceEnvironmentsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.AppServiceEnvironmentResource)
 	if err != nil {
-		return FunctionEnvelopeResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// HTTPPoller provides polling facilities until the operation reaches a terminal state.
-type HTTPPoller interface {
+// AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final *http.Response will be returned.
-	FinalResponse(ctx context.Context) (*http.Response, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error)
 }
 
-type httpPoller struct {
+type appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *httpPoller) Done() bool {
+func (p *appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, nil)
+func (p *appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.WorkerPoolResource)
+	if err != nil {
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
 }
 
-func (p *httpPoller) ResumeToken() (string, error) {
+func (p *appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, nil)
-}
-
-// KubeEnvironmentPoller provides polling facilities until the operation reaches a terminal state.
-type KubeEnvironmentPoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final KubeEnvironmentResponse will be returned.
-	FinalResponse(ctx context.Context) (KubeEnvironmentResponse, error)
-}
-
-type kubeEnvironmentPoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *kubeEnvironmentPoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *kubeEnvironmentPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *kubeEnvironmentPoller) FinalResponse(ctx context.Context) (KubeEnvironmentResponse, error) {
-	respType := KubeEnvironmentResponse{KubeEnvironment: &KubeEnvironment{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.KubeEnvironment)
+func (p *appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
 	if err != nil {
-		return KubeEnvironmentResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *kubeEnvironmentPoller) ResumeToken() (string, error) {
+// AppServiceEnvironmentsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final AppServiceEnvironmentsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsDeleteResponse, error)
+}
+
+type appServiceEnvironmentsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *appServiceEnvironmentsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *appServiceEnvironmentsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *appServiceEnvironmentsDeletePoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsDeleteResponse, error) {
+	respType := AppServiceEnvironmentsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return AppServiceEnvironmentsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *appServiceEnvironmentsDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *kubeEnvironmentPoller) pollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentResponse, error) {
-	respType := KubeEnvironmentResponse{KubeEnvironment: &KubeEnvironment{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.KubeEnvironment)
+func (p *appServiceEnvironmentsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
+	respType := AppServiceEnvironmentsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return KubeEnvironmentResponse{}, err
+		return AppServiceEnvironmentsDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// MSDeployStatusPoller provides polling facilities until the operation reaches a terminal state.
-type MSDeployStatusPoller interface {
+// AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final MSDeployStatusResponse will be returned.
-	FinalResponse(ctx context.Context) (MSDeployStatusResponse, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error)
 }
 
-type msDeployStatusPoller struct {
+type appServiceEnvironmentsDeletePrivateEndpointConnectionPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *msDeployStatusPoller) Done() bool {
+func (p *appServiceEnvironmentsDeletePrivateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *msDeployStatusPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsDeletePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *msDeployStatusPoller) FinalResponse(ctx context.Context) (MSDeployStatusResponse, error) {
-	respType := MSDeployStatusResponse{MSDeployStatus: &MSDeployStatus{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.MSDeployStatus)
+func (p *appServiceEnvironmentsDeletePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
+	respType := AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Object)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *msDeployStatusPoller) ResumeToken() (string, error) {
+func (p *appServiceEnvironmentsDeletePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *msDeployStatusPoller) pollUntilDone(ctx context.Context, freq time.Duration) (MSDeployStatusResponse, error) {
-	respType := MSDeployStatusResponse{MSDeployStatus: &MSDeployStatus{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.MSDeployStatus)
+func (p *appServiceEnvironmentsDeletePrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
+	respType := AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Object)
 	if err != nil {
-		return MSDeployStatusResponse{}, err
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// NetworkTraceArrayPoller provides polling facilities until the operation reaches a terminal state.
-type NetworkTraceArrayPoller interface {
+// AppServiceEnvironmentsResumePoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsResumePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final NetworkTraceArrayResponse will be returned.
-	FinalResponse(ctx context.Context) (NetworkTraceArrayResponse, error)
+	// If the final GET succeeded then the final AppServiceEnvironmentsResumePager will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsResumePager, error)
 }
 
-type networkTraceArrayPoller struct {
-	pt *armcore.LROPoller
+type appServiceEnvironmentsResumePoller struct {
+	pt     *armcore.LROPoller
+	client *AppServiceEnvironmentsClient
 }
 
-func (p *networkTraceArrayPoller) Done() bool {
+func (p *appServiceEnvironmentsResumePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *networkTraceArrayPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *appServiceEnvironmentsResumePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *networkTraceArrayPoller) FinalResponse(ctx context.Context) (NetworkTraceArrayResponse, error) {
-	respType := NetworkTraceArrayResponse{NetworkTraceArray: []*NetworkTrace{}}
+func (p *appServiceEnvironmentsResumePoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsResumePager, error) {
+	respType := &appServiceEnvironmentsResumePager{client: p.client}
+	if _, err := p.pt.FinalResponse(ctx, &respType.current.WebAppCollection); err != nil {
+		return nil, err
+	}
+	return respType, nil
+}
+
+func (p *appServiceEnvironmentsResumePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *appServiceEnvironmentsResumePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsResumePager, error) {
+	respType := &appServiceEnvironmentsResumePager{client: p.client}
+	if _, err := p.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection); err != nil {
+		return nil, err
+	}
+	return respType, nil
+}
+
+// AppServiceEnvironmentsSuspendPoller provides polling facilities until the operation reaches a terminal state.
+type AppServiceEnvironmentsSuspendPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final AppServiceEnvironmentsSuspendPager will be returned.
+	FinalResponse(ctx context.Context) (AppServiceEnvironmentsSuspendPager, error)
+}
+
+type appServiceEnvironmentsSuspendPoller struct {
+	pt     *armcore.LROPoller
+	client *AppServiceEnvironmentsClient
+}
+
+func (p *appServiceEnvironmentsSuspendPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *appServiceEnvironmentsSuspendPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *appServiceEnvironmentsSuspendPoller) FinalResponse(ctx context.Context) (AppServiceEnvironmentsSuspendPager, error) {
+	respType := &appServiceEnvironmentsSuspendPager{client: p.client}
+	if _, err := p.pt.FinalResponse(ctx, &respType.current.WebAppCollection); err != nil {
+		return nil, err
+	}
+	return respType, nil
+}
+
+func (p *appServiceEnvironmentsSuspendPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *appServiceEnvironmentsSuspendPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsSuspendPager, error) {
+	respType := &appServiceEnvironmentsSuspendPager{client: p.client}
+	if _, err := p.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection); err != nil {
+		return nil, err
+	}
+	return respType, nil
+}
+
+// AppServicePlansCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type AppServicePlansCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final AppServicePlansCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (AppServicePlansCreateOrUpdateResponse, error)
+}
+
+type appServicePlansCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *appServicePlansCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *appServicePlansCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *appServicePlansCreateOrUpdatePoller) FinalResponse(ctx context.Context) (AppServicePlansCreateOrUpdateResponse, error) {
+	respType := AppServicePlansCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AppServicePlan)
+	if err != nil {
+		return AppServicePlansCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *appServicePlansCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *appServicePlansCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
+	respType := AppServicePlansCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.AppServicePlan)
+	if err != nil {
+		return AppServicePlansCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// DomainsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DomainsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final DomainsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DomainsCreateOrUpdateResponse, error)
+}
+
+type domainsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *domainsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *domainsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *domainsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DomainsCreateOrUpdateResponse, error) {
+	respType := DomainsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Domain)
+	if err != nil {
+		return DomainsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *domainsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *domainsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DomainsCreateOrUpdateResponse, error) {
+	respType := DomainsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Domain)
+	if err != nil {
+		return DomainsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// KubeEnvironmentsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type KubeEnvironmentsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final KubeEnvironmentsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (KubeEnvironmentsCreateOrUpdateResponse, error)
+}
+
+type kubeEnvironmentsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *kubeEnvironmentsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *kubeEnvironmentsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *kubeEnvironmentsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (KubeEnvironmentsCreateOrUpdateResponse, error) {
+	respType := KubeEnvironmentsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.KubeEnvironment)
+	if err != nil {
+		return KubeEnvironmentsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *kubeEnvironmentsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *kubeEnvironmentsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsCreateOrUpdateResponse, error) {
+	respType := KubeEnvironmentsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.KubeEnvironment)
+	if err != nil {
+		return KubeEnvironmentsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// KubeEnvironmentsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type KubeEnvironmentsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final KubeEnvironmentsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (KubeEnvironmentsDeleteResponse, error)
+}
+
+type kubeEnvironmentsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *kubeEnvironmentsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *kubeEnvironmentsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *kubeEnvironmentsDeletePoller) FinalResponse(ctx context.Context) (KubeEnvironmentsDeleteResponse, error) {
+	respType := KubeEnvironmentsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return KubeEnvironmentsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *kubeEnvironmentsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *kubeEnvironmentsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsDeleteResponse, error) {
+	respType := KubeEnvironmentsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return KubeEnvironmentsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesApproveOrRejectPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesApproveOrRejectPrivateEndpointConnectionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesApproveOrRejectPrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesApproveOrRejectPrivateEndpointConnectionResponse, error)
+}
+
+type staticSitesApproveOrRejectPrivateEndpointConnectionPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesApproveOrRejectPrivateEndpointConnectionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesApproveOrRejectPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesApproveOrRejectPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (StaticSitesApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return StaticSitesApproveOrRejectPrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesApproveOrRejectPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesApproveOrRejectPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return StaticSitesApproveOrRejectPrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse, error)
+}
+
+type staticSitesCreateOrUpdateStaticSiteCustomDomainPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesCreateOrUpdateStaticSiteCustomDomainPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesCreateOrUpdateStaticSiteCustomDomainPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesCreateOrUpdateStaticSiteCustomDomainPoller) FinalResponse(ctx context.Context) (StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.StaticSiteCustomDomainOverviewARMResource)
+	if err != nil {
+		return StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesCreateOrUpdateStaticSiteCustomDomainPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesCreateOrUpdateStaticSiteCustomDomainPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.StaticSiteCustomDomainOverviewARMResource)
+	if err != nil {
+		return StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesCreateOrUpdateStaticSitePoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesCreateOrUpdateStaticSitePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesCreateOrUpdateStaticSiteResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesCreateOrUpdateStaticSiteResponse, error)
+}
+
+type staticSitesCreateOrUpdateStaticSitePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesCreateOrUpdateStaticSitePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesCreateOrUpdateStaticSitePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesCreateOrUpdateStaticSitePoller) FinalResponse(ctx context.Context) (StaticSitesCreateOrUpdateStaticSiteResponse, error) {
+	respType := StaticSitesCreateOrUpdateStaticSiteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.StaticSiteARMResource)
+	if err != nil {
+		return StaticSitesCreateOrUpdateStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesCreateOrUpdateStaticSitePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesCreateOrUpdateStaticSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateOrUpdateStaticSiteResponse, error) {
+	respType := StaticSitesCreateOrUpdateStaticSiteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.StaticSiteARMResource)
+	if err != nil {
+		return StaticSitesCreateOrUpdateStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesCreateZipDeploymentForStaticSiteBuildPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesCreateZipDeploymentForStaticSiteBuildPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesCreateZipDeploymentForStaticSiteBuildResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesCreateZipDeploymentForStaticSiteBuildResponse, error)
+}
+
+type staticSitesCreateZipDeploymentForStaticSiteBuildPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSiteBuildPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSiteBuildPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSiteBuildPoller) FinalResponse(ctx context.Context) (StaticSitesCreateZipDeploymentForStaticSiteBuildResponse, error) {
+	respType := StaticSitesCreateZipDeploymentForStaticSiteBuildResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesCreateZipDeploymentForStaticSiteBuildResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSiteBuildPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSiteBuildPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteBuildResponse, error) {
+	respType := StaticSitesCreateZipDeploymentForStaticSiteBuildResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesCreateZipDeploymentForStaticSiteBuildResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesCreateZipDeploymentForStaticSitePoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesCreateZipDeploymentForStaticSitePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesCreateZipDeploymentForStaticSiteResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesCreateZipDeploymentForStaticSiteResponse, error)
+}
+
+type staticSitesCreateZipDeploymentForStaticSitePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSitePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSitePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSitePoller) FinalResponse(ctx context.Context) (StaticSitesCreateZipDeploymentForStaticSiteResponse, error) {
+	respType := StaticSitesCreateZipDeploymentForStaticSiteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesCreateZipDeploymentForStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSitePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesCreateZipDeploymentForStaticSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteResponse, error) {
+	respType := StaticSitesCreateZipDeploymentForStaticSiteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesCreateZipDeploymentForStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesDeletePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesDeletePrivateEndpointConnectionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesDeletePrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesDeletePrivateEndpointConnectionResponse, error)
+}
+
+type staticSitesDeletePrivateEndpointConnectionPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesDeletePrivateEndpointConnectionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesDeletePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesDeletePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (StaticSitesDeletePrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesDeletePrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Object)
+	if err != nil {
+		return StaticSitesDeletePrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesDeletePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesDeletePrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeletePrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesDeletePrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return StaticSitesDeletePrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesDeleteStaticSiteBuildPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesDeleteStaticSiteBuildPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesDeleteStaticSiteBuildResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesDeleteStaticSiteBuildResponse, error)
+}
+
+type staticSitesDeleteStaticSiteBuildPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesDeleteStaticSiteBuildPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesDeleteStaticSiteBuildPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesDeleteStaticSiteBuildPoller) FinalResponse(ctx context.Context) (StaticSitesDeleteStaticSiteBuildResponse, error) {
+	respType := StaticSitesDeleteStaticSiteBuildResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesDeleteStaticSiteBuildResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesDeleteStaticSiteBuildPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesDeleteStaticSiteBuildPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteBuildResponse, error) {
+	respType := StaticSitesDeleteStaticSiteBuildResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesDeleteStaticSiteBuildResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesDeleteStaticSiteCustomDomainPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesDeleteStaticSiteCustomDomainPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesDeleteStaticSiteCustomDomainResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesDeleteStaticSiteCustomDomainResponse, error)
+}
+
+type staticSitesDeleteStaticSiteCustomDomainPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesDeleteStaticSiteCustomDomainPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesDeleteStaticSiteCustomDomainPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesDeleteStaticSiteCustomDomainPoller) FinalResponse(ctx context.Context) (StaticSitesDeleteStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesDeleteStaticSiteCustomDomainResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesDeleteStaticSiteCustomDomainResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesDeleteStaticSiteCustomDomainPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesDeleteStaticSiteCustomDomainPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesDeleteStaticSiteCustomDomainResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesDeleteStaticSiteCustomDomainResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesDeleteStaticSitePoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesDeleteStaticSitePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesDeleteStaticSiteResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesDeleteStaticSiteResponse, error)
+}
+
+type staticSitesDeleteStaticSitePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesDeleteStaticSitePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesDeleteStaticSitePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesDeleteStaticSitePoller) FinalResponse(ctx context.Context) (StaticSitesDeleteStaticSiteResponse, error) {
+	respType := StaticSitesDeleteStaticSiteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesDeleteStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesDeleteStaticSitePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesDeleteStaticSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteResponse, error) {
+	respType := StaticSitesDeleteStaticSiteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesDeleteStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesDetachStaticSitePoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesDetachStaticSitePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesDetachStaticSiteResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesDetachStaticSiteResponse, error)
+}
+
+type staticSitesDetachStaticSitePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesDetachStaticSitePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesDetachStaticSitePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesDetachStaticSitePoller) FinalResponse(ctx context.Context) (StaticSitesDetachStaticSiteResponse, error) {
+	respType := StaticSitesDetachStaticSiteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesDetachStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesDetachStaticSitePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesDetachStaticSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDetachStaticSiteResponse, error) {
+	respType := StaticSitesDetachStaticSiteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesDetachStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error)
+}
+
+type staticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller) FinalResponse(ctx context.Context) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error) {
+	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.StaticSiteUserProvidedFunctionAppARMResource)
+	if err != nil {
+		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error) {
+	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.StaticSiteUserProvidedFunctionAppARMResource)
+	if err != nil {
+		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse, error)
+}
+
+type staticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller) FinalResponse(ctx context.Context) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse, error) {
+	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.StaticSiteUserProvidedFunctionAppARMResource)
+	if err != nil {
+		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse, error) {
+	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.StaticSiteUserProvidedFunctionAppARMResource)
+	if err != nil {
+		return StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller provides polling facilities until the operation reaches a terminal state.
+type StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse will be returned.
+	FinalResponse(ctx context.Context) (StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse, error)
+}
+
+type staticSitesValidateCustomDomainCanBeAddedToStaticSitePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *staticSitesValidateCustomDomainCanBeAddedToStaticSitePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *staticSitesValidateCustomDomainCanBeAddedToStaticSitePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *staticSitesValidateCustomDomainCanBeAddedToStaticSitePoller) FinalResponse(ctx context.Context) (StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse, error) {
+	respType := StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *staticSitesValidateCustomDomainCanBeAddedToStaticSitePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *staticSitesValidateCustomDomainCanBeAddedToStaticSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse, error) {
+	respType := StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsApproveOrRejectPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsApproveOrRejectPrivateEndpointConnectionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsApproveOrRejectPrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error)
+}
+
+type webAppsApproveOrRejectPrivateEndpointConnectionPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := WebAppsApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return WebAppsApproveOrRejectPrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := WebAppsApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return WebAppsApproveOrRejectPrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error)
+}
+
+type webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller) FinalResponse(ctx context.Context) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsApproveOrRejectPrivateEndpointConnectionSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateFunctionPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateFunctionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateFunctionResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateFunctionResponse, error)
+}
+
+type webAppsCreateFunctionPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateFunctionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateFunctionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateFunctionPoller) FinalResponse(ctx context.Context) (WebAppsCreateFunctionResponse, error) {
+	respType := WebAppsCreateFunctionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.FunctionEnvelope)
+	if err != nil {
+		return WebAppsCreateFunctionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateFunctionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateFunctionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateFunctionResponse, error) {
+	respType := WebAppsCreateFunctionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.FunctionEnvelope)
+	if err != nil {
+		return WebAppsCreateFunctionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateInstanceFunctionSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateInstanceFunctionSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateInstanceFunctionSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateInstanceFunctionSlotResponse, error)
+}
+
+type webAppsCreateInstanceFunctionSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateInstanceFunctionSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateInstanceFunctionSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateInstanceFunctionSlotPoller) FinalResponse(ctx context.Context) (WebAppsCreateInstanceFunctionSlotResponse, error) {
+	respType := WebAppsCreateInstanceFunctionSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.FunctionEnvelope)
+	if err != nil {
+		return WebAppsCreateInstanceFunctionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateInstanceFunctionSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateInstanceFunctionSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceFunctionSlotResponse, error) {
+	respType := WebAppsCreateInstanceFunctionSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.FunctionEnvelope)
+	if err != nil {
+		return WebAppsCreateInstanceFunctionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateInstanceMSDeployOperationPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateInstanceMSDeployOperationPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateInstanceMSDeployOperationResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateInstanceMSDeployOperationResponse, error)
+}
+
+type webAppsCreateInstanceMSDeployOperationPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationPoller) FinalResponse(ctx context.Context) (WebAppsCreateInstanceMSDeployOperationResponse, error) {
+	respType := WebAppsCreateInstanceMSDeployOperationResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateInstanceMSDeployOperationResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceMSDeployOperationResponse, error) {
+	respType := WebAppsCreateInstanceMSDeployOperationResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateInstanceMSDeployOperationResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateInstanceMSDeployOperationSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateInstanceMSDeployOperationSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateInstanceMSDeployOperationSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error)
+}
+
+type webAppsCreateInstanceMSDeployOperationSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationSlotPoller) FinalResponse(ctx context.Context) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error) {
+	respType := WebAppsCreateInstanceMSDeployOperationSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateInstanceMSDeployOperationSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateInstanceMSDeployOperationSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error) {
+	respType := WebAppsCreateInstanceMSDeployOperationSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateInstanceMSDeployOperationSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateMSDeployOperationPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateMSDeployOperationPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateMSDeployOperationResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateMSDeployOperationResponse, error)
+}
+
+type webAppsCreateMSDeployOperationPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateMSDeployOperationPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateMSDeployOperationPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateMSDeployOperationPoller) FinalResponse(ctx context.Context) (WebAppsCreateMSDeployOperationResponse, error) {
+	respType := WebAppsCreateMSDeployOperationResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateMSDeployOperationResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateMSDeployOperationPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateMSDeployOperationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateMSDeployOperationResponse, error) {
+	respType := WebAppsCreateMSDeployOperationResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateMSDeployOperationResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateMSDeployOperationSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateMSDeployOperationSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateMSDeployOperationSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateMSDeployOperationSlotResponse, error)
+}
+
+type webAppsCreateMSDeployOperationSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateMSDeployOperationSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateMSDeployOperationSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateMSDeployOperationSlotPoller) FinalResponse(ctx context.Context) (WebAppsCreateMSDeployOperationSlotResponse, error) {
+	respType := WebAppsCreateMSDeployOperationSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateMSDeployOperationSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateMSDeployOperationSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateMSDeployOperationSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateMSDeployOperationSlotResponse, error) {
+	respType := WebAppsCreateMSDeployOperationSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return WebAppsCreateMSDeployOperationSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateResponse, error)
+}
+
+type webAppsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateResponse, error) {
+	respType := WebAppsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Site)
+	if err != nil {
+		return WebAppsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateResponse, error) {
+	respType := WebAppsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Site)
+	if err != nil {
+		return WebAppsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateOrUpdateSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateOrUpdateSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateOrUpdateSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateSlotResponse, error)
+}
+
+type webAppsCreateOrUpdateSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateOrUpdateSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateOrUpdateSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateOrUpdateSlotPoller) FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateSlotResponse, error) {
+	respType := WebAppsCreateOrUpdateSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Site)
+	if err != nil {
+		return WebAppsCreateOrUpdateSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateOrUpdateSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateOrUpdateSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSlotResponse, error) {
+	respType := WebAppsCreateOrUpdateSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Site)
+	if err != nil {
+		return WebAppsCreateOrUpdateSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateOrUpdateSourceControlPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateOrUpdateSourceControlPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateOrUpdateSourceControlResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateSourceControlResponse, error)
+}
+
+type webAppsCreateOrUpdateSourceControlPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateOrUpdateSourceControlPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateOrUpdateSourceControlPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateOrUpdateSourceControlPoller) FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateSourceControlResponse, error) {
+	respType := WebAppsCreateOrUpdateSourceControlResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.SiteSourceControl)
+	if err != nil {
+		return WebAppsCreateOrUpdateSourceControlResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateOrUpdateSourceControlPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateOrUpdateSourceControlPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSourceControlResponse, error) {
+	respType := WebAppsCreateOrUpdateSourceControlResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.SiteSourceControl)
+	if err != nil {
+		return WebAppsCreateOrUpdateSourceControlResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsCreateOrUpdateSourceControlSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsCreateOrUpdateSourceControlSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsCreateOrUpdateSourceControlSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateSourceControlSlotResponse, error)
+}
+
+type webAppsCreateOrUpdateSourceControlSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsCreateOrUpdateSourceControlSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsCreateOrUpdateSourceControlSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsCreateOrUpdateSourceControlSlotPoller) FinalResponse(ctx context.Context) (WebAppsCreateOrUpdateSourceControlSlotResponse, error) {
+	respType := WebAppsCreateOrUpdateSourceControlSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.SiteSourceControl)
+	if err != nil {
+		return WebAppsCreateOrUpdateSourceControlSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsCreateOrUpdateSourceControlSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsCreateOrUpdateSourceControlSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSourceControlSlotResponse, error) {
+	respType := WebAppsCreateOrUpdateSourceControlSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.SiteSourceControl)
+	if err != nil {
+		return WebAppsCreateOrUpdateSourceControlSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsDeletePrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsDeletePrivateEndpointConnectionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsDeletePrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsDeletePrivateEndpointConnectionResponse, error)
+}
+
+type webAppsDeletePrivateEndpointConnectionPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (WebAppsDeletePrivateEndpointConnectionResponse, error) {
+	respType := WebAppsDeletePrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Object)
+	if err != nil {
+		return WebAppsDeletePrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsDeletePrivateEndpointConnectionResponse, error) {
+	respType := WebAppsDeletePrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return WebAppsDeletePrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsDeletePrivateEndpointConnectionSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsDeletePrivateEndpointConnectionSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsDeletePrivateEndpointConnectionSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error)
+}
+
+type webAppsDeletePrivateEndpointConnectionSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionSlotPoller) FinalResponse(ctx context.Context) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsDeletePrivateEndpointConnectionSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Object)
+	if err != nil {
+		return WebAppsDeletePrivateEndpointConnectionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsDeletePrivateEndpointConnectionSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsDeletePrivateEndpointConnectionSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return WebAppsDeletePrivateEndpointConnectionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsInstallSiteExtensionPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsInstallSiteExtensionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsInstallSiteExtensionResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsInstallSiteExtensionResponse, error)
+}
+
+type webAppsInstallSiteExtensionPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsInstallSiteExtensionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsInstallSiteExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsInstallSiteExtensionPoller) FinalResponse(ctx context.Context) (WebAppsInstallSiteExtensionResponse, error) {
+	respType := WebAppsInstallSiteExtensionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.SiteExtensionInfo)
+	if err != nil {
+		return WebAppsInstallSiteExtensionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsInstallSiteExtensionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsInstallSiteExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsInstallSiteExtensionResponse, error) {
+	respType := WebAppsInstallSiteExtensionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.SiteExtensionInfo)
+	if err != nil {
+		return WebAppsInstallSiteExtensionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsInstallSiteExtensionSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsInstallSiteExtensionSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsInstallSiteExtensionSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsInstallSiteExtensionSlotResponse, error)
+}
+
+type webAppsInstallSiteExtensionSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsInstallSiteExtensionSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsInstallSiteExtensionSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsInstallSiteExtensionSlotPoller) FinalResponse(ctx context.Context) (WebAppsInstallSiteExtensionSlotResponse, error) {
+	respType := WebAppsInstallSiteExtensionSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.SiteExtensionInfo)
+	if err != nil {
+		return WebAppsInstallSiteExtensionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsInstallSiteExtensionSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsInstallSiteExtensionSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsInstallSiteExtensionSlotResponse, error) {
+	respType := WebAppsInstallSiteExtensionSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.SiteExtensionInfo)
+	if err != nil {
+		return WebAppsInstallSiteExtensionSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsListPublishingCredentialsPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsListPublishingCredentialsPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsListPublishingCredentialsResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsListPublishingCredentialsResponse, error)
+}
+
+type webAppsListPublishingCredentialsPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsListPublishingCredentialsPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsListPublishingCredentialsPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsListPublishingCredentialsPoller) FinalResponse(ctx context.Context) (WebAppsListPublishingCredentialsResponse, error) {
+	respType := WebAppsListPublishingCredentialsResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.User)
+	if err != nil {
+		return WebAppsListPublishingCredentialsResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsListPublishingCredentialsPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsListPublishingCredentialsPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsListPublishingCredentialsResponse, error) {
+	respType := WebAppsListPublishingCredentialsResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.User)
+	if err != nil {
+		return WebAppsListPublishingCredentialsResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsListPublishingCredentialsSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsListPublishingCredentialsSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsListPublishingCredentialsSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsListPublishingCredentialsSlotResponse, error)
+}
+
+type webAppsListPublishingCredentialsSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsListPublishingCredentialsSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsListPublishingCredentialsSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsListPublishingCredentialsSlotPoller) FinalResponse(ctx context.Context) (WebAppsListPublishingCredentialsSlotResponse, error) {
+	respType := WebAppsListPublishingCredentialsSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.User)
+	if err != nil {
+		return WebAppsListPublishingCredentialsSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsListPublishingCredentialsSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsListPublishingCredentialsSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsListPublishingCredentialsSlotResponse, error) {
+	respType := WebAppsListPublishingCredentialsSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.User)
+	if err != nil {
+		return WebAppsListPublishingCredentialsSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsMigrateMySQLPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsMigrateMySQLPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsMigrateMySQLResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsMigrateMySQLResponse, error)
+}
+
+type webAppsMigrateMySQLPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsMigrateMySQLPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsMigrateMySQLPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsMigrateMySQLPoller) FinalResponse(ctx context.Context) (WebAppsMigrateMySQLResponse, error) {
+	respType := WebAppsMigrateMySQLResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Operation)
+	if err != nil {
+		return WebAppsMigrateMySQLResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsMigrateMySQLPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsMigrateMySQLPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsMigrateMySQLResponse, error) {
+	respType := WebAppsMigrateMySQLResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Operation)
+	if err != nil {
+		return WebAppsMigrateMySQLResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsMigrateStoragePoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsMigrateStoragePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsMigrateStorageResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsMigrateStorageResponse, error)
+}
+
+type webAppsMigrateStoragePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsMigrateStoragePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsMigrateStoragePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsMigrateStoragePoller) FinalResponse(ctx context.Context) (WebAppsMigrateStorageResponse, error) {
+	respType := WebAppsMigrateStorageResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.StorageMigrationResponse)
+	if err != nil {
+		return WebAppsMigrateStorageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsMigrateStoragePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsMigrateStoragePoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsMigrateStorageResponse, error) {
+	respType := WebAppsMigrateStorageResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.StorageMigrationResponse)
+	if err != nil {
+		return WebAppsMigrateStorageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreFromBackupBlobPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreFromBackupBlobPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreFromBackupBlobResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreFromBackupBlobResponse, error)
+}
+
+type webAppsRestoreFromBackupBlobPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreFromBackupBlobPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreFromBackupBlobPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreFromBackupBlobPoller) FinalResponse(ctx context.Context) (WebAppsRestoreFromBackupBlobResponse, error) {
+	respType := WebAppsRestoreFromBackupBlobResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreFromBackupBlobResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreFromBackupBlobPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreFromBackupBlobPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromBackupBlobResponse, error) {
+	respType := WebAppsRestoreFromBackupBlobResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreFromBackupBlobResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreFromBackupBlobSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreFromBackupBlobSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreFromBackupBlobSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreFromBackupBlobSlotResponse, error)
+}
+
+type webAppsRestoreFromBackupBlobSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreFromBackupBlobSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreFromBackupBlobSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreFromBackupBlobSlotPoller) FinalResponse(ctx context.Context) (WebAppsRestoreFromBackupBlobSlotResponse, error) {
+	respType := WebAppsRestoreFromBackupBlobSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreFromBackupBlobSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreFromBackupBlobSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreFromBackupBlobSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromBackupBlobSlotResponse, error) {
+	respType := WebAppsRestoreFromBackupBlobSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreFromBackupBlobSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreFromDeletedAppPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreFromDeletedAppPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreFromDeletedAppResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreFromDeletedAppResponse, error)
+}
+
+type webAppsRestoreFromDeletedAppPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreFromDeletedAppPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreFromDeletedAppPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreFromDeletedAppPoller) FinalResponse(ctx context.Context) (WebAppsRestoreFromDeletedAppResponse, error) {
+	respType := WebAppsRestoreFromDeletedAppResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreFromDeletedAppResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreFromDeletedAppPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreFromDeletedAppPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromDeletedAppResponse, error) {
+	respType := WebAppsRestoreFromDeletedAppResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreFromDeletedAppResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreFromDeletedAppSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreFromDeletedAppSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreFromDeletedAppSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreFromDeletedAppSlotResponse, error)
+}
+
+type webAppsRestoreFromDeletedAppSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreFromDeletedAppSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreFromDeletedAppSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreFromDeletedAppSlotPoller) FinalResponse(ctx context.Context) (WebAppsRestoreFromDeletedAppSlotResponse, error) {
+	respType := WebAppsRestoreFromDeletedAppSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreFromDeletedAppSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreFromDeletedAppSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreFromDeletedAppSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromDeletedAppSlotResponse, error) {
+	respType := WebAppsRestoreFromDeletedAppSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreFromDeletedAppSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestorePoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestorePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreResponse, error)
+}
+
+type webAppsRestorePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestorePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestorePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestorePoller) FinalResponse(ctx context.Context) (WebAppsRestoreResponse, error) {
+	respType := WebAppsRestoreResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestorePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestorePoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreResponse, error) {
+	respType := WebAppsRestoreResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreSlotResponse, error)
+}
+
+type webAppsRestoreSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreSlotPoller) FinalResponse(ctx context.Context) (WebAppsRestoreSlotResponse, error) {
+	respType := WebAppsRestoreSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSlotResponse, error) {
+	respType := WebAppsRestoreSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreSnapshotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreSnapshotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreSnapshotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreSnapshotResponse, error)
+}
+
+type webAppsRestoreSnapshotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreSnapshotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreSnapshotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreSnapshotPoller) FinalResponse(ctx context.Context) (WebAppsRestoreSnapshotResponse, error) {
+	respType := WebAppsRestoreSnapshotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreSnapshotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreSnapshotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreSnapshotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSnapshotResponse, error) {
+	respType := WebAppsRestoreSnapshotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreSnapshotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsRestoreSnapshotSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsRestoreSnapshotSlotPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsRestoreSnapshotSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsRestoreSnapshotSlotResponse, error)
+}
+
+type webAppsRestoreSnapshotSlotPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsRestoreSnapshotSlotPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsRestoreSnapshotSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsRestoreSnapshotSlotPoller) FinalResponse(ctx context.Context) (WebAppsRestoreSnapshotSlotResponse, error) {
+	respType := WebAppsRestoreSnapshotSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return WebAppsRestoreSnapshotSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *webAppsRestoreSnapshotSlotPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *webAppsRestoreSnapshotSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSnapshotSlotResponse, error) {
+	respType := WebAppsRestoreSnapshotSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return WebAppsRestoreSnapshotSlotResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// WebAppsStartNetworkTracePoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsStartNetworkTracePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WebAppsStartNetworkTraceResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsStartNetworkTraceResponse, error)
+}
+
+type webAppsStartNetworkTracePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *webAppsStartNetworkTracePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *webAppsStartNetworkTracePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *webAppsStartNetworkTracePoller) FinalResponse(ctx context.Context) (WebAppsStartNetworkTraceResponse, error) {
+	respType := WebAppsStartNetworkTraceResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.NetworkTraceArray)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsStartNetworkTraceResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *networkTraceArrayPoller) ResumeToken() (string, error) {
+func (p *webAppsStartNetworkTracePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *networkTraceArrayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkTraceArrayResponse, error) {
-	respType := NetworkTraceArrayResponse{NetworkTraceArray: []*NetworkTrace{}}
+func (p *webAppsStartNetworkTracePoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartNetworkTraceResponse, error) {
+	respType := WebAppsStartNetworkTraceResponse{}
 	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
-		return NetworkTraceArrayResponse{}, err
+		return WebAppsStartNetworkTraceResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// ObjectPoller provides polling facilities until the operation reaches a terminal state.
-type ObjectPoller interface {
+// WebAppsStartNetworkTraceSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsStartNetworkTraceSlotPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final ObjectResponse will be returned.
-	FinalResponse(ctx context.Context) (ObjectResponse, error)
+	// If the final GET succeeded then the final WebAppsStartNetworkTraceSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsStartNetworkTraceSlotResponse, error)
 }
 
-type objectPoller struct {
+type webAppsStartNetworkTraceSlotPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *objectPoller) Done() bool {
+func (p *webAppsStartNetworkTraceSlotPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *objectPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *webAppsStartNetworkTraceSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *objectPoller) FinalResponse(ctx context.Context) (ObjectResponse, error) {
-	respType := ObjectResponse{}
-	resp, err := p.pt.FinalResponse(ctx, respType.Object)
+func (p *webAppsStartNetworkTraceSlotPoller) FinalResponse(ctx context.Context) (WebAppsStartNetworkTraceSlotResponse, error) {
+	respType := WebAppsStartNetworkTraceSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.NetworkTraceArray)
 	if err != nil {
-		return ObjectResponse{}, err
+		return WebAppsStartNetworkTraceSlotResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *objectPoller) ResumeToken() (string, error) {
+func (p *webAppsStartNetworkTraceSlotPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *objectPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ObjectResponse, error) {
-	respType := ObjectResponse{}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Object)
+func (p *webAppsStartNetworkTraceSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartNetworkTraceSlotResponse, error) {
+	respType := WebAppsStartNetworkTraceSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
-		return ObjectResponse{}, err
+		return WebAppsStartNetworkTraceSlotResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// OperationPoller provides polling facilities until the operation reaches a terminal state.
-type OperationPoller interface {
+// WebAppsStartWebSiteNetworkTraceOperationPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsStartWebSiteNetworkTraceOperationPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final OperationResponse will be returned.
-	FinalResponse(ctx context.Context) (OperationResponse, error)
+	// If the final GET succeeded then the final WebAppsStartWebSiteNetworkTraceOperationResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsStartWebSiteNetworkTraceOperationResponse, error)
 }
 
-type operationPoller struct {
+type webAppsStartWebSiteNetworkTraceOperationPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *operationPoller) Done() bool {
+func (p *webAppsStartWebSiteNetworkTraceOperationPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *operationPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *webAppsStartWebSiteNetworkTraceOperationPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *operationPoller) FinalResponse(ctx context.Context) (OperationResponse, error) {
-	respType := OperationResponse{Operation: &Operation{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Operation)
+func (p *webAppsStartWebSiteNetworkTraceOperationPoller) FinalResponse(ctx context.Context) (WebAppsStartWebSiteNetworkTraceOperationResponse, error) {
+	respType := WebAppsStartWebSiteNetworkTraceOperationResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.NetworkTraceArray)
 	if err != nil {
-		return OperationResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *operationPoller) ResumeToken() (string, error) {
+func (p *webAppsStartWebSiteNetworkTraceOperationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *operationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (OperationResponse, error) {
-	respType := OperationResponse{Operation: &Operation{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Operation)
+func (p *webAppsStartWebSiteNetworkTraceOperationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartWebSiteNetworkTraceOperationResponse, error) {
+	respType := WebAppsStartWebSiteNetworkTraceOperationResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
-		return OperationResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// RemotePrivateEndpointConnectionARMResourcePoller provides polling facilities until the operation reaches a terminal state.
-type RemotePrivateEndpointConnectionARMResourcePoller interface {
+// WebAppsStartWebSiteNetworkTraceOperationSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsStartWebSiteNetworkTraceOperationSlotPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final RemotePrivateEndpointConnectionARMResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (RemotePrivateEndpointConnectionARMResourceResponse, error)
+	// If the final GET succeeded then the final WebAppsStartWebSiteNetworkTraceOperationSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error)
 }
 
-type remotePrivateEndpointConnectionARMResourcePoller struct {
+type webAppsStartWebSiteNetworkTraceOperationSlotPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *remotePrivateEndpointConnectionARMResourcePoller) Done() bool {
+func (p *webAppsStartWebSiteNetworkTraceOperationSlotPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *remotePrivateEndpointConnectionARMResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *webAppsStartWebSiteNetworkTraceOperationSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *remotePrivateEndpointConnectionARMResourcePoller) FinalResponse(ctx context.Context) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
-	respType := RemotePrivateEndpointConnectionARMResourceResponse{RemotePrivateEndpointConnectionARMResource: &RemotePrivateEndpointConnectionARMResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.RemotePrivateEndpointConnectionARMResource)
+func (p *webAppsStartWebSiteNetworkTraceOperationSlotPoller) FinalResponse(ctx context.Context) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error) {
+	respType := WebAppsStartWebSiteNetworkTraceOperationSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.NetworkTraceArray)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationSlotResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *remotePrivateEndpointConnectionARMResourcePoller) ResumeToken() (string, error) {
+func (p *webAppsStartWebSiteNetworkTraceOperationSlotPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *remotePrivateEndpointConnectionARMResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
-	respType := RemotePrivateEndpointConnectionARMResourceResponse{RemotePrivateEndpointConnectionARMResource: &RemotePrivateEndpointConnectionARMResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RemotePrivateEndpointConnectionARMResource)
+func (p *webAppsStartWebSiteNetworkTraceOperationSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error) {
+	respType := WebAppsStartWebSiteNetworkTraceOperationSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return WebAppsStartWebSiteNetworkTraceOperationSlotResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// SiteExtensionInfoPoller provides polling facilities until the operation reaches a terminal state.
-type SiteExtensionInfoPoller interface {
+// WebAppsSwapSlotPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsSwapSlotPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final SiteExtensionInfoResponse will be returned.
-	FinalResponse(ctx context.Context) (SiteExtensionInfoResponse, error)
+	// If the final GET succeeded then the final WebAppsSwapSlotResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsSwapSlotResponse, error)
 }
 
-type siteExtensionInfoPoller struct {
+type webAppsSwapSlotPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *siteExtensionInfoPoller) Done() bool {
+func (p *webAppsSwapSlotPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *siteExtensionInfoPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *webAppsSwapSlotPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *siteExtensionInfoPoller) FinalResponse(ctx context.Context) (SiteExtensionInfoResponse, error) {
-	respType := SiteExtensionInfoResponse{SiteExtensionInfo: &SiteExtensionInfo{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.SiteExtensionInfo)
+func (p *webAppsSwapSlotPoller) FinalResponse(ctx context.Context) (WebAppsSwapSlotResponse, error) {
+	respType := WebAppsSwapSlotResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return SiteExtensionInfoResponse{}, err
+		return WebAppsSwapSlotResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *siteExtensionInfoPoller) ResumeToken() (string, error) {
+func (p *webAppsSwapSlotPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *siteExtensionInfoPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SiteExtensionInfoResponse, error) {
-	respType := SiteExtensionInfoResponse{SiteExtensionInfo: &SiteExtensionInfo{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SiteExtensionInfo)
+func (p *webAppsSwapSlotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsSwapSlotResponse, error) {
+	respType := WebAppsSwapSlotResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return SiteExtensionInfoResponse{}, err
+		return WebAppsSwapSlotResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// SitePoller provides polling facilities until the operation reaches a terminal state.
-type SitePoller interface {
+// WebAppsSwapSlotWithProductionPoller provides polling facilities until the operation reaches a terminal state.
+type WebAppsSwapSlotWithProductionPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final SiteResponse will be returned.
-	FinalResponse(ctx context.Context) (SiteResponse, error)
+	// If the final GET succeeded then the final WebAppsSwapSlotWithProductionResponse will be returned.
+	FinalResponse(ctx context.Context) (WebAppsSwapSlotWithProductionResponse, error)
 }
 
-type sitePoller struct {
+type webAppsSwapSlotWithProductionPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *sitePoller) Done() bool {
+func (p *webAppsSwapSlotWithProductionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *sitePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *webAppsSwapSlotWithProductionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *sitePoller) FinalResponse(ctx context.Context) (SiteResponse, error) {
-	respType := SiteResponse{Site: &Site{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Site)
+func (p *webAppsSwapSlotWithProductionPoller) FinalResponse(ctx context.Context) (WebAppsSwapSlotWithProductionResponse, error) {
+	respType := WebAppsSwapSlotWithProductionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return SiteResponse{}, err
+		return WebAppsSwapSlotWithProductionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *sitePoller) ResumeToken() (string, error) {
+func (p *webAppsSwapSlotWithProductionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *sitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SiteResponse, error) {
-	respType := SiteResponse{Site: &Site{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Site)
+func (p *webAppsSwapSlotWithProductionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppsSwapSlotWithProductionResponse, error) {
+	respType := WebAppsSwapSlotWithProductionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return SiteResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// SiteSourceControlPoller provides polling facilities until the operation reaches a terminal state.
-type SiteSourceControlPoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final SiteSourceControlResponse will be returned.
-	FinalResponse(ctx context.Context) (SiteSourceControlResponse, error)
-}
-
-type siteSourceControlPoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *siteSourceControlPoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *siteSourceControlPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *siteSourceControlPoller) FinalResponse(ctx context.Context) (SiteSourceControlResponse, error) {
-	respType := SiteSourceControlResponse{SiteSourceControl: &SiteSourceControl{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.SiteSourceControl)
-	if err != nil {
-		return SiteSourceControlResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *siteSourceControlPoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *siteSourceControlPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SiteSourceControlResponse, error) {
-	respType := SiteSourceControlResponse{SiteSourceControl: &SiteSourceControl{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SiteSourceControl)
-	if err != nil {
-		return SiteSourceControlResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// StaticSiteARMResourcePoller provides polling facilities until the operation reaches a terminal state.
-type StaticSiteARMResourcePoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final StaticSiteARMResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (StaticSiteARMResourceResponse, error)
-}
-
-type staticSiteARMResourcePoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *staticSiteARMResourcePoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *staticSiteARMResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *staticSiteARMResourcePoller) FinalResponse(ctx context.Context) (StaticSiteARMResourceResponse, error) {
-	respType := StaticSiteARMResourceResponse{StaticSiteARMResource: &StaticSiteARMResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.StaticSiteARMResource)
-	if err != nil {
-		return StaticSiteARMResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *staticSiteARMResourcePoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *staticSiteARMResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSiteARMResourceResponse, error) {
-	respType := StaticSiteARMResourceResponse{StaticSiteARMResource: &StaticSiteARMResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.StaticSiteARMResource)
-	if err != nil {
-		return StaticSiteARMResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// StaticSiteCustomDomainOverviewARMResourcePoller provides polling facilities until the operation reaches a terminal state.
-type StaticSiteCustomDomainOverviewARMResourcePoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final StaticSiteCustomDomainOverviewARMResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (StaticSiteCustomDomainOverviewARMResourceResponse, error)
-}
-
-type staticSiteCustomDomainOverviewARMResourcePoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *staticSiteCustomDomainOverviewARMResourcePoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *staticSiteCustomDomainOverviewARMResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *staticSiteCustomDomainOverviewARMResourcePoller) FinalResponse(ctx context.Context) (StaticSiteCustomDomainOverviewARMResourceResponse, error) {
-	respType := StaticSiteCustomDomainOverviewARMResourceResponse{StaticSiteCustomDomainOverviewARMResource: &StaticSiteCustomDomainOverviewARMResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.StaticSiteCustomDomainOverviewARMResource)
-	if err != nil {
-		return StaticSiteCustomDomainOverviewARMResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *staticSiteCustomDomainOverviewARMResourcePoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *staticSiteCustomDomainOverviewARMResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSiteCustomDomainOverviewARMResourceResponse, error) {
-	respType := StaticSiteCustomDomainOverviewARMResourceResponse{StaticSiteCustomDomainOverviewARMResource: &StaticSiteCustomDomainOverviewARMResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.StaticSiteCustomDomainOverviewARMResource)
-	if err != nil {
-		return StaticSiteCustomDomainOverviewARMResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// StaticSiteUserProvidedFunctionAppARMResourcePoller provides polling facilities until the operation reaches a terminal state.
-type StaticSiteUserProvidedFunctionAppARMResourcePoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final StaticSiteUserProvidedFunctionAppARMResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (StaticSiteUserProvidedFunctionAppARMResourceResponse, error)
-}
-
-type staticSiteUserProvidedFunctionAppARMResourcePoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *staticSiteUserProvidedFunctionAppARMResourcePoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *staticSiteUserProvidedFunctionAppARMResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *staticSiteUserProvidedFunctionAppARMResourcePoller) FinalResponse(ctx context.Context) (StaticSiteUserProvidedFunctionAppARMResourceResponse, error) {
-	respType := StaticSiteUserProvidedFunctionAppARMResourceResponse{StaticSiteUserProvidedFunctionAppARMResource: &StaticSiteUserProvidedFunctionAppARMResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.StaticSiteUserProvidedFunctionAppARMResource)
-	if err != nil {
-		return StaticSiteUserProvidedFunctionAppARMResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *staticSiteUserProvidedFunctionAppARMResourcePoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *staticSiteUserProvidedFunctionAppARMResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StaticSiteUserProvidedFunctionAppARMResourceResponse, error) {
-	respType := StaticSiteUserProvidedFunctionAppARMResourceResponse{StaticSiteUserProvidedFunctionAppARMResource: &StaticSiteUserProvidedFunctionAppARMResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.StaticSiteUserProvidedFunctionAppARMResource)
-	if err != nil {
-		return StaticSiteUserProvidedFunctionAppARMResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// StorageMigrationResponsePoller provides polling facilities until the operation reaches a terminal state.
-type StorageMigrationResponsePoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final StorageMigrationResponseResponse will be returned.
-	FinalResponse(ctx context.Context) (StorageMigrationResponseResponse, error)
-}
-
-type storageMigrationResponsePoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *storageMigrationResponsePoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *storageMigrationResponsePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *storageMigrationResponsePoller) FinalResponse(ctx context.Context) (StorageMigrationResponseResponse, error) {
-	respType := StorageMigrationResponseResponse{StorageMigrationResponse: &StorageMigrationResponse{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.StorageMigrationResponse)
-	if err != nil {
-		return StorageMigrationResponseResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *storageMigrationResponsePoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *storageMigrationResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (StorageMigrationResponseResponse, error) {
-	respType := StorageMigrationResponseResponse{StorageMigrationResponse: &StorageMigrationResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.StorageMigrationResponse)
-	if err != nil {
-		return StorageMigrationResponseResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// UserPoller provides polling facilities until the operation reaches a terminal state.
-type UserPoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final UserResponse will be returned.
-	FinalResponse(ctx context.Context) (UserResponse, error)
-}
-
-type userPoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *userPoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *userPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *userPoller) FinalResponse(ctx context.Context) (UserResponse, error) {
-	respType := UserResponse{User: &User{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.User)
-	if err != nil {
-		return UserResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *userPoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *userPoller) pollUntilDone(ctx context.Context, freq time.Duration) (UserResponse, error) {
-	respType := UserResponse{User: &User{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.User)
-	if err != nil {
-		return UserResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// WebAppCollectionPagerPoller provides polling facilities until the operation reaches a terminal state.
-type WebAppCollectionPagerPoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final WebAppCollectionPager will be returned.
-	FinalResponse(ctx context.Context) (WebAppCollectionPager, error)
-}
-
-type webAppCollectionPagerPoller struct {
-	pt          *armcore.LROPoller
-	errHandler  webAppCollectionHandleError
-	respHandler webAppCollectionHandleResponse
-	statusCodes []int
-}
-
-func (p *webAppCollectionPagerPoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *webAppCollectionPagerPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *webAppCollectionPagerPoller) FinalResponse(ctx context.Context) (WebAppCollectionPager, error) {
-	respType := &webAppCollectionPager{}
-	resp, err := p.pt.FinalResponse(ctx, respType)
-	if err != nil {
-		return nil, err
-	}
-	return p.handleResponse(&azcore.Response{Response: resp})
-}
-
-func (p *webAppCollectionPagerPoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *webAppCollectionPagerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WebAppCollectionPager, error) {
-	respType := &webAppCollectionPager{}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType)
-	if err != nil {
-		return nil, err
-	}
-	return p.handleResponse(&azcore.Response{Response: resp})
-}
-
-func (p *webAppCollectionPagerPoller) handleResponse(resp *azcore.Response) (WebAppCollectionPager, error) {
-	return &webAppCollectionPager{
-		pipeline:  p.pt.Pipeline,
-		resp:      resp,
-		errorer:   p.errHandler,
-		responder: p.respHandler,
-		advancer: func(ctx context.Context, resp WebAppCollectionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
-		},
-		statusCodes: p.statusCodes,
-	}, nil
-}
-
-// WorkerPoolResourcePoller provides polling facilities until the operation reaches a terminal state.
-type WorkerPoolResourcePoller interface {
-	azcore.Poller
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final WorkerPoolResourceResponse will be returned.
-	FinalResponse(ctx context.Context) (WorkerPoolResourceResponse, error)
-}
-
-type workerPoolResourcePoller struct {
-	pt *armcore.LROPoller
-}
-
-func (p *workerPoolResourcePoller) Done() bool {
-	return p.pt.Done()
-}
-
-func (p *workerPoolResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx)
-}
-
-func (p *workerPoolResourcePoller) FinalResponse(ctx context.Context) (WorkerPoolResourceResponse, error) {
-	respType := WorkerPoolResourceResponse{WorkerPoolResource: &WorkerPoolResource{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.WorkerPoolResource)
-	if err != nil {
-		return WorkerPoolResourceResponse{}, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-func (p *workerPoolResourcePoller) ResumeToken() (string, error) {
-	return p.pt.ResumeToken()
-}
-
-func (p *workerPoolResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (WorkerPoolResourceResponse, error) {
-	respType := WorkerPoolResourceResponse{WorkerPoolResource: &WorkerPoolResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.WorkerPoolResource)
-	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return WebAppsSwapSlotWithProductionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil

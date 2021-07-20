@@ -34,47 +34,47 @@ func NewAppServiceEnvironmentsClient(con *armcore.Connection, subscriptionID str
 
 // BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions) (RemotePrivateEndpointConnectionARMResourcePollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.approveOrRejectPrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := RemotePrivateEndpointConnectionARMResourcePollerResponse{
+	result := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", "", resp, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &remotePrivateEndpointConnectionARMResourcePoller{
+	poller := &appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeApproveOrRejectPrivateEndpointConnection creates a new RemotePrivateEndpointConnectionARMResourcePoller from the specified resume token.
-// token - The value must come from a previous call to RemotePrivateEndpointConnectionARMResourcePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeApproveOrRejectPrivateEndpointConnection(ctx context.Context, token string) (RemotePrivateEndpointConnectionARMResourcePollerResponse, error) {
+// ResumeApproveOrRejectPrivateEndpointConnection creates a new AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeApproveOrRejectPrivateEndpointConnection(ctx context.Context, token string) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", token, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &remotePrivateEndpointConnectionARMResourcePoller{
+	poller := &appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourcePollerResponse{}, err
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := RemotePrivateEndpointConnectionARMResourcePollerResponse{
+	result := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -143,75 +143,49 @@ func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnec
 
 // BeginChangeVnet - Description for Move an App Service Environment to a different VNET.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *AppServiceEnvironmentsBeginChangeVnetOptions) (WebAppCollectionPagerPollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *AppServiceEnvironmentsBeginChangeVnetOptions) (AppServiceEnvironmentsChangeVnetPollerResponse, error) {
 	resp, err := client.changeVnet(ctx, resourceGroupName, name, vnetInfo, options)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
 	}
-	result := WebAppCollectionPagerPollerResponse{
+	result := AppServiceEnvironmentsChangeVnetPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.ChangeVnet", "", resp, client.con.Pipeline(), client.changeVnetHandleError)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
 	}
-	poller := &webAppCollectionPagerPoller{
-		pt: pt,
-		errHandler: func(resp *azcore.Response) error {
-			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-				return nil
-			}
-			return client.changeVnetHandleError(resp)
-		},
-		respHandler: func(resp *azcore.Response) (WebAppCollectionResponse, error) {
-			var val *WebAppCollection
-			if err := resp.UnmarshalAsJSON(&val); err != nil {
-				return WebAppCollectionResponse{}, err
-			}
-			return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
-		},
-		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
+	poller := &appServiceEnvironmentsChangeVnetPoller{
+		pt:     pt,
+		client: client,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppCollectionPager, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsChangeVnetPager, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeChangeVnet creates a new WebAppCollectionPagerPoller from the specified resume token.
-// token - The value must come from a previous call to WebAppCollectionPagerPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeChangeVnet(ctx context.Context, token string) (WebAppCollectionPagerPollerResponse, error) {
+// ResumeChangeVnet creates a new AppServiceEnvironmentsChangeVnetPoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsChangeVnetPoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeChangeVnet(ctx context.Context, token string) (AppServiceEnvironmentsChangeVnetPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.ChangeVnet", token, client.con.Pipeline(), client.changeVnetHandleError)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
 	}
-	poller := &webAppCollectionPagerPoller{
-		pt: pt,
-		errHandler: func(resp *azcore.Response) error {
-			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-				return nil
-			}
-			return client.changeVnetHandleError(resp)
-		},
-		respHandler: func(resp *azcore.Response) (WebAppCollectionResponse, error) {
-			var val *WebAppCollection
-			if err := resp.UnmarshalAsJSON(&val); err != nil {
-				return WebAppCollectionResponse{}, err
-			}
-			return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
-		},
-		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
+	poller := &appServiceEnvironmentsChangeVnetPoller{
+		pt:     pt,
+		client: client,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
 	}
-	result := WebAppCollectionPagerPollerResponse{
+	result := AppServiceEnvironmentsChangeVnetPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppCollectionPager, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsChangeVnetPager, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -261,6 +235,15 @@ func (client *AppServiceEnvironmentsClient) changeVnetCreateRequest(ctx context.
 	return req, req.MarshalAsJSON(vnetInfo)
 }
 
+// changeVnetHandleResponse handles the ChangeVnet response.
+func (client *AppServiceEnvironmentsClient) changeVnetHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsChangeVnetResponse, error) {
+	result := AppServiceEnvironmentsChangeVnetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return AppServiceEnvironmentsChangeVnetResponse{}, err
+	}
+	return result, nil
+}
+
 // changeVnetHandleError handles the ChangeVnet error response.
 func (client *AppServiceEnvironmentsClient) changeVnetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
@@ -276,47 +259,47 @@ func (client *AppServiceEnvironmentsClient) changeVnetHandleError(resp *azcore.R
 
 // BeginCreateOrUpdate - Description for Create or update an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, options *AppServiceEnvironmentsBeginCreateOrUpdateOptions) (AppServiceEnvironmentResourcePollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, options *AppServiceEnvironmentsBeginCreateOrUpdateOptions) (AppServiceEnvironmentsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, hostingEnvironmentEnvelope, options)
 	if err != nil {
-		return AppServiceEnvironmentResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppServiceEnvironmentResourcePollerResponse{
+	result := AppServiceEnvironmentsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AppServiceEnvironmentResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &appServiceEnvironmentResourcePoller{
+	poller := &appServiceEnvironmentsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new AppServiceEnvironmentResourcePoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentResourcePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServiceEnvironmentResourcePollerResponse, error) {
+// ResumeCreateOrUpdate creates a new AppServiceEnvironmentsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsCreateOrUpdatePoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServiceEnvironmentsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AppServiceEnvironmentResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &appServiceEnvironmentResourcePoller{
+	poller := &appServiceEnvironmentsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AppServiceEnvironmentResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppServiceEnvironmentResourcePollerResponse{
+	result := AppServiceEnvironmentsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -381,47 +364,47 @@ func (client *AppServiceEnvironmentsClient) createOrUpdateHandleError(resp *azco
 
 // BeginCreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions) (WorkerPoolResourcePollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse, error) {
 	resp, err := client.createOrUpdateMultiRolePool(ctx, resourceGroupName, name, multiRolePoolEnvelope, options)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
 	}
-	result := WorkerPoolResourcePollerResponse{
+	result := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", "", resp, client.con.Pipeline(), client.createOrUpdateMultiRolePoolHandleError)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
 	}
-	poller := &workerPoolResourcePoller{
+	poller := &appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkerPoolResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdateMultiRolePool creates a new WorkerPoolResourcePoller from the specified resume token.
-// token - The value must come from a previous call to WorkerPoolResourcePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdateMultiRolePool(ctx context.Context, token string) (WorkerPoolResourcePollerResponse, error) {
+// ResumeCreateOrUpdateMultiRolePool creates a new AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdateMultiRolePool(ctx context.Context, token string) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", token, client.con.Pipeline(), client.createOrUpdateMultiRolePoolHandleError)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
 	}
-	poller := &workerPoolResourcePoller{
+	poller := &appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
 	}
-	result := WorkerPoolResourcePollerResponse{
+	result := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkerPoolResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -486,47 +469,47 @@ func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePoolHandleErr
 
 // BeginCreateOrUpdateWorkerPool - Description for Create or update a worker pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions) (WorkerPoolResourcePollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse, error) {
 	resp, err := client.createOrUpdateWorkerPool(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope, options)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
 	}
-	result := WorkerPoolResourcePollerResponse{
+	result := AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", "", resp, client.con.Pipeline(), client.createOrUpdateWorkerPoolHandleError)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
 	}
-	poller := &workerPoolResourcePoller{
+	poller := &appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkerPoolResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdateWorkerPool creates a new WorkerPoolResourcePoller from the specified resume token.
-// token - The value must come from a previous call to WorkerPoolResourcePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdateWorkerPool(ctx context.Context, token string) (WorkerPoolResourcePollerResponse, error) {
+// ResumeCreateOrUpdateWorkerPool creates a new AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdateWorkerPool(ctx context.Context, token string) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", token, client.con.Pipeline(), client.createOrUpdateWorkerPoolHandleError)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
 	}
-	poller := &workerPoolResourcePoller{
+	poller := &appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return WorkerPoolResourcePollerResponse{}, err
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
 	}
-	result := WorkerPoolResourcePollerResponse{
+	result := AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkerPoolResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -595,47 +578,47 @@ func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPoolHandleError(
 
 // BeginDelete - Description for Delete an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginDeleteOptions) (AppServiceEnvironmentsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := AppServiceEnvironmentsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &appServiceEnvironmentsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new AppServiceEnvironmentsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsDeletePoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeDelete(ctx context.Context, token string) (AppServiceEnvironmentsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &appServiceEnvironmentsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := AppServiceEnvironmentsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -703,47 +686,47 @@ func (client *AppServiceEnvironmentsClient) deleteHandleError(resp *azcore.Respo
 
 // BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions) (ObjectPollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions) (AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := ObjectPollerResponse{
+	result := AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", "", resp, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &objectPoller{
+	poller := &appServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ObjectResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDeletePrivateEndpointConnection creates a new ObjectPoller from the specified resume token.
-// token - The value must come from a previous call to ObjectPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeDeletePrivateEndpointConnection(ctx context.Context, token string) (ObjectPollerResponse, error) {
+// ResumeDeletePrivateEndpointConnection creates a new AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeDeletePrivateEndpointConnection(ctx context.Context, token string) (AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", token, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &objectPoller{
+	poller := &appServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return ObjectPollerResponse{}, err
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := ObjectPollerResponse{
+	result := AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ObjectResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -812,17 +795,17 @@ func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnectionHandl
 
 // Get - Description for Get the properties of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) Get(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetOptions) (AppServiceEnvironmentResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) Get(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetOptions) (AppServiceEnvironmentsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+		return AppServiceEnvironmentsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+		return AppServiceEnvironmentsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AppServiceEnvironmentResourceResponse{}, client.getHandleError(resp)
+		return AppServiceEnvironmentsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -855,12 +838,12 @@ func (client *AppServiceEnvironmentsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppServiceEnvironmentsClient) getHandleResponse(resp *azcore.Response) (AppServiceEnvironmentResourceResponse, error) {
-	var val *AppServiceEnvironmentResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) getHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetResponse, error) {
+	result := AppServiceEnvironmentsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentResource); err != nil {
+		return AppServiceEnvironmentsGetResponse{}, err
 	}
-	return AppServiceEnvironmentResourceResponse{RawResponse: resp.Response, AppServiceEnvironmentResource: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -878,17 +861,17 @@ func (client *AppServiceEnvironmentsClient) getHandleError(resp *azcore.Response
 
 // GetAseV3NetworkingConfiguration - Description for Get networking configuration of an App Service Environment
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetAseV3NetworkingConfiguration(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions) (AseV3NetworkingConfigurationResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetAseV3NetworkingConfiguration(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions) (AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse, error) {
 	req, err := client.getAseV3NetworkingConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AseV3NetworkingConfigurationResponse{}, err
+		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AseV3NetworkingConfigurationResponse{}, err
+		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AseV3NetworkingConfigurationResponse{}, client.getAseV3NetworkingConfigurationHandleError(resp)
+		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, client.getAseV3NetworkingConfigurationHandleError(resp)
 	}
 	return client.getAseV3NetworkingConfigurationHandleResponse(resp)
 }
@@ -921,12 +904,12 @@ func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationCreat
 }
 
 // getAseV3NetworkingConfigurationHandleResponse handles the GetAseV3NetworkingConfiguration response.
-func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(resp *azcore.Response) (AseV3NetworkingConfigurationResponse, error) {
-	var val *AseV3NetworkingConfiguration
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AseV3NetworkingConfigurationResponse{}, err
+func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse, error) {
+	result := AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AseV3NetworkingConfiguration); err != nil {
+		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, err
 	}
-	return AseV3NetworkingConfigurationResponse{RawResponse: resp.Response, AseV3NetworkingConfiguration: val}, nil
+	return result, nil
 }
 
 // getAseV3NetworkingConfigurationHandleError handles the GetAseV3NetworkingConfiguration error response.
@@ -944,17 +927,17 @@ func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandl
 
 // GetDiagnosticsItem - Description for Get a diagnostics item for an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetDiagnosticsItem(ctx context.Context, resourceGroupName string, name string, diagnosticsName string, options *AppServiceEnvironmentsGetDiagnosticsItemOptions) (HostingEnvironmentDiagnosticsResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetDiagnosticsItem(ctx context.Context, resourceGroupName string, name string, diagnosticsName string, options *AppServiceEnvironmentsGetDiagnosticsItemOptions) (AppServiceEnvironmentsGetDiagnosticsItemResponse, error) {
 	req, err := client.getDiagnosticsItemCreateRequest(ctx, resourceGroupName, name, diagnosticsName, options)
 	if err != nil {
-		return HostingEnvironmentDiagnosticsResponse{}, err
+		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostingEnvironmentDiagnosticsResponse{}, err
+		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostingEnvironmentDiagnosticsResponse{}, client.getDiagnosticsItemHandleError(resp)
+		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, client.getDiagnosticsItemHandleError(resp)
 	}
 	return client.getDiagnosticsItemHandleResponse(resp)
 }
@@ -991,12 +974,12 @@ func (client *AppServiceEnvironmentsClient) getDiagnosticsItemCreateRequest(ctx 
 }
 
 // getDiagnosticsItemHandleResponse handles the GetDiagnosticsItem response.
-func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleResponse(resp *azcore.Response) (HostingEnvironmentDiagnosticsResponse, error) {
-	var val *HostingEnvironmentDiagnostics
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostingEnvironmentDiagnosticsResponse{}, err
+func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetDiagnosticsItemResponse, error) {
+	result := AppServiceEnvironmentsGetDiagnosticsItemResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostingEnvironmentDiagnostics); err != nil {
+		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, err
 	}
-	return HostingEnvironmentDiagnosticsResponse{RawResponse: resp.Response, HostingEnvironmentDiagnostics: val}, nil
+	return result, nil
 }
 
 // getDiagnosticsItemHandleError handles the GetDiagnosticsItem error response.
@@ -1014,18 +997,15 @@ func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleError(resp *
 
 // GetInboundNetworkDependenciesEndpoints - Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions) InboundEnvironmentEndpointCollectionPager {
-	return &inboundEnvironmentEndpointCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions) AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager {
+	return &appServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getInboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.getInboundNetworkDependenciesEndpointsHandleResponse,
-		errorer:   client.getInboundNetworkDependenciesEndpointsHandleError,
-		advancer: func(ctx context.Context, resp InboundEnvironmentEndpointCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.InboundEnvironmentEndpointCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1057,12 +1037,12 @@ func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpoin
 }
 
 // getInboundNetworkDependenciesEndpointsHandleResponse handles the GetInboundNetworkDependenciesEndpoints response.
-func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (InboundEnvironmentEndpointCollectionResponse, error) {
-	var val *InboundEnvironmentEndpointCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return InboundEnvironmentEndpointCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse, error) {
+	result := AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.InboundEnvironmentEndpointCollection); err != nil {
+		return AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse{}, err
 	}
-	return InboundEnvironmentEndpointCollectionResponse{RawResponse: resp.Response, InboundEnvironmentEndpointCollection: val}, nil
+	return result, nil
 }
 
 // getInboundNetworkDependenciesEndpointsHandleError handles the GetInboundNetworkDependenciesEndpoints error response.
@@ -1080,17 +1060,17 @@ func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpoin
 
 // GetMultiRolePool - Description for Get properties of a multi-role pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetMultiRolePool(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetMultiRolePoolOptions) (WorkerPoolResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetMultiRolePool(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetMultiRolePoolOptions) (AppServiceEnvironmentsGetMultiRolePoolResponse, error) {
 	req, err := client.getMultiRolePoolCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return WorkerPoolResourceResponse{}, client.getMultiRolePoolHandleError(resp)
+		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, client.getMultiRolePoolHandleError(resp)
 	}
 	return client.getMultiRolePoolHandleResponse(resp)
 }
@@ -1123,12 +1103,12 @@ func (client *AppServiceEnvironmentsClient) getMultiRolePoolCreateRequest(ctx co
 }
 
 // getMultiRolePoolHandleResponse handles the GetMultiRolePool response.
-func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleResponse(resp *azcore.Response) (WorkerPoolResourceResponse, error) {
-	var val *WorkerPoolResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WorkerPoolResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetMultiRolePoolResponse, error) {
+	result := AppServiceEnvironmentsGetMultiRolePoolResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, err
 	}
-	return WorkerPoolResourceResponse{RawResponse: resp.Response, WorkerPoolResource: val}, nil
+	return result, nil
 }
 
 // getMultiRolePoolHandleError handles the GetMultiRolePool error response.
@@ -1146,18 +1126,15 @@ func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleError(resp *az
 
 // GetOutboundNetworkDependenciesEndpoints - Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions) OutboundEnvironmentEndpointCollectionPager {
-	return &outboundEnvironmentEndpointCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions) AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager {
+	return &appServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.getOutboundNetworkDependenciesEndpointsHandleResponse,
-		errorer:   client.getOutboundNetworkDependenciesEndpointsHandleError,
-		advancer: func(ctx context.Context, resp OutboundEnvironmentEndpointCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OutboundEnvironmentEndpointCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1189,12 +1166,12 @@ func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpoi
 }
 
 // getOutboundNetworkDependenciesEndpointsHandleResponse handles the GetOutboundNetworkDependenciesEndpoints response.
-func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (OutboundEnvironmentEndpointCollectionResponse, error) {
-	var val *OutboundEnvironmentEndpointCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OutboundEnvironmentEndpointCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OutboundEnvironmentEndpointCollection); err != nil {
+		return AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
-	return OutboundEnvironmentEndpointCollectionResponse{RawResponse: resp.Response, OutboundEnvironmentEndpointCollection: val}, nil
+	return result, nil
 }
 
 // getOutboundNetworkDependenciesEndpointsHandleError handles the GetOutboundNetworkDependenciesEndpoints error response.
@@ -1212,17 +1189,17 @@ func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpoi
 
 // GetPrivateEndpointConnection - Description for Gets a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionOptions) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionOptions) (AppServiceEnvironmentsGetPrivateEndpointConnectionResponse, error) {
 	req, err := client.getPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
+		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
 	}
 	return client.getPrivateEndpointConnectionHandleResponse(resp)
 }
@@ -1259,12 +1236,12 @@ func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionCreateRe
 }
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (RemotePrivateEndpointConnectionARMResourceResponse, error) {
-	var val *RemotePrivateEndpointConnectionARMResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RemotePrivateEndpointConnectionARMResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetPrivateEndpointConnectionResponse, error) {
+	result := AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RemotePrivateEndpointConnectionARMResource); err != nil {
+		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, err
 	}
-	return RemotePrivateEndpointConnectionARMResourceResponse{RawResponse: resp.Response, RemotePrivateEndpointConnectionARMResource: val}, nil
+	return result, nil
 }
 
 // getPrivateEndpointConnectionHandleError handles the GetPrivateEndpointConnection error response.
@@ -1282,18 +1259,15 @@ func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleEr
 
 // GetPrivateEndpointConnectionList - Description for Gets the list of private endpoints associated with a hosting environment
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions) PrivateEndpointConnectionCollectionPager {
-	return &privateEndpointConnectionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions) AppServiceEnvironmentsGetPrivateEndpointConnectionListPager {
+	return &appServiceEnvironmentsGetPrivateEndpointConnectionListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.getPrivateEndpointConnectionListHandleResponse,
-		errorer:   client.getPrivateEndpointConnectionListHandleError,
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1325,12 +1299,12 @@ func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListCrea
 }
 
 // getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionCollectionResponse, error) {
-	var val *PrivateEndpointConnectionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse, error) {
+	result := AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionCollection); err != nil {
+		return AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse{}, err
 	}
-	return PrivateEndpointConnectionCollectionResponse{RawResponse: resp.Response, PrivateEndpointConnectionCollection: val}, nil
+	return result, nil
 }
 
 // getPrivateEndpointConnectionListHandleError handles the GetPrivateEndpointConnectionList error response.
@@ -1348,17 +1322,17 @@ func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHand
 
 // GetPrivateLinkResources - Description for Gets the private link resources
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateLinkResourcesOptions) (PrivateLinkResourcesWrapperResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateLinkResourcesOptions) (AppServiceEnvironmentsGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourcesWrapperResponse{}, client.getPrivateLinkResourcesHandleError(resp)
+		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
@@ -1391,12 +1365,12 @@ func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesCreateRequest
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (PrivateLinkResourcesWrapperResponse, error) {
-	var val *PrivateLinkResourcesWrapper
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourcesWrapperResponse{}, err
+func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetPrivateLinkResourcesResponse, error) {
+	result := AppServiceEnvironmentsGetPrivateLinkResourcesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourcesWrapper); err != nil {
+		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, err
 	}
-	return PrivateLinkResourcesWrapperResponse{RawResponse: resp.Response, PrivateLinkResourcesWrapper: val}, nil
+	return result, nil
 }
 
 // getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
@@ -1414,17 +1388,17 @@ func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleError(r
 
 // GetVipInfo - Description for Get IP addresses assigned to an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetVipInfo(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetVipInfoOptions) (AddressResponseResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetVipInfo(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetVipInfoOptions) (AppServiceEnvironmentsGetVipInfoResponse, error) {
 	req, err := client.getVipInfoCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AddressResponseResponse{}, err
+		return AppServiceEnvironmentsGetVipInfoResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AddressResponseResponse{}, err
+		return AppServiceEnvironmentsGetVipInfoResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AddressResponseResponse{}, client.getVipInfoHandleError(resp)
+		return AppServiceEnvironmentsGetVipInfoResponse{}, client.getVipInfoHandleError(resp)
 	}
 	return client.getVipInfoHandleResponse(resp)
 }
@@ -1457,12 +1431,12 @@ func (client *AppServiceEnvironmentsClient) getVipInfoCreateRequest(ctx context.
 }
 
 // getVipInfoHandleResponse handles the GetVipInfo response.
-func (client *AppServiceEnvironmentsClient) getVipInfoHandleResponse(resp *azcore.Response) (AddressResponseResponse, error) {
-	var val *AddressResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AddressResponseResponse{}, err
+func (client *AppServiceEnvironmentsClient) getVipInfoHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetVipInfoResponse, error) {
+	result := AppServiceEnvironmentsGetVipInfoResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AddressResponse); err != nil {
+		return AppServiceEnvironmentsGetVipInfoResponse{}, err
 	}
-	return AddressResponseResponse{RawResponse: resp.Response, AddressResponse: val}, nil
+	return result, nil
 }
 
 // getVipInfoHandleError handles the GetVipInfo error response.
@@ -1480,17 +1454,17 @@ func (client *AppServiceEnvironmentsClient) getVipInfoHandleError(resp *azcore.R
 
 // GetWorkerPool - Description for Get properties of a worker pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsGetWorkerPoolOptions) (WorkerPoolResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) GetWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsGetWorkerPoolOptions) (AppServiceEnvironmentsGetWorkerPoolResponse, error) {
 	req, err := client.getWorkerPoolCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsGetWorkerPoolResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsGetWorkerPoolResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return WorkerPoolResourceResponse{}, client.getWorkerPoolHandleError(resp)
+		return AppServiceEnvironmentsGetWorkerPoolResponse{}, client.getWorkerPoolHandleError(resp)
 	}
 	return client.getWorkerPoolHandleResponse(resp)
 }
@@ -1527,12 +1501,12 @@ func (client *AppServiceEnvironmentsClient) getWorkerPoolCreateRequest(ctx conte
 }
 
 // getWorkerPoolHandleResponse handles the GetWorkerPool response.
-func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleResponse(resp *azcore.Response) (WorkerPoolResourceResponse, error) {
-	var val *WorkerPoolResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WorkerPoolResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetWorkerPoolResponse, error) {
+	result := AppServiceEnvironmentsGetWorkerPoolResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+		return AppServiceEnvironmentsGetWorkerPoolResponse{}, err
 	}
-	return WorkerPoolResourceResponse{RawResponse: resp.Response, WorkerPoolResource: val}, nil
+	return result, nil
 }
 
 // getWorkerPoolHandleError handles the GetWorkerPool error response.
@@ -1550,18 +1524,15 @@ func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleError(resp *azcor
 
 // List - Description for Get all App Service Environments for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) List(options *AppServiceEnvironmentsListOptions) AppServiceEnvironmentCollectionPager {
-	return &appServiceEnvironmentCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) List(options *AppServiceEnvironmentsListOptions) AppServiceEnvironmentsListPager {
+	return &appServiceEnvironmentsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceEnvironmentCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1585,12 +1556,12 @@ func (client *AppServiceEnvironmentsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *AppServiceEnvironmentsClient) listHandleResponse(resp *azcore.Response) (AppServiceEnvironmentCollectionResponse, error) {
-	var val *AppServiceEnvironmentCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceEnvironmentCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListResponse, error) {
+	result := AppServiceEnvironmentsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentCollection); err != nil {
+		return AppServiceEnvironmentsListResponse{}, err
 	}
-	return AppServiceEnvironmentCollectionResponse{RawResponse: resp.Response, AppServiceEnvironmentCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -1608,18 +1579,15 @@ func (client *AppServiceEnvironmentsClient) listHandleError(resp *azcore.Respons
 
 // ListAppServicePlans - Description for Get all App Service plans in an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListAppServicePlans(resourceGroupName string, name string, options *AppServiceEnvironmentsListAppServicePlansOptions) AppServicePlanCollectionPager {
-	return &appServicePlanCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListAppServicePlans(resourceGroupName string, name string, options *AppServiceEnvironmentsListAppServicePlansOptions) AppServiceEnvironmentsListAppServicePlansPager {
+	return &appServiceEnvironmentsListAppServicePlansPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listAppServicePlansCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listAppServicePlansHandleResponse,
-		errorer:   client.listAppServicePlansHandleError,
-		advancer: func(ctx context.Context, resp AppServicePlanCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListAppServicePlansResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1651,12 +1619,12 @@ func (client *AppServiceEnvironmentsClient) listAppServicePlansCreateRequest(ctx
 }
 
 // listAppServicePlansHandleResponse handles the ListAppServicePlans response.
-func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleResponse(resp *azcore.Response) (AppServicePlanCollectionResponse, error) {
-	var val *AppServicePlanCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServicePlanCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListAppServicePlansResponse, error) {
+	result := AppServiceEnvironmentsListAppServicePlansResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServicePlanCollection); err != nil {
+		return AppServiceEnvironmentsListAppServicePlansResponse{}, err
 	}
-	return AppServicePlanCollectionResponse{RawResponse: resp.Response, AppServicePlanCollection: val}, nil
+	return result, nil
 }
 
 // listAppServicePlansHandleError handles the ListAppServicePlans error response.
@@ -1674,18 +1642,15 @@ func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleError(resp 
 
 // ListByResourceGroup - Description for Get all App Service Environments in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *AppServiceEnvironmentsListByResourceGroupOptions) AppServiceEnvironmentCollectionPager {
-	return &appServiceEnvironmentCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *AppServiceEnvironmentsListByResourceGroupOptions) AppServiceEnvironmentsListByResourceGroupPager {
+	return &appServiceEnvironmentsListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceEnvironmentCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1713,12 +1678,12 @@ func (client *AppServiceEnvironmentsClient) listByResourceGroupCreateRequest(ctx
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServiceEnvironmentCollectionResponse, error) {
-	var val *AppServiceEnvironmentCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceEnvironmentCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListByResourceGroupResponse, error) {
+	result := AppServiceEnvironmentsListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentCollection); err != nil {
+		return AppServiceEnvironmentsListByResourceGroupResponse{}, err
 	}
-	return AppServiceEnvironmentCollectionResponse{RawResponse: resp.Response, AppServiceEnvironmentCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -1736,18 +1701,15 @@ func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleError(resp 
 
 // ListCapacities - Description for Get the used, available, and total worker capacity an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListCapacities(resourceGroupName string, name string, options *AppServiceEnvironmentsListCapacitiesOptions) StampCapacityCollectionPager {
-	return &stampCapacityCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListCapacities(resourceGroupName string, name string, options *AppServiceEnvironmentsListCapacitiesOptions) AppServiceEnvironmentsListCapacitiesPager {
+	return &appServiceEnvironmentsListCapacitiesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCapacitiesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listCapacitiesHandleResponse,
-		errorer:   client.listCapacitiesHandleError,
-		advancer: func(ctx context.Context, resp StampCapacityCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListCapacitiesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.StampCapacityCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1779,12 +1741,12 @@ func (client *AppServiceEnvironmentsClient) listCapacitiesCreateRequest(ctx cont
 }
 
 // listCapacitiesHandleResponse handles the ListCapacities response.
-func (client *AppServiceEnvironmentsClient) listCapacitiesHandleResponse(resp *azcore.Response) (StampCapacityCollectionResponse, error) {
-	var val *StampCapacityCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StampCapacityCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listCapacitiesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListCapacitiesResponse, error) {
+	result := AppServiceEnvironmentsListCapacitiesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.StampCapacityCollection); err != nil {
+		return AppServiceEnvironmentsListCapacitiesResponse{}, err
 	}
-	return StampCapacityCollectionResponse{RawResponse: resp.Response, StampCapacityCollection: val}, nil
+	return result, nil
 }
 
 // listCapacitiesHandleError handles the ListCapacities error response.
@@ -1802,17 +1764,17 @@ func (client *AppServiceEnvironmentsClient) listCapacitiesHandleError(resp *azco
 
 // ListDiagnostics - Description for Get diagnostic information for an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListDiagnostics(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListDiagnosticsOptions) (HostingEnvironmentDiagnosticsArrayResponse, error) {
+func (client *AppServiceEnvironmentsClient) ListDiagnostics(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListDiagnosticsOptions) (AppServiceEnvironmentsListDiagnosticsResponse, error) {
 	req, err := client.listDiagnosticsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return HostingEnvironmentDiagnosticsArrayResponse{}, err
+		return AppServiceEnvironmentsListDiagnosticsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HostingEnvironmentDiagnosticsArrayResponse{}, err
+		return AppServiceEnvironmentsListDiagnosticsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HostingEnvironmentDiagnosticsArrayResponse{}, client.listDiagnosticsHandleError(resp)
+		return AppServiceEnvironmentsListDiagnosticsResponse{}, client.listDiagnosticsHandleError(resp)
 	}
 	return client.listDiagnosticsHandleResponse(resp)
 }
@@ -1845,12 +1807,12 @@ func (client *AppServiceEnvironmentsClient) listDiagnosticsCreateRequest(ctx con
 }
 
 // listDiagnosticsHandleResponse handles the ListDiagnostics response.
-func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleResponse(resp *azcore.Response) (HostingEnvironmentDiagnosticsArrayResponse, error) {
-	var val []*HostingEnvironmentDiagnostics
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HostingEnvironmentDiagnosticsArrayResponse{}, err
+func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListDiagnosticsResponse, error) {
+	result := AppServiceEnvironmentsListDiagnosticsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HostingEnvironmentDiagnosticsArray); err != nil {
+		return AppServiceEnvironmentsListDiagnosticsResponse{}, err
 	}
-	return HostingEnvironmentDiagnosticsArrayResponse{RawResponse: resp.Response, HostingEnvironmentDiagnosticsArray: val}, nil
+	return result, nil
 }
 
 // listDiagnosticsHandleError handles the ListDiagnostics error response.
@@ -1868,18 +1830,15 @@ func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleError(resp *azc
 
 // ListMultiRoleMetricDefinitions - Description for Get metric definitions for a multi-role pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions) ResourceMetricDefinitionCollectionPager {
-	return &resourceMetricDefinitionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions) AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager {
+	return &appServiceEnvironmentsListMultiRoleMetricDefinitionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listMultiRoleMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listMultiRoleMetricDefinitionsHandleResponse,
-		errorer:   client.listMultiRoleMetricDefinitionsHandleError,
-		advancer: func(ctx context.Context, resp ResourceMetricDefinitionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1911,12 +1870,12 @@ func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsCreate
 }
 
 // listMultiRoleMetricDefinitionsHandleResponse handles the ListMultiRoleMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(resp *azcore.Response) (ResourceMetricDefinitionCollectionResponse, error) {
-	var val *ResourceMetricDefinitionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceMetricDefinitionCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+		return AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse{}, err
 	}
-	return ResourceMetricDefinitionCollectionResponse{RawResponse: resp.Response, ResourceMetricDefinitionCollection: val}, nil
+	return result, nil
 }
 
 // listMultiRoleMetricDefinitionsHandleError handles the ListMultiRoleMetricDefinitions error response.
@@ -1934,18 +1893,15 @@ func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandle
 
 // ListMultiRolePoolInstanceMetricDefinitions - Description for Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string, options *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions) ResourceMetricDefinitionCollectionPager {
-	return &resourceMetricDefinitionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string, options *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions) AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager {
+	return &appServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listMultiRolePoolInstanceMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, instance, options)
 		},
-		responder: client.listMultiRolePoolInstanceMetricDefinitionsHandleResponse,
-		errorer:   client.listMultiRolePoolInstanceMetricDefinitionsHandleError,
-		advancer: func(ctx context.Context, resp ResourceMetricDefinitionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1981,12 +1937,12 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefin
 }
 
 // listMultiRolePoolInstanceMetricDefinitionsHandleResponse handles the ListMultiRolePoolInstanceMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHandleResponse(resp *azcore.Response) (ResourceMetricDefinitionCollectionResponse, error) {
-	var val *ResourceMetricDefinitionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceMetricDefinitionCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+		return AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse{}, err
 	}
-	return ResourceMetricDefinitionCollectionResponse{RawResponse: resp.Response, ResourceMetricDefinitionCollection: val}, nil
+	return result, nil
 }
 
 // listMultiRolePoolInstanceMetricDefinitionsHandleError handles the ListMultiRolePoolInstanceMetricDefinitions error response.
@@ -2004,18 +1960,15 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefin
 
 // ListMultiRolePoolSKUs - Description for Get available SKUs for scaling a multi-role pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRolePoolSKUs(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolSKUsOptions) SKUInfoCollectionPager {
-	return &skuInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListMultiRolePoolSKUs(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolSKUsOptions) AppServiceEnvironmentsListMultiRolePoolSKUsPager {
+	return &appServiceEnvironmentsListMultiRolePoolSKUsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listMultiRolePoolSKUsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listMultiRolePoolSKUsHandleResponse,
-		errorer:   client.listMultiRolePoolSKUsHandleError,
-		advancer: func(ctx context.Context, resp SKUInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolSKUsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SKUInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2047,12 +2000,12 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsCreateRequest(c
 }
 
 // listMultiRolePoolSKUsHandleResponse handles the ListMultiRolePoolSKUs response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *azcore.Response) (SKUInfoCollectionResponse, error) {
-	var val *SKUInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SKUInfoCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRolePoolSKUsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRolePoolSKUsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SKUInfoCollection); err != nil {
+		return AppServiceEnvironmentsListMultiRolePoolSKUsResponse{}, err
 	}
-	return SKUInfoCollectionResponse{RawResponse: resp.Response, SKUInfoCollection: val}, nil
+	return result, nil
 }
 
 // listMultiRolePoolSKUsHandleError handles the ListMultiRolePoolSKUs error response.
@@ -2070,18 +2023,15 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleError(res
 
 // ListMultiRolePools - Description for Get all multi-role pools.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRolePools(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolsOptions) WorkerPoolCollectionPager {
-	return &workerPoolCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListMultiRolePools(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolsOptions) AppServiceEnvironmentsListMultiRolePoolsPager {
+	return &appServiceEnvironmentsListMultiRolePoolsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listMultiRolePoolsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listMultiRolePoolsHandleResponse,
-		errorer:   client.listMultiRolePoolsHandleError,
-		advancer: func(ctx context.Context, resp WorkerPoolCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkerPoolCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2113,12 +2063,12 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolsCreateRequest(ctx 
 }
 
 // listMultiRolePoolsHandleResponse handles the ListMultiRolePools response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleResponse(resp *azcore.Response) (WorkerPoolCollectionResponse, error) {
-	var val *WorkerPoolCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WorkerPoolCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRolePoolsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRolePoolsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WorkerPoolCollection); err != nil {
+		return AppServiceEnvironmentsListMultiRolePoolsResponse{}, err
 	}
-	return WorkerPoolCollectionResponse{RawResponse: resp.Response, WorkerPoolCollection: val}, nil
+	return result, nil
 }
 
 // listMultiRolePoolsHandleError handles the ListMultiRolePools error response.
@@ -2136,18 +2086,15 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleError(resp *
 
 // ListMultiRoleUsages - Description for Get usage metrics for a multi-role pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRoleUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleUsagesOptions) UsageCollectionPager {
-	return &usageCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListMultiRoleUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleUsagesOptions) AppServiceEnvironmentsListMultiRoleUsagesPager {
+	return &appServiceEnvironmentsListMultiRoleUsagesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listMultiRoleUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listMultiRoleUsagesHandleResponse,
-		errorer:   client.listMultiRoleUsagesHandleError,
-		advancer: func(ctx context.Context, resp UsageCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRoleUsagesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsageCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2179,12 +2126,12 @@ func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx
 }
 
 // listMultiRoleUsagesHandleResponse handles the ListMultiRoleUsages response.
-func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *azcore.Response) (UsageCollectionResponse, error) {
-	var val *UsageCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UsageCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRoleUsagesResponse, error) {
+	result := AppServiceEnvironmentsListMultiRoleUsagesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.UsageCollection); err != nil {
+		return AppServiceEnvironmentsListMultiRoleUsagesResponse{}, err
 	}
-	return UsageCollectionResponse{RawResponse: resp.Response, UsageCollection: val}, nil
+	return result, nil
 }
 
 // listMultiRoleUsagesHandleError handles the ListMultiRoleUsages error response.
@@ -2202,17 +2149,17 @@ func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleError(resp 
 
 // ListOperations - Description for List all currently running operations on the App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListOperations(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListOperationsOptions) (OperationArrayResponse, error) {
+func (client *AppServiceEnvironmentsClient) ListOperations(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListOperationsOptions) (AppServiceEnvironmentsListOperationsResponse, error) {
 	req, err := client.listOperationsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return OperationArrayResponse{}, err
+		return AppServiceEnvironmentsListOperationsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return OperationArrayResponse{}, err
+		return AppServiceEnvironmentsListOperationsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return OperationArrayResponse{}, client.listOperationsHandleError(resp)
+		return AppServiceEnvironmentsListOperationsResponse{}, client.listOperationsHandleError(resp)
 	}
 	return client.listOperationsHandleResponse(resp)
 }
@@ -2245,12 +2192,12 @@ func (client *AppServiceEnvironmentsClient) listOperationsCreateRequest(ctx cont
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *AppServiceEnvironmentsClient) listOperationsHandleResponse(resp *azcore.Response) (OperationArrayResponse, error) {
-	var val []*Operation
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OperationArrayResponse{}, err
+func (client *AppServiceEnvironmentsClient) listOperationsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListOperationsResponse, error) {
+	result := AppServiceEnvironmentsListOperationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OperationArray); err != nil {
+		return AppServiceEnvironmentsListOperationsResponse{}, err
 	}
-	return OperationArrayResponse{RawResponse: resp.Response, OperationArray: val}, nil
+	return result, nil
 }
 
 // listOperationsHandleError handles the ListOperations error response.
@@ -2268,18 +2215,15 @@ func (client *AppServiceEnvironmentsClient) listOperationsHandleError(resp *azco
 
 // ListUsages - Description for Get global usage metrics of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListUsagesOptions) CsmUsageQuotaCollectionPager {
-	return &csmUsageQuotaCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListUsagesOptions) AppServiceEnvironmentsListUsagesPager {
+	return &appServiceEnvironmentsListUsagesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listUsagesHandleResponse,
-		errorer:   client.listUsagesHandleError,
-		advancer: func(ctx context.Context, resp CsmUsageQuotaCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListUsagesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2316,12 +2260,12 @@ func (client *AppServiceEnvironmentsClient) listUsagesCreateRequest(ctx context.
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *AppServiceEnvironmentsClient) listUsagesHandleResponse(resp *azcore.Response) (CsmUsageQuotaCollectionResponse, error) {
-	var val *CsmUsageQuotaCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmUsageQuotaCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listUsagesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListUsagesResponse, error) {
+	result := AppServiceEnvironmentsListUsagesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmUsageQuotaCollection); err != nil {
+		return AppServiceEnvironmentsListUsagesResponse{}, err
 	}
-	return CsmUsageQuotaCollectionResponse{RawResponse: resp.Response, CsmUsageQuotaCollection: val}, nil
+	return result, nil
 }
 
 // listUsagesHandleError handles the ListUsages error response.
@@ -2339,18 +2283,15 @@ func (client *AppServiceEnvironmentsClient) listUsagesHandleError(resp *azcore.R
 
 // ListWebApps - Description for Get all apps in an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWebApps(resourceGroupName string, name string, options *AppServiceEnvironmentsListWebAppsOptions) WebAppCollectionPager {
-	return &webAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListWebApps(resourceGroupName string, name string, options *AppServiceEnvironmentsListWebAppsOptions) AppServiceEnvironmentsListWebAppsPager {
+	return &appServiceEnvironmentsListWebAppsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listWebAppsHandleResponse,
-		errorer:   client.listWebAppsHandleError,
-		advancer: func(ctx context.Context, resp WebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebAppsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2385,12 +2326,12 @@ func (client *AppServiceEnvironmentsClient) listWebAppsCreateRequest(ctx context
 }
 
 // listWebAppsHandleResponse handles the ListWebApps response.
-func (client *AppServiceEnvironmentsClient) listWebAppsHandleResponse(resp *azcore.Response) (WebAppCollectionResponse, error) {
-	var val *WebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listWebAppsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWebAppsResponse, error) {
+	result := AppServiceEnvironmentsListWebAppsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return AppServiceEnvironmentsListWebAppsResponse{}, err
 	}
-	return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
+	return result, nil
 }
 
 // listWebAppsHandleError handles the ListWebApps error response.
@@ -2408,18 +2349,15 @@ func (client *AppServiceEnvironmentsClient) listWebAppsHandleError(resp *azcore.
 
 // ListWebWorkerMetricDefinitions - Description for Get metric definitions for a worker pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions) ResourceMetricDefinitionCollectionPager {
-	return &resourceMetricDefinitionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions) AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager {
+	return &appServiceEnvironmentsListWebWorkerMetricDefinitionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebWorkerMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 		},
-		responder: client.listWebWorkerMetricDefinitionsHandleResponse,
-		errorer:   client.listWebWorkerMetricDefinitionsHandleError,
-		advancer: func(ctx context.Context, resp ResourceMetricDefinitionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2455,12 +2393,12 @@ func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsCreate
 }
 
 // listWebWorkerMetricDefinitionsHandleResponse handles the ListWebWorkerMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(resp *azcore.Response) (ResourceMetricDefinitionCollectionResponse, error) {
-	var val *ResourceMetricDefinitionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceMetricDefinitionCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+		return AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse{}, err
 	}
-	return ResourceMetricDefinitionCollectionResponse{RawResponse: resp.Response, ResourceMetricDefinitionCollection: val}, nil
+	return result, nil
 }
 
 // listWebWorkerMetricDefinitionsHandleError handles the ListWebWorkerMetricDefinitions error response.
@@ -2478,18 +2416,15 @@ func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandle
 
 // ListWebWorkerUsages - Description for Get usage metrics for a worker pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWebWorkerUsages(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerUsagesOptions) UsageCollectionPager {
-	return &usageCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListWebWorkerUsages(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerUsagesOptions) AppServiceEnvironmentsListWebWorkerUsagesPager {
+	return &appServiceEnvironmentsListWebWorkerUsagesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebWorkerUsagesCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 		},
-		responder: client.listWebWorkerUsagesHandleResponse,
-		errorer:   client.listWebWorkerUsagesHandleError,
-		advancer: func(ctx context.Context, resp UsageCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebWorkerUsagesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsageCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2525,12 +2460,12 @@ func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx
 }
 
 // listWebWorkerUsagesHandleResponse handles the ListWebWorkerUsages response.
-func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *azcore.Response) (UsageCollectionResponse, error) {
-	var val *UsageCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UsageCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWebWorkerUsagesResponse, error) {
+	result := AppServiceEnvironmentsListWebWorkerUsagesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.UsageCollection); err != nil {
+		return AppServiceEnvironmentsListWebWorkerUsagesResponse{}, err
 	}
-	return UsageCollectionResponse{RawResponse: resp.Response, UsageCollection: val}, nil
+	return result, nil
 }
 
 // listWebWorkerUsagesHandleError handles the ListWebWorkerUsages error response.
@@ -2548,18 +2483,15 @@ func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleError(resp 
 
 // ListWorkerPoolInstanceMetricDefinitions - Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string, options *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions) ResourceMetricDefinitionCollectionPager {
-	return &resourceMetricDefinitionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string, options *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions) AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager {
+	return &appServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWorkerPoolInstanceMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, workerPoolName, instance, options)
 		},
-		responder: client.listWorkerPoolInstanceMetricDefinitionsHandleResponse,
-		errorer:   client.listWorkerPoolInstanceMetricDefinitionsHandleError,
-		advancer: func(ctx context.Context, resp ResourceMetricDefinitionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2599,12 +2531,12 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefiniti
 }
 
 // listWorkerPoolInstanceMetricDefinitionsHandleResponse handles the ListWorkerPoolInstanceMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleResponse(resp *azcore.Response) (ResourceMetricDefinitionCollectionResponse, error) {
-	var val *ResourceMetricDefinitionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceMetricDefinitionCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+		return AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse{}, err
 	}
-	return ResourceMetricDefinitionCollectionResponse{RawResponse: resp.Response, ResourceMetricDefinitionCollection: val}, nil
+	return result, nil
 }
 
 // listWorkerPoolInstanceMetricDefinitionsHandleError handles the ListWorkerPoolInstanceMetricDefinitions error response.
@@ -2622,18 +2554,15 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefiniti
 
 // ListWorkerPoolSKUs - Description for Get available SKUs for scaling a worker pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWorkerPoolSKUs(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWorkerPoolSKUsOptions) SKUInfoCollectionPager {
-	return &skuInfoCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListWorkerPoolSKUs(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWorkerPoolSKUsOptions) AppServiceEnvironmentsListWorkerPoolSKUsPager {
+	return &appServiceEnvironmentsListWorkerPoolSKUsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWorkerPoolSKUsCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 		},
-		responder: client.listWorkerPoolSKUsHandleResponse,
-		errorer:   client.listWorkerPoolSKUsHandleError,
-		advancer: func(ctx context.Context, resp SKUInfoCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolSKUsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SKUInfoCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2669,12 +2598,12 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx 
 }
 
 // listWorkerPoolSKUsHandleResponse handles the ListWorkerPoolSKUs response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *azcore.Response) (SKUInfoCollectionResponse, error) {
-	var val *SKUInfoCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SKUInfoCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWorkerPoolSKUsResponse, error) {
+	result := AppServiceEnvironmentsListWorkerPoolSKUsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SKUInfoCollection); err != nil {
+		return AppServiceEnvironmentsListWorkerPoolSKUsResponse{}, err
 	}
-	return SKUInfoCollectionResponse{RawResponse: resp.Response, SKUInfoCollection: val}, nil
+	return result, nil
 }
 
 // listWorkerPoolSKUsHandleError handles the ListWorkerPoolSKUs error response.
@@ -2692,18 +2621,15 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleError(resp *
 
 // ListWorkerPools - Description for Get all worker pools of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWorkerPools(resourceGroupName string, name string, options *AppServiceEnvironmentsListWorkerPoolsOptions) WorkerPoolCollectionPager {
-	return &workerPoolCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceEnvironmentsClient) ListWorkerPools(resourceGroupName string, name string, options *AppServiceEnvironmentsListWorkerPoolsOptions) AppServiceEnvironmentsListWorkerPoolsPager {
+	return &appServiceEnvironmentsListWorkerPoolsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWorkerPoolsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listWorkerPoolsHandleResponse,
-		errorer:   client.listWorkerPoolsHandleError,
-		advancer: func(ctx context.Context, resp WorkerPoolCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkerPoolCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -2735,12 +2661,12 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolsCreateRequest(ctx con
 }
 
 // listWorkerPoolsHandleResponse handles the ListWorkerPools response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleResponse(resp *azcore.Response) (WorkerPoolCollectionResponse, error) {
-	var val *WorkerPoolCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WorkerPoolCollectionResponse{}, err
+func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWorkerPoolsResponse, error) {
+	result := AppServiceEnvironmentsListWorkerPoolsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WorkerPoolCollection); err != nil {
+		return AppServiceEnvironmentsListWorkerPoolsResponse{}, err
 	}
-	return WorkerPoolCollectionResponse{RawResponse: resp.Response, WorkerPoolCollection: val}, nil
+	return result, nil
 }
 
 // listWorkerPoolsHandleError handles the ListWorkerPools error response.
@@ -2758,19 +2684,19 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleError(resp *azc
 
 // Reboot - Description for Reboot all machines in an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) Reboot(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsRebootOptions) (*http.Response, error) {
+func (client *AppServiceEnvironmentsClient) Reboot(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsRebootOptions) (AppServiceEnvironmentsRebootResponse, error) {
 	req, err := client.rebootCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return AppServiceEnvironmentsRebootResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceEnvironmentsRebootResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusAccepted) {
-		return nil, client.rebootHandleError(resp)
+		return AppServiceEnvironmentsRebootResponse{}, client.rebootHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceEnvironmentsRebootResponse{RawResponse: resp.Response}, nil
 }
 
 // rebootCreateRequest creates the Reboot request.
@@ -2815,75 +2741,49 @@ func (client *AppServiceEnvironmentsClient) rebootHandleError(resp *azcore.Respo
 
 // BeginResume - Description for Resume an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginResume(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginResumeOptions) (WebAppCollectionPagerPollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginResume(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginResumeOptions) (AppServiceEnvironmentsResumePollerResponse, error) {
 	resp, err := client.resume(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsResumePollerResponse{}, err
 	}
-	result := WebAppCollectionPagerPollerResponse{
+	result := AppServiceEnvironmentsResumePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.Resume", "", resp, client.con.Pipeline(), client.resumeHandleError)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsResumePollerResponse{}, err
 	}
-	poller := &webAppCollectionPagerPoller{
-		pt: pt,
-		errHandler: func(resp *azcore.Response) error {
-			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-				return nil
-			}
-			return client.resumeHandleError(resp)
-		},
-		respHandler: func(resp *azcore.Response) (WebAppCollectionResponse, error) {
-			var val *WebAppCollection
-			if err := resp.UnmarshalAsJSON(&val); err != nil {
-				return WebAppCollectionResponse{}, err
-			}
-			return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
-		},
-		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
+	poller := &appServiceEnvironmentsResumePoller{
+		pt:     pt,
+		client: client,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppCollectionPager, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsResumePager, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeResume creates a new WebAppCollectionPagerPoller from the specified resume token.
-// token - The value must come from a previous call to WebAppCollectionPagerPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeResume(ctx context.Context, token string) (WebAppCollectionPagerPollerResponse, error) {
+// ResumeResume creates a new AppServiceEnvironmentsResumePoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsResumePoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeResume(ctx context.Context, token string) (AppServiceEnvironmentsResumePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.Resume", token, client.con.Pipeline(), client.resumeHandleError)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsResumePollerResponse{}, err
 	}
-	poller := &webAppCollectionPagerPoller{
-		pt: pt,
-		errHandler: func(resp *azcore.Response) error {
-			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-				return nil
-			}
-			return client.resumeHandleError(resp)
-		},
-		respHandler: func(resp *azcore.Response) (WebAppCollectionResponse, error) {
-			var val *WebAppCollection
-			if err := resp.UnmarshalAsJSON(&val); err != nil {
-				return WebAppCollectionResponse{}, err
-			}
-			return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
-		},
-		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
+	poller := &appServiceEnvironmentsResumePoller{
+		pt:     pt,
+		client: client,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsResumePollerResponse{}, err
 	}
-	result := WebAppCollectionPagerPollerResponse{
+	result := AppServiceEnvironmentsResumePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppCollectionPager, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsResumePager, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -2933,6 +2833,15 @@ func (client *AppServiceEnvironmentsClient) resumeCreateRequest(ctx context.Cont
 	return req, nil
 }
 
+// resumeHandleResponse handles the Resume response.
+func (client *AppServiceEnvironmentsClient) resumeHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsResumeResponse, error) {
+	result := AppServiceEnvironmentsResumeResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return AppServiceEnvironmentsResumeResponse{}, err
+	}
+	return result, nil
+}
+
 // resumeHandleError handles the Resume error response.
 func (client *AppServiceEnvironmentsClient) resumeHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
@@ -2948,75 +2857,49 @@ func (client *AppServiceEnvironmentsClient) resumeHandleError(resp *azcore.Respo
 
 // BeginSuspend - Description for Suspend an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) BeginSuspend(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginSuspendOptions) (WebAppCollectionPagerPollerResponse, error) {
+func (client *AppServiceEnvironmentsClient) BeginSuspend(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginSuspendOptions) (AppServiceEnvironmentsSuspendPollerResponse, error) {
 	resp, err := client.suspend(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsSuspendPollerResponse{}, err
 	}
-	result := WebAppCollectionPagerPollerResponse{
+	result := AppServiceEnvironmentsSuspendPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.Suspend", "", resp, client.con.Pipeline(), client.suspendHandleError)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsSuspendPollerResponse{}, err
 	}
-	poller := &webAppCollectionPagerPoller{
-		pt: pt,
-		errHandler: func(resp *azcore.Response) error {
-			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-				return nil
-			}
-			return client.suspendHandleError(resp)
-		},
-		respHandler: func(resp *azcore.Response) (WebAppCollectionResponse, error) {
-			var val *WebAppCollection
-			if err := resp.UnmarshalAsJSON(&val); err != nil {
-				return WebAppCollectionResponse{}, err
-			}
-			return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
-		},
-		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
+	poller := &appServiceEnvironmentsSuspendPoller{
+		pt:     pt,
+		client: client,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppCollectionPager, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsSuspendPager, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeSuspend creates a new WebAppCollectionPagerPoller from the specified resume token.
-// token - The value must come from a previous call to WebAppCollectionPagerPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeSuspend(ctx context.Context, token string) (WebAppCollectionPagerPollerResponse, error) {
+// ResumeSuspend creates a new AppServiceEnvironmentsSuspendPoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceEnvironmentsSuspendPoller.ResumeToken().
+func (client *AppServiceEnvironmentsClient) ResumeSuspend(ctx context.Context, token string) (AppServiceEnvironmentsSuspendPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.Suspend", token, client.con.Pipeline(), client.suspendHandleError)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsSuspendPollerResponse{}, err
 	}
-	poller := &webAppCollectionPagerPoller{
-		pt: pt,
-		errHandler: func(resp *azcore.Response) error {
-			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-				return nil
-			}
-			return client.suspendHandleError(resp)
-		},
-		respHandler: func(resp *azcore.Response) (WebAppCollectionResponse, error) {
-			var val *WebAppCollection
-			if err := resp.UnmarshalAsJSON(&val); err != nil {
-				return WebAppCollectionResponse{}, err
-			}
-			return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
-		},
-		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
+	poller := &appServiceEnvironmentsSuspendPoller{
+		pt:     pt,
+		client: client,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return WebAppCollectionPagerPollerResponse{}, err
+		return AppServiceEnvironmentsSuspendPollerResponse{}, err
 	}
-	result := WebAppCollectionPagerPollerResponse{
+	result := AppServiceEnvironmentsSuspendPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WebAppCollectionPager, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsSuspendPager, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -3066,6 +2949,15 @@ func (client *AppServiceEnvironmentsClient) suspendCreateRequest(ctx context.Con
 	return req, nil
 }
 
+// suspendHandleResponse handles the Suspend response.
+func (client *AppServiceEnvironmentsClient) suspendHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsSuspendResponse, error) {
+	result := AppServiceEnvironmentsSuspendResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return AppServiceEnvironmentsSuspendResponse{}, err
+	}
+	return result, nil
+}
+
 // suspendHandleError handles the Suspend error response.
 func (client *AppServiceEnvironmentsClient) suspendHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
@@ -3081,17 +2973,17 @@ func (client *AppServiceEnvironmentsClient) suspendHandleError(resp *azcore.Resp
 
 // Update - Description for Create or update an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) Update(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentPatchResource, options *AppServiceEnvironmentsUpdateOptions) (AppServiceEnvironmentResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) Update(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentPatchResource, options *AppServiceEnvironmentsUpdateOptions) (AppServiceEnvironmentsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, hostingEnvironmentEnvelope, options)
 	if err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+		return AppServiceEnvironmentsUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+		return AppServiceEnvironmentsUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return AppServiceEnvironmentResourceResponse{}, client.updateHandleError(resp)
+		return AppServiceEnvironmentsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -3124,12 +3016,12 @@ func (client *AppServiceEnvironmentsClient) updateCreateRequest(ctx context.Cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppServiceEnvironmentsClient) updateHandleResponse(resp *azcore.Response) (AppServiceEnvironmentResourceResponse, error) {
-	var val *AppServiceEnvironmentResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceEnvironmentResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) updateHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateResponse, error) {
+	result := AppServiceEnvironmentsUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentResource); err != nil {
+		return AppServiceEnvironmentsUpdateResponse{}, err
 	}
-	return AppServiceEnvironmentResourceResponse{RawResponse: resp.Response, AppServiceEnvironmentResource: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -3147,17 +3039,17 @@ func (client *AppServiceEnvironmentsClient) updateHandleError(resp *azcore.Respo
 
 // UpdateAseNetworkingConfiguration - Description for Update networking configuration of an App Service Environment
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) UpdateAseNetworkingConfiguration(ctx context.Context, resourceGroupName string, name string, aseNetworkingConfiguration AseV3NetworkingConfiguration, options *AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions) (AseV3NetworkingConfigurationResponse, error) {
+func (client *AppServiceEnvironmentsClient) UpdateAseNetworkingConfiguration(ctx context.Context, resourceGroupName string, name string, aseNetworkingConfiguration AseV3NetworkingConfiguration, options *AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions) (AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse, error) {
 	req, err := client.updateAseNetworkingConfigurationCreateRequest(ctx, resourceGroupName, name, aseNetworkingConfiguration, options)
 	if err != nil {
-		return AseV3NetworkingConfigurationResponse{}, err
+		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AseV3NetworkingConfigurationResponse{}, err
+		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AseV3NetworkingConfigurationResponse{}, client.updateAseNetworkingConfigurationHandleError(resp)
+		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, client.updateAseNetworkingConfigurationHandleError(resp)
 	}
 	return client.updateAseNetworkingConfigurationHandleResponse(resp)
 }
@@ -3190,12 +3082,12 @@ func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationCrea
 }
 
 // updateAseNetworkingConfigurationHandleResponse handles the UpdateAseNetworkingConfiguration response.
-func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHandleResponse(resp *azcore.Response) (AseV3NetworkingConfigurationResponse, error) {
-	var val *AseV3NetworkingConfiguration
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AseV3NetworkingConfigurationResponse{}, err
+func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse, error) {
+	result := AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AseV3NetworkingConfiguration); err != nil {
+		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, err
 	}
-	return AseV3NetworkingConfigurationResponse{RawResponse: resp.Response, AseV3NetworkingConfiguration: val}, nil
+	return result, nil
 }
 
 // updateAseNetworkingConfigurationHandleError handles the UpdateAseNetworkingConfiguration error response.
@@ -3213,17 +3105,17 @@ func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHand
 
 // UpdateMultiRolePool - Description for Create or update a multi-role pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) UpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateMultiRolePoolOptions) (WorkerPoolResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) UpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateMultiRolePoolOptions) (AppServiceEnvironmentsUpdateMultiRolePoolResponse, error) {
 	req, err := client.updateMultiRolePoolCreateRequest(ctx, resourceGroupName, name, multiRolePoolEnvelope, options)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return WorkerPoolResourceResponse{}, client.updateMultiRolePoolHandleError(resp)
+		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, client.updateMultiRolePoolHandleError(resp)
 	}
 	return client.updateMultiRolePoolHandleResponse(resp)
 }
@@ -3256,12 +3148,12 @@ func (client *AppServiceEnvironmentsClient) updateMultiRolePoolCreateRequest(ctx
 }
 
 // updateMultiRolePoolHandleResponse handles the UpdateMultiRolePool response.
-func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleResponse(resp *azcore.Response) (WorkerPoolResourceResponse, error) {
-	var val *WorkerPoolResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WorkerPoolResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateMultiRolePoolResponse, error) {
+	result := AppServiceEnvironmentsUpdateMultiRolePoolResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, err
 	}
-	return WorkerPoolResourceResponse{RawResponse: resp.Response, WorkerPoolResource: val}, nil
+	return result, nil
 }
 
 // updateMultiRolePoolHandleError handles the UpdateMultiRolePool error response.
@@ -3279,17 +3171,17 @@ func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleError(resp 
 
 // UpdateWorkerPool - Description for Create or update a worker pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) UpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateWorkerPoolOptions) (WorkerPoolResourceResponse, error) {
+func (client *AppServiceEnvironmentsClient) UpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateWorkerPoolOptions) (AppServiceEnvironmentsUpdateWorkerPoolResponse, error) {
 	req, err := client.updateWorkerPoolCreateRequest(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope, options)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return WorkerPoolResourceResponse{}, err
+		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return WorkerPoolResourceResponse{}, client.updateWorkerPoolHandleError(resp)
+		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, client.updateWorkerPoolHandleError(resp)
 	}
 	return client.updateWorkerPoolHandleResponse(resp)
 }
@@ -3326,12 +3218,12 @@ func (client *AppServiceEnvironmentsClient) updateWorkerPoolCreateRequest(ctx co
 }
 
 // updateWorkerPoolHandleResponse handles the UpdateWorkerPool response.
-func (client *AppServiceEnvironmentsClient) updateWorkerPoolHandleResponse(resp *azcore.Response) (WorkerPoolResourceResponse, error) {
-	var val *WorkerPoolResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WorkerPoolResourceResponse{}, err
+func (client *AppServiceEnvironmentsClient) updateWorkerPoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateWorkerPoolResponse, error) {
+	result := AppServiceEnvironmentsUpdateWorkerPoolResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, err
 	}
-	return WorkerPoolResourceResponse{RawResponse: resp.Response, WorkerPoolResource: val}, nil
+	return result, nil
 }
 
 // updateWorkerPoolHandleError handles the UpdateWorkerPool error response.

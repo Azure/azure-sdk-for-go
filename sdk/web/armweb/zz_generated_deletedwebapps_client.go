@@ -32,17 +32,17 @@ func NewDeletedWebAppsClient(con *armcore.Connection, subscriptionID string) *De
 
 // GetDeletedWebAppByLocation - Description for Get deleted app for a subscription at location.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DeletedWebAppsClient) GetDeletedWebAppByLocation(ctx context.Context, location string, deletedSiteID string, options *DeletedWebAppsGetDeletedWebAppByLocationOptions) (DeletedSiteResponse, error) {
+func (client *DeletedWebAppsClient) GetDeletedWebAppByLocation(ctx context.Context, location string, deletedSiteID string, options *DeletedWebAppsGetDeletedWebAppByLocationOptions) (DeletedWebAppsGetDeletedWebAppByLocationResponse, error) {
 	req, err := client.getDeletedWebAppByLocationCreateRequest(ctx, location, deletedSiteID, options)
 	if err != nil {
-		return DeletedSiteResponse{}, err
+		return DeletedWebAppsGetDeletedWebAppByLocationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeletedSiteResponse{}, err
+		return DeletedWebAppsGetDeletedWebAppByLocationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeletedSiteResponse{}, client.getDeletedWebAppByLocationHandleError(resp)
+		return DeletedWebAppsGetDeletedWebAppByLocationResponse{}, client.getDeletedWebAppByLocationHandleError(resp)
 	}
 	return client.getDeletedWebAppByLocationHandleResponse(resp)
 }
@@ -75,12 +75,12 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationCreateRequest(ctx 
 }
 
 // getDeletedWebAppByLocationHandleResponse handles the GetDeletedWebAppByLocation response.
-func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(resp *azcore.Response) (DeletedSiteResponse, error) {
-	var val *DeletedSite
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeletedSiteResponse{}, err
+func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(resp *azcore.Response) (DeletedWebAppsGetDeletedWebAppByLocationResponse, error) {
+	result := DeletedWebAppsGetDeletedWebAppByLocationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeletedSite); err != nil {
+		return DeletedWebAppsGetDeletedWebAppByLocationResponse{}, err
 	}
-	return DeletedSiteResponse{RawResponse: resp.Response, DeletedSite: val}, nil
+	return result, nil
 }
 
 // getDeletedWebAppByLocationHandleError handles the GetDeletedWebAppByLocation error response.
@@ -98,18 +98,15 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleError(resp *
 
 // List - Description for Get all deleted apps for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DeletedWebAppsClient) List(options *DeletedWebAppsListOptions) DeletedWebAppCollectionPager {
-	return &deletedWebAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DeletedWebAppsClient) List(options *DeletedWebAppsListOptions) DeletedWebAppsListPager {
+	return &deletedWebAppsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp DeletedWebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DeletedWebAppsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeletedWebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -133,12 +130,12 @@ func (client *DeletedWebAppsClient) listCreateRequest(ctx context.Context, optio
 }
 
 // listHandleResponse handles the List response.
-func (client *DeletedWebAppsClient) listHandleResponse(resp *azcore.Response) (DeletedWebAppCollectionResponse, error) {
-	var val *DeletedWebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeletedWebAppCollectionResponse{}, err
+func (client *DeletedWebAppsClient) listHandleResponse(resp *azcore.Response) (DeletedWebAppsListResponse, error) {
+	result := DeletedWebAppsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeletedWebAppCollection); err != nil {
+		return DeletedWebAppsListResponse{}, err
 	}
-	return DeletedWebAppCollectionResponse{RawResponse: resp.Response, DeletedWebAppCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -156,18 +153,15 @@ func (client *DeletedWebAppsClient) listHandleError(resp *azcore.Response) error
 
 // ListByLocation - Description for Get all deleted apps for a subscription at location
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DeletedWebAppsClient) ListByLocation(location string, options *DeletedWebAppsListByLocationOptions) DeletedWebAppCollectionPager {
-	return &deletedWebAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DeletedWebAppsClient) ListByLocation(location string, options *DeletedWebAppsListByLocationOptions) DeletedWebAppsListByLocationPager {
+	return &deletedWebAppsListByLocationPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByLocationCreateRequest(ctx, location, options)
 		},
-		responder: client.listByLocationHandleResponse,
-		errorer:   client.listByLocationHandleError,
-		advancer: func(ctx context.Context, resp DeletedWebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DeletedWebAppsListByLocationResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeletedWebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -195,12 +189,12 @@ func (client *DeletedWebAppsClient) listByLocationCreateRequest(ctx context.Cont
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *DeletedWebAppsClient) listByLocationHandleResponse(resp *azcore.Response) (DeletedWebAppCollectionResponse, error) {
-	var val *DeletedWebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeletedWebAppCollectionResponse{}, err
+func (client *DeletedWebAppsClient) listByLocationHandleResponse(resp *azcore.Response) (DeletedWebAppsListByLocationResponse, error) {
+	result := DeletedWebAppsListByLocationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeletedWebAppCollection); err != nil {
+		return DeletedWebAppsListByLocationResponse{}, err
 	}
-	return DeletedWebAppCollectionResponse{RawResponse: resp.Response, DeletedWebAppCollection: val}, nil
+	return result, nil
 }
 
 // listByLocationHandleError handles the ListByLocation error response.

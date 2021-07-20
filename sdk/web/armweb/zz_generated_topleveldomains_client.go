@@ -32,17 +32,17 @@ func NewTopLevelDomainsClient(con *armcore.Connection, subscriptionID string) *T
 
 // Get - Description for Get details of a top-level domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *TopLevelDomainsClient) Get(ctx context.Context, name string, options *TopLevelDomainsGetOptions) (TopLevelDomainResponse, error) {
+func (client *TopLevelDomainsClient) Get(ctx context.Context, name string, options *TopLevelDomainsGetOptions) (TopLevelDomainsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, name, options)
 	if err != nil {
-		return TopLevelDomainResponse{}, err
+		return TopLevelDomainsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return TopLevelDomainResponse{}, err
+		return TopLevelDomainsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return TopLevelDomainResponse{}, client.getHandleError(resp)
+		return TopLevelDomainsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -71,12 +71,12 @@ func (client *TopLevelDomainsClient) getCreateRequest(ctx context.Context, name 
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopLevelDomainsClient) getHandleResponse(resp *azcore.Response) (TopLevelDomainResponse, error) {
-	var val *TopLevelDomain
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TopLevelDomainResponse{}, err
+func (client *TopLevelDomainsClient) getHandleResponse(resp *azcore.Response) (TopLevelDomainsGetResponse, error) {
+	result := TopLevelDomainsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TopLevelDomain); err != nil {
+		return TopLevelDomainsGetResponse{}, err
 	}
-	return TopLevelDomainResponse{RawResponse: resp.Response, TopLevelDomain: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -94,18 +94,15 @@ func (client *TopLevelDomainsClient) getHandleError(resp *azcore.Response) error
 
 // List - Description for Get all top-level domains supported for registration.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *TopLevelDomainsClient) List(options *TopLevelDomainsListOptions) TopLevelDomainCollectionPager {
-	return &topLevelDomainCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *TopLevelDomainsClient) List(options *TopLevelDomainsListOptions) TopLevelDomainsListPager {
+	return &topLevelDomainsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp TopLevelDomainCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp TopLevelDomainsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TopLevelDomainCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -129,12 +126,12 @@ func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *TopLevelDomainsClient) listHandleResponse(resp *azcore.Response) (TopLevelDomainCollectionResponse, error) {
-	var val *TopLevelDomainCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TopLevelDomainCollectionResponse{}, err
+func (client *TopLevelDomainsClient) listHandleResponse(resp *azcore.Response) (TopLevelDomainsListResponse, error) {
+	result := TopLevelDomainsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TopLevelDomainCollection); err != nil {
+		return TopLevelDomainsListResponse{}, err
 	}
-	return TopLevelDomainCollectionResponse{RawResponse: resp.Response, TopLevelDomainCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -152,18 +149,15 @@ func (client *TopLevelDomainsClient) listHandleError(resp *azcore.Response) erro
 
 // ListAgreements - Description for Gets all legal agreements that user needs to accept before purchasing a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *TopLevelDomainsClient) ListAgreements(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsListAgreementsOptions) TldLegalAgreementCollectionPager {
-	return &tldLegalAgreementCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *TopLevelDomainsClient) ListAgreements(name string, agreementOption TopLevelDomainAgreementOption, options *TopLevelDomainsListAgreementsOptions) TopLevelDomainsListAgreementsPager {
+	return &topLevelDomainsListAgreementsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listAgreementsCreateRequest(ctx, name, agreementOption, options)
 		},
-		responder: client.listAgreementsHandleResponse,
-		errorer:   client.listAgreementsHandleError,
-		advancer: func(ctx context.Context, resp TldLegalAgreementCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp TopLevelDomainsListAgreementsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TldLegalAgreementCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -191,12 +185,12 @@ func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Con
 }
 
 // listAgreementsHandleResponse handles the ListAgreements response.
-func (client *TopLevelDomainsClient) listAgreementsHandleResponse(resp *azcore.Response) (TldLegalAgreementCollectionResponse, error) {
-	var val *TldLegalAgreementCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TldLegalAgreementCollectionResponse{}, err
+func (client *TopLevelDomainsClient) listAgreementsHandleResponse(resp *azcore.Response) (TopLevelDomainsListAgreementsResponse, error) {
+	result := TopLevelDomainsListAgreementsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.TldLegalAgreementCollection); err != nil {
+		return TopLevelDomainsListAgreementsResponse{}, err
 	}
-	return TldLegalAgreementCollectionResponse{RawResponse: resp.Response, TldLegalAgreementCollection: val}, nil
+	return result, nil
 }
 
 // listAgreementsHandleError handles the ListAgreements error response.

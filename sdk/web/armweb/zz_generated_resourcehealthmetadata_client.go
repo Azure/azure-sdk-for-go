@@ -32,17 +32,17 @@ func NewResourceHealthMetadataClient(con *armcore.Connection, subscriptionID str
 
 // GetBySite - Description for Gets the category of ResourceHealthMetadata to use for the given site
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ResourceHealthMetadataClient) GetBySite(ctx context.Context, resourceGroupName string, name string, options *ResourceHealthMetadataGetBySiteOptions) (ResourceHealthMetadataResponse, error) {
+func (client *ResourceHealthMetadataClient) GetBySite(ctx context.Context, resourceGroupName string, name string, options *ResourceHealthMetadataGetBySiteOptions) (ResourceHealthMetadataGetBySiteResponse, error) {
 	req, err := client.getBySiteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return ResourceHealthMetadataResponse{}, err
+		return ResourceHealthMetadataGetBySiteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ResourceHealthMetadataResponse{}, err
+		return ResourceHealthMetadataGetBySiteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ResourceHealthMetadataResponse{}, client.getBySiteHandleError(resp)
+		return ResourceHealthMetadataGetBySiteResponse{}, client.getBySiteHandleError(resp)
 	}
 	return client.getBySiteHandleResponse(resp)
 }
@@ -75,12 +75,12 @@ func (client *ResourceHealthMetadataClient) getBySiteCreateRequest(ctx context.C
 }
 
 // getBySiteHandleResponse handles the GetBySite response.
-func (client *ResourceHealthMetadataClient) getBySiteHandleResponse(resp *azcore.Response) (ResourceHealthMetadataResponse, error) {
-	var val *ResourceHealthMetadata
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceHealthMetadataResponse{}, err
+func (client *ResourceHealthMetadataClient) getBySiteHandleResponse(resp *azcore.Response) (ResourceHealthMetadataGetBySiteResponse, error) {
+	result := ResourceHealthMetadataGetBySiteResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceHealthMetadata); err != nil {
+		return ResourceHealthMetadataGetBySiteResponse{}, err
 	}
-	return ResourceHealthMetadataResponse{RawResponse: resp.Response, ResourceHealthMetadata: val}, nil
+	return result, nil
 }
 
 // getBySiteHandleError handles the GetBySite error response.
@@ -98,17 +98,17 @@ func (client *ResourceHealthMetadataClient) getBySiteHandleError(resp *azcore.Re
 
 // GetBySiteSlot - Description for Gets the category of ResourceHealthMetadata to use for the given site
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *ResourceHealthMetadataGetBySiteSlotOptions) (ResourceHealthMetadataResponse, error) {
+func (client *ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *ResourceHealthMetadataGetBySiteSlotOptions) (ResourceHealthMetadataGetBySiteSlotResponse, error) {
 	req, err := client.getBySiteSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
-		return ResourceHealthMetadataResponse{}, err
+		return ResourceHealthMetadataGetBySiteSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ResourceHealthMetadataResponse{}, err
+		return ResourceHealthMetadataGetBySiteSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ResourceHealthMetadataResponse{}, client.getBySiteSlotHandleError(resp)
+		return ResourceHealthMetadataGetBySiteSlotResponse{}, client.getBySiteSlotHandleError(resp)
 	}
 	return client.getBySiteSlotHandleResponse(resp)
 }
@@ -145,12 +145,12 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotCreateRequest(ctx conte
 }
 
 // getBySiteSlotHandleResponse handles the GetBySiteSlot response.
-func (client *ResourceHealthMetadataClient) getBySiteSlotHandleResponse(resp *azcore.Response) (ResourceHealthMetadataResponse, error) {
-	var val *ResourceHealthMetadata
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceHealthMetadataResponse{}, err
+func (client *ResourceHealthMetadataClient) getBySiteSlotHandleResponse(resp *azcore.Response) (ResourceHealthMetadataGetBySiteSlotResponse, error) {
+	result := ResourceHealthMetadataGetBySiteSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceHealthMetadata); err != nil {
+		return ResourceHealthMetadataGetBySiteSlotResponse{}, err
 	}
-	return ResourceHealthMetadataResponse{RawResponse: resp.Response, ResourceHealthMetadata: val}, nil
+	return result, nil
 }
 
 // getBySiteSlotHandleError handles the GetBySiteSlot error response.
@@ -168,18 +168,15 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotHandleError(resp *azcor
 
 // List - Description for List all ResourceHealthMetadata for all sites in the subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ResourceHealthMetadataClient) List(options *ResourceHealthMetadataListOptions) ResourceHealthMetadataCollectionPager {
-	return &resourceHealthMetadataCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ResourceHealthMetadataClient) List(options *ResourceHealthMetadataListOptions) ResourceHealthMetadataListPager {
+	return &resourceHealthMetadataListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp ResourceHealthMetadataCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceHealthMetadataListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceHealthMetadataCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -203,12 +200,12 @@ func (client *ResourceHealthMetadataClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceHealthMetadataClient) listHandleResponse(resp *azcore.Response) (ResourceHealthMetadataCollectionResponse, error) {
-	var val *ResourceHealthMetadataCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceHealthMetadataCollectionResponse{}, err
+func (client *ResourceHealthMetadataClient) listHandleResponse(resp *azcore.Response) (ResourceHealthMetadataListResponse, error) {
+	result := ResourceHealthMetadataListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceHealthMetadataCollection); err != nil {
+		return ResourceHealthMetadataListResponse{}, err
 	}
-	return ResourceHealthMetadataCollectionResponse{RawResponse: resp.Response, ResourceHealthMetadataCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -226,18 +223,15 @@ func (client *ResourceHealthMetadataClient) listHandleError(resp *azcore.Respons
 
 // ListByResourceGroup - Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ResourceHealthMetadataClient) ListByResourceGroup(resourceGroupName string, options *ResourceHealthMetadataListByResourceGroupOptions) ResourceHealthMetadataCollectionPager {
-	return &resourceHealthMetadataCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ResourceHealthMetadataClient) ListByResourceGroup(resourceGroupName string, options *ResourceHealthMetadataListByResourceGroupOptions) ResourceHealthMetadataListByResourceGroupPager {
+	return &resourceHealthMetadataListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp ResourceHealthMetadataCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceHealthMetadataListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceHealthMetadataCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -265,12 +259,12 @@ func (client *ResourceHealthMetadataClient) listByResourceGroupCreateRequest(ctx
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ResourceHealthMetadataClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ResourceHealthMetadataCollectionResponse, error) {
-	var val *ResourceHealthMetadataCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceHealthMetadataCollectionResponse{}, err
+func (client *ResourceHealthMetadataClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ResourceHealthMetadataListByResourceGroupResponse, error) {
+	result := ResourceHealthMetadataListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceHealthMetadataCollection); err != nil {
+		return ResourceHealthMetadataListByResourceGroupResponse{}, err
 	}
-	return ResourceHealthMetadataCollectionResponse{RawResponse: resp.Response, ResourceHealthMetadataCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -288,18 +282,15 @@ func (client *ResourceHealthMetadataClient) listByResourceGroupHandleError(resp 
 
 // ListBySite - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ResourceHealthMetadataClient) ListBySite(resourceGroupName string, name string, options *ResourceHealthMetadataListBySiteOptions) ResourceHealthMetadataCollectionPager {
-	return &resourceHealthMetadataCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ResourceHealthMetadataClient) ListBySite(resourceGroupName string, name string, options *ResourceHealthMetadataListBySiteOptions) ResourceHealthMetadataListBySitePager {
+	return &resourceHealthMetadataListBySitePager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBySiteCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listBySiteHandleResponse,
-		errorer:   client.listBySiteHandleError,
-		advancer: func(ctx context.Context, resp ResourceHealthMetadataCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceHealthMetadataListBySiteResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceHealthMetadataCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -331,12 +322,12 @@ func (client *ResourceHealthMetadataClient) listBySiteCreateRequest(ctx context.
 }
 
 // listBySiteHandleResponse handles the ListBySite response.
-func (client *ResourceHealthMetadataClient) listBySiteHandleResponse(resp *azcore.Response) (ResourceHealthMetadataCollectionResponse, error) {
-	var val *ResourceHealthMetadataCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceHealthMetadataCollectionResponse{}, err
+func (client *ResourceHealthMetadataClient) listBySiteHandleResponse(resp *azcore.Response) (ResourceHealthMetadataListBySiteResponse, error) {
+	result := ResourceHealthMetadataListBySiteResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceHealthMetadataCollection); err != nil {
+		return ResourceHealthMetadataListBySiteResponse{}, err
 	}
-	return ResourceHealthMetadataCollectionResponse{RawResponse: resp.Response, ResourceHealthMetadataCollection: val}, nil
+	return result, nil
 }
 
 // listBySiteHandleError handles the ListBySite error response.
@@ -354,18 +345,15 @@ func (client *ResourceHealthMetadataClient) listBySiteHandleError(resp *azcore.R
 
 // ListBySiteSlot - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ResourceHealthMetadataClient) ListBySiteSlot(resourceGroupName string, name string, slot string, options *ResourceHealthMetadataListBySiteSlotOptions) ResourceHealthMetadataCollectionPager {
-	return &resourceHealthMetadataCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ResourceHealthMetadataClient) ListBySiteSlot(resourceGroupName string, name string, slot string, options *ResourceHealthMetadataListBySiteSlotOptions) ResourceHealthMetadataListBySiteSlotPager {
+	return &resourceHealthMetadataListBySiteSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBySiteSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 		},
-		responder: client.listBySiteSlotHandleResponse,
-		errorer:   client.listBySiteSlotHandleError,
-		advancer: func(ctx context.Context, resp ResourceHealthMetadataCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceHealthMetadataListBySiteSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceHealthMetadataCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -401,12 +389,12 @@ func (client *ResourceHealthMetadataClient) listBySiteSlotCreateRequest(ctx cont
 }
 
 // listBySiteSlotHandleResponse handles the ListBySiteSlot response.
-func (client *ResourceHealthMetadataClient) listBySiteSlotHandleResponse(resp *azcore.Response) (ResourceHealthMetadataCollectionResponse, error) {
-	var val *ResourceHealthMetadataCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceHealthMetadataCollectionResponse{}, err
+func (client *ResourceHealthMetadataClient) listBySiteSlotHandleResponse(resp *azcore.Response) (ResourceHealthMetadataListBySiteSlotResponse, error) {
+	result := ResourceHealthMetadataListBySiteSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceHealthMetadataCollection); err != nil {
+		return ResourceHealthMetadataListBySiteSlotResponse{}, err
 	}
-	return ResourceHealthMetadataCollectionResponse{RawResponse: resp.Response, ResourceHealthMetadataCollection: val}, nil
+	return result, nil
 }
 
 // listBySiteSlotHandleError handles the ListBySiteSlot error response.

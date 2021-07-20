@@ -28,18 +28,15 @@ func NewDomainRegistrationProviderClient(con *armcore.Connection) *DomainRegistr
 
 // ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainRegistrationProviderClient) ListOperations(options *DomainRegistrationProviderListOperationsOptions) CsmOperationCollectionPager {
-	return &csmOperationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DomainRegistrationProviderClient) ListOperations(options *DomainRegistrationProviderListOperationsOptions) DomainRegistrationProviderListOperationsPager {
+	return &domainRegistrationProviderListOperationsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOperationsCreateRequest(ctx, options)
 		},
-		responder: client.listOperationsHandleResponse,
-		errorer:   client.listOperationsHandleError,
-		advancer: func(ctx context.Context, resp CsmOperationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DomainRegistrationProviderListOperationsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmOperationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -59,12 +56,12 @@ func (client *DomainRegistrationProviderClient) listOperationsCreateRequest(ctx 
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *DomainRegistrationProviderClient) listOperationsHandleResponse(resp *azcore.Response) (CsmOperationCollectionResponse, error) {
-	var val *CsmOperationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmOperationCollectionResponse{}, err
+func (client *DomainRegistrationProviderClient) listOperationsHandleResponse(resp *azcore.Response) (DomainRegistrationProviderListOperationsResponse, error) {
+	result := DomainRegistrationProviderListOperationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmOperationCollection); err != nil {
+		return DomainRegistrationProviderListOperationsResponse{}, err
 	}
-	return CsmOperationCollectionResponse{RawResponse: resp.Response, CsmOperationCollection: val}, nil
+	return result, nil
 }
 
 // listOperationsHandleError handles the ListOperations error response.

@@ -34,47 +34,47 @@ func NewAppServicePlansClient(con *armcore.Connection, subscriptionID string) *A
 
 // BeginCreateOrUpdate - Description for Creates or updates an App Service Plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansBeginCreateOrUpdateOptions) (AppServicePlanPollerResponse, error) {
+func (client *AppServicePlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansBeginCreateOrUpdateOptions) (AppServicePlansCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, name, appServicePlan, options)
 	if err != nil {
-		return AppServicePlanPollerResponse{}, err
+		return AppServicePlansCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppServicePlanPollerResponse{
+	result := AppServicePlansCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServicePlansClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AppServicePlanPollerResponse{}, err
+		return AppServicePlansCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &appServicePlanPoller{
+	poller := &appServicePlansCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServicePlanResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new AppServicePlanPoller from the specified resume token.
-// token - The value must come from a previous call to AppServicePlanPoller.ResumeToken().
-func (client *AppServicePlansClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServicePlanPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new AppServicePlansCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to AppServicePlansCreateOrUpdatePoller.ResumeToken().
+func (client *AppServicePlansClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServicePlansCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServicePlansClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AppServicePlanPollerResponse{}, err
+		return AppServicePlansCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &appServicePlanPoller{
+	poller := &appServicePlansCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AppServicePlanPollerResponse{}, err
+		return AppServicePlansCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppServicePlanPollerResponse{
+	result := AppServicePlansCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServicePlanResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -139,17 +139,17 @@ func (client *AppServicePlansClient) createOrUpdateHandleError(resp *azcore.Resp
 
 // CreateOrUpdateVnetRoute - Description for Create or update a Virtual Network route in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansCreateOrUpdateVnetRouteOptions) (VnetRouteResponse, error) {
+func (client *AppServicePlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansCreateOrUpdateVnetRouteOptions) (AppServicePlansCreateOrUpdateVnetRouteResponse, error) {
 	req, err := client.createOrUpdateVnetRouteCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, route, options)
 	if err != nil {
-		return VnetRouteResponse{}, err
+		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetRouteResponse{}, err
+		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetRouteResponse{}, client.createOrUpdateVnetRouteHandleError(resp)
+		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, client.createOrUpdateVnetRouteHandleError(resp)
 	}
 	return client.createOrUpdateVnetRouteHandleResponse(resp)
 }
@@ -190,12 +190,12 @@ func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx co
 }
 
 // createOrUpdateVnetRouteHandleResponse handles the CreateOrUpdateVnetRoute response.
-func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp *azcore.Response) (VnetRouteResponse, error) {
-	var val *VnetRoute
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetRouteResponse{}, err
+func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp *azcore.Response) (AppServicePlansCreateOrUpdateVnetRouteResponse, error) {
+	result := AppServicePlansCreateOrUpdateVnetRouteResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetRoute); err != nil {
+		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
 	}
-	return VnetRouteResponse{RawResponse: resp.Response, VnetRoute: val}, nil
+	return result, nil
 }
 
 // createOrUpdateVnetRouteHandleError handles the CreateOrUpdateVnetRoute error response.
@@ -221,19 +221,19 @@ func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleError(resp *az
 
 // Delete - Description for Delete an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) Delete(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansDeleteOptions) (*http.Response, error) {
+func (client *AppServicePlansClient) Delete(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansDeleteOptions) (AppServicePlansDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return AppServicePlansDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServicePlansDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return AppServicePlansDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServicePlansDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -278,19 +278,19 @@ func (client *AppServicePlansClient) deleteHandleError(resp *azcore.Response) er
 
 // DeleteHybridConnection - Description for Delete a Hybrid Connection in use in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansDeleteHybridConnectionOptions) (*http.Response, error) {
+func (client *AppServicePlansClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansDeleteHybridConnectionOptions) (AppServicePlansDeleteHybridConnectionResponse, error) {
 	req, err := client.deleteHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return nil, err
+		return AppServicePlansDeleteHybridConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServicePlansDeleteHybridConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHybridConnectionHandleError(resp)
+		return AppServicePlansDeleteHybridConnectionResponse{}, client.deleteHybridConnectionHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServicePlansDeleteHybridConnectionResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteHybridConnectionCreateRequest creates the DeleteHybridConnection request.
@@ -343,19 +343,19 @@ func (client *AppServicePlansClient) deleteHybridConnectionHandleError(resp *azc
 
 // DeleteVnetRoute - Description for Delete a Virtual Network route in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansDeleteVnetRouteOptions) (*http.Response, error) {
+func (client *AppServicePlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansDeleteVnetRouteOptions) (AppServicePlansDeleteVnetRouteResponse, error) {
 	req, err := client.deleteVnetRouteCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, options)
 	if err != nil {
-		return nil, err
+		return AppServicePlansDeleteVnetRouteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServicePlansDeleteVnetRouteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.deleteVnetRouteHandleError(resp)
+		return AppServicePlansDeleteVnetRouteResponse{}, client.deleteVnetRouteHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServicePlansDeleteVnetRouteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteVnetRouteCreateRequest creates the DeleteVnetRoute request.
@@ -416,17 +416,17 @@ func (client *AppServicePlansClient) deleteVnetRouteHandleError(resp *azcore.Res
 
 // Get - Description for Get an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) Get(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetOptions) (AppServicePlanResponse, error) {
+func (client *AppServicePlansClient) Get(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetOptions) (AppServicePlansGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlanResponse{}, err
+		return AppServicePlansGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServicePlanResponse{}, err
+		return AppServicePlansGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AppServicePlanResponse{}, client.getHandleError(resp)
+		return AppServicePlansGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -459,12 +459,12 @@ func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppServicePlansClient) getHandleResponse(resp *azcore.Response) (AppServicePlanResponse, error) {
-	var val *AppServicePlan
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServicePlanResponse{}, err
+func (client *AppServicePlansClient) getHandleResponse(resp *azcore.Response) (AppServicePlansGetResponse, error) {
+	result := AppServicePlansGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServicePlan); err != nil {
+		return AppServicePlansGetResponse{}, err
 	}
-	return AppServicePlanResponse{RawResponse: resp.Response, AppServicePlan: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -490,17 +490,17 @@ func (client *AppServicePlansClient) getHandleError(resp *azcore.Response) error
 
 // GetHybridConnection - Description for Retrieve a Hybrid Connection in use in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansGetHybridConnectionOptions) (HybridConnectionResponse, error) {
+func (client *AppServicePlansClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansGetHybridConnectionOptions) (AppServicePlansGetHybridConnectionResponse, error) {
 	req, err := client.getHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return AppServicePlansGetHybridConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionResponse{}, err
+		return AppServicePlansGetHybridConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionResponse{}, client.getHybridConnectionHandleError(resp)
+		return AppServicePlansGetHybridConnectionResponse{}, client.getHybridConnectionHandleError(resp)
 	}
 	return client.getHybridConnectionHandleResponse(resp)
 }
@@ -541,12 +541,12 @@ func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx contex
 }
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
-func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *azcore.Response) (HybridConnectionResponse, error) {
-	var val *HybridConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionResponse{}, err
+func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *azcore.Response) (AppServicePlansGetHybridConnectionResponse, error) {
+	result := AppServicePlansGetHybridConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+		return AppServicePlansGetHybridConnectionResponse{}, err
 	}
-	return HybridConnectionResponse{RawResponse: resp.Response, HybridConnection: val}, nil
+	return result, nil
 }
 
 // getHybridConnectionHandleError handles the GetHybridConnection error response.
@@ -564,17 +564,17 @@ func (client *AppServicePlansClient) getHybridConnectionHandleError(resp *azcore
 
 // GetHybridConnectionPlanLimit - Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) GetHybridConnectionPlanLimit(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetHybridConnectionPlanLimitOptions) (HybridConnectionLimitsResponse, error) {
+func (client *AppServicePlansClient) GetHybridConnectionPlanLimit(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetHybridConnectionPlanLimitOptions) (AppServicePlansGetHybridConnectionPlanLimitResponse, error) {
 	req, err := client.getHybridConnectionPlanLimitCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return HybridConnectionLimitsResponse{}, err
+		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionLimitsResponse{}, err
+		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionLimitsResponse{}, client.getHybridConnectionPlanLimitHandleError(resp)
+		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, client.getHybridConnectionPlanLimitHandleError(resp)
 	}
 	return client.getHybridConnectionPlanLimitHandleResponse(resp)
 }
@@ -607,12 +607,12 @@ func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(c
 }
 
 // getHybridConnectionPlanLimitHandleResponse handles the GetHybridConnectionPlanLimit response.
-func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(resp *azcore.Response) (HybridConnectionLimitsResponse, error) {
-	var val *HybridConnectionLimits
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionLimitsResponse{}, err
+func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(resp *azcore.Response) (AppServicePlansGetHybridConnectionPlanLimitResponse, error) {
+	result := AppServicePlansGetHybridConnectionPlanLimitResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnectionLimits); err != nil {
+		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
 	}
-	return HybridConnectionLimitsResponse{RawResponse: resp.Response, HybridConnectionLimits: val}, nil
+	return result, nil
 }
 
 // getHybridConnectionPlanLimitHandleError handles the GetHybridConnectionPlanLimit error response.
@@ -630,17 +630,17 @@ func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleError(res
 
 // GetRouteForVnet - Description for Get a Virtual Network route in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) GetRouteForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansGetRouteForVnetOptions) (VnetRouteArrayResponse, error) {
+func (client *AppServicePlansClient) GetRouteForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansGetRouteForVnetOptions) (AppServicePlansGetRouteForVnetResponse, error) {
 	req, err := client.getRouteForVnetCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, options)
 	if err != nil {
-		return VnetRouteArrayResponse{}, err
+		return AppServicePlansGetRouteForVnetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetRouteArrayResponse{}, err
+		return AppServicePlansGetRouteForVnetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetRouteArrayResponse{}, client.getRouteForVnetHandleError(resp)
+		return AppServicePlansGetRouteForVnetResponse{}, client.getRouteForVnetHandleError(resp)
 	}
 	return client.getRouteForVnetHandleResponse(resp)
 }
@@ -681,12 +681,12 @@ func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Co
 }
 
 // getRouteForVnetHandleResponse handles the GetRouteForVnet response.
-func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *azcore.Response) (VnetRouteArrayResponse, error) {
-	var val []*VnetRoute
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetRouteArrayResponse{}, err
+func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *azcore.Response) (AppServicePlansGetRouteForVnetResponse, error) {
+	result := AppServicePlansGetRouteForVnetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetRouteArray); err != nil {
+		return AppServicePlansGetRouteForVnetResponse{}, err
 	}
-	return VnetRouteArrayResponse{RawResponse: resp.Response, VnetRouteArray: val}, nil
+	return result, nil
 }
 
 // getRouteForVnetHandleError handles the GetRouteForVnet error response.
@@ -712,17 +712,17 @@ func (client *AppServicePlansClient) getRouteForVnetHandleError(resp *azcore.Res
 
 // GetServerFarmSKUs - Description for Gets all selectable SKUs for a given App Service Plan
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetServerFarmSKUsOptions) (ObjectResponse, error) {
+func (client *AppServicePlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetServerFarmSKUsOptions) (AppServicePlansGetServerFarmSKUsResponse, error) {
 	req, err := client.getServerFarmSKUsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return ObjectResponse{}, err
+		return AppServicePlansGetServerFarmSKUsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ObjectResponse{}, err
+		return AppServicePlansGetServerFarmSKUsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ObjectResponse{}, client.getServerFarmSKUsHandleError(resp)
+		return AppServicePlansGetServerFarmSKUsResponse{}, client.getServerFarmSKUsHandleError(resp)
 	}
 	return client.getServerFarmSKUsHandleResponse(resp)
 }
@@ -755,12 +755,12 @@ func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.
 }
 
 // getServerFarmSKUsHandleResponse handles the GetServerFarmSKUs response.
-func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *azcore.Response) (ObjectResponse, error) {
-	var val map[string]interface{}
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ObjectResponse{}, err
+func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *azcore.Response) (AppServicePlansGetServerFarmSKUsResponse, error) {
+	result := AppServicePlansGetServerFarmSKUsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Object); err != nil {
+		return AppServicePlansGetServerFarmSKUsResponse{}, err
 	}
-	return ObjectResponse{RawResponse: resp.Response, Object: val}, nil
+	return result, nil
 }
 
 // getServerFarmSKUsHandleError handles the GetServerFarmSKUs error response.
@@ -778,17 +778,17 @@ func (client *AppServicePlansClient) getServerFarmSKUsHandleError(resp *azcore.R
 
 // GetVnetFromServerFarm - Description for Get a Virtual Network associated with an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansGetVnetFromServerFarmOptions) (VnetInfoResponse, error) {
+func (client *AppServicePlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansGetVnetFromServerFarmOptions) (AppServicePlansGetVnetFromServerFarmResponse, error) {
 	req, err := client.getVnetFromServerFarmCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return AppServicePlansGetVnetFromServerFarmResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoResponse{}, err
+		return AppServicePlansGetVnetFromServerFarmResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoResponse{}, client.getVnetFromServerFarmHandleError(resp)
+		return AppServicePlansGetVnetFromServerFarmResponse{}, client.getVnetFromServerFarmHandleError(resp)
 	}
 	return client.getVnetFromServerFarmHandleResponse(resp)
 }
@@ -825,12 +825,12 @@ func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx cont
 }
 
 // getVnetFromServerFarmHandleResponse handles the GetVnetFromServerFarm response.
-func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *azcore.Response) (VnetInfoResponse, error) {
-	var val *VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoResponse{}, err
+func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *azcore.Response) (AppServicePlansGetVnetFromServerFarmResponse, error) {
+	result := AppServicePlansGetVnetFromServerFarmResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+		return AppServicePlansGetVnetFromServerFarmResponse{}, err
 	}
-	return VnetInfoResponse{RawResponse: resp.Response, VnetInfo: val}, nil
+	return result, nil
 }
 
 // getVnetFromServerFarmHandleError handles the GetVnetFromServerFarm error response.
@@ -856,17 +856,17 @@ func (client *AppServicePlansClient) getVnetFromServerFarmHandleError(resp *azco
 
 // GetVnetGateway - Description for Get a Virtual Network gateway.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) GetVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *AppServicePlansGetVnetGatewayOptions) (VnetGatewayResponse, error) {
+func (client *AppServicePlansClient) GetVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *AppServicePlansGetVnetGatewayOptions) (AppServicePlansGetVnetGatewayResponse, error) {
 	req, err := client.getVnetGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return AppServicePlansGetVnetGatewayResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return AppServicePlansGetVnetGatewayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.getVnetGatewayHandleError(resp)
+		return AppServicePlansGetVnetGatewayResponse{}, client.getVnetGatewayHandleError(resp)
 	}
 	return client.getVnetGatewayHandleResponse(resp)
 }
@@ -907,12 +907,12 @@ func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Con
 }
 
 // getVnetGatewayHandleResponse handles the GetVnetGateway response.
-func (client *AppServicePlansClient) getVnetGatewayHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *AppServicePlansClient) getVnetGatewayHandleResponse(resp *azcore.Response) (AppServicePlansGetVnetGatewayResponse, error) {
+	result := AppServicePlansGetVnetGatewayResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return AppServicePlansGetVnetGatewayResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // getVnetGatewayHandleError handles the GetVnetGateway error response.
@@ -930,18 +930,15 @@ func (client *AppServicePlansClient) getVnetGatewayHandleError(resp *azcore.Resp
 
 // List - Description for Get all App Service plans for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) List(options *AppServicePlansListOptions) AppServicePlanCollectionPager {
-	return &appServicePlanCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServicePlansClient) List(options *AppServicePlansListOptions) AppServicePlansListPager {
+	return &appServicePlansListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp AppServicePlanCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServicePlansListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -968,12 +965,12 @@ func (client *AppServicePlansClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *AppServicePlansClient) listHandleResponse(resp *azcore.Response) (AppServicePlanCollectionResponse, error) {
-	var val *AppServicePlanCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServicePlanCollectionResponse{}, err
+func (client *AppServicePlansClient) listHandleResponse(resp *azcore.Response) (AppServicePlansListResponse, error) {
+	result := AppServicePlansListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServicePlanCollection); err != nil {
+		return AppServicePlansListResponse{}, err
 	}
-	return AppServicePlanCollectionResponse{RawResponse: resp.Response, AppServicePlanCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -991,18 +988,15 @@ func (client *AppServicePlansClient) listHandleError(resp *azcore.Response) erro
 
 // ListByResourceGroup - Description for Get all App Service plans in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListByResourceGroup(resourceGroupName string, options *AppServicePlansListByResourceGroupOptions) AppServicePlanCollectionPager {
-	return &appServicePlanCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServicePlansClient) ListByResourceGroup(resourceGroupName string, options *AppServicePlansListByResourceGroupOptions) AppServicePlansListByResourceGroupPager {
+	return &appServicePlansListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp AppServicePlanCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServicePlansListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1030,12 +1024,12 @@ func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServicePlanCollectionResponse, error) {
-	var val *AppServicePlanCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServicePlanCollectionResponse{}, err
+func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServicePlansListByResourceGroupResponse, error) {
+	result := AppServicePlansListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServicePlanCollection); err != nil {
+		return AppServicePlansListByResourceGroupResponse{}, err
 	}
-	return AppServicePlanCollectionResponse{RawResponse: resp.Response, AppServicePlanCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -1053,17 +1047,17 @@ func (client *AppServicePlansClient) listByResourceGroupHandleError(resp *azcore
 
 // ListCapabilities - Description for List all capabilities of an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListCapabilities(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListCapabilitiesOptions) (CapabilityArrayResponse, error) {
+func (client *AppServicePlansClient) ListCapabilities(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListCapabilitiesOptions) (AppServicePlansListCapabilitiesResponse, error) {
 	req, err := client.listCapabilitiesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CapabilityArrayResponse{}, err
+		return AppServicePlansListCapabilitiesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CapabilityArrayResponse{}, err
+		return AppServicePlansListCapabilitiesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CapabilityArrayResponse{}, client.listCapabilitiesHandleError(resp)
+		return AppServicePlansListCapabilitiesResponse{}, client.listCapabilitiesHandleError(resp)
 	}
 	return client.listCapabilitiesHandleResponse(resp)
 }
@@ -1096,12 +1090,12 @@ func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.C
 }
 
 // listCapabilitiesHandleResponse handles the ListCapabilities response.
-func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *azcore.Response) (CapabilityArrayResponse, error) {
-	var val []*Capability
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CapabilityArrayResponse{}, err
+func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *azcore.Response) (AppServicePlansListCapabilitiesResponse, error) {
+	result := AppServicePlansListCapabilitiesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CapabilityArray); err != nil {
+		return AppServicePlansListCapabilitiesResponse{}, err
 	}
-	return CapabilityArrayResponse{RawResponse: resp.Response, CapabilityArray: val}, nil
+	return result, nil
 }
 
 // listCapabilitiesHandleError handles the ListCapabilities error response.
@@ -1119,17 +1113,17 @@ func (client *AppServicePlansClient) listCapabilitiesHandleError(resp *azcore.Re
 
 // ListHybridConnectionKeys - Description for Get the send key name and value of a Hybrid Connection.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListHybridConnectionKeysOptions) (HybridConnectionKeyResponse, error) {
+func (client *AppServicePlansClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListHybridConnectionKeysOptions) (AppServicePlansListHybridConnectionKeysResponse, error) {
 	req, err := client.listHybridConnectionKeysCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return HybridConnectionKeyResponse{}, err
+		return AppServicePlansListHybridConnectionKeysResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return HybridConnectionKeyResponse{}, err
+		return AppServicePlansListHybridConnectionKeysResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return HybridConnectionKeyResponse{}, client.listHybridConnectionKeysHandleError(resp)
+		return AppServicePlansListHybridConnectionKeysResponse{}, client.listHybridConnectionKeysHandleError(resp)
 	}
 	return client.listHybridConnectionKeysHandleResponse(resp)
 }
@@ -1170,12 +1164,12 @@ func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx c
 }
 
 // listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
-func (client *AppServicePlansClient) listHybridConnectionKeysHandleResponse(resp *azcore.Response) (HybridConnectionKeyResponse, error) {
-	var val *HybridConnectionKey
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionKeyResponse{}, err
+func (client *AppServicePlansClient) listHybridConnectionKeysHandleResponse(resp *azcore.Response) (AppServicePlansListHybridConnectionKeysResponse, error) {
+	result := AppServicePlansListHybridConnectionKeysResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnectionKey); err != nil {
+		return AppServicePlansListHybridConnectionKeysResponse{}, err
 	}
-	return HybridConnectionKeyResponse{RawResponse: resp.Response, HybridConnectionKey: val}, nil
+	return result, nil
 }
 
 // listHybridConnectionKeysHandleError handles the ListHybridConnectionKeys error response.
@@ -1193,18 +1187,15 @@ func (client *AppServicePlansClient) listHybridConnectionKeysHandleError(resp *a
 
 // ListHybridConnections - Description for Retrieve all Hybrid Connections in use in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListHybridConnections(resourceGroupName string, name string, options *AppServicePlansListHybridConnectionsOptions) HybridConnectionCollectionPager {
-	return &hybridConnectionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServicePlansClient) ListHybridConnections(resourceGroupName string, name string, options *AppServicePlansListHybridConnectionsOptions) AppServicePlansListHybridConnectionsPager {
+	return &appServicePlansListHybridConnectionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listHybridConnectionsHandleResponse,
-		errorer:   client.listHybridConnectionsHandleError,
-		advancer: func(ctx context.Context, resp HybridConnectionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServicePlansListHybridConnectionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.HybridConnectionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1236,12 +1227,12 @@ func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx cont
 }
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
-func (client *AppServicePlansClient) listHybridConnectionsHandleResponse(resp *azcore.Response) (HybridConnectionCollectionResponse, error) {
-	var val *HybridConnectionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return HybridConnectionCollectionResponse{}, err
+func (client *AppServicePlansClient) listHybridConnectionsHandleResponse(resp *azcore.Response) (AppServicePlansListHybridConnectionsResponse, error) {
+	result := AppServicePlansListHybridConnectionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.HybridConnectionCollection); err != nil {
+		return AppServicePlansListHybridConnectionsResponse{}, err
 	}
-	return HybridConnectionCollectionResponse{RawResponse: resp.Response, HybridConnectionCollection: val}, nil
+	return result, nil
 }
 
 // listHybridConnectionsHandleError handles the ListHybridConnections error response.
@@ -1259,17 +1250,17 @@ func (client *AppServicePlansClient) listHybridConnectionsHandleError(resp *azco
 
 // ListRoutesForVnet - Description for Get all routes that are associated with a Virtual Network in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansListRoutesForVnetOptions) (VnetRouteArrayResponse, error) {
+func (client *AppServicePlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansListRoutesForVnetOptions) (AppServicePlansListRoutesForVnetResponse, error) {
 	req, err := client.listRoutesForVnetCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
-		return VnetRouteArrayResponse{}, err
+		return AppServicePlansListRoutesForVnetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetRouteArrayResponse{}, err
+		return AppServicePlansListRoutesForVnetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetRouteArrayResponse{}, client.listRoutesForVnetHandleError(resp)
+		return AppServicePlansListRoutesForVnetResponse{}, client.listRoutesForVnetHandleError(resp)
 	}
 	return client.listRoutesForVnetHandleResponse(resp)
 }
@@ -1306,12 +1297,12 @@ func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.
 }
 
 // listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
-func (client *AppServicePlansClient) listRoutesForVnetHandleResponse(resp *azcore.Response) (VnetRouteArrayResponse, error) {
-	var val []*VnetRoute
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetRouteArrayResponse{}, err
+func (client *AppServicePlansClient) listRoutesForVnetHandleResponse(resp *azcore.Response) (AppServicePlansListRoutesForVnetResponse, error) {
+	result := AppServicePlansListRoutesForVnetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetRouteArray); err != nil {
+		return AppServicePlansListRoutesForVnetResponse{}, err
 	}
-	return VnetRouteArrayResponse{RawResponse: resp.Response, VnetRouteArray: val}, nil
+	return result, nil
 }
 
 // listRoutesForVnetHandleError handles the ListRoutesForVnet error response.
@@ -1329,18 +1320,15 @@ func (client *AppServicePlansClient) listRoutesForVnetHandleError(resp *azcore.R
 
 // ListUsages - Description for Gets server farm usage information
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListUsages(resourceGroupName string, name string, options *AppServicePlansListUsagesOptions) CsmUsageQuotaCollectionPager {
-	return &csmUsageQuotaCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServicePlansClient) ListUsages(resourceGroupName string, name string, options *AppServicePlansListUsagesOptions) AppServicePlansListUsagesPager {
+	return &appServicePlansListUsagesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listUsagesHandleResponse,
-		errorer:   client.listUsagesHandleError,
-		advancer: func(ctx context.Context, resp CsmUsageQuotaCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServicePlansListUsagesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1377,12 +1365,12 @@ func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *AppServicePlansClient) listUsagesHandleResponse(resp *azcore.Response) (CsmUsageQuotaCollectionResponse, error) {
-	var val *CsmUsageQuotaCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmUsageQuotaCollectionResponse{}, err
+func (client *AppServicePlansClient) listUsagesHandleResponse(resp *azcore.Response) (AppServicePlansListUsagesResponse, error) {
+	result := AppServicePlansListUsagesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmUsageQuotaCollection); err != nil {
+		return AppServicePlansListUsagesResponse{}, err
 	}
-	return CsmUsageQuotaCollectionResponse{RawResponse: resp.Response, CsmUsageQuotaCollection: val}, nil
+	return result, nil
 }
 
 // listUsagesHandleError handles the ListUsages error response.
@@ -1400,17 +1388,17 @@ func (client *AppServicePlansClient) listUsagesHandleError(resp *azcore.Response
 
 // ListVnets - Description for Get all Virtual Networks associated with an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListVnets(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListVnetsOptions) (VnetInfoArrayResponse, error) {
+func (client *AppServicePlansClient) ListVnets(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListVnetsOptions) (AppServicePlansListVnetsResponse, error) {
 	req, err := client.listVnetsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return VnetInfoArrayResponse{}, err
+		return AppServicePlansListVnetsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetInfoArrayResponse{}, err
+		return AppServicePlansListVnetsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetInfoArrayResponse{}, client.listVnetsHandleError(resp)
+		return AppServicePlansListVnetsResponse{}, client.listVnetsHandleError(resp)
 	}
 	return client.listVnetsHandleResponse(resp)
 }
@@ -1443,12 +1431,12 @@ func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context,
 }
 
 // listVnetsHandleResponse handles the ListVnets response.
-func (client *AppServicePlansClient) listVnetsHandleResponse(resp *azcore.Response) (VnetInfoArrayResponse, error) {
-	var val []*VnetInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetInfoArrayResponse{}, err
+func (client *AppServicePlansClient) listVnetsHandleResponse(resp *azcore.Response) (AppServicePlansListVnetsResponse, error) {
+	result := AppServicePlansListVnetsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetInfoArray); err != nil {
+		return AppServicePlansListVnetsResponse{}, err
 	}
-	return VnetInfoArrayResponse{RawResponse: resp.Response, VnetInfoArray: val}, nil
+	return result, nil
 }
 
 // listVnetsHandleError handles the ListVnets error response.
@@ -1466,18 +1454,15 @@ func (client *AppServicePlansClient) listVnetsHandleError(resp *azcore.Response)
 
 // ListWebApps - Description for Get all apps associated with an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListWebApps(resourceGroupName string, name string, options *AppServicePlansListWebAppsOptions) WebAppCollectionPager {
-	return &webAppCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServicePlansClient) ListWebApps(resourceGroupName string, name string, options *AppServicePlansListWebAppsOptions) AppServicePlansListWebAppsPager {
+	return &appServicePlansListWebAppsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listWebAppsHandleResponse,
-		errorer:   client.listWebAppsHandleError,
-		advancer: func(ctx context.Context, resp WebAppCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServicePlansListWebAppsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1520,12 +1505,12 @@ func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Contex
 }
 
 // listWebAppsHandleResponse handles the ListWebApps response.
-func (client *AppServicePlansClient) listWebAppsHandleResponse(resp *azcore.Response) (WebAppCollectionResponse, error) {
-	var val *WebAppCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppCollectionResponse{}, err
+func (client *AppServicePlansClient) listWebAppsHandleResponse(resp *azcore.Response) (AppServicePlansListWebAppsResponse, error) {
+	result := AppServicePlansListWebAppsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+		return AppServicePlansListWebAppsResponse{}, err
 	}
-	return WebAppCollectionResponse{RawResponse: resp.Response, WebAppCollection: val}, nil
+	return result, nil
 }
 
 // listWebAppsHandleError handles the ListWebApps error response.
@@ -1543,18 +1528,15 @@ func (client *AppServicePlansClient) listWebAppsHandleError(resp *azcore.Respons
 
 // ListWebAppsByHybridConnection - Description for Get all apps that use a Hybrid Connection in an App Service Plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListWebAppsByHybridConnectionOptions) ResourceCollectionPager {
-	return &resourceCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServicePlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListWebAppsByHybridConnectionOptions) AppServicePlansListWebAppsByHybridConnectionPager {
+	return &appServicePlansListWebAppsByHybridConnectionPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listWebAppsByHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 		},
-		responder: client.listWebAppsByHybridConnectionHandleResponse,
-		errorer:   client.listWebAppsByHybridConnectionHandleError,
-		advancer: func(ctx context.Context, resp ResourceCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServicePlansListWebAppsByHybridConnectionResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1594,12 +1576,12 @@ func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(
 }
 
 // listWebAppsByHybridConnectionHandleResponse handles the ListWebAppsByHybridConnection response.
-func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse(resp *azcore.Response) (ResourceCollectionResponse, error) {
-	var val *ResourceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceCollectionResponse{}, err
+func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse(resp *azcore.Response) (AppServicePlansListWebAppsByHybridConnectionResponse, error) {
+	result := AppServicePlansListWebAppsByHybridConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceCollection); err != nil {
+		return AppServicePlansListWebAppsByHybridConnectionResponse{}, err
 	}
-	return ResourceCollectionResponse{RawResponse: resp.Response, ResourceCollection: val}, nil
+	return result, nil
 }
 
 // listWebAppsByHybridConnectionHandleError handles the ListWebAppsByHybridConnection error response.
@@ -1617,19 +1599,19 @@ func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleError(re
 
 // RebootWorker - Description for Reboot a worker machine in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) RebootWorker(ctx context.Context, resourceGroupName string, name string, workerName string, options *AppServicePlansRebootWorkerOptions) (*http.Response, error) {
+func (client *AppServicePlansClient) RebootWorker(ctx context.Context, resourceGroupName string, name string, workerName string, options *AppServicePlansRebootWorkerOptions) (AppServicePlansRebootWorkerResponse, error) {
 	req, err := client.rebootWorkerCreateRequest(ctx, resourceGroupName, name, workerName, options)
 	if err != nil {
-		return nil, err
+		return AppServicePlansRebootWorkerResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServicePlansRebootWorkerResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.rebootWorkerHandleError(resp)
+		return AppServicePlansRebootWorkerResponse{}, client.rebootWorkerHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServicePlansRebootWorkerResponse{RawResponse: resp.Response}, nil
 }
 
 // rebootWorkerCreateRequest creates the RebootWorker request.
@@ -1678,19 +1660,19 @@ func (client *AppServicePlansClient) rebootWorkerHandleError(resp *azcore.Respon
 
 // RestartWebApps - Description for Restart all apps in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) RestartWebApps(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansRestartWebAppsOptions) (*http.Response, error) {
+func (client *AppServicePlansClient) RestartWebApps(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansRestartWebAppsOptions) (AppServicePlansRestartWebAppsResponse, error) {
 	req, err := client.restartWebAppsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return AppServicePlansRestartWebAppsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServicePlansRestartWebAppsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.restartWebAppsHandleError(resp)
+		return AppServicePlansRestartWebAppsResponse{}, client.restartWebAppsHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServicePlansRestartWebAppsResponse{RawResponse: resp.Response}, nil
 }
 
 // restartWebAppsCreateRequest creates the RestartWebApps request.
@@ -1738,17 +1720,17 @@ func (client *AppServicePlansClient) restartWebAppsHandleError(resp *azcore.Resp
 
 // Update - Description for Creates or updates an App Service Plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) Update(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource, options *AppServicePlansUpdateOptions) (AppServicePlanResponse, error) {
+func (client *AppServicePlansClient) Update(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource, options *AppServicePlansUpdateOptions) (AppServicePlansUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, appServicePlan, options)
 	if err != nil {
-		return AppServicePlanResponse{}, err
+		return AppServicePlansUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServicePlanResponse{}, err
+		return AppServicePlansUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return AppServicePlanResponse{}, client.updateHandleError(resp)
+		return AppServicePlansUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -1781,12 +1763,12 @@ func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppServicePlansClient) updateHandleResponse(resp *azcore.Response) (AppServicePlanResponse, error) {
-	var val *AppServicePlan
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServicePlanResponse{}, err
+func (client *AppServicePlansClient) updateHandleResponse(resp *azcore.Response) (AppServicePlansUpdateResponse, error) {
+	result := AppServicePlansUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServicePlan); err != nil {
+		return AppServicePlansUpdateResponse{}, err
 	}
-	return AppServicePlanResponse{RawResponse: resp.Response, AppServicePlan: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -1804,17 +1786,17 @@ func (client *AppServicePlansClient) updateHandleError(resp *azcore.Response) er
 
 // UpdateVnetGateway - Description for Update a Virtual Network gateway.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *AppServicePlansUpdateVnetGatewayOptions) (VnetGatewayResponse, error) {
+func (client *AppServicePlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *AppServicePlansUpdateVnetGatewayOptions) (AppServicePlansUpdateVnetGatewayResponse, error) {
 	req, err := client.updateVnetGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, options)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return AppServicePlansUpdateVnetGatewayResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetGatewayResponse{}, err
+		return AppServicePlansUpdateVnetGatewayResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetGatewayResponse{}, client.updateVnetGatewayHandleError(resp)
+		return AppServicePlansUpdateVnetGatewayResponse{}, client.updateVnetGatewayHandleError(resp)
 	}
 	return client.updateVnetGatewayHandleResponse(resp)
 }
@@ -1855,12 +1837,12 @@ func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.
 }
 
 // updateVnetGatewayHandleResponse handles the UpdateVnetGateway response.
-func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *azcore.Response) (VnetGatewayResponse, error) {
-	var val *VnetGateway
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetGatewayResponse{}, err
+func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *azcore.Response) (AppServicePlansUpdateVnetGatewayResponse, error) {
+	result := AppServicePlansUpdateVnetGatewayResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+		return AppServicePlansUpdateVnetGatewayResponse{}, err
 	}
-	return VnetGatewayResponse{RawResponse: resp.Response, VnetGateway: val}, nil
+	return result, nil
 }
 
 // updateVnetGatewayHandleError handles the UpdateVnetGateway error response.
@@ -1878,17 +1860,17 @@ func (client *AppServicePlansClient) updateVnetGatewayHandleError(resp *azcore.R
 
 // UpdateVnetRoute - Description for Create or update a Virtual Network route in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansUpdateVnetRouteOptions) (VnetRouteResponse, error) {
+func (client *AppServicePlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansUpdateVnetRouteOptions) (AppServicePlansUpdateVnetRouteResponse, error) {
 	req, err := client.updateVnetRouteCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, route, options)
 	if err != nil {
-		return VnetRouteResponse{}, err
+		return AppServicePlansUpdateVnetRouteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetRouteResponse{}, err
+		return AppServicePlansUpdateVnetRouteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetRouteResponse{}, client.updateVnetRouteHandleError(resp)
+		return AppServicePlansUpdateVnetRouteResponse{}, client.updateVnetRouteHandleError(resp)
 	}
 	return client.updateVnetRouteHandleResponse(resp)
 }
@@ -1929,12 +1911,12 @@ func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Co
 }
 
 // updateVnetRouteHandleResponse handles the UpdateVnetRoute response.
-func (client *AppServicePlansClient) updateVnetRouteHandleResponse(resp *azcore.Response) (VnetRouteResponse, error) {
-	var val *VnetRoute
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetRouteResponse{}, err
+func (client *AppServicePlansClient) updateVnetRouteHandleResponse(resp *azcore.Response) (AppServicePlansUpdateVnetRouteResponse, error) {
+	result := AppServicePlansUpdateVnetRouteResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetRoute); err != nil {
+		return AppServicePlansUpdateVnetRouteResponse{}, err
 	}
-	return VnetRouteResponse{RawResponse: resp.Response, VnetRoute: val}, nil
+	return result, nil
 }
 
 // updateVnetRouteHandleError handles the UpdateVnetRoute error response.

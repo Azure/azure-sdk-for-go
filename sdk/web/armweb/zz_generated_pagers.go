@@ -10,201 +10,29 @@ package armweb
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 	"reflect"
 )
 
-// APIKVReferenceCollectionPager provides iteration over APIKVReferenceCollection pages.
-type APIKVReferenceCollectionPager interface {
+type AppServiceCertificateOrdersListByResourceGroupPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current APIKVReferenceCollectionResponse.
-	PageResponse() APIKVReferenceCollectionResponse
+	// PageResponse returns the current AppServiceCertificateOrdersListByResourceGroupResponse.
+	PageResponse() AppServiceCertificateOrdersListByResourceGroupResponse
 }
 
-type apikvReferenceCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type apikvReferenceCollectionHandleError func(*azcore.Response) error
-
-type apikvReferenceCollectionHandleResponse func(*azcore.Response) (APIKVReferenceCollectionResponse, error)
-
-type apikvReferenceCollectionAdvancePage func(context.Context, APIKVReferenceCollectionResponse) (*azcore.Request, error)
-
-type apikvReferenceCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester apikvReferenceCollectionCreateRequest
-	// callback for handling response errors
-	errorer apikvReferenceCollectionHandleError
-	// callback for handling the HTTP response
-	responder apikvReferenceCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer apikvReferenceCollectionAdvancePage
-	// contains the current response
-	current APIKVReferenceCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceCertificateOrdersListByResourceGroupPager struct {
+	client    *AppServiceCertificateOrdersClient
+	current   AppServiceCertificateOrdersListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceCertificateOrdersListByResourceGroupResponse) (*azcore.Request, error)
 }
 
-func (p *apikvReferenceCollectionPager) Err() error {
+func (p *appServiceCertificateOrdersListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *apikvReferenceCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.APIKVReferenceCollection.NextLink == nil || len(*p.current.APIKVReferenceCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *apikvReferenceCollectionPager) PageResponse() APIKVReferenceCollectionResponse {
-	return p.current
-}
-
-// AppServiceCertificateCollectionPager provides iteration over AppServiceCertificateCollection pages.
-type AppServiceCertificateCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current AppServiceCertificateCollectionResponse.
-	PageResponse() AppServiceCertificateCollectionResponse
-}
-
-type appServiceCertificateCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type appServiceCertificateCollectionHandleError func(*azcore.Response) error
-
-type appServiceCertificateCollectionHandleResponse func(*azcore.Response) (AppServiceCertificateCollectionResponse, error)
-
-type appServiceCertificateCollectionAdvancePage func(context.Context, AppServiceCertificateCollectionResponse) (*azcore.Request, error)
-
-type appServiceCertificateCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester appServiceCertificateCollectionCreateRequest
-	// callback for handling response errors
-	errorer appServiceCertificateCollectionHandleError
-	// callback for handling the HTTP response
-	responder appServiceCertificateCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer appServiceCertificateCollectionAdvancePage
-	// contains the current response
-	current AppServiceCertificateCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *appServiceCertificateCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *appServiceCertificateCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.AppServiceCertificateCollection.NextLink == nil || len(*p.current.AppServiceCertificateCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *appServiceCertificateCollectionPager) PageResponse() AppServiceCertificateCollectionResponse {
-	return p.current
-}
-
-// AppServiceCertificateOrderCollectionPager provides iteration over AppServiceCertificateOrderCollection pages.
-type AppServiceCertificateOrderCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current AppServiceCertificateOrderCollectionResponse.
-	PageResponse() AppServiceCertificateOrderCollectionResponse
-}
-
-type appServiceCertificateOrderCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type appServiceCertificateOrderCollectionHandleError func(*azcore.Response) error
-
-type appServiceCertificateOrderCollectionHandleResponse func(*azcore.Response) (AppServiceCertificateOrderCollectionResponse, error)
-
-type appServiceCertificateOrderCollectionAdvancePage func(context.Context, AppServiceCertificateOrderCollectionResponse) (*azcore.Request, error)
-
-type appServiceCertificateOrderCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester appServiceCertificateOrderCollectionCreateRequest
-	// callback for handling response errors
-	errorer appServiceCertificateOrderCollectionHandleError
-	// callback for handling the HTTP response
-	responder appServiceCertificateOrderCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer appServiceCertificateOrderCollectionAdvancePage
-	// contains the current response
-	current AppServiceCertificateOrderCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *appServiceCertificateOrderCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *appServiceCertificateOrderCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceCertificateOrdersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -219,16 +47,16 @@ func (p *appServiceCertificateOrderCollectionPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -237,54 +65,33 @@ func (p *appServiceCertificateOrderCollectionPager) NextPage(ctx context.Context
 	return true
 }
 
-func (p *appServiceCertificateOrderCollectionPager) PageResponse() AppServiceCertificateOrderCollectionResponse {
+func (p *appServiceCertificateOrdersListByResourceGroupPager) PageResponse() AppServiceCertificateOrdersListByResourceGroupResponse {
 	return p.current
 }
 
-// AppServiceEnvironmentCollectionPager provides iteration over AppServiceEnvironmentCollection pages.
-type AppServiceEnvironmentCollectionPager interface {
+type AppServiceCertificateOrdersListCertificatesPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current AppServiceEnvironmentCollectionResponse.
-	PageResponse() AppServiceEnvironmentCollectionResponse
+	// PageResponse returns the current AppServiceCertificateOrdersListCertificatesResponse.
+	PageResponse() AppServiceCertificateOrdersListCertificatesResponse
 }
 
-type appServiceEnvironmentCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type appServiceEnvironmentCollectionHandleError func(*azcore.Response) error
-
-type appServiceEnvironmentCollectionHandleResponse func(*azcore.Response) (AppServiceEnvironmentCollectionResponse, error)
-
-type appServiceEnvironmentCollectionAdvancePage func(context.Context, AppServiceEnvironmentCollectionResponse) (*azcore.Request, error)
-
-type appServiceEnvironmentCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester appServiceEnvironmentCollectionCreateRequest
-	// callback for handling response errors
-	errorer appServiceEnvironmentCollectionHandleError
-	// callback for handling the HTTP response
-	responder appServiceEnvironmentCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer appServiceEnvironmentCollectionAdvancePage
-	// contains the current response
-	current AppServiceEnvironmentCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceCertificateOrdersListCertificatesPager struct {
+	client    *AppServiceCertificateOrdersClient
+	current   AppServiceCertificateOrdersListCertificatesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceCertificateOrdersListCertificatesResponse) (*azcore.Request, error)
 }
 
-func (p *appServiceEnvironmentCollectionPager) Err() error {
+func (p *appServiceCertificateOrdersListCertificatesPager) Err() error {
 	return p.err
 }
 
-func (p *appServiceEnvironmentCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceCertificateOrdersListCertificatesPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.AppServiceEnvironmentCollection.NextLink == nil || len(*p.current.AppServiceEnvironmentCollection.NextLink) == 0 {
+		if p.current.AppServiceCertificateCollection.NextLink == nil || len(*p.current.AppServiceCertificateCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -295,16 +102,16 @@ func (p *appServiceEnvironmentCollectionPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listCertificatesHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listCertificatesHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -313,54 +120,33 @@ func (p *appServiceEnvironmentCollectionPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-func (p *appServiceEnvironmentCollectionPager) PageResponse() AppServiceEnvironmentCollectionResponse {
+func (p *appServiceCertificateOrdersListCertificatesPager) PageResponse() AppServiceCertificateOrdersListCertificatesResponse {
 	return p.current
 }
 
-// AppServicePlanCollectionPager provides iteration over AppServicePlanCollection pages.
-type AppServicePlanCollectionPager interface {
+type AppServiceCertificateOrdersListPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current AppServicePlanCollectionResponse.
-	PageResponse() AppServicePlanCollectionResponse
+	// PageResponse returns the current AppServiceCertificateOrdersListResponse.
+	PageResponse() AppServiceCertificateOrdersListResponse
 }
 
-type appServicePlanCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type appServicePlanCollectionHandleError func(*azcore.Response) error
-
-type appServicePlanCollectionHandleResponse func(*azcore.Response) (AppServicePlanCollectionResponse, error)
-
-type appServicePlanCollectionAdvancePage func(context.Context, AppServicePlanCollectionResponse) (*azcore.Request, error)
-
-type appServicePlanCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester appServicePlanCollectionCreateRequest
-	// callback for handling response errors
-	errorer appServicePlanCollectionHandleError
-	// callback for handling the HTTP response
-	responder appServicePlanCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer appServicePlanCollectionAdvancePage
-	// contains the current response
-	current AppServicePlanCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceCertificateOrdersListPager struct {
+	client    *AppServiceCertificateOrdersClient
+	current   AppServiceCertificateOrdersListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceCertificateOrdersListResponse) (*azcore.Request, error)
 }
 
-func (p *appServicePlanCollectionPager) Err() error {
+func (p *appServiceCertificateOrdersListPager) Err() error {
 	return p.err
 }
 
-func (p *appServicePlanCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceCertificateOrdersListPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.AppServicePlanCollection.NextLink == nil || len(*p.current.AppServicePlanCollection.NextLink) == 0 {
+		if p.current.AppServiceCertificateOrderCollection.NextLink == nil || len(*p.current.AppServiceCertificateOrderCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -371,16 +157,16 @@ func (p *appServicePlanCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -389,150 +175,51 @@ func (p *appServicePlanCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *appServicePlanCollectionPager) PageResponse() AppServicePlanCollectionResponse {
+func (p *appServiceCertificateOrdersListPager) PageResponse() AppServiceCertificateOrdersListResponse {
 	return p.current
 }
 
-// ApplicationStackCollectionPager provides iteration over ApplicationStackCollection pages.
-type ApplicationStackCollectionPager interface {
+type AppServiceEnvironmentsChangeVnetPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current ApplicationStackCollectionResponse.
-	PageResponse() ApplicationStackCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsChangeVnetResponse.
+	PageResponse() AppServiceEnvironmentsChangeVnetResponse
 }
 
-type applicationStackCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type applicationStackCollectionHandleError func(*azcore.Response) error
-
-type applicationStackCollectionHandleResponse func(*azcore.Response) (ApplicationStackCollectionResponse, error)
-
-type applicationStackCollectionAdvancePage func(context.Context, ApplicationStackCollectionResponse) (*azcore.Request, error)
-
-type applicationStackCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester applicationStackCollectionCreateRequest
-	// callback for handling response errors
-	errorer applicationStackCollectionHandleError
-	// callback for handling the HTTP response
-	responder applicationStackCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer applicationStackCollectionAdvancePage
-	// contains the current response
-	current ApplicationStackCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsChangeVnetPager struct {
+	client  *AppServiceEnvironmentsClient
+	current AppServiceEnvironmentsChangeVnetResponse
+	err     error
+	second  bool
 }
 
-func (p *applicationStackCollectionPager) Err() error {
+func (p *appServiceEnvironmentsChangeVnetPager) Err() error {
 	return p.err
 }
 
-func (p *applicationStackCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ApplicationStackCollection.NextLink == nil || len(*p.current.ApplicationStackCollection.NextLink) == 0 {
+func (p *appServiceEnvironmentsChangeVnetPager) NextPage(ctx context.Context) bool {
+	if !p.second {
+		p.second = true
+		return true
+	} else if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
 			return false
 		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
 	}
+	req, err := azcore.NewRequest(ctx, http.MethodGet, *p.current.WebAppCollection.NextLink)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		p.err = p.client.changeVnetHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *applicationStackCollectionPager) PageResponse() ApplicationStackCollectionResponse {
-	return p.current
-}
-
-// BackupItemCollectionPager provides iteration over BackupItemCollection pages.
-type BackupItemCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current BackupItemCollectionResponse.
-	PageResponse() BackupItemCollectionResponse
-}
-
-type backupItemCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type backupItemCollectionHandleError func(*azcore.Response) error
-
-type backupItemCollectionHandleResponse func(*azcore.Response) (BackupItemCollectionResponse, error)
-
-type backupItemCollectionAdvancePage func(context.Context, BackupItemCollectionResponse) (*azcore.Request, error)
-
-type backupItemCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester backupItemCollectionCreateRequest
-	// callback for handling response errors
-	errorer backupItemCollectionHandleError
-	// callback for handling the HTTP response
-	responder backupItemCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer backupItemCollectionAdvancePage
-	// contains the current response
-	current BackupItemCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *backupItemCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *backupItemCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.BackupItemCollection.NextLink == nil || len(*p.current.BackupItemCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
+	result, err := p.client.changeVnetHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -541,1494 +228,29 @@ func (p *backupItemCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *backupItemCollectionPager) PageResponse() BackupItemCollectionResponse {
+func (p *appServiceEnvironmentsChangeVnetPager) PageResponse() AppServiceEnvironmentsChangeVnetResponse {
 	return p.current
 }
 
-// BillingMeterCollectionPager provides iteration over BillingMeterCollection pages.
-type BillingMeterCollectionPager interface {
+type AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current BillingMeterCollectionResponse.
-	PageResponse() BillingMeterCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse.
+	PageResponse() AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse
 }
 
-type billingMeterCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type billingMeterCollectionHandleError func(*azcore.Response) error
-
-type billingMeterCollectionHandleResponse func(*azcore.Response) (BillingMeterCollectionResponse, error)
-
-type billingMeterCollectionAdvancePage func(context.Context, BillingMeterCollectionResponse) (*azcore.Request, error)
-
-type billingMeterCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester billingMeterCollectionCreateRequest
-	// callback for handling response errors
-	errorer billingMeterCollectionHandleError
-	// callback for handling the HTTP response
-	responder billingMeterCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer billingMeterCollectionAdvancePage
-	// contains the current response
-	current BillingMeterCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error)
 }
 
-func (p *billingMeterCollectionPager) Err() error {
+func (p *appServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager) Err() error {
 	return p.err
 }
 
-func (p *billingMeterCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.BillingMeterCollection.NextLink == nil || len(*p.current.BillingMeterCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *billingMeterCollectionPager) PageResponse() BillingMeterCollectionResponse {
-	return p.current
-}
-
-// CertificateCollectionPager provides iteration over CertificateCollection pages.
-type CertificateCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current CertificateCollectionResponse.
-	PageResponse() CertificateCollectionResponse
-}
-
-type certificateCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type certificateCollectionHandleError func(*azcore.Response) error
-
-type certificateCollectionHandleResponse func(*azcore.Response) (CertificateCollectionResponse, error)
-
-type certificateCollectionAdvancePage func(context.Context, CertificateCollectionResponse) (*azcore.Request, error)
-
-type certificateCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester certificateCollectionCreateRequest
-	// callback for handling response errors
-	errorer certificateCollectionHandleError
-	// callback for handling the HTTP response
-	responder certificateCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer certificateCollectionAdvancePage
-	// contains the current response
-	current CertificateCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *certificateCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *certificateCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.CertificateCollection.NextLink == nil || len(*p.current.CertificateCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *certificateCollectionPager) PageResponse() CertificateCollectionResponse {
-	return p.current
-}
-
-// ContinuousWebJobCollectionPager provides iteration over ContinuousWebJobCollection pages.
-type ContinuousWebJobCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ContinuousWebJobCollectionResponse.
-	PageResponse() ContinuousWebJobCollectionResponse
-}
-
-type continuousWebJobCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type continuousWebJobCollectionHandleError func(*azcore.Response) error
-
-type continuousWebJobCollectionHandleResponse func(*azcore.Response) (ContinuousWebJobCollectionResponse, error)
-
-type continuousWebJobCollectionAdvancePage func(context.Context, ContinuousWebJobCollectionResponse) (*azcore.Request, error)
-
-type continuousWebJobCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester continuousWebJobCollectionCreateRequest
-	// callback for handling response errors
-	errorer continuousWebJobCollectionHandleError
-	// callback for handling the HTTP response
-	responder continuousWebJobCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer continuousWebJobCollectionAdvancePage
-	// contains the current response
-	current ContinuousWebJobCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *continuousWebJobCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *continuousWebJobCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ContinuousWebJobCollection.NextLink == nil || len(*p.current.ContinuousWebJobCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *continuousWebJobCollectionPager) PageResponse() ContinuousWebJobCollectionResponse {
-	return p.current
-}
-
-// CsmOperationCollectionPager provides iteration over CsmOperationCollection pages.
-type CsmOperationCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current CsmOperationCollectionResponse.
-	PageResponse() CsmOperationCollectionResponse
-}
-
-type csmOperationCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type csmOperationCollectionHandleError func(*azcore.Response) error
-
-type csmOperationCollectionHandleResponse func(*azcore.Response) (CsmOperationCollectionResponse, error)
-
-type csmOperationCollectionAdvancePage func(context.Context, CsmOperationCollectionResponse) (*azcore.Request, error)
-
-type csmOperationCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester csmOperationCollectionCreateRequest
-	// callback for handling response errors
-	errorer csmOperationCollectionHandleError
-	// callback for handling the HTTP response
-	responder csmOperationCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer csmOperationCollectionAdvancePage
-	// contains the current response
-	current CsmOperationCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *csmOperationCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *csmOperationCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.CsmOperationCollection.NextLink == nil || len(*p.current.CsmOperationCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *csmOperationCollectionPager) PageResponse() CsmOperationCollectionResponse {
-	return p.current
-}
-
-// CsmUsageQuotaCollectionPager provides iteration over CsmUsageQuotaCollection pages.
-type CsmUsageQuotaCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current CsmUsageQuotaCollectionResponse.
-	PageResponse() CsmUsageQuotaCollectionResponse
-}
-
-type csmUsageQuotaCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type csmUsageQuotaCollectionHandleError func(*azcore.Response) error
-
-type csmUsageQuotaCollectionHandleResponse func(*azcore.Response) (CsmUsageQuotaCollectionResponse, error)
-
-type csmUsageQuotaCollectionAdvancePage func(context.Context, CsmUsageQuotaCollectionResponse) (*azcore.Request, error)
-
-type csmUsageQuotaCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester csmUsageQuotaCollectionCreateRequest
-	// callback for handling response errors
-	errorer csmUsageQuotaCollectionHandleError
-	// callback for handling the HTTP response
-	responder csmUsageQuotaCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer csmUsageQuotaCollectionAdvancePage
-	// contains the current response
-	current CsmUsageQuotaCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *csmUsageQuotaCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *csmUsageQuotaCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.CsmUsageQuotaCollection.NextLink == nil || len(*p.current.CsmUsageQuotaCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *csmUsageQuotaCollectionPager) PageResponse() CsmUsageQuotaCollectionResponse {
-	return p.current
-}
-
-// DeletedWebAppCollectionPager provides iteration over DeletedWebAppCollection pages.
-type DeletedWebAppCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DeletedWebAppCollectionResponse.
-	PageResponse() DeletedWebAppCollectionResponse
-}
-
-type deletedWebAppCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type deletedWebAppCollectionHandleError func(*azcore.Response) error
-
-type deletedWebAppCollectionHandleResponse func(*azcore.Response) (DeletedWebAppCollectionResponse, error)
-
-type deletedWebAppCollectionAdvancePage func(context.Context, DeletedWebAppCollectionResponse) (*azcore.Request, error)
-
-type deletedWebAppCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester deletedWebAppCollectionCreateRequest
-	// callback for handling response errors
-	errorer deletedWebAppCollectionHandleError
-	// callback for handling the HTTP response
-	responder deletedWebAppCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer deletedWebAppCollectionAdvancePage
-	// contains the current response
-	current DeletedWebAppCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *deletedWebAppCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *deletedWebAppCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DeletedWebAppCollection.NextLink == nil || len(*p.current.DeletedWebAppCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *deletedWebAppCollectionPager) PageResponse() DeletedWebAppCollectionResponse {
-	return p.current
-}
-
-// DeploymentCollectionPager provides iteration over DeploymentCollection pages.
-type DeploymentCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DeploymentCollectionResponse.
-	PageResponse() DeploymentCollectionResponse
-}
-
-type deploymentCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type deploymentCollectionHandleError func(*azcore.Response) error
-
-type deploymentCollectionHandleResponse func(*azcore.Response) (DeploymentCollectionResponse, error)
-
-type deploymentCollectionAdvancePage func(context.Context, DeploymentCollectionResponse) (*azcore.Request, error)
-
-type deploymentCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester deploymentCollectionCreateRequest
-	// callback for handling response errors
-	errorer deploymentCollectionHandleError
-	// callback for handling the HTTP response
-	responder deploymentCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer deploymentCollectionAdvancePage
-	// contains the current response
-	current DeploymentCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *deploymentCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *deploymentCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DeploymentCollection.NextLink == nil || len(*p.current.DeploymentCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *deploymentCollectionPager) PageResponse() DeploymentCollectionResponse {
-	return p.current
-}
-
-// DetectorResponseCollectionPager provides iteration over DetectorResponseCollection pages.
-type DetectorResponseCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DetectorResponseCollectionResponse.
-	PageResponse() DetectorResponseCollectionResponse
-}
-
-type detectorResponseCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type detectorResponseCollectionHandleError func(*azcore.Response) error
-
-type detectorResponseCollectionHandleResponse func(*azcore.Response) (DetectorResponseCollectionResponse, error)
-
-type detectorResponseCollectionAdvancePage func(context.Context, DetectorResponseCollectionResponse) (*azcore.Request, error)
-
-type detectorResponseCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester detectorResponseCollectionCreateRequest
-	// callback for handling response errors
-	errorer detectorResponseCollectionHandleError
-	// callback for handling the HTTP response
-	responder detectorResponseCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer detectorResponseCollectionAdvancePage
-	// contains the current response
-	current DetectorResponseCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *detectorResponseCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *detectorResponseCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DetectorResponseCollection.NextLink == nil || len(*p.current.DetectorResponseCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *detectorResponseCollectionPager) PageResponse() DetectorResponseCollectionResponse {
-	return p.current
-}
-
-// DiagnosticAnalysisCollectionPager provides iteration over DiagnosticAnalysisCollection pages.
-type DiagnosticAnalysisCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DiagnosticAnalysisCollectionResponse.
-	PageResponse() DiagnosticAnalysisCollectionResponse
-}
-
-type diagnosticAnalysisCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type diagnosticAnalysisCollectionHandleError func(*azcore.Response) error
-
-type diagnosticAnalysisCollectionHandleResponse func(*azcore.Response) (DiagnosticAnalysisCollectionResponse, error)
-
-type diagnosticAnalysisCollectionAdvancePage func(context.Context, DiagnosticAnalysisCollectionResponse) (*azcore.Request, error)
-
-type diagnosticAnalysisCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester diagnosticAnalysisCollectionCreateRequest
-	// callback for handling response errors
-	errorer diagnosticAnalysisCollectionHandleError
-	// callback for handling the HTTP response
-	responder diagnosticAnalysisCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer diagnosticAnalysisCollectionAdvancePage
-	// contains the current response
-	current DiagnosticAnalysisCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *diagnosticAnalysisCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *diagnosticAnalysisCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DiagnosticAnalysisCollection.NextLink == nil || len(*p.current.DiagnosticAnalysisCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *diagnosticAnalysisCollectionPager) PageResponse() DiagnosticAnalysisCollectionResponse {
-	return p.current
-}
-
-// DiagnosticCategoryCollectionPager provides iteration over DiagnosticCategoryCollection pages.
-type DiagnosticCategoryCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DiagnosticCategoryCollectionResponse.
-	PageResponse() DiagnosticCategoryCollectionResponse
-}
-
-type diagnosticCategoryCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type diagnosticCategoryCollectionHandleError func(*azcore.Response) error
-
-type diagnosticCategoryCollectionHandleResponse func(*azcore.Response) (DiagnosticCategoryCollectionResponse, error)
-
-type diagnosticCategoryCollectionAdvancePage func(context.Context, DiagnosticCategoryCollectionResponse) (*azcore.Request, error)
-
-type diagnosticCategoryCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester diagnosticCategoryCollectionCreateRequest
-	// callback for handling response errors
-	errorer diagnosticCategoryCollectionHandleError
-	// callback for handling the HTTP response
-	responder diagnosticCategoryCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer diagnosticCategoryCollectionAdvancePage
-	// contains the current response
-	current DiagnosticCategoryCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *diagnosticCategoryCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *diagnosticCategoryCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DiagnosticCategoryCollection.NextLink == nil || len(*p.current.DiagnosticCategoryCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *diagnosticCategoryCollectionPager) PageResponse() DiagnosticCategoryCollectionResponse {
-	return p.current
-}
-
-// DiagnosticDetectorCollectionPager provides iteration over DiagnosticDetectorCollection pages.
-type DiagnosticDetectorCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DiagnosticDetectorCollectionResponse.
-	PageResponse() DiagnosticDetectorCollectionResponse
-}
-
-type diagnosticDetectorCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type diagnosticDetectorCollectionHandleError func(*azcore.Response) error
-
-type diagnosticDetectorCollectionHandleResponse func(*azcore.Response) (DiagnosticDetectorCollectionResponse, error)
-
-type diagnosticDetectorCollectionAdvancePage func(context.Context, DiagnosticDetectorCollectionResponse) (*azcore.Request, error)
-
-type diagnosticDetectorCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester diagnosticDetectorCollectionCreateRequest
-	// callback for handling response errors
-	errorer diagnosticDetectorCollectionHandleError
-	// callback for handling the HTTP response
-	responder diagnosticDetectorCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer diagnosticDetectorCollectionAdvancePage
-	// contains the current response
-	current DiagnosticDetectorCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *diagnosticDetectorCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *diagnosticDetectorCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DiagnosticDetectorCollection.NextLink == nil || len(*p.current.DiagnosticDetectorCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *diagnosticDetectorCollectionPager) PageResponse() DiagnosticDetectorCollectionResponse {
-	return p.current
-}
-
-// DomainCollectionPager provides iteration over DomainCollection pages.
-type DomainCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DomainCollectionResponse.
-	PageResponse() DomainCollectionResponse
-}
-
-type domainCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type domainCollectionHandleError func(*azcore.Response) error
-
-type domainCollectionHandleResponse func(*azcore.Response) (DomainCollectionResponse, error)
-
-type domainCollectionAdvancePage func(context.Context, DomainCollectionResponse) (*azcore.Request, error)
-
-type domainCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester domainCollectionCreateRequest
-	// callback for handling response errors
-	errorer domainCollectionHandleError
-	// callback for handling the HTTP response
-	responder domainCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer domainCollectionAdvancePage
-	// contains the current response
-	current DomainCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *domainCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *domainCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DomainCollection.NextLink == nil || len(*p.current.DomainCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *domainCollectionPager) PageResponse() DomainCollectionResponse {
-	return p.current
-}
-
-// DomainOwnershipIdentifierCollectionPager provides iteration over DomainOwnershipIdentifierCollection pages.
-type DomainOwnershipIdentifierCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DomainOwnershipIdentifierCollectionResponse.
-	PageResponse() DomainOwnershipIdentifierCollectionResponse
-}
-
-type domainOwnershipIdentifierCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type domainOwnershipIdentifierCollectionHandleError func(*azcore.Response) error
-
-type domainOwnershipIdentifierCollectionHandleResponse func(*azcore.Response) (DomainOwnershipIdentifierCollectionResponse, error)
-
-type domainOwnershipIdentifierCollectionAdvancePage func(context.Context, DomainOwnershipIdentifierCollectionResponse) (*azcore.Request, error)
-
-type domainOwnershipIdentifierCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester domainOwnershipIdentifierCollectionCreateRequest
-	// callback for handling response errors
-	errorer domainOwnershipIdentifierCollectionHandleError
-	// callback for handling the HTTP response
-	responder domainOwnershipIdentifierCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer domainOwnershipIdentifierCollectionAdvancePage
-	// contains the current response
-	current DomainOwnershipIdentifierCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *domainOwnershipIdentifierCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *domainOwnershipIdentifierCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DomainOwnershipIdentifierCollection.NextLink == nil || len(*p.current.DomainOwnershipIdentifierCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *domainOwnershipIdentifierCollectionPager) PageResponse() DomainOwnershipIdentifierCollectionResponse {
-	return p.current
-}
-
-// FunctionAppStackCollectionPager provides iteration over FunctionAppStackCollection pages.
-type FunctionAppStackCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current FunctionAppStackCollectionResponse.
-	PageResponse() FunctionAppStackCollectionResponse
-}
-
-type functionAppStackCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type functionAppStackCollectionHandleError func(*azcore.Response) error
-
-type functionAppStackCollectionHandleResponse func(*azcore.Response) (FunctionAppStackCollectionResponse, error)
-
-type functionAppStackCollectionAdvancePage func(context.Context, FunctionAppStackCollectionResponse) (*azcore.Request, error)
-
-type functionAppStackCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester functionAppStackCollectionCreateRequest
-	// callback for handling response errors
-	errorer functionAppStackCollectionHandleError
-	// callback for handling the HTTP response
-	responder functionAppStackCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer functionAppStackCollectionAdvancePage
-	// contains the current response
-	current FunctionAppStackCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *functionAppStackCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *functionAppStackCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.FunctionAppStackCollection.NextLink == nil || len(*p.current.FunctionAppStackCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *functionAppStackCollectionPager) PageResponse() FunctionAppStackCollectionResponse {
-	return p.current
-}
-
-// FunctionEnvelopeCollectionPager provides iteration over FunctionEnvelopeCollection pages.
-type FunctionEnvelopeCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current FunctionEnvelopeCollectionResponse.
-	PageResponse() FunctionEnvelopeCollectionResponse
-}
-
-type functionEnvelopeCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type functionEnvelopeCollectionHandleError func(*azcore.Response) error
-
-type functionEnvelopeCollectionHandleResponse func(*azcore.Response) (FunctionEnvelopeCollectionResponse, error)
-
-type functionEnvelopeCollectionAdvancePage func(context.Context, FunctionEnvelopeCollectionResponse) (*azcore.Request, error)
-
-type functionEnvelopeCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester functionEnvelopeCollectionCreateRequest
-	// callback for handling response errors
-	errorer functionEnvelopeCollectionHandleError
-	// callback for handling the HTTP response
-	responder functionEnvelopeCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer functionEnvelopeCollectionAdvancePage
-	// contains the current response
-	current FunctionEnvelopeCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *functionEnvelopeCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *functionEnvelopeCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.FunctionEnvelopeCollection.NextLink == nil || len(*p.current.FunctionEnvelopeCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *functionEnvelopeCollectionPager) PageResponse() FunctionEnvelopeCollectionResponse {
-	return p.current
-}
-
-// GeoRegionCollectionPager provides iteration over GeoRegionCollection pages.
-type GeoRegionCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current GeoRegionCollectionResponse.
-	PageResponse() GeoRegionCollectionResponse
-}
-
-type geoRegionCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type geoRegionCollectionHandleError func(*azcore.Response) error
-
-type geoRegionCollectionHandleResponse func(*azcore.Response) (GeoRegionCollectionResponse, error)
-
-type geoRegionCollectionAdvancePage func(context.Context, GeoRegionCollectionResponse) (*azcore.Request, error)
-
-type geoRegionCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester geoRegionCollectionCreateRequest
-	// callback for handling response errors
-	errorer geoRegionCollectionHandleError
-	// callback for handling the HTTP response
-	responder geoRegionCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer geoRegionCollectionAdvancePage
-	// contains the current response
-	current GeoRegionCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *geoRegionCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *geoRegionCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.GeoRegionCollection.NextLink == nil || len(*p.current.GeoRegionCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *geoRegionCollectionPager) PageResponse() GeoRegionCollectionResponse {
-	return p.current
-}
-
-// HostNameBindingCollectionPager provides iteration over HostNameBindingCollection pages.
-type HostNameBindingCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current HostNameBindingCollectionResponse.
-	PageResponse() HostNameBindingCollectionResponse
-}
-
-type hostNameBindingCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type hostNameBindingCollectionHandleError func(*azcore.Response) error
-
-type hostNameBindingCollectionHandleResponse func(*azcore.Response) (HostNameBindingCollectionResponse, error)
-
-type hostNameBindingCollectionAdvancePage func(context.Context, HostNameBindingCollectionResponse) (*azcore.Request, error)
-
-type hostNameBindingCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester hostNameBindingCollectionCreateRequest
-	// callback for handling response errors
-	errorer hostNameBindingCollectionHandleError
-	// callback for handling the HTTP response
-	responder hostNameBindingCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer hostNameBindingCollectionAdvancePage
-	// contains the current response
-	current HostNameBindingCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *hostNameBindingCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *hostNameBindingCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.HostNameBindingCollection.NextLink == nil || len(*p.current.HostNameBindingCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *hostNameBindingCollectionPager) PageResponse() HostNameBindingCollectionResponse {
-	return p.current
-}
-
-// HybridConnectionCollectionPager provides iteration over HybridConnectionCollection pages.
-type HybridConnectionCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current HybridConnectionCollectionResponse.
-	PageResponse() HybridConnectionCollectionResponse
-}
-
-type hybridConnectionCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type hybridConnectionCollectionHandleError func(*azcore.Response) error
-
-type hybridConnectionCollectionHandleResponse func(*azcore.Response) (HybridConnectionCollectionResponse, error)
-
-type hybridConnectionCollectionAdvancePage func(context.Context, HybridConnectionCollectionResponse) (*azcore.Request, error)
-
-type hybridConnectionCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester hybridConnectionCollectionCreateRequest
-	// callback for handling response errors
-	errorer hybridConnectionCollectionHandleError
-	// callback for handling the HTTP response
-	responder hybridConnectionCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer hybridConnectionCollectionAdvancePage
-	// contains the current response
-	current HybridConnectionCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *hybridConnectionCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *hybridConnectionCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.HybridConnectionCollection.NextLink == nil || len(*p.current.HybridConnectionCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *hybridConnectionCollectionPager) PageResponse() HybridConnectionCollectionResponse {
-	return p.current
-}
-
-// IdentifierCollectionPager provides iteration over IdentifierCollection pages.
-type IdentifierCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current IdentifierCollectionResponse.
-	PageResponse() IdentifierCollectionResponse
-}
-
-type identifierCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type identifierCollectionHandleError func(*azcore.Response) error
-
-type identifierCollectionHandleResponse func(*azcore.Response) (IdentifierCollectionResponse, error)
-
-type identifierCollectionAdvancePage func(context.Context, IdentifierCollectionResponse) (*azcore.Request, error)
-
-type identifierCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester identifierCollectionCreateRequest
-	// callback for handling response errors
-	errorer identifierCollectionHandleError
-	// callback for handling the HTTP response
-	responder identifierCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer identifierCollectionAdvancePage
-	// contains the current response
-	current IdentifierCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *identifierCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *identifierCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.IdentifierCollection.NextLink == nil || len(*p.current.IdentifierCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *identifierCollectionPager) PageResponse() IdentifierCollectionResponse {
-	return p.current
-}
-
-// InboundEnvironmentEndpointCollectionPager provides iteration over InboundEnvironmentEndpointCollection pages.
-type InboundEnvironmentEndpointCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current InboundEnvironmentEndpointCollectionResponse.
-	PageResponse() InboundEnvironmentEndpointCollectionResponse
-}
-
-type inboundEnvironmentEndpointCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type inboundEnvironmentEndpointCollectionHandleError func(*azcore.Response) error
-
-type inboundEnvironmentEndpointCollectionHandleResponse func(*azcore.Response) (InboundEnvironmentEndpointCollectionResponse, error)
-
-type inboundEnvironmentEndpointCollectionAdvancePage func(context.Context, InboundEnvironmentEndpointCollectionResponse) (*azcore.Request, error)
-
-type inboundEnvironmentEndpointCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester inboundEnvironmentEndpointCollectionCreateRequest
-	// callback for handling response errors
-	errorer inboundEnvironmentEndpointCollectionHandleError
-	// callback for handling the HTTP response
-	responder inboundEnvironmentEndpointCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer inboundEnvironmentEndpointCollectionAdvancePage
-	// contains the current response
-	current InboundEnvironmentEndpointCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *inboundEnvironmentEndpointCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *inboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -2043,92 +265,16 @@ func (p *inboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getInboundNetworkDependenciesEndpointsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *inboundEnvironmentEndpointCollectionPager) PageResponse() InboundEnvironmentEndpointCollectionResponse {
-	return p.current
-}
-
-// KubeEnvironmentCollectionPager provides iteration over KubeEnvironmentCollection pages.
-type KubeEnvironmentCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current KubeEnvironmentCollectionResponse.
-	PageResponse() KubeEnvironmentCollectionResponse
-}
-
-type kubeEnvironmentCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type kubeEnvironmentCollectionHandleError func(*azcore.Response) error
-
-type kubeEnvironmentCollectionHandleResponse func(*azcore.Response) (KubeEnvironmentCollectionResponse, error)
-
-type kubeEnvironmentCollectionAdvancePage func(context.Context, KubeEnvironmentCollectionResponse) (*azcore.Request, error)
-
-type kubeEnvironmentCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester kubeEnvironmentCollectionCreateRequest
-	// callback for handling response errors
-	errorer kubeEnvironmentCollectionHandleError
-	// callback for handling the HTTP response
-	responder kubeEnvironmentCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer kubeEnvironmentCollectionAdvancePage
-	// contains the current response
-	current KubeEnvironmentCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *kubeEnvironmentCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *kubeEnvironmentCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.KubeEnvironmentCollection.NextLink == nil || len(*p.current.KubeEnvironmentCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
+	result, err := p.client.getInboundNetworkDependenciesEndpointsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -2137,126 +283,29 @@ func (p *kubeEnvironmentCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *kubeEnvironmentCollectionPager) PageResponse() KubeEnvironmentCollectionResponse {
+func (p *appServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager) PageResponse() AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse {
 	return p.current
 }
 
-// NameIdentifierCollectionPager provides iteration over NameIdentifierCollection pages.
-type NameIdentifierCollectionPager interface {
+type AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current NameIdentifierCollectionResponse.
-	PageResponse() NameIdentifierCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse.
+	PageResponse() AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse
 }
 
-type nameIdentifierCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type nameIdentifierCollectionHandleError func(*azcore.Response) error
-
-type nameIdentifierCollectionHandleResponse func(*azcore.Response) (NameIdentifierCollectionResponse, error)
-
-type nameIdentifierCollectionAdvancePage func(context.Context, NameIdentifierCollectionResponse) (*azcore.Request, error)
-
-type nameIdentifierCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester nameIdentifierCollectionCreateRequest
-	// callback for handling response errors
-	errorer nameIdentifierCollectionHandleError
-	// callback for handling the HTTP response
-	responder nameIdentifierCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer nameIdentifierCollectionAdvancePage
-	// contains the current response
-	current NameIdentifierCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error)
 }
 
-func (p *nameIdentifierCollectionPager) Err() error {
+func (p *appServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager) Err() error {
 	return p.err
 }
 
-func (p *nameIdentifierCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.NameIdentifierCollection.NextLink == nil || len(*p.current.NameIdentifierCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *nameIdentifierCollectionPager) PageResponse() NameIdentifierCollectionResponse {
-	return p.current
-}
-
-// OutboundEnvironmentEndpointCollectionPager provides iteration over OutboundEnvironmentEndpointCollection pages.
-type OutboundEnvironmentEndpointCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current OutboundEnvironmentEndpointCollectionResponse.
-	PageResponse() OutboundEnvironmentEndpointCollectionResponse
-}
-
-type outboundEnvironmentEndpointCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type outboundEnvironmentEndpointCollectionHandleError func(*azcore.Response) error
-
-type outboundEnvironmentEndpointCollectionHandleResponse func(*azcore.Response) (OutboundEnvironmentEndpointCollectionResponse, error)
-
-type outboundEnvironmentEndpointCollectionAdvancePage func(context.Context, OutboundEnvironmentEndpointCollectionResponse) (*azcore.Request, error)
-
-type outboundEnvironmentEndpointCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester outboundEnvironmentEndpointCollectionCreateRequest
-	// callback for handling response errors
-	errorer outboundEnvironmentEndpointCollectionHandleError
-	// callback for handling the HTTP response
-	responder outboundEnvironmentEndpointCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer outboundEnvironmentEndpointCollectionAdvancePage
-	// contains the current response
-	current OutboundEnvironmentEndpointCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *outboundEnvironmentEndpointCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -2271,92 +320,16 @@ func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getOutboundNetworkDependenciesEndpointsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *outboundEnvironmentEndpointCollectionPager) PageResponse() OutboundEnvironmentEndpointCollectionResponse {
-	return p.current
-}
-
-// PerfMonCounterCollectionPager provides iteration over PerfMonCounterCollection pages.
-type PerfMonCounterCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current PerfMonCounterCollectionResponse.
-	PageResponse() PerfMonCounterCollectionResponse
-}
-
-type perfMonCounterCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type perfMonCounterCollectionHandleError func(*azcore.Response) error
-
-type perfMonCounterCollectionHandleResponse func(*azcore.Response) (PerfMonCounterCollectionResponse, error)
-
-type perfMonCounterCollectionAdvancePage func(context.Context, PerfMonCounterCollectionResponse) (*azcore.Request, error)
-
-type perfMonCounterCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester perfMonCounterCollectionCreateRequest
-	// callback for handling response errors
-	errorer perfMonCounterCollectionHandleError
-	// callback for handling the HTTP response
-	responder perfMonCounterCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer perfMonCounterCollectionAdvancePage
-	// contains the current response
-	current PerfMonCounterCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *perfMonCounterCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *perfMonCounterCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.PerfMonCounterCollection.NextLink == nil || len(*p.current.PerfMonCounterCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
+	result, err := p.client.getOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -2365,126 +338,29 @@ func (p *perfMonCounterCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *perfMonCounterCollectionPager) PageResponse() PerfMonCounterCollectionResponse {
+func (p *appServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager) PageResponse() AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse {
 	return p.current
 }
 
-// PremierAddOnOfferCollectionPager provides iteration over PremierAddOnOfferCollection pages.
-type PremierAddOnOfferCollectionPager interface {
+type AppServiceEnvironmentsGetPrivateEndpointConnectionListPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current PremierAddOnOfferCollectionResponse.
-	PageResponse() PremierAddOnOfferCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse.
+	PageResponse() AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse
 }
 
-type premierAddOnOfferCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type premierAddOnOfferCollectionHandleError func(*azcore.Response) error
-
-type premierAddOnOfferCollectionHandleResponse func(*azcore.Response) (PremierAddOnOfferCollectionResponse, error)
-
-type premierAddOnOfferCollectionAdvancePage func(context.Context, PremierAddOnOfferCollectionResponse) (*azcore.Request, error)
-
-type premierAddOnOfferCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester premierAddOnOfferCollectionCreateRequest
-	// callback for handling response errors
-	errorer premierAddOnOfferCollectionHandleError
-	// callback for handling the HTTP response
-	responder premierAddOnOfferCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer premierAddOnOfferCollectionAdvancePage
-	// contains the current response
-	current PremierAddOnOfferCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsGetPrivateEndpointConnectionListPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse) (*azcore.Request, error)
 }
 
-func (p *premierAddOnOfferCollectionPager) Err() error {
+func (p *appServiceEnvironmentsGetPrivateEndpointConnectionListPager) Err() error {
 	return p.err
 }
 
-func (p *premierAddOnOfferCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.PremierAddOnOfferCollection.NextLink == nil || len(*p.current.PremierAddOnOfferCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *premierAddOnOfferCollectionPager) PageResponse() PremierAddOnOfferCollectionResponse {
-	return p.current
-}
-
-// PrivateEndpointConnectionCollectionPager provides iteration over PrivateEndpointConnectionCollection pages.
-type PrivateEndpointConnectionCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current PrivateEndpointConnectionCollectionResponse.
-	PageResponse() PrivateEndpointConnectionCollectionResponse
-}
-
-type privateEndpointConnectionCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type privateEndpointConnectionCollectionHandleError func(*azcore.Response) error
-
-type privateEndpointConnectionCollectionHandleResponse func(*azcore.Response) (PrivateEndpointConnectionCollectionResponse, error)
-
-type privateEndpointConnectionCollectionAdvancePage func(context.Context, PrivateEndpointConnectionCollectionResponse) (*azcore.Request, error)
-
-type privateEndpointConnectionCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester privateEndpointConnectionCollectionCreateRequest
-	// callback for handling response errors
-	errorer privateEndpointConnectionCollectionHandleError
-	// callback for handling the HTTP response
-	responder privateEndpointConnectionCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer privateEndpointConnectionCollectionAdvancePage
-	// contains the current response
-	current PrivateEndpointConnectionCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *privateEndpointConnectionCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *privateEndpointConnectionCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsGetPrivateEndpointConnectionListPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -2499,16 +375,16 @@ func (p *privateEndpointConnectionCollectionPager) NextPage(ctx context.Context)
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getPrivateEndpointConnectionListHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.getPrivateEndpointConnectionListHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -2517,54 +393,33 @@ func (p *privateEndpointConnectionCollectionPager) NextPage(ctx context.Context)
 	return true
 }
 
-func (p *privateEndpointConnectionCollectionPager) PageResponse() PrivateEndpointConnectionCollectionResponse {
+func (p *appServiceEnvironmentsGetPrivateEndpointConnectionListPager) PageResponse() AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse {
 	return p.current
 }
 
-// ProcessInfoCollectionPager provides iteration over ProcessInfoCollection pages.
-type ProcessInfoCollectionPager interface {
+type AppServiceEnvironmentsListAppServicePlansPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current ProcessInfoCollectionResponse.
-	PageResponse() ProcessInfoCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListAppServicePlansResponse.
+	PageResponse() AppServiceEnvironmentsListAppServicePlansResponse
 }
 
-type processInfoCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type processInfoCollectionHandleError func(*azcore.Response) error
-
-type processInfoCollectionHandleResponse func(*azcore.Response) (ProcessInfoCollectionResponse, error)
-
-type processInfoCollectionAdvancePage func(context.Context, ProcessInfoCollectionResponse) (*azcore.Request, error)
-
-type processInfoCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester processInfoCollectionCreateRequest
-	// callback for handling response errors
-	errorer processInfoCollectionHandleError
-	// callback for handling the HTTP response
-	responder processInfoCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer processInfoCollectionAdvancePage
-	// contains the current response
-	current ProcessInfoCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListAppServicePlansPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListAppServicePlansResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListAppServicePlansResponse) (*azcore.Request, error)
 }
 
-func (p *processInfoCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListAppServicePlansPager) Err() error {
 	return p.err
 }
 
-func (p *processInfoCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListAppServicePlansPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ProcessInfoCollection.NextLink == nil || len(*p.current.ProcessInfoCollection.NextLink) == 0 {
+		if p.current.AppServicePlanCollection.NextLink == nil || len(*p.current.AppServicePlanCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -2575,16 +430,16 @@ func (p *processInfoCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listAppServicePlansHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listAppServicePlansHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -2593,54 +448,33 @@ func (p *processInfoCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *processInfoCollectionPager) PageResponse() ProcessInfoCollectionResponse {
+func (p *appServiceEnvironmentsListAppServicePlansPager) PageResponse() AppServiceEnvironmentsListAppServicePlansResponse {
 	return p.current
 }
 
-// ProcessModuleInfoCollectionPager provides iteration over ProcessModuleInfoCollection pages.
-type ProcessModuleInfoCollectionPager interface {
+type AppServiceEnvironmentsListByResourceGroupPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current ProcessModuleInfoCollectionResponse.
-	PageResponse() ProcessModuleInfoCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListByResourceGroupResponse.
+	PageResponse() AppServiceEnvironmentsListByResourceGroupResponse
 }
 
-type processModuleInfoCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type processModuleInfoCollectionHandleError func(*azcore.Response) error
-
-type processModuleInfoCollectionHandleResponse func(*azcore.Response) (ProcessModuleInfoCollectionResponse, error)
-
-type processModuleInfoCollectionAdvancePage func(context.Context, ProcessModuleInfoCollectionResponse) (*azcore.Request, error)
-
-type processModuleInfoCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester processModuleInfoCollectionCreateRequest
-	// callback for handling response errors
-	errorer processModuleInfoCollectionHandleError
-	// callback for handling the HTTP response
-	responder processModuleInfoCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer processModuleInfoCollectionAdvancePage
-	// contains the current response
-	current ProcessModuleInfoCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListByResourceGroupPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListByResourceGroupResponse) (*azcore.Request, error)
 }
 
-func (p *processModuleInfoCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *processModuleInfoCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ProcessModuleInfoCollection.NextLink == nil || len(*p.current.ProcessModuleInfoCollection.NextLink) == 0 {
+		if p.current.AppServiceEnvironmentCollection.NextLink == nil || len(*p.current.AppServiceEnvironmentCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -2651,92 +485,16 @@ func (p *processModuleInfoCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *processModuleInfoCollectionPager) PageResponse() ProcessModuleInfoCollectionResponse {
-	return p.current
-}
-
-// ProcessThreadInfoCollectionPager provides iteration over ProcessThreadInfoCollection pages.
-type ProcessThreadInfoCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ProcessThreadInfoCollectionResponse.
-	PageResponse() ProcessThreadInfoCollectionResponse
-}
-
-type processThreadInfoCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type processThreadInfoCollectionHandleError func(*azcore.Response) error
-
-type processThreadInfoCollectionHandleResponse func(*azcore.Response) (ProcessThreadInfoCollectionResponse, error)
-
-type processThreadInfoCollectionAdvancePage func(context.Context, ProcessThreadInfoCollectionResponse) (*azcore.Request, error)
-
-type processThreadInfoCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester processThreadInfoCollectionCreateRequest
-	// callback for handling response errors
-	errorer processThreadInfoCollectionHandleError
-	// callback for handling the HTTP response
-	responder processThreadInfoCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer processThreadInfoCollectionAdvancePage
-	// contains the current response
-	current ProcessThreadInfoCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *processThreadInfoCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *processThreadInfoCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ProcessThreadInfoCollection.NextLink == nil || len(*p.current.ProcessThreadInfoCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -2745,1038 +503,29 @@ func (p *processThreadInfoCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *processThreadInfoCollectionPager) PageResponse() ProcessThreadInfoCollectionResponse {
+func (p *appServiceEnvironmentsListByResourceGroupPager) PageResponse() AppServiceEnvironmentsListByResourceGroupResponse {
 	return p.current
 }
 
-// PublicCertificateCollectionPager provides iteration over PublicCertificateCollection pages.
-type PublicCertificateCollectionPager interface {
+type AppServiceEnvironmentsListCapacitiesPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current PublicCertificateCollectionResponse.
-	PageResponse() PublicCertificateCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListCapacitiesResponse.
+	PageResponse() AppServiceEnvironmentsListCapacitiesResponse
 }
 
-type publicCertificateCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type publicCertificateCollectionHandleError func(*azcore.Response) error
-
-type publicCertificateCollectionHandleResponse func(*azcore.Response) (PublicCertificateCollectionResponse, error)
-
-type publicCertificateCollectionAdvancePage func(context.Context, PublicCertificateCollectionResponse) (*azcore.Request, error)
-
-type publicCertificateCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester publicCertificateCollectionCreateRequest
-	// callback for handling response errors
-	errorer publicCertificateCollectionHandleError
-	// callback for handling the HTTP response
-	responder publicCertificateCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer publicCertificateCollectionAdvancePage
-	// contains the current response
-	current PublicCertificateCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListCapacitiesPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListCapacitiesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListCapacitiesResponse) (*azcore.Request, error)
 }
 
-func (p *publicCertificateCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListCapacitiesPager) Err() error {
 	return p.err
 }
 
-func (p *publicCertificateCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.PublicCertificateCollection.NextLink == nil || len(*p.current.PublicCertificateCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *publicCertificateCollectionPager) PageResponse() PublicCertificateCollectionResponse {
-	return p.current
-}
-
-// PublishingCredentialsPoliciesCollectionPager provides iteration over PublishingCredentialsPoliciesCollection pages.
-type PublishingCredentialsPoliciesCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current PublishingCredentialsPoliciesCollectionResponse.
-	PageResponse() PublishingCredentialsPoliciesCollectionResponse
-}
-
-type publishingCredentialsPoliciesCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type publishingCredentialsPoliciesCollectionHandleError func(*azcore.Response) error
-
-type publishingCredentialsPoliciesCollectionHandleResponse func(*azcore.Response) (PublishingCredentialsPoliciesCollectionResponse, error)
-
-type publishingCredentialsPoliciesCollectionAdvancePage func(context.Context, PublishingCredentialsPoliciesCollectionResponse) (*azcore.Request, error)
-
-type publishingCredentialsPoliciesCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester publishingCredentialsPoliciesCollectionCreateRequest
-	// callback for handling response errors
-	errorer publishingCredentialsPoliciesCollectionHandleError
-	// callback for handling the HTTP response
-	responder publishingCredentialsPoliciesCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer publishingCredentialsPoliciesCollectionAdvancePage
-	// contains the current response
-	current PublishingCredentialsPoliciesCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *publishingCredentialsPoliciesCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *publishingCredentialsPoliciesCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.PublishingCredentialsPoliciesCollection.NextLink == nil || len(*p.current.PublishingCredentialsPoliciesCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *publishingCredentialsPoliciesCollectionPager) PageResponse() PublishingCredentialsPoliciesCollectionResponse {
-	return p.current
-}
-
-// RecommendationCollectionPager provides iteration over RecommendationCollection pages.
-type RecommendationCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current RecommendationCollectionResponse.
-	PageResponse() RecommendationCollectionResponse
-}
-
-type recommendationCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type recommendationCollectionHandleError func(*azcore.Response) error
-
-type recommendationCollectionHandleResponse func(*azcore.Response) (RecommendationCollectionResponse, error)
-
-type recommendationCollectionAdvancePage func(context.Context, RecommendationCollectionResponse) (*azcore.Request, error)
-
-type recommendationCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester recommendationCollectionCreateRequest
-	// callback for handling response errors
-	errorer recommendationCollectionHandleError
-	// callback for handling the HTTP response
-	responder recommendationCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer recommendationCollectionAdvancePage
-	// contains the current response
-	current RecommendationCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *recommendationCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *recommendationCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.RecommendationCollection.NextLink == nil || len(*p.current.RecommendationCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *recommendationCollectionPager) PageResponse() RecommendationCollectionResponse {
-	return p.current
-}
-
-// ResourceCollectionPager provides iteration over ResourceCollection pages.
-type ResourceCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ResourceCollectionResponse.
-	PageResponse() ResourceCollectionResponse
-}
-
-type resourceCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type resourceCollectionHandleError func(*azcore.Response) error
-
-type resourceCollectionHandleResponse func(*azcore.Response) (ResourceCollectionResponse, error)
-
-type resourceCollectionAdvancePage func(context.Context, ResourceCollectionResponse) (*azcore.Request, error)
-
-type resourceCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester resourceCollectionCreateRequest
-	// callback for handling response errors
-	errorer resourceCollectionHandleError
-	// callback for handling the HTTP response
-	responder resourceCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer resourceCollectionAdvancePage
-	// contains the current response
-	current ResourceCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *resourceCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *resourceCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ResourceCollection.NextLink == nil || len(*p.current.ResourceCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *resourceCollectionPager) PageResponse() ResourceCollectionResponse {
-	return p.current
-}
-
-// ResourceHealthMetadataCollectionPager provides iteration over ResourceHealthMetadataCollection pages.
-type ResourceHealthMetadataCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ResourceHealthMetadataCollectionResponse.
-	PageResponse() ResourceHealthMetadataCollectionResponse
-}
-
-type resourceHealthMetadataCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type resourceHealthMetadataCollectionHandleError func(*azcore.Response) error
-
-type resourceHealthMetadataCollectionHandleResponse func(*azcore.Response) (ResourceHealthMetadataCollectionResponse, error)
-
-type resourceHealthMetadataCollectionAdvancePage func(context.Context, ResourceHealthMetadataCollectionResponse) (*azcore.Request, error)
-
-type resourceHealthMetadataCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester resourceHealthMetadataCollectionCreateRequest
-	// callback for handling response errors
-	errorer resourceHealthMetadataCollectionHandleError
-	// callback for handling the HTTP response
-	responder resourceHealthMetadataCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer resourceHealthMetadataCollectionAdvancePage
-	// contains the current response
-	current ResourceHealthMetadataCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *resourceHealthMetadataCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *resourceHealthMetadataCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ResourceHealthMetadataCollection.NextLink == nil || len(*p.current.ResourceHealthMetadataCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *resourceHealthMetadataCollectionPager) PageResponse() ResourceHealthMetadataCollectionResponse {
-	return p.current
-}
-
-// ResourceMetricDefinitionCollectionPager provides iteration over ResourceMetricDefinitionCollection pages.
-type ResourceMetricDefinitionCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ResourceMetricDefinitionCollectionResponse.
-	PageResponse() ResourceMetricDefinitionCollectionResponse
-}
-
-type resourceMetricDefinitionCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type resourceMetricDefinitionCollectionHandleError func(*azcore.Response) error
-
-type resourceMetricDefinitionCollectionHandleResponse func(*azcore.Response) (ResourceMetricDefinitionCollectionResponse, error)
-
-type resourceMetricDefinitionCollectionAdvancePage func(context.Context, ResourceMetricDefinitionCollectionResponse) (*azcore.Request, error)
-
-type resourceMetricDefinitionCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester resourceMetricDefinitionCollectionCreateRequest
-	// callback for handling response errors
-	errorer resourceMetricDefinitionCollectionHandleError
-	// callback for handling the HTTP response
-	responder resourceMetricDefinitionCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer resourceMetricDefinitionCollectionAdvancePage
-	// contains the current response
-	current ResourceMetricDefinitionCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *resourceMetricDefinitionCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *resourceMetricDefinitionCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ResourceMetricDefinitionCollection.NextLink == nil || len(*p.current.ResourceMetricDefinitionCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *resourceMetricDefinitionCollectionPager) PageResponse() ResourceMetricDefinitionCollectionResponse {
-	return p.current
-}
-
-// SKUInfoCollectionPager provides iteration over SKUInfoCollection pages.
-type SKUInfoCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SKUInfoCollectionResponse.
-	PageResponse() SKUInfoCollectionResponse
-}
-
-type skuInfoCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type skuInfoCollectionHandleError func(*azcore.Response) error
-
-type skuInfoCollectionHandleResponse func(*azcore.Response) (SKUInfoCollectionResponse, error)
-
-type skuInfoCollectionAdvancePage func(context.Context, SKUInfoCollectionResponse) (*azcore.Request, error)
-
-type skuInfoCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester skuInfoCollectionCreateRequest
-	// callback for handling response errors
-	errorer skuInfoCollectionHandleError
-	// callback for handling the HTTP response
-	responder skuInfoCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer skuInfoCollectionAdvancePage
-	// contains the current response
-	current SKUInfoCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *skuInfoCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *skuInfoCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SKUInfoCollection.NextLink == nil || len(*p.current.SKUInfoCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *skuInfoCollectionPager) PageResponse() SKUInfoCollectionResponse {
-	return p.current
-}
-
-// SiteConfigResourceCollectionPager provides iteration over SiteConfigResourceCollection pages.
-type SiteConfigResourceCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SiteConfigResourceCollectionResponse.
-	PageResponse() SiteConfigResourceCollectionResponse
-}
-
-type siteConfigResourceCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type siteConfigResourceCollectionHandleError func(*azcore.Response) error
-
-type siteConfigResourceCollectionHandleResponse func(*azcore.Response) (SiteConfigResourceCollectionResponse, error)
-
-type siteConfigResourceCollectionAdvancePage func(context.Context, SiteConfigResourceCollectionResponse) (*azcore.Request, error)
-
-type siteConfigResourceCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester siteConfigResourceCollectionCreateRequest
-	// callback for handling response errors
-	errorer siteConfigResourceCollectionHandleError
-	// callback for handling the HTTP response
-	responder siteConfigResourceCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer siteConfigResourceCollectionAdvancePage
-	// contains the current response
-	current SiteConfigResourceCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *siteConfigResourceCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *siteConfigResourceCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SiteConfigResourceCollection.NextLink == nil || len(*p.current.SiteConfigResourceCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *siteConfigResourceCollectionPager) PageResponse() SiteConfigResourceCollectionResponse {
-	return p.current
-}
-
-// SiteConfigurationSnapshotInfoCollectionPager provides iteration over SiteConfigurationSnapshotInfoCollection pages.
-type SiteConfigurationSnapshotInfoCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SiteConfigurationSnapshotInfoCollectionResponse.
-	PageResponse() SiteConfigurationSnapshotInfoCollectionResponse
-}
-
-type siteConfigurationSnapshotInfoCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type siteConfigurationSnapshotInfoCollectionHandleError func(*azcore.Response) error
-
-type siteConfigurationSnapshotInfoCollectionHandleResponse func(*azcore.Response) (SiteConfigurationSnapshotInfoCollectionResponse, error)
-
-type siteConfigurationSnapshotInfoCollectionAdvancePage func(context.Context, SiteConfigurationSnapshotInfoCollectionResponse) (*azcore.Request, error)
-
-type siteConfigurationSnapshotInfoCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester siteConfigurationSnapshotInfoCollectionCreateRequest
-	// callback for handling response errors
-	errorer siteConfigurationSnapshotInfoCollectionHandleError
-	// callback for handling the HTTP response
-	responder siteConfigurationSnapshotInfoCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer siteConfigurationSnapshotInfoCollectionAdvancePage
-	// contains the current response
-	current SiteConfigurationSnapshotInfoCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *siteConfigurationSnapshotInfoCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *siteConfigurationSnapshotInfoCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SiteConfigurationSnapshotInfoCollection.NextLink == nil || len(*p.current.SiteConfigurationSnapshotInfoCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *siteConfigurationSnapshotInfoCollectionPager) PageResponse() SiteConfigurationSnapshotInfoCollectionResponse {
-	return p.current
-}
-
-// SiteExtensionInfoCollectionPager provides iteration over SiteExtensionInfoCollection pages.
-type SiteExtensionInfoCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SiteExtensionInfoCollectionResponse.
-	PageResponse() SiteExtensionInfoCollectionResponse
-}
-
-type siteExtensionInfoCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type siteExtensionInfoCollectionHandleError func(*azcore.Response) error
-
-type siteExtensionInfoCollectionHandleResponse func(*azcore.Response) (SiteExtensionInfoCollectionResponse, error)
-
-type siteExtensionInfoCollectionAdvancePage func(context.Context, SiteExtensionInfoCollectionResponse) (*azcore.Request, error)
-
-type siteExtensionInfoCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester siteExtensionInfoCollectionCreateRequest
-	// callback for handling response errors
-	errorer siteExtensionInfoCollectionHandleError
-	// callback for handling the HTTP response
-	responder siteExtensionInfoCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer siteExtensionInfoCollectionAdvancePage
-	// contains the current response
-	current SiteExtensionInfoCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *siteExtensionInfoCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *siteExtensionInfoCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SiteExtensionInfoCollection.NextLink == nil || len(*p.current.SiteExtensionInfoCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *siteExtensionInfoCollectionPager) PageResponse() SiteExtensionInfoCollectionResponse {
-	return p.current
-}
-
-// SlotDifferenceCollectionPager provides iteration over SlotDifferenceCollection pages.
-type SlotDifferenceCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SlotDifferenceCollectionResponse.
-	PageResponse() SlotDifferenceCollectionResponse
-}
-
-type slotDifferenceCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type slotDifferenceCollectionHandleError func(*azcore.Response) error
-
-type slotDifferenceCollectionHandleResponse func(*azcore.Response) (SlotDifferenceCollectionResponse, error)
-
-type slotDifferenceCollectionAdvancePage func(context.Context, SlotDifferenceCollectionResponse) (*azcore.Request, error)
-
-type slotDifferenceCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester slotDifferenceCollectionCreateRequest
-	// callback for handling response errors
-	errorer slotDifferenceCollectionHandleError
-	// callback for handling the HTTP response
-	responder slotDifferenceCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer slotDifferenceCollectionAdvancePage
-	// contains the current response
-	current SlotDifferenceCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *slotDifferenceCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *slotDifferenceCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SlotDifferenceCollection.NextLink == nil || len(*p.current.SlotDifferenceCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *slotDifferenceCollectionPager) PageResponse() SlotDifferenceCollectionResponse {
-	return p.current
-}
-
-// SnapshotCollectionPager provides iteration over SnapshotCollection pages.
-type SnapshotCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SnapshotCollectionResponse.
-	PageResponse() SnapshotCollectionResponse
-}
-
-type snapshotCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type snapshotCollectionHandleError func(*azcore.Response) error
-
-type snapshotCollectionHandleResponse func(*azcore.Response) (SnapshotCollectionResponse, error)
-
-type snapshotCollectionAdvancePage func(context.Context, SnapshotCollectionResponse) (*azcore.Request, error)
-
-type snapshotCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester snapshotCollectionCreateRequest
-	// callback for handling response errors
-	errorer snapshotCollectionHandleError
-	// callback for handling the HTTP response
-	responder snapshotCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer snapshotCollectionAdvancePage
-	// contains the current response
-	current SnapshotCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *snapshotCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *snapshotCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SnapshotCollection.NextLink == nil || len(*p.current.SnapshotCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *snapshotCollectionPager) PageResponse() SnapshotCollectionResponse {
-	return p.current
-}
-
-// SourceControlCollectionPager provides iteration over SourceControlCollection pages.
-type SourceControlCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SourceControlCollectionResponse.
-	PageResponse() SourceControlCollectionResponse
-}
-
-type sourceControlCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type sourceControlCollectionHandleError func(*azcore.Response) error
-
-type sourceControlCollectionHandleResponse func(*azcore.Response) (SourceControlCollectionResponse, error)
-
-type sourceControlCollectionAdvancePage func(context.Context, SourceControlCollectionResponse) (*azcore.Request, error)
-
-type sourceControlCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester sourceControlCollectionCreateRequest
-	// callback for handling response errors
-	errorer sourceControlCollectionHandleError
-	// callback for handling the HTTP response
-	responder sourceControlCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer sourceControlCollectionAdvancePage
-	// contains the current response
-	current SourceControlCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *sourceControlCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *sourceControlCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SourceControlCollection.NextLink == nil || len(*p.current.SourceControlCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *sourceControlCollectionPager) PageResponse() SourceControlCollectionResponse {
-	return p.current
-}
-
-// StampCapacityCollectionPager provides iteration over StampCapacityCollection pages.
-type StampCapacityCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current StampCapacityCollectionResponse.
-	PageResponse() StampCapacityCollectionResponse
-}
-
-type stampCapacityCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type stampCapacityCollectionHandleError func(*azcore.Response) error
-
-type stampCapacityCollectionHandleResponse func(*azcore.Response) (StampCapacityCollectionResponse, error)
-
-type stampCapacityCollectionAdvancePage func(context.Context, StampCapacityCollectionResponse) (*azcore.Request, error)
-
-type stampCapacityCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester stampCapacityCollectionCreateRequest
-	// callback for handling response errors
-	errorer stampCapacityCollectionHandleError
-	// callback for handling the HTTP response
-	responder stampCapacityCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer stampCapacityCollectionAdvancePage
-	// contains the current response
-	current StampCapacityCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *stampCapacityCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *stampCapacityCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListCapacitiesPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -3791,16 +540,16 @@ func (p *stampCapacityCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listCapacitiesHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listCapacitiesHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -3809,54 +558,33 @@ func (p *stampCapacityCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *stampCapacityCollectionPager) PageResponse() StampCapacityCollectionResponse {
+func (p *appServiceEnvironmentsListCapacitiesPager) PageResponse() AppServiceEnvironmentsListCapacitiesResponse {
 	return p.current
 }
 
-// StaticSiteBuildCollectionPager provides iteration over StaticSiteBuildCollection pages.
-type StaticSiteBuildCollectionPager interface {
+type AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current StaticSiteBuildCollectionResponse.
-	PageResponse() StaticSiteBuildCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse.
+	PageResponse() AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse
 }
 
-type staticSiteBuildCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type staticSiteBuildCollectionHandleError func(*azcore.Response) error
-
-type staticSiteBuildCollectionHandleResponse func(*azcore.Response) (StaticSiteBuildCollectionResponse, error)
-
-type staticSiteBuildCollectionAdvancePage func(context.Context, StaticSiteBuildCollectionResponse) (*azcore.Request, error)
-
-type staticSiteBuildCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester staticSiteBuildCollectionCreateRequest
-	// callback for handling response errors
-	errorer staticSiteBuildCollectionHandleError
-	// callback for handling the HTTP response
-	responder staticSiteBuildCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer staticSiteBuildCollectionAdvancePage
-	// contains the current response
-	current StaticSiteBuildCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListMultiRoleMetricDefinitionsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse) (*azcore.Request, error)
 }
 
-func (p *staticSiteBuildCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListMultiRoleMetricDefinitionsPager) Err() error {
 	return p.err
 }
 
-func (p *staticSiteBuildCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListMultiRoleMetricDefinitionsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StaticSiteBuildCollection.NextLink == nil || len(*p.current.StaticSiteBuildCollection.NextLink) == 0 {
+		if p.current.ResourceMetricDefinitionCollection.NextLink == nil || len(*p.current.ResourceMetricDefinitionCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -3867,16 +595,16 @@ func (p *staticSiteBuildCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listMultiRoleMetricDefinitionsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listMultiRoleMetricDefinitionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -3885,54 +613,33 @@ func (p *staticSiteBuildCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *staticSiteBuildCollectionPager) PageResponse() StaticSiteBuildCollectionResponse {
+func (p *appServiceEnvironmentsListMultiRoleMetricDefinitionsPager) PageResponse() AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse {
 	return p.current
 }
 
-// StaticSiteCollectionPager provides iteration over StaticSiteCollection pages.
-type StaticSiteCollectionPager interface {
+type AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current StaticSiteCollectionResponse.
-	PageResponse() StaticSiteCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse.
+	PageResponse() AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse
 }
 
-type staticSiteCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type staticSiteCollectionHandleError func(*azcore.Response) error
-
-type staticSiteCollectionHandleResponse func(*azcore.Response) (StaticSiteCollectionResponse, error)
-
-type staticSiteCollectionAdvancePage func(context.Context, StaticSiteCollectionResponse) (*azcore.Request, error)
-
-type staticSiteCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester staticSiteCollectionCreateRequest
-	// callback for handling response errors
-	errorer staticSiteCollectionHandleError
-	// callback for handling the HTTP response
-	responder staticSiteCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer staticSiteCollectionAdvancePage
-	// contains the current response
-	current StaticSiteCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse) (*azcore.Request, error)
 }
 
-func (p *staticSiteCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager) Err() error {
 	return p.err
 }
 
-func (p *staticSiteCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StaticSiteCollection.NextLink == nil || len(*p.current.StaticSiteCollection.NextLink) == 0 {
+		if p.current.ResourceMetricDefinitionCollection.NextLink == nil || len(*p.current.ResourceMetricDefinitionCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -3943,16 +650,16 @@ func (p *staticSiteCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listMultiRolePoolInstanceMetricDefinitionsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listMultiRolePoolInstanceMetricDefinitionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -3961,54 +668,33 @@ func (p *staticSiteCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *staticSiteCollectionPager) PageResponse() StaticSiteCollectionResponse {
+func (p *appServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager) PageResponse() AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse {
 	return p.current
 }
 
-// StaticSiteCustomDomainOverviewCollectionPager provides iteration over StaticSiteCustomDomainOverviewCollection pages.
-type StaticSiteCustomDomainOverviewCollectionPager interface {
+type AppServiceEnvironmentsListMultiRolePoolSKUsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current StaticSiteCustomDomainOverviewCollectionResponse.
-	PageResponse() StaticSiteCustomDomainOverviewCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListMultiRolePoolSKUsResponse.
+	PageResponse() AppServiceEnvironmentsListMultiRolePoolSKUsResponse
 }
 
-type staticSiteCustomDomainOverviewCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type staticSiteCustomDomainOverviewCollectionHandleError func(*azcore.Response) error
-
-type staticSiteCustomDomainOverviewCollectionHandleResponse func(*azcore.Response) (StaticSiteCustomDomainOverviewCollectionResponse, error)
-
-type staticSiteCustomDomainOverviewCollectionAdvancePage func(context.Context, StaticSiteCustomDomainOverviewCollectionResponse) (*azcore.Request, error)
-
-type staticSiteCustomDomainOverviewCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester staticSiteCustomDomainOverviewCollectionCreateRequest
-	// callback for handling response errors
-	errorer staticSiteCustomDomainOverviewCollectionHandleError
-	// callback for handling the HTTP response
-	responder staticSiteCustomDomainOverviewCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer staticSiteCustomDomainOverviewCollectionAdvancePage
-	// contains the current response
-	current StaticSiteCustomDomainOverviewCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListMultiRolePoolSKUsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListMultiRolePoolSKUsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListMultiRolePoolSKUsResponse) (*azcore.Request, error)
 }
 
-func (p *staticSiteCustomDomainOverviewCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListMultiRolePoolSKUsPager) Err() error {
 	return p.err
 }
 
-func (p *staticSiteCustomDomainOverviewCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListMultiRolePoolSKUsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StaticSiteCustomDomainOverviewCollection.NextLink == nil || len(*p.current.StaticSiteCustomDomainOverviewCollection.NextLink) == 0 {
+		if p.current.SKUInfoCollection.NextLink == nil || len(*p.current.SKUInfoCollection.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -4019,92 +705,16 @@ func (p *staticSiteCustomDomainOverviewCollectionPager) NextPage(ctx context.Con
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listMultiRolePoolSKUsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *staticSiteCustomDomainOverviewCollectionPager) PageResponse() StaticSiteCustomDomainOverviewCollectionResponse {
-	return p.current
-}
-
-// StaticSiteFunctionOverviewCollectionPager provides iteration over StaticSiteFunctionOverviewCollection pages.
-type StaticSiteFunctionOverviewCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current StaticSiteFunctionOverviewCollectionResponse.
-	PageResponse() StaticSiteFunctionOverviewCollectionResponse
-}
-
-type staticSiteFunctionOverviewCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type staticSiteFunctionOverviewCollectionHandleError func(*azcore.Response) error
-
-type staticSiteFunctionOverviewCollectionHandleResponse func(*azcore.Response) (StaticSiteFunctionOverviewCollectionResponse, error)
-
-type staticSiteFunctionOverviewCollectionAdvancePage func(context.Context, StaticSiteFunctionOverviewCollectionResponse) (*azcore.Request, error)
-
-type staticSiteFunctionOverviewCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester staticSiteFunctionOverviewCollectionCreateRequest
-	// callback for handling response errors
-	errorer staticSiteFunctionOverviewCollectionHandleError
-	// callback for handling the HTTP response
-	responder staticSiteFunctionOverviewCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer staticSiteFunctionOverviewCollectionAdvancePage
-	// contains the current response
-	current StaticSiteFunctionOverviewCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *staticSiteFunctionOverviewCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *staticSiteFunctionOverviewCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StaticSiteFunctionOverviewCollection.NextLink == nil || len(*p.current.StaticSiteFunctionOverviewCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
+	result, err := p.client.listMultiRolePoolSKUsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -4113,893 +723,29 @@ func (p *staticSiteFunctionOverviewCollectionPager) NextPage(ctx context.Context
 	return true
 }
 
-func (p *staticSiteFunctionOverviewCollectionPager) PageResponse() StaticSiteFunctionOverviewCollectionResponse {
+func (p *appServiceEnvironmentsListMultiRolePoolSKUsPager) PageResponse() AppServiceEnvironmentsListMultiRolePoolSKUsResponse {
 	return p.current
 }
 
-// StaticSiteUserCollectionPager provides iteration over StaticSiteUserCollection pages.
-type StaticSiteUserCollectionPager interface {
+type AppServiceEnvironmentsListMultiRolePoolsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current StaticSiteUserCollectionResponse.
-	PageResponse() StaticSiteUserCollectionResponse
+	// PageResponse returns the current AppServiceEnvironmentsListMultiRolePoolsResponse.
+	PageResponse() AppServiceEnvironmentsListMultiRolePoolsResponse
 }
 
-type staticSiteUserCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type staticSiteUserCollectionHandleError func(*azcore.Response) error
-
-type staticSiteUserCollectionHandleResponse func(*azcore.Response) (StaticSiteUserCollectionResponse, error)
-
-type staticSiteUserCollectionAdvancePage func(context.Context, StaticSiteUserCollectionResponse) (*azcore.Request, error)
-
-type staticSiteUserCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester staticSiteUserCollectionCreateRequest
-	// callback for handling response errors
-	errorer staticSiteUserCollectionHandleError
-	// callback for handling the HTTP response
-	responder staticSiteUserCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer staticSiteUserCollectionAdvancePage
-	// contains the current response
-	current StaticSiteUserCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type appServiceEnvironmentsListMultiRolePoolsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListMultiRolePoolsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListMultiRolePoolsResponse) (*azcore.Request, error)
 }
 
-func (p *staticSiteUserCollectionPager) Err() error {
+func (p *appServiceEnvironmentsListMultiRolePoolsPager) Err() error {
 	return p.err
 }
 
-func (p *staticSiteUserCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StaticSiteUserCollection.NextLink == nil || len(*p.current.StaticSiteUserCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *staticSiteUserCollectionPager) PageResponse() StaticSiteUserCollectionResponse {
-	return p.current
-}
-
-// StaticSiteUserProvidedFunctionAppsCollectionPager provides iteration over StaticSiteUserProvidedFunctionAppsCollection pages.
-type StaticSiteUserProvidedFunctionAppsCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current StaticSiteUserProvidedFunctionAppsCollectionResponse.
-	PageResponse() StaticSiteUserProvidedFunctionAppsCollectionResponse
-}
-
-type staticSiteUserProvidedFunctionAppsCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type staticSiteUserProvidedFunctionAppsCollectionHandleError func(*azcore.Response) error
-
-type staticSiteUserProvidedFunctionAppsCollectionHandleResponse func(*azcore.Response) (StaticSiteUserProvidedFunctionAppsCollectionResponse, error)
-
-type staticSiteUserProvidedFunctionAppsCollectionAdvancePage func(context.Context, StaticSiteUserProvidedFunctionAppsCollectionResponse) (*azcore.Request, error)
-
-type staticSiteUserProvidedFunctionAppsCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester staticSiteUserProvidedFunctionAppsCollectionCreateRequest
-	// callback for handling response errors
-	errorer staticSiteUserProvidedFunctionAppsCollectionHandleError
-	// callback for handling the HTTP response
-	responder staticSiteUserProvidedFunctionAppsCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer staticSiteUserProvidedFunctionAppsCollectionAdvancePage
-	// contains the current response
-	current StaticSiteUserProvidedFunctionAppsCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *staticSiteUserProvidedFunctionAppsCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *staticSiteUserProvidedFunctionAppsCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StaticSiteUserProvidedFunctionAppsCollection.NextLink == nil || len(*p.current.StaticSiteUserProvidedFunctionAppsCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *staticSiteUserProvidedFunctionAppsCollectionPager) PageResponse() StaticSiteUserProvidedFunctionAppsCollectionResponse {
-	return p.current
-}
-
-// TldLegalAgreementCollectionPager provides iteration over TldLegalAgreementCollection pages.
-type TldLegalAgreementCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current TldLegalAgreementCollectionResponse.
-	PageResponse() TldLegalAgreementCollectionResponse
-}
-
-type tldLegalAgreementCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type tldLegalAgreementCollectionHandleError func(*azcore.Response) error
-
-type tldLegalAgreementCollectionHandleResponse func(*azcore.Response) (TldLegalAgreementCollectionResponse, error)
-
-type tldLegalAgreementCollectionAdvancePage func(context.Context, TldLegalAgreementCollectionResponse) (*azcore.Request, error)
-
-type tldLegalAgreementCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester tldLegalAgreementCollectionCreateRequest
-	// callback for handling response errors
-	errorer tldLegalAgreementCollectionHandleError
-	// callback for handling the HTTP response
-	responder tldLegalAgreementCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer tldLegalAgreementCollectionAdvancePage
-	// contains the current response
-	current TldLegalAgreementCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *tldLegalAgreementCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *tldLegalAgreementCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.TldLegalAgreementCollection.NextLink == nil || len(*p.current.TldLegalAgreementCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *tldLegalAgreementCollectionPager) PageResponse() TldLegalAgreementCollectionResponse {
-	return p.current
-}
-
-// TopLevelDomainCollectionPager provides iteration over TopLevelDomainCollection pages.
-type TopLevelDomainCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current TopLevelDomainCollectionResponse.
-	PageResponse() TopLevelDomainCollectionResponse
-}
-
-type topLevelDomainCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type topLevelDomainCollectionHandleError func(*azcore.Response) error
-
-type topLevelDomainCollectionHandleResponse func(*azcore.Response) (TopLevelDomainCollectionResponse, error)
-
-type topLevelDomainCollectionAdvancePage func(context.Context, TopLevelDomainCollectionResponse) (*azcore.Request, error)
-
-type topLevelDomainCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester topLevelDomainCollectionCreateRequest
-	// callback for handling response errors
-	errorer topLevelDomainCollectionHandleError
-	// callback for handling the HTTP response
-	responder topLevelDomainCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer topLevelDomainCollectionAdvancePage
-	// contains the current response
-	current TopLevelDomainCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *topLevelDomainCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *topLevelDomainCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.TopLevelDomainCollection.NextLink == nil || len(*p.current.TopLevelDomainCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *topLevelDomainCollectionPager) PageResponse() TopLevelDomainCollectionResponse {
-	return p.current
-}
-
-// TriggeredJobHistoryCollectionPager provides iteration over TriggeredJobHistoryCollection pages.
-type TriggeredJobHistoryCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current TriggeredJobHistoryCollectionResponse.
-	PageResponse() TriggeredJobHistoryCollectionResponse
-}
-
-type triggeredJobHistoryCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type triggeredJobHistoryCollectionHandleError func(*azcore.Response) error
-
-type triggeredJobHistoryCollectionHandleResponse func(*azcore.Response) (TriggeredJobHistoryCollectionResponse, error)
-
-type triggeredJobHistoryCollectionAdvancePage func(context.Context, TriggeredJobHistoryCollectionResponse) (*azcore.Request, error)
-
-type triggeredJobHistoryCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester triggeredJobHistoryCollectionCreateRequest
-	// callback for handling response errors
-	errorer triggeredJobHistoryCollectionHandleError
-	// callback for handling the HTTP response
-	responder triggeredJobHistoryCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer triggeredJobHistoryCollectionAdvancePage
-	// contains the current response
-	current TriggeredJobHistoryCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *triggeredJobHistoryCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *triggeredJobHistoryCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.TriggeredJobHistoryCollection.NextLink == nil || len(*p.current.TriggeredJobHistoryCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *triggeredJobHistoryCollectionPager) PageResponse() TriggeredJobHistoryCollectionResponse {
-	return p.current
-}
-
-// TriggeredWebJobCollectionPager provides iteration over TriggeredWebJobCollection pages.
-type TriggeredWebJobCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current TriggeredWebJobCollectionResponse.
-	PageResponse() TriggeredWebJobCollectionResponse
-}
-
-type triggeredWebJobCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type triggeredWebJobCollectionHandleError func(*azcore.Response) error
-
-type triggeredWebJobCollectionHandleResponse func(*azcore.Response) (TriggeredWebJobCollectionResponse, error)
-
-type triggeredWebJobCollectionAdvancePage func(context.Context, TriggeredWebJobCollectionResponse) (*azcore.Request, error)
-
-type triggeredWebJobCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester triggeredWebJobCollectionCreateRequest
-	// callback for handling response errors
-	errorer triggeredWebJobCollectionHandleError
-	// callback for handling the HTTP response
-	responder triggeredWebJobCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer triggeredWebJobCollectionAdvancePage
-	// contains the current response
-	current TriggeredWebJobCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *triggeredWebJobCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *triggeredWebJobCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.TriggeredWebJobCollection.NextLink == nil || len(*p.current.TriggeredWebJobCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *triggeredWebJobCollectionPager) PageResponse() TriggeredWebJobCollectionResponse {
-	return p.current
-}
-
-// UsageCollectionPager provides iteration over UsageCollection pages.
-type UsageCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current UsageCollectionResponse.
-	PageResponse() UsageCollectionResponse
-}
-
-type usageCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type usageCollectionHandleError func(*azcore.Response) error
-
-type usageCollectionHandleResponse func(*azcore.Response) (UsageCollectionResponse, error)
-
-type usageCollectionAdvancePage func(context.Context, UsageCollectionResponse) (*azcore.Request, error)
-
-type usageCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester usageCollectionCreateRequest
-	// callback for handling response errors
-	errorer usageCollectionHandleError
-	// callback for handling the HTTP response
-	responder usageCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer usageCollectionAdvancePage
-	// contains the current response
-	current UsageCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *usageCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *usageCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.UsageCollection.NextLink == nil || len(*p.current.UsageCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *usageCollectionPager) PageResponse() UsageCollectionResponse {
-	return p.current
-}
-
-// WebAppCollectionPager provides iteration over WebAppCollection pages.
-type WebAppCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current WebAppCollectionResponse.
-	PageResponse() WebAppCollectionResponse
-}
-
-type webAppCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type webAppCollectionHandleError func(*azcore.Response) error
-
-type webAppCollectionHandleResponse func(*azcore.Response) (WebAppCollectionResponse, error)
-
-type webAppCollectionAdvancePage func(context.Context, WebAppCollectionResponse) (*azcore.Request, error)
-
-type webAppCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester webAppCollectionCreateRequest
-	// callback for handling response errors
-	errorer webAppCollectionHandleError
-	// callback for handling the HTTP response
-	responder webAppCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer webAppCollectionAdvancePage
-	// contains the current response
-	current WebAppCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-	// previous response from the endpoint (LRO case)
-	resp *azcore.Response
-}
-
-func (p *webAppCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *webAppCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else if p.resp == nil {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp := p.resp
-	if resp == nil {
-		resp, err = p.pipeline.Do(req)
-	} else {
-		p.resp = nil
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *webAppCollectionPager) PageResponse() WebAppCollectionResponse {
-	return p.current
-}
-
-// WebAppInstanceStatusCollectionPager provides iteration over WebAppInstanceStatusCollection pages.
-type WebAppInstanceStatusCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current WebAppInstanceStatusCollectionResponse.
-	PageResponse() WebAppInstanceStatusCollectionResponse
-}
-
-type webAppInstanceStatusCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type webAppInstanceStatusCollectionHandleError func(*azcore.Response) error
-
-type webAppInstanceStatusCollectionHandleResponse func(*azcore.Response) (WebAppInstanceStatusCollectionResponse, error)
-
-type webAppInstanceStatusCollectionAdvancePage func(context.Context, WebAppInstanceStatusCollectionResponse) (*azcore.Request, error)
-
-type webAppInstanceStatusCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester webAppInstanceStatusCollectionCreateRequest
-	// callback for handling response errors
-	errorer webAppInstanceStatusCollectionHandleError
-	// callback for handling the HTTP response
-	responder webAppInstanceStatusCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer webAppInstanceStatusCollectionAdvancePage
-	// contains the current response
-	current WebAppInstanceStatusCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *webAppInstanceStatusCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *webAppInstanceStatusCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.WebAppInstanceStatusCollection.NextLink == nil || len(*p.current.WebAppInstanceStatusCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *webAppInstanceStatusCollectionPager) PageResponse() WebAppInstanceStatusCollectionResponse {
-	return p.current
-}
-
-// WebAppStackCollectionPager provides iteration over WebAppStackCollection pages.
-type WebAppStackCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current WebAppStackCollectionResponse.
-	PageResponse() WebAppStackCollectionResponse
-}
-
-type webAppStackCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type webAppStackCollectionHandleError func(*azcore.Response) error
-
-type webAppStackCollectionHandleResponse func(*azcore.Response) (WebAppStackCollectionResponse, error)
-
-type webAppStackCollectionAdvancePage func(context.Context, WebAppStackCollectionResponse) (*azcore.Request, error)
-
-type webAppStackCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester webAppStackCollectionCreateRequest
-	// callback for handling response errors
-	errorer webAppStackCollectionHandleError
-	// callback for handling the HTTP response
-	responder webAppStackCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer webAppStackCollectionAdvancePage
-	// contains the current response
-	current WebAppStackCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *webAppStackCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *webAppStackCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.WebAppStackCollection.NextLink == nil || len(*p.current.WebAppStackCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *webAppStackCollectionPager) PageResponse() WebAppStackCollectionResponse {
-	return p.current
-}
-
-// WebJobCollectionPager provides iteration over WebJobCollection pages.
-type WebJobCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current WebJobCollectionResponse.
-	PageResponse() WebJobCollectionResponse
-}
-
-type webJobCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type webJobCollectionHandleError func(*azcore.Response) error
-
-type webJobCollectionHandleResponse func(*azcore.Response) (WebJobCollectionResponse, error)
-
-type webJobCollectionAdvancePage func(context.Context, WebJobCollectionResponse) (*azcore.Request, error)
-
-type webJobCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester webJobCollectionCreateRequest
-	// callback for handling response errors
-	errorer webJobCollectionHandleError
-	// callback for handling the HTTP response
-	responder webJobCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer webJobCollectionAdvancePage
-	// contains the current response
-	current WebJobCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *webJobCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *webJobCollectionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.WebJobCollection.NextLink == nil || len(*p.current.WebJobCollection.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *webJobCollectionPager) PageResponse() WebJobCollectionResponse {
-	return p.current
-}
-
-// WorkerPoolCollectionPager provides iteration over WorkerPoolCollection pages.
-type WorkerPoolCollectionPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current WorkerPoolCollectionResponse.
-	PageResponse() WorkerPoolCollectionResponse
-}
-
-type workerPoolCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type workerPoolCollectionHandleError func(*azcore.Response) error
-
-type workerPoolCollectionHandleResponse func(*azcore.Response) (WorkerPoolCollectionResponse, error)
-
-type workerPoolCollectionAdvancePage func(context.Context, WorkerPoolCollectionResponse) (*azcore.Request, error)
-
-type workerPoolCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester workerPoolCollectionCreateRequest
-	// callback for handling response errors
-	errorer workerPoolCollectionHandleError
-	// callback for handling the HTTP response
-	responder workerPoolCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer workerPoolCollectionAdvancePage
-	// contains the current response
-	current WorkerPoolCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *workerPoolCollectionPager) Err() error {
-	return p.err
-}
-
-func (p *workerPoolCollectionPager) NextPage(ctx context.Context) bool {
+func (p *appServiceEnvironmentsListMultiRolePoolsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -5014,16 +760,16 @@ func (p *workerPoolCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listMultiRolePoolsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listMultiRolePoolsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -5032,6 +778,7427 @@ func (p *workerPoolCollectionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *workerPoolCollectionPager) PageResponse() WorkerPoolCollectionResponse {
+func (p *appServiceEnvironmentsListMultiRolePoolsPager) PageResponse() AppServiceEnvironmentsListMultiRolePoolsResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListMultiRoleUsagesPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListMultiRoleUsagesResponse.
+	PageResponse() AppServiceEnvironmentsListMultiRoleUsagesResponse
+}
+
+type appServiceEnvironmentsListMultiRoleUsagesPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListMultiRoleUsagesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListMultiRoleUsagesResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListMultiRoleUsagesPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListMultiRoleUsagesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.UsageCollection.NextLink == nil || len(*p.current.UsageCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listMultiRoleUsagesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listMultiRoleUsagesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListMultiRoleUsagesPager) PageResponse() AppServiceEnvironmentsListMultiRoleUsagesResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListResponse.
+	PageResponse() AppServiceEnvironmentsListResponse
+}
+
+type appServiceEnvironmentsListPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.AppServiceEnvironmentCollection.NextLink == nil || len(*p.current.AppServiceEnvironmentCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListPager) PageResponse() AppServiceEnvironmentsListResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListUsagesPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListUsagesResponse.
+	PageResponse() AppServiceEnvironmentsListUsagesResponse
+}
+
+type appServiceEnvironmentsListUsagesPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListUsagesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListUsagesResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListUsagesPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListUsagesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmUsageQuotaCollection.NextLink == nil || len(*p.current.CsmUsageQuotaCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listUsagesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listUsagesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListUsagesPager) PageResponse() AppServiceEnvironmentsListUsagesResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListWebAppsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListWebAppsResponse.
+	PageResponse() AppServiceEnvironmentsListWebAppsResponse
+}
+
+type appServiceEnvironmentsListWebAppsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListWebAppsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListWebAppsResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListWebAppsPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListWebAppsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebAppsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebAppsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListWebAppsPager) PageResponse() AppServiceEnvironmentsListWebAppsResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse.
+	PageResponse() AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse
+}
+
+type appServiceEnvironmentsListWebWorkerMetricDefinitionsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListWebWorkerMetricDefinitionsPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListWebWorkerMetricDefinitionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceMetricDefinitionCollection.NextLink == nil || len(*p.current.ResourceMetricDefinitionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebWorkerMetricDefinitionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebWorkerMetricDefinitionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListWebWorkerMetricDefinitionsPager) PageResponse() AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListWebWorkerUsagesPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListWebWorkerUsagesResponse.
+	PageResponse() AppServiceEnvironmentsListWebWorkerUsagesResponse
+}
+
+type appServiceEnvironmentsListWebWorkerUsagesPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListWebWorkerUsagesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListWebWorkerUsagesResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListWebWorkerUsagesPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListWebWorkerUsagesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.UsageCollection.NextLink == nil || len(*p.current.UsageCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebWorkerUsagesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebWorkerUsagesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListWebWorkerUsagesPager) PageResponse() AppServiceEnvironmentsListWebWorkerUsagesResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse.
+	PageResponse() AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse
+}
+
+type appServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceMetricDefinitionCollection.NextLink == nil || len(*p.current.ResourceMetricDefinitionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWorkerPoolInstanceMetricDefinitionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWorkerPoolInstanceMetricDefinitionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager) PageResponse() AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListWorkerPoolSKUsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListWorkerPoolSKUsResponse.
+	PageResponse() AppServiceEnvironmentsListWorkerPoolSKUsResponse
+}
+
+type appServiceEnvironmentsListWorkerPoolSKUsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListWorkerPoolSKUsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListWorkerPoolSKUsResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolSKUsPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolSKUsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SKUInfoCollection.NextLink == nil || len(*p.current.SKUInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWorkerPoolSKUsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWorkerPoolSKUsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolSKUsPager) PageResponse() AppServiceEnvironmentsListWorkerPoolSKUsResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsListWorkerPoolsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsListWorkerPoolsResponse.
+	PageResponse() AppServiceEnvironmentsListWorkerPoolsResponse
+}
+
+type appServiceEnvironmentsListWorkerPoolsPager struct {
+	client    *AppServiceEnvironmentsClient
+	current   AppServiceEnvironmentsListWorkerPoolsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServiceEnvironmentsListWorkerPoolsResponse) (*azcore.Request, error)
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolsPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WorkerPoolCollection.NextLink == nil || len(*p.current.WorkerPoolCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWorkerPoolsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWorkerPoolsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsListWorkerPoolsPager) PageResponse() AppServiceEnvironmentsListWorkerPoolsResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsResumePager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsResumeResponse.
+	PageResponse() AppServiceEnvironmentsResumeResponse
+}
+
+type appServiceEnvironmentsResumePager struct {
+	client  *AppServiceEnvironmentsClient
+	current AppServiceEnvironmentsResumeResponse
+	err     error
+	second  bool
+}
+
+func (p *appServiceEnvironmentsResumePager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsResumePager) NextPage(ctx context.Context) bool {
+	if !p.second {
+		p.second = true
+		return true
+	} else if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+	}
+	req, err := azcore.NewRequest(ctx, http.MethodGet, *p.current.WebAppCollection.NextLink)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		p.err = p.client.resumeHandleError(resp)
+		return false
+	}
+	result, err := p.client.resumeHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsResumePager) PageResponse() AppServiceEnvironmentsResumeResponse {
+	return p.current
+}
+
+type AppServiceEnvironmentsSuspendPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServiceEnvironmentsSuspendResponse.
+	PageResponse() AppServiceEnvironmentsSuspendResponse
+}
+
+type appServiceEnvironmentsSuspendPager struct {
+	client  *AppServiceEnvironmentsClient
+	current AppServiceEnvironmentsSuspendResponse
+	err     error
+	second  bool
+}
+
+func (p *appServiceEnvironmentsSuspendPager) Err() error {
+	return p.err
+}
+
+func (p *appServiceEnvironmentsSuspendPager) NextPage(ctx context.Context) bool {
+	if !p.second {
+		p.second = true
+		return true
+	} else if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+	}
+	req, err := azcore.NewRequest(ctx, http.MethodGet, *p.current.WebAppCollection.NextLink)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		p.err = p.client.suspendHandleError(resp)
+		return false
+	}
+	result, err := p.client.suspendHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServiceEnvironmentsSuspendPager) PageResponse() AppServiceEnvironmentsSuspendResponse {
+	return p.current
+}
+
+type AppServicePlansListByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServicePlansListByResourceGroupResponse.
+	PageResponse() AppServicePlansListByResourceGroupResponse
+}
+
+type appServicePlansListByResourceGroupPager struct {
+	client    *AppServicePlansClient
+	current   AppServicePlansListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServicePlansListByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *appServicePlansListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *appServicePlansListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.AppServicePlanCollection.NextLink == nil || len(*p.current.AppServicePlanCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServicePlansListByResourceGroupPager) PageResponse() AppServicePlansListByResourceGroupResponse {
+	return p.current
+}
+
+type AppServicePlansListHybridConnectionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServicePlansListHybridConnectionsResponse.
+	PageResponse() AppServicePlansListHybridConnectionsResponse
+}
+
+type appServicePlansListHybridConnectionsPager struct {
+	client    *AppServicePlansClient
+	current   AppServicePlansListHybridConnectionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServicePlansListHybridConnectionsResponse) (*azcore.Request, error)
+}
+
+func (p *appServicePlansListHybridConnectionsPager) Err() error {
+	return p.err
+}
+
+func (p *appServicePlansListHybridConnectionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.HybridConnectionCollection.NextLink == nil || len(*p.current.HybridConnectionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHybridConnectionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHybridConnectionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServicePlansListHybridConnectionsPager) PageResponse() AppServicePlansListHybridConnectionsResponse {
+	return p.current
+}
+
+type AppServicePlansListPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServicePlansListResponse.
+	PageResponse() AppServicePlansListResponse
+}
+
+type appServicePlansListPager struct {
+	client    *AppServicePlansClient
+	current   AppServicePlansListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServicePlansListResponse) (*azcore.Request, error)
+}
+
+func (p *appServicePlansListPager) Err() error {
+	return p.err
+}
+
+func (p *appServicePlansListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.AppServicePlanCollection.NextLink == nil || len(*p.current.AppServicePlanCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServicePlansListPager) PageResponse() AppServicePlansListResponse {
+	return p.current
+}
+
+type AppServicePlansListUsagesPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServicePlansListUsagesResponse.
+	PageResponse() AppServicePlansListUsagesResponse
+}
+
+type appServicePlansListUsagesPager struct {
+	client    *AppServicePlansClient
+	current   AppServicePlansListUsagesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServicePlansListUsagesResponse) (*azcore.Request, error)
+}
+
+func (p *appServicePlansListUsagesPager) Err() error {
+	return p.err
+}
+
+func (p *appServicePlansListUsagesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmUsageQuotaCollection.NextLink == nil || len(*p.current.CsmUsageQuotaCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listUsagesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listUsagesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServicePlansListUsagesPager) PageResponse() AppServicePlansListUsagesResponse {
+	return p.current
+}
+
+type AppServicePlansListWebAppsByHybridConnectionPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServicePlansListWebAppsByHybridConnectionResponse.
+	PageResponse() AppServicePlansListWebAppsByHybridConnectionResponse
+}
+
+type appServicePlansListWebAppsByHybridConnectionPager struct {
+	client    *AppServicePlansClient
+	current   AppServicePlansListWebAppsByHybridConnectionResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServicePlansListWebAppsByHybridConnectionResponse) (*azcore.Request, error)
+}
+
+func (p *appServicePlansListWebAppsByHybridConnectionPager) Err() error {
+	return p.err
+}
+
+func (p *appServicePlansListWebAppsByHybridConnectionPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceCollection.NextLink == nil || len(*p.current.ResourceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebAppsByHybridConnectionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebAppsByHybridConnectionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServicePlansListWebAppsByHybridConnectionPager) PageResponse() AppServicePlansListWebAppsByHybridConnectionResponse {
+	return p.current
+}
+
+type AppServicePlansListWebAppsPager interface {
+	azcore.Pager
+	// PageResponse returns the current AppServicePlansListWebAppsResponse.
+	PageResponse() AppServicePlansListWebAppsResponse
+}
+
+type appServicePlansListWebAppsPager struct {
+	client    *AppServicePlansClient
+	current   AppServicePlansListWebAppsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AppServicePlansListWebAppsResponse) (*azcore.Request, error)
+}
+
+func (p *appServicePlansListWebAppsPager) Err() error {
+	return p.err
+}
+
+func (p *appServicePlansListWebAppsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebAppsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebAppsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *appServicePlansListWebAppsPager) PageResponse() AppServicePlansListWebAppsResponse {
+	return p.current
+}
+
+type CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager interface {
+	azcore.Pager
+	// PageResponse returns the current CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse.
+	PageResponse() CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse
+}
+
+type certificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager struct {
+	client    *CertificateOrdersDiagnosticsClient
+	current   CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse) (*azcore.Request, error)
+}
+
+func (p *certificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager) Err() error {
+	return p.err
+}
+
+func (p *certificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DetectorResponseCollection.NextLink == nil || len(*p.current.DetectorResponseCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listAppServiceCertificateOrderDetectorResponseHandleError(resp)
+		return false
+	}
+	result, err := p.client.listAppServiceCertificateOrderDetectorResponseHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *certificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager) PageResponse() CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse {
+	return p.current
+}
+
+type CertificateRegistrationProviderListOperationsPager interface {
+	azcore.Pager
+	// PageResponse returns the current CertificateRegistrationProviderListOperationsResponse.
+	PageResponse() CertificateRegistrationProviderListOperationsResponse
+}
+
+type certificateRegistrationProviderListOperationsPager struct {
+	client    *CertificateRegistrationProviderClient
+	current   CertificateRegistrationProviderListOperationsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, CertificateRegistrationProviderListOperationsResponse) (*azcore.Request, error)
+}
+
+func (p *certificateRegistrationProviderListOperationsPager) Err() error {
+	return p.err
+}
+
+func (p *certificateRegistrationProviderListOperationsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmOperationCollection.NextLink == nil || len(*p.current.CsmOperationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listOperationsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listOperationsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *certificateRegistrationProviderListOperationsPager) PageResponse() CertificateRegistrationProviderListOperationsResponse {
+	return p.current
+}
+
+type CertificatesListByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current CertificatesListByResourceGroupResponse.
+	PageResponse() CertificatesListByResourceGroupResponse
+}
+
+type certificatesListByResourceGroupPager struct {
+	client    *CertificatesClient
+	current   CertificatesListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, CertificatesListByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *certificatesListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *certificatesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CertificateCollection.NextLink == nil || len(*p.current.CertificateCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *certificatesListByResourceGroupPager) PageResponse() CertificatesListByResourceGroupResponse {
+	return p.current
+}
+
+type CertificatesListPager interface {
+	azcore.Pager
+	// PageResponse returns the current CertificatesListResponse.
+	PageResponse() CertificatesListResponse
+}
+
+type certificatesListPager struct {
+	client    *CertificatesClient
+	current   CertificatesListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, CertificatesListResponse) (*azcore.Request, error)
+}
+
+func (p *certificatesListPager) Err() error {
+	return p.err
+}
+
+func (p *certificatesListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CertificateCollection.NextLink == nil || len(*p.current.CertificateCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *certificatesListPager) PageResponse() CertificatesListResponse {
+	return p.current
+}
+
+type DeletedWebAppsListByLocationPager interface {
+	azcore.Pager
+	// PageResponse returns the current DeletedWebAppsListByLocationResponse.
+	PageResponse() DeletedWebAppsListByLocationResponse
+}
+
+type deletedWebAppsListByLocationPager struct {
+	client    *DeletedWebAppsClient
+	current   DeletedWebAppsListByLocationResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DeletedWebAppsListByLocationResponse) (*azcore.Request, error)
+}
+
+func (p *deletedWebAppsListByLocationPager) Err() error {
+	return p.err
+}
+
+func (p *deletedWebAppsListByLocationPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeletedWebAppCollection.NextLink == nil || len(*p.current.DeletedWebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByLocationHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByLocationHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *deletedWebAppsListByLocationPager) PageResponse() DeletedWebAppsListByLocationResponse {
+	return p.current
+}
+
+type DeletedWebAppsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current DeletedWebAppsListResponse.
+	PageResponse() DeletedWebAppsListResponse
+}
+
+type deletedWebAppsListPager struct {
+	client    *DeletedWebAppsClient
+	current   DeletedWebAppsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DeletedWebAppsListResponse) (*azcore.Request, error)
+}
+
+func (p *deletedWebAppsListPager) Err() error {
+	return p.err
+}
+
+func (p *deletedWebAppsListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeletedWebAppCollection.NextLink == nil || len(*p.current.DeletedWebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *deletedWebAppsListPager) PageResponse() DeletedWebAppsListResponse {
+	return p.current
+}
+
+type DiagnosticsListHostingEnvironmentDetectorResponsesPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListHostingEnvironmentDetectorResponsesResponse.
+	PageResponse() DiagnosticsListHostingEnvironmentDetectorResponsesResponse
+}
+
+type diagnosticsListHostingEnvironmentDetectorResponsesPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListHostingEnvironmentDetectorResponsesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListHostingEnvironmentDetectorResponsesResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListHostingEnvironmentDetectorResponsesPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListHostingEnvironmentDetectorResponsesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DetectorResponseCollection.NextLink == nil || len(*p.current.DetectorResponseCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHostingEnvironmentDetectorResponsesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHostingEnvironmentDetectorResponsesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListHostingEnvironmentDetectorResponsesPager) PageResponse() DiagnosticsListHostingEnvironmentDetectorResponsesResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteAnalysesPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteAnalysesResponse.
+	PageResponse() DiagnosticsListSiteAnalysesResponse
+}
+
+type diagnosticsListSiteAnalysesPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteAnalysesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteAnalysesResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteAnalysesPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteAnalysesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiagnosticAnalysisCollection.NextLink == nil || len(*p.current.DiagnosticAnalysisCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteAnalysesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteAnalysesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteAnalysesPager) PageResponse() DiagnosticsListSiteAnalysesResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteAnalysesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteAnalysesSlotResponse.
+	PageResponse() DiagnosticsListSiteAnalysesSlotResponse
+}
+
+type diagnosticsListSiteAnalysesSlotPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteAnalysesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteAnalysesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteAnalysesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteAnalysesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiagnosticAnalysisCollection.NextLink == nil || len(*p.current.DiagnosticAnalysisCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteAnalysesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteAnalysesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteAnalysesSlotPager) PageResponse() DiagnosticsListSiteAnalysesSlotResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteDetectorResponsesPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteDetectorResponsesResponse.
+	PageResponse() DiagnosticsListSiteDetectorResponsesResponse
+}
+
+type diagnosticsListSiteDetectorResponsesPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteDetectorResponsesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteDetectorResponsesResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteDetectorResponsesPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteDetectorResponsesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DetectorResponseCollection.NextLink == nil || len(*p.current.DetectorResponseCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteDetectorResponsesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteDetectorResponsesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteDetectorResponsesPager) PageResponse() DiagnosticsListSiteDetectorResponsesResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteDetectorResponsesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteDetectorResponsesSlotResponse.
+	PageResponse() DiagnosticsListSiteDetectorResponsesSlotResponse
+}
+
+type diagnosticsListSiteDetectorResponsesSlotPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteDetectorResponsesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteDetectorResponsesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteDetectorResponsesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteDetectorResponsesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DetectorResponseCollection.NextLink == nil || len(*p.current.DetectorResponseCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteDetectorResponsesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteDetectorResponsesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteDetectorResponsesSlotPager) PageResponse() DiagnosticsListSiteDetectorResponsesSlotResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteDetectorsPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteDetectorsResponse.
+	PageResponse() DiagnosticsListSiteDetectorsResponse
+}
+
+type diagnosticsListSiteDetectorsPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteDetectorsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteDetectorsResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteDetectorsPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteDetectorsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiagnosticDetectorCollection.NextLink == nil || len(*p.current.DiagnosticDetectorCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteDetectorsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteDetectorsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteDetectorsPager) PageResponse() DiagnosticsListSiteDetectorsResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteDetectorsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteDetectorsSlotResponse.
+	PageResponse() DiagnosticsListSiteDetectorsSlotResponse
+}
+
+type diagnosticsListSiteDetectorsSlotPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteDetectorsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteDetectorsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteDetectorsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteDetectorsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiagnosticDetectorCollection.NextLink == nil || len(*p.current.DiagnosticDetectorCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteDetectorsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteDetectorsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteDetectorsSlotPager) PageResponse() DiagnosticsListSiteDetectorsSlotResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteDiagnosticCategoriesPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteDiagnosticCategoriesResponse.
+	PageResponse() DiagnosticsListSiteDiagnosticCategoriesResponse
+}
+
+type diagnosticsListSiteDiagnosticCategoriesPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteDiagnosticCategoriesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteDiagnosticCategoriesResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteDiagnosticCategoriesPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteDiagnosticCategoriesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiagnosticCategoryCollection.NextLink == nil || len(*p.current.DiagnosticCategoryCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteDiagnosticCategoriesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteDiagnosticCategoriesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteDiagnosticCategoriesPager) PageResponse() DiagnosticsListSiteDiagnosticCategoriesResponse {
+	return p.current
+}
+
+type DiagnosticsListSiteDiagnosticCategoriesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current DiagnosticsListSiteDiagnosticCategoriesSlotResponse.
+	PageResponse() DiagnosticsListSiteDiagnosticCategoriesSlotResponse
+}
+
+type diagnosticsListSiteDiagnosticCategoriesSlotPager struct {
+	client    *DiagnosticsClient
+	current   DiagnosticsListSiteDiagnosticCategoriesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DiagnosticsListSiteDiagnosticCategoriesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *diagnosticsListSiteDiagnosticCategoriesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *diagnosticsListSiteDiagnosticCategoriesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DiagnosticCategoryCollection.NextLink == nil || len(*p.current.DiagnosticCategoryCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteDiagnosticCategoriesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteDiagnosticCategoriesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *diagnosticsListSiteDiagnosticCategoriesSlotPager) PageResponse() DiagnosticsListSiteDiagnosticCategoriesSlotResponse {
+	return p.current
+}
+
+type DomainRegistrationProviderListOperationsPager interface {
+	azcore.Pager
+	// PageResponse returns the current DomainRegistrationProviderListOperationsResponse.
+	PageResponse() DomainRegistrationProviderListOperationsResponse
+}
+
+type domainRegistrationProviderListOperationsPager struct {
+	client    *DomainRegistrationProviderClient
+	current   DomainRegistrationProviderListOperationsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DomainRegistrationProviderListOperationsResponse) (*azcore.Request, error)
+}
+
+func (p *domainRegistrationProviderListOperationsPager) Err() error {
+	return p.err
+}
+
+func (p *domainRegistrationProviderListOperationsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmOperationCollection.NextLink == nil || len(*p.current.CsmOperationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listOperationsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listOperationsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *domainRegistrationProviderListOperationsPager) PageResponse() DomainRegistrationProviderListOperationsResponse {
+	return p.current
+}
+
+type DomainsListByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current DomainsListByResourceGroupResponse.
+	PageResponse() DomainsListByResourceGroupResponse
+}
+
+type domainsListByResourceGroupPager struct {
+	client    *DomainsClient
+	current   DomainsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DomainsListByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *domainsListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *domainsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DomainCollection.NextLink == nil || len(*p.current.DomainCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *domainsListByResourceGroupPager) PageResponse() DomainsListByResourceGroupResponse {
+	return p.current
+}
+
+type DomainsListOwnershipIdentifiersPager interface {
+	azcore.Pager
+	// PageResponse returns the current DomainsListOwnershipIdentifiersResponse.
+	PageResponse() DomainsListOwnershipIdentifiersResponse
+}
+
+type domainsListOwnershipIdentifiersPager struct {
+	client    *DomainsClient
+	current   DomainsListOwnershipIdentifiersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DomainsListOwnershipIdentifiersResponse) (*azcore.Request, error)
+}
+
+func (p *domainsListOwnershipIdentifiersPager) Err() error {
+	return p.err
+}
+
+func (p *domainsListOwnershipIdentifiersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DomainOwnershipIdentifierCollection.NextLink == nil || len(*p.current.DomainOwnershipIdentifierCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listOwnershipIdentifiersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listOwnershipIdentifiersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *domainsListOwnershipIdentifiersPager) PageResponse() DomainsListOwnershipIdentifiersResponse {
+	return p.current
+}
+
+type DomainsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current DomainsListResponse.
+	PageResponse() DomainsListResponse
+}
+
+type domainsListPager struct {
+	client    *DomainsClient
+	current   DomainsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DomainsListResponse) (*azcore.Request, error)
+}
+
+func (p *domainsListPager) Err() error {
+	return p.err
+}
+
+func (p *domainsListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DomainCollection.NextLink == nil || len(*p.current.DomainCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *domainsListPager) PageResponse() DomainsListResponse {
+	return p.current
+}
+
+type DomainsListRecommendationsPager interface {
+	azcore.Pager
+	// PageResponse returns the current DomainsListRecommendationsResponse.
+	PageResponse() DomainsListRecommendationsResponse
+}
+
+type domainsListRecommendationsPager struct {
+	client    *DomainsClient
+	current   DomainsListRecommendationsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, DomainsListRecommendationsResponse) (*azcore.Request, error)
+}
+
+func (p *domainsListRecommendationsPager) Err() error {
+	return p.err
+}
+
+func (p *domainsListRecommendationsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.NameIdentifierCollection.NextLink == nil || len(*p.current.NameIdentifierCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listRecommendationsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listRecommendationsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *domainsListRecommendationsPager) PageResponse() DomainsListRecommendationsResponse {
+	return p.current
+}
+
+type KubeEnvironmentsListByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current KubeEnvironmentsListByResourceGroupResponse.
+	PageResponse() KubeEnvironmentsListByResourceGroupResponse
+}
+
+type kubeEnvironmentsListByResourceGroupPager struct {
+	client    *KubeEnvironmentsClient
+	current   KubeEnvironmentsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, KubeEnvironmentsListByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *kubeEnvironmentsListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *kubeEnvironmentsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.KubeEnvironmentCollection.NextLink == nil || len(*p.current.KubeEnvironmentCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *kubeEnvironmentsListByResourceGroupPager) PageResponse() KubeEnvironmentsListByResourceGroupResponse {
+	return p.current
+}
+
+type KubeEnvironmentsListBySubscriptionPager interface {
+	azcore.Pager
+	// PageResponse returns the current KubeEnvironmentsListBySubscriptionResponse.
+	PageResponse() KubeEnvironmentsListBySubscriptionResponse
+}
+
+type kubeEnvironmentsListBySubscriptionPager struct {
+	client    *KubeEnvironmentsClient
+	current   KubeEnvironmentsListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, KubeEnvironmentsListBySubscriptionResponse) (*azcore.Request, error)
+}
+
+func (p *kubeEnvironmentsListBySubscriptionPager) Err() error {
+	return p.err
+}
+
+func (p *kubeEnvironmentsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.KubeEnvironmentCollection.NextLink == nil || len(*p.current.KubeEnvironmentCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBySubscriptionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *kubeEnvironmentsListBySubscriptionPager) PageResponse() KubeEnvironmentsListBySubscriptionResponse {
+	return p.current
+}
+
+type ProviderGetAvailableStacksOnPremPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderGetAvailableStacksOnPremResponse.
+	PageResponse() ProviderGetAvailableStacksOnPremResponse
+}
+
+type providerGetAvailableStacksOnPremPager struct {
+	client    *ProviderClient
+	current   ProviderGetAvailableStacksOnPremResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderGetAvailableStacksOnPremResponse) (*azcore.Request, error)
+}
+
+func (p *providerGetAvailableStacksOnPremPager) Err() error {
+	return p.err
+}
+
+func (p *providerGetAvailableStacksOnPremPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ApplicationStackCollection.NextLink == nil || len(*p.current.ApplicationStackCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getAvailableStacksOnPremHandleError(resp)
+		return false
+	}
+	result, err := p.client.getAvailableStacksOnPremHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerGetAvailableStacksOnPremPager) PageResponse() ProviderGetAvailableStacksOnPremResponse {
+	return p.current
+}
+
+type ProviderGetAvailableStacksPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderGetAvailableStacksResponse.
+	PageResponse() ProviderGetAvailableStacksResponse
+}
+
+type providerGetAvailableStacksPager struct {
+	client    *ProviderClient
+	current   ProviderGetAvailableStacksResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderGetAvailableStacksResponse) (*azcore.Request, error)
+}
+
+func (p *providerGetAvailableStacksPager) Err() error {
+	return p.err
+}
+
+func (p *providerGetAvailableStacksPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ApplicationStackCollection.NextLink == nil || len(*p.current.ApplicationStackCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getAvailableStacksHandleError(resp)
+		return false
+	}
+	result, err := p.client.getAvailableStacksHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerGetAvailableStacksPager) PageResponse() ProviderGetAvailableStacksResponse {
+	return p.current
+}
+
+type ProviderGetFunctionAppStacksForLocationPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderGetFunctionAppStacksForLocationResponse.
+	PageResponse() ProviderGetFunctionAppStacksForLocationResponse
+}
+
+type providerGetFunctionAppStacksForLocationPager struct {
+	client    *ProviderClient
+	current   ProviderGetFunctionAppStacksForLocationResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderGetFunctionAppStacksForLocationResponse) (*azcore.Request, error)
+}
+
+func (p *providerGetFunctionAppStacksForLocationPager) Err() error {
+	return p.err
+}
+
+func (p *providerGetFunctionAppStacksForLocationPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FunctionAppStackCollection.NextLink == nil || len(*p.current.FunctionAppStackCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getFunctionAppStacksForLocationHandleError(resp)
+		return false
+	}
+	result, err := p.client.getFunctionAppStacksForLocationHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerGetFunctionAppStacksForLocationPager) PageResponse() ProviderGetFunctionAppStacksForLocationResponse {
+	return p.current
+}
+
+type ProviderGetFunctionAppStacksPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderGetFunctionAppStacksResponse.
+	PageResponse() ProviderGetFunctionAppStacksResponse
+}
+
+type providerGetFunctionAppStacksPager struct {
+	client    *ProviderClient
+	current   ProviderGetFunctionAppStacksResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderGetFunctionAppStacksResponse) (*azcore.Request, error)
+}
+
+func (p *providerGetFunctionAppStacksPager) Err() error {
+	return p.err
+}
+
+func (p *providerGetFunctionAppStacksPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FunctionAppStackCollection.NextLink == nil || len(*p.current.FunctionAppStackCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getFunctionAppStacksHandleError(resp)
+		return false
+	}
+	result, err := p.client.getFunctionAppStacksHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerGetFunctionAppStacksPager) PageResponse() ProviderGetFunctionAppStacksResponse {
+	return p.current
+}
+
+type ProviderGetWebAppStacksForLocationPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderGetWebAppStacksForLocationResponse.
+	PageResponse() ProviderGetWebAppStacksForLocationResponse
+}
+
+type providerGetWebAppStacksForLocationPager struct {
+	client    *ProviderClient
+	current   ProviderGetWebAppStacksForLocationResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderGetWebAppStacksForLocationResponse) (*azcore.Request, error)
+}
+
+func (p *providerGetWebAppStacksForLocationPager) Err() error {
+	return p.err
+}
+
+func (p *providerGetWebAppStacksForLocationPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppStackCollection.NextLink == nil || len(*p.current.WebAppStackCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getWebAppStacksForLocationHandleError(resp)
+		return false
+	}
+	result, err := p.client.getWebAppStacksForLocationHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerGetWebAppStacksForLocationPager) PageResponse() ProviderGetWebAppStacksForLocationResponse {
+	return p.current
+}
+
+type ProviderGetWebAppStacksPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderGetWebAppStacksResponse.
+	PageResponse() ProviderGetWebAppStacksResponse
+}
+
+type providerGetWebAppStacksPager struct {
+	client    *ProviderClient
+	current   ProviderGetWebAppStacksResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderGetWebAppStacksResponse) (*azcore.Request, error)
+}
+
+func (p *providerGetWebAppStacksPager) Err() error {
+	return p.err
+}
+
+func (p *providerGetWebAppStacksPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppStackCollection.NextLink == nil || len(*p.current.WebAppStackCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getWebAppStacksHandleError(resp)
+		return false
+	}
+	result, err := p.client.getWebAppStacksHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerGetWebAppStacksPager) PageResponse() ProviderGetWebAppStacksResponse {
+	return p.current
+}
+
+type ProviderListOperationsPager interface {
+	azcore.Pager
+	// PageResponse returns the current ProviderListOperationsResponse.
+	PageResponse() ProviderListOperationsResponse
+}
+
+type providerListOperationsPager struct {
+	client    *ProviderClient
+	current   ProviderListOperationsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ProviderListOperationsResponse) (*azcore.Request, error)
+}
+
+func (p *providerListOperationsPager) Err() error {
+	return p.err
+}
+
+func (p *providerListOperationsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmOperationCollection.NextLink == nil || len(*p.current.CsmOperationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listOperationsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listOperationsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *providerListOperationsPager) PageResponse() ProviderListOperationsResponse {
+	return p.current
+}
+
+type RecommendationsListHistoryForHostingEnvironmentPager interface {
+	azcore.Pager
+	// PageResponse returns the current RecommendationsListHistoryForHostingEnvironmentResponse.
+	PageResponse() RecommendationsListHistoryForHostingEnvironmentResponse
+}
+
+type recommendationsListHistoryForHostingEnvironmentPager struct {
+	client    *RecommendationsClient
+	current   RecommendationsListHistoryForHostingEnvironmentResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, RecommendationsListHistoryForHostingEnvironmentResponse) (*azcore.Request, error)
+}
+
+func (p *recommendationsListHistoryForHostingEnvironmentPager) Err() error {
+	return p.err
+}
+
+func (p *recommendationsListHistoryForHostingEnvironmentPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.RecommendationCollection.NextLink == nil || len(*p.current.RecommendationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHistoryForHostingEnvironmentHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHistoryForHostingEnvironmentHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *recommendationsListHistoryForHostingEnvironmentPager) PageResponse() RecommendationsListHistoryForHostingEnvironmentResponse {
+	return p.current
+}
+
+type RecommendationsListHistoryForWebAppPager interface {
+	azcore.Pager
+	// PageResponse returns the current RecommendationsListHistoryForWebAppResponse.
+	PageResponse() RecommendationsListHistoryForWebAppResponse
+}
+
+type recommendationsListHistoryForWebAppPager struct {
+	client    *RecommendationsClient
+	current   RecommendationsListHistoryForWebAppResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, RecommendationsListHistoryForWebAppResponse) (*azcore.Request, error)
+}
+
+func (p *recommendationsListHistoryForWebAppPager) Err() error {
+	return p.err
+}
+
+func (p *recommendationsListHistoryForWebAppPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.RecommendationCollection.NextLink == nil || len(*p.current.RecommendationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHistoryForWebAppHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHistoryForWebAppHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *recommendationsListHistoryForWebAppPager) PageResponse() RecommendationsListHistoryForWebAppResponse {
+	return p.current
+}
+
+type RecommendationsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current RecommendationsListResponse.
+	PageResponse() RecommendationsListResponse
+}
+
+type recommendationsListPager struct {
+	client    *RecommendationsClient
+	current   RecommendationsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, RecommendationsListResponse) (*azcore.Request, error)
+}
+
+func (p *recommendationsListPager) Err() error {
+	return p.err
+}
+
+func (p *recommendationsListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.RecommendationCollection.NextLink == nil || len(*p.current.RecommendationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *recommendationsListPager) PageResponse() RecommendationsListResponse {
+	return p.current
+}
+
+type RecommendationsListRecommendedRulesForHostingEnvironmentPager interface {
+	azcore.Pager
+	// PageResponse returns the current RecommendationsListRecommendedRulesForHostingEnvironmentResponse.
+	PageResponse() RecommendationsListRecommendedRulesForHostingEnvironmentResponse
+}
+
+type recommendationsListRecommendedRulesForHostingEnvironmentPager struct {
+	client    *RecommendationsClient
+	current   RecommendationsListRecommendedRulesForHostingEnvironmentResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, RecommendationsListRecommendedRulesForHostingEnvironmentResponse) (*azcore.Request, error)
+}
+
+func (p *recommendationsListRecommendedRulesForHostingEnvironmentPager) Err() error {
+	return p.err
+}
+
+func (p *recommendationsListRecommendedRulesForHostingEnvironmentPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.RecommendationCollection.NextLink == nil || len(*p.current.RecommendationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listRecommendedRulesForHostingEnvironmentHandleError(resp)
+		return false
+	}
+	result, err := p.client.listRecommendedRulesForHostingEnvironmentHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *recommendationsListRecommendedRulesForHostingEnvironmentPager) PageResponse() RecommendationsListRecommendedRulesForHostingEnvironmentResponse {
+	return p.current
+}
+
+type RecommendationsListRecommendedRulesForWebAppPager interface {
+	azcore.Pager
+	// PageResponse returns the current RecommendationsListRecommendedRulesForWebAppResponse.
+	PageResponse() RecommendationsListRecommendedRulesForWebAppResponse
+}
+
+type recommendationsListRecommendedRulesForWebAppPager struct {
+	client    *RecommendationsClient
+	current   RecommendationsListRecommendedRulesForWebAppResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, RecommendationsListRecommendedRulesForWebAppResponse) (*azcore.Request, error)
+}
+
+func (p *recommendationsListRecommendedRulesForWebAppPager) Err() error {
+	return p.err
+}
+
+func (p *recommendationsListRecommendedRulesForWebAppPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.RecommendationCollection.NextLink == nil || len(*p.current.RecommendationCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listRecommendedRulesForWebAppHandleError(resp)
+		return false
+	}
+	result, err := p.client.listRecommendedRulesForWebAppHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *recommendationsListRecommendedRulesForWebAppPager) PageResponse() RecommendationsListRecommendedRulesForWebAppResponse {
+	return p.current
+}
+
+type ResourceHealthMetadataListByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current ResourceHealthMetadataListByResourceGroupResponse.
+	PageResponse() ResourceHealthMetadataListByResourceGroupResponse
+}
+
+type resourceHealthMetadataListByResourceGroupPager struct {
+	client    *ResourceHealthMetadataClient
+	current   ResourceHealthMetadataListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ResourceHealthMetadataListByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *resourceHealthMetadataListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *resourceHealthMetadataListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceHealthMetadataCollection.NextLink == nil || len(*p.current.ResourceHealthMetadataCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *resourceHealthMetadataListByResourceGroupPager) PageResponse() ResourceHealthMetadataListByResourceGroupResponse {
+	return p.current
+}
+
+type ResourceHealthMetadataListBySitePager interface {
+	azcore.Pager
+	// PageResponse returns the current ResourceHealthMetadataListBySiteResponse.
+	PageResponse() ResourceHealthMetadataListBySiteResponse
+}
+
+type resourceHealthMetadataListBySitePager struct {
+	client    *ResourceHealthMetadataClient
+	current   ResourceHealthMetadataListBySiteResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ResourceHealthMetadataListBySiteResponse) (*azcore.Request, error)
+}
+
+func (p *resourceHealthMetadataListBySitePager) Err() error {
+	return p.err
+}
+
+func (p *resourceHealthMetadataListBySitePager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceHealthMetadataCollection.NextLink == nil || len(*p.current.ResourceHealthMetadataCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBySiteHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySiteHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *resourceHealthMetadataListBySitePager) PageResponse() ResourceHealthMetadataListBySiteResponse {
+	return p.current
+}
+
+type ResourceHealthMetadataListBySiteSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current ResourceHealthMetadataListBySiteSlotResponse.
+	PageResponse() ResourceHealthMetadataListBySiteSlotResponse
+}
+
+type resourceHealthMetadataListBySiteSlotPager struct {
+	client    *ResourceHealthMetadataClient
+	current   ResourceHealthMetadataListBySiteSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ResourceHealthMetadataListBySiteSlotResponse) (*azcore.Request, error)
+}
+
+func (p *resourceHealthMetadataListBySiteSlotPager) Err() error {
+	return p.err
+}
+
+func (p *resourceHealthMetadataListBySiteSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceHealthMetadataCollection.NextLink == nil || len(*p.current.ResourceHealthMetadataCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBySiteSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySiteSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *resourceHealthMetadataListBySiteSlotPager) PageResponse() ResourceHealthMetadataListBySiteSlotResponse {
+	return p.current
+}
+
+type ResourceHealthMetadataListPager interface {
+	azcore.Pager
+	// PageResponse returns the current ResourceHealthMetadataListResponse.
+	PageResponse() ResourceHealthMetadataListResponse
+}
+
+type resourceHealthMetadataListPager struct {
+	client    *ResourceHealthMetadataClient
+	current   ResourceHealthMetadataListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ResourceHealthMetadataListResponse) (*azcore.Request, error)
+}
+
+func (p *resourceHealthMetadataListPager) Err() error {
+	return p.err
+}
+
+func (p *resourceHealthMetadataListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceHealthMetadataCollection.NextLink == nil || len(*p.current.ResourceHealthMetadataCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *resourceHealthMetadataListPager) PageResponse() ResourceHealthMetadataListResponse {
+	return p.current
+}
+
+type StaticSitesGetPrivateEndpointConnectionListPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesGetPrivateEndpointConnectionListResponse.
+	PageResponse() StaticSitesGetPrivateEndpointConnectionListResponse
+}
+
+type staticSitesGetPrivateEndpointConnectionListPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesGetPrivateEndpointConnectionListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesGetPrivateEndpointConnectionListResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesGetPrivateEndpointConnectionListPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesGetPrivateEndpointConnectionListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PrivateEndpointConnectionCollection.NextLink == nil || len(*p.current.PrivateEndpointConnectionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getPrivateEndpointConnectionListHandleError(resp)
+		return false
+	}
+	result, err := p.client.getPrivateEndpointConnectionListHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesGetPrivateEndpointConnectionListPager) PageResponse() StaticSitesGetPrivateEndpointConnectionListResponse {
+	return p.current
+}
+
+type StaticSitesGetStaticSiteBuildsPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesGetStaticSiteBuildsResponse.
+	PageResponse() StaticSitesGetStaticSiteBuildsResponse
+}
+
+type staticSitesGetStaticSiteBuildsPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesGetStaticSiteBuildsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesGetStaticSiteBuildsResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesGetStaticSiteBuildsPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesGetStaticSiteBuildsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteBuildCollection.NextLink == nil || len(*p.current.StaticSiteBuildCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getStaticSiteBuildsHandleError(resp)
+		return false
+	}
+	result, err := p.client.getStaticSiteBuildsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesGetStaticSiteBuildsPager) PageResponse() StaticSitesGetStaticSiteBuildsResponse {
+	return p.current
+}
+
+type StaticSitesGetStaticSitesByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesGetStaticSitesByResourceGroupResponse.
+	PageResponse() StaticSitesGetStaticSitesByResourceGroupResponse
+}
+
+type staticSitesGetStaticSitesByResourceGroupPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesGetStaticSitesByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesGetStaticSitesByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesGetStaticSitesByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesGetStaticSitesByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteCollection.NextLink == nil || len(*p.current.StaticSiteCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getStaticSitesByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.getStaticSitesByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesGetStaticSitesByResourceGroupPager) PageResponse() StaticSitesGetStaticSitesByResourceGroupResponse {
+	return p.current
+}
+
+type StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse.
+	PageResponse() StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse
+}
+
+type staticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteUserProvidedFunctionAppsCollection.NextLink == nil || len(*p.current.StaticSiteUserProvidedFunctionAppsCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getUserProvidedFunctionAppsForStaticSiteBuildHandleError(resp)
+		return false
+	}
+	result, err := p.client.getUserProvidedFunctionAppsForStaticSiteBuildHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesGetUserProvidedFunctionAppsForStaticSiteBuildPager) PageResponse() StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse {
+	return p.current
+}
+
+type StaticSitesGetUserProvidedFunctionAppsForStaticSitePager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse.
+	PageResponse() StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse
+}
+
+type staticSitesGetUserProvidedFunctionAppsForStaticSitePager struct {
+	client    *StaticSitesClient
+	current   StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesGetUserProvidedFunctionAppsForStaticSitePager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesGetUserProvidedFunctionAppsForStaticSitePager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteUserProvidedFunctionAppsCollection.NextLink == nil || len(*p.current.StaticSiteUserProvidedFunctionAppsCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getUserProvidedFunctionAppsForStaticSiteHandleError(resp)
+		return false
+	}
+	result, err := p.client.getUserProvidedFunctionAppsForStaticSiteHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesGetUserProvidedFunctionAppsForStaticSitePager) PageResponse() StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse {
+	return p.current
+}
+
+type StaticSitesListPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesListResponse.
+	PageResponse() StaticSitesListResponse
+}
+
+type staticSitesListPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesListResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesListPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteCollection.NextLink == nil || len(*p.current.StaticSiteCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesListPager) PageResponse() StaticSitesListResponse {
+	return p.current
+}
+
+type StaticSitesListStaticSiteBuildFunctionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesListStaticSiteBuildFunctionsResponse.
+	PageResponse() StaticSitesListStaticSiteBuildFunctionsResponse
+}
+
+type staticSitesListStaticSiteBuildFunctionsPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesListStaticSiteBuildFunctionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesListStaticSiteBuildFunctionsResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesListStaticSiteBuildFunctionsPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesListStaticSiteBuildFunctionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteFunctionOverviewCollection.NextLink == nil || len(*p.current.StaticSiteFunctionOverviewCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listStaticSiteBuildFunctionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listStaticSiteBuildFunctionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesListStaticSiteBuildFunctionsPager) PageResponse() StaticSitesListStaticSiteBuildFunctionsResponse {
+	return p.current
+}
+
+type StaticSitesListStaticSiteCustomDomainsPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesListStaticSiteCustomDomainsResponse.
+	PageResponse() StaticSitesListStaticSiteCustomDomainsResponse
+}
+
+type staticSitesListStaticSiteCustomDomainsPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesListStaticSiteCustomDomainsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesListStaticSiteCustomDomainsResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesListStaticSiteCustomDomainsPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesListStaticSiteCustomDomainsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteCustomDomainOverviewCollection.NextLink == nil || len(*p.current.StaticSiteCustomDomainOverviewCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listStaticSiteCustomDomainsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listStaticSiteCustomDomainsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesListStaticSiteCustomDomainsPager) PageResponse() StaticSitesListStaticSiteCustomDomainsResponse {
+	return p.current
+}
+
+type StaticSitesListStaticSiteFunctionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesListStaticSiteFunctionsResponse.
+	PageResponse() StaticSitesListStaticSiteFunctionsResponse
+}
+
+type staticSitesListStaticSiteFunctionsPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesListStaticSiteFunctionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesListStaticSiteFunctionsResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesListStaticSiteFunctionsPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesListStaticSiteFunctionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteFunctionOverviewCollection.NextLink == nil || len(*p.current.StaticSiteFunctionOverviewCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listStaticSiteFunctionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listStaticSiteFunctionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesListStaticSiteFunctionsPager) PageResponse() StaticSitesListStaticSiteFunctionsResponse {
+	return p.current
+}
+
+type StaticSitesListStaticSiteUsersPager interface {
+	azcore.Pager
+	// PageResponse returns the current StaticSitesListStaticSiteUsersResponse.
+	PageResponse() StaticSitesListStaticSiteUsersResponse
+}
+
+type staticSitesListStaticSiteUsersPager struct {
+	client    *StaticSitesClient
+	current   StaticSitesListStaticSiteUsersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, StaticSitesListStaticSiteUsersResponse) (*azcore.Request, error)
+}
+
+func (p *staticSitesListStaticSiteUsersPager) Err() error {
+	return p.err
+}
+
+func (p *staticSitesListStaticSiteUsersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.StaticSiteUserCollection.NextLink == nil || len(*p.current.StaticSiteUserCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listStaticSiteUsersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listStaticSiteUsersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *staticSitesListStaticSiteUsersPager) PageResponse() StaticSitesListStaticSiteUsersResponse {
+	return p.current
+}
+
+type TopLevelDomainsListAgreementsPager interface {
+	azcore.Pager
+	// PageResponse returns the current TopLevelDomainsListAgreementsResponse.
+	PageResponse() TopLevelDomainsListAgreementsResponse
+}
+
+type topLevelDomainsListAgreementsPager struct {
+	client    *TopLevelDomainsClient
+	current   TopLevelDomainsListAgreementsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, TopLevelDomainsListAgreementsResponse) (*azcore.Request, error)
+}
+
+func (p *topLevelDomainsListAgreementsPager) Err() error {
+	return p.err
+}
+
+func (p *topLevelDomainsListAgreementsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.TldLegalAgreementCollection.NextLink == nil || len(*p.current.TldLegalAgreementCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listAgreementsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listAgreementsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *topLevelDomainsListAgreementsPager) PageResponse() TopLevelDomainsListAgreementsResponse {
+	return p.current
+}
+
+type TopLevelDomainsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current TopLevelDomainsListResponse.
+	PageResponse() TopLevelDomainsListResponse
+}
+
+type topLevelDomainsListPager struct {
+	client    *TopLevelDomainsClient
+	current   TopLevelDomainsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, TopLevelDomainsListResponse) (*azcore.Request, error)
+}
+
+func (p *topLevelDomainsListPager) Err() error {
+	return p.err
+}
+
+func (p *topLevelDomainsListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.TopLevelDomainCollection.NextLink == nil || len(*p.current.TopLevelDomainCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *topLevelDomainsListPager) PageResponse() TopLevelDomainsListResponse {
+	return p.current
+}
+
+type WebAppsGetAppSettingsKeyVaultReferencesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsGetAppSettingsKeyVaultReferencesResponse.
+	PageResponse() WebAppsGetAppSettingsKeyVaultReferencesResponse
+}
+
+type webAppsGetAppSettingsKeyVaultReferencesPager struct {
+	client    *WebAppsClient
+	current   WebAppsGetAppSettingsKeyVaultReferencesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsGetAppSettingsKeyVaultReferencesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsGetAppSettingsKeyVaultReferencesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsGetAppSettingsKeyVaultReferencesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.APIKVReferenceCollection.NextLink == nil || len(*p.current.APIKVReferenceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getAppSettingsKeyVaultReferencesHandleError(resp)
+		return false
+	}
+	result, err := p.client.getAppSettingsKeyVaultReferencesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsGetAppSettingsKeyVaultReferencesPager) PageResponse() WebAppsGetAppSettingsKeyVaultReferencesResponse {
+	return p.current
+}
+
+type WebAppsGetAppSettingsKeyVaultReferencesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsGetAppSettingsKeyVaultReferencesSlotResponse.
+	PageResponse() WebAppsGetAppSettingsKeyVaultReferencesSlotResponse
+}
+
+type webAppsGetAppSettingsKeyVaultReferencesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsGetAppSettingsKeyVaultReferencesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsGetAppSettingsKeyVaultReferencesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsGetAppSettingsKeyVaultReferencesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsGetAppSettingsKeyVaultReferencesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.APIKVReferenceCollection.NextLink == nil || len(*p.current.APIKVReferenceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getAppSettingsKeyVaultReferencesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.getAppSettingsKeyVaultReferencesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsGetAppSettingsKeyVaultReferencesSlotPager) PageResponse() WebAppsGetAppSettingsKeyVaultReferencesSlotResponse {
+	return p.current
+}
+
+type WebAppsGetPrivateEndpointConnectionListPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsGetPrivateEndpointConnectionListResponse.
+	PageResponse() WebAppsGetPrivateEndpointConnectionListResponse
+}
+
+type webAppsGetPrivateEndpointConnectionListPager struct {
+	client    *WebAppsClient
+	current   WebAppsGetPrivateEndpointConnectionListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsGetPrivateEndpointConnectionListResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsGetPrivateEndpointConnectionListPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsGetPrivateEndpointConnectionListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PrivateEndpointConnectionCollection.NextLink == nil || len(*p.current.PrivateEndpointConnectionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getPrivateEndpointConnectionListHandleError(resp)
+		return false
+	}
+	result, err := p.client.getPrivateEndpointConnectionListHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsGetPrivateEndpointConnectionListPager) PageResponse() WebAppsGetPrivateEndpointConnectionListResponse {
+	return p.current
+}
+
+type WebAppsGetPrivateEndpointConnectionListSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsGetPrivateEndpointConnectionListSlotResponse.
+	PageResponse() WebAppsGetPrivateEndpointConnectionListSlotResponse
+}
+
+type webAppsGetPrivateEndpointConnectionListSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsGetPrivateEndpointConnectionListSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsGetPrivateEndpointConnectionListSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsGetPrivateEndpointConnectionListSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsGetPrivateEndpointConnectionListSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PrivateEndpointConnectionCollection.NextLink == nil || len(*p.current.PrivateEndpointConnectionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getPrivateEndpointConnectionListSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.getPrivateEndpointConnectionListSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsGetPrivateEndpointConnectionListSlotPager) PageResponse() WebAppsGetPrivateEndpointConnectionListSlotResponse {
+	return p.current
+}
+
+type WebAppsGetSiteConnectionStringKeyVaultReferencesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsGetSiteConnectionStringKeyVaultReferencesResponse.
+	PageResponse() WebAppsGetSiteConnectionStringKeyVaultReferencesResponse
+}
+
+type webAppsGetSiteConnectionStringKeyVaultReferencesPager struct {
+	client    *WebAppsClient
+	current   WebAppsGetSiteConnectionStringKeyVaultReferencesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsGetSiteConnectionStringKeyVaultReferencesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsGetSiteConnectionStringKeyVaultReferencesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsGetSiteConnectionStringKeyVaultReferencesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.APIKVReferenceCollection.NextLink == nil || len(*p.current.APIKVReferenceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getSiteConnectionStringKeyVaultReferencesHandleError(resp)
+		return false
+	}
+	result, err := p.client.getSiteConnectionStringKeyVaultReferencesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsGetSiteConnectionStringKeyVaultReferencesPager) PageResponse() WebAppsGetSiteConnectionStringKeyVaultReferencesResponse {
+	return p.current
+}
+
+type WebAppsGetSiteConnectionStringKeyVaultReferencesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse.
+	PageResponse() WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse
+}
+
+type webAppsGetSiteConnectionStringKeyVaultReferencesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsGetSiteConnectionStringKeyVaultReferencesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsGetSiteConnectionStringKeyVaultReferencesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.APIKVReferenceCollection.NextLink == nil || len(*p.current.APIKVReferenceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.getSiteConnectionStringKeyVaultReferencesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsGetSiteConnectionStringKeyVaultReferencesSlotPager) PageResponse() WebAppsGetSiteConnectionStringKeyVaultReferencesSlotResponse {
+	return p.current
+}
+
+type WebAppsListBackupsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListBackupsResponse.
+	PageResponse() WebAppsListBackupsResponse
+}
+
+type webAppsListBackupsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListBackupsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListBackupsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListBackupsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListBackupsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.BackupItemCollection.NextLink == nil || len(*p.current.BackupItemCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBackupsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBackupsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListBackupsPager) PageResponse() WebAppsListBackupsResponse {
+	return p.current
+}
+
+type WebAppsListBackupsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListBackupsSlotResponse.
+	PageResponse() WebAppsListBackupsSlotResponse
+}
+
+type webAppsListBackupsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListBackupsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListBackupsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListBackupsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListBackupsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.BackupItemCollection.NextLink == nil || len(*p.current.BackupItemCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBackupsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBackupsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListBackupsSlotPager) PageResponse() WebAppsListBackupsSlotResponse {
+	return p.current
+}
+
+type WebAppsListBasicPublishingCredentialsPoliciesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListBasicPublishingCredentialsPoliciesResponse.
+	PageResponse() WebAppsListBasicPublishingCredentialsPoliciesResponse
+}
+
+type webAppsListBasicPublishingCredentialsPoliciesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListBasicPublishingCredentialsPoliciesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListBasicPublishingCredentialsPoliciesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListBasicPublishingCredentialsPoliciesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListBasicPublishingCredentialsPoliciesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PublishingCredentialsPoliciesCollection.NextLink == nil || len(*p.current.PublishingCredentialsPoliciesCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBasicPublishingCredentialsPoliciesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBasicPublishingCredentialsPoliciesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListBasicPublishingCredentialsPoliciesPager) PageResponse() WebAppsListBasicPublishingCredentialsPoliciesResponse {
+	return p.current
+}
+
+type WebAppsListBasicPublishingCredentialsPoliciesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListBasicPublishingCredentialsPoliciesSlotResponse.
+	PageResponse() WebAppsListBasicPublishingCredentialsPoliciesSlotResponse
+}
+
+type webAppsListBasicPublishingCredentialsPoliciesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListBasicPublishingCredentialsPoliciesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListBasicPublishingCredentialsPoliciesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListBasicPublishingCredentialsPoliciesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListBasicPublishingCredentialsPoliciesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PublishingCredentialsPoliciesCollection.NextLink == nil || len(*p.current.PublishingCredentialsPoliciesCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBasicPublishingCredentialsPoliciesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListBasicPublishingCredentialsPoliciesSlotPager) PageResponse() WebAppsListBasicPublishingCredentialsPoliciesSlotResponse {
+	return p.current
+}
+
+type WebAppsListByResourceGroupPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListByResourceGroupResponse.
+	PageResponse() WebAppsListByResourceGroupResponse
+}
+
+type webAppsListByResourceGroupPager struct {
+	client    *WebAppsClient
+	current   WebAppsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListByResourceGroupResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListByResourceGroupPager) PageResponse() WebAppsListByResourceGroupResponse {
+	return p.current
+}
+
+type WebAppsListConfigurationSnapshotInfoPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListConfigurationSnapshotInfoResponse.
+	PageResponse() WebAppsListConfigurationSnapshotInfoResponse
+}
+
+type webAppsListConfigurationSnapshotInfoPager struct {
+	client    *WebAppsClient
+	current   WebAppsListConfigurationSnapshotInfoResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListConfigurationSnapshotInfoResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListConfigurationSnapshotInfoPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListConfigurationSnapshotInfoPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SiteConfigurationSnapshotInfoCollection.NextLink == nil || len(*p.current.SiteConfigurationSnapshotInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listConfigurationSnapshotInfoHandleError(resp)
+		return false
+	}
+	result, err := p.client.listConfigurationSnapshotInfoHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListConfigurationSnapshotInfoPager) PageResponse() WebAppsListConfigurationSnapshotInfoResponse {
+	return p.current
+}
+
+type WebAppsListConfigurationSnapshotInfoSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListConfigurationSnapshotInfoSlotResponse.
+	PageResponse() WebAppsListConfigurationSnapshotInfoSlotResponse
+}
+
+type webAppsListConfigurationSnapshotInfoSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListConfigurationSnapshotInfoSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListConfigurationSnapshotInfoSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListConfigurationSnapshotInfoSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListConfigurationSnapshotInfoSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SiteConfigurationSnapshotInfoCollection.NextLink == nil || len(*p.current.SiteConfigurationSnapshotInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listConfigurationSnapshotInfoSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listConfigurationSnapshotInfoSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListConfigurationSnapshotInfoSlotPager) PageResponse() WebAppsListConfigurationSnapshotInfoSlotResponse {
+	return p.current
+}
+
+type WebAppsListConfigurationsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListConfigurationsResponse.
+	PageResponse() WebAppsListConfigurationsResponse
+}
+
+type webAppsListConfigurationsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListConfigurationsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListConfigurationsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListConfigurationsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListConfigurationsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SiteConfigResourceCollection.NextLink == nil || len(*p.current.SiteConfigResourceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listConfigurationsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listConfigurationsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListConfigurationsPager) PageResponse() WebAppsListConfigurationsResponse {
+	return p.current
+}
+
+type WebAppsListConfigurationsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListConfigurationsSlotResponse.
+	PageResponse() WebAppsListConfigurationsSlotResponse
+}
+
+type webAppsListConfigurationsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListConfigurationsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListConfigurationsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListConfigurationsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListConfigurationsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SiteConfigResourceCollection.NextLink == nil || len(*p.current.SiteConfigResourceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listConfigurationsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listConfigurationsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListConfigurationsSlotPager) PageResponse() WebAppsListConfigurationsSlotResponse {
+	return p.current
+}
+
+type WebAppsListContinuousWebJobsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListContinuousWebJobsResponse.
+	PageResponse() WebAppsListContinuousWebJobsResponse
+}
+
+type webAppsListContinuousWebJobsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListContinuousWebJobsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListContinuousWebJobsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListContinuousWebJobsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListContinuousWebJobsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ContinuousWebJobCollection.NextLink == nil || len(*p.current.ContinuousWebJobCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listContinuousWebJobsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listContinuousWebJobsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListContinuousWebJobsPager) PageResponse() WebAppsListContinuousWebJobsResponse {
+	return p.current
+}
+
+type WebAppsListContinuousWebJobsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListContinuousWebJobsSlotResponse.
+	PageResponse() WebAppsListContinuousWebJobsSlotResponse
+}
+
+type webAppsListContinuousWebJobsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListContinuousWebJobsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListContinuousWebJobsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListContinuousWebJobsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListContinuousWebJobsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ContinuousWebJobCollection.NextLink == nil || len(*p.current.ContinuousWebJobCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listContinuousWebJobsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listContinuousWebJobsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListContinuousWebJobsSlotPager) PageResponse() WebAppsListContinuousWebJobsSlotResponse {
+	return p.current
+}
+
+type WebAppsListDeploymentsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListDeploymentsResponse.
+	PageResponse() WebAppsListDeploymentsResponse
+}
+
+type webAppsListDeploymentsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListDeploymentsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListDeploymentsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListDeploymentsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListDeploymentsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeploymentCollection.NextLink == nil || len(*p.current.DeploymentCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listDeploymentsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listDeploymentsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListDeploymentsPager) PageResponse() WebAppsListDeploymentsResponse {
+	return p.current
+}
+
+type WebAppsListDeploymentsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListDeploymentsSlotResponse.
+	PageResponse() WebAppsListDeploymentsSlotResponse
+}
+
+type webAppsListDeploymentsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListDeploymentsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListDeploymentsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListDeploymentsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListDeploymentsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeploymentCollection.NextLink == nil || len(*p.current.DeploymentCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listDeploymentsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listDeploymentsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListDeploymentsSlotPager) PageResponse() WebAppsListDeploymentsSlotResponse {
+	return p.current
+}
+
+type WebAppsListDomainOwnershipIdentifiersPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListDomainOwnershipIdentifiersResponse.
+	PageResponse() WebAppsListDomainOwnershipIdentifiersResponse
+}
+
+type webAppsListDomainOwnershipIdentifiersPager struct {
+	client    *WebAppsClient
+	current   WebAppsListDomainOwnershipIdentifiersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListDomainOwnershipIdentifiersResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListDomainOwnershipIdentifiersPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListDomainOwnershipIdentifiersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.IdentifierCollection.NextLink == nil || len(*p.current.IdentifierCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listDomainOwnershipIdentifiersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listDomainOwnershipIdentifiersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListDomainOwnershipIdentifiersPager) PageResponse() WebAppsListDomainOwnershipIdentifiersResponse {
+	return p.current
+}
+
+type WebAppsListDomainOwnershipIdentifiersSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListDomainOwnershipIdentifiersSlotResponse.
+	PageResponse() WebAppsListDomainOwnershipIdentifiersSlotResponse
+}
+
+type webAppsListDomainOwnershipIdentifiersSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListDomainOwnershipIdentifiersSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListDomainOwnershipIdentifiersSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListDomainOwnershipIdentifiersSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListDomainOwnershipIdentifiersSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.IdentifierCollection.NextLink == nil || len(*p.current.IdentifierCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listDomainOwnershipIdentifiersSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listDomainOwnershipIdentifiersSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListDomainOwnershipIdentifiersSlotPager) PageResponse() WebAppsListDomainOwnershipIdentifiersSlotResponse {
+	return p.current
+}
+
+type WebAppsListFunctionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListFunctionsResponse.
+	PageResponse() WebAppsListFunctionsResponse
+}
+
+type webAppsListFunctionsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListFunctionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListFunctionsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListFunctionsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListFunctionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FunctionEnvelopeCollection.NextLink == nil || len(*p.current.FunctionEnvelopeCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listFunctionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listFunctionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListFunctionsPager) PageResponse() WebAppsListFunctionsResponse {
+	return p.current
+}
+
+type WebAppsListHostNameBindingsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListHostNameBindingsResponse.
+	PageResponse() WebAppsListHostNameBindingsResponse
+}
+
+type webAppsListHostNameBindingsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListHostNameBindingsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListHostNameBindingsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListHostNameBindingsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListHostNameBindingsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.HostNameBindingCollection.NextLink == nil || len(*p.current.HostNameBindingCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHostNameBindingsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHostNameBindingsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListHostNameBindingsPager) PageResponse() WebAppsListHostNameBindingsResponse {
+	return p.current
+}
+
+type WebAppsListHostNameBindingsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListHostNameBindingsSlotResponse.
+	PageResponse() WebAppsListHostNameBindingsSlotResponse
+}
+
+type webAppsListHostNameBindingsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListHostNameBindingsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListHostNameBindingsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListHostNameBindingsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListHostNameBindingsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.HostNameBindingCollection.NextLink == nil || len(*p.current.HostNameBindingCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHostNameBindingsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHostNameBindingsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListHostNameBindingsSlotPager) PageResponse() WebAppsListHostNameBindingsSlotResponse {
+	return p.current
+}
+
+type WebAppsListInstanceFunctionsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceFunctionsSlotResponse.
+	PageResponse() WebAppsListInstanceFunctionsSlotResponse
+}
+
+type webAppsListInstanceFunctionsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceFunctionsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceFunctionsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceFunctionsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceFunctionsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.FunctionEnvelopeCollection.NextLink == nil || len(*p.current.FunctionEnvelopeCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceFunctionsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceFunctionsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceFunctionsSlotPager) PageResponse() WebAppsListInstanceFunctionsSlotResponse {
+	return p.current
+}
+
+type WebAppsListInstanceIdentifiersPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceIdentifiersResponse.
+	PageResponse() WebAppsListInstanceIdentifiersResponse
+}
+
+type webAppsListInstanceIdentifiersPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceIdentifiersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceIdentifiersResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceIdentifiersPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceIdentifiersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppInstanceStatusCollection.NextLink == nil || len(*p.current.WebAppInstanceStatusCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceIdentifiersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceIdentifiersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceIdentifiersPager) PageResponse() WebAppsListInstanceIdentifiersResponse {
+	return p.current
+}
+
+type WebAppsListInstanceIdentifiersSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceIdentifiersSlotResponse.
+	PageResponse() WebAppsListInstanceIdentifiersSlotResponse
+}
+
+type webAppsListInstanceIdentifiersSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceIdentifiersSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceIdentifiersSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceIdentifiersSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceIdentifiersSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppInstanceStatusCollection.NextLink == nil || len(*p.current.WebAppInstanceStatusCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceIdentifiersSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceIdentifiersSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceIdentifiersSlotPager) PageResponse() WebAppsListInstanceIdentifiersSlotResponse {
+	return p.current
+}
+
+type WebAppsListInstanceProcessModulesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceProcessModulesResponse.
+	PageResponse() WebAppsListInstanceProcessModulesResponse
+}
+
+type webAppsListInstanceProcessModulesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceProcessModulesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceProcessModulesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceProcessModulesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceProcessModulesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessModuleInfoCollection.NextLink == nil || len(*p.current.ProcessModuleInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceProcessModulesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceProcessModulesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceProcessModulesPager) PageResponse() WebAppsListInstanceProcessModulesResponse {
+	return p.current
+}
+
+type WebAppsListInstanceProcessModulesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceProcessModulesSlotResponse.
+	PageResponse() WebAppsListInstanceProcessModulesSlotResponse
+}
+
+type webAppsListInstanceProcessModulesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceProcessModulesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceProcessModulesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceProcessModulesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceProcessModulesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessModuleInfoCollection.NextLink == nil || len(*p.current.ProcessModuleInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceProcessModulesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceProcessModulesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceProcessModulesSlotPager) PageResponse() WebAppsListInstanceProcessModulesSlotResponse {
+	return p.current
+}
+
+type WebAppsListInstanceProcessThreadsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceProcessThreadsResponse.
+	PageResponse() WebAppsListInstanceProcessThreadsResponse
+}
+
+type webAppsListInstanceProcessThreadsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceProcessThreadsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceProcessThreadsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceProcessThreadsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceProcessThreadsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessThreadInfoCollection.NextLink == nil || len(*p.current.ProcessThreadInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceProcessThreadsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceProcessThreadsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceProcessThreadsPager) PageResponse() WebAppsListInstanceProcessThreadsResponse {
+	return p.current
+}
+
+type WebAppsListInstanceProcessThreadsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceProcessThreadsSlotResponse.
+	PageResponse() WebAppsListInstanceProcessThreadsSlotResponse
+}
+
+type webAppsListInstanceProcessThreadsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceProcessThreadsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceProcessThreadsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceProcessThreadsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceProcessThreadsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessThreadInfoCollection.NextLink == nil || len(*p.current.ProcessThreadInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceProcessThreadsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceProcessThreadsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceProcessThreadsSlotPager) PageResponse() WebAppsListInstanceProcessThreadsSlotResponse {
+	return p.current
+}
+
+type WebAppsListInstanceProcessesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceProcessesResponse.
+	PageResponse() WebAppsListInstanceProcessesResponse
+}
+
+type webAppsListInstanceProcessesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceProcessesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceProcessesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceProcessesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceProcessesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessInfoCollection.NextLink == nil || len(*p.current.ProcessInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceProcessesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceProcessesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceProcessesPager) PageResponse() WebAppsListInstanceProcessesResponse {
+	return p.current
+}
+
+type WebAppsListInstanceProcessesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListInstanceProcessesSlotResponse.
+	PageResponse() WebAppsListInstanceProcessesSlotResponse
+}
+
+type webAppsListInstanceProcessesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListInstanceProcessesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListInstanceProcessesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListInstanceProcessesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListInstanceProcessesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessInfoCollection.NextLink == nil || len(*p.current.ProcessInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listInstanceProcessesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listInstanceProcessesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListInstanceProcessesSlotPager) PageResponse() WebAppsListInstanceProcessesSlotResponse {
+	return p.current
+}
+
+type WebAppsListPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListResponse.
+	PageResponse() WebAppsListResponse
+}
+
+type webAppsListPager struct {
+	client    *WebAppsClient
+	current   WebAppsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListPager) PageResponse() WebAppsListResponse {
+	return p.current
+}
+
+type WebAppsListPerfMonCountersPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListPerfMonCountersResponse.
+	PageResponse() WebAppsListPerfMonCountersResponse
+}
+
+type webAppsListPerfMonCountersPager struct {
+	client    *WebAppsClient
+	current   WebAppsListPerfMonCountersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListPerfMonCountersResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListPerfMonCountersPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListPerfMonCountersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PerfMonCounterCollection.NextLink == nil || len(*p.current.PerfMonCounterCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listPerfMonCountersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listPerfMonCountersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListPerfMonCountersPager) PageResponse() WebAppsListPerfMonCountersResponse {
+	return p.current
+}
+
+type WebAppsListPerfMonCountersSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListPerfMonCountersSlotResponse.
+	PageResponse() WebAppsListPerfMonCountersSlotResponse
+}
+
+type webAppsListPerfMonCountersSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListPerfMonCountersSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListPerfMonCountersSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListPerfMonCountersSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListPerfMonCountersSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PerfMonCounterCollection.NextLink == nil || len(*p.current.PerfMonCounterCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listPerfMonCountersSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listPerfMonCountersSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListPerfMonCountersSlotPager) PageResponse() WebAppsListPerfMonCountersSlotResponse {
+	return p.current
+}
+
+type WebAppsListProcessModulesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListProcessModulesResponse.
+	PageResponse() WebAppsListProcessModulesResponse
+}
+
+type webAppsListProcessModulesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListProcessModulesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListProcessModulesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListProcessModulesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListProcessModulesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessModuleInfoCollection.NextLink == nil || len(*p.current.ProcessModuleInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listProcessModulesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listProcessModulesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListProcessModulesPager) PageResponse() WebAppsListProcessModulesResponse {
+	return p.current
+}
+
+type WebAppsListProcessModulesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListProcessModulesSlotResponse.
+	PageResponse() WebAppsListProcessModulesSlotResponse
+}
+
+type webAppsListProcessModulesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListProcessModulesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListProcessModulesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListProcessModulesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListProcessModulesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessModuleInfoCollection.NextLink == nil || len(*p.current.ProcessModuleInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listProcessModulesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listProcessModulesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListProcessModulesSlotPager) PageResponse() WebAppsListProcessModulesSlotResponse {
+	return p.current
+}
+
+type WebAppsListProcessThreadsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListProcessThreadsResponse.
+	PageResponse() WebAppsListProcessThreadsResponse
+}
+
+type webAppsListProcessThreadsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListProcessThreadsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListProcessThreadsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListProcessThreadsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListProcessThreadsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessThreadInfoCollection.NextLink == nil || len(*p.current.ProcessThreadInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listProcessThreadsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listProcessThreadsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListProcessThreadsPager) PageResponse() WebAppsListProcessThreadsResponse {
+	return p.current
+}
+
+type WebAppsListProcessThreadsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListProcessThreadsSlotResponse.
+	PageResponse() WebAppsListProcessThreadsSlotResponse
+}
+
+type webAppsListProcessThreadsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListProcessThreadsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListProcessThreadsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListProcessThreadsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListProcessThreadsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessThreadInfoCollection.NextLink == nil || len(*p.current.ProcessThreadInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listProcessThreadsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listProcessThreadsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListProcessThreadsSlotPager) PageResponse() WebAppsListProcessThreadsSlotResponse {
+	return p.current
+}
+
+type WebAppsListProcessesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListProcessesResponse.
+	PageResponse() WebAppsListProcessesResponse
+}
+
+type webAppsListProcessesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListProcessesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListProcessesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListProcessesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListProcessesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessInfoCollection.NextLink == nil || len(*p.current.ProcessInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listProcessesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listProcessesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListProcessesPager) PageResponse() WebAppsListProcessesResponse {
+	return p.current
+}
+
+type WebAppsListProcessesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListProcessesSlotResponse.
+	PageResponse() WebAppsListProcessesSlotResponse
+}
+
+type webAppsListProcessesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListProcessesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListProcessesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListProcessesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListProcessesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ProcessInfoCollection.NextLink == nil || len(*p.current.ProcessInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listProcessesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listProcessesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListProcessesSlotPager) PageResponse() WebAppsListProcessesSlotResponse {
+	return p.current
+}
+
+type WebAppsListPublicCertificatesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListPublicCertificatesResponse.
+	PageResponse() WebAppsListPublicCertificatesResponse
+}
+
+type webAppsListPublicCertificatesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListPublicCertificatesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListPublicCertificatesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListPublicCertificatesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListPublicCertificatesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PublicCertificateCollection.NextLink == nil || len(*p.current.PublicCertificateCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listPublicCertificatesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listPublicCertificatesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListPublicCertificatesPager) PageResponse() WebAppsListPublicCertificatesResponse {
+	return p.current
+}
+
+type WebAppsListPublicCertificatesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListPublicCertificatesSlotResponse.
+	PageResponse() WebAppsListPublicCertificatesSlotResponse
+}
+
+type webAppsListPublicCertificatesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListPublicCertificatesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListPublicCertificatesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListPublicCertificatesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListPublicCertificatesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PublicCertificateCollection.NextLink == nil || len(*p.current.PublicCertificateCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listPublicCertificatesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listPublicCertificatesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListPublicCertificatesSlotPager) PageResponse() WebAppsListPublicCertificatesSlotResponse {
+	return p.current
+}
+
+type WebAppsListSiteBackupsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSiteBackupsResponse.
+	PageResponse() WebAppsListSiteBackupsResponse
+}
+
+type webAppsListSiteBackupsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSiteBackupsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSiteBackupsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSiteBackupsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSiteBackupsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.BackupItemCollection.NextLink == nil || len(*p.current.BackupItemCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteBackupsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteBackupsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSiteBackupsPager) PageResponse() WebAppsListSiteBackupsResponse {
+	return p.current
+}
+
+type WebAppsListSiteBackupsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSiteBackupsSlotResponse.
+	PageResponse() WebAppsListSiteBackupsSlotResponse
+}
+
+type webAppsListSiteBackupsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSiteBackupsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSiteBackupsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSiteBackupsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSiteBackupsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.BackupItemCollection.NextLink == nil || len(*p.current.BackupItemCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteBackupsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteBackupsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSiteBackupsSlotPager) PageResponse() WebAppsListSiteBackupsSlotResponse {
+	return p.current
+}
+
+type WebAppsListSiteExtensionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSiteExtensionsResponse.
+	PageResponse() WebAppsListSiteExtensionsResponse
+}
+
+type webAppsListSiteExtensionsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSiteExtensionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSiteExtensionsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSiteExtensionsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSiteExtensionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SiteExtensionInfoCollection.NextLink == nil || len(*p.current.SiteExtensionInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteExtensionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteExtensionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSiteExtensionsPager) PageResponse() WebAppsListSiteExtensionsResponse {
+	return p.current
+}
+
+type WebAppsListSiteExtensionsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSiteExtensionsSlotResponse.
+	PageResponse() WebAppsListSiteExtensionsSlotResponse
+}
+
+type webAppsListSiteExtensionsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSiteExtensionsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSiteExtensionsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSiteExtensionsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSiteExtensionsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SiteExtensionInfoCollection.NextLink == nil || len(*p.current.SiteExtensionInfoCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteExtensionsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteExtensionsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSiteExtensionsSlotPager) PageResponse() WebAppsListSiteExtensionsSlotResponse {
+	return p.current
+}
+
+type WebAppsListSlotDifferencesFromProductionPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSlotDifferencesFromProductionResponse.
+	PageResponse() WebAppsListSlotDifferencesFromProductionResponse
+}
+
+type webAppsListSlotDifferencesFromProductionPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSlotDifferencesFromProductionResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSlotDifferencesFromProductionResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSlotDifferencesFromProductionPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSlotDifferencesFromProductionPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SlotDifferenceCollection.NextLink == nil || len(*p.current.SlotDifferenceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSlotDifferencesFromProductionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSlotDifferencesFromProductionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSlotDifferencesFromProductionPager) PageResponse() WebAppsListSlotDifferencesFromProductionResponse {
+	return p.current
+}
+
+type WebAppsListSlotDifferencesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSlotDifferencesSlotResponse.
+	PageResponse() WebAppsListSlotDifferencesSlotResponse
+}
+
+type webAppsListSlotDifferencesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSlotDifferencesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSlotDifferencesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSlotDifferencesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSlotDifferencesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SlotDifferenceCollection.NextLink == nil || len(*p.current.SlotDifferenceCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSlotDifferencesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSlotDifferencesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSlotDifferencesSlotPager) PageResponse() WebAppsListSlotDifferencesSlotResponse {
+	return p.current
+}
+
+type WebAppsListSlotsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSlotsResponse.
+	PageResponse() WebAppsListSlotsResponse
+}
+
+type webAppsListSlotsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSlotsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSlotsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSlotsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSlotsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebAppCollection.NextLink == nil || len(*p.current.WebAppCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSlotsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSlotsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSlotsPager) PageResponse() WebAppsListSlotsResponse {
+	return p.current
+}
+
+type WebAppsListSnapshotsFromDRSecondaryPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSnapshotsFromDRSecondaryResponse.
+	PageResponse() WebAppsListSnapshotsFromDRSecondaryResponse
+}
+
+type webAppsListSnapshotsFromDRSecondaryPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSnapshotsFromDRSecondaryResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSnapshotsFromDRSecondaryResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSnapshotsFromDRSecondaryPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSnapshotsFromDRSecondaryPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SnapshotCollection.NextLink == nil || len(*p.current.SnapshotCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSnapshotsFromDRSecondaryHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSnapshotsFromDRSecondaryHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSnapshotsFromDRSecondaryPager) PageResponse() WebAppsListSnapshotsFromDRSecondaryResponse {
+	return p.current
+}
+
+type WebAppsListSnapshotsFromDRSecondarySlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSnapshotsFromDRSecondarySlotResponse.
+	PageResponse() WebAppsListSnapshotsFromDRSecondarySlotResponse
+}
+
+type webAppsListSnapshotsFromDRSecondarySlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSnapshotsFromDRSecondarySlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSnapshotsFromDRSecondarySlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSnapshotsFromDRSecondarySlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSnapshotsFromDRSecondarySlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SnapshotCollection.NextLink == nil || len(*p.current.SnapshotCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSnapshotsFromDRSecondarySlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSnapshotsFromDRSecondarySlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSnapshotsFromDRSecondarySlotPager) PageResponse() WebAppsListSnapshotsFromDRSecondarySlotResponse {
+	return p.current
+}
+
+type WebAppsListSnapshotsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSnapshotsResponse.
+	PageResponse() WebAppsListSnapshotsResponse
+}
+
+type webAppsListSnapshotsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSnapshotsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSnapshotsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSnapshotsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSnapshotsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SnapshotCollection.NextLink == nil || len(*p.current.SnapshotCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSnapshotsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSnapshotsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSnapshotsPager) PageResponse() WebAppsListSnapshotsResponse {
+	return p.current
+}
+
+type WebAppsListSnapshotsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListSnapshotsSlotResponse.
+	PageResponse() WebAppsListSnapshotsSlotResponse
+}
+
+type webAppsListSnapshotsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListSnapshotsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListSnapshotsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListSnapshotsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListSnapshotsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SnapshotCollection.NextLink == nil || len(*p.current.SnapshotCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSnapshotsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSnapshotsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListSnapshotsSlotPager) PageResponse() WebAppsListSnapshotsSlotResponse {
+	return p.current
+}
+
+type WebAppsListTriggeredWebJobHistoryPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListTriggeredWebJobHistoryResponse.
+	PageResponse() WebAppsListTriggeredWebJobHistoryResponse
+}
+
+type webAppsListTriggeredWebJobHistoryPager struct {
+	client    *WebAppsClient
+	current   WebAppsListTriggeredWebJobHistoryResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListTriggeredWebJobHistoryResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListTriggeredWebJobHistoryPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListTriggeredWebJobHistoryPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.TriggeredJobHistoryCollection.NextLink == nil || len(*p.current.TriggeredJobHistoryCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listTriggeredWebJobHistoryHandleError(resp)
+		return false
+	}
+	result, err := p.client.listTriggeredWebJobHistoryHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListTriggeredWebJobHistoryPager) PageResponse() WebAppsListTriggeredWebJobHistoryResponse {
+	return p.current
+}
+
+type WebAppsListTriggeredWebJobHistorySlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListTriggeredWebJobHistorySlotResponse.
+	PageResponse() WebAppsListTriggeredWebJobHistorySlotResponse
+}
+
+type webAppsListTriggeredWebJobHistorySlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListTriggeredWebJobHistorySlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListTriggeredWebJobHistorySlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListTriggeredWebJobHistorySlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListTriggeredWebJobHistorySlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.TriggeredJobHistoryCollection.NextLink == nil || len(*p.current.TriggeredJobHistoryCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listTriggeredWebJobHistorySlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listTriggeredWebJobHistorySlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListTriggeredWebJobHistorySlotPager) PageResponse() WebAppsListTriggeredWebJobHistorySlotResponse {
+	return p.current
+}
+
+type WebAppsListTriggeredWebJobsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListTriggeredWebJobsResponse.
+	PageResponse() WebAppsListTriggeredWebJobsResponse
+}
+
+type webAppsListTriggeredWebJobsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListTriggeredWebJobsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListTriggeredWebJobsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListTriggeredWebJobsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListTriggeredWebJobsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.TriggeredWebJobCollection.NextLink == nil || len(*p.current.TriggeredWebJobCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listTriggeredWebJobsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listTriggeredWebJobsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListTriggeredWebJobsPager) PageResponse() WebAppsListTriggeredWebJobsResponse {
+	return p.current
+}
+
+type WebAppsListTriggeredWebJobsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListTriggeredWebJobsSlotResponse.
+	PageResponse() WebAppsListTriggeredWebJobsSlotResponse
+}
+
+type webAppsListTriggeredWebJobsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListTriggeredWebJobsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListTriggeredWebJobsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListTriggeredWebJobsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListTriggeredWebJobsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.TriggeredWebJobCollection.NextLink == nil || len(*p.current.TriggeredWebJobCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listTriggeredWebJobsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listTriggeredWebJobsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListTriggeredWebJobsSlotPager) PageResponse() WebAppsListTriggeredWebJobsSlotResponse {
+	return p.current
+}
+
+type WebAppsListUsagesPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListUsagesResponse.
+	PageResponse() WebAppsListUsagesResponse
+}
+
+type webAppsListUsagesPager struct {
+	client    *WebAppsClient
+	current   WebAppsListUsagesResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListUsagesResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListUsagesPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListUsagesPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmUsageQuotaCollection.NextLink == nil || len(*p.current.CsmUsageQuotaCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listUsagesHandleError(resp)
+		return false
+	}
+	result, err := p.client.listUsagesHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListUsagesPager) PageResponse() WebAppsListUsagesResponse {
+	return p.current
+}
+
+type WebAppsListUsagesSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListUsagesSlotResponse.
+	PageResponse() WebAppsListUsagesSlotResponse
+}
+
+type webAppsListUsagesSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListUsagesSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListUsagesSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListUsagesSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListUsagesSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CsmUsageQuotaCollection.NextLink == nil || len(*p.current.CsmUsageQuotaCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listUsagesSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listUsagesSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListUsagesSlotPager) PageResponse() WebAppsListUsagesSlotResponse {
+	return p.current
+}
+
+type WebAppsListWebJobsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListWebJobsResponse.
+	PageResponse() WebAppsListWebJobsResponse
+}
+
+type webAppsListWebJobsPager struct {
+	client    *WebAppsClient
+	current   WebAppsListWebJobsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListWebJobsResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListWebJobsPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListWebJobsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebJobCollection.NextLink == nil || len(*p.current.WebJobCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebJobsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebJobsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListWebJobsPager) PageResponse() WebAppsListWebJobsResponse {
+	return p.current
+}
+
+type WebAppsListWebJobsSlotPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebAppsListWebJobsSlotResponse.
+	PageResponse() WebAppsListWebJobsSlotResponse
+}
+
+type webAppsListWebJobsSlotPager struct {
+	client    *WebAppsClient
+	current   WebAppsListWebJobsSlotResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebAppsListWebJobsSlotResponse) (*azcore.Request, error)
+}
+
+func (p *webAppsListWebJobsSlotPager) Err() error {
+	return p.err
+}
+
+func (p *webAppsListWebJobsSlotPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.WebJobCollection.NextLink == nil || len(*p.current.WebJobCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listWebJobsSlotHandleError(resp)
+		return false
+	}
+	result, err := p.client.listWebJobsSlotHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webAppsListWebJobsSlotPager) PageResponse() WebAppsListWebJobsSlotResponse {
+	return p.current
+}
+
+type WebSiteManagementClientListBillingMetersPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebSiteManagementClientListBillingMetersResponse.
+	PageResponse() WebSiteManagementClientListBillingMetersResponse
+}
+
+type webSiteManagementClientListBillingMetersPager struct {
+	client    *WebSiteManagementClient
+	current   WebSiteManagementClientListBillingMetersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebSiteManagementClientListBillingMetersResponse) (*azcore.Request, error)
+}
+
+func (p *webSiteManagementClientListBillingMetersPager) Err() error {
+	return p.err
+}
+
+func (p *webSiteManagementClientListBillingMetersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.BillingMeterCollection.NextLink == nil || len(*p.current.BillingMeterCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listBillingMetersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBillingMetersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webSiteManagementClientListBillingMetersPager) PageResponse() WebSiteManagementClientListBillingMetersResponse {
+	return p.current
+}
+
+type WebSiteManagementClientListGeoRegionsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebSiteManagementClientListGeoRegionsResponse.
+	PageResponse() WebSiteManagementClientListGeoRegionsResponse
+}
+
+type webSiteManagementClientListGeoRegionsPager struct {
+	client    *WebSiteManagementClient
+	current   WebSiteManagementClientListGeoRegionsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebSiteManagementClientListGeoRegionsResponse) (*azcore.Request, error)
+}
+
+func (p *webSiteManagementClientListGeoRegionsPager) Err() error {
+	return p.err
+}
+
+func (p *webSiteManagementClientListGeoRegionsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.GeoRegionCollection.NextLink == nil || len(*p.current.GeoRegionCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listGeoRegionsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listGeoRegionsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webSiteManagementClientListGeoRegionsPager) PageResponse() WebSiteManagementClientListGeoRegionsResponse {
+	return p.current
+}
+
+type WebSiteManagementClientListPremierAddOnOffersPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebSiteManagementClientListPremierAddOnOffersResponse.
+	PageResponse() WebSiteManagementClientListPremierAddOnOffersResponse
+}
+
+type webSiteManagementClientListPremierAddOnOffersPager struct {
+	client    *WebSiteManagementClient
+	current   WebSiteManagementClientListPremierAddOnOffersResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebSiteManagementClientListPremierAddOnOffersResponse) (*azcore.Request, error)
+}
+
+func (p *webSiteManagementClientListPremierAddOnOffersPager) Err() error {
+	return p.err
+}
+
+func (p *webSiteManagementClientListPremierAddOnOffersPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PremierAddOnOfferCollection.NextLink == nil || len(*p.current.PremierAddOnOfferCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listPremierAddOnOffersHandleError(resp)
+		return false
+	}
+	result, err := p.client.listPremierAddOnOffersHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webSiteManagementClientListPremierAddOnOffersPager) PageResponse() WebSiteManagementClientListPremierAddOnOffersResponse {
+	return p.current
+}
+
+type WebSiteManagementClientListSiteIdentifiersAssignedToHostNamePager interface {
+	azcore.Pager
+	// PageResponse returns the current WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse.
+	PageResponse() WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse
+}
+
+type webSiteManagementClientListSiteIdentifiersAssignedToHostNamePager struct {
+	client    *WebSiteManagementClient
+	current   WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) (*azcore.Request, error)
+}
+
+func (p *webSiteManagementClientListSiteIdentifiersAssignedToHostNamePager) Err() error {
+	return p.err
+}
+
+func (p *webSiteManagementClientListSiteIdentifiersAssignedToHostNamePager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.IdentifierCollection.NextLink == nil || len(*p.current.IdentifierCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSiteIdentifiersAssignedToHostNameHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSiteIdentifiersAssignedToHostNameHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webSiteManagementClientListSiteIdentifiersAssignedToHostNamePager) PageResponse() WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse {
+	return p.current
+}
+
+type WebSiteManagementClientListSourceControlsPager interface {
+	azcore.Pager
+	// PageResponse returns the current WebSiteManagementClientListSourceControlsResponse.
+	PageResponse() WebSiteManagementClientListSourceControlsResponse
+}
+
+type webSiteManagementClientListSourceControlsPager struct {
+	client    *WebSiteManagementClient
+	current   WebSiteManagementClientListSourceControlsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, WebSiteManagementClientListSourceControlsResponse) (*azcore.Request, error)
+}
+
+func (p *webSiteManagementClientListSourceControlsPager) Err() error {
+	return p.err
+}
+
+func (p *webSiteManagementClientListSourceControlsPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SourceControlCollection.NextLink == nil || len(*p.current.SourceControlCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listSourceControlsHandleError(resp)
+		return false
+	}
+	result, err := p.client.listSourceControlsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *webSiteManagementClientListSourceControlsPager) PageResponse() WebSiteManagementClientListSourceControlsResponse {
 	return p.current
 }

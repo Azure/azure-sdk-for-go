@@ -28,18 +28,15 @@ func NewCertificateRegistrationProviderClient(con *armcore.Connection) *Certific
 
 // ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificateRegistrationProviderClient) ListOperations(options *CertificateRegistrationProviderListOperationsOptions) CsmOperationCollectionPager {
-	return &csmOperationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *CertificateRegistrationProviderClient) ListOperations(options *CertificateRegistrationProviderListOperationsOptions) CertificateRegistrationProviderListOperationsPager {
+	return &certificateRegistrationProviderListOperationsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOperationsCreateRequest(ctx, options)
 		},
-		responder: client.listOperationsHandleResponse,
-		errorer:   client.listOperationsHandleError,
-		advancer: func(ctx context.Context, resp CsmOperationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CertificateRegistrationProviderListOperationsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmOperationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -59,12 +56,12 @@ func (client *CertificateRegistrationProviderClient) listOperationsCreateRequest
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *CertificateRegistrationProviderClient) listOperationsHandleResponse(resp *azcore.Response) (CsmOperationCollectionResponse, error) {
-	var val *CsmOperationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmOperationCollectionResponse{}, err
+func (client *CertificateRegistrationProviderClient) listOperationsHandleResponse(resp *azcore.Response) (CertificateRegistrationProviderListOperationsResponse, error) {
+	result := CertificateRegistrationProviderListOperationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmOperationCollection); err != nil {
+		return CertificateRegistrationProviderListOperationsResponse{}, err
 	}
-	return CsmOperationCollectionResponse{RawResponse: resp.Response, CsmOperationCollection: val}, nil
+	return result, nil
 }
 
 // listOperationsHandleError handles the ListOperations error response.

@@ -32,17 +32,17 @@ func NewCertificatesClient(con *armcore.Connection, subscriptionID string) *Cert
 
 // CreateOrUpdate - Description for Create or update a certificate.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, certificateEnvelope Certificate, options *CertificatesCreateOrUpdateOptions) (CertificateResponse, error) {
+func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, certificateEnvelope Certificate, options *CertificatesCreateOrUpdateOptions) (CertificatesCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, certificateEnvelope, options)
 	if err != nil {
-		return CertificateResponse{}, err
+		return CertificatesCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CertificateResponse{}, err
+		return CertificatesCreateOrUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CertificateResponse{}, client.createOrUpdateHandleError(resp)
+		return CertificatesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
@@ -75,12 +75,12 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CertificatesClient) createOrUpdateHandleResponse(resp *azcore.Response) (CertificateResponse, error) {
-	var val *Certificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateResponse{}, err
+func (client *CertificatesClient) createOrUpdateHandleResponse(resp *azcore.Response) (CertificatesCreateOrUpdateResponse, error) {
+	result := CertificatesCreateOrUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Certificate); err != nil {
+		return CertificatesCreateOrUpdateResponse{}, err
 	}
-	return CertificateResponse{RawResponse: resp.Response, Certificate: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -98,19 +98,19 @@ func (client *CertificatesClient) createOrUpdateHandleError(resp *azcore.Respons
 
 // Delete - Description for Delete a certificate.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, name string, options *CertificatesDeleteOptions) (*http.Response, error) {
+func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, name string, options *CertificatesDeleteOptions) (CertificatesDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return nil, err
+		return CertificatesDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return CertificatesDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return CertificatesDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return CertificatesDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -155,17 +155,17 @@ func (client *CertificatesClient) deleteHandleError(resp *azcore.Response) error
 
 // Get - Description for Get a certificate.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, name string, options *CertificatesGetOptions) (CertificateResponse, error) {
+func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, name string, options *CertificatesGetOptions) (CertificatesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CertificateResponse{}, err
+		return CertificatesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CertificateResponse{}, err
+		return CertificatesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CertificateResponse{}, client.getHandleError(resp)
+		return CertificatesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -198,12 +198,12 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificatesClient) getHandleResponse(resp *azcore.Response) (CertificateResponse, error) {
-	var val *Certificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateResponse{}, err
+func (client *CertificatesClient) getHandleResponse(resp *azcore.Response) (CertificatesGetResponse, error) {
+	result := CertificatesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Certificate); err != nil {
+		return CertificatesGetResponse{}, err
 	}
-	return CertificateResponse{RawResponse: resp.Response, Certificate: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -221,18 +221,15 @@ func (client *CertificatesClient) getHandleError(resp *azcore.Response) error {
 
 // List - Description for Get all certificates for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) List(options *CertificatesListOptions) CertificateCollectionPager {
-	return &certificateCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *CertificatesClient) List(options *CertificatesListOptions) CertificatesListPager {
+	return &certificatesListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp CertificateCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CertificatesListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -261,12 +258,12 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *CertificatesClient) listHandleResponse(resp *azcore.Response) (CertificateCollectionResponse, error) {
-	var val *CertificateCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateCollectionResponse{}, err
+func (client *CertificatesClient) listHandleResponse(resp *azcore.Response) (CertificatesListResponse, error) {
+	result := CertificatesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CertificateCollection); err != nil {
+		return CertificatesListResponse{}, err
 	}
-	return CertificateCollectionResponse{RawResponse: resp.Response, CertificateCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -284,18 +281,15 @@ func (client *CertificatesClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Description for Get all certificates in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) ListByResourceGroup(resourceGroupName string, options *CertificatesListByResourceGroupOptions) CertificateCollectionPager {
-	return &certificateCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *CertificatesClient) ListByResourceGroup(resourceGroupName string, options *CertificatesListByResourceGroupOptions) CertificatesListByResourceGroupPager {
+	return &certificatesListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp CertificateCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CertificatesListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -323,12 +317,12 @@ func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (CertificateCollectionResponse, error) {
-	var val *CertificateCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateCollectionResponse{}, err
+func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (CertificatesListByResourceGroupResponse, error) {
+	result := CertificatesListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CertificateCollection); err != nil {
+		return CertificatesListByResourceGroupResponse{}, err
 	}
-	return CertificateCollectionResponse{RawResponse: resp.Response, CertificateCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -346,17 +340,17 @@ func (client *CertificatesClient) listByResourceGroupHandleError(resp *azcore.Re
 
 // Update - Description for Create or update a certificate.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName string, name string, certificateEnvelope CertificatePatchResource, options *CertificatesUpdateOptions) (CertificateResponse, error) {
+func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName string, name string, certificateEnvelope CertificatePatchResource, options *CertificatesUpdateOptions) (CertificatesUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, certificateEnvelope, options)
 	if err != nil {
-		return CertificateResponse{}, err
+		return CertificatesUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CertificateResponse{}, err
+		return CertificatesUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CertificateResponse{}, client.updateHandleError(resp)
+		return CertificatesUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -389,12 +383,12 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CertificatesClient) updateHandleResponse(resp *azcore.Response) (CertificateResponse, error) {
-	var val *Certificate
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateResponse{}, err
+func (client *CertificatesClient) updateHandleResponse(resp *azcore.Response) (CertificatesUpdateResponse, error) {
+	result := CertificatesUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Certificate); err != nil {
+		return CertificatesUpdateResponse{}, err
 	}
-	return CertificateResponse{RawResponse: resp.Response, Certificate: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.

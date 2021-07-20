@@ -33,19 +33,19 @@ func NewRecommendationsClient(con *armcore.Connection, subscriptionID string) *R
 
 // DisableAllForHostingEnvironment - Description for Disable all recommendations for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsDisableAllForHostingEnvironmentOptions) (*http.Response, error) {
+func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsDisableAllForHostingEnvironmentOptions) (RecommendationsDisableAllForHostingEnvironmentResponse, error) {
 	req, err := client.disableAllForHostingEnvironmentCreateRequest(ctx, resourceGroupName, environmentName, hostingEnvironmentName, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableAllForHostingEnvironmentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableAllForHostingEnvironmentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.disableAllForHostingEnvironmentHandleError(resp)
+		return RecommendationsDisableAllForHostingEnvironmentResponse{}, client.disableAllForHostingEnvironmentHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsDisableAllForHostingEnvironmentResponse{RawResponse: resp.Response}, nil
 }
 
 // disableAllForHostingEnvironmentCreateRequest creates the DisableAllForHostingEnvironment request.
@@ -91,19 +91,19 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentHandleError(
 
 // DisableAllForWebApp - Description for Disable all recommendations for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsDisableAllForWebAppOptions) (*http.Response, error) {
+func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsDisableAllForWebAppOptions) (RecommendationsDisableAllForWebAppResponse, error) {
 	req, err := client.disableAllForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableAllForWebAppResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableAllForWebAppResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.disableAllForWebAppHandleError(resp)
+		return RecommendationsDisableAllForWebAppResponse{}, client.disableAllForWebAppHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsDisableAllForWebAppResponse{RawResponse: resp.Response}, nil
 }
 
 // disableAllForWebAppCreateRequest creates the DisableAllForWebApp request.
@@ -148,19 +148,19 @@ func (client *RecommendationsClient) disableAllForWebAppHandleError(resp *azcore
 
 // DisableRecommendationForHostingEnvironment - Description for Disables the specific rule for a web site permanently.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, name string, hostingEnvironmentName string, options *RecommendationsDisableRecommendationForHostingEnvironmentOptions) (*http.Response, error) {
+func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, name string, hostingEnvironmentName string, options *RecommendationsDisableRecommendationForHostingEnvironmentOptions) (RecommendationsDisableRecommendationForHostingEnvironmentResponse, error) {
 	req, err := client.disableRecommendationForHostingEnvironmentCreateRequest(ctx, resourceGroupName, environmentName, name, hostingEnvironmentName, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.disableRecommendationForHostingEnvironmentHandleError(resp)
+		return RecommendationsDisableRecommendationForHostingEnvironmentResponse{}, client.disableRecommendationForHostingEnvironmentHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsDisableRecommendationForHostingEnvironmentResponse{RawResponse: resp.Response}, nil
 }
 
 // disableRecommendationForHostingEnvironmentCreateRequest creates the DisableRecommendationForHostingEnvironment request.
@@ -210,19 +210,19 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentH
 
 // DisableRecommendationForSite - Description for Disables the specific rule for a web site permanently.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsDisableRecommendationForSiteOptions) (*http.Response, error) {
+func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsDisableRecommendationForSiteOptions) (RecommendationsDisableRecommendationForSiteResponse, error) {
 	req, err := client.disableRecommendationForSiteCreateRequest(ctx, resourceGroupName, siteName, name, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableRecommendationForSiteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableRecommendationForSiteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.disableRecommendationForSiteHandleError(resp)
+		return RecommendationsDisableRecommendationForSiteResponse{}, client.disableRecommendationForSiteHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsDisableRecommendationForSiteResponse{RawResponse: resp.Response}, nil
 }
 
 // disableRecommendationForSiteCreateRequest creates the DisableRecommendationForSite request.
@@ -271,19 +271,19 @@ func (client *RecommendationsClient) disableRecommendationForSiteHandleError(res
 
 // DisableRecommendationForSubscription - Description for Disables the specified rule so it will not apply to a subscription in the future.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx context.Context, name string, options *RecommendationsDisableRecommendationForSubscriptionOptions) (*http.Response, error) {
+func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx context.Context, name string, options *RecommendationsDisableRecommendationForSubscriptionOptions) (RecommendationsDisableRecommendationForSubscriptionResponse, error) {
 	req, err := client.disableRecommendationForSubscriptionCreateRequest(ctx, name, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableRecommendationForSubscriptionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsDisableRecommendationForSubscriptionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.disableRecommendationForSubscriptionHandleError(resp)
+		return RecommendationsDisableRecommendationForSubscriptionResponse{}, client.disableRecommendationForSubscriptionHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsDisableRecommendationForSubscriptionResponse{RawResponse: resp.Response}, nil
 }
 
 // disableRecommendationForSubscriptionCreateRequest creates the DisableRecommendationForSubscription request.
@@ -324,17 +324,17 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionHandleE
 
 // GetRuleDetailsByHostingEnvironment - Description for Get a recommendation rule for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, name string, options *RecommendationsGetRuleDetailsByHostingEnvironmentOptions) (RecommendationRuleResponse, error) {
+func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, name string, options *RecommendationsGetRuleDetailsByHostingEnvironmentOptions) (RecommendationsGetRuleDetailsByHostingEnvironmentResponse, error) {
 	req, err := client.getRuleDetailsByHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, name, options)
 	if err != nil {
-		return RecommendationRuleResponse{}, err
+		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RecommendationRuleResponse{}, err
+		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RecommendationRuleResponse{}, client.getRuleDetailsByHostingEnvironmentHandleError(resp)
+		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, client.getRuleDetailsByHostingEnvironmentHandleError(resp)
 	}
 	return client.getRuleDetailsByHostingEnvironmentHandleResponse(resp)
 }
@@ -377,12 +377,12 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 }
 
 // getRuleDetailsByHostingEnvironmentHandleResponse handles the GetRuleDetailsByHostingEnvironment response.
-func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationRuleResponse, error) {
-	var val *RecommendationRule
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationRuleResponse{}, err
+func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationsGetRuleDetailsByHostingEnvironmentResponse, error) {
+	result := RecommendationsGetRuleDetailsByHostingEnvironmentResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationRule); err != nil {
+		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	return RecommendationRuleResponse{RawResponse: resp.Response, RecommendationRule: val}, nil
+	return result, nil
 }
 
 // getRuleDetailsByHostingEnvironmentHandleError handles the GetRuleDetailsByHostingEnvironment error response.
@@ -400,17 +400,17 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleErr
 
 // GetRuleDetailsByWebApp - Description for Get a recommendation rule for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsGetRuleDetailsByWebAppOptions) (RecommendationRuleResponse, error) {
+func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsGetRuleDetailsByWebAppOptions) (RecommendationsGetRuleDetailsByWebAppResponse, error) {
 	req, err := client.getRuleDetailsByWebAppCreateRequest(ctx, resourceGroupName, siteName, name, options)
 	if err != nil {
-		return RecommendationRuleResponse{}, err
+		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RecommendationRuleResponse{}, err
+		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RecommendationRuleResponse{}, client.getRuleDetailsByWebAppHandleError(resp)
+		return RecommendationsGetRuleDetailsByWebAppResponse{}, client.getRuleDetailsByWebAppHandleError(resp)
 	}
 	return client.getRuleDetailsByWebAppHandleResponse(resp)
 }
@@ -453,12 +453,12 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 }
 
 // getRuleDetailsByWebAppHandleResponse handles the GetRuleDetailsByWebApp response.
-func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *azcore.Response) (RecommendationRuleResponse, error) {
-	var val *RecommendationRule
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationRuleResponse{}, err
+func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *azcore.Response) (RecommendationsGetRuleDetailsByWebAppResponse, error) {
+	result := RecommendationsGetRuleDetailsByWebAppResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationRule); err != nil {
+		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
 	}
-	return RecommendationRuleResponse{RawResponse: resp.Response, RecommendationRule: val}, nil
+	return result, nil
 }
 
 // getRuleDetailsByWebAppHandleError handles the GetRuleDetailsByWebApp error response.
@@ -476,18 +476,15 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleError(resp *azc
 
 // List - Description for List all recommendations for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) List(options *RecommendationsListOptions) RecommendationCollectionPager {
-	return &recommendationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *RecommendationsClient) List(options *RecommendationsListOptions) RecommendationsListPager {
+	return &recommendationsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RecommendationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -519,12 +516,12 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *RecommendationsClient) listHandleResponse(resp *azcore.Response) (RecommendationCollectionResponse, error) {
-	var val *RecommendationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationCollectionResponse{}, err
+func (client *RecommendationsClient) listHandleResponse(resp *azcore.Response) (RecommendationsListResponse, error) {
+	result := RecommendationsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+		return RecommendationsListResponse{}, err
 	}
-	return RecommendationCollectionResponse{RawResponse: resp.Response, RecommendationCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -542,18 +539,15 @@ func (client *RecommendationsClient) listHandleError(resp *azcore.Response) erro
 
 // ListHistoryForHostingEnvironment - Description for Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListHistoryForHostingEnvironmentOptions) RecommendationCollectionPager {
-	return &recommendationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListHistoryForHostingEnvironmentOptions) RecommendationsListHistoryForHostingEnvironmentPager {
+	return &recommendationsListHistoryForHostingEnvironmentPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listHistoryForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
 		},
-		responder: client.listHistoryForHostingEnvironmentHandleResponse,
-		errorer:   client.listHistoryForHostingEnvironmentHandleError,
-		advancer: func(ctx context.Context, resp RecommendationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationsListHistoryForHostingEnvironmentResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -593,12 +587,12 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 }
 
 // listHistoryForHostingEnvironmentHandleResponse handles the ListHistoryForHostingEnvironment response.
-func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationCollectionResponse, error) {
-	var val *RecommendationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationCollectionResponse{}, err
+func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationsListHistoryForHostingEnvironmentResponse, error) {
+	result := RecommendationsListHistoryForHostingEnvironmentResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+		return RecommendationsListHistoryForHostingEnvironmentResponse{}, err
 	}
-	return RecommendationCollectionResponse{RawResponse: resp.Response, RecommendationCollection: val}, nil
+	return result, nil
 }
 
 // listHistoryForHostingEnvironmentHandleError handles the ListHistoryForHostingEnvironment error response.
@@ -616,18 +610,15 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleError
 
 // ListHistoryForWebApp - Description for Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsListHistoryForWebAppOptions) RecommendationCollectionPager {
-	return &recommendationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsListHistoryForWebAppOptions) RecommendationsListHistoryForWebAppPager {
+	return &recommendationsListHistoryForWebAppPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listHistoryForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		responder: client.listHistoryForWebAppHandleResponse,
-		errorer:   client.listHistoryForWebAppHandleError,
-		advancer: func(ctx context.Context, resp RecommendationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationsListHistoryForWebAppResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -667,12 +658,12 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 }
 
 // listHistoryForWebAppHandleResponse handles the ListHistoryForWebApp response.
-func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *azcore.Response) (RecommendationCollectionResponse, error) {
-	var val *RecommendationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationCollectionResponse{}, err
+func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *azcore.Response) (RecommendationsListHistoryForWebAppResponse, error) {
+	result := RecommendationsListHistoryForWebAppResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+		return RecommendationsListHistoryForWebAppResponse{}, err
 	}
-	return RecommendationCollectionResponse{RawResponse: resp.Response, RecommendationCollection: val}, nil
+	return result, nil
 }
 
 // listHistoryForWebAppHandleError handles the ListHistoryForWebApp error response.
@@ -690,18 +681,15 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleError(resp *azcor
 
 // ListRecommendedRulesForHostingEnvironment - Description for Get all recommendations for a hosting environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListRecommendedRulesForHostingEnvironmentOptions) RecommendationCollectionPager {
-	return &recommendationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListRecommendedRulesForHostingEnvironmentOptions) RecommendationsListRecommendedRulesForHostingEnvironmentPager {
+	return &recommendationsListRecommendedRulesForHostingEnvironmentPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listRecommendedRulesForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
 		},
-		responder: client.listRecommendedRulesForHostingEnvironmentHandleResponse,
-		errorer:   client.listRecommendedRulesForHostingEnvironmentHandleError,
-		advancer: func(ctx context.Context, resp RecommendationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationsListRecommendedRulesForHostingEnvironmentResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -741,12 +729,12 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 }
 
 // listRecommendedRulesForHostingEnvironmentHandleResponse handles the ListRecommendedRulesForHostingEnvironment response.
-func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationCollectionResponse, error) {
-	var val *RecommendationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationCollectionResponse{}, err
+func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationsListRecommendedRulesForHostingEnvironmentResponse, error) {
+	result := RecommendationsListRecommendedRulesForHostingEnvironmentResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+		return RecommendationsListRecommendedRulesForHostingEnvironmentResponse{}, err
 	}
-	return RecommendationCollectionResponse{RawResponse: resp.Response, RecommendationCollection: val}, nil
+	return result, nil
 }
 
 // listRecommendedRulesForHostingEnvironmentHandleError handles the ListRecommendedRulesForHostingEnvironment error response.
@@ -764,18 +752,15 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 
 // ListRecommendedRulesForWebApp - Description for Get all recommendations for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsListRecommendedRulesForWebAppOptions) RecommendationCollectionPager {
-	return &recommendationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsListRecommendedRulesForWebAppOptions) RecommendationsListRecommendedRulesForWebAppPager {
+	return &recommendationsListRecommendedRulesForWebAppPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listRecommendedRulesForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		responder: client.listRecommendedRulesForWebAppHandleResponse,
-		errorer:   client.listRecommendedRulesForWebAppHandleError,
-		advancer: func(ctx context.Context, resp RecommendationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationsListRecommendedRulesForWebAppResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -815,12 +800,12 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 }
 
 // listRecommendedRulesForWebAppHandleResponse handles the ListRecommendedRulesForWebApp response.
-func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse(resp *azcore.Response) (RecommendationCollectionResponse, error) {
-	var val *RecommendationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecommendationCollectionResponse{}, err
+func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse(resp *azcore.Response) (RecommendationsListRecommendedRulesForWebAppResponse, error) {
+	result := RecommendationsListRecommendedRulesForWebAppResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+		return RecommendationsListRecommendedRulesForWebAppResponse{}, err
 	}
-	return RecommendationCollectionResponse{RawResponse: resp.Response, RecommendationCollection: val}, nil
+	return result, nil
 }
 
 // listRecommendedRulesForWebAppHandleError handles the ListRecommendedRulesForWebApp error response.
@@ -838,19 +823,19 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleError(re
 
 // ResetAllFilters - Description for Reset all recommendation opt-out settings for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, options *RecommendationsResetAllFiltersOptions) (*http.Response, error) {
+func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, options *RecommendationsResetAllFiltersOptions) (RecommendationsResetAllFiltersResponse, error) {
 	req, err := client.resetAllFiltersCreateRequest(ctx, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsResetAllFiltersResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsResetAllFiltersResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.resetAllFiltersHandleError(resp)
+		return RecommendationsResetAllFiltersResponse{}, client.resetAllFiltersHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsResetAllFiltersResponse{RawResponse: resp.Response}, nil
 }
 
 // resetAllFiltersCreateRequest creates the ResetAllFilters request.
@@ -887,19 +872,19 @@ func (client *RecommendationsClient) resetAllFiltersHandleError(resp *azcore.Res
 
 // ResetAllFiltersForHostingEnvironment - Description for Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsResetAllFiltersForHostingEnvironmentOptions) (*http.Response, error) {
+func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsResetAllFiltersForHostingEnvironmentOptions) (RecommendationsResetAllFiltersForHostingEnvironmentResponse, error) {
 	req, err := client.resetAllFiltersForHostingEnvironmentCreateRequest(ctx, resourceGroupName, environmentName, hostingEnvironmentName, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.resetAllFiltersForHostingEnvironmentHandleError(resp)
+		return RecommendationsResetAllFiltersForHostingEnvironmentResponse{}, client.resetAllFiltersForHostingEnvironmentHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsResetAllFiltersForHostingEnvironmentResponse{RawResponse: resp.Response}, nil
 }
 
 // resetAllFiltersForHostingEnvironmentCreateRequest creates the ResetAllFiltersForHostingEnvironment request.
@@ -945,19 +930,19 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentHandleE
 
 // ResetAllFiltersForWebApp - Description for Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsResetAllFiltersForWebAppOptions) (*http.Response, error) {
+func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsResetAllFiltersForWebAppOptions) (RecommendationsResetAllFiltersForWebAppResponse, error) {
 	req, err := client.resetAllFiltersForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 	if err != nil {
-		return nil, err
+		return RecommendationsResetAllFiltersForWebAppResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecommendationsResetAllFiltersForWebAppResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.resetAllFiltersForWebAppHandleError(resp)
+		return RecommendationsResetAllFiltersForWebAppResponse{}, client.resetAllFiltersForWebAppHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecommendationsResetAllFiltersForWebAppResponse{RawResponse: resp.Response}, nil
 }
 
 // resetAllFiltersForWebAppCreateRequest creates the ResetAllFiltersForWebApp request.

@@ -33,17 +33,17 @@ func NewDiagnosticsClient(con *armcore.Connection, subscriptionID string) *Diagn
 
 // ExecuteSiteAnalysis - Description for Execute Analysis
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsExecuteSiteAnalysisOptions) (DiagnosticAnalysisResponse, error) {
+func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsExecuteSiteAnalysisOptions) (DiagnosticsExecuteSiteAnalysisResponse, error) {
 	req, err := client.executeSiteAnalysisCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, options)
 	if err != nil {
-		return DiagnosticAnalysisResponse{}, err
+		return DiagnosticsExecuteSiteAnalysisResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiagnosticAnalysisResponse{}, err
+		return DiagnosticsExecuteSiteAnalysisResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticAnalysisResponse{}, client.executeSiteAnalysisHandleError(resp)
+		return DiagnosticsExecuteSiteAnalysisResponse{}, client.executeSiteAnalysisHandleError(resp)
 	}
 	return client.executeSiteAnalysisHandleResponse(resp)
 }
@@ -93,12 +93,12 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 }
 
 // executeSiteAnalysisHandleResponse handles the ExecuteSiteAnalysis response.
-func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *azcore.Response) (DiagnosticAnalysisResponse, error) {
-	var val *DiagnosticAnalysis
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticAnalysisResponse{}, err
+func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *azcore.Response) (DiagnosticsExecuteSiteAnalysisResponse, error) {
+	result := DiagnosticsExecuteSiteAnalysisResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticAnalysis); err != nil {
+		return DiagnosticsExecuteSiteAnalysisResponse{}, err
 	}
-	return DiagnosticAnalysisResponse{RawResponse: resp.Response, DiagnosticAnalysis: val}, nil
+	return result, nil
 }
 
 // executeSiteAnalysisHandleError handles the ExecuteSiteAnalysis error response.
@@ -116,17 +116,17 @@ func (client *DiagnosticsClient) executeSiteAnalysisHandleError(resp *azcore.Res
 
 // ExecuteSiteAnalysisSlot - Description for Execute Analysis
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsExecuteSiteAnalysisSlotOptions) (DiagnosticAnalysisResponse, error) {
+func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsExecuteSiteAnalysisSlotOptions) (DiagnosticsExecuteSiteAnalysisSlotResponse, error) {
 	req, err := client.executeSiteAnalysisSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, slot, options)
 	if err != nil {
-		return DiagnosticAnalysisResponse{}, err
+		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiagnosticAnalysisResponse{}, err
+		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticAnalysisResponse{}, client.executeSiteAnalysisSlotHandleError(resp)
+		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, client.executeSiteAnalysisSlotHandleError(resp)
 	}
 	return client.executeSiteAnalysisSlotHandleResponse(resp)
 }
@@ -180,12 +180,12 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 }
 
 // executeSiteAnalysisSlotHandleResponse handles the ExecuteSiteAnalysisSlot response.
-func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *azcore.Response) (DiagnosticAnalysisResponse, error) {
-	var val *DiagnosticAnalysis
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticAnalysisResponse{}, err
+func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *azcore.Response) (DiagnosticsExecuteSiteAnalysisSlotResponse, error) {
+	result := DiagnosticsExecuteSiteAnalysisSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticAnalysis); err != nil {
+		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, err
 	}
-	return DiagnosticAnalysisResponse{RawResponse: resp.Response, DiagnosticAnalysis: val}, nil
+	return result, nil
 }
 
 // executeSiteAnalysisSlotHandleError handles the ExecuteSiteAnalysisSlot error response.
@@ -203,17 +203,17 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleError(resp *azcore
 
 // ExecuteSiteDetector - Description for Execute Detector
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsExecuteSiteDetectorOptions) (DiagnosticDetectorResponseResponse, error) {
+func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *DiagnosticsExecuteSiteDetectorOptions) (DiagnosticsExecuteSiteDetectorResponse, error) {
 	req, err := client.executeSiteDetectorCreateRequest(ctx, resourceGroupName, siteName, detectorName, diagnosticCategory, options)
 	if err != nil {
-		return DiagnosticDetectorResponseResponse{}, err
+		return DiagnosticsExecuteSiteDetectorResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiagnosticDetectorResponseResponse{}, err
+		return DiagnosticsExecuteSiteDetectorResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticDetectorResponseResponse{}, client.executeSiteDetectorHandleError(resp)
+		return DiagnosticsExecuteSiteDetectorResponse{}, client.executeSiteDetectorHandleError(resp)
 	}
 	return client.executeSiteDetectorHandleResponse(resp)
 }
@@ -263,12 +263,12 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 }
 
 // executeSiteDetectorHandleResponse handles the ExecuteSiteDetector response.
-func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *azcore.Response) (DiagnosticDetectorResponseResponse, error) {
-	var val *DiagnosticDetectorResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticDetectorResponseResponse{}, err
+func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *azcore.Response) (DiagnosticsExecuteSiteDetectorResponse, error) {
+	result := DiagnosticsExecuteSiteDetectorResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticDetectorResponse); err != nil {
+		return DiagnosticsExecuteSiteDetectorResponse{}, err
 	}
-	return DiagnosticDetectorResponseResponse{RawResponse: resp.Response, DiagnosticDetectorResponse: val}, nil
+	return result, nil
 }
 
 // executeSiteDetectorHandleError handles the ExecuteSiteDetector error response.
@@ -286,17 +286,17 @@ func (client *DiagnosticsClient) executeSiteDetectorHandleError(resp *azcore.Res
 
 // ExecuteSiteDetectorSlot - Description for Execute Detector
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsExecuteSiteDetectorSlotOptions) (DiagnosticDetectorResponseResponse, error) {
+func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *DiagnosticsExecuteSiteDetectorSlotOptions) (DiagnosticsExecuteSiteDetectorSlotResponse, error) {
 	req, err := client.executeSiteDetectorSlotCreateRequest(ctx, resourceGroupName, siteName, detectorName, diagnosticCategory, slot, options)
 	if err != nil {
-		return DiagnosticDetectorResponseResponse{}, err
+		return DiagnosticsExecuteSiteDetectorSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiagnosticDetectorResponseResponse{}, err
+		return DiagnosticsExecuteSiteDetectorSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticDetectorResponseResponse{}, client.executeSiteDetectorSlotHandleError(resp)
+		return DiagnosticsExecuteSiteDetectorSlotResponse{}, client.executeSiteDetectorSlotHandleError(resp)
 	}
 	return client.executeSiteDetectorSlotHandleResponse(resp)
 }
@@ -350,12 +350,12 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 }
 
 // executeSiteDetectorSlotHandleResponse handles the ExecuteSiteDetectorSlot response.
-func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *azcore.Response) (DiagnosticDetectorResponseResponse, error) {
-	var val *DiagnosticDetectorResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticDetectorResponseResponse{}, err
+func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *azcore.Response) (DiagnosticsExecuteSiteDetectorSlotResponse, error) {
+	result := DiagnosticsExecuteSiteDetectorSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticDetectorResponse); err != nil {
+		return DiagnosticsExecuteSiteDetectorSlotResponse{}, err
 	}
-	return DiagnosticDetectorResponseResponse{RawResponse: resp.Response, DiagnosticDetectorResponse: val}, nil
+	return result, nil
 }
 
 // executeSiteDetectorSlotHandleError handles the ExecuteSiteDetectorSlot error response.
@@ -373,17 +373,17 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotHandleError(resp *azcore
 
 // GetHostingEnvironmentDetectorResponse - Description for Get Hosting Environment Detector Response
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsGetHostingEnvironmentDetectorResponseOptions) (DetectorResponseResponse, error) {
+func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx context.Context, resourceGroupName string, name string, detectorName string, options *DiagnosticsGetHostingEnvironmentDetectorResponseOptions) (DiagnosticsGetHostingEnvironmentDetectorResponseResponse, error) {
 	req, err := client.getHostingEnvironmentDetectorResponseCreateRequest(ctx, resourceGroupName, name, detectorName, options)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DetectorResponseResponse{}, client.getHostingEnvironmentDetectorResponseHandleError(resp)
+		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, client.getHostingEnvironmentDetectorResponseHandleError(resp)
 	}
 	return client.getHostingEnvironmentDetectorResponseHandleResponse(resp)
 }
@@ -429,12 +429,12 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 }
 
 // getHostingEnvironmentDetectorResponseHandleResponse handles the GetHostingEnvironmentDetectorResponse response.
-func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *azcore.Response) (DetectorResponseResponse, error) {
-	var val *DetectorResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseResponse{}, err
+func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *azcore.Response) (DiagnosticsGetHostingEnvironmentDetectorResponseResponse, error) {
+	result := DiagnosticsGetHostingEnvironmentDetectorResponseResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponse); err != nil {
+		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
-	return DetectorResponseResponse{RawResponse: resp.Response, DetectorResponse: val}, nil
+	return result, nil
 }
 
 // getHostingEnvironmentDetectorResponseHandleError handles the GetHostingEnvironmentDetectorResponse error response.
@@ -452,17 +452,17 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleErro
 
 // GetSiteAnalysis - Description for Get Site Analysis
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsGetSiteAnalysisOptions) (AnalysisDefinitionResponse, error) {
+func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *DiagnosticsGetSiteAnalysisOptions) (DiagnosticsGetSiteAnalysisResponse, error) {
 	req, err := client.getSiteAnalysisCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, options)
 	if err != nil {
-		return AnalysisDefinitionResponse{}, err
+		return DiagnosticsGetSiteAnalysisResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AnalysisDefinitionResponse{}, err
+		return DiagnosticsGetSiteAnalysisResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AnalysisDefinitionResponse{}, client.getSiteAnalysisHandleError(resp)
+		return DiagnosticsGetSiteAnalysisResponse{}, client.getSiteAnalysisHandleError(resp)
 	}
 	return client.getSiteAnalysisHandleResponse(resp)
 }
@@ -503,12 +503,12 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 }
 
 // getSiteAnalysisHandleResponse handles the GetSiteAnalysis response.
-func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *azcore.Response) (AnalysisDefinitionResponse, error) {
-	var val *AnalysisDefinition
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AnalysisDefinitionResponse{}, err
+func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteAnalysisResponse, error) {
+	result := DiagnosticsGetSiteAnalysisResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AnalysisDefinition); err != nil {
+		return DiagnosticsGetSiteAnalysisResponse{}, err
 	}
-	return AnalysisDefinitionResponse{RawResponse: resp.Response, AnalysisDefinition: val}, nil
+	return result, nil
 }
 
 // getSiteAnalysisHandleError handles the GetSiteAnalysis error response.
@@ -526,17 +526,17 @@ func (client *DiagnosticsClient) getSiteAnalysisHandleError(resp *azcore.Respons
 
 // GetSiteAnalysisSlot - Description for Get Site Analysis
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsGetSiteAnalysisSlotOptions) (AnalysisDefinitionResponse, error) {
+func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *DiagnosticsGetSiteAnalysisSlotOptions) (DiagnosticsGetSiteAnalysisSlotResponse, error) {
 	req, err := client.getSiteAnalysisSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, analysisName, slot, options)
 	if err != nil {
-		return AnalysisDefinitionResponse{}, err
+		return DiagnosticsGetSiteAnalysisSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AnalysisDefinitionResponse{}, err
+		return DiagnosticsGetSiteAnalysisSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AnalysisDefinitionResponse{}, client.getSiteAnalysisSlotHandleError(resp)
+		return DiagnosticsGetSiteAnalysisSlotResponse{}, client.getSiteAnalysisSlotHandleError(resp)
 	}
 	return client.getSiteAnalysisSlotHandleResponse(resp)
 }
@@ -581,12 +581,12 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 }
 
 // getSiteAnalysisSlotHandleResponse handles the GetSiteAnalysisSlot response.
-func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *azcore.Response) (AnalysisDefinitionResponse, error) {
-	var val *AnalysisDefinition
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AnalysisDefinitionResponse{}, err
+func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteAnalysisSlotResponse, error) {
+	result := DiagnosticsGetSiteAnalysisSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AnalysisDefinition); err != nil {
+		return DiagnosticsGetSiteAnalysisSlotResponse{}, err
 	}
-	return AnalysisDefinitionResponse{RawResponse: resp.Response, AnalysisDefinition: val}, nil
+	return result, nil
 }
 
 // getSiteAnalysisSlotHandleError handles the GetSiteAnalysisSlot error response.
@@ -604,17 +604,17 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotHandleError(resp *azcore.Res
 
 // GetSiteDetector - Description for Get Detector
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsGetSiteDetectorOptions) (DetectorDefinitionResponse, error) {
+func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *DiagnosticsGetSiteDetectorOptions) (DiagnosticsGetSiteDetectorResponse, error) {
 	req, err := client.getSiteDetectorCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, detectorName, options)
 	if err != nil {
-		return DetectorDefinitionResponse{}, err
+		return DiagnosticsGetSiteDetectorResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DetectorDefinitionResponse{}, err
+		return DiagnosticsGetSiteDetectorResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DetectorDefinitionResponse{}, client.getSiteDetectorHandleError(resp)
+		return DiagnosticsGetSiteDetectorResponse{}, client.getSiteDetectorHandleError(resp)
 	}
 	return client.getSiteDetectorHandleResponse(resp)
 }
@@ -655,12 +655,12 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 }
 
 // getSiteDetectorHandleResponse handles the GetSiteDetector response.
-func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *azcore.Response) (DetectorDefinitionResponse, error) {
-	var val *DetectorDefinition
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorDefinitionResponse{}, err
+func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteDetectorResponse, error) {
+	result := DiagnosticsGetSiteDetectorResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorDefinition); err != nil {
+		return DiagnosticsGetSiteDetectorResponse{}, err
 	}
-	return DetectorDefinitionResponse{RawResponse: resp.Response, DetectorDefinition: val}, nil
+	return result, nil
 }
 
 // getSiteDetectorHandleError handles the GetSiteDetector error response.
@@ -678,17 +678,17 @@ func (client *DiagnosticsClient) getSiteDetectorHandleError(resp *azcore.Respons
 
 // GetSiteDetectorResponse - Description for Get site detector response
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsGetSiteDetectorResponseOptions) (DetectorResponseResponse, error) {
+func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *DiagnosticsGetSiteDetectorResponseOptions) (DiagnosticsGetSiteDetectorResponseResponse, error) {
 	req, err := client.getSiteDetectorResponseCreateRequest(ctx, resourceGroupName, siteName, detectorName, options)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return DiagnosticsGetSiteDetectorResponseResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return DiagnosticsGetSiteDetectorResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DetectorResponseResponse{}, client.getSiteDetectorResponseHandleError(resp)
+		return DiagnosticsGetSiteDetectorResponseResponse{}, client.getSiteDetectorResponseHandleError(resp)
 	}
 	return client.getSiteDetectorResponseHandleResponse(resp)
 }
@@ -734,12 +734,12 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 }
 
 // getSiteDetectorResponseHandleResponse handles the GetSiteDetectorResponse response.
-func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *azcore.Response) (DetectorResponseResponse, error) {
-	var val *DetectorResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseResponse{}, err
+func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteDetectorResponseResponse, error) {
+	result := DiagnosticsGetSiteDetectorResponseResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponse); err != nil {
+		return DiagnosticsGetSiteDetectorResponseResponse{}, err
 	}
-	return DetectorResponseResponse{RawResponse: resp.Response, DetectorResponse: val}, nil
+	return result, nil
 }
 
 // getSiteDetectorResponseHandleError handles the GetSiteDetectorResponse error response.
@@ -757,17 +757,17 @@ func (client *DiagnosticsClient) getSiteDetectorResponseHandleError(resp *azcore
 
 // GetSiteDetectorResponseSlot - Description for Get site detector response
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorResponseSlotOptions) (DetectorResponseResponse, error) {
+func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorResponseSlotOptions) (DiagnosticsGetSiteDetectorResponseSlotResponse, error) {
 	req, err := client.getSiteDetectorResponseSlotCreateRequest(ctx, resourceGroupName, siteName, detectorName, slot, options)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DetectorResponseResponse{}, client.getSiteDetectorResponseSlotHandleError(resp)
+		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, client.getSiteDetectorResponseSlotHandleError(resp)
 	}
 	return client.getSiteDetectorResponseSlotHandleResponse(resp)
 }
@@ -817,12 +817,12 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 }
 
 // getSiteDetectorResponseSlotHandleResponse handles the GetSiteDetectorResponseSlot response.
-func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *azcore.Response) (DetectorResponseResponse, error) {
-	var val *DetectorResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseResponse{}, err
+func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteDetectorResponseSlotResponse, error) {
+	result := DiagnosticsGetSiteDetectorResponseSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponse); err != nil {
+		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, err
 	}
-	return DetectorResponseResponse{RawResponse: resp.Response, DetectorResponse: val}, nil
+	return result, nil
 }
 
 // getSiteDetectorResponseSlotHandleError handles the GetSiteDetectorResponseSlot error response.
@@ -840,17 +840,17 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleError(resp *az
 
 // GetSiteDetectorSlot - Description for Get Detector
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorSlotOptions) (DetectorDefinitionResponse, error) {
+func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *DiagnosticsGetSiteDetectorSlotOptions) (DiagnosticsGetSiteDetectorSlotResponse, error) {
 	req, err := client.getSiteDetectorSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, detectorName, slot, options)
 	if err != nil {
-		return DetectorDefinitionResponse{}, err
+		return DiagnosticsGetSiteDetectorSlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DetectorDefinitionResponse{}, err
+		return DiagnosticsGetSiteDetectorSlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DetectorDefinitionResponse{}, client.getSiteDetectorSlotHandleError(resp)
+		return DiagnosticsGetSiteDetectorSlotResponse{}, client.getSiteDetectorSlotHandleError(resp)
 	}
 	return client.getSiteDetectorSlotHandleResponse(resp)
 }
@@ -895,12 +895,12 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 }
 
 // getSiteDetectorSlotHandleResponse handles the GetSiteDetectorSlot response.
-func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *azcore.Response) (DetectorDefinitionResponse, error) {
-	var val *DetectorDefinition
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorDefinitionResponse{}, err
+func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteDetectorSlotResponse, error) {
+	result := DiagnosticsGetSiteDetectorSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorDefinition); err != nil {
+		return DiagnosticsGetSiteDetectorSlotResponse{}, err
 	}
-	return DetectorDefinitionResponse{RawResponse: resp.Response, DetectorDefinition: val}, nil
+	return result, nil
 }
 
 // getSiteDetectorSlotHandleError handles the GetSiteDetectorSlot error response.
@@ -918,17 +918,17 @@ func (client *DiagnosticsClient) getSiteDetectorSlotHandleError(resp *azcore.Res
 
 // GetSiteDiagnosticCategory - Description for Get Diagnostics Category
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsGetSiteDiagnosticCategoryOptions) (DiagnosticCategoryResponse, error) {
+func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsGetSiteDiagnosticCategoryOptions) (DiagnosticsGetSiteDiagnosticCategoryResponse, error) {
 	req, err := client.getSiteDiagnosticCategoryCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 	if err != nil {
-		return DiagnosticCategoryResponse{}, err
+		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiagnosticCategoryResponse{}, err
+		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticCategoryResponse{}, client.getSiteDiagnosticCategoryHandleError(resp)
+		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, client.getSiteDiagnosticCategoryHandleError(resp)
 	}
 	return client.getSiteDiagnosticCategoryHandleResponse(resp)
 }
@@ -965,12 +965,12 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 }
 
 // getSiteDiagnosticCategoryHandleResponse handles the GetSiteDiagnosticCategory response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *azcore.Response) (DiagnosticCategoryResponse, error) {
-	var val *DiagnosticCategory
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticCategoryResponse{}, err
+func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteDiagnosticCategoryResponse, error) {
+	result := DiagnosticsGetSiteDiagnosticCategoryResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticCategory); err != nil {
+		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, err
 	}
-	return DiagnosticCategoryResponse{RawResponse: resp.Response, DiagnosticCategory: val}, nil
+	return result, nil
 }
 
 // getSiteDiagnosticCategoryHandleError handles the GetSiteDiagnosticCategory error response.
@@ -988,17 +988,17 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleError(resp *azco
 
 // GetSiteDiagnosticCategorySlot - Description for Get Diagnostics Category
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsGetSiteDiagnosticCategorySlotOptions) (DiagnosticCategoryResponse, error) {
+func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsGetSiteDiagnosticCategorySlotOptions) (DiagnosticsGetSiteDiagnosticCategorySlotResponse, error) {
 	req, err := client.getSiteDiagnosticCategorySlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 	if err != nil {
-		return DiagnosticCategoryResponse{}, err
+		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiagnosticCategoryResponse{}, err
+		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticCategoryResponse{}, client.getSiteDiagnosticCategorySlotHandleError(resp)
+		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, client.getSiteDiagnosticCategorySlotHandleError(resp)
 	}
 	return client.getSiteDiagnosticCategorySlotHandleResponse(resp)
 }
@@ -1039,12 +1039,12 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 }
 
 // getSiteDiagnosticCategorySlotHandleResponse handles the GetSiteDiagnosticCategorySlot response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *azcore.Response) (DiagnosticCategoryResponse, error) {
-	var val *DiagnosticCategory
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticCategoryResponse{}, err
+func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *azcore.Response) (DiagnosticsGetSiteDiagnosticCategorySlotResponse, error) {
+	result := DiagnosticsGetSiteDiagnosticCategorySlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticCategory); err != nil {
+		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, err
 	}
-	return DiagnosticCategoryResponse{RawResponse: resp.Response, DiagnosticCategory: val}, nil
+	return result, nil
 }
 
 // getSiteDiagnosticCategorySlotHandleError handles the GetSiteDiagnosticCategorySlot error response.
@@ -1062,18 +1062,15 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleError(resp *
 
 // ListHostingEnvironmentDetectorResponses - Description for List Hosting Environment Detector Responses
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsListHostingEnvironmentDetectorResponsesOptions) DetectorResponseCollectionPager {
-	return &detectorResponseCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListHostingEnvironmentDetectorResponses(resourceGroupName string, name string, options *DiagnosticsListHostingEnvironmentDetectorResponsesOptions) DiagnosticsListHostingEnvironmentDetectorResponsesPager {
+	return &diagnosticsListHostingEnvironmentDetectorResponsesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listHostingEnvironmentDetectorResponsesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listHostingEnvironmentDetectorResponsesHandleResponse,
-		errorer:   client.listHostingEnvironmentDetectorResponsesHandleError,
-		advancer: func(ctx context.Context, resp DetectorResponseCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListHostingEnvironmentDetectorResponsesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1105,12 +1102,12 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 }
 
 // listHostingEnvironmentDetectorResponsesHandleResponse handles the ListHostingEnvironmentDetectorResponses response.
-func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *azcore.Response) (DetectorResponseCollectionResponse, error) {
-	var val *DetectorResponseCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseCollectionResponse{}, err
+func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *azcore.Response) (DiagnosticsListHostingEnvironmentDetectorResponsesResponse, error) {
+	result := DiagnosticsListHostingEnvironmentDetectorResponsesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponseCollection); err != nil {
+		return DiagnosticsListHostingEnvironmentDetectorResponsesResponse{}, err
 	}
-	return DetectorResponseCollectionResponse{RawResponse: resp.Response, DetectorResponseCollection: val}, nil
+	return result, nil
 }
 
 // listHostingEnvironmentDetectorResponsesHandleError handles the ListHostingEnvironmentDetectorResponses error response.
@@ -1128,18 +1125,15 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleEr
 
 // ListSiteAnalyses - Description for Get Site Analyses
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteAnalysesOptions) DiagnosticAnalysisCollectionPager {
-	return &diagnosticAnalysisCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteAnalyses(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteAnalysesOptions) DiagnosticsListSiteAnalysesPager {
+	return &diagnosticsListSiteAnalysesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteAnalysesCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 		},
-		responder: client.listSiteAnalysesHandleResponse,
-		errorer:   client.listSiteAnalysesHandleError,
-		advancer: func(ctx context.Context, resp DiagnosticAnalysisCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteAnalysesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiagnosticAnalysisCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1175,12 +1169,12 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 }
 
 // listSiteAnalysesHandleResponse handles the ListSiteAnalyses response.
-func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *azcore.Response) (DiagnosticAnalysisCollectionResponse, error) {
-	var val *DiagnosticAnalysisCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticAnalysisCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *azcore.Response) (DiagnosticsListSiteAnalysesResponse, error) {
+	result := DiagnosticsListSiteAnalysesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticAnalysisCollection); err != nil {
+		return DiagnosticsListSiteAnalysesResponse{}, err
 	}
-	return DiagnosticAnalysisCollectionResponse{RawResponse: resp.Response, DiagnosticAnalysisCollection: val}, nil
+	return result, nil
 }
 
 // listSiteAnalysesHandleError handles the ListSiteAnalyses error response.
@@ -1198,18 +1192,15 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleError(resp *azcore.Respon
 
 // ListSiteAnalysesSlot - Description for Get Site Analyses
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteAnalysesSlotOptions) DiagnosticAnalysisCollectionPager {
-	return &diagnosticAnalysisCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteAnalysesSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteAnalysesSlotOptions) DiagnosticsListSiteAnalysesSlotPager {
+	return &diagnosticsListSiteAnalysesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteAnalysesSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 		},
-		responder: client.listSiteAnalysesSlotHandleResponse,
-		errorer:   client.listSiteAnalysesSlotHandleError,
-		advancer: func(ctx context.Context, resp DiagnosticAnalysisCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteAnalysesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiagnosticAnalysisCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1249,12 +1240,12 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 }
 
 // listSiteAnalysesSlotHandleResponse handles the ListSiteAnalysesSlot response.
-func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *azcore.Response) (DiagnosticAnalysisCollectionResponse, error) {
-	var val *DiagnosticAnalysisCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticAnalysisCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *azcore.Response) (DiagnosticsListSiteAnalysesSlotResponse, error) {
+	result := DiagnosticsListSiteAnalysesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticAnalysisCollection); err != nil {
+		return DiagnosticsListSiteAnalysesSlotResponse{}, err
 	}
-	return DiagnosticAnalysisCollectionResponse{RawResponse: resp.Response, DiagnosticAnalysisCollection: val}, nil
+	return result, nil
 }
 
 // listSiteAnalysesSlotHandleError handles the ListSiteAnalysesSlot error response.
@@ -1272,18 +1263,15 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotHandleError(resp *azcore.Re
 
 // ListSiteDetectorResponses - Description for List Site Detector Responses
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsListSiteDetectorResponsesOptions) DetectorResponseCollectionPager {
-	return &detectorResponseCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteDetectorResponses(resourceGroupName string, siteName string, options *DiagnosticsListSiteDetectorResponsesOptions) DiagnosticsListSiteDetectorResponsesPager {
+	return &diagnosticsListSiteDetectorResponsesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteDetectorResponsesCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		responder: client.listSiteDetectorResponsesHandleResponse,
-		errorer:   client.listSiteDetectorResponsesHandleError,
-		advancer: func(ctx context.Context, resp DetectorResponseCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorResponsesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1315,12 +1303,12 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 }
 
 // listSiteDetectorResponsesHandleResponse handles the ListSiteDetectorResponses response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *azcore.Response) (DetectorResponseCollectionResponse, error) {
-	var val *DetectorResponseCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *azcore.Response) (DiagnosticsListSiteDetectorResponsesResponse, error) {
+	result := DiagnosticsListSiteDetectorResponsesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponseCollection); err != nil {
+		return DiagnosticsListSiteDetectorResponsesResponse{}, err
 	}
-	return DetectorResponseCollectionResponse{RawResponse: resp.Response, DetectorResponseCollection: val}, nil
+	return result, nil
 }
 
 // listSiteDetectorResponsesHandleError handles the ListSiteDetectorResponses error response.
@@ -1338,18 +1326,15 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesHandleError(resp *azco
 
 // ListSiteDetectorResponsesSlot - Description for List Site Detector Responses
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDetectorResponsesSlotOptions) DetectorResponseCollectionPager {
-	return &detectorResponseCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteDetectorResponsesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDetectorResponsesSlotOptions) DiagnosticsListSiteDetectorResponsesSlotPager {
+	return &diagnosticsListSiteDetectorResponsesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteDetectorResponsesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
 		},
-		responder: client.listSiteDetectorResponsesSlotHandleResponse,
-		errorer:   client.listSiteDetectorResponsesSlotHandleError,
-		advancer: func(ctx context.Context, resp DetectorResponseCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorResponsesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1385,12 +1370,12 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 }
 
 // listSiteDetectorResponsesSlotHandleResponse handles the ListSiteDetectorResponsesSlot response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *azcore.Response) (DetectorResponseCollectionResponse, error) {
-	var val *DetectorResponseCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *azcore.Response) (DiagnosticsListSiteDetectorResponsesSlotResponse, error) {
+	result := DiagnosticsListSiteDetectorResponsesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponseCollection); err != nil {
+		return DiagnosticsListSiteDetectorResponsesSlotResponse{}, err
 	}
-	return DetectorResponseCollectionResponse{RawResponse: resp.Response, DetectorResponseCollection: val}, nil
+	return result, nil
 }
 
 // listSiteDetectorResponsesSlotHandleError handles the ListSiteDetectorResponsesSlot error response.
@@ -1408,18 +1393,15 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleError(resp *
 
 // ListSiteDetectors - Description for Get Detectors
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteDetectorsOptions) DiagnosticDetectorCollectionPager {
-	return &diagnosticDetectorCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteDetectors(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsListSiteDetectorsOptions) DiagnosticsListSiteDetectorsPager {
+	return &diagnosticsListSiteDetectorsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteDetectorsCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
 		},
-		responder: client.listSiteDetectorsHandleResponse,
-		errorer:   client.listSiteDetectorsHandleError,
-		advancer: func(ctx context.Context, resp DiagnosticDetectorCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiagnosticDetectorCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1455,12 +1437,12 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 }
 
 // listSiteDetectorsHandleResponse handles the ListSiteDetectors response.
-func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *azcore.Response) (DiagnosticDetectorCollectionResponse, error) {
-	var val *DiagnosticDetectorCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticDetectorCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *azcore.Response) (DiagnosticsListSiteDetectorsResponse, error) {
+	result := DiagnosticsListSiteDetectorsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticDetectorCollection); err != nil {
+		return DiagnosticsListSiteDetectorsResponse{}, err
 	}
-	return DiagnosticDetectorCollectionResponse{RawResponse: resp.Response, DiagnosticDetectorCollection: val}, nil
+	return result, nil
 }
 
 // listSiteDetectorsHandleError handles the ListSiteDetectors error response.
@@ -1478,18 +1460,15 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleError(resp *azcore.Respo
 
 // ListSiteDetectorsSlot - Description for Get Detectors
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteDetectorsSlotOptions) DiagnosticDetectorCollectionPager {
-	return &diagnosticDetectorCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteDetectorsSlot(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsListSiteDetectorsSlotOptions) DiagnosticsListSiteDetectorsSlotPager {
+	return &diagnosticsListSiteDetectorsSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteDetectorsSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
 		},
-		responder: client.listSiteDetectorsSlotHandleResponse,
-		errorer:   client.listSiteDetectorsSlotHandleError,
-		advancer: func(ctx context.Context, resp DiagnosticDetectorCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteDetectorsSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiagnosticDetectorCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1529,12 +1508,12 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 }
 
 // listSiteDetectorsSlotHandleResponse handles the ListSiteDetectorsSlot response.
-func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *azcore.Response) (DiagnosticDetectorCollectionResponse, error) {
-	var val *DiagnosticDetectorCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticDetectorCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *azcore.Response) (DiagnosticsListSiteDetectorsSlotResponse, error) {
+	result := DiagnosticsListSiteDetectorsSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticDetectorCollection); err != nil {
+		return DiagnosticsListSiteDetectorsSlotResponse{}, err
 	}
-	return DiagnosticDetectorCollectionResponse{RawResponse: resp.Response, DiagnosticDetectorCollection: val}, nil
+	return result, nil
 }
 
 // listSiteDetectorsSlotHandleError handles the ListSiteDetectorsSlot error response.
@@ -1552,18 +1531,15 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotHandleError(resp *azcore.R
 
 // ListSiteDiagnosticCategories - Description for Get Diagnostics Categories
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsListSiteDiagnosticCategoriesOptions) DiagnosticCategoryCollectionPager {
-	return &diagnosticCategoryCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteDiagnosticCategories(resourceGroupName string, siteName string, options *DiagnosticsListSiteDiagnosticCategoriesOptions) DiagnosticsListSiteDiagnosticCategoriesPager {
+	return &diagnosticsListSiteDiagnosticCategoriesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteDiagnosticCategoriesCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		responder: client.listSiteDiagnosticCategoriesHandleResponse,
-		errorer:   client.listSiteDiagnosticCategoriesHandleError,
-		advancer: func(ctx context.Context, resp DiagnosticCategoryCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteDiagnosticCategoriesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCategoryCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1595,12 +1571,12 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 }
 
 // listSiteDiagnosticCategoriesHandleResponse handles the ListSiteDiagnosticCategories response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *azcore.Response) (DiagnosticCategoryCollectionResponse, error) {
-	var val *DiagnosticCategoryCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticCategoryCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *azcore.Response) (DiagnosticsListSiteDiagnosticCategoriesResponse, error) {
+	result := DiagnosticsListSiteDiagnosticCategoriesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticCategoryCollection); err != nil {
+		return DiagnosticsListSiteDiagnosticCategoriesResponse{}, err
 	}
-	return DiagnosticCategoryCollectionResponse{RawResponse: resp.Response, DiagnosticCategoryCollection: val}, nil
+	return result, nil
 }
 
 // listSiteDiagnosticCategoriesHandleError handles the ListSiteDiagnosticCategories error response.
@@ -1618,18 +1594,15 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleError(resp *a
 
 // ListSiteDiagnosticCategoriesSlot - Description for Get Diagnostics Categories
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDiagnosticCategoriesSlotOptions) DiagnosticCategoryCollectionPager {
-	return &diagnosticCategoryCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(resourceGroupName string, siteName string, slot string, options *DiagnosticsListSiteDiagnosticCategoriesSlotOptions) DiagnosticsListSiteDiagnosticCategoriesSlotPager {
+	return &diagnosticsListSiteDiagnosticCategoriesSlotPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteDiagnosticCategoriesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
 		},
-		responder: client.listSiteDiagnosticCategoriesSlotHandleResponse,
-		errorer:   client.listSiteDiagnosticCategoriesSlotHandleError,
-		advancer: func(ctx context.Context, resp DiagnosticCategoryCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiagnosticsListSiteDiagnosticCategoriesSlotResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiagnosticCategoryCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -1665,12 +1638,12 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 }
 
 // listSiteDiagnosticCategoriesSlotHandleResponse handles the ListSiteDiagnosticCategoriesSlot response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *azcore.Response) (DiagnosticCategoryCollectionResponse, error) {
-	var val *DiagnosticCategoryCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticCategoryCollectionResponse{}, err
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *azcore.Response) (DiagnosticsListSiteDiagnosticCategoriesSlotResponse, error) {
+	result := DiagnosticsListSiteDiagnosticCategoriesSlotResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiagnosticCategoryCollection); err != nil {
+		return DiagnosticsListSiteDiagnosticCategoriesSlotResponse{}, err
 	}
-	return DiagnosticCategoryCollectionResponse{RawResponse: resp.Response, DiagnosticCategoryCollection: val}, nil
+	return result, nil
 }
 
 // listSiteDiagnosticCategoriesSlotHandleError handles the ListSiteDiagnosticCategoriesSlot error response.

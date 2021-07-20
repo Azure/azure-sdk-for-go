@@ -1,5 +1,5 @@
-github.com/Azure/azure-sdk-for-go v55.5.0+incompatible h1:GToUAq2Qdrh6g2ITPXx95zQ2DGMFSIatf9QwFplUTmk=
-github.com/Azure/azure-sdk-for-go v55.5.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
+github.com/Azure/azure-sdk-for-go v55.7.0+incompatible h1:BhYuQTWEb5qRIHp9+UKQdeJqcgq5pyOwHGFraV/QBlQ=
+github.com/Azure/azure-sdk-for-go v55.7.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
 github.com/Azure/azure-sdk-for-go/sdk/armcore v0.8.0 h1:HQQoaSGOh32mpoRkpLDjkngMwYJqkxu93FRx0epdLHE=
 github.com/Azure/azure-sdk-for-go/sdk/armcore v0.8.0/go.mod h1:BSKvHb/5cy8j4hahIInXH92X/2zGJ3TxKF6b9pw1Btg=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2 h1:UC4vfOhW2l0f2QOCQpOxJS4/K6oKFy2tQZE+uWU1MEo=

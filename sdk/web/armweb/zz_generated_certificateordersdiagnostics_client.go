@@ -33,17 +33,17 @@ func NewCertificateOrdersDiagnosticsClient(con *armcore.Connection, subscription
 
 // GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderDetectorResponse(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions) (DetectorResponseResponse, error) {
+func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderDetectorResponse(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseOptions) (CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse, error) {
 	req, err := client.getAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, detectorName, options)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DetectorResponseResponse{}, err
+		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DetectorResponseResponse{}, client.getAppServiceCertificateOrderDetectorResponseHandleError(resp)
+		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, client.getAppServiceCertificateOrderDetectorResponseHandleError(resp)
 	}
 	return client.getAppServiceCertificateOrderDetectorResponseHandleResponse(resp)
 }
@@ -89,12 +89,12 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 }
 
 // getAppServiceCertificateOrderDetectorResponseHandleResponse handles the GetAppServiceCertificateOrderDetectorResponse response.
-func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *azcore.Response) (DetectorResponseResponse, error) {
-	var val *DetectorResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseResponse{}, err
+func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *azcore.Response) (CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse, error) {
+	result := CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponse); err != nil {
+		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
-	return DetectorResponseResponse{RawResponse: resp.Response, DetectorResponse: val}, nil
+	return result, nil
 }
 
 // getAppServiceCertificateOrderDetectorResponseHandleError handles the GetAppServiceCertificateOrderDetectorResponse error response.
@@ -112,18 +112,15 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 
 // ListAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificateOrdersDiagnosticsClient) ListAppServiceCertificateOrderDetectorResponse(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions) DetectorResponseCollectionPager {
-	return &detectorResponseCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *CertificateOrdersDiagnosticsClient) ListAppServiceCertificateOrderDetectorResponse(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseOptions) CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager {
+	return &certificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponsePager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 		},
-		responder: client.listAppServiceCertificateOrderDetectorResponseHandleResponse,
-		errorer:   client.listAppServiceCertificateOrderDetectorResponseHandleError,
-		advancer: func(ctx context.Context, resp DetectorResponseCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DetectorResponseCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -155,12 +152,12 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 }
 
 // listAppServiceCertificateOrderDetectorResponseHandleResponse handles the ListAppServiceCertificateOrderDetectorResponse response.
-func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *azcore.Response) (DetectorResponseCollectionResponse, error) {
-	var val *DetectorResponseCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DetectorResponseCollectionResponse{}, err
+func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *azcore.Response) (CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse, error) {
+	result := CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DetectorResponseCollection); err != nil {
+		return CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
-	return DetectorResponseCollectionResponse{RawResponse: resp.Response, DetectorResponseCollection: val}, nil
+	return result, nil
 }
 
 // listAppServiceCertificateOrderDetectorResponseHandleError handles the ListAppServiceCertificateOrderDetectorResponse error response.

@@ -33,17 +33,17 @@ func NewWebSiteManagementClient(con *armcore.Connection, subscriptionID string) 
 
 // CheckNameAvailability - Description for Check if a resource name is available.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) CheckNameAvailability(ctx context.Context, request ResourceNameAvailabilityRequest, options *WebSiteManagementClientCheckNameAvailabilityOptions) (ResourceNameAvailabilityResponse, error) {
+func (client *WebSiteManagementClient) CheckNameAvailability(ctx context.Context, request ResourceNameAvailabilityRequest, options *WebSiteManagementClientCheckNameAvailabilityOptions) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, request, options)
 	if err != nil {
-		return ResourceNameAvailabilityResponse{}, err
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ResourceNameAvailabilityResponse{}, err
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ResourceNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
@@ -68,12 +68,12 @@ func (client *WebSiteManagementClient) checkNameAvailabilityCreateRequest(ctx co
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (ResourceNameAvailabilityResponse, error) {
-	var val *ResourceNameAvailability
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceNameAvailabilityResponse{}, err
+func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
+	result := WebSiteManagementClientCheckNameAvailabilityResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceNameAvailability); err != nil {
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	return ResourceNameAvailabilityResponse{RawResponse: resp.Response, ResourceNameAvailability: val}, nil
+	return result, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
@@ -91,17 +91,17 @@ func (client *WebSiteManagementClient) checkNameAvailabilityHandleError(resp *az
 
 // GenerateGithubAccessTokenForAppserviceCLIAsync - Description for Exchange code for GitHub access token for AppService CLI
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) GenerateGithubAccessTokenForAppserviceCLIAsync(ctx context.Context, request AppserviceGithubTokenRequest, options *WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncOptions) (AppserviceGithubTokenResponse, error) {
+func (client *WebSiteManagementClient) GenerateGithubAccessTokenForAppserviceCLIAsync(ctx context.Context, request AppserviceGithubTokenRequest, options *WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncOptions) (WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse, error) {
 	req, err := client.generateGithubAccessTokenForAppserviceCLIAsyncCreateRequest(ctx, request, options)
 	if err != nil {
-		return AppserviceGithubTokenResponse{}, err
+		return WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppserviceGithubTokenResponse{}, err
+		return WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AppserviceGithubTokenResponse{}, client.generateGithubAccessTokenForAppserviceCLIAsyncHandleError(resp)
+		return WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{}, client.generateGithubAccessTokenForAppserviceCLIAsyncHandleError(resp)
 	}
 	return client.generateGithubAccessTokenForAppserviceCLIAsyncHandleResponse(resp)
 }
@@ -122,12 +122,12 @@ func (client *WebSiteManagementClient) generateGithubAccessTokenForAppserviceCLI
 }
 
 // generateGithubAccessTokenForAppserviceCLIAsyncHandleResponse handles the GenerateGithubAccessTokenForAppserviceCLIAsync response.
-func (client *WebSiteManagementClient) generateGithubAccessTokenForAppserviceCLIAsyncHandleResponse(resp *azcore.Response) (AppserviceGithubTokenResponse, error) {
-	var val *AppserviceGithubToken
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppserviceGithubTokenResponse{}, err
+func (client *WebSiteManagementClient) generateGithubAccessTokenForAppserviceCLIAsyncHandleResponse(resp *azcore.Response) (WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse, error) {
+	result := WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppserviceGithubToken); err != nil {
+		return WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{}, err
 	}
-	return AppserviceGithubTokenResponse{RawResponse: resp.Response, AppserviceGithubToken: val}, nil
+	return result, nil
 }
 
 // generateGithubAccessTokenForAppserviceCLIAsyncHandleError handles the GenerateGithubAccessTokenForAppserviceCLIAsync error response.
@@ -145,17 +145,17 @@ func (client *WebSiteManagementClient) generateGithubAccessTokenForAppserviceCLI
 
 // GetPublishingUser - Description for Gets publishing user
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, options *WebSiteManagementClientGetPublishingUserOptions) (UserResponse, error) {
+func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, options *WebSiteManagementClientGetPublishingUserOptions) (WebSiteManagementClientGetPublishingUserResponse, error) {
 	req, err := client.getPublishingUserCreateRequest(ctx, options)
 	if err != nil {
-		return UserResponse{}, err
+		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return UserResponse{}, err
+		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return UserResponse{}, client.getPublishingUserHandleError(resp)
+		return WebSiteManagementClientGetPublishingUserResponse{}, client.getPublishingUserHandleError(resp)
 	}
 	return client.getPublishingUserHandleResponse(resp)
 }
@@ -176,12 +176,12 @@ func (client *WebSiteManagementClient) getPublishingUserCreateRequest(ctx contex
 }
 
 // getPublishingUserHandleResponse handles the GetPublishingUser response.
-func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *azcore.Response) (UserResponse, error) {
-	var val *User
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UserResponse{}, err
+func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *azcore.Response) (WebSiteManagementClientGetPublishingUserResponse, error) {
+	result := WebSiteManagementClientGetPublishingUserResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.User); err != nil {
+		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
-	return UserResponse{RawResponse: resp.Response, User: val}, nil
+	return result, nil
 }
 
 // getPublishingUserHandleError handles the GetPublishingUser error response.
@@ -199,17 +199,17 @@ func (client *WebSiteManagementClient) getPublishingUserHandleError(resp *azcore
 
 // GetSourceControl - Description for Gets source control token
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) GetSourceControl(ctx context.Context, sourceControlType string, options *WebSiteManagementClientGetSourceControlOptions) (SourceControlResponse, error) {
+func (client *WebSiteManagementClient) GetSourceControl(ctx context.Context, sourceControlType string, options *WebSiteManagementClientGetSourceControlOptions) (WebSiteManagementClientGetSourceControlResponse, error) {
 	req, err := client.getSourceControlCreateRequest(ctx, sourceControlType, options)
 	if err != nil {
-		return SourceControlResponse{}, err
+		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SourceControlResponse{}, err
+		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SourceControlResponse{}, client.getSourceControlHandleError(resp)
+		return WebSiteManagementClientGetSourceControlResponse{}, client.getSourceControlHandleError(resp)
 	}
 	return client.getSourceControlHandleResponse(resp)
 }
@@ -234,12 +234,12 @@ func (client *WebSiteManagementClient) getSourceControlCreateRequest(ctx context
 }
 
 // getSourceControlHandleResponse handles the GetSourceControl response.
-func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *azcore.Response) (SourceControlResponse, error) {
-	var val *SourceControl
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SourceControlResponse{}, err
+func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *azcore.Response) (WebSiteManagementClientGetSourceControlResponse, error) {
+	result := WebSiteManagementClientGetSourceControlResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SourceControl); err != nil {
+		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
-	return SourceControlResponse{RawResponse: resp.Response, SourceControl: val}, nil
+	return result, nil
 }
 
 // getSourceControlHandleError handles the GetSourceControl error response.
@@ -257,17 +257,17 @@ func (client *WebSiteManagementClient) getSourceControlHandleError(resp *azcore.
 
 // GetSubscriptionDeploymentLocations - Description for Gets list of available geo regions plus ministamps
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) GetSubscriptionDeploymentLocations(ctx context.Context, options *WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (DeploymentLocationsResponse, error) {
+func (client *WebSiteManagementClient) GetSubscriptionDeploymentLocations(ctx context.Context, options *WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
 	req, err := client.getSubscriptionDeploymentLocationsCreateRequest(ctx, options)
 	if err != nil {
-		return DeploymentLocationsResponse{}, err
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentLocationsResponse{}, err
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DeploymentLocationsResponse{}, client.getSubscriptionDeploymentLocationsHandleError(resp)
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, client.getSubscriptionDeploymentLocationsHandleError(resp)
 	}
 	return client.getSubscriptionDeploymentLocationsHandleResponse(resp)
 }
@@ -292,12 +292,12 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsCreateR
 }
 
 // getSubscriptionDeploymentLocationsHandleResponse handles the GetSubscriptionDeploymentLocations response.
-func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *azcore.Response) (DeploymentLocationsResponse, error) {
-	var val *DeploymentLocations
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeploymentLocationsResponse{}, err
+func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *azcore.Response) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
+	result := WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DeploymentLocations); err != nil {
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
-	return DeploymentLocationsResponse{RawResponse: resp.Response, DeploymentLocations: val}, nil
+	return result, nil
 }
 
 // getSubscriptionDeploymentLocationsHandleError handles the GetSubscriptionDeploymentLocations error response.
@@ -315,18 +315,15 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleE
 
 // ListBillingMeters - Description for Gets a list of meters for a given location.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ListBillingMeters(options *WebSiteManagementClientListBillingMetersOptions) BillingMeterCollectionPager {
-	return &billingMeterCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebSiteManagementClient) ListBillingMeters(options *WebSiteManagementClientListBillingMetersOptions) WebSiteManagementClientListBillingMetersPager {
+	return &webSiteManagementClientListBillingMetersPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBillingMetersCreateRequest(ctx, options)
 		},
-		responder: client.listBillingMetersHandleResponse,
-		errorer:   client.listBillingMetersHandleError,
-		advancer: func(ctx context.Context, resp BillingMeterCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebSiteManagementClientListBillingMetersResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BillingMeterCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -356,12 +353,12 @@ func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx contex
 }
 
 // listBillingMetersHandleResponse handles the ListBillingMeters response.
-func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *azcore.Response) (BillingMeterCollectionResponse, error) {
-	var val *BillingMeterCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BillingMeterCollectionResponse{}, err
+func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *azcore.Response) (WebSiteManagementClientListBillingMetersResponse, error) {
+	result := WebSiteManagementClientListBillingMetersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.BillingMeterCollection); err != nil {
+		return WebSiteManagementClientListBillingMetersResponse{}, err
 	}
-	return BillingMeterCollectionResponse{RawResponse: resp.Response, BillingMeterCollection: val}, nil
+	return result, nil
 }
 
 // listBillingMetersHandleError handles the ListBillingMeters error response.
@@ -379,18 +376,15 @@ func (client *WebSiteManagementClient) listBillingMetersHandleError(resp *azcore
 
 // ListGeoRegions - Description for Get a list of available geographical regions.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ListGeoRegions(options *WebSiteManagementClientListGeoRegionsOptions) GeoRegionCollectionPager {
-	return &geoRegionCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebSiteManagementClient) ListGeoRegions(options *WebSiteManagementClientListGeoRegionsOptions) WebSiteManagementClientListGeoRegionsPager {
+	return &webSiteManagementClientListGeoRegionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listGeoRegionsCreateRequest(ctx, options)
 		},
-		responder: client.listGeoRegionsHandleResponse,
-		errorer:   client.listGeoRegionsHandleError,
-		advancer: func(ctx context.Context, resp GeoRegionCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebSiteManagementClientListGeoRegionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.GeoRegionCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -426,12 +420,12 @@ func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.C
 }
 
 // listGeoRegionsHandleResponse handles the ListGeoRegions response.
-func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *azcore.Response) (GeoRegionCollectionResponse, error) {
-	var val *GeoRegionCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GeoRegionCollectionResponse{}, err
+func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *azcore.Response) (WebSiteManagementClientListGeoRegionsResponse, error) {
+	result := WebSiteManagementClientListGeoRegionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.GeoRegionCollection); err != nil {
+		return WebSiteManagementClientListGeoRegionsResponse{}, err
 	}
-	return GeoRegionCollectionResponse{RawResponse: resp.Response, GeoRegionCollection: val}, nil
+	return result, nil
 }
 
 // listGeoRegionsHandleError handles the ListGeoRegions error response.
@@ -449,18 +443,15 @@ func (client *WebSiteManagementClient) listGeoRegionsHandleError(resp *azcore.Re
 
 // ListPremierAddOnOffers - Description for List all premier add-on offers.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ListPremierAddOnOffers(options *WebSiteManagementClientListPremierAddOnOffersOptions) PremierAddOnOfferCollectionPager {
-	return &premierAddOnOfferCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebSiteManagementClient) ListPremierAddOnOffers(options *WebSiteManagementClientListPremierAddOnOffersOptions) WebSiteManagementClientListPremierAddOnOffersPager {
+	return &webSiteManagementClientListPremierAddOnOffersPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listPremierAddOnOffersCreateRequest(ctx, options)
 		},
-		responder: client.listPremierAddOnOffersHandleResponse,
-		errorer:   client.listPremierAddOnOffersHandleError,
-		advancer: func(ctx context.Context, resp PremierAddOnOfferCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebSiteManagementClientListPremierAddOnOffersResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PremierAddOnOfferCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -484,12 +475,12 @@ func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx c
 }
 
 // listPremierAddOnOffersHandleResponse handles the ListPremierAddOnOffers response.
-func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp *azcore.Response) (PremierAddOnOfferCollectionResponse, error) {
-	var val *PremierAddOnOfferCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PremierAddOnOfferCollectionResponse{}, err
+func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp *azcore.Response) (WebSiteManagementClientListPremierAddOnOffersResponse, error) {
+	result := WebSiteManagementClientListPremierAddOnOffersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PremierAddOnOfferCollection); err != nil {
+		return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 	}
-	return PremierAddOnOfferCollectionResponse{RawResponse: resp.Response, PremierAddOnOfferCollection: val}, nil
+	return result, nil
 }
 
 // listPremierAddOnOffersHandleError handles the ListPremierAddOnOffers error response.
@@ -507,17 +498,17 @@ func (client *WebSiteManagementClient) listPremierAddOnOffersHandleError(resp *a
 
 // ListSKUs - Description for List all SKUs.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ListSKUs(ctx context.Context, options *WebSiteManagementClientListSKUsOptions) (SKUInfosResponse, error) {
+func (client *WebSiteManagementClient) ListSKUs(ctx context.Context, options *WebSiteManagementClientListSKUsOptions) (WebSiteManagementClientListSKUsResponse, error) {
 	req, err := client.listSKUsCreateRequest(ctx, options)
 	if err != nil {
-		return SKUInfosResponse{}, err
+		return WebSiteManagementClientListSKUsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SKUInfosResponse{}, err
+		return WebSiteManagementClientListSKUsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SKUInfosResponse{}, client.listSKUsHandleError(resp)
+		return WebSiteManagementClientListSKUsResponse{}, client.listSKUsHandleError(resp)
 	}
 	return client.listSKUsHandleResponse(resp)
 }
@@ -542,12 +533,12 @@ func (client *WebSiteManagementClient) listSKUsCreateRequest(ctx context.Context
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *azcore.Response) (SKUInfosResponse, error) {
-	var val *SKUInfos
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SKUInfosResponse{}, err
+func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *azcore.Response) (WebSiteManagementClientListSKUsResponse, error) {
+	result := WebSiteManagementClientListSKUsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SKUInfos); err != nil {
+		return WebSiteManagementClientListSKUsResponse{}, err
 	}
-	return SKUInfosResponse{RawResponse: resp.Response, SKUInfos: val}, nil
+	return result, nil
 }
 
 // listSKUsHandleError handles the ListSKUs error response.
@@ -565,18 +556,15 @@ func (client *WebSiteManagementClient) listSKUsHandleError(resp *azcore.Response
 
 // ListSiteIdentifiersAssignedToHostName - Description for List all apps that are assigned to a hostname.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ListSiteIdentifiersAssignedToHostName(nameIdentifier NameIdentifier, options *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) IdentifierCollectionPager {
-	return &identifierCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebSiteManagementClient) ListSiteIdentifiersAssignedToHostName(nameIdentifier NameIdentifier, options *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) WebSiteManagementClientListSiteIdentifiersAssignedToHostNamePager {
+	return &webSiteManagementClientListSiteIdentifiersAssignedToHostNamePager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSiteIdentifiersAssignedToHostNameCreateRequest(ctx, nameIdentifier, options)
 		},
-		responder: client.listSiteIdentifiersAssignedToHostNameHandleResponse,
-		errorer:   client.listSiteIdentifiersAssignedToHostNameHandleError,
-		advancer: func(ctx context.Context, resp IdentifierCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.IdentifierCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -600,12 +588,12 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCrea
 }
 
 // listSiteIdentifiersAssignedToHostNameHandleResponse handles the ListSiteIdentifiersAssignedToHostName response.
-func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *azcore.Response) (IdentifierCollectionResponse, error) {
-	var val *IdentifierCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IdentifierCollectionResponse{}, err
+func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *azcore.Response) (WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
+	result := WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.IdentifierCollection); err != nil {
+		return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 	}
-	return IdentifierCollectionResponse{RawResponse: resp.Response, IdentifierCollection: val}, nil
+	return result, nil
 }
 
 // listSiteIdentifiersAssignedToHostNameHandleError handles the ListSiteIdentifiersAssignedToHostName error response.
@@ -623,18 +611,15 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHand
 
 // ListSourceControls - Description for Gets the source controls available for Azure websites.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ListSourceControls(options *WebSiteManagementClientListSourceControlsOptions) SourceControlCollectionPager {
-	return &sourceControlCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *WebSiteManagementClient) ListSourceControls(options *WebSiteManagementClientListSourceControlsOptions) WebSiteManagementClientListSourceControlsPager {
+	return &webSiteManagementClientListSourceControlsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listSourceControlsCreateRequest(ctx, options)
 		},
-		responder: client.listSourceControlsHandleResponse,
-		errorer:   client.listSourceControlsHandleError,
-		advancer: func(ctx context.Context, resp SourceControlCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp WebSiteManagementClientListSourceControlsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SourceControlCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -654,12 +639,12 @@ func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx conte
 }
 
 // listSourceControlsHandleResponse handles the ListSourceControls response.
-func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *azcore.Response) (SourceControlCollectionResponse, error) {
-	var val *SourceControlCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SourceControlCollectionResponse{}, err
+func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *azcore.Response) (WebSiteManagementClientListSourceControlsResponse, error) {
+	result := WebSiteManagementClientListSourceControlsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SourceControlCollection); err != nil {
+		return WebSiteManagementClientListSourceControlsResponse{}, err
 	}
-	return SourceControlCollectionResponse{RawResponse: resp.Response, SourceControlCollection: val}, nil
+	return result, nil
 }
 
 // listSourceControlsHandleError handles the ListSourceControls error response.
@@ -677,19 +662,19 @@ func (client *WebSiteManagementClient) listSourceControlsHandleError(resp *azcor
 
 // Move - Description for Move resources between resource groups.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) Move(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientMoveOptions) (*http.Response, error) {
+func (client *WebSiteManagementClient) Move(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientMoveOptions) (WebSiteManagementClientMoveResponse, error) {
 	req, err := client.moveCreateRequest(ctx, resourceGroupName, moveResourceEnvelope, options)
 	if err != nil {
-		return nil, err
+		return WebSiteManagementClientMoveResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebSiteManagementClientMoveResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.moveHandleError(resp)
+		return WebSiteManagementClientMoveResponse{}, client.moveHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebSiteManagementClientMoveResponse{RawResponse: resp.Response}, nil
 }
 
 // moveCreateRequest creates the Move request.
@@ -730,17 +715,17 @@ func (client *WebSiteManagementClient) moveHandleError(resp *azcore.Response) er
 
 // UpdatePublishingUser - Description for Updates publishing user
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context, userDetails User, options *WebSiteManagementClientUpdatePublishingUserOptions) (UserResponse, error) {
+func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context, userDetails User, options *WebSiteManagementClientUpdatePublishingUserOptions) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
 	req, err := client.updatePublishingUserCreateRequest(ctx, userDetails, options)
 	if err != nil {
-		return UserResponse{}, err
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return UserResponse{}, err
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return UserResponse{}, client.updatePublishingUserHandleError(resp)
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, client.updatePublishingUserHandleError(resp)
 	}
 	return client.updatePublishingUserHandleResponse(resp)
 }
@@ -761,12 +746,12 @@ func (client *WebSiteManagementClient) updatePublishingUserCreateRequest(ctx con
 }
 
 // updatePublishingUserHandleResponse handles the UpdatePublishingUser response.
-func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *azcore.Response) (UserResponse, error) {
-	var val *User
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UserResponse{}, err
+func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *azcore.Response) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
+	result := WebSiteManagementClientUpdatePublishingUserResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.User); err != nil {
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
-	return UserResponse{RawResponse: resp.Response, User: val}, nil
+	return result, nil
 }
 
 // updatePublishingUserHandleError handles the UpdatePublishingUser error response.
@@ -784,17 +769,17 @@ func (client *WebSiteManagementClient) updatePublishingUserHandleError(resp *azc
 
 // UpdateSourceControl - Description for Updates source control token
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl, options *WebSiteManagementClientUpdateSourceControlOptions) (SourceControlResponse, error) {
+func (client *WebSiteManagementClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl, options *WebSiteManagementClientUpdateSourceControlOptions) (WebSiteManagementClientUpdateSourceControlResponse, error) {
 	req, err := client.updateSourceControlCreateRequest(ctx, sourceControlType, requestMessage, options)
 	if err != nil {
-		return SourceControlResponse{}, err
+		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SourceControlResponse{}, err
+		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SourceControlResponse{}, client.updateSourceControlHandleError(resp)
+		return WebSiteManagementClientUpdateSourceControlResponse{}, client.updateSourceControlHandleError(resp)
 	}
 	return client.updateSourceControlHandleResponse(resp)
 }
@@ -819,12 +804,12 @@ func (client *WebSiteManagementClient) updateSourceControlCreateRequest(ctx cont
 }
 
 // updateSourceControlHandleResponse handles the UpdateSourceControl response.
-func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *azcore.Response) (SourceControlResponse, error) {
-	var val *SourceControl
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SourceControlResponse{}, err
+func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *azcore.Response) (WebSiteManagementClientUpdateSourceControlResponse, error) {
+	result := WebSiteManagementClientUpdateSourceControlResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SourceControl); err != nil {
+		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
-	return SourceControlResponse{RawResponse: resp.Response, SourceControl: val}, nil
+	return result, nil
 }
 
 // updateSourceControlHandleError handles the UpdateSourceControl error response.
@@ -842,17 +827,17 @@ func (client *WebSiteManagementClient) updateSourceControlHandleError(resp *azco
 
 // Validate - Description for Validate if a resource can be created.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) Validate(ctx context.Context, resourceGroupName string, validateRequest ValidateRequest, options *WebSiteManagementClientValidateOptions) (ValidateResponseResponse, error) {
+func (client *WebSiteManagementClient) Validate(ctx context.Context, resourceGroupName string, validateRequest ValidateRequest, options *WebSiteManagementClientValidateOptions) (WebSiteManagementClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, validateRequest, options)
 	if err != nil {
-		return ValidateResponseResponse{}, err
+		return WebSiteManagementClientValidateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ValidateResponseResponse{}, err
+		return WebSiteManagementClientValidateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ValidateResponseResponse{}, client.validateHandleError(resp)
+		return WebSiteManagementClientValidateResponse{}, client.validateHandleError(resp)
 	}
 	return client.validateHandleResponse(resp)
 }
@@ -881,12 +866,12 @@ func (client *WebSiteManagementClient) validateCreateRequest(ctx context.Context
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *WebSiteManagementClient) validateHandleResponse(resp *azcore.Response) (ValidateResponseResponse, error) {
-	var val *ValidateResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ValidateResponseResponse{}, err
+func (client *WebSiteManagementClient) validateHandleResponse(resp *azcore.Response) (WebSiteManagementClientValidateResponse, error) {
+	result := WebSiteManagementClientValidateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ValidateResponse); err != nil {
+		return WebSiteManagementClientValidateResponse{}, err
 	}
-	return ValidateResponseResponse{RawResponse: resp.Response, ValidateResponse: val}, nil
+	return result, nil
 }
 
 // validateHandleError handles the Validate error response.
@@ -904,19 +889,19 @@ func (client *WebSiteManagementClient) validateHandleError(resp *azcore.Response
 
 // ValidateMove - Description for Validate whether a resource can be moved.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) ValidateMove(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientValidateMoveOptions) (*http.Response, error) {
+func (client *WebSiteManagementClient) ValidateMove(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientValidateMoveOptions) (WebSiteManagementClientValidateMoveResponse, error) {
 	req, err := client.validateMoveCreateRequest(ctx, resourceGroupName, moveResourceEnvelope, options)
 	if err != nil {
-		return nil, err
+		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.validateMoveHandleError(resp)
+		return WebSiteManagementClientValidateMoveResponse{}, client.validateMoveHandleError(resp)
 	}
-	return resp.Response, nil
+	return WebSiteManagementClientValidateMoveResponse{RawResponse: resp.Response}, nil
 }
 
 // validateMoveCreateRequest creates the ValidateMove request.
@@ -958,17 +943,17 @@ func (client *WebSiteManagementClient) validateMoveHandleError(resp *azcore.Resp
 // VerifyHostingEnvironmentVnet - Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security
 // Group rules.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *WebSiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.Context, parameters VnetParameters, options *WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (VnetValidationFailureDetailsResponse, error) {
+func (client *WebSiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.Context, parameters VnetParameters, options *WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
 	req, err := client.verifyHostingEnvironmentVnetCreateRequest(ctx, parameters, options)
 	if err != nil {
-		return VnetValidationFailureDetailsResponse{}, err
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VnetValidationFailureDetailsResponse{}, err
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VnetValidationFailureDetailsResponse{}, client.verifyHostingEnvironmentVnetHandleError(resp)
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, client.verifyHostingEnvironmentVnetHandleError(resp)
 	}
 	return client.verifyHostingEnvironmentVnetHandleResponse(resp)
 }
@@ -993,12 +978,12 @@ func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetCreateRequest
 }
 
 // verifyHostingEnvironmentVnetHandleResponse handles the VerifyHostingEnvironmentVnet response.
-func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *azcore.Response) (VnetValidationFailureDetailsResponse, error) {
-	var val *VnetValidationFailureDetails
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VnetValidationFailureDetailsResponse{}, err
+func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *azcore.Response) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
+	result := WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VnetValidationFailureDetails); err != nil {
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
-	return VnetValidationFailureDetailsResponse{RawResponse: resp.Response, VnetValidationFailureDetails: val}, nil
+	return result, nil
 }
 
 // verifyHostingEnvironmentVnetHandleError handles the VerifyHostingEnvironmentVnet error response.

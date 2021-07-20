@@ -33,47 +33,47 @@ func NewAppServiceCertificateOrdersClient(con *armcore.Connection, subscriptionI
 
 // BeginCreateOrUpdate - Description for Create or update a certificate purchase order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder, options *AppServiceCertificateOrdersBeginCreateOrUpdateOptions) (AppServiceCertificateOrderPollerResponse, error) {
+func (client *AppServiceCertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder, options *AppServiceCertificateOrdersBeginCreateOrUpdateOptions) (AppServiceCertificateOrdersCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
 	if err != nil {
-		return AppServiceCertificateOrderPollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppServiceCertificateOrderPollerResponse{
+	result := AppServiceCertificateOrdersCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceCertificateOrdersClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AppServiceCertificateOrderPollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &appServiceCertificateOrderPoller{
+	poller := &appServiceCertificateOrdersCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrderResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrdersCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new AppServiceCertificateOrderPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceCertificateOrderPoller.ResumeToken().
-func (client *AppServiceCertificateOrdersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServiceCertificateOrderPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new AppServiceCertificateOrdersCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceCertificateOrdersCreateOrUpdatePoller.ResumeToken().
+func (client *AppServiceCertificateOrdersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServiceCertificateOrdersCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceCertificateOrdersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AppServiceCertificateOrderPollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &appServiceCertificateOrderPoller{
+	poller := &appServiceCertificateOrdersCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AppServiceCertificateOrderPollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppServiceCertificateOrderPollerResponse{
+	result := AppServiceCertificateOrdersCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrderResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrdersCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -138,47 +138,47 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdateHandleError(resp 
 
 // BeginCreateOrUpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, options *AppServiceCertificateOrdersBeginCreateOrUpdateCertificateOptions) (AppServiceCertificateResourcePollerResponse, error) {
+func (client *AppServiceCertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, options *AppServiceCertificateOrdersBeginCreateOrUpdateCertificateOptions) (AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse, error) {
 	resp, err := client.createOrUpdateCertificate(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
 	if err != nil {
-		return AppServiceCertificateResourcePollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse{}, err
 	}
-	result := AppServiceCertificateResourcePollerResponse{
+	result := AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AppServiceCertificateOrdersClient.CreateOrUpdateCertificate", "", resp, client.con.Pipeline(), client.createOrUpdateCertificateHandleError)
 	if err != nil {
-		return AppServiceCertificateResourcePollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse{}, err
 	}
-	poller := &appServiceCertificateResourcePoller{
+	poller := &appServiceCertificateOrdersCreateOrUpdateCertificatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdateCertificate creates a new AppServiceCertificateResourcePoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceCertificateResourcePoller.ResumeToken().
-func (client *AppServiceCertificateOrdersClient) ResumeCreateOrUpdateCertificate(ctx context.Context, token string) (AppServiceCertificateResourcePollerResponse, error) {
+// ResumeCreateOrUpdateCertificate creates a new AppServiceCertificateOrdersCreateOrUpdateCertificatePoller from the specified resume token.
+// token - The value must come from a previous call to AppServiceCertificateOrdersCreateOrUpdateCertificatePoller.ResumeToken().
+func (client *AppServiceCertificateOrdersClient) ResumeCreateOrUpdateCertificate(ctx context.Context, token string) (AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceCertificateOrdersClient.CreateOrUpdateCertificate", token, client.con.Pipeline(), client.createOrUpdateCertificateHandleError)
 	if err != nil {
-		return AppServiceCertificateResourcePollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse{}, err
 	}
-	poller := &appServiceCertificateResourcePoller{
+	poller := &appServiceCertificateOrdersCreateOrUpdateCertificatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AppServiceCertificateResourcePollerResponse{}, err
+		return AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse{}, err
 	}
-	result := AppServiceCertificateResourcePollerResponse{
+	result := AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateResourceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -247,19 +247,19 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdateCertificateHandle
 
 // Delete - Description for Delete an existing certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) Delete(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersDeleteOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) Delete(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersDeleteOptions) (AppServiceCertificateOrdersDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return AppServiceCertificateOrdersDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -304,19 +304,19 @@ func (client *AppServiceCertificateOrdersClient) deleteHandleError(resp *azcore.
 
 // DeleteCertificate - Description for Delete the certificate associated with a certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) DeleteCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *AppServiceCertificateOrdersDeleteCertificateOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) DeleteCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *AppServiceCertificateOrdersDeleteCertificateOptions) (AppServiceCertificateOrdersDeleteCertificateResponse, error) {
 	req, err := client.deleteCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersDeleteCertificateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersDeleteCertificateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteCertificateHandleError(resp)
+		return AppServiceCertificateOrdersDeleteCertificateResponse{}, client.deleteCertificateHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersDeleteCertificateResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCertificateCreateRequest creates the DeleteCertificate request.
@@ -365,17 +365,17 @@ func (client *AppServiceCertificateOrdersClient) deleteCertificateHandleError(re
 
 // Get - Description for Get a certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) Get(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersGetOptions) (AppServiceCertificateOrderResponse, error) {
+func (client *AppServiceCertificateOrdersClient) Get(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersGetOptions) (AppServiceCertificateOrdersGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+		return AppServiceCertificateOrdersGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+		return AppServiceCertificateOrdersGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AppServiceCertificateOrderResponse{}, client.getHandleError(resp)
+		return AppServiceCertificateOrdersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -408,12 +408,12 @@ func (client *AppServiceCertificateOrdersClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppServiceCertificateOrdersClient) getHandleResponse(resp *azcore.Response) (AppServiceCertificateOrderResponse, error) {
-	var val *AppServiceCertificateOrder
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+func (client *AppServiceCertificateOrdersClient) getHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersGetResponse, error) {
+	result := AppServiceCertificateOrdersGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateOrder); err != nil {
+		return AppServiceCertificateOrdersGetResponse{}, err
 	}
-	return AppServiceCertificateOrderResponse{RawResponse: resp.Response, AppServiceCertificateOrder: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -431,17 +431,17 @@ func (client *AppServiceCertificateOrdersClient) getHandleError(resp *azcore.Res
 
 // GetCertificate - Description for Get the certificate associated with a certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) GetCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *AppServiceCertificateOrdersGetCertificateOptions) (AppServiceCertificateResourceResponse, error) {
+func (client *AppServiceCertificateOrdersClient) GetCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *AppServiceCertificateOrdersGetCertificateOptions) (AppServiceCertificateOrdersGetCertificateResponse, error) {
 	req, err := client.getCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, options)
 	if err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+		return AppServiceCertificateOrdersGetCertificateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+		return AppServiceCertificateOrdersGetCertificateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AppServiceCertificateResourceResponse{}, client.getCertificateHandleError(resp)
+		return AppServiceCertificateOrdersGetCertificateResponse{}, client.getCertificateHandleError(resp)
 	}
 	return client.getCertificateHandleResponse(resp)
 }
@@ -478,12 +478,12 @@ func (client *AppServiceCertificateOrdersClient) getCertificateCreateRequest(ctx
 }
 
 // getCertificateHandleResponse handles the GetCertificate response.
-func (client *AppServiceCertificateOrdersClient) getCertificateHandleResponse(resp *azcore.Response) (AppServiceCertificateResourceResponse, error) {
-	var val *AppServiceCertificateResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+func (client *AppServiceCertificateOrdersClient) getCertificateHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersGetCertificateResponse, error) {
+	result := AppServiceCertificateOrdersGetCertificateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateResource); err != nil {
+		return AppServiceCertificateOrdersGetCertificateResponse{}, err
 	}
-	return AppServiceCertificateResourceResponse{RawResponse: resp.Response, AppServiceCertificateResource: val}, nil
+	return result, nil
 }
 
 // getCertificateHandleError handles the GetCertificate error response.
@@ -501,18 +501,15 @@ func (client *AppServiceCertificateOrdersClient) getCertificateHandleError(resp 
 
 // List - Description for List all certificate orders in a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) List(options *AppServiceCertificateOrdersListOptions) AppServiceCertificateOrderCollectionPager {
-	return &appServiceCertificateOrderCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceCertificateOrdersClient) List(options *AppServiceCertificateOrdersListOptions) AppServiceCertificateOrdersListPager {
+	return &appServiceCertificateOrdersListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp AppServiceCertificateOrderCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceCertificateOrdersListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceCertificateOrderCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -536,12 +533,12 @@ func (client *AppServiceCertificateOrdersClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client *AppServiceCertificateOrdersClient) listHandleResponse(resp *azcore.Response) (AppServiceCertificateOrderCollectionResponse, error) {
-	var val *AppServiceCertificateOrderCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateOrderCollectionResponse{}, err
+func (client *AppServiceCertificateOrdersClient) listHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersListResponse, error) {
+	result := AppServiceCertificateOrdersListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateOrderCollection); err != nil {
+		return AppServiceCertificateOrdersListResponse{}, err
 	}
-	return AppServiceCertificateOrderCollectionResponse{RawResponse: resp.Response, AppServiceCertificateOrderCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -559,18 +556,15 @@ func (client *AppServiceCertificateOrdersClient) listHandleError(resp *azcore.Re
 
 // ListByResourceGroup - Description for Get certificate orders in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) ListByResourceGroup(resourceGroupName string, options *AppServiceCertificateOrdersListByResourceGroupOptions) AppServiceCertificateOrderCollectionPager {
-	return &appServiceCertificateOrderCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceCertificateOrdersClient) ListByResourceGroup(resourceGroupName string, options *AppServiceCertificateOrdersListByResourceGroupOptions) AppServiceCertificateOrdersListByResourceGroupPager {
+	return &appServiceCertificateOrdersListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp AppServiceCertificateOrderCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceCertificateOrdersListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceCertificateOrderCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -598,12 +592,12 @@ func (client *AppServiceCertificateOrdersClient) listByResourceGroupCreateReques
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppServiceCertificateOrdersClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServiceCertificateOrderCollectionResponse, error) {
-	var val *AppServiceCertificateOrderCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateOrderCollectionResponse{}, err
+func (client *AppServiceCertificateOrdersClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersListByResourceGroupResponse, error) {
+	result := AppServiceCertificateOrdersListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateOrderCollection); err != nil {
+		return AppServiceCertificateOrdersListByResourceGroupResponse{}, err
 	}
-	return AppServiceCertificateOrderCollectionResponse{RawResponse: resp.Response, AppServiceCertificateOrderCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -621,18 +615,15 @@ func (client *AppServiceCertificateOrdersClient) listByResourceGroupHandleError(
 
 // ListCertificates - Description for List all certificates associated with a certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) ListCertificates(resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersListCertificatesOptions) AppServiceCertificateCollectionPager {
-	return &appServiceCertificateCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *AppServiceCertificateOrdersClient) ListCertificates(resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersListCertificatesOptions) AppServiceCertificateOrdersListCertificatesPager {
+	return &appServiceCertificateOrdersListCertificatesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCertificatesCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 		},
-		responder: client.listCertificatesHandleResponse,
-		errorer:   client.listCertificatesHandleError,
-		advancer: func(ctx context.Context, resp AppServiceCertificateCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AppServiceCertificateOrdersListCertificatesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceCertificateCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -664,12 +655,12 @@ func (client *AppServiceCertificateOrdersClient) listCertificatesCreateRequest(c
 }
 
 // listCertificatesHandleResponse handles the ListCertificates response.
-func (client *AppServiceCertificateOrdersClient) listCertificatesHandleResponse(resp *azcore.Response) (AppServiceCertificateCollectionResponse, error) {
-	var val *AppServiceCertificateCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateCollectionResponse{}, err
+func (client *AppServiceCertificateOrdersClient) listCertificatesHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersListCertificatesResponse, error) {
+	result := AppServiceCertificateOrdersListCertificatesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateCollection); err != nil {
+		return AppServiceCertificateOrdersListCertificatesResponse{}, err
 	}
-	return AppServiceCertificateCollectionResponse{RawResponse: resp.Response, AppServiceCertificateCollection: val}, nil
+	return result, nil
 }
 
 // listCertificatesHandleError handles the ListCertificates error response.
@@ -687,19 +678,19 @@ func (client *AppServiceCertificateOrdersClient) listCertificatesHandleError(res
 
 // Reissue - Description for Reissue an existing certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) Reissue(ctx context.Context, resourceGroupName string, certificateOrderName string, reissueCertificateOrderRequest ReissueCertificateOrderRequest, options *AppServiceCertificateOrdersReissueOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) Reissue(ctx context.Context, resourceGroupName string, certificateOrderName string, reissueCertificateOrderRequest ReissueCertificateOrderRequest, options *AppServiceCertificateOrdersReissueOptions) (AppServiceCertificateOrdersReissueResponse, error) {
 	req, err := client.reissueCreateRequest(ctx, resourceGroupName, certificateOrderName, reissueCertificateOrderRequest, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersReissueResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersReissueResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.reissueHandleError(resp)
+		return AppServiceCertificateOrdersReissueResponse{}, client.reissueHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersReissueResponse{RawResponse: resp.Response}, nil
 }
 
 // reissueCreateRequest creates the Reissue request.
@@ -744,19 +735,19 @@ func (client *AppServiceCertificateOrdersClient) reissueHandleError(resp *azcore
 
 // Renew - Description for Renew an existing certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) Renew(ctx context.Context, resourceGroupName string, certificateOrderName string, renewCertificateOrderRequest RenewCertificateOrderRequest, options *AppServiceCertificateOrdersRenewOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) Renew(ctx context.Context, resourceGroupName string, certificateOrderName string, renewCertificateOrderRequest RenewCertificateOrderRequest, options *AppServiceCertificateOrdersRenewOptions) (AppServiceCertificateOrdersRenewResponse, error) {
 	req, err := client.renewCreateRequest(ctx, resourceGroupName, certificateOrderName, renewCertificateOrderRequest, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersRenewResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersRenewResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.renewHandleError(resp)
+		return AppServiceCertificateOrdersRenewResponse{}, client.renewHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersRenewResponse{RawResponse: resp.Response}, nil
 }
 
 // renewCreateRequest creates the Renew request.
@@ -801,19 +792,19 @@ func (client *AppServiceCertificateOrdersClient) renewHandleError(resp *azcore.R
 
 // ResendEmail - Description for Resend certificate email.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) ResendEmail(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersResendEmailOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) ResendEmail(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersResendEmailOptions) (AppServiceCertificateOrdersResendEmailResponse, error) {
 	req, err := client.resendEmailCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersResendEmailResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersResendEmailResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.resendEmailHandleError(resp)
+		return AppServiceCertificateOrdersResendEmailResponse{}, client.resendEmailHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersResendEmailResponse{RawResponse: resp.Response}, nil
 }
 
 // resendEmailCreateRequest creates the ResendEmail request.
@@ -858,19 +849,19 @@ func (client *AppServiceCertificateOrdersClient) resendEmailHandleError(resp *az
 
 // ResendRequestEmails - Description for Verify domain ownership for this certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) ResendRequestEmails(ctx context.Context, resourceGroupName string, certificateOrderName string, nameIdentifier NameIdentifier, options *AppServiceCertificateOrdersResendRequestEmailsOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) ResendRequestEmails(ctx context.Context, resourceGroupName string, certificateOrderName string, nameIdentifier NameIdentifier, options *AppServiceCertificateOrdersResendRequestEmailsOptions) (AppServiceCertificateOrdersResendRequestEmailsResponse, error) {
 	req, err := client.resendRequestEmailsCreateRequest(ctx, resourceGroupName, certificateOrderName, nameIdentifier, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersResendRequestEmailsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersResendRequestEmailsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.resendRequestEmailsHandleError(resp)
+		return AppServiceCertificateOrdersResendRequestEmailsResponse{}, client.resendRequestEmailsHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersResendRequestEmailsResponse{RawResponse: resp.Response}, nil
 }
 
 // resendRequestEmailsCreateRequest creates the ResendRequestEmails request.
@@ -915,17 +906,17 @@ func (client *AppServiceCertificateOrdersClient) resendRequestEmailsHandleError(
 
 // RetrieveCertificateActions - Description for Retrieve the list of certificate actions.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) RetrieveCertificateActions(ctx context.Context, resourceGroupName string, name string, options *AppServiceCertificateOrdersRetrieveCertificateActionsOptions) (CertificateOrderActionArrayResponse, error) {
+func (client *AppServiceCertificateOrdersClient) RetrieveCertificateActions(ctx context.Context, resourceGroupName string, name string, options *AppServiceCertificateOrdersRetrieveCertificateActionsOptions) (AppServiceCertificateOrdersRetrieveCertificateActionsResponse, error) {
 	req, err := client.retrieveCertificateActionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CertificateOrderActionArrayResponse{}, err
+		return AppServiceCertificateOrdersRetrieveCertificateActionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CertificateOrderActionArrayResponse{}, err
+		return AppServiceCertificateOrdersRetrieveCertificateActionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CertificateOrderActionArrayResponse{}, client.retrieveCertificateActionsHandleError(resp)
+		return AppServiceCertificateOrdersRetrieveCertificateActionsResponse{}, client.retrieveCertificateActionsHandleError(resp)
 	}
 	return client.retrieveCertificateActionsHandleResponse(resp)
 }
@@ -958,12 +949,12 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsCreat
 }
 
 // retrieveCertificateActionsHandleResponse handles the RetrieveCertificateActions response.
-func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsHandleResponse(resp *azcore.Response) (CertificateOrderActionArrayResponse, error) {
-	var val []*CertificateOrderAction
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateOrderActionArrayResponse{}, err
+func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersRetrieveCertificateActionsResponse, error) {
+	result := AppServiceCertificateOrdersRetrieveCertificateActionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CertificateOrderActionArray); err != nil {
+		return AppServiceCertificateOrdersRetrieveCertificateActionsResponse{}, err
 	}
-	return CertificateOrderActionArrayResponse{RawResponse: resp.Response, CertificateOrderActionArray: val}, nil
+	return result, nil
 }
 
 // retrieveCertificateActionsHandleError handles the RetrieveCertificateActions error response.
@@ -981,17 +972,17 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsHandl
 
 // RetrieveCertificateEmailHistory - Description for Retrieve email history.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(ctx context.Context, resourceGroupName string, name string, options *AppServiceCertificateOrdersRetrieveCertificateEmailHistoryOptions) (CertificateEmailArrayResponse, error) {
+func (client *AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(ctx context.Context, resourceGroupName string, name string, options *AppServiceCertificateOrdersRetrieveCertificateEmailHistoryOptions) (AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse, error) {
 	req, err := client.retrieveCertificateEmailHistoryCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return CertificateEmailArrayResponse{}, err
+		return AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CertificateEmailArrayResponse{}, err
+		return AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CertificateEmailArrayResponse{}, client.retrieveCertificateEmailHistoryHandleError(resp)
+		return AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{}, client.retrieveCertificateEmailHistoryHandleError(resp)
 	}
 	return client.retrieveCertificateEmailHistoryHandleResponse(resp)
 }
@@ -1024,12 +1015,12 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistory
 }
 
 // retrieveCertificateEmailHistoryHandleResponse handles the RetrieveCertificateEmailHistory response.
-func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistoryHandleResponse(resp *azcore.Response) (CertificateEmailArrayResponse, error) {
-	var val []*CertificateEmail
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CertificateEmailArrayResponse{}, err
+func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistoryHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse, error) {
+	result := AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CertificateEmailArray); err != nil {
+		return AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{}, err
 	}
-	return CertificateEmailArrayResponse{RawResponse: resp.Response, CertificateEmailArray: val}, nil
+	return result, nil
 }
 
 // retrieveCertificateEmailHistoryHandleError handles the RetrieveCertificateEmailHistory error response.
@@ -1047,17 +1038,17 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistory
 
 // RetrieveSiteSeal - Description for Verify domain ownership for this certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) RetrieveSiteSeal(ctx context.Context, resourceGroupName string, certificateOrderName string, siteSealRequest SiteSealRequest, options *AppServiceCertificateOrdersRetrieveSiteSealOptions) (SiteSealResponse, error) {
+func (client *AppServiceCertificateOrdersClient) RetrieveSiteSeal(ctx context.Context, resourceGroupName string, certificateOrderName string, siteSealRequest SiteSealRequest, options *AppServiceCertificateOrdersRetrieveSiteSealOptions) (AppServiceCertificateOrdersRetrieveSiteSealResponse, error) {
 	req, err := client.retrieveSiteSealCreateRequest(ctx, resourceGroupName, certificateOrderName, siteSealRequest, options)
 	if err != nil {
-		return SiteSealResponse{}, err
+		return AppServiceCertificateOrdersRetrieveSiteSealResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SiteSealResponse{}, err
+		return AppServiceCertificateOrdersRetrieveSiteSealResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SiteSealResponse{}, client.retrieveSiteSealHandleError(resp)
+		return AppServiceCertificateOrdersRetrieveSiteSealResponse{}, client.retrieveSiteSealHandleError(resp)
 	}
 	return client.retrieveSiteSealHandleResponse(resp)
 }
@@ -1090,12 +1081,12 @@ func (client *AppServiceCertificateOrdersClient) retrieveSiteSealCreateRequest(c
 }
 
 // retrieveSiteSealHandleResponse handles the RetrieveSiteSeal response.
-func (client *AppServiceCertificateOrdersClient) retrieveSiteSealHandleResponse(resp *azcore.Response) (SiteSealResponse, error) {
-	var val *SiteSeal
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SiteSealResponse{}, err
+func (client *AppServiceCertificateOrdersClient) retrieveSiteSealHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersRetrieveSiteSealResponse, error) {
+	result := AppServiceCertificateOrdersRetrieveSiteSealResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SiteSeal); err != nil {
+		return AppServiceCertificateOrdersRetrieveSiteSealResponse{}, err
 	}
-	return SiteSealResponse{RawResponse: resp.Response, SiteSeal: val}, nil
+	return result, nil
 }
 
 // retrieveSiteSealHandleError handles the RetrieveSiteSeal error response.
@@ -1113,17 +1104,17 @@ func (client *AppServiceCertificateOrdersClient) retrieveSiteSealHandleError(res
 
 // Update - Description for Create or update a certificate purchase order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) Update(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrderPatchResource, options *AppServiceCertificateOrdersUpdateOptions) (AppServiceCertificateOrderResponse, error) {
+func (client *AppServiceCertificateOrdersClient) Update(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrderPatchResource, options *AppServiceCertificateOrdersUpdateOptions) (AppServiceCertificateOrdersUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
 	if err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+		return AppServiceCertificateOrdersUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+		return AppServiceCertificateOrdersUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return AppServiceCertificateOrderResponse{}, client.updateHandleError(resp)
+		return AppServiceCertificateOrdersUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -1156,12 +1147,12 @@ func (client *AppServiceCertificateOrdersClient) updateCreateRequest(ctx context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppServiceCertificateOrdersClient) updateHandleResponse(resp *azcore.Response) (AppServiceCertificateOrderResponse, error) {
-	var val *AppServiceCertificateOrder
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateOrderResponse{}, err
+func (client *AppServiceCertificateOrdersClient) updateHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersUpdateResponse, error) {
+	result := AppServiceCertificateOrdersUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateOrder); err != nil {
+		return AppServiceCertificateOrdersUpdateResponse{}, err
 	}
-	return AppServiceCertificateOrderResponse{RawResponse: resp.Response, AppServiceCertificateOrder: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -1179,17 +1170,17 @@ func (client *AppServiceCertificateOrdersClient) updateHandleError(resp *azcore.
 
 // UpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) UpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificatePatchResource, options *AppServiceCertificateOrdersUpdateCertificateOptions) (AppServiceCertificateResourceResponse, error) {
+func (client *AppServiceCertificateOrdersClient) UpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificatePatchResource, options *AppServiceCertificateOrdersUpdateCertificateOptions) (AppServiceCertificateOrdersUpdateCertificateResponse, error) {
 	req, err := client.updateCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
 	if err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+		return AppServiceCertificateOrdersUpdateCertificateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+		return AppServiceCertificateOrdersUpdateCertificateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return AppServiceCertificateResourceResponse{}, client.updateCertificateHandleError(resp)
+		return AppServiceCertificateOrdersUpdateCertificateResponse{}, client.updateCertificateHandleError(resp)
 	}
 	return client.updateCertificateHandleResponse(resp)
 }
@@ -1226,12 +1217,12 @@ func (client *AppServiceCertificateOrdersClient) updateCertificateCreateRequest(
 }
 
 // updateCertificateHandleResponse handles the UpdateCertificate response.
-func (client *AppServiceCertificateOrdersClient) updateCertificateHandleResponse(resp *azcore.Response) (AppServiceCertificateResourceResponse, error) {
-	var val *AppServiceCertificateResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AppServiceCertificateResourceResponse{}, err
+func (client *AppServiceCertificateOrdersClient) updateCertificateHandleResponse(resp *azcore.Response) (AppServiceCertificateOrdersUpdateCertificateResponse, error) {
+	result := AppServiceCertificateOrdersUpdateCertificateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AppServiceCertificateResource); err != nil {
+		return AppServiceCertificateOrdersUpdateCertificateResponse{}, err
 	}
-	return AppServiceCertificateResourceResponse{RawResponse: resp.Response, AppServiceCertificateResource: val}, nil
+	return result, nil
 }
 
 // updateCertificateHandleError handles the UpdateCertificate error response.
@@ -1249,19 +1240,19 @@ func (client *AppServiceCertificateOrdersClient) updateCertificateHandleError(re
 
 // ValidatePurchaseInformation - Description for Validate information for a certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) ValidatePurchaseInformation(ctx context.Context, appServiceCertificateOrder AppServiceCertificateOrder, options *AppServiceCertificateOrdersValidatePurchaseInformationOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) ValidatePurchaseInformation(ctx context.Context, appServiceCertificateOrder AppServiceCertificateOrder, options *AppServiceCertificateOrdersValidatePurchaseInformationOptions) (AppServiceCertificateOrdersValidatePurchaseInformationResponse, error) {
 	req, err := client.validatePurchaseInformationCreateRequest(ctx, appServiceCertificateOrder, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersValidatePurchaseInformationResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersValidatePurchaseInformationResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.validatePurchaseInformationHandleError(resp)
+		return AppServiceCertificateOrdersValidatePurchaseInformationResponse{}, client.validatePurchaseInformationHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersValidatePurchaseInformationResponse{RawResponse: resp.Response}, nil
 }
 
 // validatePurchaseInformationCreateRequest creates the ValidatePurchaseInformation request.
@@ -1298,19 +1289,19 @@ func (client *AppServiceCertificateOrdersClient) validatePurchaseInformationHand
 
 // VerifyDomainOwnership - Description for Verify domain ownership for this certificate order.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceCertificateOrdersClient) VerifyDomainOwnership(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersVerifyDomainOwnershipOptions) (*http.Response, error) {
+func (client *AppServiceCertificateOrdersClient) VerifyDomainOwnership(ctx context.Context, resourceGroupName string, certificateOrderName string, options *AppServiceCertificateOrdersVerifyDomainOwnershipOptions) (AppServiceCertificateOrdersVerifyDomainOwnershipResponse, error) {
 	req, err := client.verifyDomainOwnershipCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersVerifyDomainOwnershipResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return AppServiceCertificateOrdersVerifyDomainOwnershipResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.verifyDomainOwnershipHandleError(resp)
+		return AppServiceCertificateOrdersVerifyDomainOwnershipResponse{}, client.verifyDomainOwnershipHandleError(resp)
 	}
-	return resp.Response, nil
+	return AppServiceCertificateOrdersVerifyDomainOwnershipResponse{RawResponse: resp.Response}, nil
 }
 
 // verifyDomainOwnershipCreateRequest creates the VerifyDomainOwnership request.

@@ -34,17 +34,17 @@ func NewDomainsClient(con *armcore.Connection, subscriptionID string) *DomainsCl
 
 // CheckAvailability - Description for Check if a domain is available for registration.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) CheckAvailability(ctx context.Context, identifier NameIdentifier, options *DomainsCheckAvailabilityOptions) (DomainAvailabilityCheckResultResponse, error) {
+func (client *DomainsClient) CheckAvailability(ctx context.Context, identifier NameIdentifier, options *DomainsCheckAvailabilityOptions) (DomainsCheckAvailabilityResponse, error) {
 	req, err := client.checkAvailabilityCreateRequest(ctx, identifier, options)
 	if err != nil {
-		return DomainAvailabilityCheckResultResponse{}, err
+		return DomainsCheckAvailabilityResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainAvailabilityCheckResultResponse{}, err
+		return DomainsCheckAvailabilityResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DomainAvailabilityCheckResultResponse{}, client.checkAvailabilityHandleError(resp)
+		return DomainsCheckAvailabilityResponse{}, client.checkAvailabilityHandleError(resp)
 	}
 	return client.checkAvailabilityHandleResponse(resp)
 }
@@ -69,12 +69,12 @@ func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context,
 }
 
 // checkAvailabilityHandleResponse handles the CheckAvailability response.
-func (client *DomainsClient) checkAvailabilityHandleResponse(resp *azcore.Response) (DomainAvailabilityCheckResultResponse, error) {
-	var val *DomainAvailabilityCheckResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainAvailabilityCheckResultResponse{}, err
+func (client *DomainsClient) checkAvailabilityHandleResponse(resp *azcore.Response) (DomainsCheckAvailabilityResponse, error) {
+	result := DomainsCheckAvailabilityResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainAvailabilityCheckResult); err != nil {
+		return DomainsCheckAvailabilityResponse{}, err
 	}
-	return DomainAvailabilityCheckResultResponse{RawResponse: resp.Response, DomainAvailabilityCheckResult: val}, nil
+	return result, nil
 }
 
 // checkAvailabilityHandleError handles the CheckAvailability error response.
@@ -92,47 +92,47 @@ func (client *DomainsClient) checkAvailabilityHandleError(resp *azcore.Response)
 
 // BeginCreateOrUpdate - Description for Creates or updates a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsBeginCreateOrUpdateOptions) (DomainPollerResponse, error) {
+func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsBeginCreateOrUpdateOptions) (DomainsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, domain, options)
 	if err != nil {
-		return DomainPollerResponse{}, err
+		return DomainsCreateOrUpdatePollerResponse{}, err
 	}
-	result := DomainPollerResponse{
+	result := DomainsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DomainsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DomainPollerResponse{}, err
+		return DomainsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &domainPoller{
+	poller := &domainsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DomainResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DomainsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new DomainPoller from the specified resume token.
-// token - The value must come from a previous call to DomainPoller.ResumeToken().
-func (client *DomainsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DomainPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new DomainsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DomainsCreateOrUpdatePoller.ResumeToken().
+func (client *DomainsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DomainsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DomainsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DomainPollerResponse{}, err
+		return DomainsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &domainPoller{
+	poller := &domainsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DomainPollerResponse{}, err
+		return DomainsCreateOrUpdatePollerResponse{}, err
 	}
-	result := DomainPollerResponse{
+	result := DomainsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DomainResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DomainsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -197,17 +197,17 @@ func (client *DomainsClient) createOrUpdateHandleError(resp *azcore.Response) er
 
 // CreateOrUpdateOwnershipIdentifier - Description for Creates an ownership identifier for a domain or updates identifier details for an existing identifier
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) CreateOrUpdateOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsCreateOrUpdateOwnershipIdentifierOptions) (DomainOwnershipIdentifierResponse, error) {
+func (client *DomainsClient) CreateOrUpdateOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsCreateOrUpdateOwnershipIdentifierOptions) (DomainsCreateOrUpdateOwnershipIdentifierResponse, error) {
 	req, err := client.createOrUpdateOwnershipIdentifierCreateRequest(ctx, resourceGroupName, domainName, name, domainOwnershipIdentifier, options)
 	if err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DomainOwnershipIdentifierResponse{}, client.createOrUpdateOwnershipIdentifierHandleError(resp)
+		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, client.createOrUpdateOwnershipIdentifierHandleError(resp)
 	}
 	return client.createOrUpdateOwnershipIdentifierHandleResponse(resp)
 }
@@ -244,12 +244,12 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx 
 }
 
 // createOrUpdateOwnershipIdentifierHandleResponse handles the CreateOrUpdateOwnershipIdentifier response.
-func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainOwnershipIdentifierResponse, error) {
-	var val *DomainOwnershipIdentifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainsCreateOrUpdateOwnershipIdentifierResponse, error) {
+	result := DomainsCreateOrUpdateOwnershipIdentifierResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifier); err != nil {
+		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
-	return DomainOwnershipIdentifierResponse{RawResponse: resp.Response, DomainOwnershipIdentifier: val}, nil
+	return result, nil
 }
 
 // createOrUpdateOwnershipIdentifierHandleError handles the CreateOrUpdateOwnershipIdentifier error response.
@@ -267,19 +267,19 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleError(resp *
 
 // Delete - Description for Delete a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName string, domainName string, options *DomainsDeleteOptions) (*http.Response, error) {
+func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName string, domainName string, options *DomainsDeleteOptions) (DomainsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainName, options)
 	if err != nil {
-		return nil, err
+		return DomainsDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DomainsDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return DomainsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return DomainsDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -327,19 +327,19 @@ func (client *DomainsClient) deleteHandleError(resp *azcore.Response) error {
 
 // DeleteOwnershipIdentifier - Description for Delete ownership identifier for domain
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsDeleteOwnershipIdentifierOptions) (*http.Response, error) {
+func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsDeleteOwnershipIdentifierOptions) (DomainsDeleteOwnershipIdentifierResponse, error) {
 	req, err := client.deleteOwnershipIdentifierCreateRequest(ctx, resourceGroupName, domainName, name, options)
 	if err != nil {
-		return nil, err
+		return DomainsDeleteOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DomainsDeleteOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteOwnershipIdentifierHandleError(resp)
+		return DomainsDeleteOwnershipIdentifierResponse{}, client.deleteOwnershipIdentifierHandleError(resp)
 	}
-	return resp.Response, nil
+	return DomainsDeleteOwnershipIdentifierResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteOwnershipIdentifierCreateRequest creates the DeleteOwnershipIdentifier request.
@@ -388,17 +388,17 @@ func (client *DomainsClient) deleteOwnershipIdentifierHandleError(resp *azcore.R
 
 // Get - Description for Get a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, domainName string, options *DomainsGetOptions) (DomainResponse, error) {
+func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, domainName string, options *DomainsGetOptions) (DomainsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, domainName, options)
 	if err != nil {
-		return DomainResponse{}, err
+		return DomainsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainResponse{}, err
+		return DomainsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DomainResponse{}, client.getHandleError(resp)
+		return DomainsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -431,12 +431,12 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *DomainsClient) getHandleResponse(resp *azcore.Response) (DomainResponse, error) {
-	var val *Domain
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainResponse{}, err
+func (client *DomainsClient) getHandleResponse(resp *azcore.Response) (DomainsGetResponse, error) {
+	result := DomainsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Domain); err != nil {
+		return DomainsGetResponse{}, err
 	}
-	return DomainResponse{RawResponse: resp.Response, Domain: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -454,17 +454,17 @@ func (client *DomainsClient) getHandleError(resp *azcore.Response) error {
 
 // GetControlCenterSsoRequest - Description for Generate a single sign-on request for the domain management portal.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) GetControlCenterSsoRequest(ctx context.Context, options *DomainsGetControlCenterSsoRequestOptions) (DomainControlCenterSsoRequestResponse, error) {
+func (client *DomainsClient) GetControlCenterSsoRequest(ctx context.Context, options *DomainsGetControlCenterSsoRequestOptions) (DomainsGetControlCenterSsoRequestResponse, error) {
 	req, err := client.getControlCenterSsoRequestCreateRequest(ctx, options)
 	if err != nil {
-		return DomainControlCenterSsoRequestResponse{}, err
+		return DomainsGetControlCenterSsoRequestResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainControlCenterSsoRequestResponse{}, err
+		return DomainsGetControlCenterSsoRequestResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DomainControlCenterSsoRequestResponse{}, client.getControlCenterSsoRequestHandleError(resp)
+		return DomainsGetControlCenterSsoRequestResponse{}, client.getControlCenterSsoRequestHandleError(resp)
 	}
 	return client.getControlCenterSsoRequestHandleResponse(resp)
 }
@@ -489,12 +489,12 @@ func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context
 }
 
 // getControlCenterSsoRequestHandleResponse handles the GetControlCenterSsoRequest response.
-func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *azcore.Response) (DomainControlCenterSsoRequestResponse, error) {
-	var val *DomainControlCenterSsoRequest
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainControlCenterSsoRequestResponse{}, err
+func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *azcore.Response) (DomainsGetControlCenterSsoRequestResponse, error) {
+	result := DomainsGetControlCenterSsoRequestResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainControlCenterSsoRequest); err != nil {
+		return DomainsGetControlCenterSsoRequestResponse{}, err
 	}
-	return DomainControlCenterSsoRequestResponse{RawResponse: resp.Response, DomainControlCenterSsoRequest: val}, nil
+	return result, nil
 }
 
 // getControlCenterSsoRequestHandleError handles the GetControlCenterSsoRequest error response.
@@ -512,17 +512,17 @@ func (client *DomainsClient) getControlCenterSsoRequestHandleError(resp *azcore.
 
 // GetOwnershipIdentifier - Description for Get ownership identifier for domain
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) GetOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsGetOwnershipIdentifierOptions) (DomainOwnershipIdentifierResponse, error) {
+func (client *DomainsClient) GetOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsGetOwnershipIdentifierOptions) (DomainsGetOwnershipIdentifierResponse, error) {
 	req, err := client.getOwnershipIdentifierCreateRequest(ctx, resourceGroupName, domainName, name, options)
 	if err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+		return DomainsGetOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+		return DomainsGetOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DomainOwnershipIdentifierResponse{}, client.getOwnershipIdentifierHandleError(resp)
+		return DomainsGetOwnershipIdentifierResponse{}, client.getOwnershipIdentifierHandleError(resp)
 	}
 	return client.getOwnershipIdentifierHandleResponse(resp)
 }
@@ -559,12 +559,12 @@ func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Con
 }
 
 // getOwnershipIdentifierHandleResponse handles the GetOwnershipIdentifier response.
-func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainOwnershipIdentifierResponse, error) {
-	var val *DomainOwnershipIdentifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainsGetOwnershipIdentifierResponse, error) {
+	result := DomainsGetOwnershipIdentifierResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifier); err != nil {
+		return DomainsGetOwnershipIdentifierResponse{}, err
 	}
-	return DomainOwnershipIdentifierResponse{RawResponse: resp.Response, DomainOwnershipIdentifier: val}, nil
+	return result, nil
 }
 
 // getOwnershipIdentifierHandleError handles the GetOwnershipIdentifier error response.
@@ -582,18 +582,15 @@ func (client *DomainsClient) getOwnershipIdentifierHandleError(resp *azcore.Resp
 
 // List - Description for Get all domains in a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) List(options *DomainsListOptions) DomainCollectionPager {
-	return &domainCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DomainsClient) List(options *DomainsListOptions) DomainsListPager {
+	return &domainsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp DomainCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DomainsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -617,12 +614,12 @@ func (client *DomainsClient) listCreateRequest(ctx context.Context, options *Dom
 }
 
 // listHandleResponse handles the List response.
-func (client *DomainsClient) listHandleResponse(resp *azcore.Response) (DomainCollectionResponse, error) {
-	var val *DomainCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainCollectionResponse{}, err
+func (client *DomainsClient) listHandleResponse(resp *azcore.Response) (DomainsListResponse, error) {
+	result := DomainsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainCollection); err != nil {
+		return DomainsListResponse{}, err
 	}
-	return DomainCollectionResponse{RawResponse: resp.Response, DomainCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -640,18 +637,15 @@ func (client *DomainsClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Description for Get all domains in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsListByResourceGroupOptions) DomainCollectionPager {
-	return &domainCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsListByResourceGroupOptions) DomainsListByResourceGroupPager {
+	return &domainsListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp DomainCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DomainsListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -679,12 +673,12 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DomainsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DomainCollectionResponse, error) {
-	var val *DomainCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainCollectionResponse{}, err
+func (client *DomainsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DomainsListByResourceGroupResponse, error) {
+	result := DomainsListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainCollection); err != nil {
+		return DomainsListByResourceGroupResponse{}, err
 	}
-	return DomainCollectionResponse{RawResponse: resp.Response, DomainCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -702,18 +696,15 @@ func (client *DomainsClient) listByResourceGroupHandleError(resp *azcore.Respons
 
 // ListOwnershipIdentifiers - Description for Lists domain ownership identifiers.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsListOwnershipIdentifiersOptions) DomainOwnershipIdentifierCollectionPager {
-	return &domainOwnershipIdentifierCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsListOwnershipIdentifiersOptions) DomainsListOwnershipIdentifiersPager {
+	return &domainsListOwnershipIdentifiersPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, domainName, options)
 		},
-		responder: client.listOwnershipIdentifiersHandleResponse,
-		errorer:   client.listOwnershipIdentifiersHandleError,
-		advancer: func(ctx context.Context, resp DomainOwnershipIdentifierCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DomainsListOwnershipIdentifiersResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DomainOwnershipIdentifierCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -745,12 +736,12 @@ func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.C
 }
 
 // listOwnershipIdentifiersHandleResponse handles the ListOwnershipIdentifiers response.
-func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *azcore.Response) (DomainOwnershipIdentifierCollectionResponse, error) {
-	var val *DomainOwnershipIdentifierCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainOwnershipIdentifierCollectionResponse{}, err
+func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *azcore.Response) (DomainsListOwnershipIdentifiersResponse, error) {
+	result := DomainsListOwnershipIdentifiersResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifierCollection); err != nil {
+		return DomainsListOwnershipIdentifiersResponse{}, err
 	}
-	return DomainOwnershipIdentifierCollectionResponse{RawResponse: resp.Response, DomainOwnershipIdentifierCollection: val}, nil
+	return result, nil
 }
 
 // listOwnershipIdentifiersHandleError handles the ListOwnershipIdentifiers error response.
@@ -768,18 +759,15 @@ func (client *DomainsClient) listOwnershipIdentifiersHandleError(resp *azcore.Re
 
 // ListRecommendations - Description for Get domain name recommendations based on keywords.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsListRecommendationsOptions) NameIdentifierCollectionPager {
-	return &nameIdentifierCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsListRecommendationsOptions) DomainsListRecommendationsPager {
+	return &domainsListRecommendationsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listRecommendationsCreateRequest(ctx, parameters, options)
 		},
-		responder: client.listRecommendationsHandleResponse,
-		errorer:   client.listRecommendationsHandleError,
-		advancer: func(ctx context.Context, resp NameIdentifierCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DomainsListRecommendationsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NameIdentifierCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -803,12 +791,12 @@ func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Contex
 }
 
 // listRecommendationsHandleResponse handles the ListRecommendations response.
-func (client *DomainsClient) listRecommendationsHandleResponse(resp *azcore.Response) (NameIdentifierCollectionResponse, error) {
-	var val *NameIdentifierCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NameIdentifierCollectionResponse{}, err
+func (client *DomainsClient) listRecommendationsHandleResponse(resp *azcore.Response) (DomainsListRecommendationsResponse, error) {
+	result := DomainsListRecommendationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.NameIdentifierCollection); err != nil {
+		return DomainsListRecommendationsResponse{}, err
 	}
-	return NameIdentifierCollectionResponse{RawResponse: resp.Response, NameIdentifierCollection: val}, nil
+	return result, nil
 }
 
 // listRecommendationsHandleError handles the ListRecommendations error response.
@@ -826,19 +814,19 @@ func (client *DomainsClient) listRecommendationsHandleError(resp *azcore.Respons
 
 // Renew - Description for Renew a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string, domainName string, options *DomainsRenewOptions) (*http.Response, error) {
+func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string, domainName string, options *DomainsRenewOptions) (DomainsRenewResponse, error) {
 	req, err := client.renewCreateRequest(ctx, resourceGroupName, domainName, options)
 	if err != nil {
-		return nil, err
+		return DomainsRenewResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return DomainsRenewResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.renewHandleError(resp)
+		return DomainsRenewResponse{}, client.renewHandleError(resp)
 	}
-	return resp.Response, nil
+	return DomainsRenewResponse{RawResponse: resp.Response}, nil
 }
 
 // renewCreateRequest creates the Renew request.
@@ -883,17 +871,17 @@ func (client *DomainsClient) renewHandleError(resp *azcore.Response) error {
 
 // Update - Description for Creates or updates a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) Update(ctx context.Context, resourceGroupName string, domainName string, domain DomainPatchResource, options *DomainsUpdateOptions) (DomainResponse, error) {
+func (client *DomainsClient) Update(ctx context.Context, resourceGroupName string, domainName string, domain DomainPatchResource, options *DomainsUpdateOptions) (DomainsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainName, domain, options)
 	if err != nil {
-		return DomainResponse{}, err
+		return DomainsUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainResponse{}, err
+		return DomainsUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return DomainResponse{}, client.updateHandleError(resp)
+		return DomainsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -926,12 +914,12 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DomainsClient) updateHandleResponse(resp *azcore.Response) (DomainResponse, error) {
-	var val *Domain
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainResponse{}, err
+func (client *DomainsClient) updateHandleResponse(resp *azcore.Response) (DomainsUpdateResponse, error) {
+	result := DomainsUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Domain); err != nil {
+		return DomainsUpdateResponse{}, err
 	}
-	return DomainResponse{RawResponse: resp.Response, Domain: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -949,17 +937,17 @@ func (client *DomainsClient) updateHandleError(resp *azcore.Response) error {
 
 // UpdateOwnershipIdentifier - Description for Creates an ownership identifier for a domain or updates identifier details for an existing identifier
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) UpdateOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsUpdateOwnershipIdentifierOptions) (DomainOwnershipIdentifierResponse, error) {
+func (client *DomainsClient) UpdateOwnershipIdentifier(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsUpdateOwnershipIdentifierOptions) (DomainsUpdateOwnershipIdentifierResponse, error) {
 	req, err := client.updateOwnershipIdentifierCreateRequest(ctx, resourceGroupName, domainName, name, domainOwnershipIdentifier, options)
 	if err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+		return DomainsUpdateOwnershipIdentifierResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+		return DomainsUpdateOwnershipIdentifierResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DomainOwnershipIdentifierResponse{}, client.updateOwnershipIdentifierHandleError(resp)
+		return DomainsUpdateOwnershipIdentifierResponse{}, client.updateOwnershipIdentifierHandleError(resp)
 	}
 	return client.updateOwnershipIdentifierHandleResponse(resp)
 }
@@ -996,12 +984,12 @@ func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.
 }
 
 // updateOwnershipIdentifierHandleResponse handles the UpdateOwnershipIdentifier response.
-func (client *DomainsClient) updateOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainOwnershipIdentifierResponse, error) {
-	var val *DomainOwnershipIdentifier
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DomainOwnershipIdentifierResponse{}, err
+func (client *DomainsClient) updateOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainsUpdateOwnershipIdentifierResponse, error) {
+	result := DomainsUpdateOwnershipIdentifierResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifier); err != nil {
+		return DomainsUpdateOwnershipIdentifierResponse{}, err
 	}
-	return DomainOwnershipIdentifierResponse{RawResponse: resp.Response, DomainOwnershipIdentifier: val}, nil
+	return result, nil
 }
 
 // updateOwnershipIdentifierHandleError handles the UpdateOwnershipIdentifier error response.

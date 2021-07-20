@@ -1,10 +1,10 @@
 {
-  "commit": "???",
+  "commit": "36172a10bc1941ec874f17dddc1a0f27b086337c",
   "readme": "/_/azure-rest-api-specs/specification/web/resource-manager/readme.md",
   "tag": "package-2021-01-15",
-  "use": "@autorest/go@4.0.0-preview.22",
+  "use": "@autorest/go@4.0.0-preview.24",
   "repository_url": "https://github.com/Azure/azure-rest-api-specs.git",
-  "autorest_command": "autorest --use=@autorest/go@4.0.0-preview.22 --go --track2 --go-sdk-folder=/_/azure-sdk-for-go --file-prefix=\"zz_generated_\" --clear-output-folder=false /_/azure-rest-api-specs/specification/web/resource-manager/readme.md",
+  "autorest_command": "autorest --use=@autorest/go@4.0.0-preview.24 --go --track2 --go-sdk-folder=/_/azure-sdk-for-go --file-prefix=\"zz_generated_\" --clear-output-folder=false /_/azure-rest-api-specs/specification/web/resource-manager/readme.md",
   "additional_properties": {
     "additional_options": "--go --track2 --file-prefix=\"zz_generated_\" --clear-output-folder=false"
   }

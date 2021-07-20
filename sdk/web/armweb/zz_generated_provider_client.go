@@ -32,18 +32,15 @@ func NewProviderClient(con *armcore.Connection, subscriptionID string) *Provider
 
 // GetAvailableStacks - Description for Get available application frameworks and their versions
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) GetAvailableStacks(options *ProviderGetAvailableStacksOptions) ApplicationStackCollectionPager {
-	return &applicationStackCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) GetAvailableStacks(options *ProviderGetAvailableStacksOptions) ProviderGetAvailableStacksPager {
+	return &providerGetAvailableStacksPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getAvailableStacksCreateRequest(ctx, options)
 		},
-		responder: client.getAvailableStacksHandleResponse,
-		errorer:   client.getAvailableStacksHandleError,
-		advancer: func(ctx context.Context, resp ApplicationStackCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderGetAvailableStacksResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ApplicationStackCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -66,12 +63,12 @@ func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Contex
 }
 
 // getAvailableStacksHandleResponse handles the GetAvailableStacks response.
-func (client *ProviderClient) getAvailableStacksHandleResponse(resp *azcore.Response) (ApplicationStackCollectionResponse, error) {
-	var val *ApplicationStackCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ApplicationStackCollectionResponse{}, err
+func (client *ProviderClient) getAvailableStacksHandleResponse(resp *azcore.Response) (ProviderGetAvailableStacksResponse, error) {
+	result := ProviderGetAvailableStacksResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ApplicationStackCollection); err != nil {
+		return ProviderGetAvailableStacksResponse{}, err
 	}
-	return ApplicationStackCollectionResponse{RawResponse: resp.Response, ApplicationStackCollection: val}, nil
+	return result, nil
 }
 
 // getAvailableStacksHandleError handles the GetAvailableStacks error response.
@@ -89,18 +86,15 @@ func (client *ProviderClient) getAvailableStacksHandleError(resp *azcore.Respons
 
 // GetAvailableStacksOnPrem - Description for Get available application frameworks and their versions
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) GetAvailableStacksOnPrem(options *ProviderGetAvailableStacksOnPremOptions) ApplicationStackCollectionPager {
-	return &applicationStackCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) GetAvailableStacksOnPrem(options *ProviderGetAvailableStacksOnPremOptions) ProviderGetAvailableStacksOnPremPager {
+	return &providerGetAvailableStacksOnPremPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getAvailableStacksOnPremCreateRequest(ctx, options)
 		},
-		responder: client.getAvailableStacksOnPremHandleResponse,
-		errorer:   client.getAvailableStacksOnPremHandleError,
-		advancer: func(ctx context.Context, resp ApplicationStackCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderGetAvailableStacksOnPremResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ApplicationStackCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -127,12 +121,12 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 }
 
 // getAvailableStacksOnPremHandleResponse handles the GetAvailableStacksOnPrem response.
-func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *azcore.Response) (ApplicationStackCollectionResponse, error) {
-	var val *ApplicationStackCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ApplicationStackCollectionResponse{}, err
+func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *azcore.Response) (ProviderGetAvailableStacksOnPremResponse, error) {
+	result := ProviderGetAvailableStacksOnPremResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ApplicationStackCollection); err != nil {
+		return ProviderGetAvailableStacksOnPremResponse{}, err
 	}
-	return ApplicationStackCollectionResponse{RawResponse: resp.Response, ApplicationStackCollection: val}, nil
+	return result, nil
 }
 
 // getAvailableStacksOnPremHandleError handles the GetAvailableStacksOnPrem error response.
@@ -150,18 +144,15 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleError(resp *azcore.R
 
 // GetFunctionAppStacks - Description for Get available Function app frameworks and their versions
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) GetFunctionAppStacks(options *ProviderGetFunctionAppStacksOptions) FunctionAppStackCollectionPager {
-	return &functionAppStackCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) GetFunctionAppStacks(options *ProviderGetFunctionAppStacksOptions) ProviderGetFunctionAppStacksPager {
+	return &providerGetFunctionAppStacksPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getFunctionAppStacksCreateRequest(ctx, options)
 		},
-		responder: client.getFunctionAppStacksHandleResponse,
-		errorer:   client.getFunctionAppStacksHandleError,
-		advancer: func(ctx context.Context, resp FunctionAppStackCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderGetFunctionAppStacksResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FunctionAppStackCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -184,12 +175,12 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 }
 
 // getFunctionAppStacksHandleResponse handles the GetFunctionAppStacks response.
-func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *azcore.Response) (FunctionAppStackCollectionResponse, error) {
-	var val *FunctionAppStackCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionAppStackCollectionResponse{}, err
+func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *azcore.Response) (ProviderGetFunctionAppStacksResponse, error) {
+	result := ProviderGetFunctionAppStacksResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionAppStackCollection); err != nil {
+		return ProviderGetFunctionAppStacksResponse{}, err
 	}
-	return FunctionAppStackCollectionResponse{RawResponse: resp.Response, FunctionAppStackCollection: val}, nil
+	return result, nil
 }
 
 // getFunctionAppStacksHandleError handles the GetFunctionAppStacks error response.
@@ -207,18 +198,15 @@ func (client *ProviderClient) getFunctionAppStacksHandleError(resp *azcore.Respo
 
 // GetFunctionAppStacksForLocation - Description for Get available Function app frameworks and their versions for location
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) GetFunctionAppStacksForLocation(location string, options *ProviderGetFunctionAppStacksForLocationOptions) FunctionAppStackCollectionPager {
-	return &functionAppStackCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) GetFunctionAppStacksForLocation(location string, options *ProviderGetFunctionAppStacksForLocationOptions) ProviderGetFunctionAppStacksForLocationPager {
+	return &providerGetFunctionAppStacksForLocationPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getFunctionAppStacksForLocationCreateRequest(ctx, location, options)
 		},
-		responder: client.getFunctionAppStacksForLocationHandleResponse,
-		errorer:   client.getFunctionAppStacksForLocationHandleError,
-		advancer: func(ctx context.Context, resp FunctionAppStackCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderGetFunctionAppStacksForLocationResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FunctionAppStackCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -245,12 +233,12 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 }
 
 // getFunctionAppStacksForLocationHandleResponse handles the GetFunctionAppStacksForLocation response.
-func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *azcore.Response) (FunctionAppStackCollectionResponse, error) {
-	var val *FunctionAppStackCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return FunctionAppStackCollectionResponse{}, err
+func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *azcore.Response) (ProviderGetFunctionAppStacksForLocationResponse, error) {
+	result := ProviderGetFunctionAppStacksForLocationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.FunctionAppStackCollection); err != nil {
+		return ProviderGetFunctionAppStacksForLocationResponse{}, err
 	}
-	return FunctionAppStackCollectionResponse{RawResponse: resp.Response, FunctionAppStackCollection: val}, nil
+	return result, nil
 }
 
 // getFunctionAppStacksForLocationHandleError handles the GetFunctionAppStacksForLocation error response.
@@ -268,18 +256,15 @@ func (client *ProviderClient) getFunctionAppStacksForLocationHandleError(resp *a
 
 // GetWebAppStacks - Description for Get available Web app frameworks and their versions
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) GetWebAppStacks(options *ProviderGetWebAppStacksOptions) WebAppStackCollectionPager {
-	return &webAppStackCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) GetWebAppStacks(options *ProviderGetWebAppStacksOptions) ProviderGetWebAppStacksPager {
+	return &providerGetWebAppStacksPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getWebAppStacksCreateRequest(ctx, options)
 		},
-		responder: client.getWebAppStacksHandleResponse,
-		errorer:   client.getWebAppStacksHandleError,
-		advancer: func(ctx context.Context, resp WebAppStackCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderGetWebAppStacksResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppStackCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -302,12 +287,12 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 }
 
 // getWebAppStacksHandleResponse handles the GetWebAppStacks response.
-func (client *ProviderClient) getWebAppStacksHandleResponse(resp *azcore.Response) (WebAppStackCollectionResponse, error) {
-	var val *WebAppStackCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppStackCollectionResponse{}, err
+func (client *ProviderClient) getWebAppStacksHandleResponse(resp *azcore.Response) (ProviderGetWebAppStacksResponse, error) {
+	result := ProviderGetWebAppStacksResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppStackCollection); err != nil {
+		return ProviderGetWebAppStacksResponse{}, err
 	}
-	return WebAppStackCollectionResponse{RawResponse: resp.Response, WebAppStackCollection: val}, nil
+	return result, nil
 }
 
 // getWebAppStacksHandleError handles the GetWebAppStacks error response.
@@ -325,18 +310,15 @@ func (client *ProviderClient) getWebAppStacksHandleError(resp *azcore.Response) 
 
 // GetWebAppStacksForLocation - Description for Get available Web app frameworks and their versions for location
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) GetWebAppStacksForLocation(location string, options *ProviderGetWebAppStacksForLocationOptions) WebAppStackCollectionPager {
-	return &webAppStackCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) GetWebAppStacksForLocation(location string, options *ProviderGetWebAppStacksForLocationOptions) ProviderGetWebAppStacksForLocationPager {
+	return &providerGetWebAppStacksForLocationPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.getWebAppStacksForLocationCreateRequest(ctx, location, options)
 		},
-		responder: client.getWebAppStacksForLocationHandleResponse,
-		errorer:   client.getWebAppStacksForLocationHandleError,
-		advancer: func(ctx context.Context, resp WebAppStackCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderGetWebAppStacksForLocationResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppStackCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -363,12 +345,12 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 }
 
 // getWebAppStacksForLocationHandleResponse handles the GetWebAppStacksForLocation response.
-func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *azcore.Response) (WebAppStackCollectionResponse, error) {
-	var val *WebAppStackCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return WebAppStackCollectionResponse{}, err
+func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *azcore.Response) (ProviderGetWebAppStacksForLocationResponse, error) {
+	result := ProviderGetWebAppStacksForLocationResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.WebAppStackCollection); err != nil {
+		return ProviderGetWebAppStacksForLocationResponse{}, err
 	}
-	return WebAppStackCollectionResponse{RawResponse: resp.Response, WebAppStackCollection: val}, nil
+	return result, nil
 }
 
 // getWebAppStacksForLocationHandleError handles the GetWebAppStacksForLocation error response.
@@ -386,18 +368,15 @@ func (client *ProviderClient) getWebAppStacksForLocationHandleError(resp *azcore
 
 // ListOperations - Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *ProviderClient) ListOperations(options *ProviderListOperationsOptions) CsmOperationCollectionPager {
-	return &csmOperationCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ProviderClient) ListOperations(options *ProviderListOperationsOptions) ProviderListOperationsPager {
+	return &providerListOperationsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOperationsCreateRequest(ctx, options)
 		},
-		responder: client.listOperationsHandleResponse,
-		errorer:   client.listOperationsHandleError,
-		advancer: func(ctx context.Context, resp CsmOperationCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ProviderListOperationsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmOperationCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -417,12 +396,12 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, o
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *ProviderClient) listOperationsHandleResponse(resp *azcore.Response) (CsmOperationCollectionResponse, error) {
-	var val *CsmOperationCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CsmOperationCollectionResponse{}, err
+func (client *ProviderClient) listOperationsHandleResponse(resp *azcore.Response) (ProviderListOperationsResponse, error) {
+	result := ProviderListOperationsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CsmOperationCollection); err != nil {
+		return ProviderListOperationsResponse{}, err
 	}
-	return CsmOperationCollectionResponse{RawResponse: resp.Response, CsmOperationCollection: val}, nil
+	return result, nil
 }
 
 // listOperationsHandleError handles the ListOperations error response.

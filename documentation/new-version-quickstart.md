@@ -430,7 +430,7 @@ func createResourceGroup(connection *armcore.Connection) error {
 
 ***Creating a Virtual Network***
 ```go
-func createVirtualNetwork(connection *armcore.Connection) error {
+func createVirtualNetwork(connection *armcore.Connection) (armnetwork.VirtualNetworkResponse, error) {
 	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
 
 	param := armnetwork.VirtualNetwork{

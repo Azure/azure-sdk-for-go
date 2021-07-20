@@ -446,12 +446,9 @@ func getTestId(t *testing.T) string {
 
 func convertToHttpRequest(req *azcore.Request) *http.Request {
 	r := http.Request{
-		URL: req.URL,
+		URL:    req.URL,
+		Header: req.Header,
 	}
-
-	r.URL = req.URL
-	r.Header = req.Header
-
 	return &r
 }
 

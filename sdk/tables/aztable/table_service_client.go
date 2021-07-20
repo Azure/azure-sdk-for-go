@@ -36,7 +36,6 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, p)
 	}
 	con := newConnection(serviceURL, conOptions)
-	// c, _ := cred.(*SharedKeyCredential)
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: cred}, nil
 }
 

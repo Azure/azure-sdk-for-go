@@ -640,6 +640,8 @@ In the samples above, you might notice some operations has a ``Begin`` prefix (f
 - Use Poller
 - Pass a polling interval
 
+For details on design guidelines of LRO, please follow [this documentation here](https://azure.github.io/azure-sdk/golang_introduction.html#methods-invoking-long-running-operations)
+
 ## Code Samples
 
 More code samples for using the management library for Go SDK can be found in the following locations

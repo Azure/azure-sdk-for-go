@@ -159,7 +159,7 @@ import {
 }
 ```
 
-***Define the required variables***
+***Define some global variables***
 ```go
 var (
 	ctx               = context.Background()

@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
 	"testing"
@@ -417,8 +416,12 @@ var modeMap = map[RecordMode]recorder.Mode{
 }
 
 func getTestId(t *testing.T) string {
-	_, fileName, _, _ := runtime.Caller(0)
-	return fmt.Sprintf("%v.%v", fileName, t.Name())
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Errorf("Could not find current working directory")
+	}
+	fmt.Println(cwd, t.Name())
+	return fmt.Sprintf("%v.%v", cwd, t.Name())
 }
 
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
@@ -460,14 +463,15 @@ func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 		response, err := http.DefaultClient.Do(req)
 		return response, err
 	}
-	return nil, errors.New("AZURE_RECORD_MODE was not set")
+	return nil, errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
 }
 
 func StartRecording(t *testing.T) error {
 	if recordMode == "" {
-		return errors.New("AZURE_RECORD_MODE was not set")
+		return errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
 	}
-	recordingId := getTestId(t)
+	fmt.Println("Starting recording...")
+	recordingId = getTestId(t)
 	fmt.Println(recordingId)
 	req, err := http.NewRequest("POST", startURL, nil)
 	fmt.Println("URL: ", req.URL.String())
@@ -494,7 +498,8 @@ func StopRecording(t *testing.T) error {
 	req.Header.Set("x-recording-id", recordingId)
 	_, err = client.Do(req)
 	if err != nil {
-		return err
+		t.Errorf(err.Error())
 	}
+	fmt.Println("Stopped recording")
 	return nil
 }

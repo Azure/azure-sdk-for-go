@@ -27,12 +27,15 @@ func Test_TestProxy(t *testing.T) {
 		Scopes:     []string{AADAuthenticationScope},
 		HTTPClient: testProxyTransport,
 	}
-	client, err := NewTableClient("testproxy", "https://seankaneprimx.table.core.windows.net", cred, &options)
+	client, err := NewTableClient("testproxy", "https://seankaneprim.table.core.windows.net", cred, &options)
+	fmt.Println(err)
 	require.NoError(err)
 
 	_, err = client.Create(ctx)
+	fmt.Println(err)
 	require.NoError(err)
 
-	client.Delete(ctx)
+	_, err = client.Delete(ctx)
+	fmt.Println(err)
 	require.NoError(err)
 }

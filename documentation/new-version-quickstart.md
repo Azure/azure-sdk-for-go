@@ -402,7 +402,7 @@ func createResourceGroup(connection *armcore.Connection) error {
 		Location: to.StringPtr(location),
 	}
 
-	resp, err := rgClient.CreateOrUpdate(ctx, resourceGroupName, param, nil)
+	return rgClient.CreateOrUpdate(ctx, resourceGroupName, param, nil)
 	if err != nil {
 		return err
 	}

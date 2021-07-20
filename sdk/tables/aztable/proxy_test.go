@@ -28,14 +28,16 @@ func Test_TestProxy(t *testing.T) {
 		HTTPClient: testProxyTransport,
 	}
 	client, err := NewTableClient("testproxy", "https://seankaneprim.table.core.windows.net", cred, &options)
-	fmt.Println(err)
+	fmt.Println("NewTableClient err: ", err)
 	require.NoError(err)
 
+	fmt.Println("CALLING CREATE")
 	_, err = client.Create(ctx)
-	fmt.Println(err)
+	fmt.Println("Create err: ", err)
 	require.NoError(err)
 
+	fmt.Println("CALLING DELETE")
 	_, err = client.Delete(ctx)
-	fmt.Println(err)
+	fmt.Println("Delete err: ", err)
 	require.NoError(err)
 }

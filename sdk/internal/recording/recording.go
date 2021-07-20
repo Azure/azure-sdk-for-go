@@ -19,7 +19,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -429,7 +428,9 @@ var recordingModeHeader = "x-recording-mode"
 var tr = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 }
-var client = http.Client{Transport: tr}
+var client = http.Client{
+	Transport: tr,
+}
 
 type TestProxyTransport struct{}
 
@@ -444,28 +445,25 @@ func getTestId(t *testing.T) string {
 	return fmt.Sprintf("%v.%v", cwd, t.Name())
 }
 
-func convertToHttpRequest(req *azcore.Request) *http.Request {
-	r := http.Request{
-		URL:    req.URL,
-		Header: req.Header,
-	}
-	return &r
-}
-
-func convertToAzcoreResponse(resp *http.Response) *azcore.Response {
-	r := azcore.Response{}
-	r.Header = resp.Header
-	r.Body = resp.Body
-	return &r
-}
+var DoCounter = 0
 
 func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 	if recordMode == "record" || recordMode == "playback" {
-		originalUrl := req.URL
-		req.Header.Set("x-recording-upstream-base-uri", originalUrl.String())
+		DoCounter += 1
+		fmt.Println("In DO: ", DoCounter)
+		req.Header.Set("x-recording-upstream-base-uri", req.URL.Host)
+		req.URL.Host = "localhost:5001"
+		fmt.Println(req.URL.String())
+		fmt.Println(req.URL.Host, req.Header.Get("x-recording-upstream-base-uri"), req.URL.Path, req.Method)
 		req.Header.Set(recordingIdHeader, recordingId)
 		req.Header.Set(recordingModeHeader, recordMode)
-		response, err := client.Do(req)
+		fmt.Println("MAKING THE HTTP CALL")
+		response, err := http.DefaultClient.Do(req)
+		if err != nil {
+			fmt.Println("ERROR: ", err)
+		}
+		DoCounter -= 1
+		fmt.Println(response.StatusCode, response.Header)
 		return response, err
 	}
 	return nil, errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")

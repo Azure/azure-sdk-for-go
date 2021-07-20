@@ -356,7 +356,7 @@ var (
 	vnetName          = "example-vnet"
 	subnetName        = "internal"
 	nicName           = "example-nic"
-    vmName            = "example-vm"
+        vmName            = "example-vm"
 
 	resourceGroupID string
 	vnetID          string

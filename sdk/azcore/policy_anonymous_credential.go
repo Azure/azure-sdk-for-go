@@ -15,6 +15,6 @@ func anonCredPolicyFunc(req *Request) (*Response, error) {
 
 // AnonymousCredential is for use with HTTP(S) requests that read public resource
 // or for use with Shared Access Signatures (SAS).
-func AnonymousCredential() Credential {
+func NewAnonymousCredential() Credential {
 	return credentialFunc(anonCredAuthPolicyFunc)
 }

@@ -8,15 +8,6 @@ parameters:
 
 steps:
 
-  - pwsh: |
-      go get github.com/jstemmer/go-junit-report
-      go get github.com/axw/gocov/gocov
-      go get github.com/AlekSi/gocov-xml
-      go get github.com/matm/gocov-html
-      go get -u github.com/wadey/gocovmerge
-    displayName: "Install Coverage and Junit Dependencies"
-    workingDirectory: '${{parameters.GoWorkspace}}'
-
   - pwsh: ./eng/scripts/build.ps1
     displayName: 'Build'
     workingDirectory: '${{parameters.GoWorkspace}}'
@@ -30,6 +21,15 @@ steps:
       GO111MODULE: 'on'
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
+    - pwsh: |
+        go get github.com/jstemmer/go-junit-report
+        go get github.com/axw/gocov/gocov
+        go get github.com/AlekSi/gocov-xml
+        go get github.com/matm/gocov-html
+        go get -u github.com/wadey/gocovmerge
+      displayName: "Install Coverage and Junit Dependencies"
+      workingDirectory: '${{parameters.GoWorkspace}}'
+
     - pwsh: |
         $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
         foreach ($td in $testDirs) {

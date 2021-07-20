@@ -108,6 +108,21 @@ func recordedTestTeardown(key string) {
 	}
 }
 
+func insertNEntities(pk string, n int, client *TableClient) error {
+	for i := 0; i < n; i++ {
+		e := &map[string]interface{}{
+			"PartitionKey": pk,
+			"RowKey":       fmt.Sprint(i),
+			"Value":        i + 1,
+		}
+		_, err := client.AddEntity(ctx, *e)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // cleans up the specified tables. If tables is nil, all tables will be deleted
 func cleanupTables(context *testContext, tables *[]string) {
 	c := context.client

@@ -500,21 +500,6 @@ func (s *tableClientLiveTests) TestListEntities() {
 	require.Equal(5, count)
 }
 
-func insertNEntities(pk string, n int, client *TableClient) error {
-	for i := 0; i < n; i++ {
-		e := &map[string]interface{}{
-			"PartitionKey": pk,
-			"RowKey":       fmt.Sprint(i),
-			"Value":        i + 1,
-		}
-		_, err := client.AddEntity(ctx, *e)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // setup the test environment
 func (s *tableClientLiveTests) BeforeTest(suite string, test string) {
 	recordedTestSetup(s.T(), s.T().Name(), s.endpointType, s.mode)

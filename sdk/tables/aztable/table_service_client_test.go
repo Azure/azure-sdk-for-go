@@ -154,7 +154,6 @@ func (s *tableServiceClientLiveTests) TestListTables() {
 	for i := 0; i < 5; i++ {
 		_, err := context.client.Create(ctx, fmt.Sprintf("%v%v", tableName, i))
 		require.NoError(err)
-		fmt.Println("Created: ", i)
 	}
 
 	count := 0

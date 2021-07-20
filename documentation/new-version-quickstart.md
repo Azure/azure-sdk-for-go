@@ -132,21 +132,74 @@ client := armnetwork.NewVirtualNetworksClient(acon, "<subscription ID>")
 Interacting with Azure Resources
 --------------------------------
 
-Now that we are authenticated and have created our sub-resource clients, we can use our client to make API calls. Let's demonstrate management client's usage by showing various concrete examples
+Now that we are authenticated and have created our sub-resource clients, we can use our client to make API calls. For resource management scenarios, most of our cases are centered around creating / updating / reading / deleting Azure resources. Those scenarios correspond to what we call "operations" in Azure. Once you are sure of which operations you want to call, you can then implement the operation call using the management client we just created in previous section.
 
-Example: Managing Resource Groups
+To write the concrete code for the API call, you might need to look up the information of request parameters, types, and response body for a certain opertaion. We recommend using the following site for SDK reference:
+
+- [Official Go docs for new Azure Go SDK packages](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) - This web-site contains the complete SDK references for each released package as well as embedded code snippets for some operation
+
+To see the reference for a certain package, you can either click into each package on the web-site, or directly add the SDK path to the end of URL. For example, to see the reference for Azure Compute package, you can use [https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute). Certain development tool or IDE has features that allow you to directly look up API definitions as well.
+
+Let's illustrate the SDK usage by a few quick examples. In the following sample. we are going to create a resource group using the SDK. To acheive this scenario, we can take the follow steps
+
+- Step 1 : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources#ResourceGroupsClient)
+- Step 2 : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
+- Step 3 : Using the information about this operation, we can then fill in the required parameters, and implement it using the Go SDK. If we need extra information on what those parameters mean, we can also use the [Azure service documentation on Microsoft Docs](https://docs.microsoft.com/en-us/azure/?product=featured)
+
+Let's show our what final code looks like
+
+Example: Creating a Resource Group
 ---------------------------------
-In this example, we will show how to manage Resource Groups.
 
 ***Import the packages***
 ```go
-import "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
+import {
+    "github.com/Azure/azure-sdk-for-go/sdk/armcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/to"
+}
+```
+
+***Define the global variables***
+```go
+var (
+	ctx               context.Context
+	subscriptionId    string
+	location          = "westus2"
+	resourceGroupName = "resourceGroupName"
+	resourceGroupID string
+)
 ```
 
 ***Create a resource group***
-
 ```go
+func init() {
+	ctx = context.Background()
+	subscriptionId = os.Getenv("SUBSCRIPTION_ID")
+}
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+		Logging: azcore.LogOptions{
+			IncludeBody: true,
+		},
+	})
+
+	defer cleanup(conn)
+
+	if err := createResourceGroup(ctx, conn); err != nil {
+		panic(err)
+	}
+})
+
 func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+
+
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
 	param := armresources.ResourceGroup{
@@ -155,6 +208,65 @@ func createResourceGroup(ctx context.Context, connection *armcore.Connection) (a
 
 	return rgClient.CreateOrUpdate(context.Backgroud(), resourceGroupName, param, nil)
 }
+```
+
+Let's demonstrate management client's usage by showing additional samples
+
+Example: Managing Resource Groups
+---------------------------------
+
+***Import the packages***
+```go
+import {
+    "github.com/Azure/azure-sdk-for-go/sdk/armcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
+    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/to"
+}
+```
+
+***Define the global variables***
+```go
+var (
+	ctx               context.Context
+	subscriptionId    string
+	location          = "westus2"
+	resourceGroupName = "resourceGroupName"
+	resourceGroupID string
+)
+```
+***Authentication and Setup***
+```go
+func init() {
+	ctx = context.Background()
+	subscriptionId = os.Getenv("SUBSCRIPTION_ID")
+}
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+		Logging: azcore.LogOptions{
+			IncludeBody: true,
+		},
+	})
+
+	defer cleanup(conn)
+
+	if err := updateResourceGroup(ctx, conn); err != nil {
+		panic(err)
+	}
+
+	if err := listResourceGroups(ctx, conn); err != nil {
+		panic(err)
+	}
+
+	if err := deleteResourceGroup(ctx, conn); err != nil {
+		panic(err)
+	}
+})
 ```
 
 ***Update a resource group***
@@ -208,18 +320,113 @@ func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) er
 }
 ```
 
-Example: Managing Network Resources
+Example: Managing Virtual Machines
 ---------------------------------
-In this example, we will show to manage Network related resources.
+In addition to resource groups, we will also use Virtual Machine as an example and show how to manage how to create a Virtual Machine which involves three Azure services (Resource Group, Network and Compute)
 
 ***Import the packages***
 ```go
-import "github.com/Azure/azure-sdk-for-go/sdk/network/armnetwork"
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+)
+```
+***Define the global variables***
+```go
+var (
+	ctx               context.Context
+	subscriptionId    string
+	location          = "westus2"
+	resourceGroupName = "resourceGroupName"
+	vnetName          = "example-vnet"
+	subnetName        = "internal"
+	nicName           = "example-nic"
+    vmName            = "example-vm"
+
+	resourceGroupID string
+	vnetID          string
+	subnetID        string
+	nicID           string
+	vmID            string
+)
+```
+***Authentication and Setup***
+```go
+func init() {
+	ctx = context.Background()
+	subscriptionId = os.Getenv("SUBSCRIPTION_ID")
+}
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+		Logging: azcore.LogOptions{
+			IncludeBody: true,
+		},
+	})
+
+	if err := createResourceGroup(conn); err != nil {
+		panic(err)
+	}
+
+	if err := createVirtualNetwork(conn); err != nil {
+		panic(err)
+	}
+
+	if err := createSubnet(conn); err != nil {
+		panic(err)
+	}
+
+	if err := createNIC(conn); err != nil {
+		panic(err)
+	}
+
+	if err := createVirtualMachine(conn); err != nil {
+		panic(err)
+	}
+}
+```
+***Creating a Resource Group***
+```go
+func createResourceGroup(connection *armcore.Connection) error {
+	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+
+	param := armresources.ResourceGroup{
+		Location: to.StringPtr(location),
+	}
+
+	resp, err := rgClient.CreateOrUpdate(ctx, resourceGroupName, param, nil)
+	if err != nil {
+		return err
+	}
+	b, err := json.MarshalIndent(*resp.ResourceGroup, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	resourceGroupID = *resp.ResourceGroup.ID
+	fmt.Printf("Resource Group '%s' created: \n%s\n", resourceGroupID, string(b))
+	return nil
+}
 ```
 
 ***Creating a Virtual Network***
 ```go
-func createVirtualNetwork(ctx context.Context, connection *armcore.Connection) (armnetwork.VirtualNetworkResponse, error) {
+func createVirtualNetwork(connection *armcore.Connection) error {
 	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
 
 	param := armnetwork.VirtualNetwork{
@@ -236,78 +443,199 @@ func createVirtualNetwork(ctx context.Context, connection *armcore.Connection) (
 	}
 	poller, err := vnetClient.BeginCreateOrUpdate(ctx, resourceGroupName, vnetName, param, nil)
 	if err != nil {
-		return armnetwork.VirtualNetworkResponse{}, err
+		return err
 	}
-	return poller.PollUntilDone(ctx, interval)
+	resp, err := poller.PollUntilDone(ctx, interval)
+	if err != nil {
+		return err
+	}
+	b, err := json.MarshalIndent(*resp.VirtualNetwork, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	vnetID = *resp.VirtualNetwork.ID
+	fmt.Printf("Virtual Network '%s' created: \n%s\n", vnetID, string(b))
+	return nil
 }
 ```
 
-***Deleting a Virtual Network***
+***Creating a Subnet***
 ```go
-func deleteVirtualNetwork(ctx context.Context, connection *armcore.Connection) error {
-	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
+func createSubnet(connection *armcore.Connection) error {
+	subnetClient := armnetwork.NewSubnetsClient(connection, subscriptionId)
 
-	poller, err := vnetClient.BeginDelete(ctx, resourceGroupName, vnetName, nil)
+	param := armnetwork.Subnet{
+		Properties: &armnetwork.SubnetPropertiesFormat{
+			AddressPrefix: to.StringPtr("10.0.2.0/24"),
+		},
+	}
+	poller, err := subnetClient.BeginCreateOrUpdate(ctx, resourceGroupName, vnetName, subnetName, param, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := poller.PollUntilDone(ctx, interval)
+	if err != nil {
+		return err
+	}
+
+	b, err := json.MarshalIndent(*resp.Subnet, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	subnetID = *resp.Subnet.ID
+	fmt.Printf("Subnet '%s' created: \n%s\n", subnetID, string(b))
+	return nil
+}
+```
+***Creating a Network Interface***
+```go
+func createNIC(connection *armcore.Connection) error {
+	nicClient := armnetwork.NewNetworkInterfacesClient(connection, subscriptionId)
+
+	param := armnetwork.NetworkInterface{
+		Resource: armnetwork.Resource{
+			Location: to.StringPtr(location),
+		},
+		Properties: &armnetwork.NetworkInterfacePropertiesFormat{
+			IPConfigurations: []*armnetwork.NetworkInterfaceIPConfiguration{
+				{
+					Name: to.StringPtr("internal"),
+					Properties: &armnetwork.NetworkInterfaceIPConfigurationPropertiesFormat{
+						PrivateIPAllocationMethod: armnetwork.IPAllocationMethodDynamic.ToPtr(),
+						Subnet: &armnetwork.Subnet{
+							SubResource: armnetwork.SubResource{
+								ID: to.StringPtr(subnetID),
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	poller, err := nicClient.BeginCreateOrUpdate(ctx, resourceGroupName, nicName, param, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := poller.PollUntilDone(ctx, interval)
+	if err != nil {
+		return err
+	}
+
+	b, err := json.MarshalIndent(*resp.NetworkInterface, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	nicID = *resp.NetworkInterface.ID
+	fmt.Printf("Network Interface '%s' created: \n%s\n", nicID, string(b))
+	return nil
+}
+```
+
+***Creating a Virtual Machine***
+```go
+func createVirtualMachine(connection *armcore.Connection) error {
+	vmClient := armcompute.NewVirtualMachinesClient(connection, subscriptionId)
+
+	param := armcompute.VirtualMachine{
+		Resource: armcompute.Resource{
+			Location: to.StringPtr(location),
+		},
+		Identity: &armcompute.VirtualMachineIdentity{
+			Type: armcompute.ResourceIdentityTypeSystemAssigned.ToPtr(),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: armcompute.VirtualMachineSizeTypesStandardF2.ToPtr(),
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword:        to.StringPtr("P@$$w0rd1234!"),
+				AdminUsername:        to.StringPtr("adminuser"),
+				ComputerName:         to.StringPtr("arcturus"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{},
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						SubResource: armcompute.SubResource{
+							ID: to.StringPtr(nicID),
+						},
+					},
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.StringPtr("WindowsServer"),
+					Publisher: to.StringPtr("MicrosoftWindowsServer"),
+					SKU:       to.StringPtr("2016-Datacenter"),
+					Version:   to.StringPtr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					CreateOption: armcompute.DiskCreateOptionTypesFromImage.ToPtr(),
+					Caching:      armcompute.CachingTypesReadWrite.ToPtr(),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: armcompute.StorageAccountTypesStandardLRS.ToPtr(),
+					},
+					OSType: armcompute.OperatingSystemTypesWindows.ToPtr(),
+				},
+			},
+		},
+	}
+
+	poller, err := vmClient.BeginCreateOrUpdate(ctx, resourceGroupName, vmName, param, nil)
+	if err != nil {
+		return err
+	}
+
+	// we cannot use the resp returned by the service because this response does not returned with a final polling URL in its header
+	if _, err := poller.PollUntilDone(ctx, interval); err != nil {
+		return err
+	}
+
+	resp, err := vmClient.Get(ctx, resourceGroupName, vmName, nil)
+	if err != nil {
+		return err
+	}
+
+	b, err := json.MarshalIndent(*resp.VirtualMachine, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	vmID = *resp.VirtualMachine.ID
+	fmt.Printf("Virtual Machine '%s' created: \n%s\n", vmID, string(b))
+	return nil
+}
+```
+The following example shows how to delete a Virtual Machine
+
+***Deleting a Virtual Machine***
+```go
+func deleteVirtualMachine(connection *armcore.Connection) error {
+	vmClient := armcompute.NewVirtualMachinesClient(connection, subscriptionId)
+
+	poller, err := vmClient.BeginDelete(ctx, resourceGroupName, vmName, &armcompute.VirtualMachinesBeginDeleteOptions{
+		ForceDeletion: to.BoolPtr(true),
+	})
 	if err != nil {
 		return err
 	}
 	if _, err := poller.PollUntilDone(ctx, interval); err != nil {
 		return err
 	}
+
+	fmt.Printf("Virtual Machine '%s' deleted.\n", vmID)
 	return nil
 }
-```
-
-***List all Virtual Networks in a Resource Group***
-```go
-func listVirtualNetwork(ctx context.Context, connection *armcore.Connection) ([]*armnetwork.VirtualNetwork, error) {
-    vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
-    
-    pager := vnetClient.List(resourceGroupName, nil)
-    
-    var virtualNetworks []*armnetwork.VirtualNetwork
-    for pager.NextPage(ctx) {
-        resp := pager.PageResponse()
-        virtualNetworks = append(virtualNetworks, resp.VirtualNetworkListResult.Value...)
-    }
-    
-    return virtualNetworks, pager.Err()
-}
-```
-
-Example: Managing Virtual Machines
----------------------------------
-In this example, we will show how to manage Virtual Machines
-
-***Import the packages***
-```go
-// insert code
-```
-
-***Creating a Virtual Machine***
-```go
-// insert code
-```
-
-***Updating a Virtual Machine***
-```go
-// insert code
-```
-
-***List all Virtual Machines***
-```go
-// insert code
-```
-
-***Delete a Virtual Machine***
-```go
-// insert code
 ```
 
 ## Code Samples
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples](https://github.com/Azure-Samples/azure-sdk-for-go-samples)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/network/armnetwork/example_networkinterfaces_test.go)
 
 Need help?
 ----------

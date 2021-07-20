@@ -1,10 +1,10 @@
-# Azure AgFood Module for Go
+# Azure AgriFood Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/agfood/armagfood)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/agfood/armagfood)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/agrifood/armagrifood)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/agrifood/armagrifood)
 
-The `armagfood` module provides operations for working with Azure agfood.
+The `armagrifood` module provides operations for working with Azure AgriFood.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/agfood/armagfood)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/agrifood/armagrifood)
 
 # Getting started
 
@@ -17,15 +17,15 @@ The `armagfood` module provides operations for working with Azure agfood.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure AgFood module:
+Install the Azure AgriFood module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/agfood/armagfood
+go get github.com/Azure/azure-sdk-for-go/sdk/agrifood/armagrifood
 ```
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure AgFood.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure AgriFood.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure AgFood
+## Connecting to Azure AgriFood
 
 Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
@@ -45,16 +45,16 @@ For more information on ARM connections, please see the documentation for `armco
 
 ## Clients
 
-Azure AgFood modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure AgriFood modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armagfood.NewFarmBeatsModelsClient(con, "<subscription ID>")
+client := armagrifood.NewFarmBeatsModelsClient(con, "<subscription ID>")
 ```
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `AgFood` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `AgriFood` label.
 
 # Contributing
 

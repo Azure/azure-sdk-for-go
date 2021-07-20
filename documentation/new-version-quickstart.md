@@ -195,8 +195,6 @@ func main() {
 })
 
 func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
-
-
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
 	param := armresources.ResourceGroup{

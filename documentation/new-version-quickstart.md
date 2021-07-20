@@ -162,8 +162,8 @@ import {
 ***Define the required variables***
 ```go
 var (
-	ctx               context.Context
-	subscriptionId    string
+	ctx               = context.Background()
+	subscriptionId    = os.Getenv("AZURE_SUBSCRIPTION_ID")
 	location          = "westus2"
 	resourceGroupName = "resourceGroupName"
 	resourceGroupID string

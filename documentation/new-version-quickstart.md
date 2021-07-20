@@ -417,10 +417,6 @@ func createResourceGroup(connection *armcore.Connection) error {
 	if err != nil {
 		return err
 	}
-	b, err := json.MarshalIndent(*resp.ResourceGroup, "", "  ")
-	if err != nil {
-		return err
-	}
 
 	resourceGroupID = *resp.ResourceGroup.ID
 	fmt.Printf("Resource Group '%s' created: \n%s\n", resourceGroupID, string(b))

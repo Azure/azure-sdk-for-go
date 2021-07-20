@@ -633,6 +633,8 @@ func deleteVirtualMachine(connection *armcore.Connection) error {
 Long Running Operations
 -----------------------
 In the samples above, you might notice some operations has a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (In short, LRO). For those operations, you need to follow a specific pattern. 
+- Use Poller
+- Pass a polling interval
 
 ## Code Samples
 

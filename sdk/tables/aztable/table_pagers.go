@@ -29,7 +29,7 @@ import (
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 type TableEntityQueryResponsePager interface {
@@ -70,7 +70,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryResponseResponse {
@@ -94,7 +94,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 type TableQueryResponsePager interface {
@@ -163,7 +163,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
 	return *p.current

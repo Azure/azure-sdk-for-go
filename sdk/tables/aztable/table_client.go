@@ -58,7 +58,7 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 // pager := client.Query(nil)
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Fprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponsePager {
@@ -78,7 +78,7 @@ func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponse
 // pager := client.List()
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Fprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 func (t *TableClient) List() TableEntityQueryResponsePager {

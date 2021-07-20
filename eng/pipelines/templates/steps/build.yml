@@ -1,3 +1,5 @@
+# This builds only track 2 SDKs. See \azure-pipelines.yml for track 1.
+
 parameters:
   ServiceDirectory: ''
   GoWorkspace: ''
@@ -7,25 +9,13 @@ parameters:
 
 steps:
 
-  - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go build -v ./... in $md"
-        go build -v ./...
-      }
+  - pwsh: ./eng/scripts/build.ps1
     displayName: 'Build'
     workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
 
-  - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go vet ./... in $md"
-        go vet ./...
-      }
+  - pwsh: ./eng/scripts/build.ps1 -vet -skipBuild
     displayName: 'Vet'
     workingDirectory: '${{parameters.GoWorkspace}}'
     env:

@@ -11,7 +11,7 @@ package redis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-06-01/redis"
+	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 )
 
 const (
@@ -21,39 +21,39 @@ const (
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Everyday  DayOfWeek = original.Everyday
-	Friday    DayOfWeek = original.Friday
-	Monday    DayOfWeek = original.Monday
-	Saturday  DayOfWeek = original.Saturday
-	Sunday    DayOfWeek = original.Sunday
-	Thursday  DayOfWeek = original.Thursday
-	Tuesday   DayOfWeek = original.Tuesday
-	Wednesday DayOfWeek = original.Wednesday
-	Weekend   DayOfWeek = original.Weekend
+	DayOfWeekEveryday  DayOfWeek = original.DayOfWeekEveryday
+	DayOfWeekFriday    DayOfWeek = original.DayOfWeekFriday
+	DayOfWeekMonday    DayOfWeek = original.DayOfWeekMonday
+	DayOfWeekSaturday  DayOfWeek = original.DayOfWeekSaturday
+	DayOfWeekSunday    DayOfWeek = original.DayOfWeekSunday
+	DayOfWeekThursday  DayOfWeek = original.DayOfWeekThursday
+	DayOfWeekTuesday   DayOfWeek = original.DayOfWeekTuesday
+	DayOfWeekWednesday DayOfWeek = original.DayOfWeekWednesday
+	DayOfWeekWeekend   DayOfWeek = original.DayOfWeekWeekend
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary   KeyType = original.Primary
-	Secondary KeyType = original.Secondary
+	KeyTypePrimary   KeyType = original.KeyTypePrimary
+	KeyTypeSecondary KeyType = original.KeyTypeSecondary
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
-	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
-	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
-	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -76,16 +76,16 @@ const (
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type RebootType = original.RebootType
 
 const (
-	AllNodes      RebootType = original.AllNodes
-	PrimaryNode   RebootType = original.PrimaryNode
-	SecondaryNode RebootType = original.SecondaryNode
+	RebootTypeAllNodes      RebootType = original.RebootTypeAllNodes
+	RebootTypePrimaryNode   RebootType = original.RebootTypePrimaryNode
+	RebootTypeSecondaryNode RebootType = original.RebootTypeSecondaryNode
 )
 
 type ReplicationRole = original.ReplicationRole
@@ -98,27 +98,28 @@ const (
 type SkuFamily = original.SkuFamily
 
 const (
-	C SkuFamily = original.C
-	P SkuFamily = original.P
+	SkuFamilyC SkuFamily = original.SkuFamilyC
+	SkuFamilyP SkuFamily = original.SkuFamilyP
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic    SkuName = original.Basic
-	Premium  SkuName = original.Premium
-	Standard SkuName = original.Standard
+	SkuNameBasic    SkuName = original.SkuNameBasic
+	SkuNamePremium  SkuName = original.SkuNamePremium
+	SkuNameStandard SkuName = original.SkuNameStandard
 )
 
 type TLSVersion = original.TLSVersion
 
 const (
-	OneFullStopOne  TLSVersion = original.OneFullStopOne
-	OneFullStopTwo  TLSVersion = original.OneFullStopTwo
-	OneFullStopZero TLSVersion = original.OneFullStopZero
+	TLSVersionOneFullStopOne  TLSVersion = original.TLSVersionOneFullStopOne
+	TLSVersionOneFullStopTwo  TLSVersion = original.TLSVersionOneFullStopTwo
+	TLSVersionOneFullStopZero TLSVersion = original.TLSVersionOneFullStopZero
 )
 
 type AccessKeys = original.AccessKeys
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type Client = original.Client
@@ -157,6 +158,8 @@ type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type NotificationListResponse = original.NotificationListResponse
+type NotificationListResponseIterator = original.NotificationListResponseIterator
+type NotificationListResponsePage = original.NotificationListResponsePage
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -231,6 +234,12 @@ func NewListResultIterator(page ListResultPage) ListResultIterator {
 }
 func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
 	return original.NewListResultPage(cur, getNextPage)
+}
+func NewNotificationListResponseIterator(page NotificationListResponsePage) NotificationListResponseIterator {
+	return original.NewNotificationListResponseIterator(page)
+}
+func NewNotificationListResponsePage(cur NotificationListResponse, getNextPage func(context.Context, NotificationListResponse) (NotificationListResponse, error)) NotificationListResponsePage {
+	return original.NewNotificationListResponsePage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

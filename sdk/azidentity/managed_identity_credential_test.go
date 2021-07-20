@@ -662,3 +662,33 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 		t.Fatalf("expected to receive an error but received none")
 	}
 }
+
+func TestManagedIdentityCredential_ResourceID_envVar(t *testing.T) {
+	// setting a dummy value for IDENTITY_ENDPOINT in order to be able to get a ManagedIdentityCredential type
+	_ = os.Setenv("IDENTITY_ENDPOINT", "somevalue")
+	_ = os.Setenv("IDENTITY_HEADER", "header")
+	_ = os.Setenv("AZURE_CLIENT_ID", "client_id")
+	_ = os.Setenv("AZURE_RESOURCE_ID", "resource_id")
+	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER", "AZURE_CLIENT_ID", "AZURE_RESOURCE_ID")
+	cred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{ID: ResourceID})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if cred.id != "resource_id" {
+		t.Fatal("unexpected id value stored")
+	}
+	cred, err = NewManagedIdentityCredential("", nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if cred.id != "client_id" {
+		t.Fatal("unexpected id value stored")
+	}
+	cred, err = NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{ID: ClientID})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if cred.id != "client_id" {
+		t.Fatal("unexpected id value stored")
+	}
+}

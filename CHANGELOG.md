@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## `v55.7.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-06-01/media`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/mysql/mgmt/2020-01-01/mysql/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/postgresql/mgmt/2020-01-01/postgresql/CHANGELOG.md) |
+
+## `v55.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-06-01/avs`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-06-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/edgeorder/mgmt/2020-12-01-preview/edgeorder`
+- `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis`
+- `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features`
+- `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-01-15/web`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.6.0/services/preview/quantum/mgmt/2019-11-04-preview/quantum/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.6.0/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+
 ## `v55.5.0`
 
 ### New Packages
@@ -13,7 +49,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.5.0/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration/CHANGELOG.md) |
 
 ## `v55.4.0`
 

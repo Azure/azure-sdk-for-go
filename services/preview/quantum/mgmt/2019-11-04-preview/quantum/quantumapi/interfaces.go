@@ -40,3 +40,10 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*quantum.OperationsClient)(nil)
+
+// WorkspaceClientAPI contains the set of methods on the WorkspaceClient type.
+type WorkspaceClientAPI interface {
+	CheckNameAvailability(ctx context.Context, locationName string, checkNameAvailabilityParameters quantum.CheckNameAvailabilityParameters) (result quantum.CheckNameAvailabilityResult, err error)
+}
+
+var _ WorkspaceClientAPI = (*quantum.WorkspaceClient)(nil)

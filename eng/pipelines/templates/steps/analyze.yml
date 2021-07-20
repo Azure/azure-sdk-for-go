@@ -6,7 +6,7 @@ parameters:
   Scope: 'sdk/...'
 
 steps:
-          
+
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:
       Directory: sdk/${{ parameters.ServiceDirectory }}
@@ -25,7 +25,6 @@ steps:
         Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml in $md"
         golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml
       }
-      exit 0
     displayName: 'Lint'
     failOnStderr: false
     workingDirectory: '${{parameters.GoWorkspace}}'

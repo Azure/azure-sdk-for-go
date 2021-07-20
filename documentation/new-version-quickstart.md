@@ -58,9 +58,7 @@ Windows (Note: Administrator access is required)
 2.  Click System Security, then System
 3.  Click Advanced system settings on the left
 4.  Inside the System Properties window, click the `Environment Variables…` button.
-5.  Click on the property you would like to change, then click the Edit…
-    button. If the property name is not listed, then click the New…
-    button.
+5.  Click on the property you would like to change, then click the `Edit…` button. If the property name is not listed, then click the `New…` button.
 
 Linux-based OS :
 

@@ -161,7 +161,7 @@ import {
 }
 ```
 
-***Define the global variables***
+***Define the required variables***
 ```go
 var (
 	ctx               context.Context
@@ -225,7 +225,7 @@ import {
 }
 ```
 
-***Define the global variables***
+***Define the required variables***
 ```go
 var (
 	ctx               context.Context
@@ -344,6 +344,10 @@ import (
 ```
 ***Define the global variables***
 ```go
+const (
+	interval = 10 * time.Second
+)
+
 var (
 	ctx               context.Context
 	subscriptionId    string

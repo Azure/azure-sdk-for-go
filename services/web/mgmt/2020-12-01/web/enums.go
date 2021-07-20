@@ -1442,6 +1442,21 @@ func PossibleStackPreferredOsValues() []StackPreferredOs {
 	return []StackPreferredOs{Linux, Windows}
 }
 
+// StagingEnvironmentPolicy enumerates the values for staging environment policy.
+type StagingEnvironmentPolicy string
+
+const (
+	// StagingEnvironmentPolicyDisabled ...
+	StagingEnvironmentPolicyDisabled StagingEnvironmentPolicy = "Disabled"
+	// StagingEnvironmentPolicyEnabled ...
+	StagingEnvironmentPolicyEnabled StagingEnvironmentPolicy = "Enabled"
+)
+
+// PossibleStagingEnvironmentPolicyValues returns an array of possible values for the StagingEnvironmentPolicy const type.
+func PossibleStagingEnvironmentPolicyValues() []StagingEnvironmentPolicy {
+	return []StagingEnvironmentPolicy{StagingEnvironmentPolicyDisabled, StagingEnvironmentPolicyEnabled}
+}
+
 // StatusOptions enumerates the values for status options.
 type StatusOptions string
 

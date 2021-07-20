@@ -1,0 +1,11 @@
+trigger: none
+
+extends:
+  template: /eng/common/pipelines/templates/steps/prepare-pipelines.yml
+  parameters:
+    Repository: $(Build.Repository.Name)
+    Prefix: go
+    CIConventionOptions: ''
+    UPConventionOptions: '--variablegroup 58 --variablegroup 76 --variablegroup 56 --variablegroup 93'
+    # Uncomment once live tests (tests.yml) are added to the repository
+    # TestsConventionOptions: '--variablegroup 64'

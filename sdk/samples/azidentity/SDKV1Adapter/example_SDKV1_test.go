@@ -72,7 +72,7 @@ func ExampleNewDefaultAzureCredential() {
 // ExampleNewClientSecretCredential for using the ClientSecretCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.
 // NewAzureIdentityCredentialAdapter can take any credential type defined in azidentity and convert it to an authorizer that is compatible with the Azure SDK for Go
-// V1 implementation. For a list of the credentials that azidentity includes, please see: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity.
+// V1 implementation. For a list of the credentials that azidentity includes, please see: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity.
 // NewClientSecretCredential can be used in place of auth.NewClientCredentialsConfig().
 func ExampleNewClientSecretCredential() {
 	groupsClient := resources.NewGroupsClient(subscriptionID)
@@ -110,7 +110,7 @@ func ExampleNewClientSecretCredential() {
 // ExampleNewEnvironmentCredential for using the EnvironmentCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.
 // NewAzureIdentityCredentialAdapter can take any credential type defined in azidentity and convert it to an authorizer that is compatible with the Azure SDK for Go
-// V1 implementation. For a list of the credentials that azidentity includes, please see: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity.
+// V1 implementation. For a list of the credentials that azidentity includes, please see: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity.
 // NewEnvironmentCredential can be used in place of auth.NewAuthorizerFromEnvironment(). An important distinction is that NewEnvironmentCredential does not include Managed
 // Identity credential, for a credential that also checks the environment for Managed Identity credential use the NewDefaultAzureCredentialAdapter. Alternatively,
 // create a custom credential chain with NewChainedTokenCredential and add all desired token credentials to try into the chain.

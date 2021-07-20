@@ -1,7 +1,7 @@
 # Azure SDK for Go
 
 [![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=master)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=main)
 
 This repository is for active development of the Azure SDK for Go. For consumers of the SDK you can follow the links below to visit the documentation you are interested in
 * [Overview of Azure SDK for Go](https://docs.microsoft.com/azure/developer/go/)
@@ -46,6 +46,11 @@ If a package you need isn't available please open an issue and let us know.
 | Event Hubs           | [github.com/Azure/azure-event-hubs-go](https://github.com/Azure/azure-event-hubs-go)               |
 | Application Insights | [github.com/Microsoft/ApplicationInsights-go](https://github.com/Microsoft/ApplicationInsights-go) |
 
+Packages that are still in public preview can be found under the `services/preview` directory. Please be aware that since these packages are in preview they are subject to change, including breaking changes, outside of a major semver bump.
+
+## Samples
+[Samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples
+
 ## Reporting security issues and security bugs
 
 Security issues and bugs should be reported privately, via email, to the Microsoft Security Response Center (MSRC) <secure@microsoft.com>. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Further information, including the MSRC PGP key, can be found in the [Security TechCenter](https://www.microsoft.com/msrc/faqs-report-an-issue).
@@ -62,17 +67,8 @@ channel](https://gophers.slack.com/messages/CA7HK8EEP)** on the [Gophers
 Slack](https://gophers.slack.com/). Sign up
 [here](https://invite.slack.golangbridge.org) first if necessary.
 
-## Contributing
+## Contribute
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-go/blob/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit
-https://cla.microsoft.com.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
-or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-[samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples

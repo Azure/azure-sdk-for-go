@@ -136,3 +136,17 @@ func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interf
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }
+
+// GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
+func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArrayResponse, error) {
+	return t.client.GetAccessPolicy(ctx, t.Name, nil)
+}
+
+// SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
+func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
+	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
+	if len(*&options.TableACL) > 5 {
+		err = tooManyAccessPoliciesError
+	}
+	return response, err
+}

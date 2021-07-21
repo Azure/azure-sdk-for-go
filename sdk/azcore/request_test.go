@@ -471,12 +471,15 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	buff := make([]byte, 768, 768)
+	buff := make([]byte, 768)
 	const buffLen = 768
 	for i := 0; i < buffLen; i++ {
 		buff[i] = 1
 	}
-	req.SetBody(NopCloser(bytes.NewReader(buff)), "application/octet-stream")
+	err = req.SetBody(NopCloser(bytes.NewReader(buff)), "application/octet-stream")
+	if err != nil {
+		t.Fatal(err)
+	}
 	if req.Header.Get(headerContentLength) != strconv.FormatInt(buffLen, 10) {
 		t.Fatalf("expected content-length %d, got %s", buffLen, req.Header.Get(headerContentLength))
 	}

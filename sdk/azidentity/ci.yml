@@ -14,3 +14,4 @@ stages:
   parameters:
     ServiceDirectory: 'azidentity'
     CoverageGoal: 0.80
+    RunTests: true

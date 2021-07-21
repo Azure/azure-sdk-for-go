@@ -15,13 +15,13 @@ type AuthenticationOptions struct {
 	// Options contains the TokenRequestOptions that includes a scopes field which contains
 	// the list of OAuth2 authentication scopes used when requesting a token.
 	// This field is ignored for other forms of authentication (e.g. shared key).
-	Options TokenRequestOptions
+	TokenRequest TokenRequestOptions
 }
 
 // Credential represents any credential type.
 type Credential interface {
 	// AuthenticationPolicy returns a policy that requests the credential and applies it to the HTTP request.
-	AuthenticationPolicy(options AuthenticationOptions) Policy
+	NewAuthenticationPolicy(options AuthenticationOptions) Policy
 }
 
 // credentialFunc is a type that implements the Credential interface.
@@ -29,7 +29,7 @@ type Credential interface {
 type credentialFunc func(options AuthenticationOptions) Policy
 
 // AuthenticationPolicy implements the Credential interface on credentialFunc.
-func (cf credentialFunc) AuthenticationPolicy(options AuthenticationOptions) Policy {
+func (cf credentialFunc) NewAuthenticationPolicy(options AuthenticationOptions) Policy {
 	return cf(options)
 }
 

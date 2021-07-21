@@ -16,7 +16,6 @@ import (
 )
 
 var (
-	ctx               context.Context
 	subscriptionId    string
 	location          = "westus2"
 	resourceGroupName = "sample-resourcegroup"
@@ -41,7 +40,7 @@ func main() {
 		},
 	})
 
-	ctx = context.Background()
+	ctx := context.Background()
 	resourceGroup, err := createResourceGroup(ctx, conn)
 	if err != nil {
 		log.Fatalf("Cannot create resource group: %+v", err)
@@ -256,7 +255,7 @@ func createNIC(ctx context.Context, connection *armcore.Connection, subnetID str
 	return resp.NetworkInterface, nil
 }
 
-func deleteNIC(connection *armcore.Connection) error {
+func deleteNIC(ctx context.Context, connection *armcore.Connection) error {
 	nicClient := armnetwork.NewNetworkInterfacesClient(connection, subscriptionId)
 
 	poller, err := nicClient.BeginDelete(ctx, resourceGroupName, nicName, nil)
@@ -331,7 +330,7 @@ func createVirtualMachine(ctx context.Context, connection *armcore.Connection, n
 	return resp.VirtualMachine, nil
 }
 
-func deleteVirtualMachine(connection *armcore.Connection) error {
+func deleteVirtualMachine(ctx context.Context, connection *armcore.Connection) error {
 	vmClient := armcompute.NewVirtualMachinesClient(connection, subscriptionId)
 
 	poller, err := vmClient.BeginDelete(ctx, resourceGroupName, vmName, &armcompute.VirtualMachinesBeginDeleteOptions{

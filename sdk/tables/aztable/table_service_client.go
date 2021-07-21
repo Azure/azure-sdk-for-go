@@ -75,6 +75,21 @@ func (t *TableServiceClient) Query(queryOptions *QueryOptions) TableQueryRespons
 	return &tableQueryResponsePager{client: t.client, queryOptions: queryOptions, tableQueryOptions: new(TableQueryOptions)}
 }
 
+func (t *TableServiceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (TableServiceStatsResponse, error) {
+	// TODO: This only uses the secondary endpoint which needs to be updated in the generated call
+	if options == nil {
+		options = &ServiceGetStatisticsOptions{}
+	}
+	return t.service.GetStatistics(ctx, options)
+}
+
+func (t *TableServiceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (TableServicePropertiesResponse, error) {
+	if options == nil {
+		options = &ServiceGetPropertiesOptions{}
+	}
+	return t.service.GetProperties(ctx, options)
+}
+
 func isCosmosEndpoint(url string) bool {
 	isCosmosEmulator := strings.Contains(url, "localhost") && strings.Contains(url, "8902")
 	return isCosmosEmulator || strings.Contains(url, CosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)

@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -125,6 +126,31 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 	assert.Nil(pager.Err())
 	assert.Equal(resultCount, tableCount-1)
 	assert.Equal(pageCount, int(top))
+}
+
+func (s *tableServiceClientLiveTests) TestGetStatistics() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	s.T().Skip() // TODO: need to change URL to -secondary https://docs.microsoft.com/en-us/rest/api/storageservices/get-table-service-stats
+	resp, err := context.client.GetStatistics(ctx, nil)
+	require.Nil(err)
+	require.NotNil(resp)
+}
+
+func (s *tableServiceClientLiveTests) TestGetProperties() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	resp, err := context.client.GetProperties(ctx, nil)
+	require.Nil(err)
+	require.NotNil(resp)
 }
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {

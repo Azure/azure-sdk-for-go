@@ -19,9 +19,9 @@ foreach ($sdk in (./eng/scripts/get_module_dirs.ps1 -serviceDir 'sdk/...')) {
 }
 
 $keys = $sdks.Keys | Sort-Object;
-if (![string]::IsNullOrWhiteSpace($filter)) { 
+if (![string]::IsNullOrWhiteSpace($filter)) {
     Write-Host "Using filter: $filter"
-    $keys = $keys.Where( { $_ -match $filter }) 
+    $keys = $keys.Where( { $_ -match $filter })
 }
 
 $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {

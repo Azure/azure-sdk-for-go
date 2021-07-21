@@ -451,7 +451,8 @@ func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 	if recordMode == "record" || recordMode == "playback" {
 		DoCounter += 1
 		fmt.Println("In DO: ", DoCounter)
-		req.Header.Set("x-recording-upstream-base-uri", req.URL.Host)
+		originalURLHost := req.URL.Host
+		req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
 		req.URL.Host = "localhost:5001"
 		fmt.Println(req.URL.String())
 		fmt.Println(req.URL.Host, req.Header.Get("x-recording-upstream-base-uri"), req.URL.Path, req.Method)
@@ -462,7 +463,7 @@ func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 		if err != nil {
 			fmt.Println("ERROR: ", err)
 		}
-		DoCounter -= 1
+		fmt.Printf("CALL MADE\n\n")
 		fmt.Println(response.StatusCode, response.Header)
 		return response, err
 	}

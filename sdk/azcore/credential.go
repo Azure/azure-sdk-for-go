@@ -10,26 +10,26 @@ import (
 	"time"
 )
 
-// AuthenticationPolicyOptions contains various options used to create a credential policy.
-type AuthenticationPolicyOptions struct {
+// AuthenticationOptions contains various options used to create a credential policy.
+type AuthenticationOptions struct {
 	// Options contains the TokenRequestOptions that includes a scopes field which contains
 	// the list of OAuth2 authentication scopes used when requesting a token.
 	// This field is ignored for other forms of authentication (e.g. shared key).
-	Options TokenRequestOptions
+	TokenRequest TokenRequestOptions
 }
 
 // Credential represents any credential type.
 type Credential interface {
 	// AuthenticationPolicy returns a policy that requests the credential and applies it to the HTTP request.
-	AuthenticationPolicy(options AuthenticationPolicyOptions) Policy
+	NewAuthenticationPolicy(options AuthenticationOptions) Policy
 }
 
 // credentialFunc is a type that implements the Credential interface.
 // Use this type when implementing a stateless credential as a first-class function.
-type credentialFunc func(options AuthenticationPolicyOptions) Policy
+type credentialFunc func(options AuthenticationOptions) Policy
 
 // AuthenticationPolicy implements the Credential interface on credentialFunc.
-func (cf credentialFunc) AuthenticationPolicy(options AuthenticationPolicyOptions) Policy {
+func (cf credentialFunc) NewAuthenticationPolicy(options AuthenticationOptions) Policy {
 	return cf(options)
 }
 

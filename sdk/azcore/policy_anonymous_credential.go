@@ -5,7 +5,7 @@
 
 package azcore
 
-func anonCredAuthPolicyFunc(AuthenticationPolicyOptions) Policy {
+func anonCredAuthPolicyFunc(AuthenticationOptions) Policy {
 	return PolicyFunc(anonCredPolicyFunc)
 }
 

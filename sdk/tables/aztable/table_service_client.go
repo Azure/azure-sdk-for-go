@@ -75,14 +75,27 @@ func (t *TableServiceClient) Query(queryOptions *QueryOptions) TableQueryRespons
 	return &tableQueryResponsePager{client: t.client, queryOptions: queryOptions, tableQueryOptions: new(TableQueryOptions)}
 }
 
+// GetStatistics retrieves all the statistics for an account with Geo-redundancy established.
+//
+// response, err := client.GetStatistics(context.Background, nil)
+// handle(err)
+// fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
+// fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
 func (t *TableServiceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (TableServiceStatsResponse, error) {
-	// TODO: This only uses the secondary endpoint which needs to be updated in the generated call
 	if options == nil {
 		options = &ServiceGetStatisticsOptions{}
 	}
 	return t.service.GetStatistics(ctx, options)
 }
 
+// GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
+//
+// response, err := client.GetProperties(context.Background, nil)
+// handle(err)
+// fmt.Println(resopnse.StorageServiceStats.Cors)
+// fmt.Println(resopnse.StorageServiceStats.HourMetrics)
+// fmt.Println(resopnse.StorageServiceStats.Logging)
+// fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
 func (t *TableServiceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (TableServicePropertiesResponse, error) {
 	if options == nil {
 		options = &ServiceGetPropertiesOptions{}
@@ -90,6 +103,30 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *Service
 	return t.service.GetProperties(ctx, options)
 }
 
+// SetProperties allows the user to set cors , metrics, and logging rules for the account.
+//
+// Cors: A slice of CorsRules.
+//
+// HoursMetrics: A summary of request statistics grouped in hourly aggregatess for tables
+//
+// HoursMetrics: A summary of request statistics grouped in minute aggregates for tables
+//
+// Logging: Azure Analytics logging settings
+//
+//
+// logging := Logging{
+// 		Read:    to.BoolPtr(true),
+// 		Write:   to.BoolPtr(true),
+// 		Delete:  to.BoolPtr(true),
+// 		Version: to.StringPtr("1.0"),
+// 		RetentionPolicy: &RetentionPolicy{
+// 			Enabled: to.BoolPtr(true),
+// 		Days:    to.Int32Ptr(5),
+// 		},
+// }
+// props := TableServiceProperties{Logging: &logging}
+// resp, err := context.client.SetProperties(ctx, props, nil)
+// handle(err)
 func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
 	if options == nil {
 		options = &ServiceSetPropertiesOptions{}

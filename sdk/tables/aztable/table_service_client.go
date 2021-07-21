@@ -90,6 +90,13 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *Service
 	return t.service.GetProperties(ctx, options)
 }
 
+func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+	if options == nil {
+		options = &ServiceSetPropertiesOptions{}
+	}
+	return t.service.SetProperties(ctx, properties, options)
+}
+
 func isCosmosEndpoint(url string) bool {
 	isCosmosEmulator := strings.Contains(url, "localhost") && strings.Contains(url, "8902")
 	return isCosmosEmulator || strings.Contains(url, CosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)

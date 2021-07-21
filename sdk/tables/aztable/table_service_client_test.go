@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -151,6 +152,35 @@ func (s *tableServiceClientLiveTests) TestGetProperties() {
 	resp, err := context.client.GetProperties(ctx, nil)
 	require.Nil(err)
 	require.NotNil(resp)
+}
+
+func (s *tableServiceClientLiveTests) TestSetProperties() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	logging := Logging{
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(false),
+		},
+		Read:    to.BoolPtr(true),
+		Delete:  to.BoolPtr(true),
+		Write:   to.BoolPtr(true),
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{
+		Logging: &logging,
+	}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.Nil(err)
+	require.NotNil(resp)
+
+	receivedProps, err := context.client.GetProperties(ctx, nil)
+	require.Nil(err)
+	require.Equal(logging.Write, receivedProps.StorageServiceProperties.Logging.Write)
 }
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {

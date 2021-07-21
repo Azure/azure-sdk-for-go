@@ -101,7 +101,10 @@ func ExampleNewClientSecretCredential() {
 	}
 	for list.NotDone() {
 		fmt.Println(*list.Value().Name)
-		list.Next()
+		err = list.Next()
+		if err != nil {
+			panic(err.Error())
+		}
 	}
 	// Output:
 	// samplegroup

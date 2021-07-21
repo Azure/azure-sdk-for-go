@@ -33,10 +33,7 @@ var (
 	tenantID       = os.Getenv("AZURE_TENANT_ID")
 )
 
-var (
-	location  = os.Getenv("AZURE_LOCATION")
-	userAgent = "azidentitysample"
-)
+var location = os.Getenv("AZURE_LOCATION")
 
 // ExampleNewDefaultAzureCredential for using the DefaultAzureCredential through the NewDefaultAzureCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.

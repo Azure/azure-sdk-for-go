@@ -38,7 +38,7 @@ steps:
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - pwsh: |
-      echo check source file formatting in $(pwd)
+      Write-Host "##[command]Check source file formatting in $(pwd)"
       $files = Get-ChildItem -Path . -Filter *.go
       if ($files.Count -gt 0) {
         gofmt -s -l -d $files

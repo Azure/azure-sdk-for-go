@@ -39,7 +39,7 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
         $autorestPath = $_.path + "\autorest.md"
 
         if (ShouldGenerate-AutorestConfig $autorestPath) {
-            Generate-AutorestConfig($autorestPath)
+            Generate-AutorestConfig $autorestPath
             $removeAutorestFile = $true
         }
 

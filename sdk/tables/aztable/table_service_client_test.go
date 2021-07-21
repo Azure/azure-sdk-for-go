@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
@@ -138,7 +139,7 @@ func (s *tableServiceClientLiveTests) TestGetStatistics() {
 
 	s.T().Skip() // TODO: need to change URL to -secondary https://docs.microsoft.com/en-us/rest/api/storageservices/get-table-service-stats
 	resp, err := context.client.GetStatistics(ctx, nil)
-	require.Nil(err)
+	require.NoError(err)
 	require.NotNil(resp)
 }
 
@@ -150,11 +151,11 @@ func (s *tableServiceClientLiveTests) TestGetProperties() {
 	}
 
 	resp, err := context.client.GetProperties(ctx, nil)
-	require.Nil(err)
+	require.NoError(err)
 	require.NotNil(resp)
 }
 
-func (s *tableServiceClientLiveTests) TestSetProperties() {
+func (s *tableServiceClientLiveTests) TestSetLogging() {
 	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
@@ -162,26 +163,127 @@ func (s *tableServiceClientLiveTests) TestSetProperties() {
 	}
 
 	logging := Logging{
-		RetentionPolicy: &RetentionPolicy{
-			Enabled: to.BoolPtr(false),
-		},
 		Read:    to.BoolPtr(true),
-		Delete:  to.BoolPtr(true),
 		Write:   to.BoolPtr(true),
+		Delete:  to.BoolPtr(true),
 		Version: to.StringPtr("1.0"),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(5),
+		},
 	}
-	props := TableServiceProperties{
-		Logging: &logging,
-	}
+	props := TableServiceProperties{Logging: &logging}
 
 	resp, err := context.client.SetProperties(ctx, props, nil)
-	require.Nil(err)
+	require.NoError(err)
 	require.NotNil(resp)
 
-	receivedProps, err := context.client.GetProperties(ctx, nil)
-	require.Nil(err)
-	require.Equal(logging.Write, receivedProps.StorageServiceProperties.Logging.Write)
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.Logging.Read, *received.StorageServiceProperties.Logging.Read)
+	require.Equal(*props.Logging.Write, *received.StorageServiceProperties.Logging.Write)
+	require.Equal(*props.Logging.Delete, *received.StorageServiceProperties.Logging.Delete)
+	require.Equal(*props.Logging.RetentionPolicy.Enabled, *received.StorageServiceProperties.Logging.RetentionPolicy.Enabled)
+	require.Equal(*props.Logging.RetentionPolicy.Days, *received.StorageServiceProperties.Logging.RetentionPolicy.Days)
 }
+
+func (s *tableServiceClientLiveTests) TestSetHoursMetrics() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	metrics := Metrics{
+		Enabled:     to.BoolPtr(true),
+		IncludeAPIs: to.BoolPtr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(5),
+		},
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{HourMetrics: &metrics}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.HourMetrics.Enabled, *received.StorageServiceProperties.HourMetrics.Enabled)
+	require.Equal(*props.HourMetrics.IncludeAPIs, *received.StorageServiceProperties.HourMetrics.IncludeAPIs)
+	require.Equal(*props.HourMetrics.RetentionPolicy.Days, *received.StorageServiceProperties.HourMetrics.RetentionPolicy.Days)
+	require.Equal(*props.HourMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.HourMetrics.RetentionPolicy.Enabled)
+}
+
+func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	metrics := Metrics{
+		Enabled:     to.BoolPtr(true),
+		IncludeAPIs: to.BoolPtr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(5),
+		},
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{MinuteMetrics: &metrics}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.MinuteMetrics.Enabled, *received.StorageServiceProperties.MinuteMetrics.Enabled)
+	require.Equal(*props.MinuteMetrics.IncludeAPIs, *received.StorageServiceProperties.MinuteMetrics.IncludeAPIs)
+	require.Equal(*props.MinuteMetrics.RetentionPolicy.Days, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Days)
+	require.Equal(*props.MinuteMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Enabled)
+}
+
+/*
+func (s *tableServiceClientLiveTests) TestSetCors() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	corsRules1 := CorsRule{
+		AllowedHeaders: to.StringPtr("x-ms-meta-data"),
+		AllowedMethods: to.StringPtr("PUT"),
+	}
+	props := TableServiceProperties{Cors: []*CorsRule{&corsRules1}}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(props.Logging.Read, received.StorageServiceProperties.Logging.Read)
+	require.Equal(props.Logging.Write, received.StorageServiceProperties.Logging.Write)
+	require.Equal(props.Logging.Delete, received.StorageServiceProperties.Logging.Delete)
+	require.Equal(props.Logging.RetentionPolicy.Enabled, received.StorageServiceProperties.Logging.RetentionPolicy.Enabled)
+	require.Equal(props.Logging.RetentionPolicy.Days, received.StorageServiceProperties.Logging.RetentionPolicy.Days)
+}
+*/
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {
 	// setup the test environment

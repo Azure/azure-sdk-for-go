@@ -1015,6 +1015,46 @@ type AzureResourceManagerError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// CloudError ...
+type CloudError struct {
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
+type ErrorResponse struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorResponse `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // KeyVaultReference specifies the link to a Key Vault.
 type KeyVaultReference struct {
 	// ID - Azure resource ID of the Key Vault.
@@ -1547,7 +1587,7 @@ func (paap PolicyAssignmentArtifactProperties) MarshalJSON() ([]byte, error) {
 type Properties struct {
 	// Versions - Published versions of this blueprint definition.
 	Versions interface{} `json:"versions,omitempty"`
-	// Layout - Layout view of the blueprint definition for UI reference.
+	// Layout - READ-ONLY; Layout view of the blueprint definition for UI reference.
 	Layout interface{} `json:"layout,omitempty"`
 	// Status - READ-ONLY; Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
@@ -1568,9 +1608,6 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.Versions != nil {
 		objectMap["versions"] = p.Versions
-	}
-	if p.Layout != nil {
-		objectMap["layout"] = p.Layout
 	}
 	if p.TargetScope != "" {
 		objectMap["targetScope"] = p.TargetScope

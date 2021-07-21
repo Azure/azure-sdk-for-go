@@ -37,9 +37,12 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - script: |
+  - pwsh: |
       echo check source file formatting in $(pwd)
-      gofmt -s -l -d $(find . -name '*.go' -print) >&2
+      $files = Get-ChildItem -Path . -Filter *.go
+      if ($files.Count -gt 0) {
+        gofmt -s -l -d $files
+      }
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true

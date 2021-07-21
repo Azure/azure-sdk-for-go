@@ -178,7 +178,7 @@ func (s *tableServiceClientLiveTests) TestSetLogging() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	// time.Sleep(45 * time.Second)
+	time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -212,7 +212,7 @@ func (s *tableServiceClientLiveTests) TestSetHoursMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	// time.Sleep(45 * time.Second)
+	time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -245,7 +245,7 @@ func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	// time.Sleep(45 * time.Second)
+	time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -276,7 +276,7 @@ func (s *tableServiceClientLiveTests) TestSetCors() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	// time.Sleep(45 * time.Second)
+	time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -309,8 +309,28 @@ func (s *tableServiceClientLiveTests) TestSetTooManyCors() {
 
 	_, err := context.client.SetProperties(ctx, props, nil)
 	require.Error(err)
+}
 
-	time.Sleep(45 * time.Second)
+func (s *tableServiceClientLiveTests) TestRetentionTooLong() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	metrics := Metrics{
+		Enabled:     to.BoolPtr(true),
+		IncludeAPIs: to.BoolPtr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(366),
+		},
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{MinuteMetrics: &metrics}
+
+	_, err := context.client.SetProperties(ctx, props, nil)
+	require.Error(err)
 }
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {

@@ -178,7 +178,7 @@ func (s *tableServiceClientLiveTests) TestSetLogging() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -212,7 +212,7 @@ func (s *tableServiceClientLiveTests) TestSetHoursMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -245,7 +245,7 @@ func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -256,7 +256,6 @@ func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
 	require.Equal(*props.MinuteMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Enabled)
 }
 
-/*
 func (s *tableServiceClientLiveTests) TestSetCors() {
 	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
@@ -265,8 +264,11 @@ func (s *tableServiceClientLiveTests) TestSetCors() {
 	}
 
 	corsRules1 := CorsRule{
-		AllowedHeaders: to.StringPtr("x-ms-meta-data"),
-		AllowedMethods: to.StringPtr("PUT"),
+		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
+		AllowedMethods:  to.StringPtr("PUT"),
+		AllowedOrigins:  to.StringPtr("www.xyz.com"),
+		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Int32Ptr(500),
 	}
 	props := TableServiceProperties{Cors: []*CorsRule{&corsRules1}}
 
@@ -274,16 +276,42 @@ func (s *tableServiceClientLiveTests) TestSetCors() {
 	require.NoError(err)
 	require.NotNil(resp)
 
+	// time.Sleep(45 * time.Second)
+
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
 
-	require.Equal(props.Logging.Read, received.StorageServiceProperties.Logging.Read)
-	require.Equal(props.Logging.Write, received.StorageServiceProperties.Logging.Write)
-	require.Equal(props.Logging.Delete, received.StorageServiceProperties.Logging.Delete)
-	require.Equal(props.Logging.RetentionPolicy.Enabled, received.StorageServiceProperties.Logging.RetentionPolicy.Enabled)
-	require.Equal(props.Logging.RetentionPolicy.Days, received.StorageServiceProperties.Logging.RetentionPolicy.Days)
+	require.Equal(*props.Cors[0].AllowedHeaders, *received.StorageServiceProperties.Cors[0].AllowedHeaders)
+	require.Equal(*props.Cors[0].AllowedMethods, *received.StorageServiceProperties.Cors[0].AllowedMethods)
+	require.Equal(*props.Cors[0].AllowedOrigins, *received.StorageServiceProperties.Cors[0].AllowedOrigins)
+	require.Equal(*props.Cors[0].ExposedHeaders, *received.StorageServiceProperties.Cors[0].ExposedHeaders)
+	require.Equal(*props.Cors[0].MaxAgeInSeconds, *received.StorageServiceProperties.Cors[0].MaxAgeInSeconds)
 }
-*/
+
+func (s *tableServiceClientLiveTests) TestSetTooManyCors() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	corsRules1 := CorsRule{
+		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
+		AllowedMethods:  to.StringPtr("PUT"),
+		AllowedOrigins:  to.StringPtr("www.xyz.com"),
+		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Int32Ptr(500),
+	}
+	props := TableServiceProperties{Cors: make([]*CorsRule, 0)}
+	for i := 0; i < 6; i++ {
+		props.Cors = append(props.Cors, &corsRules1)
+	}
+
+	_, err := context.client.SetProperties(ctx, props, nil)
+	require.Error(err)
+
+	time.Sleep(45 * time.Second)
+}
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {
 	// setup the test environment

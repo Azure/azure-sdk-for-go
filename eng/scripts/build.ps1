@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild)
 
-. $PSScriptRoot\meta_generation.ps1
+. $PSScriptRoot/meta_generation.ps1
 
 $startingDirectory = Get-Location
 $root = Resolve-Path ($PSScriptRoot + "/../..")
@@ -38,7 +38,7 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
         Write-Host "##[command]Executing autorest.go in " $_.path
         $autorestPath = $_.path + "\autorest.md"
 
-        if (ShouldGenerate-AutorestConfig($autorestPath) ) {
+        if (ShouldGenerate-AutorestConfig $autorestPath) {
             Generate-AutorestConfig($autorestPath)
             $removeAutorestFile = $true
         }

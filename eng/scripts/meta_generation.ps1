@@ -1,15 +1,9 @@
-function ShouldGenerate-AutorestConfig {
-    Param(
-        [string] $autorestPath
-    )
+function ShouldGenerate-AutorestConfig([string]$autorestPath) {
     $metaPath = $autorestPath.Replace("autorest.md", "_meta.json")
-    return !(Test-Path $autorestPath -PathType Leaf) && (Test-Path $metaPath -PathType Leaf)
+    return !(Test-Path $autorestPath -PathType Leaf) -and (Test-Path $metaPath -PathType Leaf)
 }
 
-function Generate-AutorestConfig {
-    Param(
-        [string] $autorestPath
-    )
+function Generate-AutorestConfig([string]$autorestPath) {
     $metaPath = $autorestPath.Replace("autorest.md", "_meta.json")
     $meta = Get-Content $metaPath | ConvertFrom-Json
     $readme = "https://github.com/Azure/azure-rest-api-specs/blob/" + $meta.commit + $meta.readme.Split("/azure-rest-api-specs")[1];

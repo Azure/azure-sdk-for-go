@@ -11,7 +11,6 @@ import (
 	"time"
 )
 
-// ********************** The following goes in the aztables package *****************
 // https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations
 
 type Entity struct {
@@ -71,7 +70,7 @@ func (e *EdmEntity) UnmarshalJSON(data []byte) (err error) {
 			err = json.Unmarshal(propRawValue, &e.Metadata)
 		case "odata.id":
 			err = json.Unmarshal(propRawValue, &e.Id)
-		case "odata.editLink": // TODO: Verify the casing that the the service returns
+		case "odata.editLink":
 			err = json.Unmarshal(propRawValue, &e.EditLink)
 		case "odata.type":
 			err = json.Unmarshal(propRawValue, &e.Type)

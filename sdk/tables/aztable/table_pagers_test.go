@@ -4,53 +4,12 @@
 package aztable
 
 import (
-	"encoding/json"
 	"io"
 	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
-
-func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
-	assert := assert.New(b)
-	b.ReportAllocs()
-	bt := []byte(complexPayload)
-	for i := 0; i < b.N; i++ {
-		var val = make(map[string]interface{})
-		err := json.Unmarshal(bt, &val)
-		assert.Nil(err)
-		err = castAndRemoveAnnotations(&val)
-		assert.Nil(err)
-		assert.Equal("somePartition", val["PartitionKey"])
-	}
-}
-
-func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
-	assert := assert.New(b)
-
-	bt := []byte(complexPayload)
-	for i := 0; i < b.N; i++ {
-		var val = make(map[string]interface{})
-		err := json.Unmarshal(bt, &val)
-		if err != nil {
-			panic(err)
-		}
-		result := complexEntity{}
-		err = EntityMapAsModel(val, &result)
-		assert.Nil(err)
-		assert.Equal("somePartition", result.PartitionKey)
-	}
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
 
 func closerFromString(content string) io.ReadCloser {
 	return ioutil.NopCloser(strings.NewReader(content))

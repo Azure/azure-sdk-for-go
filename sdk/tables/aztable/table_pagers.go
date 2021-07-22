@@ -56,13 +56,12 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	}
 	var resp TableEntityQueryResponseResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
-	// if p.err == nil {
-	// 	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
-	// }
+
 	c, err := castToByteResponse(&resp)
 	if err != nil {
 		p.err = nil
 	}
+
 	p.current = &c
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
@@ -108,38 +107,6 @@ type TableQueryResponsePager interface {
 	PageResponse() TableQueryResponseResponse
 }
 
-// AsModels converts each map[string]interface{} entity result into a strongly slice of strongly typed models
-// The modelSlice parameter should be a pointer to a slice of struct types that match the entity model type in the table response.
-// func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
-// 	models := reflect.ValueOf(modelSlice).Elem()
-// 	tt := getTypeArray(models.Interface())
-// 	fmap := getTypeValueMap(tt)
-// 	for i, e := range r.Value {
-// 		err := fromMap(tt, fmap, &e, models.Index(i))
-// 		if err != nil {
-// 			return nil
-// 		}
-// 	}
-
-// 	return nil
-// }
-
-// EntityMapAsModel converts a table entity in the form of map[string]interface{} and converts it to a strongly typed model.
-//
-// Example:
-// mapEntity, err := client.GetEntity("somePartition", "someRow", nil)
-// myEntityModel := MyModel{}
-// err = EntityMapAsModel(mapEntity, &myEntityModel)
-func EntityMapAsModel(entityMap map[string]interface{}, model interface{}) error {
-	tt := getTypeArray(model)
-	fmap := getTypeValueMap(tt)
-	err := fromMap(reflect.TypeOf(model).Elem(), fmap, &entityMap, reflect.ValueOf(model).Elem())
-	if err != nil {
-		return nil
-	}
-	return err
-}
-
 type tableQueryResponsePager struct {
 	client            *tableClient
 	current           *TableQueryResponseResponse
@@ -176,53 +143,6 @@ func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (p *tableQueryResponsePager) Err() error {
 	return p.err
-}
-
-func castAndRemoveAnnotationsSlice(entities *[]map[string]interface{}) {
-	for _, e := range *entities {
-		castAndRemoveAnnotations(&e) //nolint:errcheck
-	}
-}
-
-// TODO: The default behavior of json.Unmarshal is to deserialize all json numbers as Float64.
-// This can be a problem for table entities which store float and int differently
-func castAndRemoveAnnotations(entity *map[string]interface{}) error {
-	//value := (*entity)["value"].([]interface{})[0].(map[string]interface{})
-	value := *entity
-	for k, v := range value {
-
-		iSuffix := strings.Index(k, OdataType)
-		if iSuffix > 0 {
-			// Get the name of the property that this odataType key describes.
-			valueKey := k[0:iSuffix]
-			// get the string value of the value at the valueKey
-			valAsString := value[valueKey].(string)
-
-			switch v {
-			case edmBinary:
-				value[valueKey] = []byte(valAsString)
-			case edmDateTime:
-				t, err := time.Parse(ISO8601, valAsString)
-				if err != nil {
-					return err
-				}
-				value[valueKey] = t
-			case edmGuid:
-				value[valueKey] = uuid.Parse(valAsString)
-			case edmInt64:
-				i, err := strconv.ParseInt(valAsString, 10, 64)
-				if err != nil {
-					return err
-				}
-				value[valueKey] = i
-			default:
-				return fmt.Errorf("unsupported annotation found: %s", k)
-			}
-			// remove the annotation key
-			delete(value, k)
-		}
-	}
-	return nil
 }
 
 func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
@@ -274,23 +194,6 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 	return nil
 }
 
-func convertField(value reflect.Value, edmType string) interface{} {
-	switch edmType {
-	case edmBinary:
-		return value.Bytes()
-	case edmInt32, edmInt64:
-		return value.Int()
-	case edmDouble:
-		return value.Float()
-	case edmBoolean:
-		return value.Bool()
-	case edmGuid, edmDateTime, edmString:
-		return value.String()
-	default:
-		return value.String()
-	}
-}
-
 func flattenEntity(entity reflect.Value, entityMap *map[string]interface{}) {
 	for i := 0; i < entity.NumField(); i++ {
 		if !entity.Field(i).IsZero() {
@@ -302,124 +205,6 @@ func flattenEntity(entity reflect.Value, entityMap *map[string]interface{}) {
 			}
 		}
 	}
-}
-
-func serializeBinaryProperty(binaryData reflect.Value) string {
-	return base64.StdEncoding.EncodeToString(binaryData.Interface().([]byte))
-}
-
-func convertToOdata(fieldName string) string {
-	var b strings.Builder
-	b.Grow(len(fieldName) + len(OdataType))
-	b.WriteString(fieldName)
-	b.WriteString(OdataType)
-	return b.String()
-}
-
-func edmTypeFromValue(value reflect.Value) (string, error) {
-	switch value.Type().Kind() {
-	case reflect.String:
-		return edmString, nil
-	case reflect.Bool:
-		return edmBoolean, nil
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32:
-		return edmInt32, nil
-	case reflect.Int64:
-		return edmInt64, nil
-	case reflect.Float32, reflect.Float64:
-		return edmDouble, nil
-	case reflect.Slice, reflect.Array:
-		if reflect.TypeOf(value.Interface()).Elem() != reflect.TypeOf(byte(0)) {
-			return "", errors.New("Arrays and slices must be of type byte")
-		}
-		return edmBinary, nil
-
-	default:
-		return "", errors.New("User defined fields cannot be a struct type")
-	}
-}
-
-// fromMap converts an entity map to a strongly typed model interface
-// tt is the type of the model
-// fmap is the result of getTypeValueMap for the model type
-// src is the source map value
-// srcVal is the the Value of the source map value
-func fromMap(tt reflect.Type, fmap *map[string]int, src *map[string]interface{}, srcVal reflect.Value) error {
-	for k, v := range *src {
-		// skip if this is an OData type descriptor
-		iSuffix := strings.Index(k, OdataType)
-		if iSuffix > 0 {
-			continue
-		}
-		// fetch the Field index by property name from the field map
-		fIndex := (*fmap)[k]
-		// Get the Value for the Field
-		val := srcVal.Field(fIndex)
-	Switch:
-		switch val.Kind() {
-		case reflect.String:
-			val.SetString(v.(string))
-		case reflect.Bool:
-			val.SetBool(v.(bool))
-		case reflect.Float64:
-			val.SetFloat(v.(float64))
-		case reflect.Int:
-			val.SetInt(int64(v.(float64)))
-		case reflect.Int64:
-			i64, err := strconv.ParseInt(v.(string), 10, 64)
-			if err != nil {
-				return err
-			}
-			val.SetInt(i64)
-		case reflect.Struct:
-			switch tn := val.Type().String(); tn {
-			case "time.Time":
-				t, err := time.Parse(ISO8601, v.(string))
-				if err != nil {
-					return err
-				}
-				val.Set(reflect.ValueOf(t))
-			}
-		case reflect.Ptr:
-			if val.IsNil() {
-				// populate the nil pointer with it's element type and re-run the type evaluation
-				val.Set(reflect.New(val.Type().Elem()))
-				val = val.Elem()
-				goto Switch
-			}
-		case reflect.Array, reflect.Map, reflect.Slice:
-			if getTypeArray(val.Interface()) != reflect.TypeOf(byte(0)) {
-				return errors.New("arrays and slices must be of type byte")
-			}
-			// 	// check if this is a uuid field as decorated by a tag
-			if _, ok := tt.Field(fIndex).Tag.Lookup("uuid"); ok {
-				u := uuid.Parse(v.(string))
-				val.Set(reflect.ValueOf(u))
-			} else {
-				b, err := base64.StdEncoding.DecodeString(v.(string))
-				if err != nil {
-					return err
-				}
-				val.SetBytes(b)
-			}
-		}
-	}
-	return nil
-}
-
-// getTypeValueMap - builds a map of Field names to their Field index for the given interface{}
-func getTypeValueMap(tt reflect.Type) *map[string]int {
-	nf := tt.NumField()
-	fmap := make(map[string]int)
-	// build a map of field types
-	for i := 0; i < nf; i++ {
-		f := tt.Field(i)
-		fmap[f.Name] = i
-		if f.Name == etag {
-			fmap[etagOdata] = i
-		}
-	}
-	return &fmap
 }
 
 func odataType(n string) string {

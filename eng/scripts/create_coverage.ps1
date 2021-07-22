@@ -6,6 +6,8 @@ Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
   Write-Host "Adding $covFile to the list of code coverage files"
   $coverageFiles.Add($covFile)
 }
+
+# merge coverage files
 gocovmerge $coverageFiles > mergedCoverage.txt
 gocov convert ./mergedCoverage.txt > ./coverage.json
 

@@ -629,7 +629,19 @@ type ExtendedGeoJSONFeatureCollection struct {
 // MarshalJSON implements the json.Marshaller interface for type ExtendedGeoJSONFeatureCollection.
 func (e ExtendedGeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
 	objectMap := e.ExtendedGeoJSONFeatureCollectionData.marshalInternal()
+	for key, val := range e.GeoJSONFeatureCollection.marshalInternal(*e.GetGeoJSONFeatureCollection().Type) {
+		objectMap[key] = val
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (e *ExtendedGeoJSONFeatureCollection) UnmarshalJSON(data []byte) error {
+	if err := e.GeoJSONFeatureCollectionData.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return e.ExtendedGeoJSONFeatureCollectionData.UnmarshalJSON(data)
 }
 
 type ExtendedGeoJSONFeatureCollectionData struct {
@@ -781,8 +793,20 @@ type GeoJSONFeature struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONFeature.
 func (g GeoJSONFeature) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONFeatureData.marshalInternal()
+	objectMap := g.GeoJSONObject.marshalInternal(*g.GeoJSONObject.Type)
+	for key, val := range g.GeoJSONFeatureData.marshalInternal() {
+		objectMap[key] = val
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONFeature) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONObject.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONFeatureData.UnmarshalJSON(data)
 }
 
 // GeoJSONFeatureCollectionClassification provides polymorphic access to related types.
@@ -813,11 +837,19 @@ func (g GeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
 
 func (g GeoJSONFeatureCollection) marshalInternal(discValue GeoJSONObjectType) map[string]interface{} {
 	objectMap := g.GeoJSONFeatureCollectionData.marshalInternal()
+	for key, val := range g.GeoJSONObject.marshalInternal(*g.GetGeoJSONObject().Type) {
+		objectMap[key] = val
+	}
+
 	return objectMap
 }
 
 func (g *GeoJSONFeatureCollection) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	return g.GeoJSONFeatureCollectionData.unmarshalInternal(rawMsg)
+	if err := g.GeoJSONFeatureCollectionData.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+
+	return g.GeoJSONObject.unmarshalInternal(rawMsg)
 }
 
 type GeoJSONFeatureCollectionData struct {
@@ -971,7 +1003,18 @@ type GeoJSONGeometryCollection struct {
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONGeometryCollection.
 func (g GeoJSONGeometryCollection) MarshalJSON() ([]byte, error) {
 	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal()
+	for key, value := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMap[key] = value
+	}
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONGeometryCollection) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometryCollectionData.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONGeometry.UnmarshalJSON(data)
 }
 
 type GeoJSONGeometryCollectionData struct {
@@ -1024,7 +1067,19 @@ type GeoJSONLineString struct {
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONLineString.
 func (g GeoJSONLineString) MarshalJSON() ([]byte, error) {
 	objectMap := g.GeoJSONLineStringData.marshalInternal()
+	for key, value := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMap[key] = value
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONLineString) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometry.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONLineStringData.UnmarshalJSON(data)
 }
 
 type GeoJSONLineStringData struct {
@@ -1078,7 +1133,19 @@ type GeoJSONMultiLineString struct {
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiLineString.
 func (g GeoJSONMultiLineString) MarshalJSON() ([]byte, error) {
 	objectMap := g.GeoJSONMultiLineStringData.marshalInternal()
+	for key, value := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMap[key] = value
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONMultiLineString) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometry.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONMultiLineStringData.UnmarshalJSON(data)
 }
 
 type GeoJSONMultiLineStringData struct {
@@ -1131,7 +1198,19 @@ type GeoJSONMultiPoint struct {
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPoint.
 func (g GeoJSONMultiPoint) MarshalJSON() ([]byte, error) {
 	objectMap := g.GeoJSONMultiPointData.marshalInternal()
+	for key, value := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMap[key] = value
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONMultiPoint) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometry.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONMultiPointData.UnmarshalJSON(data)
 }
 
 // GeoJSONMultiPointData - Data contained by a GeoJson MultiPoint.
@@ -1184,8 +1263,20 @@ type GeoJSONMultiPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPolygon.
 func (g GeoJSONMultiPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPolygonData.marshalInternal()
-	return json.Marshal(objectMap)
+	objectMapBase := g.GeoJSONMultiPolygonData.marshalInternal()
+	for key, val := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMapBase[key] = val
+	}
+
+	return json.Marshal(objectMapBase)
+}
+
+func (g *GeoJSONMultiPolygon) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometry.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONMultiPolygonData.UnmarshalJSON(data)
 }
 
 type GeoJSONMultiPolygonData struct {
@@ -1290,7 +1381,19 @@ type GeoJSONPoint struct {
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPoint.
 func (g GeoJSONPoint) MarshalJSON() ([]byte, error) {
 	objectMap := g.GeoJSONPointData.marshalInternal()
+	for key, value := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMap[key] = value
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONPoint) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometry.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONPointData.UnmarshalJSON(data)
 }
 
 // GeoJSONPointData - Data contained by a GeoJson Point.
@@ -1346,7 +1449,19 @@ type GeoJSONPolygon struct {
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPolygon.
 func (g GeoJSONPolygon) MarshalJSON() ([]byte, error) {
 	objectMap := g.GeoJSONPolygonData.marshalInternal()
+	for key, val := range g.GeoJSONGeometry.marshalInternal(*g.GeoJSONGeometry.Type) {
+		objectMap[key] = val
+	}
+
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONPolygon) UnmarshalJSON(data []byte) error {
+	if err := g.GeoJSONGeometry.UnmarshalJSON(data); err != nil {
+		return err
+	}
+
+	return g.GeoJSONPolygonData.UnmarshalJSON(data)
 }
 
 type GeoJSONPolygonData struct {

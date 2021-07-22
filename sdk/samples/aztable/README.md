@@ -126,20 +126,20 @@ what you can do with the Azure Data Tables client library.
 <!-- LINKS -->
 [api_reference_documentation]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
 
-[sample_authentication]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_authentication.go
+[sample_authentication]:https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_authentication.go
 
-[create_client]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_create_client.go
+[create_client]:https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_create_client.go
 
-[create_delete_table]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_create_delete_table.go
+[create_delete_table]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_create_delete_table.go
 
-[insert_delete_entities]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_insert_delete_entities.go
+[insert_delete_entities]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.go
 
-[query_entities]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_query_table.go
+[query_entities]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_query_table.go
 
-[query_tables]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_query_tables.go
+[query_tables]:https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_query_tables.go
 
-[update_upsert_merge]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_update_upsert_merge_entities.go
+[update_upsert_merge]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.go
 
-[sample_batch]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_batching.go
+[sample_batch]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_batching.go
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/tables/azure-data-tables/README.png)

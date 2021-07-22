@@ -5,7 +5,7 @@ Param(
 $testDirs = [Collections.Generic.List[String]]@()
 
 # find each directory under $serviceDir that contains Go test files
-Get-Childitem -recurse -path $serviceDir -filter *_test.go | foreach-object {
+Get-ChildItem -recurse -path $serviceDir -filter *_test.go | ForEach-Object {
   $cdir = $_.Directory
   $tests = Select-String -Path $_ 'Test' -AllMatches
 

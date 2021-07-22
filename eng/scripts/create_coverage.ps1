@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 
 $coverageFiles = [Collections.Generic.List[String]]@()
-Get-Childitem -recurse -path . -filter coverage.txt | foreach-object {
+Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
   $covFile = $_.FullName
   Write-Host "Adding $covFile to the list of code coverage files"
   $coverageFiles.Add($covFile)

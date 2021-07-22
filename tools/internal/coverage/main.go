@@ -66,18 +66,16 @@ func ReadConfigData() *CodeCoverage {
 
 // This supports doing a single package at a time. If this needs to be expanded in the future
 // this method will have to return a []*float64 for each packages goal
-func findCoverageGoal(covFiles []string, configData *CodeCoverage) *float64 {
-	var ret float64
-
+func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 	for _, covFile := range covFiles {
 		for _, p := range configData.Packages {
 			if strings.Contains(covFile, p.Name) {
-				return &p.CoverageGoal
+				return p.CoverageGoal
 			}
 		}
 	}
-
-	return &ret
+	fmt.Println("WARNING: Could not find a coverage goal, defaulting to 95%.")
+	return 0.95
 }
 
 func main() {
@@ -90,7 +88,7 @@ func main() {
 	configData := ReadConfigData()
 	coverageGoal := findCoverageGoal(coverageFiles, configData)
 
-	fmt.Printf("Failing if the coverage is below %.2f\n", *coverageGoal)
+	fmt.Printf("Failing if the coverage is below %.2f\n", coverageGoal)
 
 	coverageValues := make([]float64, 0)
 	for _, coverageFile := range coverageFiles {
@@ -123,11 +121,11 @@ func main() {
 	failedCoverage := false
 	for i := range coverageValues {
 		status := "Succeeded"
-		if coverageValues[i] < *coverageGoal {
+		if coverageValues[i] < coverageGoal {
 			status = "Failed"
 		}
 		fmt.Printf("Status: %v\tCoverage file: %v\t Coverage Amount: %.4f\n", status, coverageFiles[i], coverageValues[i])
-		if coverageValues[i] < *coverageGoal {
+		if coverageValues[i] < coverageGoal {
 			failedCoverage = true
 		}
 	}

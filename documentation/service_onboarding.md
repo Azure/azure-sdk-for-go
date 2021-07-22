@@ -14,7 +14,7 @@ This guide describes how to take an OpenAPI (or Swagger) spec located in the azu
 
 ## Install Go
 
-The Azure-sdk-for-go team supports Go versions N and N-1, ie the most recent release and the release before that, to see the exact versions we support you can check the pipeline defintions [here](https://github.com/Azure/azure-sdk-for-go/blob/main/eng/pipelines/templates/jobs/archetype-sdk-client.yml). The CI pipelines test the N and N-1 versions on both Windows and Linux virtual machines. If you do not already have Go installed, refer to this [workspace setup][workspace_setup] article for a more in depth tutorial on setting up your Go environment. After installing Go and configuring your workspace, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<GO HOME>/src/github.com/Azure/azure-sdk-for-go`.
+The Azure-sdk-for-go team supports Go versions latest and latest-1, to see the exact versions we support you can check the pipeline defintions [here](https://github.com/Azure/azure-sdk-for-go/blob/main/eng/pipelines/templates/jobs/archetype-sdk-client.yml). The CI pipelines test the latest and latest-1 versions on both Windows and Linux virtual machines. If you do not already have Go installed, refer to this [workspace setup][workspace_setup] article for a more in depth tutorial on setting up your Go environment (there is also an MSI if you are developing on Windows at the [go download page](https://golang.org/dl/)). After installing Go and configuring your workspace, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<GO HOME>/src/github.com/Azure/azure-sdk-for-go`.
 
 ## Install Autorest
 
@@ -73,25 +73,17 @@ This client takes three parameters, the first is the service URL for the specifi
 ### Defining Methods
 Defining a method follows the format:
 ```golang
-func (m *<MyStruct>) MethodName(param1 param1Type, param2 param2Type) (ReturnType, ReturnType2) {
-
-}
-```
-The `(m *<MyStruct>)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will avoid copying types on method calls and allow the method to mutate the receiving struct. You should use pointer receivers wherever possible to limit memory copies.
-
-
-Both public and private methods can be declared on clients. Below is an example in the `aztables` package for a `Create` method on the `TableServiceClient`:
-```golang
 // Create creates a table with the specified name.
-func (t *TableServiceClient) Create(ctx context.Context, name string) (TableCreateResponse, error) {
+func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
 	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
 	if err == nil {
-		tableResp := resp.(TableCreateResponse)
+		tableResp := resp.(TableResponseResponse)
 		return tableResp, nil
 	}
-	return TableCreateResponse{}, err
+	return TableResponseResponse{}, err
 }
 ```
+The `(t *TableServiceClient)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will not copy types on method calls and allows the method to mutate the receiving struct. It is best practice to use pointer receivers wherever possible to limit memory copies.
 
 All methods that perform I/O of any kind, sleep, or perform a significant amount of CPU-bound work must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to carry a deadline, cancellation signal, and other values across API boundaries. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
 
@@ -120,7 +112,7 @@ func TestCreateTable(t *testing.T) {
 	client := NewTableClient(accountName, accountKey, "tableName")
 	resp, err := client.Create()
 	assert.Nil(t, err)
-	assert.Equal(t, respo.TableResponse.TableName, "tableName")
+	assert.Equal(t, resp.TableResponse.TableName, "tableName")
 }
 ```
 

@@ -286,7 +286,6 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 
 // generateEntitySubset generates body payload for particular batch entity
 func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAction, writer *multipart.Writer) error {
-
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
@@ -321,10 +320,6 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 			return err
 		}
 	case Add:
-		err = toOdataAnnotatedDictionary(&entity)
-		if err != nil {
-			return err
-		}
 		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
 		if err != nil {
 			return err
@@ -332,10 +327,6 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
-		err = toOdataAnnotatedDictionary(&entity)
-		if err != nil {
-			return err
-		}
 		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
@@ -350,10 +341,6 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateReplace:
 		fallthrough
 	case UpsertReplace:
-		err = toOdataAnnotatedDictionary(&entity)
-		if err != nil {
-			return err
-		}
 		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 		if err != nil {
 			return err

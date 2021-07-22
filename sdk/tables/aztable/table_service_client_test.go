@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
@@ -177,7 +176,7 @@ func (s *tableServiceClientLiveTests) TestSetLogging() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -211,7 +210,7 @@ func (s *tableServiceClientLiveTests) TestSetHoursMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -244,7 +243,7 @@ func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -275,7 +274,7 @@ func (s *tableServiceClientLiveTests) TestSetCors() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)

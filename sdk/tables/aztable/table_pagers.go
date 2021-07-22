@@ -5,16 +5,8 @@ package aztable
 
 import (
 	"context"
-	"encoding/base64"
-	"errors"
-	"fmt"
-	"reflect"
-	"strconv"
-	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // TableEntityQueryResponsePager is a Pager for Table entity query results.
@@ -143,78 +135,4 @@ func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (p *tableQueryResponsePager) Err() error {
 	return p.err
-}
-
-func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
-	entMap := *entity
-	for k, v := range entMap {
-		t := reflect.TypeOf(v)
-	Switch:
-		switch t.Kind() {
-		case reflect.Slice, reflect.Array:
-			if getTypeArray(v) != reflect.TypeOf(byte(0)) {
-				return errors.New("arrays and slices must be of type byte")
-			}
-			// check if this is a uuid
-			uuidVal, ok := v.(uuid.UUID)
-			if ok {
-				entMap[k] = uuidVal.String()
-				entMap[odataType(k)] = edmGuid
-			} else {
-				entMap[odataType(k)] = edmBinary
-				b := v.([]byte)
-				entMap[k] = base64.StdEncoding.EncodeToString(b)
-			}
-		case reflect.Struct:
-			switch tn := reflect.TypeOf(v).String(); tn {
-			case "time.Time":
-				entMap[odataType(k)] = edmDateTime
-				time := v.(time.Time)
-				entMap[k] = time.UTC().Format(ISO8601)
-				continue
-			default:
-				return fmt.Errorf("Invalid struct for entity field '%s' of type '%s'", k, tn)
-			}
-		case reflect.Float32, reflect.Float64:
-			entMap[odataType(k)] = edmDouble
-		case reflect.Int64:
-			entMap[odataType(k)] = edmInt64
-			i64 := v.(int64)
-			entMap[k] = strconv.FormatInt(i64, 10)
-		case reflect.Ptr:
-			if v == nil {
-				// if the pointer is nil, ignore it.
-				continue
-			}
-			// follow the pointer to the type and re-run the switch
-			t = reflect.ValueOf(v).Elem().Type()
-			goto Switch
-		}
-	}
-	return nil
-}
-
-func flattenEntity(entity reflect.Value, entityMap *map[string]interface{}) {
-	for i := 0; i < entity.NumField(); i++ {
-		if !entity.Field(i).IsZero() {
-			fieldName := entity.Type().Field(i).Name
-			if fieldName == "PartitionKey" {
-				(*entityMap)["PartitionKey"] = entity.Field(i).String()
-			} else if fieldName == "RowKey" {
-				(*entityMap)["RowKey"] = entity.Field(i).String()
-			}
-		}
-	}
-}
-
-func odataType(n string) string {
-	var b strings.Builder
-	b.Grow(len(n) + len(OdataType))
-	b.WriteString(n)
-	b.WriteString(OdataType)
-	return b.String()
-}
-
-func getTypeArray(arr interface{}) reflect.Type {
-	return reflect.TypeOf(arr).Elem()
 }

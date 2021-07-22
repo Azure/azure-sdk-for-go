@@ -6,7 +6,6 @@ package aztable
 import (
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"

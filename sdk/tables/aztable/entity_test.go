@@ -8,28 +8,57 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// "odata.type":"account.Customers",
-// "odata.id":https://myaccount.table.core.windows.net/Customers(PartitionKey='Customer03',RowKey='Name'),
-// "odata.etag":"W/\"0x5B168C7B6E589D2\"",
-// "odata.editLink":"Customers(PartitionKey='Customer03',RowKey='Name')",
-// "PartitionKey":"partitionkey",
-// "RowKey":"rowkey",
-// "Timestamp":"2013-08-09T18:55:48.3402073Z",
-// "Bool":false,
-// "Int32":1234,
-// Int64@odata.type:"Edm.Int64",
-// "Int64":"123456789012",
-// "Double":1234.1234,
-// "String":"test",
-// Guid@odata.type:"Edm.Guid",
-// "Guid":"4185404a-5818-48c3-b9be-f217df0dba6f",
-// DateTime@odata.type:"Edm.DateTime",
-// "DateTime":"2013-08-02T17:37:43.9004348Z",
-// Binary@odata.type:"Edm.Binary",
-// "Binary":"AQIDBA=="
+func (s *tableClientLiveTests) TestAddBasicEntity() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
+
+	basicEntity := basicTestEntity{
+		Entity: Entity{
+			PartitionKey: "pk001",
+			RowKey:       "rk001",
+		},
+		Integer: 10,
+		String:  "abcdef",
+		Bool:    true,
+	}
+
+	marshalled, err := json.Marshal(basicEntity)
+	require.Nil(err)
+	_, err = client.AddEntity(ctx, marshalled)
+	require.Nil(err)
+
+	resp, err := client.GetEntity(ctx, "pk001", "rk001", nil)
+	require.Nil(err)
+
+	receivedEntity := basicTestEntity{}
+	err = json.Unmarshal(resp.Value, &receivedEntity)
+	require.Nil(err)
+	assert.Equal(receivedEntity.PartitionKey, "pk001")
+	assert.Equal(receivedEntity.RowKey, "rk001")
+
+	queryString := "PartitionKey eq 'pk001'"
+	queryOptions := QueryOptions{Filter: &queryString}
+	pager := client.Query(&queryOptions)
+	count := 0
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, e := range resp.TableEntityQueryResponse.Value {
+			err = json.Unmarshal(e, &receivedEntity)
+			assert.Nil(err)
+			assert.Equal(receivedEntity.PartitionKey, "pk001")
+			assert.Equal(receivedEntity.RowKey, "rk001")
+			count += 1
+		}
+	}
+
+	assert.Equal(count, 1)
+}
 
 func createEdmEntity(count int, pk string) EdmEntity {
 	return EdmEntity{

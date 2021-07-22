@@ -53,17 +53,27 @@ func (edi ErrorDetailsInternal) MarshalJSON() ([]byte, error) {
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name *string `json:"name,omitempty"`
+	// IsDataAction - Gets or sets a value indicating whether the operation is a data action or not
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Origin - READ-ONLY; Default value is 'user,system'.
 	Origin *string `json:"origin,omitempty"`
 	// Display - The information displayed about the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Properties - Properties of the operation
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if o.IsDataAction != nil {
+		objectMap["isDataAction"] = o.IsDataAction
+	}
 	if o.Display != nil {
 		objectMap["display"] = o.Display
+	}
+	if o.Properties != nil {
+		objectMap["properties"] = o.Properties
 	}
 	return json.Marshal(objectMap)
 }

@@ -1,12 +1,10 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. ErrorDetailsInternal.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. PrivateEndpoint.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. Operation.IsDataAction
+1. Operation.Properties

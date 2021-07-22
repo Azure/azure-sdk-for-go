@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	// "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
 func Sample_QueryTables() {

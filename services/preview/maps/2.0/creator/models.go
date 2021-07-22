@@ -759,7 +759,7 @@ type FeatureStateObject struct {
 	KeyName *string `json:"keyName,omitempty"`
 
 	// Value for the feature state. Type should comply with the style definition attached to the featurestate. Maximum length allowed for string type is 1024.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 // FeatureStatePutStatesetOptions contains the optional parameters for the FeatureState.PutStateset method.

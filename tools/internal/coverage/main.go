@@ -1,7 +1,7 @@
 package main
 
 import (
-	"flag"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -12,9 +12,20 @@ import (
 	"strings"
 )
 
+type CodeCoverage struct {
+	Packages []Package `json:"Packages"`
+}
+
+type Package struct {
+	Name         string  `json:"name"`
+	CoverageGoal float64 `json:"CoverageGoal"`
+}
+
 const (
 	coverageXmlFile = "coverage.xml"
 )
+
+var configFile, _ = filepath.Abs(filepath.Join("..", "eng", "config.json"))
 
 func check(e error) {
 	if e != nil {
@@ -39,15 +50,45 @@ func FindCoverageFiles(p string) {
 	check(err)
 }
 
+func ReadConfigData() *CodeCoverage {
+	jsonFile, err := os.Open(configFile)
+	check(err)
+	defer jsonFile.Close()
+
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	check(err)
+
+	var cov CodeCoverage
+	err = json.Unmarshal([]byte(byteValue), &cov)
+	check(err)
+	return &cov
+}
+
+// This supports doing a single package at a time. If this needs to be expanded in the future
+// this method will have to return a []*float64 for each packages goal
+func findCoverageGoal(covFiles []string, configData *CodeCoverage) *float64 {
+	var ret float64
+
+	for _, covFile := range covFiles {
+		for _, p := range configData.Packages {
+			if strings.Contains(covFile, p.Name) {
+				return &p.CoverageGoal
+			}
+		}
+	}
+
+	return &ret
+}
+
 func main() {
 	coverageFiles = make([]string, 0)
 	rootPath, err := filepath.Abs(".")
 	check(err)
+
 	FindCoverageFiles(rootPath)
 
-	coverageGoal := flag.Float64("coverage-goal", 0.95, "The goal coverage. This script will fail if coverage is below.")
-
-	flag.Parse()
+	configData := ReadConfigData()
+	coverageGoal := findCoverageGoal(coverageFiles, configData)
 
 	fmt.Printf("Failing if the coverage is below %.2f\n", *coverageGoal)
 

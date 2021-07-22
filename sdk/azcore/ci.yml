@@ -15,4 +15,3 @@ stages:
   parameters:
     ServiceDirectory: 'azcore'
     RunTests: true
-    CoverageGoal: 0.84

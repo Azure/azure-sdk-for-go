@@ -19,19 +19,6 @@ use: "@autorest/go@4.0.0-preview.23"
 openapi-type: data-plane
 ```
 
-<!-- ``` yaml
-directive:
-  # dynamically change TableEntityProperties from map[string]interface{} to []byte
-  - from: swagger-document
-    where: $.definitions.TableEntityProperties
-    transform: >-
-      $["type"] = "string";
-      $["format"] = "byte";
-      delete $.additionalProperties;
-      $lib.log($);
-      return $;
-``` -->
-
 ### Go multi-api
 
 ``` yaml $(go) && $(multiapi)

@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -64,6 +63,9 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 // }
 // err := pager.Err()
 func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponsePager {
+	if queryOptions == nil {
+		queryOptions = &QueryOptions{}
+	}
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
@@ -87,8 +89,7 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}
 	if err != nil {
 		return entity, err
 	}
-	// addOdataAnnotations(&mapEntity)
-	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, nil)
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return insertResp, nil
@@ -164,14 +165,16 @@ func (t *TableClient) UpsertEntity(ctx context.Context, entity []byte, updateMod
 	return nil, errors.New("Invalid TableUpdateMode")
 }
 
-type TableAccessPolicy struct {
-	Start      time.Time
-	Expiry     time.Time
-	Permission string
+// GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
+func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArrayResponse, error) {
+	return t.client.GetAccessPolicy(ctx, t.Name, nil)
 }
 
-// GetTableAccessPolicy retrieves details about any stored access policies specified on the table that may be used with Shared Access Signatures
-func (t *TableClient) GetTableAccessPolicy(ctx context.Context) (SignedIdentifierArrayResponse, error) {
-	accessPolicies, err := t.client.GetAccessPolicy(ctx, t.Name, nil)
-	return accessPolicies, err
+// SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
+func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
+	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
+	if len(*&options.TableACL) > 5 {
+		err = tooManyAccessPoliciesError
+	}
+	return response, err
 }

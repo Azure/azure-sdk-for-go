@@ -180,7 +180,7 @@ func (p *tableQueryResponsePager) Err() error {
 
 func castAndRemoveAnnotationsSlice(entities *[]map[string]interface{}) {
 	for _, e := range *entities {
-		castAndRemoveAnnotations(&e)
+		castAndRemoveAnnotations(&e) //nolint:errcheck
 	}
 }
 
@@ -216,7 +216,7 @@ func castAndRemoveAnnotations(entity *map[string]interface{}) error {
 				}
 				value[valueKey] = i
 			default:
-				return errors.New(fmt.Sprintf("unsupported annotation found: %s", k))
+				return fmt.Errorf("unsupported annotation found: %s", k)
 			}
 			// remove the annotation key
 			delete(value, k)
@@ -253,7 +253,7 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 				entMap[k] = time.UTC().Format(ISO8601)
 				continue
 			default:
-				return errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", k, tn))
+				return fmt.Errorf("Invalid struct for entity field '%s' of type '%s'", k, tn)
 			}
 		case reflect.Float32, reflect.Float64:
 			entMap[odataType(k)] = edmDouble
@@ -272,64 +272,6 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 		}
 	}
 	return nil
-}
-
-// toMap converts a CustomerEntity (with embeded Entity property) to a map[string]interface.
-// This method includes adding key-values for edmtypes
-func toMap(entity interface{}) (*map[string]interface{}, error) {
-	v := reflect.ValueOf(entity)
-	entityMap := make(map[string]interface{})
-
-	for i := 0; i < v.NumField(); i++ {
-		fieldName := v.Type().Field(i).Name
-		if fieldName == "Entity" {
-			entityField := v.Field(i)
-			flattenEntity(entityField, &entityMap)
-		} else {
-			switch v.Field(i).Kind() {
-			case reflect.Struct:
-				structField := v.Field(i)
-
-				// A struct could be a time
-				switch structField.Type().String() {
-				case "time.Time":
-					entityMap[fieldName] = structField
-					entityMap[convertToOdata(fieldName)] = edmDateTime
-
-				default:
-					return &entityMap, errors.New("Structs cannot be a value on an entity except for the embedded Entity property")
-				}
-
-			case reflect.Ptr:
-				if !v.Field(i).IsNil() {
-					entityMap[fieldName] = v.Field(i).Elem()
-					edmType, err := edmTypeFromValue(v.Field(i).Elem())
-					if err != nil {
-						return &entityMap, err
-					}
-					entityMap[convertToOdata(fieldName)] = edmType
-				}
-
-			default:
-				entityField := v.Field(i)
-				edmType, err := edmTypeFromValue(v.Field(i))
-				if err != nil {
-					return &entityMap, err
-				}
-				if edmType == edmBinary {
-					binEntityField := serializeBinaryProperty(v.Field(i))
-					entityMap[fieldName] = binEntityField
-				} else {
-					entityMap[fieldName] = convertField(entityField, edmType)
-				}
-				entityMap[convertToOdata(fieldName)] = edmType
-
-			}
-
-		}
-	}
-
-	return &entityMap, nil
 }
 
 func convertField(value reflect.Value, edmType string) interface{} {

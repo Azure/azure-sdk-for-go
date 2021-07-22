@@ -338,7 +338,10 @@ func (s *tableClientLiveTests) init(createTable bool) (*TableClient, func()) {
 		}
 	}
 	return client, func() {
-		client.Delete(ctx)
+		_, err := client.Delete(ctx)
+		if err != nil {
+			fmt.Printf("Error deleting table. %v\n", err.Error())
+		}
 	}
 }
 
@@ -355,7 +358,7 @@ func getStringFromBody(e *runtime.ResponseError) string {
 		if err != nil {
 			return "<emtpy body>"
 		}
-		b = ioutil.NopCloser(&body)
+		_ = ioutil.NopCloser(&body)
 	}
 	return body.String()
 }

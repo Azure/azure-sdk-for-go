@@ -52,7 +52,6 @@ func cosmosURI(accountName string, endpointSuffix string) string {
 	return fmt.Sprintf("https://%v.table.%v/", accountName, endpointSuffix)
 }
 
-
 // create the test specific TableClient and wire it up to recordings
 func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode recording.RecordMode) {
 	var accountName string
@@ -160,8 +159,6 @@ type complexTestEntity struct {
 	Float    float32
 	DateTime time.Time
 	Byte     []byte
-	// Integer64 int64 // Need to add type hints for ints/floats above 32bits
-	// Float64   float64
 }
 
 func createSimpleEntity(count int, pk string) basicTestEntity {
@@ -220,28 +217,35 @@ func createComplexEntities(count int, pk string) *[]complexTestEntity {
 	return &result
 }
 
-type simpleEntity struct {
-	ETag         string
-	PartitionKey string
-	RowKey       string
-	Timestamp    time.Time
-	IntProp      int
-	BoolProp     bool
-	StringProp   string
+func createEdmEntity(count int, pk string) EdmEntity {
+	return EdmEntity{
+		Entity: Entity{
+			PartitionKey: pk,
+			RowKey:       fmt.Sprint(count),
+		},
+		Properties: map[string]interface{}{
+			"Bool":     false,
+			"Int32":    int32(1234),
+			"Int64":    EdmInt64(123456789012),
+			"Double":   1234.1234,
+			"String":   "test",
+			"Guid":     EdmGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
+			"DateTime": EdmDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
+			"Binary":   EdmBinary("SomeBinary"),
+		},
+	}
 }
 
-type complexEntity struct {
-	ETag                  string
-	PartitionKey          string
-	RowKey                string
-	Timestamp             time.Time
-	SomeBinaryProperty    []byte
-	SomeDateProperty      time.Time
-	SomeDoubleProperty0   float64
-	SomeDoubleProperty1   float64
-	SomeGuidProperty      [16]byte `uuid:""`
-	SomeInt64Property     int64
-	SomeIntProperty       int
-	SomeStringProperty    string
-	SomePtrStringProperty *string
+func requireSameDateTime(r *require.Assertions, time1, time2 interface{}) {
+	t1 := time.Time(time1.(EdmDateTime))
+	t2 := time.Time(time2.(EdmDateTime))
+	r.Equal(t1.Year(), t2.Year())
+	r.Equal(t1.Month(), t2.Month())
+	r.Equal(t1.Day(), t2.Day())
+	r.Equal(t1.Hour(), t2.Hour())
+	r.Equal(t1.Minute(), t2.Minute())
+	r.Equal(t1.Second(), t2.Second())
+	z1, _ := t1.Zone()
+	z2, _ := t2.Zone()
+	r.Equal(z1, z2)
 }

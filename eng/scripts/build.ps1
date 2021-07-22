@@ -36,7 +36,7 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
 
     if ($_.generate) {
         Write-Host "##[command]Executing autorest.go in " $_.path
-        $autorestPath = $_.path + "\autorest.md"
+        $autorestPath = $_.path + "/autorest.md"
 
         if (ShouldGenerate-AutorestConfig $autorestPath) {
             Generate-AutorestConfig $autorestPath

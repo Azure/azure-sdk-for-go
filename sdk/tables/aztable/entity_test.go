@@ -8,12 +8,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func (s *tableClientLiveTests) TestAddBasicEntity() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
@@ -39,8 +37,8 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	receivedEntity := basicTestEntity{}
 	err = json.Unmarshal(resp.Value, &receivedEntity)
 	require.Nil(err)
-	assert.Equal(receivedEntity.PartitionKey, "pk001")
-	assert.Equal(receivedEntity.RowKey, "rk001")
+	require.Equal(receivedEntity.PartitionKey, "pk001")
+	require.Equal(receivedEntity.RowKey, "rk001")
 
 	queryString := "PartitionKey eq 'pk001'"
 	queryOptions := QueryOptions{Filter: &queryString}
@@ -50,14 +48,14 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 		resp := pager.PageResponse()
 		for _, e := range resp.TableEntityQueryResponse.Value {
 			err = json.Unmarshal(e, &receivedEntity)
-			assert.Nil(err)
-			assert.Equal(receivedEntity.PartitionKey, "pk001")
-			assert.Equal(receivedEntity.RowKey, "rk001")
+			require.NoError(err)
+			require.Equal(receivedEntity.PartitionKey, "pk001")
+			require.Equal(receivedEntity.RowKey, "rk001")
 			count += 1
 		}
 	}
 
-	assert.Equal(count, 1)
+	require.Equal(count, 1)
 }
 
 func createEdmEntity(count int, pk string) EdmEntity {
@@ -88,7 +86,6 @@ func requireSameDateTime(r *require.Assertions, time1, time2 interface{}) {
 	r.Equal(t1.Hour(), t2.Hour())
 	r.Equal(t1.Minute(), t2.Minute())
 	r.Equal(t1.Second(), t2.Second())
-	// r.Equal(t1.Nanosecond(), t2.Nanosecond())  // Service cuts off at 6 decimals
 	z1, _ := t1.Zone()
 	z2, _ := t2.Zone()
 	r.Equal(z1, z2)

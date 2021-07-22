@@ -7,12 +7,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func (s *tableClientLiveTests) TestBatchAdd() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
 	defer delete()
@@ -22,15 +21,15 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 
 	for i, e := range *entitiesToCreate {
 		marshalled, err := json.Marshal(e)
-		assert.Nil(err)
+		require.NoError(err)
 		batch[i] = TableTransactionAction{ActionType: Add, Entity: marshalled}
 	}
 
 	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.Nil(err)
+	require.NoError(err)
 	for i := 0; i < len(*resp.TransactionResponses); i++ {
 		r := (*resp.TransactionResponses)[i]
-		assert.Equal(r.StatusCode, http.StatusNoContent)
+		require.Equal(r.StatusCode, http.StatusNoContent)
 	}
 
 	pager := client.Query(nil)
@@ -40,11 +39,10 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 		count += len(response.TableEntityQueryResponse.Value)
 	}
 
-	assert.Equal(count, 10)
+	require.Equal(count, 10)
 }
 
 func (s *tableClientLiveTests) TestBatchMixed() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
@@ -66,7 +64,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	require.Nil(err)
 	for i := 0; i < len(*resp.TransactionResponses); i++ {
 		r := (*resp.TransactionResponses)[i]
-		assert.Equal(http.StatusNoContent, r.StatusCode)
+		require.Equal(http.StatusNoContent, r.StatusCode)
 	}
 
 	var qResp TableEntityQueryByteResponseResponse
@@ -123,7 +121,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	for i := 0; i < len(*resp.TransactionResponses); i++ {
 		r := (*resp.TransactionResponses)[i]
-		assert.Equal(http.StatusNoContent, r.StatusCode)
+		require.Equal(http.StatusNoContent, r.StatusCode)
 
 	}
 
@@ -137,12 +135,11 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	require.Nil(err)
 
 	// The merged entity has all its properties + the merged property
-	assert.Equalf(len(unMarshalledPreMerge)+1, len(unMarshaledPostMerge), "postMerge should have one more property than preMerge")
-	assert.Equalf(unMarshaledPostMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
+	require.Equalf(len(unMarshalledPreMerge)+1, len(unMarshaledPostMerge), "postMerge should have one more property than preMerge")
+	require.Equalf(unMarshaledPostMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
 
 func (s *tableClientLiveTests) TestBatchError() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
@@ -155,8 +152,8 @@ func (s *tableClientLiveTests) TestBatchError() {
 
 	// Sending an empty batch throws.
 	_, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.NotNil(err)
-	assert.Equal(error_empty_transaction, err.Error())
+	require.NotNil(err)
+	require.Equal(error_empty_transaction, err.Error())
 
 	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
 	marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])
@@ -170,10 +167,10 @@ func (s *tableClientLiveTests) TestBatchError() {
 	}
 
 	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.NotNil(err)
+	require.NotNil(err)
 	transactionError, ok := err.(*TableTransactionError)
 	require.Truef(ok, "err should be of type TableTransactionError")
-	assert.Equal("EntityAlreadyExists", transactionError.OdataError.Code)
-	assert.Equal(2, transactionError.FailedEntityIndex)
-	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
+	require.Equal("EntityAlreadyExists", transactionError.OdataError.Code)
+	require.Equal(2, transactionError.FailedEntityIndex)
+	require.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 }

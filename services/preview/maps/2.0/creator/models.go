@@ -637,7 +637,7 @@ func (e ExtendedGeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExtendedGeoJSONFeatureCollection) UnmarshalJSON(data []byte) error {
-	if err := e.GeoJSONFeatureCollectionData.UnmarshalJSON(data); err != nil {
+	if err := e.GeoJSONFeatureCollection.UnmarshalJSON(data); err != nil {
 		return err
 	}
 
@@ -833,6 +833,14 @@ func (g *GeoJSONFeatureCollection) GetGeoJSONFeatureCollection() *GeoJSONFeature
 func (g GeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
 	objectMap := g.marshalInternal(GeoJSONObjectTypeGeoJSONFeatureCollection)
 	return json.Marshal(objectMap)
+}
+
+func (g *GeoJSONFeatureCollection) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return g.unmarshalInternal(rawMsg)
 }
 
 func (g GeoJSONFeatureCollection) marshalInternal(discValue GeoJSONObjectType) map[string]interface{} {

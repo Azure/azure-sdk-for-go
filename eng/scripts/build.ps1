@@ -2,7 +2,6 @@
 param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
-. $PSScriptRoot/get_module_dirs.ps1
 
 function Process-Sdk ($path) {
     if ($clean) {

@@ -2,6 +2,8 @@
 param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
+. $PSScriptRoot/get_module_dirs.ps1
+
 
 function Process-Sdk ($path) {
     if ($clean) {
@@ -47,7 +49,7 @@ $root = Resolve-Path ($PSScriptRoot + "/../..")
 Set-Location $root
 $sdks = @{};
 
-foreach ($sdk in (./eng/scripts/get_module_dirs.ps1 -serviceDir 'sdk/...')) {
+foreach ($sdk in (Get-ModuleDirs 'sdk/...')) {
     $name = $sdk | split-path -leaf
     $sdks[$name] = @{
         'path' = $sdk;

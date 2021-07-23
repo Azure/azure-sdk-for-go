@@ -2,6 +2,7 @@
 param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
+. $PSScriptRoot/get_module_dirs.ps1
 
 $startingDirectory = Get-Location
 $root = Resolve-Path ($PSScriptRoot + "/../..")
@@ -47,16 +48,19 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
             Remove-Item $autorestPath
         }
     }
+
     if (!$skipBuild) {
         Write-Host "##[command]Executing go build -v ./... in " $_.path
         go build -x -v ./...
         Write-Host "##[command]Build Complete!"
 
     }
+
     if ($vet) {
         Write-Host "##[command]Executing go vet ./... in " $_.path
         go vet ./...
     }
+
     Pop-Location
 }
 

@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild)
+param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, $config = "autorest.md")
 
 . $PSScriptRoot/meta_generation.ps1
 
@@ -36,7 +36,7 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
 
     if ($_.generate) {
         Write-Host "##[command]Executing autorest.go in " $_.path
-        $autorestPath = $_.path + "/autorest.md"
+        $autorestPath = $_.path + "/" + $config
 
         if (ShouldGenerate-AutorestConfig $autorestPath) {
             Generate-AutorestConfig $autorestPath

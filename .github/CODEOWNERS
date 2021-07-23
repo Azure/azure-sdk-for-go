@@ -38,7 +38,7 @@
 # SDK (track1 and track1.5)
 #############
 
-/profiles/ @ArcturusZhang
-/services/ @ArcturusZhang
+/profiles/ @ArcturusZhang @lirenhe
+/services/ @ArcturusZhang @lirenhe
 /storage/ @jhendrixMSFT
-/version/ @ArcturusZhang
+/version/ @ArcturusZhang @lirenhe

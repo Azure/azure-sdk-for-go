@@ -197,3 +197,52 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		t.Fatal("expected nil response")
 	}
 }
+
+func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	headerResult := "Bearer new_token, Bearer new_token, Bearer new_token"
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+	options := ClientSecretCredentialOptions{
+		AuthorityHost: srv.URL(),
+		HTTPClient:    srv,
+	}
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	retryOpts := azcore.RetryOptions{
+		MaxRetryDelay: 500 * time.Millisecond,
+		RetryDelay:    50 * time.Millisecond,
+	}
+	pipeline := azcore.NewPipeline(
+		srv,
+		azcore.NewRetryPolicy(&retryOpts),
+		cred.NewAuthenticationPolicy(
+			azcore.AuthenticationOptions{
+				TokenRequest: azcore.TokenRequestOptions{
+					Scopes: []string{scope},
+				},
+				AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
+			}),
+		azcore.NewLogPolicy(nil))
+
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if auxH := resp.Request.Header.Get(headerAuxiliaryAuthorization); auxH != headerResult {
+		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
+	}
+}

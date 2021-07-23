@@ -440,7 +440,7 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if req.Request.Header.Get(azcore.HeaderMetadata) != "true" {
+	if req.Request.Header.Get(headerMetadata) != "true" {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
 	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)

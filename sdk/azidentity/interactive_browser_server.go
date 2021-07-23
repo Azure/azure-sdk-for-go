@@ -70,7 +70,7 @@ func (s *server) Start(reqState string, port int) string {
 			if s.err != nil {
 				page = failPage
 			}
-			w.Write([]byte(page))
+			w.Write([]byte(page)) // nolint:errcheck
 		}()
 
 		qp := r.URL.Query()
@@ -94,14 +94,14 @@ func (s *server) Start(reqState string, port int) string {
 		}
 		s.code = code
 	})
-	go s.s.ListenAndServe()
+	go s.s.ListenAndServe() // nolint:errcheck
 	return fmt.Sprintf("http://localhost:%d", port)
 }
 
 // Stop will shut down the local HTTP server.
 func (s *server) Stop() {
 	close(s.done)
-	s.s.Shutdown(context.Background())
+	s.s.Shutdown(context.Background()) // nolint:errcheck
 }
 
 // WaitForCallback will wait until Azure interactive login has called us back with an authorization code or error.

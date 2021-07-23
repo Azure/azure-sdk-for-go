@@ -37,9 +37,9 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - script: |
-      echo check source file formatting in $(pwd)
-      gofmt -s -l -d $(find . -name '*.go' -print) >&2
+  - pwsh: |
+      Write-Host "##[command]Check source file formatting in $(pwd)"
+      gofmt -s -l -d .
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true

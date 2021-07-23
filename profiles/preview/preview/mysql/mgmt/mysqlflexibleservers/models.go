@@ -11,40 +11,69 @@ package mysqlflexibleservers
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2020-07-01-preview/mysqlflexibleservers"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2021-05-01-preview/mysqlflexibleservers"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ConfigurationSource = original.ConfigurationSource
+
+const (
+	ConfigurationSourceSystemDefault ConfigurationSource = original.ConfigurationSourceSystemDefault
+	ConfigurationSourceUserOverride  ConfigurationSource = original.ConfigurationSourceUserOverride
+)
+
 type CreateMode = original.CreateMode
 
 const (
-	Default            CreateMode = original.Default
-	PointInTimeRestore CreateMode = original.PointInTimeRestore
-	Replica            CreateMode = original.Replica
+	CreateModeDefault            CreateMode = original.CreateModeDefault
+	CreateModeGeoRestore         CreateMode = original.CreateModeGeoRestore
+	CreateModePointInTimeRestore CreateMode = original.CreateModePointInTimeRestore
+	CreateModeReplica            CreateMode = original.CreateModeReplica
 )
 
-type HaEnabledEnum = original.HaEnabledEnum
+type CreatedByType = original.CreatedByType
 
 const (
-	Disabled HaEnabledEnum = original.Disabled
-	Enabled  HaEnabledEnum = original.Enabled
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
-type InfrastructureEncryptionEnum = original.InfrastructureEncryptionEnum
+type EnableStatusEnum = original.EnableStatusEnum
 
 const (
-	InfrastructureEncryptionEnumDisabled InfrastructureEncryptionEnum = original.InfrastructureEncryptionEnumDisabled
-	InfrastructureEncryptionEnumEnabled  InfrastructureEncryptionEnum = original.InfrastructureEncryptionEnumEnabled
+	EnableStatusEnumDisabled EnableStatusEnum = original.EnableStatusEnumDisabled
+	EnableStatusEnumEnabled  EnableStatusEnum = original.EnableStatusEnumEnabled
+)
+
+type HighAvailabilityMode = original.HighAvailabilityMode
+
+const (
+	HighAvailabilityModeDisabled      HighAvailabilityMode = original.HighAvailabilityModeDisabled
+	HighAvailabilityModeEnabled       HighAvailabilityMode = original.HighAvailabilityModeEnabled
+	HighAvailabilityModeSameZone      HighAvailabilityMode = original.HighAvailabilityModeSameZone
+	HighAvailabilityModeZoneRedundant HighAvailabilityMode = original.HighAvailabilityModeZoneRedundant
+)
+
+type HighAvailabilityState = original.HighAvailabilityState
+
+const (
+	HighAvailabilityStateCreatingStandby HighAvailabilityState = original.HighAvailabilityStateCreatingStandby
+	HighAvailabilityStateFailingOver     HighAvailabilityState = original.HighAvailabilityStateFailingOver
+	HighAvailabilityStateHealthy         HighAvailabilityState = original.HighAvailabilityStateHealthy
+	HighAvailabilityStateNotEnabled      HighAvailabilityState = original.HighAvailabilityStateNotEnabled
+	HighAvailabilityStateRemovingStandby HighAvailabilityState = original.HighAvailabilityStateRemovingStandby
 )
 
 type IsConfigPendingRestart = original.IsConfigPendingRestart
 
 const (
-	False IsConfigPendingRestart = original.False
-	True  IsConfigPendingRestart = original.True
+	IsConfigPendingRestartFalse IsConfigPendingRestart = original.IsConfigPendingRestartFalse
+	IsConfigPendingRestartTrue  IsConfigPendingRestart = original.IsConfigPendingRestartTrue
 )
 
 type IsDynamicConfig = original.IsDynamicConfig
@@ -61,36 +90,18 @@ const (
 	IsReadOnlyTrue  IsReadOnly = original.IsReadOnlyTrue
 )
 
-type OperationOrigin = original.OperationOrigin
+type ReplicationRole = original.ReplicationRole
 
 const (
-	NotSpecified OperationOrigin = original.NotSpecified
-	System       OperationOrigin = original.System
-	User         OperationOrigin = original.User
-)
-
-type PublicNetworkAccessEnum = original.PublicNetworkAccessEnum
-
-const (
-	PublicNetworkAccessEnumDisabled PublicNetworkAccessEnum = original.PublicNetworkAccessEnumDisabled
-	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = original.PublicNetworkAccessEnumEnabled
+	ReplicationRoleNone    ReplicationRole = original.ReplicationRoleNone
+	ReplicationRoleReplica ReplicationRole = original.ReplicationRoleReplica
+	ReplicationRoleSource  ReplicationRole = original.ReplicationRoleSource
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
-)
-
-type ServerHAState = original.ServerHAState
-
-const (
-	CreatingStandby ServerHAState = original.CreatingStandby
-	FailingOver     ServerHAState = original.FailingOver
-	Healthy         ServerHAState = original.Healthy
-	NotEnabled      ServerHAState = original.NotEnabled
-	RemovingStandby ServerHAState = original.RemovingStandby
-	ReplicatingData ServerHAState = original.ReplicatingData
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 )
 
 type ServerState = original.ServerState
@@ -108,32 +119,21 @@ const (
 type ServerVersion = original.ServerVersion
 
 const (
-	FiveFullStopSeven ServerVersion = original.FiveFullStopSeven
+	ServerVersionEightFullStopZeroFullStopTwoOne ServerVersion = original.ServerVersionEightFullStopZeroFullStopTwoOne
+	ServerVersionFiveFullStopSeven               ServerVersion = original.ServerVersionFiveFullStopSeven
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Burstable       SkuTier = original.Burstable
-	GeneralPurpose  SkuTier = original.GeneralPurpose
-	MemoryOptimized SkuTier = original.MemoryOptimized
-)
-
-type SslEnforcementEnum = original.SslEnforcementEnum
-
-const (
-	SslEnforcementEnumDisabled SslEnforcementEnum = original.SslEnforcementEnumDisabled
-	SslEnforcementEnumEnabled  SslEnforcementEnum = original.SslEnforcementEnumEnabled
-)
-
-type StorageAutogrow = original.StorageAutogrow
-
-const (
-	StorageAutogrowDisabled StorageAutogrow = original.StorageAutogrowDisabled
-	StorageAutogrowEnabled  StorageAutogrow = original.StorageAutogrowEnabled
+	SkuTierBurstable       SkuTier = original.SkuTierBurstable
+	SkuTierGeneralPurpose  SkuTier = original.SkuTierGeneralPurpose
+	SkuTierMemoryOptimized SkuTier = original.SkuTierMemoryOptimized
 )
 
 type AzureEntityResource = original.AzureEntityResource
+type Backup = original.Backup
+type BackupsClient = original.BackupsClient
 type BaseClient = original.BaseClient
 type CapabilitiesListResult = original.CapabilitiesListResult
 type CapabilitiesListResultIterator = original.CapabilitiesListResultIterator
@@ -143,10 +143,14 @@ type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 type CheckVirtualNetworkSubnetUsageClient = original.CheckVirtualNetworkSubnetUsageClient
 type CloudError = original.CloudError
 type Configuration = original.Configuration
+type ConfigurationForBatchUpdate = original.ConfigurationForBatchUpdate
+type ConfigurationForBatchUpdateProperties = original.ConfigurationForBatchUpdateProperties
+type ConfigurationListForBatchUpdate = original.ConfigurationListForBatchUpdate
 type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationListResultIterator = original.ConfigurationListResultIterator
 type ConfigurationListResultPage = original.ConfigurationListResultPage
 type ConfigurationProperties = original.ConfigurationProperties
+type ConfigurationsBatchUpdateFuture = original.ConfigurationsBatchUpdateFuture
 type ConfigurationsClient = original.ConfigurationsClient
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture
 type Database = original.Database
@@ -157,7 +161,6 @@ type DatabaseProperties = original.DatabaseProperties
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
-type DelegatedSubnetArguments = original.DelegatedSubnetArguments
 type DelegatedSubnetUsage = original.DelegatedSubnetUsage
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
@@ -169,14 +172,20 @@ type FirewallRuleProperties = original.FirewallRuleProperties
 type FirewallRulesClient = original.FirewallRulesClient
 type FirewallRulesCreateOrUpdateFuture = original.FirewallRulesCreateOrUpdateFuture
 type FirewallRulesDeleteFuture = original.FirewallRulesDeleteFuture
+type GetPrivateDNSZoneSuffixClient = original.GetPrivateDNSZoneSuffixClient
+type GetPrivateDNSZoneSuffixResponse = original.GetPrivateDNSZoneSuffixResponse
+type HighAvailability = original.HighAvailability
 type Identity = original.Identity
 type LocationBasedCapabilitiesClient = original.LocationBasedCapabilitiesClient
 type MaintenanceWindow = original.MaintenanceWindow
 type NameAvailability = original.NameAvailability
 type NameAvailabilityRequest = original.NameAvailabilityRequest
+type Network = original.Network
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
 type ProxyResource = original.ProxyResource
@@ -187,40 +196,45 @@ type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAll
 type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
 type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
 type Server = original.Server
+type ServerBackup = original.ServerBackup
+type ServerBackupListResult = original.ServerBackupListResult
+type ServerBackupListResultIterator = original.ServerBackupListResultIterator
+type ServerBackupListResultPage = original.ServerBackupListResultPage
+type ServerBackupProperties = original.ServerBackupProperties
 type ServerEditionCapability = original.ServerEditionCapability
 type ServerForUpdate = original.ServerForUpdate
-type ServerKey = original.ServerKey
-type ServerKeyListResult = original.ServerKeyListResult
-type ServerKeyListResultIterator = original.ServerKeyListResultIterator
-type ServerKeyListResultPage = original.ServerKeyListResultPage
-type ServerKeyProperties = original.ServerKeyProperties
-type ServerKeysClient = original.ServerKeysClient
-type ServerKeysCreateOrUpdateFuture = original.ServerKeysCreateOrUpdateFuture
-type ServerKeysDeleteFuture = original.ServerKeysDeleteFuture
 type ServerListResult = original.ServerListResult
 type ServerListResultIterator = original.ServerListResultIterator
 type ServerListResultPage = original.ServerListResultPage
 type ServerProperties = original.ServerProperties
 type ServerPropertiesForUpdate = original.ServerPropertiesForUpdate
+type ServerRestartParameter = original.ServerRestartParameter
 type ServerVersionCapability = original.ServerVersionCapability
 type ServersClient = original.ServersClient
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
+type ServersFailoverFuture = original.ServersFailoverFuture
 type ServersRestartFuture = original.ServersRestartFuture
 type ServersStartFuture = original.ServersStartFuture
 type ServersStopFuture = original.ServersStopFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type Sku = original.Sku
+type SkuCapability = original.SkuCapability
+type Storage = original.Storage
 type StorageEditionCapability = original.StorageEditionCapability
-type StorageMBCapability = original.StorageMBCapability
-type StorageProfile = original.StorageProfile
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
-type VcoreCapability = original.VcoreCapability
 type VirtualNetworkSubnetUsageParameter = original.VirtualNetworkSubnetUsageParameter
 type VirtualNetworkSubnetUsageResult = original.VirtualNetworkSubnetUsageResult
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewBackupsClient(subscriptionID string) BackupsClient {
+	return original.NewBackupsClient(subscriptionID)
+}
+func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
+	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCapabilitiesListResultIterator(page CapabilitiesListResultPage) CapabilitiesListResultIterator {
 	return original.NewCapabilitiesListResultIterator(page)
@@ -276,11 +290,23 @@ func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewGetPrivateDNSZoneSuffixClient(subscriptionID string) GetPrivateDNSZoneSuffixClient {
+	return original.NewGetPrivateDNSZoneSuffixClient(subscriptionID)
+}
+func NewGetPrivateDNSZoneSuffixClientWithBaseURI(baseURI string, subscriptionID string) GetPrivateDNSZoneSuffixClient {
+	return original.NewGetPrivateDNSZoneSuffixClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewLocationBasedCapabilitiesClient(subscriptionID string) LocationBasedCapabilitiesClient {
 	return original.NewLocationBasedCapabilitiesClient(subscriptionID)
 }
 func NewLocationBasedCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedCapabilitiesClient {
 	return original.NewLocationBasedCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -294,17 +320,11 @@ func NewReplicasClient(subscriptionID string) ReplicasClient {
 func NewReplicasClientWithBaseURI(baseURI string, subscriptionID string) ReplicasClient {
 	return original.NewReplicasClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServerKeyListResultIterator(page ServerKeyListResultPage) ServerKeyListResultIterator {
-	return original.NewServerKeyListResultIterator(page)
+func NewServerBackupListResultIterator(page ServerBackupListResultPage) ServerBackupListResultIterator {
+	return original.NewServerBackupListResultIterator(page)
 }
-func NewServerKeyListResultPage(cur ServerKeyListResult, getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
-	return original.NewServerKeyListResultPage(cur, getNextPage)
-}
-func NewServerKeysClient(subscriptionID string) ServerKeysClient {
-	return original.NewServerKeysClient(subscriptionID)
-}
-func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) ServerKeysClient {
-	return original.NewServerKeysClientWithBaseURI(baseURI, subscriptionID)
+func NewServerBackupListResultPage(cur ServerBackupListResult, getNextPage func(context.Context, ServerBackupListResult) (ServerBackupListResult, error)) ServerBackupListResultPage {
+	return original.NewServerBackupListResultPage(cur, getNextPage)
 }
 func NewServerListResultIterator(page ServerListResultPage) ServerListResultIterator {
 	return original.NewServerListResultIterator(page)
@@ -321,14 +341,23 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleConfigurationSourceValues() []ConfigurationSource {
+	return original.PossibleConfigurationSourceValues()
+}
 func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
 }
-func PossibleHaEnabledEnumValues() []HaEnabledEnum {
-	return original.PossibleHaEnabledEnumValues()
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
-func PossibleInfrastructureEncryptionEnumValues() []InfrastructureEncryptionEnum {
-	return original.PossibleInfrastructureEncryptionEnumValues()
+func PossibleEnableStatusEnumValues() []EnableStatusEnum {
+	return original.PossibleEnableStatusEnumValues()
+}
+func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
+	return original.PossibleHighAvailabilityModeValues()
+}
+func PossibleHighAvailabilityStateValues() []HighAvailabilityState {
+	return original.PossibleHighAvailabilityStateValues()
 }
 func PossibleIsConfigPendingRestartValues() []IsConfigPendingRestart {
 	return original.PossibleIsConfigPendingRestartValues()
@@ -339,17 +368,11 @@ func PossibleIsDynamicConfigValues() []IsDynamicConfig {
 func PossibleIsReadOnlyValues() []IsReadOnly {
 	return original.PossibleIsReadOnlyValues()
 }
-func PossibleOperationOriginValues() []OperationOrigin {
-	return original.PossibleOperationOriginValues()
-}
-func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
-	return original.PossiblePublicNetworkAccessEnumValues()
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return original.PossibleReplicationRoleValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
-}
-func PossibleServerHAStateValues() []ServerHAState {
-	return original.PossibleServerHAStateValues()
 }
 func PossibleServerStateValues() []ServerState {
 	return original.PossibleServerStateValues()
@@ -359,12 +382,6 @@ func PossibleServerVersionValues() []ServerVersion {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
-}
-func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
-	return original.PossibleSslEnforcementEnumValues()
-}
-func PossibleStorageAutogrowValues() []StorageAutogrow {
-	return original.PossibleStorageAutogrowValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

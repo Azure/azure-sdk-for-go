@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v55.8.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-04-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-03-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2021-05-01-preview/mysqlflexibleservers`
+
 ## `v55.7.0`
 
 ### New Packages
@@ -10,8 +18,8 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/mysql/mgmt/2020-01-01/mysql/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/postgresql/mgmt/2020-01-01/postgresql/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.7.0/services/mysql/mgmt/2020-01-01/mysql/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.7.0/services/postgresql/mgmt/2020-01-01/postgresql/CHANGELOG.md) |
 
 ## `v55.6.0`
 

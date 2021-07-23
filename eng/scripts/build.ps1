@@ -1,6 +1,8 @@
 #Requires -Version 7.0
 param($filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild)
 
+. $PSScriptRoot/meta_generation.ps1
+
 $startingDirectory = Get-Location
 $root = Resolve-Path ($PSScriptRoot + "/../..")
 Set-Location $root
@@ -34,11 +36,20 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
 
     if ($_.generate) {
         Write-Host "##[command]Executing autorest.go in " $_.path
-        $autorestPath = $_.path + "\autorest.md"
+        $autorestPath = $_.path + "/autorest.md"
+
+        if (ShouldGenerate-AutorestConfig $autorestPath) {
+            Generate-AutorestConfig $autorestPath
+            $removeAutorestFile = $true
+        }
+
         $autorestVersion = "@autorest/go@4.0.0-preview.23"
         $outputFolder = $_.path
         $root = $_.root
         autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        if ($removeAutorestFile) {
+            Remove-Item $autorestPath
+        }
     }
     if (!$_.skipBuild) {
         Write-Host "##[command]Executing go build -v ./... in " $_.path

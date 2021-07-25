@@ -563,7 +563,7 @@ type DefinitionProperties struct {
 	Required *bool `json:"required,omitempty"`
 
 	// REQUIRED; type of attribute
-	Type map[string]interface{} `json:"type,omitempty"`
+	Type interface{} `json:"type,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -1752,16 +1752,16 @@ type PointInPolygonSummary struct {
 // RangeObject - The numeric value range for this style rule. If the value is in the range, all the conditions must hold true.
 type RangeObject struct {
 	// All the number x that x < exclusiveMaximum.
-	ExclusiveMaximum *float64 `json:"exclusiveMaximum,omitempty"`
+	ExclusiveMaximum interface{} `json:"exclusiveMaximum,omitempty"`
 
 	// All the number x that x > exclusiveMinimum.
-	ExclusiveMinimum *float64 `json:"exclusiveMinimum,omitempty"`
+	ExclusiveMinimum interface{} `json:"exclusiveMinimum,omitempty"`
 
 	// All the number x that x ≤ maximum.
-	Maximum *float64 `json:"maximum,omitempty"`
+	Maximum interface{} `json:"maximum,omitempty"`
 
 	// All the number x that x ≥ minimum.
-	Minimum *float64 `json:"minimum,omitempty"`
+	Minimum interface{} `json:"minimum,omitempty"`
 }
 
 // SpatialCoordinate - A location represented as a latitude and longitude

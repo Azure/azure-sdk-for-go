@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
 type MyEntity struct {
@@ -28,7 +30,7 @@ func Sample_Batching() {
 	client := aztable.NewTableClient("tableName", serviceURL, cred, nil)
 
 	entity1 := MyEntity{
-		aztable.Entity: aztable.Entity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk001",
 		},
@@ -39,7 +41,7 @@ func Sample_Batching() {
 	}
 
 	entity2 := MyEntity{
-		aztable.Entity: aztable.Entity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk002",
 		},
@@ -50,7 +52,7 @@ func Sample_Batching() {
 	}
 
 	entity3 := MyEntity{
-		aztable.Entity: aztable.Entity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk003",
 		},
@@ -61,7 +63,7 @@ func Sample_Batching() {
 	}
 
 	entity4 := MyEntity{
-		aztable.Entity: aztable.Entity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk004",
 		},
@@ -91,8 +93,4 @@ func Sample_Batching() {
 
 	_, err := client.SubmitTransaction(context.Background(), batch, nil)
 	check(err)
-}
-
-func main() {
-	Sample_Batching()
 }

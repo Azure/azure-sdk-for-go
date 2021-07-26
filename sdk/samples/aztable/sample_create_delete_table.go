@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	// "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
 func CreateFromTableServiceClient() {
@@ -58,11 +58,4 @@ func DeleteFromTableClient() {
 	client := aztable.NewTableClient("fromTableClient", serviceURL, cred, nil)
 	_, err = client.Delete(context.Background())
 	check(err)
-}
-
-func main() {
-	CreateFromTableServiceClient()
-	CreateFromTableClient()
-	DeleteFromTableServiceClient()
-	DeleteFromTableClient()
 }

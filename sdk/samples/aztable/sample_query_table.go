@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	// "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
 func Sample_QueryTable() {
@@ -41,8 +42,4 @@ func Sample_QueryTable() {
 		pageCount += 1
 	}
 	check(pager.Error())
-}
-
-func main() {
-	Sample_QueryTable()
 }

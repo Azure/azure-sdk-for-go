@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"os"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
-// "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
-
-type MyEntity struct {
+type InventoryEntity struct {
 	aztable.Entity
 	Price       float32
 	Inventory   int32
@@ -31,8 +31,8 @@ func InsertEntity() {
 	cred := aztable.SharedKeyCredential(accountName, accountKey)
 	client := aztable.NewTableClient("myTable", serviceURL, cred, nil)
 
-	myEntity := MyEntity{
-		aztable.Entity: aztable.Entity{
+	myEntity := InventoryEntity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk001",
 		},
@@ -86,9 +86,4 @@ func DeleteEntity() {
 
 	_, err := client.DeleteEntity(context.Background(), "pk001", "rk001", "*")
 	check(err)
-}
-
-func main() {
-	InsertEntity()
-	DeleteEntity()
 }

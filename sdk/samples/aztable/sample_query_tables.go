@@ -35,7 +35,3 @@ func Sample_QueryTables() {
 
 	check(pager.Error())
 }
-
-func main() {
-	Sample_QueryTables()
-}

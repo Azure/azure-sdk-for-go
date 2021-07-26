@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"os"
 	"time"
-)
 
-// "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+)
 
 func UpdateEntities() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
@@ -25,7 +25,7 @@ func UpdateEntities() {
 
 	// 1. First add an entity
 	myEntity := MyEntity{
-		aztable.Entity: aztable.Entity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk001",
 		},
@@ -111,7 +111,7 @@ func UpsertEntity() {
 
 	// 1. First add an entity
 	myEntity := MyEntity{
-		aztable.Entity: aztable.Entity{
+		Entity: aztable.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk001",
 		},
@@ -135,10 +135,4 @@ func UpsertEntity() {
 	_, err = client.UpsertEntity(context.Background(), marshalled, nil, aztable.Merge)
 	check(err)
 
-}
-
-func main() {
-	UpdateEntities()
-	MergeEntities()
-	UpsertEntity()
 }

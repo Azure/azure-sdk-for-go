@@ -1,5 +1,6 @@
 parameters:
   ServiceDirectory: ''
+  CoverageGoal: 0.95
   RunTests: false
 
 stages:
@@ -54,6 +55,7 @@ stages:
           Scope: $(SCOPE)
           Image: $(vm.image)
           GoVersion: $(go.version)
+          CoverageGoal: ${{ parameters.CoverageGoal }}
           RunTests: ${{ parameters.RunTests }}
 
     - job: Analyze

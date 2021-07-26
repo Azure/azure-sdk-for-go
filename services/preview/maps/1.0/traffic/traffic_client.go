@@ -29,7 +29,7 @@ type TrafficClient struct {
 // NewTrafficClient creates a new instance of TrafficClient with the specified values.
 func NewTrafficClient(con *Connection, xmsClientID *string) *TrafficClient {
 	return &TrafficClient{
-		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, *xmsClientID}, con.cp.options),
+		con:         NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
 		xmsClientID: xmsClientID,
 	}
 }

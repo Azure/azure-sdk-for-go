@@ -99,7 +99,7 @@ func main() {
 		byteValue, err := ioutil.ReadAll(xmlFile)
 		check(err)
 
-		re := regexp.MustCompile(`<coverage line-rate=\"\d.\d+\"`)
+		re := regexp.MustCompile(`<coverage line-rate=\"\d\.\d+\"`)
 		coverageValue := re.Find(byteValue) //, -1)
 		if coverageValue == nil {
 			log.Fatalf("Could not match regexp to coverage.xml file.")

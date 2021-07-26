@@ -32,47 +32,47 @@ func NewDedicatedHostsClient(con *armcore.Connection, subscriptionID string) *De
 
 // BeginCreateOrUpdate - Create or update a dedicated host .
 // If the operation fails it returns a generic error.
-func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsBeginCreateOrUpdateOptions) (DedicatedHostPollerResponse, error) {
+func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsBeginCreateOrUpdateOptions) (DedicatedHostsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsCreateOrUpdatePollerResponse{}, err
 	}
-	result := DedicatedHostPollerResponse{
+	result := DedicatedHostsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DedicatedHostsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &dedicatedHostPoller{
+	poller := &dedicatedHostsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new DedicatedHostPoller from the specified resume token.
-// token - The value must come from a previous call to DedicatedHostPoller.ResumeToken().
-func (client *DedicatedHostsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DedicatedHostPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new DedicatedHostsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DedicatedHostsCreateOrUpdatePoller.ResumeToken().
+func (client *DedicatedHostsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DedicatedHostsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DedicatedHostsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &dedicatedHostPoller{
+	poller := &dedicatedHostsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsCreateOrUpdatePollerResponse{}, err
 	}
-	result := DedicatedHostPollerResponse{
+	result := DedicatedHostsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -140,47 +140,47 @@ func (client *DedicatedHostsClient) createOrUpdateHandleError(resp *azcore.Respo
 
 // BeginDelete - Delete a dedicated host.
 // If the operation fails it returns a generic error.
-func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsBeginDeleteOptions) (DedicatedHostsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DedicatedHostsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DedicatedHostsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DedicatedHostsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DedicatedHostsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &dedicatedHostsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DedicatedHostsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new DedicatedHostsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to DedicatedHostsDeletePoller.ResumeToken().
+func (client *DedicatedHostsClient) ResumeDelete(ctx context.Context, token string) (DedicatedHostsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DedicatedHostsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DedicatedHostsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &dedicatedHostsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DedicatedHostsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DedicatedHostsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -247,17 +247,17 @@ func (client *DedicatedHostsClient) deleteHandleError(resp *azcore.Response) err
 
 // Get - Retrieves information about a dedicated host.
 // If the operation fails it returns a generic error.
-func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsGetOptions) (DedicatedHostResponse, error) {
+func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsGetOptions) (DedicatedHostsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
-		return DedicatedHostResponse{}, err
+		return DedicatedHostsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DedicatedHostResponse{}, err
+		return DedicatedHostsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DedicatedHostResponse{}, client.getHandleError(resp)
+		return DedicatedHostsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -297,12 +297,12 @@ func (client *DedicatedHostsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *DedicatedHostsClient) getHandleResponse(resp *azcore.Response) (DedicatedHostResponse, error) {
-	var val *DedicatedHost
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DedicatedHostResponse{}, err
+func (client *DedicatedHostsClient) getHandleResponse(resp *azcore.Response) (DedicatedHostsGetResponse, error) {
+	result := DedicatedHostsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DedicatedHost); err != nil {
+		return DedicatedHostsGetResponse{}, err
 	}
-	return DedicatedHostResponse{RawResponse: resp.Response, DedicatedHost: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -320,18 +320,15 @@ func (client *DedicatedHostsClient) getHandleError(resp *azcore.Response) error 
 // ListByHostGroup - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page
 // of dedicated hosts.
 // If the operation fails it returns a generic error.
-func (client *DedicatedHostsClient) ListByHostGroup(resourceGroupName string, hostGroupName string, options *DedicatedHostsListByHostGroupOptions) DedicatedHostListResultPager {
-	return &dedicatedHostListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *DedicatedHostsClient) ListByHostGroup(resourceGroupName string, hostGroupName string, options *DedicatedHostsListByHostGroupOptions) DedicatedHostsListByHostGroupPager {
+	return &dedicatedHostsListByHostGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByHostGroupCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 		},
-		responder: client.listByHostGroupHandleResponse,
-		errorer:   client.listByHostGroupHandleError,
-		advancer: func(ctx context.Context, resp DedicatedHostListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DedicatedHostsListByHostGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DedicatedHostListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -363,12 +360,12 @@ func (client *DedicatedHostsClient) listByHostGroupCreateRequest(ctx context.Con
 }
 
 // listByHostGroupHandleResponse handles the ListByHostGroup response.
-func (client *DedicatedHostsClient) listByHostGroupHandleResponse(resp *azcore.Response) (DedicatedHostListResultResponse, error) {
-	var val *DedicatedHostListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DedicatedHostListResultResponse{}, err
+func (client *DedicatedHostsClient) listByHostGroupHandleResponse(resp *azcore.Response) (DedicatedHostsListByHostGroupResponse, error) {
+	result := DedicatedHostsListByHostGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DedicatedHostListResult); err != nil {
+		return DedicatedHostsListByHostGroupResponse{}, err
 	}
-	return DedicatedHostListResultResponse{RawResponse: resp.Response, DedicatedHostListResult: val}, nil
+	return result, nil
 }
 
 // listByHostGroupHandleError handles the ListByHostGroup error response.
@@ -385,47 +382,47 @@ func (client *DedicatedHostsClient) listByHostGroupHandleError(resp *azcore.Resp
 
 // BeginUpdate - Update an dedicated host .
 // If the operation fails it returns a generic error.
-func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsBeginUpdateOptions) (DedicatedHostPollerResponse, error) {
+func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsBeginUpdateOptions) (DedicatedHostsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsUpdatePollerResponse{}, err
 	}
-	result := DedicatedHostPollerResponse{
+	result := DedicatedHostsUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DedicatedHostsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsUpdatePollerResponse{}, err
 	}
-	poller := &dedicatedHostPoller{
+	poller := &dedicatedHostsUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new DedicatedHostPoller from the specified resume token.
-// token - The value must come from a previous call to DedicatedHostPoller.ResumeToken().
-func (client *DedicatedHostsClient) ResumeUpdate(ctx context.Context, token string) (DedicatedHostPollerResponse, error) {
+// ResumeUpdate creates a new DedicatedHostsUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DedicatedHostsUpdatePoller.ResumeToken().
+func (client *DedicatedHostsClient) ResumeUpdate(ctx context.Context, token string) (DedicatedHostsUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DedicatedHostsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsUpdatePollerResponse{}, err
 	}
-	poller := &dedicatedHostPoller{
+	poller := &dedicatedHostsUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DedicatedHostPollerResponse{}, err
+		return DedicatedHostsUpdatePollerResponse{}, err
 	}
-	result := DedicatedHostPollerResponse{
+	result := DedicatedHostsUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

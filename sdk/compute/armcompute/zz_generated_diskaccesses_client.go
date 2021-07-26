@@ -33,47 +33,47 @@ func NewDiskAccessesClient(con *armcore.Connection, subscriptionID string) *Disk
 
 // BeginCreateOrUpdate - Creates or updates a disk access resource
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (DiskAccessPollerResponse, error) {
+func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (DiskAccessesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskAccessPollerResponse{
+	result := DiskAccessesCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskAccessesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &diskAccessPoller{
+	poller := &diskAccessesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new DiskAccessPoller from the specified resume token.
-// token - The value must come from a previous call to DiskAccessPoller.ResumeToken().
-func (client *DiskAccessesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskAccessPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new DiskAccessesCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DiskAccessesCreateOrUpdatePoller.ResumeToken().
+func (client *DiskAccessesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskAccessesCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskAccessesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &diskAccessPoller{
+	poller := &diskAccessesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskAccessPollerResponse{
+	result := DiskAccessesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -138,47 +138,47 @@ func (client *DiskAccessesClient) createOrUpdateHandleError(resp *azcore.Respons
 
 // BeginDelete - Deletes a disk access resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (DiskAccessesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DiskAccessesDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskAccessesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &diskAccessesDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DiskAccessesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new DiskAccessesDeletePoller from the specified resume token.
+// token - The value must come from a previous call to DiskAccessesDeletePoller.ResumeToken().
+func (client *DiskAccessesClient) ResumeDelete(ctx context.Context, token string) (DiskAccessesDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskAccessesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &diskAccessesDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DiskAccessesDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -243,47 +243,47 @@ func (client *DiskAccessesClient) deleteHandleError(resp *azcore.Response) error
 
 // BeginDeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a disk access resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions) (HTTPPollerResponse, error) {
+func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions) (DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deleteAPrivateEndpointConnection(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskAccessesClient.DeleteAPrivateEndpointConnection", "", resp, client.con.Pipeline(), client.deleteAPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &diskAccessesDeleteAPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesDeleteAPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDeleteAPrivateEndpointConnection creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DiskAccessesClient) ResumeDeleteAPrivateEndpointConnection(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDeleteAPrivateEndpointConnection creates a new DiskAccessesDeleteAPrivateEndpointConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to DiskAccessesDeleteAPrivateEndpointConnectionPoller.ResumeToken().
+func (client *DiskAccessesClient) ResumeDeleteAPrivateEndpointConnection(ctx context.Context, token string) (DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskAccessesClient.DeleteAPrivateEndpointConnection", token, client.con.Pipeline(), client.deleteAPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &diskAccessesDeleteAPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesDeleteAPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -352,17 +352,17 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionHandleError(re
 
 // Get - Gets information about a disk access resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetOptions) (DiskAccessResponse, error) {
+func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetOptions) (DiskAccessesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
-		return DiskAccessResponse{}, err
+		return DiskAccessesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiskAccessResponse{}, err
+		return DiskAccessesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiskAccessResponse{}, client.getHandleError(resp)
+		return DiskAccessesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -395,12 +395,12 @@ func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskAccessesClient) getHandleResponse(resp *azcore.Response) (DiskAccessResponse, error) {
-	var val *DiskAccess
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskAccessResponse{}, err
+func (client *DiskAccessesClient) getHandleResponse(resp *azcore.Response) (DiskAccessesGetResponse, error) {
+	result := DiskAccessesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskAccess); err != nil {
+		return DiskAccessesGetResponse{}, err
 	}
-	return DiskAccessResponse{RawResponse: resp.Response, DiskAccess: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -418,17 +418,17 @@ func (client *DiskAccessesClient) getHandleError(resp *azcore.Response) error {
 
 // GetAPrivateEndpointConnection - Gets information about a private endpoint connection under a disk access resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesGetAPrivateEndpointConnectionOptions) (PrivateEndpointConnectionResponse, error) {
+func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesGetAPrivateEndpointConnectionOptions) (DiskAccessesGetAPrivateEndpointConnectionResponse, error) {
 	req, err := client.getAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateEndpointConnectionResponse{}, client.getAPrivateEndpointConnectionHandleError(resp)
+		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, client.getAPrivateEndpointConnectionHandleError(resp)
 	}
 	return client.getAPrivateEndpointConnectionHandleResponse(resp)
 }
@@ -465,12 +465,12 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx
 }
 
 // getAPrivateEndpointConnectionHandleResponse handles the GetAPrivateEndpointConnection response.
-func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionResponse, error) {
-	var val *PrivateEndpointConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (DiskAccessesGetAPrivateEndpointConnectionResponse, error) {
+	result := DiskAccessesGetAPrivateEndpointConnectionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnection); err != nil {
+		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, err
 	}
-	return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
+	return result, nil
 }
 
 // getAPrivateEndpointConnectionHandleError handles the GetAPrivateEndpointConnection error response.
@@ -488,17 +488,17 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleError(resp 
 
 // GetPrivateLinkResources - Gets the private link resources possible under disk access resource
 // If the operation fails it returns a generic error.
-func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetPrivateLinkResourcesOptions) (PrivateLinkResourceListResultResponse, error) {
+func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetPrivateLinkResourcesOptions) (DiskAccessesGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+		return DiskAccessesGetPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+		return DiskAccessesGetPrivateLinkResourcesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourceListResultResponse{}, client.getPrivateLinkResourcesHandleError(resp)
+		return DiskAccessesGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
@@ -531,12 +531,12 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx conte
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
-	var val *PrivateLinkResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (DiskAccessesGetPrivateLinkResourcesResponse, error) {
+	result := DiskAccessesGetPrivateLinkResourcesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult); err != nil {
+		return DiskAccessesGetPrivateLinkResourcesResponse{}, err
 	}
-	return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
+	return result, nil
 }
 
 // getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
@@ -553,18 +553,15 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesHandleError(resp *azcor
 
 // List - Lists all the disk access resources under a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) List(options *DiskAccessesListOptions) DiskAccessListPager {
-	return &diskAccessListPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskAccessesClient) List(options *DiskAccessesListOptions) DiskAccessesListPager {
+	return &diskAccessesListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp DiskAccessListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskAccessesListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskAccessList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -588,12 +585,12 @@ func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *DiskAccessesClient) listHandleResponse(resp *azcore.Response) (DiskAccessListResponse, error) {
-	var val *DiskAccessList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskAccessListResponse{}, err
+func (client *DiskAccessesClient) listHandleResponse(resp *azcore.Response) (DiskAccessesListResponse, error) {
+	result := DiskAccessesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskAccessList); err != nil {
+		return DiskAccessesListResponse{}, err
 	}
-	return DiskAccessListResponse{RawResponse: resp.Response, DiskAccessList: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -611,18 +608,15 @@ func (client *DiskAccessesClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists all the disk access resources under a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) DiskAccessListPager {
-	return &diskAccessListPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) DiskAccessesListByResourceGroupPager {
+	return &diskAccessesListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp DiskAccessListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskAccessesListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskAccessList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -650,12 +644,12 @@ func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DiskAccessListResponse, error) {
-	var val *DiskAccessList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskAccessListResponse{}, err
+func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DiskAccessesListByResourceGroupResponse, error) {
+	result := DiskAccessesListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskAccessList); err != nil {
+		return DiskAccessesListByResourceGroupResponse{}, err
 	}
-	return DiskAccessListResponse{RawResponse: resp.Response, DiskAccessList: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -673,18 +667,15 @@ func (client *DiskAccessesClient) listByResourceGroupHandleError(resp *azcore.Re
 
 // ListPrivateEndpointConnections - List information about private endpoint connections under a disk access resource
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) ListPrivateEndpointConnections(resourceGroupName string, diskAccessName string, options *DiskAccessesListPrivateEndpointConnectionsOptions) PrivateEndpointConnectionListResultPager {
-	return &privateEndpointConnectionListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskAccessesClient) ListPrivateEndpointConnections(resourceGroupName string, diskAccessName string, options *DiskAccessesListPrivateEndpointConnectionsOptions) DiskAccessesListPrivateEndpointConnectionsPager {
+	return &diskAccessesListPrivateEndpointConnectionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 		},
-		responder: client.listPrivateEndpointConnectionsHandleResponse,
-		errorer:   client.listPrivateEndpointConnectionsHandleError,
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskAccessesListPrivateEndpointConnectionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -716,12 +707,12 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ct
 }
 
 // listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
-func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionListResultResponse, error) {
-	var val *PrivateEndpointConnectionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionListResultResponse{}, err
+func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(resp *azcore.Response) (DiskAccessesListPrivateEndpointConnectionsResponse, error) {
+	result := DiskAccessesListPrivateEndpointConnectionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionListResult); err != nil {
+		return DiskAccessesListPrivateEndpointConnectionsResponse{}, err
 	}
-	return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
+	return result, nil
 }
 
 // listPrivateEndpointConnectionsHandleError handles the ListPrivateEndpointConnections error response.
@@ -739,47 +730,47 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleError(resp
 
 // BeginUpdate - Updates (patches) a disk access resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (DiskAccessPollerResponse, error) {
+func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (DiskAccessesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesUpdatePollerResponse{}, err
 	}
-	result := DiskAccessPollerResponse{
+	result := DiskAccessesUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskAccessesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesUpdatePollerResponse{}, err
 	}
-	poller := &diskAccessPoller{
+	poller := &diskAccessesUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new DiskAccessPoller from the specified resume token.
-// token - The value must come from a previous call to DiskAccessPoller.ResumeToken().
-func (client *DiskAccessesClient) ResumeUpdate(ctx context.Context, token string) (DiskAccessPollerResponse, error) {
+// ResumeUpdate creates a new DiskAccessesUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DiskAccessesUpdatePoller.ResumeToken().
+func (client *DiskAccessesClient) ResumeUpdate(ctx context.Context, token string) (DiskAccessesUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskAccessesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesUpdatePollerResponse{}, err
 	}
-	poller := &diskAccessPoller{
+	poller := &diskAccessesUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DiskAccessPollerResponse{}, err
+		return DiskAccessesUpdatePollerResponse{}, err
 	}
-	result := DiskAccessPollerResponse{
+	result := DiskAccessesUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -845,47 +836,47 @@ func (client *DiskAccessesClient) updateHandleError(resp *azcore.Response) error
 // BeginUpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
 // private endpoint connection.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (PrivateEndpointConnectionPollerResponse, error) {
+func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.updateAPrivateEndpointConnection(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
-		return PrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := PrivateEndpointConnectionPollerResponse{
+	result := DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskAccessesClient.UpdateAPrivateEndpointConnection", "", resp, client.con.Pipeline(), client.updateAPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return PrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &privateEndpointConnectionPoller{
+	poller := &diskAccessesUpdateAPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesUpdateAPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdateAPrivateEndpointConnection creates a new PrivateEndpointConnectionPoller from the specified resume token.
-// token - The value must come from a previous call to PrivateEndpointConnectionPoller.ResumeToken().
-func (client *DiskAccessesClient) ResumeUpdateAPrivateEndpointConnection(ctx context.Context, token string) (PrivateEndpointConnectionPollerResponse, error) {
+// ResumeUpdateAPrivateEndpointConnection creates a new DiskAccessesUpdateAPrivateEndpointConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to DiskAccessesUpdateAPrivateEndpointConnectionPoller.ResumeToken().
+func (client *DiskAccessesClient) ResumeUpdateAPrivateEndpointConnection(ctx context.Context, token string) (DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskAccessesClient.UpdateAPrivateEndpointConnection", token, client.con.Pipeline(), client.updateAPrivateEndpointConnectionHandleError)
 	if err != nil {
-		return PrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	poller := &privateEndpointConnectionPoller{
+	poller := &diskAccessesUpdateAPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return PrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := PrivateEndpointConnectionPollerResponse{
+	result := DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskAccessesUpdateAPrivateEndpointConnectionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

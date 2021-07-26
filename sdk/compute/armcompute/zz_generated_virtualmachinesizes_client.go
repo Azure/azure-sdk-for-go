@@ -31,17 +31,17 @@ func NewVirtualMachineSizesClient(con *armcore.Connection, subscriptionID string
 
 // List - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (VirtualMachineSizeListResultResponse, error) {
+func (client *VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (VirtualMachineSizesListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
+		return VirtualMachineSizesListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
+		return VirtualMachineSizesListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineSizeListResultResponse{}, client.listHandleError(resp)
+		return VirtualMachineSizesListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -70,12 +70,12 @@ func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineSizesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineSizeListResultResponse, error) {
-	var val *VirtualMachineSizeListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
+func (client *VirtualMachineSizesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineSizesListResponse, error) {
+	result := VirtualMachineSizesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VirtualMachineSizeListResult); err != nil {
+		return VirtualMachineSizesListResponse{}, err
 	}
-	return VirtualMachineSizeListResultResponse{RawResponse: resp.Response, VirtualMachineSizeListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

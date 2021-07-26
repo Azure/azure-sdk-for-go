@@ -34,17 +34,17 @@ func NewRestorePointCollectionsClient(con *armcore.Connection, subscriptionID st
 // CreateOrUpdate - The operation to create or update the restore point collection. Please refer to https://aka.ms/RestorePoints for more details. When
 // updating a restore point collection, only tags may be modified.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointCollectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters RestorePointCollection, options *RestorePointCollectionsCreateOrUpdateOptions) (RestorePointCollectionResponse, error) {
+func (client *RestorePointCollectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters RestorePointCollection, options *RestorePointCollectionsCreateOrUpdateOptions) (RestorePointCollectionsCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, restorePointCollectionName, parameters, options)
 	if err != nil {
-		return RestorePointCollectionResponse{}, err
+		return RestorePointCollectionsCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RestorePointCollectionResponse{}, err
+		return RestorePointCollectionsCreateOrUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return RestorePointCollectionResponse{}, client.createOrUpdateHandleError(resp)
+		return RestorePointCollectionsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
@@ -77,12 +77,12 @@ func (client *RestorePointCollectionsClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (RestorePointCollectionResponse, error) {
-	var val *RestorePointCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestorePointCollectionResponse{}, err
+func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (RestorePointCollectionsCreateOrUpdateResponse, error) {
+	result := RestorePointCollectionsCreateOrUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestorePointCollection); err != nil {
+		return RestorePointCollectionsCreateOrUpdateResponse{}, err
 	}
-	return RestorePointCollectionResponse{RawResponse: resp.Response, RestorePointCollection: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -100,47 +100,47 @@ func (client *RestorePointCollectionsClient) createOrUpdateHandleError(resp *azc
 
 // BeginDelete - The operation to delete the restore point collection. This operation will also delete all the contained restore points.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsBeginDeleteOptions) (RestorePointCollectionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointCollectionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := RestorePointCollectionsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("RestorePointCollectionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointCollectionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &restorePointCollectionsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointCollectionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *RestorePointCollectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new RestorePointCollectionsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to RestorePointCollectionsDeletePoller.ResumeToken().
+func (client *RestorePointCollectionsClient) ResumeDelete(ctx context.Context, token string) (RestorePointCollectionsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("RestorePointCollectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointCollectionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &restorePointCollectionsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointCollectionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := RestorePointCollectionsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointCollectionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -205,17 +205,17 @@ func (client *RestorePointCollectionsClient) deleteHandleError(resp *azcore.Resp
 
 // Get - The operation to get the restore point collection.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointCollectionsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsGetOptions) (RestorePointCollectionResponse, error) {
+func (client *RestorePointCollectionsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsGetOptions) (RestorePointCollectionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, options)
 	if err != nil {
-		return RestorePointCollectionResponse{}, err
+		return RestorePointCollectionsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RestorePointCollectionResponse{}, err
+		return RestorePointCollectionsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RestorePointCollectionResponse{}, client.getHandleError(resp)
+		return RestorePointCollectionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -251,12 +251,12 @@ func (client *RestorePointCollectionsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *RestorePointCollectionsClient) getHandleResponse(resp *azcore.Response) (RestorePointCollectionResponse, error) {
-	var val *RestorePointCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestorePointCollectionResponse{}, err
+func (client *RestorePointCollectionsClient) getHandleResponse(resp *azcore.Response) (RestorePointCollectionsGetResponse, error) {
+	result := RestorePointCollectionsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestorePointCollection); err != nil {
+		return RestorePointCollectionsGetResponse{}, err
 	}
-	return RestorePointCollectionResponse{RawResponse: resp.Response, RestorePointCollection: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -274,18 +274,15 @@ func (client *RestorePointCollectionsClient) getHandleError(resp *azcore.Respons
 
 // List - Gets the list of restore point collections in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointCollectionsClient) List(resourceGroupName string, options *RestorePointCollectionsListOptions) RestorePointCollectionListResultPager {
-	return &restorePointCollectionListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *RestorePointCollectionsClient) List(resourceGroupName string, options *RestorePointCollectionsListOptions) RestorePointCollectionsListPager {
+	return &restorePointCollectionsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RestorePointCollectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RestorePointCollectionsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RestorePointCollectionListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -313,12 +310,12 @@ func (client *RestorePointCollectionsClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorePointCollectionsClient) listHandleResponse(resp *azcore.Response) (RestorePointCollectionListResultResponse, error) {
-	var val *RestorePointCollectionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestorePointCollectionListResultResponse{}, err
+func (client *RestorePointCollectionsClient) listHandleResponse(resp *azcore.Response) (RestorePointCollectionsListResponse, error) {
+	result := RestorePointCollectionsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestorePointCollectionListResult); err != nil {
+		return RestorePointCollectionsListResponse{}, err
 	}
-	return RestorePointCollectionListResultResponse{RawResponse: resp.Response, RestorePointCollectionListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -338,18 +335,15 @@ func (client *RestorePointCollectionsClient) listHandleError(resp *azcore.Respon
 // collections. Do this till nextLink is not null to fetch all
 // the restore point collections.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointCollectionsClient) ListAll(options *RestorePointCollectionsListAllOptions) RestorePointCollectionListResultPager {
-	return &restorePointCollectionListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *RestorePointCollectionsClient) ListAll(options *RestorePointCollectionsListAllOptions) RestorePointCollectionsListAllPager {
+	return &restorePointCollectionsListAllPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.listAllHandleResponse,
-		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp RestorePointCollectionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp RestorePointCollectionsListAllResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RestorePointCollectionListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -373,12 +367,12 @@ func (client *RestorePointCollectionsClient) listAllCreateRequest(ctx context.Co
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *azcore.Response) (RestorePointCollectionListResultResponse, error) {
-	var val *RestorePointCollectionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestorePointCollectionListResultResponse{}, err
+func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *azcore.Response) (RestorePointCollectionsListAllResponse, error) {
+	result := RestorePointCollectionsListAllResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestorePointCollectionListResult); err != nil {
+		return RestorePointCollectionsListAllResponse{}, err
 	}
-	return RestorePointCollectionListResultResponse{RawResponse: resp.Response, RestorePointCollectionListResult: val}, nil
+	return result, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -396,17 +390,17 @@ func (client *RestorePointCollectionsClient) listAllHandleError(resp *azcore.Res
 
 // Update - The operation to update the restore point collection.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointCollectionsClient) Update(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters RestorePointCollectionUpdate, options *RestorePointCollectionsUpdateOptions) (RestorePointCollectionResponse, error) {
+func (client *RestorePointCollectionsClient) Update(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters RestorePointCollectionUpdate, options *RestorePointCollectionsUpdateOptions) (RestorePointCollectionsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, restorePointCollectionName, parameters, options)
 	if err != nil {
-		return RestorePointCollectionResponse{}, err
+		return RestorePointCollectionsUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RestorePointCollectionResponse{}, err
+		return RestorePointCollectionsUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RestorePointCollectionResponse{}, client.updateHandleError(resp)
+		return RestorePointCollectionsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -439,12 +433,12 @@ func (client *RestorePointCollectionsClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RestorePointCollectionsClient) updateHandleResponse(resp *azcore.Response) (RestorePointCollectionResponse, error) {
-	var val *RestorePointCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestorePointCollectionResponse{}, err
+func (client *RestorePointCollectionsClient) updateHandleResponse(resp *azcore.Response) (RestorePointCollectionsUpdateResponse, error) {
+	result := RestorePointCollectionsUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestorePointCollection); err != nil {
+		return RestorePointCollectionsUpdateResponse{}, err
 	}
-	return RestorePointCollectionResponse{RawResponse: resp.Response, RestorePointCollection: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.

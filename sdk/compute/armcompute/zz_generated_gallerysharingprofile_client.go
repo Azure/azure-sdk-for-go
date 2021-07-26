@@ -33,47 +33,47 @@ func NewGallerySharingProfileClient(con *armcore.Connection, subscriptionID stri
 
 // BeginUpdate - Update sharing profile of a gallery.
 // If the operation fails it returns the *CloudError error type.
-func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (SharingUpdatePollerResponse, error) {
+func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (GallerySharingProfileUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
-		return SharingUpdatePollerResponse{}, err
+		return GallerySharingProfileUpdatePollerResponse{}, err
 	}
-	result := SharingUpdatePollerResponse{
+	result := GallerySharingProfileUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("GallerySharingProfileClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return SharingUpdatePollerResponse{}, err
+		return GallerySharingProfileUpdatePollerResponse{}, err
 	}
-	poller := &sharingUpdatePoller{
+	poller := &gallerySharingProfileUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GallerySharingProfileUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new SharingUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to SharingUpdatePoller.ResumeToken().
-func (client *GallerySharingProfileClient) ResumeUpdate(ctx context.Context, token string) (SharingUpdatePollerResponse, error) {
+// ResumeUpdate creates a new GallerySharingProfileUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to GallerySharingProfileUpdatePoller.ResumeToken().
+func (client *GallerySharingProfileClient) ResumeUpdate(ctx context.Context, token string) (GallerySharingProfileUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("GallerySharingProfileClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return SharingUpdatePollerResponse{}, err
+		return GallerySharingProfileUpdatePollerResponse{}, err
 	}
-	poller := &sharingUpdatePoller{
+	poller := &gallerySharingProfileUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SharingUpdatePollerResponse{}, err
+		return GallerySharingProfileUpdatePollerResponse{}, err
 	}
-	result := SharingUpdatePollerResponse{
+	result := GallerySharingProfileUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GallerySharingProfileUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

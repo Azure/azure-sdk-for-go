@@ -32,17 +32,17 @@ func NewSharedGalleryImagesClient(con *armcore.Connection, subscriptionID string
 
 // Get - Get a shared gallery image by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
-func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImageResponse, error) {
+func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImagesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, options)
 	if err != nil {
-		return SharedGalleryImageResponse{}, err
+		return SharedGalleryImagesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SharedGalleryImageResponse{}, err
+		return SharedGalleryImagesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SharedGalleryImageResponse{}, client.getHandleError(resp)
+		return SharedGalleryImagesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -79,12 +79,12 @@ func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharedGalleryImagesClient) getHandleResponse(resp *azcore.Response) (SharedGalleryImageResponse, error) {
-	var val *SharedGalleryImage
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SharedGalleryImageResponse{}, err
+func (client *SharedGalleryImagesClient) getHandleResponse(resp *azcore.Response) (SharedGalleryImagesGetResponse, error) {
+	result := SharedGalleryImagesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SharedGalleryImage); err != nil {
+		return SharedGalleryImagesGetResponse{}, err
 	}
-	return SharedGalleryImageResponse{RawResponse: resp.Response, SharedGalleryImage: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -102,18 +102,15 @@ func (client *SharedGalleryImagesClient) getHandleError(resp *azcore.Response) e
 
 // List - List shared gallery images by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
-func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImageListPager {
-	return &sharedGalleryImageListPager{
-		pipeline: client.con.Pipeline(),
+func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImagesListPager {
+	return &sharedGalleryImagesListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, location, galleryUniqueName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp SharedGalleryImageListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp SharedGalleryImagesListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SharedGalleryImageList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -148,12 +145,12 @@ func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *SharedGalleryImagesClient) listHandleResponse(resp *azcore.Response) (SharedGalleryImageListResponse, error) {
-	var val *SharedGalleryImageList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SharedGalleryImageListResponse{}, err
+func (client *SharedGalleryImagesClient) listHandleResponse(resp *azcore.Response) (SharedGalleryImagesListResponse, error) {
+	result := SharedGalleryImagesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SharedGalleryImageList); err != nil {
+		return SharedGalleryImagesListResponse{}, err
 	}
-	return SharedGalleryImageListResponse{RawResponse: resp.Response, SharedGalleryImageList: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

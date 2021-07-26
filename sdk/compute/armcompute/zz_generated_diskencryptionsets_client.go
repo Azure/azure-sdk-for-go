@@ -33,47 +33,47 @@ func NewDiskEncryptionSetsClient(con *armcore.Connection, subscriptionID string)
 
 // BeginCreateOrUpdate - Creates or updates a disk encryption set
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet, options *DiskEncryptionSetsBeginCreateOrUpdateOptions) (DiskEncryptionSetPollerResponse, error) {
+func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet, options *DiskEncryptionSetsBeginCreateOrUpdateOptions) (DiskEncryptionSetsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskEncryptionSetPollerResponse{
+	result := DiskEncryptionSetsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskEncryptionSetsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &diskEncryptionSetPoller{
+	poller := &diskEncryptionSetsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new DiskEncryptionSetPoller from the specified resume token.
-// token - The value must come from a previous call to DiskEncryptionSetPoller.ResumeToken().
-func (client *DiskEncryptionSetsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskEncryptionSetPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new DiskEncryptionSetsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DiskEncryptionSetsCreateOrUpdatePoller.ResumeToken().
+func (client *DiskEncryptionSetsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskEncryptionSetsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskEncryptionSetsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &diskEncryptionSetPoller{
+	poller := &diskEncryptionSetsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskEncryptionSetPollerResponse{
+	result := DiskEncryptionSetsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -138,47 +138,47 @@ func (client *DiskEncryptionSetsClient) createOrUpdateHandleError(resp *azcore.R
 
 // BeginDelete - Deletes a disk encryption set.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsBeginDeleteOptions) (DiskEncryptionSetsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskEncryptionSetName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskEncryptionSetsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DiskEncryptionSetsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskEncryptionSetsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskEncryptionSetsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &diskEncryptionSetsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DiskEncryptionSetsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new DiskEncryptionSetsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to DiskEncryptionSetsDeletePoller.ResumeToken().
+func (client *DiskEncryptionSetsClient) ResumeDelete(ctx context.Context, token string) (DiskEncryptionSetsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskEncryptionSetsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskEncryptionSetsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &diskEncryptionSetsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DiskEncryptionSetsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DiskEncryptionSetsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -243,17 +243,17 @@ func (client *DiskEncryptionSetsClient) deleteHandleError(resp *azcore.Response)
 
 // Get - Gets information about a disk encryption set.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsGetOptions) (DiskEncryptionSetResponse, error) {
+func (client *DiskEncryptionSetsClient) Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsGetOptions) (DiskEncryptionSetsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
 	if err != nil {
-		return DiskEncryptionSetResponse{}, err
+		return DiskEncryptionSetsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiskEncryptionSetResponse{}, err
+		return DiskEncryptionSetsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiskEncryptionSetResponse{}, client.getHandleError(resp)
+		return DiskEncryptionSetsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -286,12 +286,12 @@ func (client *DiskEncryptionSetsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskEncryptionSetsClient) getHandleResponse(resp *azcore.Response) (DiskEncryptionSetResponse, error) {
-	var val *DiskEncryptionSet
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskEncryptionSetResponse{}, err
+func (client *DiskEncryptionSetsClient) getHandleResponse(resp *azcore.Response) (DiskEncryptionSetsGetResponse, error) {
+	result := DiskEncryptionSetsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskEncryptionSet); err != nil {
+		return DiskEncryptionSetsGetResponse{}, err
 	}
-	return DiskEncryptionSetResponse{RawResponse: resp.Response, DiskEncryptionSet: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -309,18 +309,15 @@ func (client *DiskEncryptionSetsClient) getHandleError(resp *azcore.Response) er
 
 // List - Lists all the disk encryption sets under a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) List(options *DiskEncryptionSetsListOptions) DiskEncryptionSetListPager {
-	return &diskEncryptionSetListPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskEncryptionSetsClient) List(options *DiskEncryptionSetsListOptions) DiskEncryptionSetsListPager {
+	return &diskEncryptionSetsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp DiskEncryptionSetListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskEncryptionSetsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskEncryptionSetList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -344,12 +341,12 @@ func (client *DiskEncryptionSetsClient) listCreateRequest(ctx context.Context, o
 }
 
 // listHandleResponse handles the List response.
-func (client *DiskEncryptionSetsClient) listHandleResponse(resp *azcore.Response) (DiskEncryptionSetListResponse, error) {
-	var val *DiskEncryptionSetList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskEncryptionSetListResponse{}, err
+func (client *DiskEncryptionSetsClient) listHandleResponse(resp *azcore.Response) (DiskEncryptionSetsListResponse, error) {
+	result := DiskEncryptionSetsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskEncryptionSetList); err != nil {
+		return DiskEncryptionSetsListResponse{}, err
 	}
-	return DiskEncryptionSetListResponse{RawResponse: resp.Response, DiskEncryptionSetList: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -367,18 +364,15 @@ func (client *DiskEncryptionSetsClient) listHandleError(resp *azcore.Response) e
 
 // ListAssociatedResources - Lists all resources that are encrypted with this disk encryption set.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) ListAssociatedResources(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsListAssociatedResourcesOptions) ResourceURIListPager {
-	return &resourceURIListPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskEncryptionSetsClient) ListAssociatedResources(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsListAssociatedResourcesOptions) DiskEncryptionSetsListAssociatedResourcesPager {
+	return &diskEncryptionSetsListAssociatedResourcesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, diskEncryptionSetName, options)
 		},
-		responder: client.listAssociatedResourcesHandleResponse,
-		errorer:   client.listAssociatedResourcesHandleError,
-		advancer: func(ctx context.Context, resp ResourceURIListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskEncryptionSetsListAssociatedResourcesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceURIList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -410,12 +404,12 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesCreateRequest(ctx
 }
 
 // listAssociatedResourcesHandleResponse handles the ListAssociatedResources response.
-func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(resp *azcore.Response) (ResourceURIListResponse, error) {
-	var val *ResourceURIList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceURIListResponse{}, err
+func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(resp *azcore.Response) (DiskEncryptionSetsListAssociatedResourcesResponse, error) {
+	result := DiskEncryptionSetsListAssociatedResourcesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceURIList); err != nil {
+		return DiskEncryptionSetsListAssociatedResourcesResponse{}, err
 	}
-	return ResourceURIListResponse{RawResponse: resp.Response, ResourceURIList: val}, nil
+	return result, nil
 }
 
 // listAssociatedResourcesHandleError handles the ListAssociatedResources error response.
@@ -433,18 +427,15 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleError(resp 
 
 // ListByResourceGroup - Lists all the disk encryption sets under a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) ListByResourceGroup(resourceGroupName string, options *DiskEncryptionSetsListByResourceGroupOptions) DiskEncryptionSetListPager {
-	return &diskEncryptionSetListPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskEncryptionSetsClient) ListByResourceGroup(resourceGroupName string, options *DiskEncryptionSetsListByResourceGroupOptions) DiskEncryptionSetsListByResourceGroupPager {
+	return &diskEncryptionSetsListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp DiskEncryptionSetListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskEncryptionSetsListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskEncryptionSetList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -472,12 +463,12 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupCreateRequest(ctx con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DiskEncryptionSetListResponse, error) {
-	var val *DiskEncryptionSetList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskEncryptionSetListResponse{}, err
+func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DiskEncryptionSetsListByResourceGroupResponse, error) {
+	result := DiskEncryptionSetsListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskEncryptionSetList); err != nil {
+		return DiskEncryptionSetsListByResourceGroupResponse{}, err
 	}
-	return DiskEncryptionSetListResponse{RawResponse: resp.Response, DiskEncryptionSetList: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -495,47 +486,47 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupHandleError(resp *azc
 
 // BeginUpdate - Updates (patches) a disk encryption set.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate, options *DiskEncryptionSetsBeginUpdateOptions) (DiskEncryptionSetPollerResponse, error) {
+func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate, options *DiskEncryptionSetsBeginUpdateOptions) (DiskEncryptionSetsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskEncryptionSetName, diskEncryptionSet, options)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsUpdatePollerResponse{}, err
 	}
-	result := DiskEncryptionSetPollerResponse{
+	result := DiskEncryptionSetsUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("DiskEncryptionSetsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsUpdatePollerResponse{}, err
 	}
-	poller := &diskEncryptionSetPoller{
+	poller := &diskEncryptionSetsUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new DiskEncryptionSetPoller from the specified resume token.
-// token - The value must come from a previous call to DiskEncryptionSetPoller.ResumeToken().
-func (client *DiskEncryptionSetsClient) ResumeUpdate(ctx context.Context, token string) (DiskEncryptionSetPollerResponse, error) {
+// ResumeUpdate creates a new DiskEncryptionSetsUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to DiskEncryptionSetsUpdatePoller.ResumeToken().
+func (client *DiskEncryptionSetsClient) ResumeUpdate(ctx context.Context, token string) (DiskEncryptionSetsUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("DiskEncryptionSetsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsUpdatePollerResponse{}, err
 	}
-	poller := &diskEncryptionSetPoller{
+	poller := &diskEncryptionSetsUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return DiskEncryptionSetPollerResponse{}, err
+		return DiskEncryptionSetsUpdatePollerResponse{}, err
 	}
-	result := DiskEncryptionSetPollerResponse{
+	result := DiskEncryptionSetsUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

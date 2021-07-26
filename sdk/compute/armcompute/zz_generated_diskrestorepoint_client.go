@@ -32,17 +32,17 @@ func NewDiskRestorePointClient(con *armcore.Connection, subscriptionID string) *
 
 // Get - Get disk restorePoint resource
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointGetOptions) (DiskRestorePointResponse, error) {
+func (client *DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointGetOptions) (DiskRestorePointGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
-		return DiskRestorePointResponse{}, err
+		return DiskRestorePointGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return DiskRestorePointResponse{}, err
+		return DiskRestorePointGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return DiskRestorePointResponse{}, client.getHandleError(resp)
+		return DiskRestorePointGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -83,12 +83,12 @@ func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskRestorePointClient) getHandleResponse(resp *azcore.Response) (DiskRestorePointResponse, error) {
-	var val *DiskRestorePoint
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskRestorePointResponse{}, err
+func (client *DiskRestorePointClient) getHandleResponse(resp *azcore.Response) (DiskRestorePointGetResponse, error) {
+	result := DiskRestorePointGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskRestorePoint); err != nil {
+		return DiskRestorePointGetResponse{}, err
 	}
-	return DiskRestorePointResponse{RawResponse: resp.Response, DiskRestorePoint: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -106,18 +106,15 @@ func (client *DiskRestorePointClient) getHandleError(resp *azcore.Response) erro
 
 // ListByRestorePoint - Lists diskRestorePoints under a vmRestorePoint.
 // If the operation fails it returns the *CloudError error type.
-func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointListByRestorePointOptions) DiskRestorePointListPager {
-	return &diskRestorePointListPager{
-		pipeline: client.con.Pipeline(),
+func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointListByRestorePointOptions) DiskRestorePointListByRestorePointPager {
+	return &diskRestorePointListByRestorePointPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByRestorePointCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, options)
 		},
-		responder: client.listByRestorePointHandleResponse,
-		errorer:   client.listByRestorePointHandleError,
-		advancer: func(ctx context.Context, resp DiskRestorePointListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp DiskRestorePointListByRestorePointResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskRestorePointList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -153,12 +150,12 @@ func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx contex
 }
 
 // listByRestorePointHandleResponse handles the ListByRestorePoint response.
-func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *azcore.Response) (DiskRestorePointListResponse, error) {
-	var val *DiskRestorePointList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskRestorePointListResponse{}, err
+func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *azcore.Response) (DiskRestorePointListByRestorePointResponse, error) {
+	result := DiskRestorePointListByRestorePointResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.DiskRestorePointList); err != nil {
+		return DiskRestorePointListByRestorePointResponse{}, err
 	}
-	return DiskRestorePointListResponse{RawResponse: resp.Response, DiskRestorePointList: val}, nil
+	return result, nil
 }
 
 // listByRestorePointHandleError handles the ListByRestorePoint error response.

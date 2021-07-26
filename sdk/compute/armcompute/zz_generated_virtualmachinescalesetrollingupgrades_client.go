@@ -32,47 +32,47 @@ func NewVirtualMachineScaleSetRollingUpgradesClient(con *armcore.Connection, sub
 
 // BeginCancel - Cancels the current virtual machine scale set rolling upgrade.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesBeginCancelOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesBeginCancelOptions) (VirtualMachineScaleSetRollingUpgradesCancelPollerResponse, error) {
 	resp, err := client.cancel(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesCancelPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetRollingUpgradesCancelPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineScaleSetRollingUpgradesClient.Cancel", "", resp, client.con.Pipeline(), client.cancelHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesCancelPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetRollingUpgradesCancelPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesCancelResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCancel creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeCancel(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeCancel creates a new VirtualMachineScaleSetRollingUpgradesCancelPoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetRollingUpgradesCancelPoller.ResumeToken().
+func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeCancel(ctx context.Context, token string) (VirtualMachineScaleSetRollingUpgradesCancelPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineScaleSetRollingUpgradesClient.Cancel", token, client.con.Pipeline(), client.cancelHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesCancelPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetRollingUpgradesCancelPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesCancelPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetRollingUpgradesCancelPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesCancelResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -135,17 +135,17 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) cancelHandleError(res
 
 // GetLatest - Gets the status of the latest virtual machine scale set rolling upgrade.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesGetLatestOptions) (RollingUpgradeStatusInfoResponse, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesGetLatestOptions) (VirtualMachineScaleSetRollingUpgradesGetLatestResponse, error) {
 	req, err := client.getLatestCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
-		return RollingUpgradeStatusInfoResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesGetLatestResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RollingUpgradeStatusInfoResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesGetLatestResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RollingUpgradeStatusInfoResponse{}, client.getLatestHandleError(resp)
+		return VirtualMachineScaleSetRollingUpgradesGetLatestResponse{}, client.getLatestHandleError(resp)
 	}
 	return client.getLatestHandleResponse(resp)
 }
@@ -178,12 +178,12 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestCreateReques
 }
 
 // getLatestHandleResponse handles the GetLatest response.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestHandleResponse(resp *azcore.Response) (RollingUpgradeStatusInfoResponse, error) {
-	var val *RollingUpgradeStatusInfo
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RollingUpgradeStatusInfoResponse{}, err
+func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetRollingUpgradesGetLatestResponse, error) {
+	result := VirtualMachineScaleSetRollingUpgradesGetLatestResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RollingUpgradeStatusInfo); err != nil {
+		return VirtualMachineScaleSetRollingUpgradesGetLatestResponse{}, err
 	}
-	return RollingUpgradeStatusInfoResponse{RawResponse: resp.Response, RollingUpgradeStatusInfo: val}, nil
+	return result, nil
 }
 
 // getLatestHandleError handles the GetLatest error response.
@@ -202,47 +202,47 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestHandleError(
 // version. Instances which are already running the latest extension versions
 // are not affected.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesBeginStartExtensionUpgradeOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesBeginStartExtensionUpgradeOptions) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse, error) {
 	resp, err := client.startExtensionUpgrade(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineScaleSetRollingUpgradesClient.StartExtensionUpgrade", "", resp, client.con.Pipeline(), client.startExtensionUpgradeHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStartExtensionUpgrade creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeStartExtensionUpgrade(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeStartExtensionUpgrade creates a new VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller.ResumeToken().
+func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeStartExtensionUpgrade(ctx context.Context, token string) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineScaleSetRollingUpgradesClient.StartExtensionUpgrade", token, client.con.Pipeline(), client.startExtensionUpgradeHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -309,47 +309,47 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) startExtensionUpgrade
 // which are already running the latest available OS version are not
 // affected.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesBeginStartOSUpgradeOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesBeginStartOSUpgradeOptions) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse, error) {
 	resp, err := client.startOSUpgrade(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineScaleSetRollingUpgradesClient.StartOSUpgrade", "", resp, client.con.Pipeline(), client.startOSUpgradeHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStartOSUpgrade creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeStartOSUpgrade(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeStartOSUpgrade creates a new VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller.ResumeToken().
+func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeStartOSUpgrade(ctx context.Context, token string) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineScaleSetRollingUpgradesClient.StartOSUpgrade", token, client.con.Pipeline(), client.startOSUpgradeHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

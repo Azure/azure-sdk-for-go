@@ -33,47 +33,47 @@ func NewVirtualMachineScaleSetVMExtensionsClient(con *armcore.Connection, subscr
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineScaleSetVMExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions) (VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, extensionParameters, options)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineScaleSetVMExtensionPollerResponse{
+	result := VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineScaleSetVMExtensionsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineScaleSetVMExtensionPoller{
+	poller := &virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new VirtualMachineScaleSetVMExtensionPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineScaleSetVMExtensionPoller.ResumeToken().
-func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller.ResumeToken().
+func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineScaleSetVMExtensionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineScaleSetVMExtensionPoller{
+	poller := &virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineScaleSetVMExtensionPollerResponse{
+	result := VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -146,47 +146,47 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) createOrUpdateHandleErro
 
 // BeginDelete - The operation to delete the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineScaleSetVMExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions) (VirtualMachineScaleSetVMExtensionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetVMExtensionsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineScaleSetVMExtensionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetVMExtensionsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new VirtualMachineScaleSetVMExtensionsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetVMExtensionsDeletePoller.ResumeToken().
+func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeDelete(ctx context.Context, token string) (VirtualMachineScaleSetVMExtensionsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineScaleSetVMExtensionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineScaleSetVMExtensionsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineScaleSetVMExtensionsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -259,17 +259,17 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) deleteHandleError(resp *
 
 // Get - The operation to get the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineScaleSetVMExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsGetOptions) (VirtualMachineScaleSetVMExtensionResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsGetOptions) (VirtualMachineScaleSetVMExtensionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, options)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineScaleSetVMExtensionResponse{}, client.getHandleError(resp)
+		return VirtualMachineScaleSetVMExtensionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -313,12 +313,12 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineScaleSetVMExtensionsClient) getHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetVMExtensionResponse, error) {
-	var val *VirtualMachineScaleSetVMExtension
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineScaleSetVMExtensionResponse{}, err
+func (client *VirtualMachineScaleSetVMExtensionsClient) getHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetVMExtensionsGetResponse, error) {
+	result := VirtualMachineScaleSetVMExtensionsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetVMExtension); err != nil {
+		return VirtualMachineScaleSetVMExtensionsGetResponse{}, err
 	}
-	return VirtualMachineScaleSetVMExtensionResponse{RawResponse: resp.Response, VirtualMachineScaleSetVMExtension: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -336,17 +336,17 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) getHandleError(resp *azc
 
 // List - The operation to get all extensions of an instance in Virtual Machine Scaleset.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineScaleSetVMExtensionsClient) List(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMExtensionsListOptions) (VirtualMachineScaleSetVMExtensionsListResultResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) List(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMExtensionsListOptions) (VirtualMachineScaleSetVMExtensionsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionsListResultResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionsListResultResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineScaleSetVMExtensionsListResultResponse{}, client.listHandleError(resp)
+		return VirtualMachineScaleSetVMExtensionsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -386,12 +386,12 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) listCreateRequest(ctx co
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineScaleSetVMExtensionsClient) listHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetVMExtensionsListResultResponse, error) {
-	var val *VirtualMachineScaleSetVMExtensionsListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineScaleSetVMExtensionsListResultResponse{}, err
+func (client *VirtualMachineScaleSetVMExtensionsClient) listHandleResponse(resp *azcore.Response) (VirtualMachineScaleSetVMExtensionsListResponse, error) {
+	result := VirtualMachineScaleSetVMExtensionsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetVMExtensionsListResult); err != nil {
+		return VirtualMachineScaleSetVMExtensionsListResponse{}, err
 	}
-	return VirtualMachineScaleSetVMExtensionsListResultResponse{RawResponse: resp.Response, VirtualMachineScaleSetVMExtensionsListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -409,47 +409,47 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) listHandleError(resp *az
 
 // BeginUpdate - The operation to update the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachineScaleSetVMExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions) (VirtualMachineScaleSetVMExtensionsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, extensionParameters, options)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineScaleSetVMExtensionPollerResponse{
+	result := VirtualMachineScaleSetVMExtensionsUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineScaleSetVMExtensionsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineScaleSetVMExtensionPoller{
+	poller := &virtualMachineScaleSetVMExtensionsUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new VirtualMachineScaleSetVMExtensionPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineScaleSetVMExtensionPoller.ResumeToken().
-func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachineScaleSetVMExtensionPollerResponse, error) {
+// ResumeUpdate creates a new VirtualMachineScaleSetVMExtensionsUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetVMExtensionsUpdatePoller.ResumeToken().
+func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachineScaleSetVMExtensionsUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineScaleSetVMExtensionsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineScaleSetVMExtensionPoller{
+	poller := &virtualMachineScaleSetVMExtensionsUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionPollerResponse{}, err
+		return VirtualMachineScaleSetVMExtensionsUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineScaleSetVMExtensionPollerResponse{
+	result := VirtualMachineScaleSetVMExtensionsUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

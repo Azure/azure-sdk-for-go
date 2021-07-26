@@ -32,17 +32,17 @@ func NewCloudServiceOperatingSystemsClient(con *armcore.Connection, subscription
 
 // GetOSFamily - Gets properties of a guest operating system family that can be specified in the XML service configuration (.cscfg) for a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceOperatingSystemsClient) GetOSFamily(ctx context.Context, location string, osFamilyName string, options *CloudServiceOperatingSystemsGetOSFamilyOptions) (OSFamilyResponse, error) {
+func (client *CloudServiceOperatingSystemsClient) GetOSFamily(ctx context.Context, location string, osFamilyName string, options *CloudServiceOperatingSystemsGetOSFamilyOptions) (CloudServiceOperatingSystemsGetOSFamilyResponse, error) {
 	req, err := client.getOSFamilyCreateRequest(ctx, location, osFamilyName, options)
 	if err != nil {
-		return OSFamilyResponse{}, err
+		return CloudServiceOperatingSystemsGetOSFamilyResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return OSFamilyResponse{}, err
+		return CloudServiceOperatingSystemsGetOSFamilyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return OSFamilyResponse{}, client.getOSFamilyHandleError(resp)
+		return CloudServiceOperatingSystemsGetOSFamilyResponse{}, client.getOSFamilyHandleError(resp)
 	}
 	return client.getOSFamilyHandleResponse(resp)
 }
@@ -75,12 +75,12 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyCreateRequest(ctx c
 }
 
 // getOSFamilyHandleResponse handles the GetOSFamily response.
-func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp *azcore.Response) (OSFamilyResponse, error) {
-	var val *OSFamily
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OSFamilyResponse{}, err
+func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp *azcore.Response) (CloudServiceOperatingSystemsGetOSFamilyResponse, error) {
+	result := CloudServiceOperatingSystemsGetOSFamilyResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OSFamily); err != nil {
+		return CloudServiceOperatingSystemsGetOSFamilyResponse{}, err
 	}
-	return OSFamilyResponse{RawResponse: resp.Response, OSFamily: val}, nil
+	return result, nil
 }
 
 // getOSFamilyHandleError handles the GetOSFamily error response.
@@ -98,17 +98,17 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleError(resp *a
 
 // GetOSVersion - Gets properties of a guest operating system version that can be specified in the XML service configuration (.cscfg) for a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceOperatingSystemsClient) GetOSVersion(ctx context.Context, location string, osVersionName string, options *CloudServiceOperatingSystemsGetOSVersionOptions) (OSVersionResponse, error) {
+func (client *CloudServiceOperatingSystemsClient) GetOSVersion(ctx context.Context, location string, osVersionName string, options *CloudServiceOperatingSystemsGetOSVersionOptions) (CloudServiceOperatingSystemsGetOSVersionResponse, error) {
 	req, err := client.getOSVersionCreateRequest(ctx, location, osVersionName, options)
 	if err != nil {
-		return OSVersionResponse{}, err
+		return CloudServiceOperatingSystemsGetOSVersionResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return OSVersionResponse{}, err
+		return CloudServiceOperatingSystemsGetOSVersionResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return OSVersionResponse{}, client.getOSVersionHandleError(resp)
+		return CloudServiceOperatingSystemsGetOSVersionResponse{}, client.getOSVersionHandleError(resp)
 	}
 	return client.getOSVersionHandleResponse(resp)
 }
@@ -141,12 +141,12 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionCreateRequest(ctx 
 }
 
 // getOSVersionHandleResponse handles the GetOSVersion response.
-func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(resp *azcore.Response) (OSVersionResponse, error) {
-	var val *OSVersion
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OSVersionResponse{}, err
+func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(resp *azcore.Response) (CloudServiceOperatingSystemsGetOSVersionResponse, error) {
+	result := CloudServiceOperatingSystemsGetOSVersionResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OSVersion); err != nil {
+		return CloudServiceOperatingSystemsGetOSVersionResponse{}, err
 	}
-	return OSVersionResponse{RawResponse: resp.Response, OSVersion: val}, nil
+	return result, nil
 }
 
 // getOSVersionHandleError handles the GetOSVersion error response.
@@ -166,18 +166,15 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleError(resp *
 // Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceOperatingSystemsClient) ListOSFamilies(location string, options *CloudServiceOperatingSystemsListOSFamiliesOptions) OSFamilyListResultPager {
-	return &osFamilyListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServiceOperatingSystemsClient) ListOSFamilies(location string, options *CloudServiceOperatingSystemsListOSFamiliesOptions) CloudServiceOperatingSystemsListOSFamiliesPager {
+	return &cloudServiceOperatingSystemsListOSFamiliesPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOSFamiliesCreateRequest(ctx, location, options)
 		},
-		responder: client.listOSFamiliesHandleResponse,
-		errorer:   client.listOSFamiliesHandleError,
-		advancer: func(ctx context.Context, resp OSFamilyListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServiceOperatingSystemsListOSFamiliesResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OSFamilyListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -205,12 +202,12 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesCreateRequest(ct
 }
 
 // listOSFamiliesHandleResponse handles the ListOSFamilies response.
-func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(resp *azcore.Response) (OSFamilyListResultResponse, error) {
-	var val *OSFamilyListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OSFamilyListResultResponse{}, err
+func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(resp *azcore.Response) (CloudServiceOperatingSystemsListOSFamiliesResponse, error) {
+	result := CloudServiceOperatingSystemsListOSFamiliesResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OSFamilyListResult); err != nil {
+		return CloudServiceOperatingSystemsListOSFamiliesResponse{}, err
 	}
-	return OSFamilyListResultResponse{RawResponse: resp.Response, OSFamilyListResult: val}, nil
+	return result, nil
 }
 
 // listOSFamiliesHandleError handles the ListOSFamilies error response.
@@ -230,18 +227,15 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleError(resp
 // Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceOperatingSystemsClient) ListOSVersions(location string, options *CloudServiceOperatingSystemsListOSVersionsOptions) OSVersionListResultPager {
-	return &osVersionListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServiceOperatingSystemsClient) ListOSVersions(location string, options *CloudServiceOperatingSystemsListOSVersionsOptions) CloudServiceOperatingSystemsListOSVersionsPager {
+	return &cloudServiceOperatingSystemsListOSVersionsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOSVersionsCreateRequest(ctx, location, options)
 		},
-		responder: client.listOSVersionsHandleResponse,
-		errorer:   client.listOSVersionsHandleError,
-		advancer: func(ctx context.Context, resp OSVersionListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServiceOperatingSystemsListOSVersionsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OSVersionListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -269,12 +263,12 @@ func (client *CloudServiceOperatingSystemsClient) listOSVersionsCreateRequest(ct
 }
 
 // listOSVersionsHandleResponse handles the ListOSVersions response.
-func (client *CloudServiceOperatingSystemsClient) listOSVersionsHandleResponse(resp *azcore.Response) (OSVersionListResultResponse, error) {
-	var val *OSVersionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OSVersionListResultResponse{}, err
+func (client *CloudServiceOperatingSystemsClient) listOSVersionsHandleResponse(resp *azcore.Response) (CloudServiceOperatingSystemsListOSVersionsResponse, error) {
+	result := CloudServiceOperatingSystemsListOSVersionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OSVersionListResult); err != nil {
+		return CloudServiceOperatingSystemsListOSVersionsResponse{}, err
 	}
-	return OSVersionListResultResponse{RawResponse: resp.Response, OSVersionListResult: val}, nil
+	return result, nil
 }
 
 // listOSVersionsHandleError handles the ListOSVersions error response.

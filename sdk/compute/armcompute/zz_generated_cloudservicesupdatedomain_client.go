@@ -35,17 +35,17 @@ func NewCloudServicesUpdateDomainClient(con *armcore.Connection, subscriptionID 
 // GetUpdateDomain - Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page of update domains.
 // Do this till nextLink is null to fetch all the update domains.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) GetUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (UpdateDomainResponse, error) {
+func (client *CloudServicesUpdateDomainClient) GetUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (CloudServicesUpdateDomainGetUpdateDomainResponse, error) {
 	req, err := client.getUpdateDomainCreateRequest(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
-		return UpdateDomainResponse{}, err
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return UpdateDomainResponse{}, err
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return UpdateDomainResponse{}, client.getUpdateDomainHandleError(resp)
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, client.getUpdateDomainHandleError(resp)
 	}
 	return client.getUpdateDomainHandleResponse(resp)
 }
@@ -79,12 +79,12 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainCreateRequest(ctx 
 }
 
 // getUpdateDomainHandleResponse handles the GetUpdateDomain response.
-func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(resp *azcore.Response) (UpdateDomainResponse, error) {
-	var val *UpdateDomain
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UpdateDomainResponse{}, err
+func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(resp *azcore.Response) (CloudServicesUpdateDomainGetUpdateDomainResponse, error) {
+	result := CloudServicesUpdateDomainGetUpdateDomainResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.UpdateDomain); err != nil {
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, err
 	}
-	return UpdateDomainResponse{RawResponse: resp.Response, UpdateDomain: val}, nil
+	return result, nil
 }
 
 // getUpdateDomainHandleError handles the GetUpdateDomain error response.
@@ -102,18 +102,15 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleError(resp *
 
 // ListUpdateDomains - Gets a list of all update domains in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) UpdateDomainListResultPager {
-	return &updateDomainListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) CloudServicesUpdateDomainListUpdateDomainsPager {
+	return &cloudServicesUpdateDomainListUpdateDomainsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listUpdateDomainsCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 		},
-		responder: client.listUpdateDomainsHandleResponse,
-		errorer:   client.listUpdateDomainsHandleError,
-		advancer: func(ctx context.Context, resp UpdateDomainListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServicesUpdateDomainListUpdateDomainsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.UpdateDomainListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -145,12 +142,12 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsCreateRequest(ct
 }
 
 // listUpdateDomainsHandleResponse handles the ListUpdateDomains response.
-func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleResponse(resp *azcore.Response) (UpdateDomainListResultResponse, error) {
-	var val *UpdateDomainListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UpdateDomainListResultResponse{}, err
+func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleResponse(resp *azcore.Response) (CloudServicesUpdateDomainListUpdateDomainsResponse, error) {
+	result := CloudServicesUpdateDomainListUpdateDomainsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.UpdateDomainListResult); err != nil {
+		return CloudServicesUpdateDomainListUpdateDomainsResponse{}, err
 	}
-	return UpdateDomainListResultResponse{RawResponse: resp.Response, UpdateDomainListResult: val}, nil
+	return result, nil
 }
 
 // listUpdateDomainsHandleError handles the ListUpdateDomains error response.
@@ -168,47 +165,47 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleError(resp
 
 // BeginWalkUpdateDomain - Updates the role instances in the specified update domain.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (CloudServicesUpdateDomainWalkUpdateDomainPollerResponse, error) {
 	resp, err := client.walkUpdateDomain(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesUpdateDomainClient.WalkUpdateDomain", "", resp, client.con.Pipeline(), client.walkUpdateDomainHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesUpdateDomainWalkUpdateDomainPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesUpdateDomainWalkUpdateDomainResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeWalkUpdateDomain creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesUpdateDomainClient) ResumeWalkUpdateDomain(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeWalkUpdateDomain creates a new CloudServicesUpdateDomainWalkUpdateDomainPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesUpdateDomainWalkUpdateDomainPoller.ResumeToken().
+func (client *CloudServicesUpdateDomainClient) ResumeWalkUpdateDomain(ctx context.Context, token string) (CloudServicesUpdateDomainWalkUpdateDomainPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesUpdateDomainClient.WalkUpdateDomain", token, client.con.Pipeline(), client.walkUpdateDomainHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesUpdateDomainWalkUpdateDomainPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesUpdateDomainWalkUpdateDomainResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

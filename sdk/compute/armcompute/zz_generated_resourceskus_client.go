@@ -31,18 +31,15 @@ func NewResourceSKUsClient(con *armcore.Connection, subscriptionID string) *Reso
 
 // List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
 // If the operation fails it returns a generic error.
-func (client *ResourceSKUsClient) List(options *ResourceSKUsListOptions) ResourceSKUsResultPager {
-	return &resourceSKUsResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *ResourceSKUsClient) List(options *ResourceSKUsListOptions) ResourceSKUsListPager {
+	return &resourceSKUsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp ResourceSKUsResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceSKUsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUsResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -69,12 +66,12 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceSKUsClient) listHandleResponse(resp *azcore.Response) (ResourceSKUsResultResponse, error) {
-	var val *ResourceSKUsResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ResourceSKUsResultResponse{}, err
+func (client *ResourceSKUsClient) listHandleResponse(resp *azcore.Response) (ResourceSKUsListResponse, error) {
+	result := ResourceSKUsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ResourceSKUsResult); err != nil {
+		return ResourceSKUsListResponse{}, err
 	}
-	return ResourceSKUsResultResponse{RawResponse: resp.Response, ResourceSKUsResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

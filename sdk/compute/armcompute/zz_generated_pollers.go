@@ -15,1294 +15,5311 @@ import (
 	"time"
 )
 
-// AccessURIPoller provides polling facilities until the operation reaches a terminal state.
-type AccessURIPoller interface {
+// CloudServiceRoleInstancesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type CloudServiceRoleInstancesDeletePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final AccessURIResponse will be returned.
-	FinalResponse(ctx context.Context) (AccessURIResponse, error)
+	// If the final GET succeeded then the final CloudServiceRoleInstancesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServiceRoleInstancesDeleteResponse, error)
 }
 
-type accessURIPoller struct {
+type cloudServiceRoleInstancesDeletePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *accessURIPoller) Done() bool {
+func (p *cloudServiceRoleInstancesDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *accessURIPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServiceRoleInstancesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *accessURIPoller) FinalResponse(ctx context.Context) (AccessURIResponse, error) {
-	respType := AccessURIResponse{AccessURI: &AccessURI{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.AccessURI)
+func (p *cloudServiceRoleInstancesDeletePoller) FinalResponse(ctx context.Context) (CloudServiceRoleInstancesDeleteResponse, error) {
+	respType := CloudServiceRoleInstancesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return AccessURIResponse{}, err
+		return CloudServiceRoleInstancesDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *accessURIPoller) ResumeToken() (string, error) {
+func (p *cloudServiceRoleInstancesDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *accessURIPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AccessURIResponse, error) {
-	respType := AccessURIResponse{AccessURI: &AccessURI{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AccessURI)
+func (p *cloudServiceRoleInstancesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServiceRoleInstancesDeleteResponse, error) {
+	respType := CloudServiceRoleInstancesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return AccessURIResponse{}, err
+		return CloudServiceRoleInstancesDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// CloudServicePoller provides polling facilities until the operation reaches a terminal state.
-type CloudServicePoller interface {
+// CloudServiceRoleInstancesRebuildPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServiceRoleInstancesRebuildPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final CloudServiceResponse will be returned.
-	FinalResponse(ctx context.Context) (CloudServiceResponse, error)
+	// If the final GET succeeded then the final CloudServiceRoleInstancesRebuildResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServiceRoleInstancesRebuildResponse, error)
 }
 
-type cloudServicePoller struct {
+type cloudServiceRoleInstancesRebuildPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *cloudServicePoller) Done() bool {
+func (p *cloudServiceRoleInstancesRebuildPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *cloudServicePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServiceRoleInstancesRebuildPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *cloudServicePoller) FinalResponse(ctx context.Context) (CloudServiceResponse, error) {
-	respType := CloudServiceResponse{CloudService: &CloudService{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.CloudService)
+func (p *cloudServiceRoleInstancesRebuildPoller) FinalResponse(ctx context.Context) (CloudServiceRoleInstancesRebuildResponse, error) {
+	respType := CloudServiceRoleInstancesRebuildResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return CloudServiceResponse{}, err
+		return CloudServiceRoleInstancesRebuildResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *cloudServicePoller) ResumeToken() (string, error) {
+func (p *cloudServiceRoleInstancesRebuildPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *cloudServicePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServiceResponse, error) {
-	respType := CloudServiceResponse{CloudService: &CloudService{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.CloudService)
+func (p *cloudServiceRoleInstancesRebuildPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServiceRoleInstancesRebuildResponse, error) {
+	respType := CloudServiceRoleInstancesRebuildResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return CloudServiceResponse{}, err
+		return CloudServiceRoleInstancesRebuildResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// DedicatedHostPoller provides polling facilities until the operation reaches a terminal state.
-type DedicatedHostPoller interface {
+// CloudServiceRoleInstancesReimagePoller provides polling facilities until the operation reaches a terminal state.
+type CloudServiceRoleInstancesReimagePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final DedicatedHostResponse will be returned.
-	FinalResponse(ctx context.Context) (DedicatedHostResponse, error)
+	// If the final GET succeeded then the final CloudServiceRoleInstancesReimageResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServiceRoleInstancesReimageResponse, error)
 }
 
-type dedicatedHostPoller struct {
+type cloudServiceRoleInstancesReimagePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *dedicatedHostPoller) Done() bool {
+func (p *cloudServiceRoleInstancesReimagePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *dedicatedHostPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServiceRoleInstancesReimagePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *dedicatedHostPoller) FinalResponse(ctx context.Context) (DedicatedHostResponse, error) {
-	respType := DedicatedHostResponse{DedicatedHost: &DedicatedHost{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.DedicatedHost)
+func (p *cloudServiceRoleInstancesReimagePoller) FinalResponse(ctx context.Context) (CloudServiceRoleInstancesReimageResponse, error) {
+	respType := CloudServiceRoleInstancesReimageResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return DedicatedHostResponse{}, err
+		return CloudServiceRoleInstancesReimageResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *dedicatedHostPoller) ResumeToken() (string, error) {
+func (p *cloudServiceRoleInstancesReimagePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *dedicatedHostPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostResponse, error) {
-	respType := DedicatedHostResponse{DedicatedHost: &DedicatedHost{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DedicatedHost)
+func (p *cloudServiceRoleInstancesReimagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServiceRoleInstancesReimageResponse, error) {
+	respType := CloudServiceRoleInstancesReimageResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return DedicatedHostResponse{}, err
+		return CloudServiceRoleInstancesReimageResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// DiskAccessPoller provides polling facilities until the operation reaches a terminal state.
-type DiskAccessPoller interface {
+// CloudServiceRoleInstancesRestartPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServiceRoleInstancesRestartPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final DiskAccessResponse will be returned.
-	FinalResponse(ctx context.Context) (DiskAccessResponse, error)
+	// If the final GET succeeded then the final CloudServiceRoleInstancesRestartResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServiceRoleInstancesRestartResponse, error)
 }
 
-type diskAccessPoller struct {
+type cloudServiceRoleInstancesRestartPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *diskAccessPoller) Done() bool {
+func (p *cloudServiceRoleInstancesRestartPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *diskAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServiceRoleInstancesRestartPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *diskAccessPoller) FinalResponse(ctx context.Context) (DiskAccessResponse, error) {
-	respType := DiskAccessResponse{DiskAccess: &DiskAccess{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.DiskAccess)
+func (p *cloudServiceRoleInstancesRestartPoller) FinalResponse(ctx context.Context) (CloudServiceRoleInstancesRestartResponse, error) {
+	respType := CloudServiceRoleInstancesRestartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return DiskAccessResponse{}, err
+		return CloudServiceRoleInstancesRestartResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *diskAccessPoller) ResumeToken() (string, error) {
+func (p *cloudServiceRoleInstancesRestartPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *diskAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessResponse, error) {
-	respType := DiskAccessResponse{DiskAccess: &DiskAccess{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DiskAccess)
+func (p *cloudServiceRoleInstancesRestartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServiceRoleInstancesRestartResponse, error) {
+	respType := CloudServiceRoleInstancesRestartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return DiskAccessResponse{}, err
+		return CloudServiceRoleInstancesRestartResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// DiskEncryptionSetPoller provides polling facilities until the operation reaches a terminal state.
-type DiskEncryptionSetPoller interface {
+// CloudServicesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final DiskEncryptionSetResponse will be returned.
-	FinalResponse(ctx context.Context) (DiskEncryptionSetResponse, error)
+	// If the final GET succeeded then the final CloudServicesCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesCreateOrUpdateResponse, error)
 }
 
-type diskEncryptionSetPoller struct {
+type cloudServicesCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *diskEncryptionSetPoller) Done() bool {
+func (p *cloudServicesCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *diskEncryptionSetPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *diskEncryptionSetPoller) FinalResponse(ctx context.Context) (DiskEncryptionSetResponse, error) {
-	respType := DiskEncryptionSetResponse{DiskEncryptionSet: &DiskEncryptionSet{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.DiskEncryptionSet)
+func (p *cloudServicesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (CloudServicesCreateOrUpdateResponse, error) {
+	respType := CloudServicesCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.CloudService)
 	if err != nil {
-		return DiskEncryptionSetResponse{}, err
+		return CloudServicesCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *diskEncryptionSetPoller) ResumeToken() (string, error) {
+func (p *cloudServicesCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *diskEncryptionSetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskEncryptionSetResponse, error) {
-	respType := DiskEncryptionSetResponse{DiskEncryptionSet: &DiskEncryptionSet{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DiskEncryptionSet)
+func (p *cloudServicesCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesCreateOrUpdateResponse, error) {
+	respType := CloudServicesCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.CloudService)
 	if err != nil {
-		return DiskEncryptionSetResponse{}, err
+		return CloudServicesCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// DiskPoller provides polling facilities until the operation reaches a terminal state.
-type DiskPoller interface {
+// CloudServicesDeleteInstancesPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesDeleteInstancesPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final DiskResponse will be returned.
-	FinalResponse(ctx context.Context) (DiskResponse, error)
+	// If the final GET succeeded then the final CloudServicesDeleteInstancesResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesDeleteInstancesResponse, error)
 }
 
-type diskPoller struct {
+type cloudServicesDeleteInstancesPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *diskPoller) Done() bool {
+func (p *cloudServicesDeleteInstancesPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *diskPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesDeleteInstancesPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *diskPoller) FinalResponse(ctx context.Context) (DiskResponse, error) {
-	respType := DiskResponse{Disk: &Disk{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Disk)
+func (p *cloudServicesDeleteInstancesPoller) FinalResponse(ctx context.Context) (CloudServicesDeleteInstancesResponse, error) {
+	respType := CloudServicesDeleteInstancesResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return DiskResponse{}, err
+		return CloudServicesDeleteInstancesResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *diskPoller) ResumeToken() (string, error) {
+func (p *cloudServicesDeleteInstancesPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *diskPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskResponse, error) {
-	respType := DiskResponse{Disk: &Disk{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Disk)
+func (p *cloudServicesDeleteInstancesPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesDeleteInstancesResponse, error) {
+	respType := CloudServicesDeleteInstancesResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return DiskResponse{}, err
+		return CloudServicesDeleteInstancesResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// GalleryApplicationPoller provides polling facilities until the operation reaches a terminal state.
-type GalleryApplicationPoller interface {
+// CloudServicesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesDeletePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final GalleryApplicationResponse will be returned.
-	FinalResponse(ctx context.Context) (GalleryApplicationResponse, error)
+	// If the final GET succeeded then the final CloudServicesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesDeleteResponse, error)
 }
 
-type galleryApplicationPoller struct {
+type cloudServicesDeletePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *galleryApplicationPoller) Done() bool {
+func (p *cloudServicesDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *galleryApplicationPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *galleryApplicationPoller) FinalResponse(ctx context.Context) (GalleryApplicationResponse, error) {
-	respType := GalleryApplicationResponse{GalleryApplication: &GalleryApplication{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.GalleryApplication)
+func (p *cloudServicesDeletePoller) FinalResponse(ctx context.Context) (CloudServicesDeleteResponse, error) {
+	respType := CloudServicesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return GalleryApplicationResponse{}, err
+		return CloudServicesDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *galleryApplicationPoller) ResumeToken() (string, error) {
+func (p *cloudServicesDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryApplicationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationResponse, error) {
-	respType := GalleryApplicationResponse{GalleryApplication: &GalleryApplication{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryApplication)
+func (p *cloudServicesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesDeleteResponse, error) {
+	respType := CloudServicesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return GalleryApplicationResponse{}, err
+		return CloudServicesDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// GalleryApplicationVersionPoller provides polling facilities until the operation reaches a terminal state.
-type GalleryApplicationVersionPoller interface {
+// CloudServicesPowerOffPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesPowerOffPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final GalleryApplicationVersionResponse will be returned.
-	FinalResponse(ctx context.Context) (GalleryApplicationVersionResponse, error)
+	// If the final GET succeeded then the final CloudServicesPowerOffResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesPowerOffResponse, error)
 }
 
-type galleryApplicationVersionPoller struct {
+type cloudServicesPowerOffPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *galleryApplicationVersionPoller) Done() bool {
+func (p *cloudServicesPowerOffPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *galleryApplicationVersionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesPowerOffPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *galleryApplicationVersionPoller) FinalResponse(ctx context.Context) (GalleryApplicationVersionResponse, error) {
-	respType := GalleryApplicationVersionResponse{GalleryApplicationVersion: &GalleryApplicationVersion{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.GalleryApplicationVersion)
+func (p *cloudServicesPowerOffPoller) FinalResponse(ctx context.Context) (CloudServicesPowerOffResponse, error) {
+	respType := CloudServicesPowerOffResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return GalleryApplicationVersionResponse{}, err
+		return CloudServicesPowerOffResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *galleryApplicationVersionPoller) ResumeToken() (string, error) {
+func (p *cloudServicesPowerOffPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryApplicationVersionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationVersionResponse, error) {
-	respType := GalleryApplicationVersionResponse{GalleryApplicationVersion: &GalleryApplicationVersion{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryApplicationVersion)
+func (p *cloudServicesPowerOffPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesPowerOffResponse, error) {
+	respType := CloudServicesPowerOffResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return GalleryApplicationVersionResponse{}, err
+		return CloudServicesPowerOffResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// GalleryImagePoller provides polling facilities until the operation reaches a terminal state.
-type GalleryImagePoller interface {
+// CloudServicesRebuildPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesRebuildPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final GalleryImageResponse will be returned.
-	FinalResponse(ctx context.Context) (GalleryImageResponse, error)
+	// If the final GET succeeded then the final CloudServicesRebuildResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesRebuildResponse, error)
 }
 
-type galleryImagePoller struct {
+type cloudServicesRebuildPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *galleryImagePoller) Done() bool {
+func (p *cloudServicesRebuildPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *galleryImagePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesRebuildPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *galleryImagePoller) FinalResponse(ctx context.Context) (GalleryImageResponse, error) {
-	respType := GalleryImageResponse{GalleryImage: &GalleryImage{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.GalleryImage)
+func (p *cloudServicesRebuildPoller) FinalResponse(ctx context.Context) (CloudServicesRebuildResponse, error) {
+	respType := CloudServicesRebuildResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return GalleryImageResponse{}, err
+		return CloudServicesRebuildResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *galleryImagePoller) ResumeToken() (string, error) {
+func (p *cloudServicesRebuildPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryImagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageResponse, error) {
-	respType := GalleryImageResponse{GalleryImage: &GalleryImage{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryImage)
+func (p *cloudServicesRebuildPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesRebuildResponse, error) {
+	respType := CloudServicesRebuildResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return GalleryImageResponse{}, err
+		return CloudServicesRebuildResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// GalleryImageVersionPoller provides polling facilities until the operation reaches a terminal state.
-type GalleryImageVersionPoller interface {
+// CloudServicesReimagePoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesReimagePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final GalleryImageVersionResponse will be returned.
-	FinalResponse(ctx context.Context) (GalleryImageVersionResponse, error)
+	// If the final GET succeeded then the final CloudServicesReimageResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesReimageResponse, error)
 }
 
-type galleryImageVersionPoller struct {
+type cloudServicesReimagePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *galleryImageVersionPoller) Done() bool {
+func (p *cloudServicesReimagePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *galleryImageVersionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesReimagePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *galleryImageVersionPoller) FinalResponse(ctx context.Context) (GalleryImageVersionResponse, error) {
-	respType := GalleryImageVersionResponse{GalleryImageVersion: &GalleryImageVersion{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.GalleryImageVersion)
+func (p *cloudServicesReimagePoller) FinalResponse(ctx context.Context) (CloudServicesReimageResponse, error) {
+	respType := CloudServicesReimageResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return GalleryImageVersionResponse{}, err
+		return CloudServicesReimageResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *galleryImageVersionPoller) ResumeToken() (string, error) {
+func (p *cloudServicesReimagePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryImageVersionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageVersionResponse, error) {
-	respType := GalleryImageVersionResponse{GalleryImageVersion: &GalleryImageVersion{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryImageVersion)
+func (p *cloudServicesReimagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesReimageResponse, error) {
+	respType := CloudServicesReimageResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return GalleryImageVersionResponse{}, err
+		return CloudServicesReimageResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// GalleryPoller provides polling facilities until the operation reaches a terminal state.
-type GalleryPoller interface {
+// CloudServicesRestartPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesRestartPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final GalleryResponse will be returned.
-	FinalResponse(ctx context.Context) (GalleryResponse, error)
+	// If the final GET succeeded then the final CloudServicesRestartResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesRestartResponse, error)
 }
 
-type galleryPoller struct {
+type cloudServicesRestartPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *galleryPoller) Done() bool {
+func (p *cloudServicesRestartPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *galleryPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesRestartPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *galleryPoller) FinalResponse(ctx context.Context) (GalleryResponse, error) {
-	respType := GalleryResponse{Gallery: &Gallery{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Gallery)
+func (p *cloudServicesRestartPoller) FinalResponse(ctx context.Context) (CloudServicesRestartResponse, error) {
+	respType := CloudServicesRestartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return GalleryResponse{}, err
+		return CloudServicesRestartResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *galleryPoller) ResumeToken() (string, error) {
+func (p *cloudServicesRestartPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryResponse, error) {
-	respType := GalleryResponse{Gallery: &Gallery{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Gallery)
+func (p *cloudServicesRestartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesRestartResponse, error) {
+	respType := CloudServicesRestartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return GalleryResponse{}, err
+		return CloudServicesRestartResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// HTTPPoller provides polling facilities until the operation reaches a terminal state.
-type HTTPPoller interface {
+// CloudServicesStartPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesStartPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final *http.Response will be returned.
-	FinalResponse(ctx context.Context) (*http.Response, error)
+	// If the final GET succeeded then the final CloudServicesStartResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesStartResponse, error)
 }
 
-type httpPoller struct {
+type cloudServicesStartPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *httpPoller) Done() bool {
+func (p *cloudServicesStartPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesStartPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, nil)
+func (p *cloudServicesStartPoller) FinalResponse(ctx context.Context) (CloudServicesStartResponse, error) {
+	respType := CloudServicesStartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return CloudServicesStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
 }
 
-func (p *httpPoller) ResumeToken() (string, error) {
+func (p *cloudServicesStartPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, nil)
+func (p *cloudServicesStartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesStartResponse, error) {
+	respType := CloudServicesStartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return CloudServicesStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
 }
 
-// ImagePoller provides polling facilities until the operation reaches a terminal state.
-type ImagePoller interface {
+// CloudServicesUpdateDomainWalkUpdateDomainPoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesUpdateDomainWalkUpdateDomainPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final ImageResponse will be returned.
-	FinalResponse(ctx context.Context) (ImageResponse, error)
+	// If the final GET succeeded then the final CloudServicesUpdateDomainWalkUpdateDomainResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesUpdateDomainWalkUpdateDomainResponse, error)
 }
 
-type imagePoller struct {
+type cloudServicesUpdateDomainWalkUpdateDomainPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *imagePoller) Done() bool {
+func (p *cloudServicesUpdateDomainWalkUpdateDomainPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *imagePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesUpdateDomainWalkUpdateDomainPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *imagePoller) FinalResponse(ctx context.Context) (ImageResponse, error) {
-	respType := ImageResponse{Image: &Image{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Image)
+func (p *cloudServicesUpdateDomainWalkUpdateDomainPoller) FinalResponse(ctx context.Context) (CloudServicesUpdateDomainWalkUpdateDomainResponse, error) {
+	respType := CloudServicesUpdateDomainWalkUpdateDomainResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return ImageResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *imagePoller) ResumeToken() (string, error) {
+func (p *cloudServicesUpdateDomainWalkUpdateDomainPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *imagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (ImageResponse, error) {
-	respType := ImageResponse{Image: &Image{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Image)
+func (p *cloudServicesUpdateDomainWalkUpdateDomainPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesUpdateDomainWalkUpdateDomainResponse, error) {
+	respType := CloudServicesUpdateDomainWalkUpdateDomainResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return ImageResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// LogAnalyticsOperationResultPoller provides polling facilities until the operation reaches a terminal state.
-type LogAnalyticsOperationResultPoller interface {
+// CloudServicesUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type CloudServicesUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final LogAnalyticsOperationResultResponse will be returned.
-	FinalResponse(ctx context.Context) (LogAnalyticsOperationResultResponse, error)
+	// If the final GET succeeded then the final CloudServicesUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (CloudServicesUpdateResponse, error)
 }
 
-type logAnalyticsOperationResultPoller struct {
+type cloudServicesUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *logAnalyticsOperationResultPoller) Done() bool {
+func (p *cloudServicesUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *logAnalyticsOperationResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *cloudServicesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *logAnalyticsOperationResultPoller) FinalResponse(ctx context.Context) (LogAnalyticsOperationResultResponse, error) {
-	respType := LogAnalyticsOperationResultResponse{LogAnalyticsOperationResult: &LogAnalyticsOperationResult{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.LogAnalyticsOperationResult)
+func (p *cloudServicesUpdatePoller) FinalResponse(ctx context.Context) (CloudServicesUpdateResponse, error) {
+	respType := CloudServicesUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.CloudService)
 	if err != nil {
-		return LogAnalyticsOperationResultResponse{}, err
+		return CloudServicesUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *logAnalyticsOperationResultPoller) ResumeToken() (string, error) {
+func (p *cloudServicesUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *logAnalyticsOperationResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LogAnalyticsOperationResultResponse, error) {
-	respType := LogAnalyticsOperationResultResponse{LogAnalyticsOperationResult: &LogAnalyticsOperationResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.LogAnalyticsOperationResult)
+func (p *cloudServicesUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServicesUpdateResponse, error) {
+	respType := CloudServicesUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.CloudService)
 	if err != nil {
-		return LogAnalyticsOperationResultResponse{}, err
+		return CloudServicesUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// PrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
-type PrivateEndpointConnectionPoller interface {
+// DedicatedHostsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DedicatedHostsCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final PrivateEndpointConnectionResponse will be returned.
-	FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error)
+	// If the final GET succeeded then the final DedicatedHostsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DedicatedHostsCreateOrUpdateResponse, error)
 }
 
-type privateEndpointConnectionPoller struct {
+type dedicatedHostsCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *privateEndpointConnectionPoller) Done() bool {
+func (p *dedicatedHostsCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *dedicatedHostsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error) {
-	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.PrivateEndpointConnection)
+func (p *dedicatedHostsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DedicatedHostsCreateOrUpdateResponse, error) {
+	respType := DedicatedHostsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.DedicatedHost)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return DedicatedHostsCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
+func (p *dedicatedHostsCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionResponse, error) {
-	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateEndpointConnection)
+func (p *dedicatedHostsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostsCreateOrUpdateResponse, error) {
+	respType := DedicatedHostsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.DedicatedHost)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return DedicatedHostsCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// RestorePointPoller provides polling facilities until the operation reaches a terminal state.
-type RestorePointPoller interface {
+// DedicatedHostsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type DedicatedHostsDeletePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final RestorePointResponse will be returned.
-	FinalResponse(ctx context.Context) (RestorePointResponse, error)
+	// If the final GET succeeded then the final DedicatedHostsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (DedicatedHostsDeleteResponse, error)
 }
 
-type restorePointPoller struct {
+type dedicatedHostsDeletePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *restorePointPoller) Done() bool {
+func (p *dedicatedHostsDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *restorePointPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *dedicatedHostsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *restorePointPoller) FinalResponse(ctx context.Context) (RestorePointResponse, error) {
-	respType := RestorePointResponse{RestorePoint: &RestorePoint{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.RestorePoint)
+func (p *dedicatedHostsDeletePoller) FinalResponse(ctx context.Context) (DedicatedHostsDeleteResponse, error) {
+	respType := DedicatedHostsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return RestorePointResponse{}, err
+		return DedicatedHostsDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *restorePointPoller) ResumeToken() (string, error) {
+func (p *dedicatedHostsDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *restorePointPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RestorePointResponse, error) {
-	respType := RestorePointResponse{RestorePoint: &RestorePoint{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RestorePoint)
+func (p *dedicatedHostsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostsDeleteResponse, error) {
+	respType := DedicatedHostsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return RestorePointResponse{}, err
+		return DedicatedHostsDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// RunCommandResultPoller provides polling facilities until the operation reaches a terminal state.
-type RunCommandResultPoller interface {
+// DedicatedHostsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DedicatedHostsUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final RunCommandResultResponse will be returned.
-	FinalResponse(ctx context.Context) (RunCommandResultResponse, error)
+	// If the final GET succeeded then the final DedicatedHostsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DedicatedHostsUpdateResponse, error)
 }
 
-type runCommandResultPoller struct {
+type dedicatedHostsUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *runCommandResultPoller) Done() bool {
+func (p *dedicatedHostsUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *runCommandResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *dedicatedHostsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *runCommandResultPoller) FinalResponse(ctx context.Context) (RunCommandResultResponse, error) {
-	respType := RunCommandResultResponse{RunCommandResult: &RunCommandResult{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.RunCommandResult)
+func (p *dedicatedHostsUpdatePoller) FinalResponse(ctx context.Context) (DedicatedHostsUpdateResponse, error) {
+	respType := DedicatedHostsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.DedicatedHost)
 	if err != nil {
-		return RunCommandResultResponse{}, err
+		return DedicatedHostsUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *runCommandResultPoller) ResumeToken() (string, error) {
+func (p *dedicatedHostsUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *runCommandResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RunCommandResultResponse, error) {
-	respType := RunCommandResultResponse{RunCommandResult: &RunCommandResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RunCommandResult)
+func (p *dedicatedHostsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostsUpdateResponse, error) {
+	respType := DedicatedHostsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.DedicatedHost)
 	if err != nil {
-		return RunCommandResultResponse{}, err
+		return DedicatedHostsUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// SharingUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type SharingUpdatePoller interface {
+// DiskAccessesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DiskAccessesCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final SharingUpdateResponse will be returned.
-	FinalResponse(ctx context.Context) (SharingUpdateResponse, error)
+	// If the final GET succeeded then the final DiskAccessesCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskAccessesCreateOrUpdateResponse, error)
 }
 
-type sharingUpdatePoller struct {
+type diskAccessesCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *sharingUpdatePoller) Done() bool {
+func (p *diskAccessesCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *sharingUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskAccessesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *sharingUpdatePoller) FinalResponse(ctx context.Context) (SharingUpdateResponse, error) {
-	respType := SharingUpdateResponse{SharingUpdate: &SharingUpdate{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.SharingUpdate)
+func (p *diskAccessesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DiskAccessesCreateOrUpdateResponse, error) {
+	respType := DiskAccessesCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.DiskAccess)
 	if err != nil {
-		return SharingUpdateResponse{}, err
+		return DiskAccessesCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *sharingUpdatePoller) ResumeToken() (string, error) {
+func (p *diskAccessesCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *sharingUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SharingUpdateResponse, error) {
-	respType := SharingUpdateResponse{SharingUpdate: &SharingUpdate{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SharingUpdate)
+func (p *diskAccessesCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessesCreateOrUpdateResponse, error) {
+	respType := DiskAccessesCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.DiskAccess)
 	if err != nil {
-		return SharingUpdateResponse{}, err
+		return DiskAccessesCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// SnapshotPoller provides polling facilities until the operation reaches a terminal state.
-type SnapshotPoller interface {
+// DiskAccessesDeleteAPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type DiskAccessesDeleteAPrivateEndpointConnectionPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final SnapshotResponse will be returned.
-	FinalResponse(ctx context.Context) (SnapshotResponse, error)
+	// If the final GET succeeded then the final DiskAccessesDeleteAPrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskAccessesDeleteAPrivateEndpointConnectionResponse, error)
 }
 
-type snapshotPoller struct {
+type diskAccessesDeleteAPrivateEndpointConnectionPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *snapshotPoller) Done() bool {
+func (p *diskAccessesDeleteAPrivateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *snapshotPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskAccessesDeleteAPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *snapshotPoller) FinalResponse(ctx context.Context) (SnapshotResponse, error) {
-	respType := SnapshotResponse{Snapshot: &Snapshot{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.Snapshot)
+func (p *diskAccessesDeleteAPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (DiskAccessesDeleteAPrivateEndpointConnectionResponse, error) {
+	respType := DiskAccessesDeleteAPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return SnapshotResponse{}, err
+		return DiskAccessesDeleteAPrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *snapshotPoller) ResumeToken() (string, error) {
+func (p *diskAccessesDeleteAPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *snapshotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotResponse, error) {
-	respType := SnapshotResponse{Snapshot: &Snapshot{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Snapshot)
+func (p *diskAccessesDeleteAPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessesDeleteAPrivateEndpointConnectionResponse, error) {
+	respType := DiskAccessesDeleteAPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return SnapshotResponse{}, err
+		return DiskAccessesDeleteAPrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineAssessPatchesResultPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineAssessPatchesResultPoller interface {
+// DiskAccessesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type DiskAccessesDeletePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineAssessPatchesResultResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineAssessPatchesResultResponse, error)
+	// If the final GET succeeded then the final DiskAccessesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskAccessesDeleteResponse, error)
 }
 
-type virtualMachineAssessPatchesResultPoller struct {
+type diskAccessesDeletePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineAssessPatchesResultPoller) Done() bool {
+func (p *diskAccessesDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineAssessPatchesResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskAccessesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineAssessPatchesResultPoller) FinalResponse(ctx context.Context) (VirtualMachineAssessPatchesResultResponse, error) {
-	respType := VirtualMachineAssessPatchesResultResponse{VirtualMachineAssessPatchesResult: &VirtualMachineAssessPatchesResult{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineAssessPatchesResult)
+func (p *diskAccessesDeletePoller) FinalResponse(ctx context.Context) (DiskAccessesDeleteResponse, error) {
+	respType := DiskAccessesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineAssessPatchesResultResponse{}, err
+		return DiskAccessesDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineAssessPatchesResultPoller) ResumeToken() (string, error) {
+func (p *diskAccessesDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineAssessPatchesResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineAssessPatchesResultResponse, error) {
-	respType := VirtualMachineAssessPatchesResultResponse{VirtualMachineAssessPatchesResult: &VirtualMachineAssessPatchesResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineAssessPatchesResult)
+func (p *diskAccessesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessesDeleteResponse, error) {
+	respType := DiskAccessesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return VirtualMachineAssessPatchesResultResponse{}, err
+		return DiskAccessesDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineCaptureResultPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineCaptureResultPoller interface {
+// DiskAccessesUpdateAPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type DiskAccessesUpdateAPrivateEndpointConnectionPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineCaptureResultResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineCaptureResultResponse, error)
+	// If the final GET succeeded then the final DiskAccessesUpdateAPrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskAccessesUpdateAPrivateEndpointConnectionResponse, error)
 }
 
-type virtualMachineCaptureResultPoller struct {
+type diskAccessesUpdateAPrivateEndpointConnectionPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineCaptureResultPoller) Done() bool {
+func (p *diskAccessesUpdateAPrivateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineCaptureResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskAccessesUpdateAPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineCaptureResultPoller) FinalResponse(ctx context.Context) (VirtualMachineCaptureResultResponse, error) {
-	respType := VirtualMachineCaptureResultResponse{VirtualMachineCaptureResult: &VirtualMachineCaptureResult{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineCaptureResult)
+func (p *diskAccessesUpdateAPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (DiskAccessesUpdateAPrivateEndpointConnectionResponse, error) {
+	respType := DiskAccessesUpdateAPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.PrivateEndpointConnection)
 	if err != nil {
-		return VirtualMachineCaptureResultResponse{}, err
+		return DiskAccessesUpdateAPrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineCaptureResultPoller) ResumeToken() (string, error) {
+func (p *diskAccessesUpdateAPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineCaptureResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineCaptureResultResponse, error) {
-	respType := VirtualMachineCaptureResultResponse{VirtualMachineCaptureResult: &VirtualMachineCaptureResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineCaptureResult)
+func (p *diskAccessesUpdateAPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessesUpdateAPrivateEndpointConnectionResponse, error) {
+	respType := DiskAccessesUpdateAPrivateEndpointConnectionResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
-		return VirtualMachineCaptureResultResponse{}, err
+		return DiskAccessesUpdateAPrivateEndpointConnectionResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineExtensionPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineExtensionPoller interface {
+// DiskAccessesUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DiskAccessesUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineExtensionResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineExtensionResponse, error)
+	// If the final GET succeeded then the final DiskAccessesUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskAccessesUpdateResponse, error)
 }
 
-type virtualMachineExtensionPoller struct {
+type diskAccessesUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineExtensionPoller) Done() bool {
+func (p *diskAccessesUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskAccessesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineExtensionPoller) FinalResponse(ctx context.Context) (VirtualMachineExtensionResponse, error) {
-	respType := VirtualMachineExtensionResponse{VirtualMachineExtension: &VirtualMachineExtension{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineExtension)
+func (p *diskAccessesUpdatePoller) FinalResponse(ctx context.Context) (DiskAccessesUpdateResponse, error) {
+	respType := DiskAccessesUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.DiskAccess)
 	if err != nil {
-		return VirtualMachineExtensionResponse{}, err
+		return DiskAccessesUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineExtensionPoller) ResumeToken() (string, error) {
+func (p *diskAccessesUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineExtensionResponse, error) {
-	respType := VirtualMachineExtensionResponse{VirtualMachineExtension: &VirtualMachineExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineExtension)
+func (p *diskAccessesUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessesUpdateResponse, error) {
+	respType := DiskAccessesUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.DiskAccess)
 	if err != nil {
-		return VirtualMachineExtensionResponse{}, err
+		return DiskAccessesUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineInstallPatchesResultPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineInstallPatchesResultPoller interface {
+// DiskEncryptionSetsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DiskEncryptionSetsCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineInstallPatchesResultResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineInstallPatchesResultResponse, error)
+	// If the final GET succeeded then the final DiskEncryptionSetsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskEncryptionSetsCreateOrUpdateResponse, error)
 }
 
-type virtualMachineInstallPatchesResultPoller struct {
+type diskEncryptionSetsCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineInstallPatchesResultPoller) Done() bool {
+func (p *diskEncryptionSetsCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineInstallPatchesResultPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskEncryptionSetsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineInstallPatchesResultPoller) FinalResponse(ctx context.Context) (VirtualMachineInstallPatchesResultResponse, error) {
-	respType := VirtualMachineInstallPatchesResultResponse{VirtualMachineInstallPatchesResult: &VirtualMachineInstallPatchesResult{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineInstallPatchesResult)
+func (p *diskEncryptionSetsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DiskEncryptionSetsCreateOrUpdateResponse, error) {
+	respType := DiskEncryptionSetsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.DiskEncryptionSet)
 	if err != nil {
-		return VirtualMachineInstallPatchesResultResponse{}, err
+		return DiskEncryptionSetsCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineInstallPatchesResultPoller) ResumeToken() (string, error) {
+func (p *diskEncryptionSetsCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineInstallPatchesResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineInstallPatchesResultResponse, error) {
-	respType := VirtualMachineInstallPatchesResultResponse{VirtualMachineInstallPatchesResult: &VirtualMachineInstallPatchesResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineInstallPatchesResult)
+func (p *diskEncryptionSetsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskEncryptionSetsCreateOrUpdateResponse, error) {
+	respType := DiskEncryptionSetsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.DiskEncryptionSet)
 	if err != nil {
-		return VirtualMachineInstallPatchesResultResponse{}, err
+		return DiskEncryptionSetsCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachinePoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachinePoller interface {
+// DiskEncryptionSetsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type DiskEncryptionSetsDeletePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineResponse, error)
+	// If the final GET succeeded then the final DiskEncryptionSetsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskEncryptionSetsDeleteResponse, error)
 }
 
-type virtualMachinePoller struct {
+type diskEncryptionSetsDeletePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachinePoller) Done() bool {
+func (p *diskEncryptionSetsDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachinePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskEncryptionSetsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachinePoller) FinalResponse(ctx context.Context) (VirtualMachineResponse, error) {
-	respType := VirtualMachineResponse{VirtualMachine: &VirtualMachine{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachine)
+func (p *diskEncryptionSetsDeletePoller) FinalResponse(ctx context.Context) (DiskEncryptionSetsDeleteResponse, error) {
+	respType := DiskEncryptionSetsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineResponse{}, err
+		return DiskEncryptionSetsDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachinePoller) ResumeToken() (string, error) {
+func (p *diskEncryptionSetsDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachinePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineResponse, error) {
-	respType := VirtualMachineResponse{VirtualMachine: &VirtualMachine{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachine)
+func (p *diskEncryptionSetsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskEncryptionSetsDeleteResponse, error) {
+	respType := DiskEncryptionSetsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return VirtualMachineResponse{}, err
+		return DiskEncryptionSetsDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineRunCommandPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineRunCommandPoller interface {
+// DiskEncryptionSetsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DiskEncryptionSetsUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineRunCommandResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineRunCommandResponse, error)
+	// If the final GET succeeded then the final DiskEncryptionSetsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DiskEncryptionSetsUpdateResponse, error)
 }
 
-type virtualMachineRunCommandPoller struct {
+type diskEncryptionSetsUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineRunCommandPoller) Done() bool {
+func (p *diskEncryptionSetsUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineRunCommandPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *diskEncryptionSetsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineRunCommandPoller) FinalResponse(ctx context.Context) (VirtualMachineRunCommandResponse, error) {
-	respType := VirtualMachineRunCommandResponse{VirtualMachineRunCommand: &VirtualMachineRunCommand{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineRunCommand)
+func (p *diskEncryptionSetsUpdatePoller) FinalResponse(ctx context.Context) (DiskEncryptionSetsUpdateResponse, error) {
+	respType := DiskEncryptionSetsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.DiskEncryptionSet)
 	if err != nil {
-		return VirtualMachineRunCommandResponse{}, err
+		return DiskEncryptionSetsUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineRunCommandPoller) ResumeToken() (string, error) {
+func (p *diskEncryptionSetsUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineRunCommandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineRunCommandResponse, error) {
-	respType := VirtualMachineRunCommandResponse{VirtualMachineRunCommand: &VirtualMachineRunCommand{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineRunCommand)
+func (p *diskEncryptionSetsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskEncryptionSetsUpdateResponse, error) {
+	respType := DiskEncryptionSetsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.DiskEncryptionSet)
 	if err != nil {
-		return VirtualMachineRunCommandResponse{}, err
+		return DiskEncryptionSetsUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineScaleSetExtensionPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineScaleSetExtensionPoller interface {
+// DisksCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DisksCreateOrUpdatePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineScaleSetExtensionResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionResponse, error)
+	// If the final GET succeeded then the final DisksCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DisksCreateOrUpdateResponse, error)
 }
 
-type virtualMachineScaleSetExtensionPoller struct {
+type disksCreateOrUpdatePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineScaleSetExtensionPoller) Done() bool {
+func (p *disksCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineScaleSetExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *disksCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineScaleSetExtensionPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionResponse, error) {
-	respType := VirtualMachineScaleSetExtensionResponse{VirtualMachineScaleSetExtension: &VirtualMachineScaleSetExtension{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSetExtension)
+func (p *disksCreateOrUpdatePoller) FinalResponse(ctx context.Context) (DisksCreateOrUpdateResponse, error) {
+	respType := DisksCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Disk)
 	if err != nil {
-		return VirtualMachineScaleSetExtensionResponse{}, err
+		return DisksCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineScaleSetExtensionPoller) ResumeToken() (string, error) {
+func (p *disksCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetExtensionResponse, error) {
-	respType := VirtualMachineScaleSetExtensionResponse{VirtualMachineScaleSetExtension: &VirtualMachineScaleSetExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSetExtension)
+func (p *disksCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DisksCreateOrUpdateResponse, error) {
+	respType := DisksCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Disk)
 	if err != nil {
-		return VirtualMachineScaleSetExtensionResponse{}, err
+		return DisksCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineScaleSetPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineScaleSetPoller interface {
+// DisksDeletePoller provides polling facilities until the operation reaches a terminal state.
+type DisksDeletePoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineScaleSetResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineScaleSetResponse, error)
+	// If the final GET succeeded then the final DisksDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (DisksDeleteResponse, error)
 }
 
-type virtualMachineScaleSetPoller struct {
+type disksDeletePoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineScaleSetPoller) Done() bool {
+func (p *disksDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineScaleSetPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *disksDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineScaleSetPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetResponse, error) {
-	respType := VirtualMachineScaleSetResponse{VirtualMachineScaleSet: &VirtualMachineScaleSet{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSet)
+func (p *disksDeletePoller) FinalResponse(ctx context.Context) (DisksDeleteResponse, error) {
+	respType := DisksDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineScaleSetResponse{}, err
+		return DisksDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineScaleSetPoller) ResumeToken() (string, error) {
+func (p *disksDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetResponse, error) {
-	respType := VirtualMachineScaleSetResponse{VirtualMachineScaleSet: &VirtualMachineScaleSet{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSet)
+func (p *disksDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DisksDeleteResponse, error) {
+	respType := DisksDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return VirtualMachineScaleSetResponse{}, err
+		return DisksDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineScaleSetVMExtensionPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineScaleSetVMExtensionPoller interface {
+// DisksGrantAccessPoller provides polling facilities until the operation reaches a terminal state.
+type DisksGrantAccessPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineScaleSetVMExtensionResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionResponse, error)
+	// If the final GET succeeded then the final DisksGrantAccessResponse will be returned.
+	FinalResponse(ctx context.Context) (DisksGrantAccessResponse, error)
 }
 
-type virtualMachineScaleSetVMExtensionPoller struct {
+type disksGrantAccessPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineScaleSetVMExtensionPoller) Done() bool {
+func (p *disksGrantAccessPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineScaleSetVMExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *disksGrantAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineScaleSetVMExtensionPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionResponse, error) {
-	respType := VirtualMachineScaleSetVMExtensionResponse{VirtualMachineScaleSetVMExtension: &VirtualMachineScaleSetVMExtension{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSetVMExtension)
+func (p *disksGrantAccessPoller) FinalResponse(ctx context.Context) (DisksGrantAccessResponse, error) {
+	respType := DisksGrantAccessResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AccessURI)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionResponse{}, err
+		return DisksGrantAccessResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineScaleSetVMExtensionPoller) ResumeToken() (string, error) {
+func (p *disksGrantAccessPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetVMExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
-	respType := VirtualMachineScaleSetVMExtensionResponse{VirtualMachineScaleSetVMExtension: &VirtualMachineScaleSetVMExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSetVMExtension)
+func (p *disksGrantAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DisksGrantAccessResponse, error) {
+	respType := DisksGrantAccessResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.AccessURI)
 	if err != nil {
-		return VirtualMachineScaleSetVMExtensionResponse{}, err
+		return DisksGrantAccessResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-// VirtualMachineScaleSetVMPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineScaleSetVMPoller interface {
+// DisksRevokeAccessPoller provides polling facilities until the operation reaches a terminal state.
+type DisksRevokeAccessPoller interface {
 	azcore.Poller
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final VirtualMachineScaleSetVMResponse will be returned.
-	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMResponse, error)
+	// If the final GET succeeded then the final DisksRevokeAccessResponse will be returned.
+	FinalResponse(ctx context.Context) (DisksRevokeAccessResponse, error)
 }
 
-type virtualMachineScaleSetVMPoller struct {
+type disksRevokeAccessPoller struct {
 	pt *armcore.LROPoller
 }
 
-func (p *virtualMachineScaleSetVMPoller) Done() bool {
+func (p *disksRevokeAccessPoller) Done() bool {
 	return p.pt.Done()
 }
 
-func (p *virtualMachineScaleSetVMPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *disksRevokeAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
-func (p *virtualMachineScaleSetVMPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMResponse, error) {
-	respType := VirtualMachineScaleSetVMResponse{VirtualMachineScaleSetVM: &VirtualMachineScaleSetVM{}}
-	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSetVM)
+func (p *disksRevokeAccessPoller) FinalResponse(ctx context.Context) (DisksRevokeAccessResponse, error) {
+	respType := DisksRevokeAccessResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineScaleSetVMResponse{}, err
+		return DisksRevokeAccessResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
 }
 
-func (p *virtualMachineScaleSetVMPoller) ResumeToken() (string, error) {
+func (p *disksRevokeAccessPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetVMPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMResponse, error) {
-	respType := VirtualMachineScaleSetVMResponse{VirtualMachineScaleSetVM: &VirtualMachineScaleSetVM{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSetVM)
+func (p *disksRevokeAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DisksRevokeAccessResponse, error) {
+	respType := DisksRevokeAccessResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
-		return VirtualMachineScaleSetVMResponse{}, err
+		return DisksRevokeAccessResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// DisksUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type DisksUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final DisksUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (DisksUpdateResponse, error)
+}
+
+type disksUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *disksUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *disksUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *disksUpdatePoller) FinalResponse(ctx context.Context) (DisksUpdateResponse, error) {
+	respType := DisksUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Disk)
+	if err != nil {
+		return DisksUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *disksUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *disksUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (DisksUpdateResponse, error) {
+	respType := DisksUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Disk)
+	if err != nil {
+		return DisksUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleriesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleriesCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleriesCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleriesCreateOrUpdateResponse, error)
+}
+
+type galleriesCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleriesCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleriesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleriesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (GalleriesCreateOrUpdateResponse, error) {
+	respType := GalleriesCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Gallery)
+	if err != nil {
+		return GalleriesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleriesCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleriesCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleriesCreateOrUpdateResponse, error) {
+	respType := GalleriesCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Gallery)
+	if err != nil {
+		return GalleriesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleriesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type GalleriesDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleriesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleriesDeleteResponse, error)
+}
+
+type galleriesDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleriesDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleriesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleriesDeletePoller) FinalResponse(ctx context.Context) (GalleriesDeleteResponse, error) {
+	respType := GalleriesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return GalleriesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleriesDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleriesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleriesDeleteResponse, error) {
+	respType := GalleriesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return GalleriesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleriesUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleriesUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleriesUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleriesUpdateResponse, error)
+}
+
+type galleriesUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleriesUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleriesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleriesUpdatePoller) FinalResponse(ctx context.Context) (GalleriesUpdateResponse, error) {
+	respType := GalleriesUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Gallery)
+	if err != nil {
+		return GalleriesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleriesUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleriesUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleriesUpdateResponse, error) {
+	respType := GalleriesUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Gallery)
+	if err != nil {
+		return GalleriesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryApplicationVersionsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryApplicationVersionsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryApplicationVersionsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryApplicationVersionsCreateOrUpdateResponse, error)
+}
+
+type galleryApplicationVersionsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryApplicationVersionsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryApplicationVersionsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryApplicationVersionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (GalleryApplicationVersionsCreateOrUpdateResponse, error) {
+	respType := GalleryApplicationVersionsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryApplicationVersion)
+	if err != nil {
+		return GalleryApplicationVersionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryApplicationVersionsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryApplicationVersionsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationVersionsCreateOrUpdateResponse, error) {
+	respType := GalleryApplicationVersionsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryApplicationVersion)
+	if err != nil {
+		return GalleryApplicationVersionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryApplicationVersionsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryApplicationVersionsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryApplicationVersionsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryApplicationVersionsDeleteResponse, error)
+}
+
+type galleryApplicationVersionsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryApplicationVersionsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryApplicationVersionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryApplicationVersionsDeletePoller) FinalResponse(ctx context.Context) (GalleryApplicationVersionsDeleteResponse, error) {
+	respType := GalleryApplicationVersionsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return GalleryApplicationVersionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryApplicationVersionsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryApplicationVersionsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationVersionsDeleteResponse, error) {
+	respType := GalleryApplicationVersionsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return GalleryApplicationVersionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryApplicationVersionsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryApplicationVersionsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryApplicationVersionsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryApplicationVersionsUpdateResponse, error)
+}
+
+type galleryApplicationVersionsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryApplicationVersionsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryApplicationVersionsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryApplicationVersionsUpdatePoller) FinalResponse(ctx context.Context) (GalleryApplicationVersionsUpdateResponse, error) {
+	respType := GalleryApplicationVersionsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryApplicationVersion)
+	if err != nil {
+		return GalleryApplicationVersionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryApplicationVersionsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryApplicationVersionsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationVersionsUpdateResponse, error) {
+	respType := GalleryApplicationVersionsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryApplicationVersion)
+	if err != nil {
+		return GalleryApplicationVersionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryApplicationsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryApplicationsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryApplicationsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryApplicationsCreateOrUpdateResponse, error)
+}
+
+type galleryApplicationsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryApplicationsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryApplicationsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryApplicationsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (GalleryApplicationsCreateOrUpdateResponse, error) {
+	respType := GalleryApplicationsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryApplication)
+	if err != nil {
+		return GalleryApplicationsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryApplicationsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryApplicationsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationsCreateOrUpdateResponse, error) {
+	respType := GalleryApplicationsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryApplication)
+	if err != nil {
+		return GalleryApplicationsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryApplicationsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryApplicationsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryApplicationsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryApplicationsDeleteResponse, error)
+}
+
+type galleryApplicationsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryApplicationsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryApplicationsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryApplicationsDeletePoller) FinalResponse(ctx context.Context) (GalleryApplicationsDeleteResponse, error) {
+	respType := GalleryApplicationsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return GalleryApplicationsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryApplicationsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryApplicationsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationsDeleteResponse, error) {
+	respType := GalleryApplicationsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return GalleryApplicationsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryApplicationsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryApplicationsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryApplicationsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryApplicationsUpdateResponse, error)
+}
+
+type galleryApplicationsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryApplicationsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryApplicationsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryApplicationsUpdatePoller) FinalResponse(ctx context.Context) (GalleryApplicationsUpdateResponse, error) {
+	respType := GalleryApplicationsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryApplication)
+	if err != nil {
+		return GalleryApplicationsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryApplicationsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryApplicationsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationsUpdateResponse, error) {
+	respType := GalleryApplicationsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryApplication)
+	if err != nil {
+		return GalleryApplicationsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryImageVersionsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryImageVersionsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryImageVersionsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryImageVersionsCreateOrUpdateResponse, error)
+}
+
+type galleryImageVersionsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryImageVersionsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryImageVersionsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryImageVersionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (GalleryImageVersionsCreateOrUpdateResponse, error) {
+	respType := GalleryImageVersionsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryImageVersion)
+	if err != nil {
+		return GalleryImageVersionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryImageVersionsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryImageVersionsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageVersionsCreateOrUpdateResponse, error) {
+	respType := GalleryImageVersionsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryImageVersion)
+	if err != nil {
+		return GalleryImageVersionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryImageVersionsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryImageVersionsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryImageVersionsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryImageVersionsDeleteResponse, error)
+}
+
+type galleryImageVersionsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryImageVersionsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryImageVersionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryImageVersionsDeletePoller) FinalResponse(ctx context.Context) (GalleryImageVersionsDeleteResponse, error) {
+	respType := GalleryImageVersionsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return GalleryImageVersionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryImageVersionsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryImageVersionsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageVersionsDeleteResponse, error) {
+	respType := GalleryImageVersionsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return GalleryImageVersionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryImageVersionsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryImageVersionsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryImageVersionsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryImageVersionsUpdateResponse, error)
+}
+
+type galleryImageVersionsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryImageVersionsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryImageVersionsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryImageVersionsUpdatePoller) FinalResponse(ctx context.Context) (GalleryImageVersionsUpdateResponse, error) {
+	respType := GalleryImageVersionsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryImageVersion)
+	if err != nil {
+		return GalleryImageVersionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryImageVersionsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryImageVersionsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageVersionsUpdateResponse, error) {
+	respType := GalleryImageVersionsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryImageVersion)
+	if err != nil {
+		return GalleryImageVersionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryImagesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryImagesCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryImagesCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryImagesCreateOrUpdateResponse, error)
+}
+
+type galleryImagesCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryImagesCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryImagesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryImagesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (GalleryImagesCreateOrUpdateResponse, error) {
+	respType := GalleryImagesCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryImage)
+	if err != nil {
+		return GalleryImagesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryImagesCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryImagesCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImagesCreateOrUpdateResponse, error) {
+	respType := GalleryImagesCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryImage)
+	if err != nil {
+		return GalleryImagesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryImagesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryImagesDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryImagesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryImagesDeleteResponse, error)
+}
+
+type galleryImagesDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryImagesDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryImagesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryImagesDeletePoller) FinalResponse(ctx context.Context) (GalleryImagesDeleteResponse, error) {
+	respType := GalleryImagesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return GalleryImagesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryImagesDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryImagesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImagesDeleteResponse, error) {
+	respType := GalleryImagesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return GalleryImagesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GalleryImagesUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GalleryImagesUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GalleryImagesUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GalleryImagesUpdateResponse, error)
+}
+
+type galleryImagesUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *galleryImagesUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *galleryImagesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *galleryImagesUpdatePoller) FinalResponse(ctx context.Context) (GalleryImagesUpdateResponse, error) {
+	respType := GalleryImagesUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.GalleryImage)
+	if err != nil {
+		return GalleryImagesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *galleryImagesUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *galleryImagesUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImagesUpdateResponse, error) {
+	respType := GalleryImagesUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.GalleryImage)
+	if err != nil {
+		return GalleryImagesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// GallerySharingProfileUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type GallerySharingProfileUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GallerySharingProfileUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (GallerySharingProfileUpdateResponse, error)
+}
+
+type gallerySharingProfileUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *gallerySharingProfileUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *gallerySharingProfileUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *gallerySharingProfileUpdatePoller) FinalResponse(ctx context.Context) (GallerySharingProfileUpdateResponse, error) {
+	respType := GallerySharingProfileUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.SharingUpdate)
+	if err != nil {
+		return GallerySharingProfileUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *gallerySharingProfileUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *gallerySharingProfileUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GallerySharingProfileUpdateResponse, error) {
+	respType := GallerySharingProfileUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.SharingUpdate)
+	if err != nil {
+		return GallerySharingProfileUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// ImagesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type ImagesCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final ImagesCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (ImagesCreateOrUpdateResponse, error)
+}
+
+type imagesCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *imagesCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *imagesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *imagesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (ImagesCreateOrUpdateResponse, error) {
+	respType := ImagesCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Image)
+	if err != nil {
+		return ImagesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *imagesCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *imagesCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (ImagesCreateOrUpdateResponse, error) {
+	respType := ImagesCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Image)
+	if err != nil {
+		return ImagesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// ImagesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type ImagesDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final ImagesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (ImagesDeleteResponse, error)
+}
+
+type imagesDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *imagesDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *imagesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *imagesDeletePoller) FinalResponse(ctx context.Context) (ImagesDeleteResponse, error) {
+	respType := ImagesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return ImagesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *imagesDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *imagesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (ImagesDeleteResponse, error) {
+	respType := ImagesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return ImagesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// ImagesUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type ImagesUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final ImagesUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (ImagesUpdateResponse, error)
+}
+
+type imagesUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *imagesUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *imagesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *imagesUpdatePoller) FinalResponse(ctx context.Context) (ImagesUpdateResponse, error) {
+	respType := ImagesUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Image)
+	if err != nil {
+		return ImagesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *imagesUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *imagesUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (ImagesUpdateResponse, error) {
+	respType := ImagesUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Image)
+	if err != nil {
+		return ImagesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// LogAnalyticsExportRequestRateByIntervalPoller provides polling facilities until the operation reaches a terminal state.
+type LogAnalyticsExportRequestRateByIntervalPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final LogAnalyticsExportRequestRateByIntervalResponse will be returned.
+	FinalResponse(ctx context.Context) (LogAnalyticsExportRequestRateByIntervalResponse, error)
+}
+
+type logAnalyticsExportRequestRateByIntervalPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *logAnalyticsExportRequestRateByIntervalPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *logAnalyticsExportRequestRateByIntervalPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *logAnalyticsExportRequestRateByIntervalPoller) FinalResponse(ctx context.Context) (LogAnalyticsExportRequestRateByIntervalResponse, error) {
+	respType := LogAnalyticsExportRequestRateByIntervalResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.LogAnalyticsOperationResult)
+	if err != nil {
+		return LogAnalyticsExportRequestRateByIntervalResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *logAnalyticsExportRequestRateByIntervalPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *logAnalyticsExportRequestRateByIntervalPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LogAnalyticsExportRequestRateByIntervalResponse, error) {
+	respType := LogAnalyticsExportRequestRateByIntervalResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.LogAnalyticsOperationResult)
+	if err != nil {
+		return LogAnalyticsExportRequestRateByIntervalResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// LogAnalyticsExportThrottledRequestsPoller provides polling facilities until the operation reaches a terminal state.
+type LogAnalyticsExportThrottledRequestsPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final LogAnalyticsExportThrottledRequestsResponse will be returned.
+	FinalResponse(ctx context.Context) (LogAnalyticsExportThrottledRequestsResponse, error)
+}
+
+type logAnalyticsExportThrottledRequestsPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *logAnalyticsExportThrottledRequestsPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *logAnalyticsExportThrottledRequestsPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *logAnalyticsExportThrottledRequestsPoller) FinalResponse(ctx context.Context) (LogAnalyticsExportThrottledRequestsResponse, error) {
+	respType := LogAnalyticsExportThrottledRequestsResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.LogAnalyticsOperationResult)
+	if err != nil {
+		return LogAnalyticsExportThrottledRequestsResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *logAnalyticsExportThrottledRequestsPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *logAnalyticsExportThrottledRequestsPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LogAnalyticsExportThrottledRequestsResponse, error) {
+	respType := LogAnalyticsExportThrottledRequestsResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.LogAnalyticsOperationResult)
+	if err != nil {
+		return LogAnalyticsExportThrottledRequestsResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// RestorePointCollectionsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type RestorePointCollectionsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final RestorePointCollectionsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (RestorePointCollectionsDeleteResponse, error)
+}
+
+type restorePointCollectionsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *restorePointCollectionsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *restorePointCollectionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *restorePointCollectionsDeletePoller) FinalResponse(ctx context.Context) (RestorePointCollectionsDeleteResponse, error) {
+	respType := RestorePointCollectionsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return RestorePointCollectionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *restorePointCollectionsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *restorePointCollectionsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RestorePointCollectionsDeleteResponse, error) {
+	respType := RestorePointCollectionsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return RestorePointCollectionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// RestorePointsCreatePoller provides polling facilities until the operation reaches a terminal state.
+type RestorePointsCreatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final RestorePointsCreateResponse will be returned.
+	FinalResponse(ctx context.Context) (RestorePointsCreateResponse, error)
+}
+
+type restorePointsCreatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *restorePointsCreatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *restorePointsCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *restorePointsCreatePoller) FinalResponse(ctx context.Context) (RestorePointsCreateResponse, error) {
+	respType := RestorePointsCreateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RestorePoint)
+	if err != nil {
+		return RestorePointsCreateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *restorePointsCreatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *restorePointsCreatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RestorePointsCreateResponse, error) {
+	respType := RestorePointsCreateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RestorePoint)
+	if err != nil {
+		return RestorePointsCreateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// RestorePointsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type RestorePointsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final RestorePointsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (RestorePointsDeleteResponse, error)
+}
+
+type restorePointsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *restorePointsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *restorePointsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *restorePointsDeletePoller) FinalResponse(ctx context.Context) (RestorePointsDeleteResponse, error) {
+	respType := RestorePointsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return RestorePointsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *restorePointsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *restorePointsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RestorePointsDeleteResponse, error) {
+	respType := RestorePointsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return RestorePointsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// SnapshotsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type SnapshotsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final SnapshotsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (SnapshotsCreateOrUpdateResponse, error)
+}
+
+type snapshotsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *snapshotsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *snapshotsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *snapshotsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (SnapshotsCreateOrUpdateResponse, error) {
+	respType := SnapshotsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Snapshot)
+	if err != nil {
+		return SnapshotsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *snapshotsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *snapshotsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotsCreateOrUpdateResponse, error) {
+	respType := SnapshotsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Snapshot)
+	if err != nil {
+		return SnapshotsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// SnapshotsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type SnapshotsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final SnapshotsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (SnapshotsDeleteResponse, error)
+}
+
+type snapshotsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *snapshotsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *snapshotsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *snapshotsDeletePoller) FinalResponse(ctx context.Context) (SnapshotsDeleteResponse, error) {
+	respType := SnapshotsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return SnapshotsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *snapshotsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *snapshotsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotsDeleteResponse, error) {
+	respType := SnapshotsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return SnapshotsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// SnapshotsGrantAccessPoller provides polling facilities until the operation reaches a terminal state.
+type SnapshotsGrantAccessPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final SnapshotsGrantAccessResponse will be returned.
+	FinalResponse(ctx context.Context) (SnapshotsGrantAccessResponse, error)
+}
+
+type snapshotsGrantAccessPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *snapshotsGrantAccessPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *snapshotsGrantAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *snapshotsGrantAccessPoller) FinalResponse(ctx context.Context) (SnapshotsGrantAccessResponse, error) {
+	respType := SnapshotsGrantAccessResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AccessURI)
+	if err != nil {
+		return SnapshotsGrantAccessResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *snapshotsGrantAccessPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *snapshotsGrantAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotsGrantAccessResponse, error) {
+	respType := SnapshotsGrantAccessResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.AccessURI)
+	if err != nil {
+		return SnapshotsGrantAccessResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// SnapshotsRevokeAccessPoller provides polling facilities until the operation reaches a terminal state.
+type SnapshotsRevokeAccessPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final SnapshotsRevokeAccessResponse will be returned.
+	FinalResponse(ctx context.Context) (SnapshotsRevokeAccessResponse, error)
+}
+
+type snapshotsRevokeAccessPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *snapshotsRevokeAccessPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *snapshotsRevokeAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *snapshotsRevokeAccessPoller) FinalResponse(ctx context.Context) (SnapshotsRevokeAccessResponse, error) {
+	respType := SnapshotsRevokeAccessResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return SnapshotsRevokeAccessResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *snapshotsRevokeAccessPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *snapshotsRevokeAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotsRevokeAccessResponse, error) {
+	respType := SnapshotsRevokeAccessResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return SnapshotsRevokeAccessResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// SnapshotsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type SnapshotsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final SnapshotsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (SnapshotsUpdateResponse, error)
+}
+
+type snapshotsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *snapshotsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *snapshotsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *snapshotsUpdatePoller) FinalResponse(ctx context.Context) (SnapshotsUpdateResponse, error) {
+	respType := SnapshotsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.Snapshot)
+	if err != nil {
+		return SnapshotsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *snapshotsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *snapshotsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotsUpdateResponse, error) {
+	respType := SnapshotsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Snapshot)
+	if err != nil {
+		return SnapshotsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineExtensionsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineExtensionsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineExtensionsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineExtensionsCreateOrUpdateResponse, error)
+}
+
+type virtualMachineExtensionsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineExtensionsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineExtensionsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineExtensionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineExtensionsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineExtensionsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineExtension)
+	if err != nil {
+		return VirtualMachineExtensionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineExtensionsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineExtensionsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineExtensionsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineExtensionsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineExtension)
+	if err != nil {
+		return VirtualMachineExtensionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineExtensionsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineExtensionsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineExtensionsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineExtensionsDeleteResponse, error)
+}
+
+type virtualMachineExtensionsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineExtensionsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineExtensionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineExtensionsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineExtensionsDeleteResponse, error) {
+	respType := VirtualMachineExtensionsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineExtensionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineExtensionsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineExtensionsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineExtensionsDeleteResponse, error) {
+	respType := VirtualMachineExtensionsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineExtensionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineExtensionsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineExtensionsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineExtensionsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineExtensionsUpdateResponse, error)
+}
+
+type virtualMachineExtensionsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineExtensionsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineExtensionsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineExtensionsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineExtensionsUpdateResponse, error) {
+	respType := VirtualMachineExtensionsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineExtension)
+	if err != nil {
+		return VirtualMachineExtensionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineExtensionsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineExtensionsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineExtensionsUpdateResponse, error) {
+	respType := VirtualMachineExtensionsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineExtension)
+	if err != nil {
+		return VirtualMachineExtensionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineRunCommandsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineRunCommandsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineRunCommandsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineRunCommandsCreateOrUpdateResponse, error)
+}
+
+type virtualMachineRunCommandsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineRunCommandsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineRunCommandsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineRunCommandsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineRunCommandsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineRunCommandsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineRunCommandsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineRunCommandsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineRunCommandsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineRunCommandsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineRunCommandsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineRunCommandsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineRunCommandsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineRunCommandsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineRunCommandsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineRunCommandsDeleteResponse, error)
+}
+
+type virtualMachineRunCommandsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineRunCommandsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineRunCommandsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineRunCommandsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineRunCommandsDeleteResponse, error) {
+	respType := VirtualMachineRunCommandsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineRunCommandsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineRunCommandsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineRunCommandsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineRunCommandsDeleteResponse, error) {
+	respType := VirtualMachineRunCommandsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineRunCommandsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineRunCommandsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineRunCommandsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineRunCommandsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineRunCommandsUpdateResponse, error)
+}
+
+type virtualMachineRunCommandsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineRunCommandsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineRunCommandsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineRunCommandsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineRunCommandsUpdateResponse, error) {
+	respType := VirtualMachineRunCommandsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineRunCommandsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineRunCommandsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineRunCommandsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineRunCommandsUpdateResponse, error) {
+	respType := VirtualMachineRunCommandsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineRunCommandsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetExtensionsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetExtensionsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetExtensionsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionsCreateOrUpdateResponse, error)
+}
+
+type virtualMachineScaleSetExtensionsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetExtensionsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetExtensionsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetExtensionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetExtensionsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSetExtension)
+	if err != nil {
+		return VirtualMachineScaleSetExtensionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetExtensionsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetExtensionsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetExtensionsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetExtensionsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSetExtension)
+	if err != nil {
+		return VirtualMachineScaleSetExtensionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetExtensionsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetExtensionsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetExtensionsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionsDeleteResponse, error)
+}
+
+type virtualMachineScaleSetExtensionsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetExtensionsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetExtensionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetExtensionsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetExtensionsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetExtensionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetExtensionsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetExtensionsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetExtensionsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetExtensionsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetExtensionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetExtensionsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetExtensionsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetExtensionsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionsUpdateResponse, error)
+}
+
+type virtualMachineScaleSetExtensionsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetExtensionsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetExtensionsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetExtensionsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetExtensionsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSetExtension)
+	if err != nil {
+		return VirtualMachineScaleSetExtensionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetExtensionsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetExtensionsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetExtensionsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetExtensionsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSetExtension)
+	if err != nil {
+		return VirtualMachineScaleSetExtensionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetRollingUpgradesCancelPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetRollingUpgradesCancelPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetRollingUpgradesCancelResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetRollingUpgradesCancelResponse, error)
+}
+
+type virtualMachineScaleSetRollingUpgradesCancelPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesCancelPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesCancelPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesCancelPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetRollingUpgradesCancelResponse, error) {
+	respType := VirtualMachineScaleSetRollingUpgradesCancelResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetRollingUpgradesCancelResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesCancelPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesCancelPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetRollingUpgradesCancelResponse, error) {
+	respType := VirtualMachineScaleSetRollingUpgradesCancelResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetRollingUpgradesCancelResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse, error)
+}
+
+type virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse, error) {
+	respType := VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse, error) {
+	respType := VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse, error)
+}
+
+type virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse, error) {
+	respType := VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetRollingUpgradesStartOSUpgradePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse, error) {
+	respType := VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse, error)
+}
+
+type virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSetVMExtension)
+	if err != nil {
+		return VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMExtensionsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSetVMExtension)
+	if err != nil {
+		return VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMExtensionsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMExtensionsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMExtensionsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionsDeleteResponse, error)
+}
+
+type virtualMachineScaleSetVMExtensionsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMExtensionsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMExtensionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMExtensionsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetVMExtensionsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMExtensionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMExtensionsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMExtensionsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMExtensionsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetVMExtensionsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMExtensionsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMExtensionsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMExtensionsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMExtensionsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionsUpdateResponse, error)
+}
+
+type virtualMachineScaleSetVMExtensionsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMExtensionsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMExtensionsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMExtensionsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMExtensionsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSetVMExtension)
+	if err != nil {
+		return VirtualMachineScaleSetVMExtensionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMExtensionsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMExtensionsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMExtensionsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMExtensionsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSetVMExtension)
+	if err != nil {
+		return VirtualMachineScaleSetVMExtensionsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse, error)
+}
+
+type virtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMRunCommandsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMRunCommandsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMRunCommandsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMRunCommandsDeleteResponse, error)
+}
+
+type virtualMachineScaleSetVMRunCommandsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMRunCommandsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetVMRunCommandsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMRunCommandsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMRunCommandsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetVMRunCommandsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMRunCommandsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMRunCommandsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMRunCommandsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMRunCommandsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMRunCommandsUpdateResponse, error)
+}
+
+type virtualMachineScaleSetVMRunCommandsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMRunCommandsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMRunCommandsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineScaleSetVMRunCommandsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMRunCommandsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMRunCommandsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMRunCommandsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineRunCommand)
+	if err != nil {
+		return VirtualMachineScaleSetVMRunCommandsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsDeallocatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsDeallocatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsDeallocateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsDeallocateResponse, error)
+}
+
+type virtualMachineScaleSetVMsDeallocatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsDeallocatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsDeallocatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsDeallocatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsDeallocateResponse, error) {
+	respType := VirtualMachineScaleSetVMsDeallocateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsDeallocateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsDeallocatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsDeallocatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsDeallocateResponse, error) {
+	respType := VirtualMachineScaleSetVMsDeallocateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsDeallocateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsDeleteResponse, error)
+}
+
+type virtualMachineScaleSetVMsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetVMsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetVMsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsPerformMaintenancePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsPerformMaintenancePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsPerformMaintenanceResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsPerformMaintenanceResponse, error)
+}
+
+type virtualMachineScaleSetVMsPerformMaintenancePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsPerformMaintenancePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsPerformMaintenancePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsPerformMaintenancePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsPerformMaintenanceResponse, error) {
+	respType := VirtualMachineScaleSetVMsPerformMaintenanceResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsPerformMaintenanceResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsPerformMaintenancePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsPerformMaintenancePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsPerformMaintenanceResponse, error) {
+	respType := VirtualMachineScaleSetVMsPerformMaintenanceResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsPerformMaintenanceResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsPowerOffPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsPowerOffPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsPowerOffResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsPowerOffResponse, error)
+}
+
+type virtualMachineScaleSetVMsPowerOffPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsPowerOffPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsPowerOffPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsPowerOffPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsPowerOffResponse, error) {
+	respType := VirtualMachineScaleSetVMsPowerOffResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsPowerOffResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsPowerOffPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsPowerOffPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsPowerOffResponse, error) {
+	respType := VirtualMachineScaleSetVMsPowerOffResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsPowerOffResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsRedeployPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsRedeployPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsRedeployResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsRedeployResponse, error)
+}
+
+type virtualMachineScaleSetVMsRedeployPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsRedeployPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsRedeployPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsRedeployPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsRedeployResponse, error) {
+	respType := VirtualMachineScaleSetVMsRedeployResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsRedeployResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsRedeployPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsRedeployPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsRedeployResponse, error) {
+	respType := VirtualMachineScaleSetVMsRedeployResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsRedeployResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsReimageAllPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsReimageAllPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsReimageAllResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsReimageAllResponse, error)
+}
+
+type virtualMachineScaleSetVMsReimageAllPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsReimageAllPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsReimageAllPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsReimageAllPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsReimageAllResponse, error) {
+	respType := VirtualMachineScaleSetVMsReimageAllResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsReimageAllResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsReimageAllPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsReimageAllPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsReimageAllResponse, error) {
+	respType := VirtualMachineScaleSetVMsReimageAllResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsReimageAllResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsReimagePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsReimagePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsReimageResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsReimageResponse, error)
+}
+
+type virtualMachineScaleSetVMsReimagePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsReimagePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsReimagePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsReimagePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsReimageResponse, error) {
+	respType := VirtualMachineScaleSetVMsReimageResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsReimageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsReimagePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsReimagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsReimageResponse, error) {
+	respType := VirtualMachineScaleSetVMsReimageResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsReimageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsRestartPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsRestartPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsRestartResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsRestartResponse, error)
+}
+
+type virtualMachineScaleSetVMsRestartPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsRestartPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsRestartPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsRestartPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsRestartResponse, error) {
+	respType := VirtualMachineScaleSetVMsRestartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsRestartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsRestartPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsRestartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsRestartResponse, error) {
+	respType := VirtualMachineScaleSetVMsRestartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsRestartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsRunCommandPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsRunCommandPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsRunCommandResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsRunCommandResponse, error)
+}
+
+type virtualMachineScaleSetVMsRunCommandPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsRunCommandPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsRunCommandPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsRunCommandPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsRunCommandResponse, error) {
+	respType := VirtualMachineScaleSetVMsRunCommandResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RunCommandResult)
+	if err != nil {
+		return VirtualMachineScaleSetVMsRunCommandResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsRunCommandPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsRunCommandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsRunCommandResponse, error) {
+	respType := VirtualMachineScaleSetVMsRunCommandResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RunCommandResult)
+	if err != nil {
+		return VirtualMachineScaleSetVMsRunCommandResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsStartPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsStartPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsStartResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsStartResponse, error)
+}
+
+type virtualMachineScaleSetVMsStartPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsStartPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsStartPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsStartPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsStartResponse, error) {
+	respType := VirtualMachineScaleSetVMsStartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsStartPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsStartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsStartResponse, error) {
+	respType := VirtualMachineScaleSetVMsStartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetVMsStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetVMsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetVMsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetVMsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsUpdateResponse, error)
+}
+
+type virtualMachineScaleSetVMsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetVMsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetVMsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetVMsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSetVM)
+	if err != nil {
+		return VirtualMachineScaleSetVMsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetVMsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetVMsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetVMsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSetVM)
+	if err != nil {
+		return VirtualMachineScaleSetVMsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsCreateOrUpdateResponse, error)
+}
+
+type virtualMachineScaleSetsCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetsCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSet)
+	if err != nil {
+		return VirtualMachineScaleSetsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsCreateOrUpdateResponse, error) {
+	respType := VirtualMachineScaleSetsCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSet)
+	if err != nil {
+		return VirtualMachineScaleSetsCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsDeallocatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsDeallocatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsDeallocateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsDeallocateResponse, error)
+}
+
+type virtualMachineScaleSetsDeallocatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsDeallocatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsDeallocatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsDeallocatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsDeallocateResponse, error) {
+	respType := VirtualMachineScaleSetsDeallocateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsDeallocateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsDeallocatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsDeallocatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsDeallocateResponse, error) {
+	respType := VirtualMachineScaleSetsDeallocateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsDeallocateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsDeleteInstancesPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsDeleteInstancesPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsDeleteInstancesResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsDeleteInstancesResponse, error)
+}
+
+type virtualMachineScaleSetsDeleteInstancesPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsDeleteInstancesPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsDeleteInstancesPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsDeleteInstancesPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsDeleteInstancesResponse, error) {
+	respType := VirtualMachineScaleSetsDeleteInstancesResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsDeleteInstancesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsDeleteInstancesPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsDeleteInstancesPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsDeleteInstancesResponse, error) {
+	respType := VirtualMachineScaleSetsDeleteInstancesResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsDeleteInstancesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsDeleteResponse, error)
+}
+
+type virtualMachineScaleSetsDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetsDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsDeleteResponse, error) {
+	respType := VirtualMachineScaleSetsDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsPerformMaintenancePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsPerformMaintenancePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsPerformMaintenanceResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsPerformMaintenanceResponse, error)
+}
+
+type virtualMachineScaleSetsPerformMaintenancePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsPerformMaintenancePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsPerformMaintenancePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsPerformMaintenancePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsPerformMaintenanceResponse, error) {
+	respType := VirtualMachineScaleSetsPerformMaintenanceResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsPerformMaintenanceResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsPerformMaintenancePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsPerformMaintenancePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsPerformMaintenanceResponse, error) {
+	respType := VirtualMachineScaleSetsPerformMaintenanceResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsPerformMaintenanceResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsPowerOffPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsPowerOffPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsPowerOffResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsPowerOffResponse, error)
+}
+
+type virtualMachineScaleSetsPowerOffPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsPowerOffPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsPowerOffPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsPowerOffPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsPowerOffResponse, error) {
+	respType := VirtualMachineScaleSetsPowerOffResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsPowerOffResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsPowerOffPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsPowerOffPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsPowerOffResponse, error) {
+	respType := VirtualMachineScaleSetsPowerOffResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsPowerOffResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsRedeployPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsRedeployPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsRedeployResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsRedeployResponse, error)
+}
+
+type virtualMachineScaleSetsRedeployPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsRedeployPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsRedeployPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsRedeployPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsRedeployResponse, error) {
+	respType := VirtualMachineScaleSetsRedeployResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsRedeployResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsRedeployPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsRedeployPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsRedeployResponse, error) {
+	respType := VirtualMachineScaleSetsRedeployResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsRedeployResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsReimageAllPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsReimageAllPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsReimageAllResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsReimageAllResponse, error)
+}
+
+type virtualMachineScaleSetsReimageAllPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsReimageAllPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsReimageAllPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsReimageAllPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsReimageAllResponse, error) {
+	respType := VirtualMachineScaleSetsReimageAllResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsReimageAllResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsReimageAllPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsReimageAllPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsReimageAllResponse, error) {
+	respType := VirtualMachineScaleSetsReimageAllResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsReimageAllResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsReimagePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsReimagePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsReimageResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsReimageResponse, error)
+}
+
+type virtualMachineScaleSetsReimagePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsReimagePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsReimagePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsReimagePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsReimageResponse, error) {
+	respType := VirtualMachineScaleSetsReimageResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsReimageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsReimagePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsReimagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsReimageResponse, error) {
+	respType := VirtualMachineScaleSetsReimageResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsReimageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsRestartPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsRestartPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsRestartResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsRestartResponse, error)
+}
+
+type virtualMachineScaleSetsRestartPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsRestartPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsRestartPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsRestartPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsRestartResponse, error) {
+	respType := VirtualMachineScaleSetsRestartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsRestartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsRestartPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsRestartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsRestartResponse, error) {
+	respType := VirtualMachineScaleSetsRestartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsRestartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsSetOrchestrationServiceStatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsSetOrchestrationServiceStatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsSetOrchestrationServiceStateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsSetOrchestrationServiceStateResponse, error)
+}
+
+type virtualMachineScaleSetsSetOrchestrationServiceStatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsSetOrchestrationServiceStatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsSetOrchestrationServiceStatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsSetOrchestrationServiceStatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsSetOrchestrationServiceStateResponse, error) {
+	respType := VirtualMachineScaleSetsSetOrchestrationServiceStateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsSetOrchestrationServiceStateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsSetOrchestrationServiceStatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsSetOrchestrationServiceStatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsSetOrchestrationServiceStateResponse, error) {
+	respType := VirtualMachineScaleSetsSetOrchestrationServiceStateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsSetOrchestrationServiceStateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsStartPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsStartPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsStartResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsStartResponse, error)
+}
+
+type virtualMachineScaleSetsStartPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsStartPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsStartPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsStartPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsStartResponse, error) {
+	respType := VirtualMachineScaleSetsStartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsStartPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsStartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsStartResponse, error) {
+	respType := VirtualMachineScaleSetsStartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsUpdateInstancesPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsUpdateInstancesPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsUpdateInstancesResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsUpdateInstancesResponse, error)
+}
+
+type virtualMachineScaleSetsUpdateInstancesPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsUpdateInstancesPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsUpdateInstancesPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsUpdateInstancesPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsUpdateInstancesResponse, error) {
+	respType := VirtualMachineScaleSetsUpdateInstancesResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsUpdateInstancesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsUpdateInstancesPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsUpdateInstancesPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsUpdateInstancesResponse, error) {
+	respType := VirtualMachineScaleSetsUpdateInstancesResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachineScaleSetsUpdateInstancesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachineScaleSetsUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineScaleSetsUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachineScaleSetsUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachineScaleSetsUpdateResponse, error)
+}
+
+type virtualMachineScaleSetsUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachineScaleSetsUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachineScaleSetsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachineScaleSetsUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetsUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineScaleSet)
+	if err != nil {
+		return VirtualMachineScaleSetsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachineScaleSetsUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachineScaleSetsUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetsUpdateResponse, error) {
+	respType := VirtualMachineScaleSetsUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineScaleSet)
+	if err != nil {
+		return VirtualMachineScaleSetsUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesAssessPatchesPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesAssessPatchesPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesAssessPatchesResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesAssessPatchesResponse, error)
+}
+
+type virtualMachinesAssessPatchesPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesAssessPatchesPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesAssessPatchesPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesAssessPatchesPoller) FinalResponse(ctx context.Context) (VirtualMachinesAssessPatchesResponse, error) {
+	respType := VirtualMachinesAssessPatchesResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineAssessPatchesResult)
+	if err != nil {
+		return VirtualMachinesAssessPatchesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesAssessPatchesPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesAssessPatchesPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesAssessPatchesResponse, error) {
+	respType := VirtualMachinesAssessPatchesResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineAssessPatchesResult)
+	if err != nil {
+		return VirtualMachinesAssessPatchesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesCapturePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesCapturePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesCaptureResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesCaptureResponse, error)
+}
+
+type virtualMachinesCapturePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesCapturePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesCapturePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesCapturePoller) FinalResponse(ctx context.Context) (VirtualMachinesCaptureResponse, error) {
+	respType := VirtualMachinesCaptureResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineCaptureResult)
+	if err != nil {
+		return VirtualMachinesCaptureResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesCapturePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesCapturePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesCaptureResponse, error) {
+	respType := VirtualMachinesCaptureResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineCaptureResult)
+	if err != nil {
+		return VirtualMachinesCaptureResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesConvertToManagedDisksPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesConvertToManagedDisksPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesConvertToManagedDisksResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesConvertToManagedDisksResponse, error)
+}
+
+type virtualMachinesConvertToManagedDisksPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesConvertToManagedDisksPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesConvertToManagedDisksPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesConvertToManagedDisksPoller) FinalResponse(ctx context.Context) (VirtualMachinesConvertToManagedDisksResponse, error) {
+	respType := VirtualMachinesConvertToManagedDisksResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesConvertToManagedDisksResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesConvertToManagedDisksPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesConvertToManagedDisksPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesConvertToManagedDisksResponse, error) {
+	respType := VirtualMachinesConvertToManagedDisksResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesConvertToManagedDisksResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesCreateOrUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesCreateOrUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesCreateOrUpdateResponse, error)
+}
+
+type virtualMachinesCreateOrUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesCreateOrUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachinesCreateOrUpdateResponse, error) {
+	respType := VirtualMachinesCreateOrUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachine)
+	if err != nil {
+		return VirtualMachinesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesCreateOrUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesCreateOrUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesCreateOrUpdateResponse, error) {
+	respType := VirtualMachinesCreateOrUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachine)
+	if err != nil {
+		return VirtualMachinesCreateOrUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesDeallocatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesDeallocatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesDeallocateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesDeallocateResponse, error)
+}
+
+type virtualMachinesDeallocatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesDeallocatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesDeallocatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesDeallocatePoller) FinalResponse(ctx context.Context) (VirtualMachinesDeallocateResponse, error) {
+	respType := VirtualMachinesDeallocateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesDeallocateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesDeallocatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesDeallocatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesDeallocateResponse, error) {
+	respType := VirtualMachinesDeallocateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesDeallocateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesDeletePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesDeleteResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesDeleteResponse, error)
+}
+
+type virtualMachinesDeletePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesDeletePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesDeletePoller) FinalResponse(ctx context.Context) (VirtualMachinesDeleteResponse, error) {
+	respType := VirtualMachinesDeleteResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesDeletePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesDeletePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesDeleteResponse, error) {
+	respType := VirtualMachinesDeleteResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesDeleteResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesInstallPatchesPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesInstallPatchesPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesInstallPatchesResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesInstallPatchesResponse, error)
+}
+
+type virtualMachinesInstallPatchesPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesInstallPatchesPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesInstallPatchesPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesInstallPatchesPoller) FinalResponse(ctx context.Context) (VirtualMachinesInstallPatchesResponse, error) {
+	respType := VirtualMachinesInstallPatchesResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachineInstallPatchesResult)
+	if err != nil {
+		return VirtualMachinesInstallPatchesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesInstallPatchesPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesInstallPatchesPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesInstallPatchesResponse, error) {
+	respType := VirtualMachinesInstallPatchesResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachineInstallPatchesResult)
+	if err != nil {
+		return VirtualMachinesInstallPatchesResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesPerformMaintenancePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesPerformMaintenancePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesPerformMaintenanceResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesPerformMaintenanceResponse, error)
+}
+
+type virtualMachinesPerformMaintenancePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesPerformMaintenancePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesPerformMaintenancePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesPerformMaintenancePoller) FinalResponse(ctx context.Context) (VirtualMachinesPerformMaintenanceResponse, error) {
+	respType := VirtualMachinesPerformMaintenanceResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesPerformMaintenanceResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesPerformMaintenancePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesPerformMaintenancePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesPerformMaintenanceResponse, error) {
+	respType := VirtualMachinesPerformMaintenanceResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesPerformMaintenanceResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesPowerOffPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesPowerOffPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesPowerOffResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesPowerOffResponse, error)
+}
+
+type virtualMachinesPowerOffPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesPowerOffPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesPowerOffPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesPowerOffPoller) FinalResponse(ctx context.Context) (VirtualMachinesPowerOffResponse, error) {
+	respType := VirtualMachinesPowerOffResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesPowerOffResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesPowerOffPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesPowerOffPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesPowerOffResponse, error) {
+	respType := VirtualMachinesPowerOffResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesPowerOffResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesReapplyPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesReapplyPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesReapplyResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesReapplyResponse, error)
+}
+
+type virtualMachinesReapplyPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesReapplyPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesReapplyPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesReapplyPoller) FinalResponse(ctx context.Context) (VirtualMachinesReapplyResponse, error) {
+	respType := VirtualMachinesReapplyResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesReapplyResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesReapplyPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesReapplyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesReapplyResponse, error) {
+	respType := VirtualMachinesReapplyResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesReapplyResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesRedeployPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesRedeployPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesRedeployResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesRedeployResponse, error)
+}
+
+type virtualMachinesRedeployPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesRedeployPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesRedeployPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesRedeployPoller) FinalResponse(ctx context.Context) (VirtualMachinesRedeployResponse, error) {
+	respType := VirtualMachinesRedeployResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesRedeployResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesRedeployPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesRedeployPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesRedeployResponse, error) {
+	respType := VirtualMachinesRedeployResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesRedeployResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesReimagePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesReimagePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesReimageResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesReimageResponse, error)
+}
+
+type virtualMachinesReimagePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesReimagePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesReimagePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesReimagePoller) FinalResponse(ctx context.Context) (VirtualMachinesReimageResponse, error) {
+	respType := VirtualMachinesReimageResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesReimageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesReimagePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesReimagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesReimageResponse, error) {
+	respType := VirtualMachinesReimageResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesReimageResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesRestartPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesRestartPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesRestartResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesRestartResponse, error)
+}
+
+type virtualMachinesRestartPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesRestartPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesRestartPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesRestartPoller) FinalResponse(ctx context.Context) (VirtualMachinesRestartResponse, error) {
+	respType := VirtualMachinesRestartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesRestartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesRestartPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesRestartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesRestartResponse, error) {
+	respType := VirtualMachinesRestartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesRestartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesRunCommandPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesRunCommandPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesRunCommandResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesRunCommandResponse, error)
+}
+
+type virtualMachinesRunCommandPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesRunCommandPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesRunCommandPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesRunCommandPoller) FinalResponse(ctx context.Context) (VirtualMachinesRunCommandResponse, error) {
+	respType := VirtualMachinesRunCommandResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.RunCommandResult)
+	if err != nil {
+		return VirtualMachinesRunCommandResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesRunCommandPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesRunCommandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesRunCommandResponse, error) {
+	respType := VirtualMachinesRunCommandResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.RunCommandResult)
+	if err != nil {
+		return VirtualMachinesRunCommandResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesStartPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesStartPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesStartResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesStartResponse, error)
+}
+
+type virtualMachinesStartPoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesStartPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesStartPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesStartPoller) FinalResponse(ctx context.Context) (VirtualMachinesStartResponse, error) {
+	respType := VirtualMachinesStartResponse{}
+	resp, err := p.pt.FinalResponse(ctx, nil)
+	if err != nil {
+		return VirtualMachinesStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesStartPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesStartPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesStartResponse, error) {
+	respType := VirtualMachinesStartResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return VirtualMachinesStartResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// VirtualMachinesUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachinesUpdatePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualMachinesUpdateResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualMachinesUpdateResponse, error)
+}
+
+type virtualMachinesUpdatePoller struct {
+	pt *armcore.LROPoller
+}
+
+func (p *virtualMachinesUpdatePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualMachinesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx)
+}
+
+func (p *virtualMachinesUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachinesUpdateResponse, error) {
+	respType := VirtualMachinesUpdateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.VirtualMachine)
+	if err != nil {
+		return VirtualMachinesUpdateResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualMachinesUpdatePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualMachinesUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachinesUpdateResponse, error) {
+	respType := VirtualMachinesUpdateResponse{}
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.VirtualMachine)
+	if err != nil {
+		return VirtualMachinesUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil

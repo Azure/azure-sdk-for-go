@@ -31,18 +31,15 @@ func NewUsageClient(con *armcore.Connection, subscriptionID string) *UsageClient
 
 // List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
 // If the operation fails it returns a generic error.
-func (client *UsageClient) List(location string, options *UsageListOptions) ListUsagesResultPager {
-	return &listUsagesResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *UsageClient) List(location string, options *UsageListOptions) UsageListPager {
+	return &usageListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp ListUsagesResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp UsageListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListUsagesResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -70,12 +67,12 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, location strin
 }
 
 // listHandleResponse handles the List response.
-func (client *UsageClient) listHandleResponse(resp *azcore.Response) (ListUsagesResultResponse, error) {
-	var val *ListUsagesResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ListUsagesResultResponse{}, err
+func (client *UsageClient) listHandleResponse(resp *azcore.Response) (UsageListResponse, error) {
+	result := UsageListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ListUsagesResult); err != nil {
+		return UsageListResponse{}, err
 	}
-	return ListUsagesResultResponse{RawResponse: resp.Response, ListUsagesResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

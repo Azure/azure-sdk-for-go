@@ -32,47 +32,47 @@ func NewSnapshotsClient(con *armcore.Connection, subscriptionID string) *Snapsho
 
 // BeginCreateOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsBeginCreateOrUpdateOptions) (SnapshotPollerResponse, error) {
+func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsBeginCreateOrUpdateOptions) (SnapshotsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsCreateOrUpdatePollerResponse{}, err
 	}
-	result := SnapshotPollerResponse{
+	result := SnapshotsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("SnapshotsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &snapshotPoller{
+	poller := &snapshotsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new SnapshotPoller from the specified resume token.
-// token - The value must come from a previous call to SnapshotPoller.ResumeToken().
-func (client *SnapshotsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SnapshotPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new SnapshotsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to SnapshotsCreateOrUpdatePoller.ResumeToken().
+func (client *SnapshotsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SnapshotsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &snapshotPoller{
+	poller := &snapshotsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsCreateOrUpdatePollerResponse{}, err
 	}
-	result := SnapshotPollerResponse{
+	result := SnapshotsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -136,47 +136,47 @@ func (client *SnapshotsClient) createOrUpdateHandleError(resp *azcore.Response) 
 
 // BeginDelete - Deletes a snapshot.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginDeleteOptions) (SnapshotsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := SnapshotsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("SnapshotsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &snapshotsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *SnapshotsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new SnapshotsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to SnapshotsDeletePoller.ResumeToken().
+func (client *SnapshotsClient) ResumeDelete(ctx context.Context, token string) (SnapshotsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &snapshotsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := SnapshotsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -239,17 +239,17 @@ func (client *SnapshotsClient) deleteHandleError(resp *azcore.Response) error {
 
 // Get - Gets information about a snapshot.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (SnapshotResponse, error) {
+func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (SnapshotsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
-		return SnapshotResponse{}, err
+		return SnapshotsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SnapshotResponse{}, err
+		return SnapshotsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SnapshotResponse{}, client.getHandleError(resp)
+		return SnapshotsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -282,12 +282,12 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *SnapshotsClient) getHandleResponse(resp *azcore.Response) (SnapshotResponse, error) {
-	var val *Snapshot
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotResponse{}, err
+func (client *SnapshotsClient) getHandleResponse(resp *azcore.Response) (SnapshotsGetResponse, error) {
+	result := SnapshotsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.Snapshot); err != nil {
+		return SnapshotsGetResponse{}, err
 	}
-	return SnapshotResponse{RawResponse: resp.Response, Snapshot: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,47 +304,47 @@ func (client *SnapshotsClient) getHandleError(resp *azcore.Response) error {
 
 // BeginGrantAccess - Grants access to a snapshot.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsBeginGrantAccessOptions) (AccessURIPollerResponse, error) {
+func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsBeginGrantAccessOptions) (SnapshotsGrantAccessPollerResponse, error) {
 	resp, err := client.grantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
-		return AccessURIPollerResponse{}, err
+		return SnapshotsGrantAccessPollerResponse{}, err
 	}
-	result := AccessURIPollerResponse{
+	result := SnapshotsGrantAccessPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("SnapshotsClient.GrantAccess", "location", resp, client.con.Pipeline(), client.grantAccessHandleError)
 	if err != nil {
-		return AccessURIPollerResponse{}, err
+		return SnapshotsGrantAccessPollerResponse{}, err
 	}
-	poller := &accessURIPoller{
+	poller := &snapshotsGrantAccessPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsGrantAccessResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeGrantAccess creates a new AccessURIPoller from the specified resume token.
-// token - The value must come from a previous call to AccessURIPoller.ResumeToken().
-func (client *SnapshotsClient) ResumeGrantAccess(ctx context.Context, token string) (AccessURIPollerResponse, error) {
+// ResumeGrantAccess creates a new SnapshotsGrantAccessPoller from the specified resume token.
+// token - The value must come from a previous call to SnapshotsGrantAccessPoller.ResumeToken().
+func (client *SnapshotsClient) ResumeGrantAccess(ctx context.Context, token string) (SnapshotsGrantAccessPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.GrantAccess", token, client.con.Pipeline(), client.grantAccessHandleError)
 	if err != nil {
-		return AccessURIPollerResponse{}, err
+		return SnapshotsGrantAccessPollerResponse{}, err
 	}
-	poller := &accessURIPoller{
+	poller := &snapshotsGrantAccessPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AccessURIPollerResponse{}, err
+		return SnapshotsGrantAccessPollerResponse{}, err
 	}
-	result := AccessURIPollerResponse{
+	result := SnapshotsGrantAccessPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsGrantAccessResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -408,18 +408,15 @@ func (client *SnapshotsClient) grantAccessHandleError(resp *azcore.Response) err
 
 // List - Lists snapshots under a subscription.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) List(options *SnapshotsListOptions) SnapshotListPager {
-	return &snapshotListPager{
-		pipeline: client.con.Pipeline(),
+func (client *SnapshotsClient) List(options *SnapshotsListOptions) SnapshotsListPager {
+	return &snapshotsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp SnapshotListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp SnapshotsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -443,12 +440,12 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, options *S
 }
 
 // listHandleResponse handles the List response.
-func (client *SnapshotsClient) listHandleResponse(resp *azcore.Response) (SnapshotListResponse, error) {
-	var val *SnapshotList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotListResponse{}, err
+func (client *SnapshotsClient) listHandleResponse(resp *azcore.Response) (SnapshotsListResponse, error) {
+	result := SnapshotsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotList); err != nil {
+		return SnapshotsListResponse{}, err
 	}
-	return SnapshotListResponse{RawResponse: resp.Response, SnapshotList: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -465,18 +462,15 @@ func (client *SnapshotsClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists snapshots under a resource group.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) SnapshotListPager {
-	return &snapshotListPager{
-		pipeline: client.con.Pipeline(),
+func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) SnapshotsListByResourceGroupPager {
+	return &snapshotsListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp SnapshotListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp SnapshotsListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -504,12 +498,12 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (SnapshotListResponse, error) {
-	var val *SnapshotList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SnapshotListResponse{}, err
+func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (SnapshotsListByResourceGroupResponse, error) {
+	result := SnapshotsListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.SnapshotList); err != nil {
+		return SnapshotsListByResourceGroupResponse{}, err
 	}
-	return SnapshotListResponse{RawResponse: resp.Response, SnapshotList: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -526,47 +520,47 @@ func (client *SnapshotsClient) listByResourceGroupHandleError(resp *azcore.Respo
 
 // BeginRevokeAccess - Revokes access to a snapshot.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginRevokeAccessOptions) (HTTPPollerResponse, error) {
+func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginRevokeAccessOptions) (SnapshotsRevokeAccessPollerResponse, error) {
 	resp, err := client.revokeAccess(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsRevokeAccessPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := SnapshotsRevokeAccessPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("SnapshotsClient.RevokeAccess", "location", resp, client.con.Pipeline(), client.revokeAccessHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsRevokeAccessPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &snapshotsRevokeAccessPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsRevokeAccessResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRevokeAccess creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *SnapshotsClient) ResumeRevokeAccess(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRevokeAccess creates a new SnapshotsRevokeAccessPoller from the specified resume token.
+// token - The value must come from a previous call to SnapshotsRevokeAccessPoller.ResumeToken().
+func (client *SnapshotsClient) ResumeRevokeAccess(ctx context.Context, token string) (SnapshotsRevokeAccessPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.RevokeAccess", token, client.con.Pipeline(), client.revokeAccessHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsRevokeAccessPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &snapshotsRevokeAccessPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return SnapshotsRevokeAccessPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := SnapshotsRevokeAccessPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsRevokeAccessResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -629,47 +623,47 @@ func (client *SnapshotsClient) revokeAccessHandleError(resp *azcore.Response) er
 
 // BeginUpdate - Updates (patches) a snapshot.
 // If the operation fails it returns a generic error.
-func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsBeginUpdateOptions) (SnapshotPollerResponse, error) {
+func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsBeginUpdateOptions) (SnapshotsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsUpdatePollerResponse{}, err
 	}
-	result := SnapshotPollerResponse{
+	result := SnapshotsUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("SnapshotsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsUpdatePollerResponse{}, err
 	}
-	poller := &snapshotPoller{
+	poller := &snapshotsUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new SnapshotPoller from the specified resume token.
-// token - The value must come from a previous call to SnapshotPoller.ResumeToken().
-func (client *SnapshotsClient) ResumeUpdate(ctx context.Context, token string) (SnapshotPollerResponse, error) {
+// ResumeUpdate creates a new SnapshotsUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to SnapshotsUpdatePoller.ResumeToken().
+func (client *SnapshotsClient) ResumeUpdate(ctx context.Context, token string) (SnapshotsUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsUpdatePollerResponse{}, err
 	}
-	poller := &snapshotPoller{
+	poller := &snapshotsUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return SnapshotPollerResponse{}, err
+		return SnapshotsUpdatePollerResponse{}, err
 	}
-	result := SnapshotPollerResponse{
+	result := SnapshotsUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

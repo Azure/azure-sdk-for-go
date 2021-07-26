@@ -32,17 +32,17 @@ func NewCloudServiceRolesClient(con *armcore.Connection, subscriptionID string) 
 
 // Get - Gets a role from a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRolesClient) Get(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRolesGetOptions) (CloudServiceRoleResponse, error) {
+func (client *CloudServiceRolesClient) Get(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRolesGetOptions) (CloudServiceRolesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, roleName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceRoleResponse{}, err
+		return CloudServiceRolesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CloudServiceRoleResponse{}, err
+		return CloudServiceRolesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CloudServiceRoleResponse{}, client.getHandleError(resp)
+		return CloudServiceRolesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -79,12 +79,12 @@ func (client *CloudServiceRolesClient) getCreateRequest(ctx context.Context, rol
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudServiceRolesClient) getHandleResponse(resp *azcore.Response) (CloudServiceRoleResponse, error) {
-	var val *CloudServiceRole
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceRoleResponse{}, err
+func (client *CloudServiceRolesClient) getHandleResponse(resp *azcore.Response) (CloudServiceRolesGetResponse, error) {
+	result := CloudServiceRolesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CloudServiceRole); err != nil {
+		return CloudServiceRolesGetResponse{}, err
 	}
-	return CloudServiceRoleResponse{RawResponse: resp.Response, CloudServiceRole: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -103,18 +103,15 @@ func (client *CloudServiceRolesClient) getHandleError(resp *azcore.Response) err
 // List - Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles. Do this till nextLink is null
 // to fetch all the roles.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRolesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesListOptions) CloudServiceRoleListResultPager {
-	return &cloudServiceRoleListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServiceRolesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesListOptions) CloudServiceRolesListPager {
+	return &cloudServiceRolesListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp CloudServiceRoleListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServiceRolesListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CloudServiceRoleListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -146,12 +143,12 @@ func (client *CloudServiceRolesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *CloudServiceRolesClient) listHandleResponse(resp *azcore.Response) (CloudServiceRoleListResultResponse, error) {
-	var val *CloudServiceRoleListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceRoleListResultResponse{}, err
+func (client *CloudServiceRolesClient) listHandleResponse(resp *azcore.Response) (CloudServiceRolesListResponse, error) {
+	result := CloudServiceRolesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CloudServiceRoleListResult); err != nil {
+		return CloudServiceRolesListResponse{}, err
 	}
-	return CloudServiceRoleListResultResponse{RawResponse: resp.Response, CloudServiceRoleListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

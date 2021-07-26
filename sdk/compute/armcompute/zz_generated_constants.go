@@ -7,7 +7,7 @@
 
 package armcompute
 
-const telemetryInfo = "azsdk-go-armcompute/v0.2.0"
+const telemetryInfo = "azsdk-go-armcompute/v0.3.0"
 
 type AccessLevel string
 

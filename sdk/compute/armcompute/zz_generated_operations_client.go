@@ -28,17 +28,17 @@ func NewOperationsClient(con *armcore.Connection) *OperationsClient {
 
 // List - Gets a list of compute operations.
 // If the operation fails it returns a generic error.
-func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (ComputeOperationListResultResponse, error) {
+func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (OperationsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return ComputeOperationListResultResponse{}, err
+		return OperationsListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ComputeOperationListResultResponse{}, err
+		return OperationsListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ComputeOperationListResultResponse{}, client.listHandleError(resp)
+		return OperationsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -59,12 +59,12 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (ComputeOperationListResultResponse, error) {
-	var val *ComputeOperationListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ComputeOperationListResultResponse{}, err
+func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (OperationsListResponse, error) {
+	result := OperationsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ComputeOperationListResult); err != nil {
+		return OperationsListResponse{}, err
 	}
-	return ComputeOperationListResultResponse{RawResponse: resp.Response, ComputeOperationListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

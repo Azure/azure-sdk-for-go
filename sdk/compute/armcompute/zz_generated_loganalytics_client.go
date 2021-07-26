@@ -32,47 +32,47 @@ func NewLogAnalyticsClient(con *armcore.Connection, subscriptionID string) *LogA
 
 // BeginExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to show throttling activities.
 // If the operation fails it returns a generic error.
-func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsBeginExportRequestRateByIntervalOptions) (LogAnalyticsOperationResultPollerResponse, error) {
+func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsBeginExportRequestRateByIntervalOptions) (LogAnalyticsExportRequestRateByIntervalPollerResponse, error) {
 	resp, err := client.exportRequestRateByInterval(ctx, location, parameters, options)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportRequestRateByIntervalPollerResponse{}, err
 	}
-	result := LogAnalyticsOperationResultPollerResponse{
+	result := LogAnalyticsExportRequestRateByIntervalPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("LogAnalyticsClient.ExportRequestRateByInterval", "azure-async-operation", resp, client.con.Pipeline(), client.exportRequestRateByIntervalHandleError)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportRequestRateByIntervalPollerResponse{}, err
 	}
-	poller := &logAnalyticsOperationResultPoller{
+	poller := &logAnalyticsExportRequestRateByIntervalPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsExportRequestRateByIntervalResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeExportRequestRateByInterval creates a new LogAnalyticsOperationResultPoller from the specified resume token.
-// token - The value must come from a previous call to LogAnalyticsOperationResultPoller.ResumeToken().
-func (client *LogAnalyticsClient) ResumeExportRequestRateByInterval(ctx context.Context, token string) (LogAnalyticsOperationResultPollerResponse, error) {
+// ResumeExportRequestRateByInterval creates a new LogAnalyticsExportRequestRateByIntervalPoller from the specified resume token.
+// token - The value must come from a previous call to LogAnalyticsExportRequestRateByIntervalPoller.ResumeToken().
+func (client *LogAnalyticsClient) ResumeExportRequestRateByInterval(ctx context.Context, token string) (LogAnalyticsExportRequestRateByIntervalPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("LogAnalyticsClient.ExportRequestRateByInterval", token, client.con.Pipeline(), client.exportRequestRateByIntervalHandleError)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportRequestRateByIntervalPollerResponse{}, err
 	}
-	poller := &logAnalyticsOperationResultPoller{
+	poller := &logAnalyticsExportRequestRateByIntervalPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportRequestRateByIntervalPollerResponse{}, err
 	}
-	result := LogAnalyticsOperationResultPollerResponse{
+	result := LogAnalyticsExportRequestRateByIntervalPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsExportRequestRateByIntervalResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -132,47 +132,47 @@ func (client *LogAnalyticsClient) exportRequestRateByIntervalHandleError(resp *a
 
 // BeginExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.
 // If the operation fails it returns a generic error.
-func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsBeginExportThrottledRequestsOptions) (LogAnalyticsOperationResultPollerResponse, error) {
+func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsBeginExportThrottledRequestsOptions) (LogAnalyticsExportThrottledRequestsPollerResponse, error) {
 	resp, err := client.exportThrottledRequests(ctx, location, parameters, options)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportThrottledRequestsPollerResponse{}, err
 	}
-	result := LogAnalyticsOperationResultPollerResponse{
+	result := LogAnalyticsExportThrottledRequestsPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("LogAnalyticsClient.ExportThrottledRequests", "azure-async-operation", resp, client.con.Pipeline(), client.exportThrottledRequestsHandleError)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportThrottledRequestsPollerResponse{}, err
 	}
-	poller := &logAnalyticsOperationResultPoller{
+	poller := &logAnalyticsExportThrottledRequestsPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsExportThrottledRequestsResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeExportThrottledRequests creates a new LogAnalyticsOperationResultPoller from the specified resume token.
-// token - The value must come from a previous call to LogAnalyticsOperationResultPoller.ResumeToken().
-func (client *LogAnalyticsClient) ResumeExportThrottledRequests(ctx context.Context, token string) (LogAnalyticsOperationResultPollerResponse, error) {
+// ResumeExportThrottledRequests creates a new LogAnalyticsExportThrottledRequestsPoller from the specified resume token.
+// token - The value must come from a previous call to LogAnalyticsExportThrottledRequestsPoller.ResumeToken().
+func (client *LogAnalyticsClient) ResumeExportThrottledRequests(ctx context.Context, token string) (LogAnalyticsExportThrottledRequestsPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("LogAnalyticsClient.ExportThrottledRequests", token, client.con.Pipeline(), client.exportThrottledRequestsHandleError)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportThrottledRequestsPollerResponse{}, err
 	}
-	poller := &logAnalyticsOperationResultPoller{
+	poller := &logAnalyticsExportThrottledRequestsPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return LogAnalyticsOperationResultPollerResponse{}, err
+		return LogAnalyticsExportThrottledRequestsPollerResponse{}, err
 	}
-	result := LogAnalyticsOperationResultPollerResponse{
+	result := LogAnalyticsExportThrottledRequestsPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsExportThrottledRequestsResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

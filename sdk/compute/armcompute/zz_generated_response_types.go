@@ -13,1247 +13,4080 @@ import (
 	"time"
 )
 
-// AccessURIPollerResponse is the response envelope for operations that asynchronously return a AccessURI type.
-type AccessURIPollerResponse struct {
+// AvailabilitySetsCreateOrUpdateResponse contains the response from method AvailabilitySets.CreateOrUpdate.
+type AvailabilitySetsCreateOrUpdateResponse struct {
+	AvailabilitySetsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsCreateOrUpdateResult contains the result from method AvailabilitySets.CreateOrUpdate.
+type AvailabilitySetsCreateOrUpdateResult struct {
+	AvailabilitySet
+}
+
+// AvailabilitySetsDeleteResponse contains the response from method AvailabilitySets.Delete.
+type AvailabilitySetsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsGetResponse contains the response from method AvailabilitySets.Get.
+type AvailabilitySetsGetResponse struct {
+	AvailabilitySetsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsGetResult contains the result from method AvailabilitySets.Get.
+type AvailabilitySetsGetResult struct {
+	AvailabilitySet
+}
+
+// AvailabilitySetsListAvailableSizesResponse contains the response from method AvailabilitySets.ListAvailableSizes.
+type AvailabilitySetsListAvailableSizesResponse struct {
+	AvailabilitySetsListAvailableSizesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsListAvailableSizesResult contains the result from method AvailabilitySets.ListAvailableSizes.
+type AvailabilitySetsListAvailableSizesResult struct {
+	VirtualMachineSizeListResult
+}
+
+// AvailabilitySetsListBySubscriptionResponse contains the response from method AvailabilitySets.ListBySubscription.
+type AvailabilitySetsListBySubscriptionResponse struct {
+	AvailabilitySetsListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsListBySubscriptionResult contains the result from method AvailabilitySets.ListBySubscription.
+type AvailabilitySetsListBySubscriptionResult struct {
+	AvailabilitySetListResult
+}
+
+// AvailabilitySetsListResponse contains the response from method AvailabilitySets.List.
+type AvailabilitySetsListResponse struct {
+	AvailabilitySetsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsListResult contains the result from method AvailabilitySets.List.
+type AvailabilitySetsListResult struct {
+	AvailabilitySetListResult
+}
+
+// AvailabilitySetsUpdateResponse contains the response from method AvailabilitySets.Update.
+type AvailabilitySetsUpdateResponse struct {
+	AvailabilitySetsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AvailabilitySetsUpdateResult contains the result from method AvailabilitySets.Update.
+type AvailabilitySetsUpdateResult struct {
+	AvailabilitySet
+}
+
+// CloudServiceOperatingSystemsGetOSFamilyResponse contains the response from method CloudServiceOperatingSystems.GetOSFamily.
+type CloudServiceOperatingSystemsGetOSFamilyResponse struct {
+	CloudServiceOperatingSystemsGetOSFamilyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServiceOperatingSystemsGetOSFamilyResult contains the result from method CloudServiceOperatingSystems.GetOSFamily.
+type CloudServiceOperatingSystemsGetOSFamilyResult struct {
+	OSFamily
+}
+
+// CloudServiceOperatingSystemsGetOSVersionResponse contains the response from method CloudServiceOperatingSystems.GetOSVersion.
+type CloudServiceOperatingSystemsGetOSVersionResponse struct {
+	CloudServiceOperatingSystemsGetOSVersionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServiceOperatingSystemsGetOSVersionResult contains the result from method CloudServiceOperatingSystems.GetOSVersion.
+type CloudServiceOperatingSystemsGetOSVersionResult struct {
+	OSVersion
+}
+
+// CloudServiceOperatingSystemsListOSFamiliesResponse contains the response from method CloudServiceOperatingSystems.ListOSFamilies.
+type CloudServiceOperatingSystemsListOSFamiliesResponse struct {
+	CloudServiceOperatingSystemsListOSFamiliesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServiceOperatingSystemsListOSFamiliesResult contains the result from method CloudServiceOperatingSystems.ListOSFamilies.
+type CloudServiceOperatingSystemsListOSFamiliesResult struct {
+	OSFamilyListResult
+}
+
+// CloudServiceOperatingSystemsListOSVersionsResponse contains the response from method CloudServiceOperatingSystems.ListOSVersions.
+type CloudServiceOperatingSystemsListOSVersionsResponse struct {
+	CloudServiceOperatingSystemsListOSVersionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServiceOperatingSystemsListOSVersionsResult contains the result from method CloudServiceOperatingSystems.ListOSVersions.
+type CloudServiceOperatingSystemsListOSVersionsResult struct {
+	OSVersionListResult
+}
+
+// CloudServiceRoleInstancesDeletePollerResponse contains the response from method CloudServiceRoleInstances.Delete.
+type CloudServiceRoleInstancesDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller AccessURIPoller
+	Poller CloudServiceRoleInstancesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccessURIResponse is the response envelope for operations that return a AccessURI type.
-type AccessURIResponse struct {
-	// A disk access SAS uri.
-	AccessURI *AccessURI
-
+// CloudServiceRoleInstancesDeleteResponse contains the response from method CloudServiceRoleInstances.Delete.
+type CloudServiceRoleInstancesDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailabilitySetListResultResponse is the response envelope for operations that return a AvailabilitySetListResult type.
-type AvailabilitySetListResultResponse struct {
-	// The List Availability Set operation response.
-	AvailabilitySetListResult *AvailabilitySetListResult
-
+// CloudServiceRoleInstancesGetInstanceViewResponse contains the response from method CloudServiceRoleInstances.GetInstanceView.
+type CloudServiceRoleInstancesGetInstanceViewResponse struct {
+	CloudServiceRoleInstancesGetInstanceViewResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailabilitySetResponse is the response envelope for operations that return a AvailabilitySet type.
-type AvailabilitySetResponse struct {
-	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified in the same availability
-	// set are allocated to different nodes to maximize availability. For more information about availability sets, see [Availability sets overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
-	// <br><br> For more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
-	// <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability set.
-	AvailabilitySet *AvailabilitySet
+// CloudServiceRoleInstancesGetInstanceViewResult contains the result from method CloudServiceRoleInstances.GetInstanceView.
+type CloudServiceRoleInstancesGetInstanceViewResult struct {
+	RoleInstanceView
+}
 
+// CloudServiceRoleInstancesGetRemoteDesktopFileResponse contains the response from method CloudServiceRoleInstances.GetRemoteDesktopFile.
+type CloudServiceRoleInstancesGetRemoteDesktopFileResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CloudServiceInstanceViewResponse is the response envelope for operations that return a CloudServiceInstanceView type.
-type CloudServiceInstanceViewResponse struct {
-	// InstanceView of CloudService as a whole
-	CloudServiceInstanceView *CloudServiceInstanceView
-
+// CloudServiceRoleInstancesGetResponse contains the response from method CloudServiceRoleInstances.Get.
+type CloudServiceRoleInstancesGetResponse struct {
+	CloudServiceRoleInstancesGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CloudServiceListResultResponse is the response envelope for operations that return a CloudServiceListResult type.
-type CloudServiceListResultResponse struct {
-	CloudServiceListResult *CloudServiceListResult
+// CloudServiceRoleInstancesGetResult contains the result from method CloudServiceRoleInstances.Get.
+type CloudServiceRoleInstancesGetResult struct {
+	RoleInstance
+}
 
+// CloudServiceRoleInstancesListResponse contains the response from method CloudServiceRoleInstances.List.
+type CloudServiceRoleInstancesListResponse struct {
+	CloudServiceRoleInstancesListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CloudServicePollerResponse is the response envelope for operations that asynchronously return a CloudService type.
-type CloudServicePollerResponse struct {
+// CloudServiceRoleInstancesListResult contains the result from method CloudServiceRoleInstances.List.
+type CloudServiceRoleInstancesListResult struct {
+	RoleInstanceListResult
+}
+
+// CloudServiceRoleInstancesRebuildPollerResponse contains the response from method CloudServiceRoleInstances.Rebuild.
+type CloudServiceRoleInstancesRebuildPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesRebuildResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller CloudServicePoller
+	Poller CloudServiceRoleInstancesRebuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CloudServiceResponse is the response envelope for operations that return a CloudService type.
-type CloudServiceResponse struct {
-	// Describes the cloud service.
-	CloudService *CloudService
-
+// CloudServiceRoleInstancesRebuildResponse contains the response from method CloudServiceRoleInstances.Rebuild.
+type CloudServiceRoleInstancesRebuildResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CloudServiceRoleListResultResponse is the response envelope for operations that return a CloudServiceRoleListResult type.
-type CloudServiceRoleListResultResponse struct {
-	CloudServiceRoleListResult *CloudServiceRoleListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudServiceRoleResponse is the response envelope for operations that return a CloudServiceRole type.
-type CloudServiceRoleResponse struct {
-	// Describes a role of the cloud service.
-	CloudServiceRole *CloudServiceRole
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ComputeOperationListResultResponse is the response envelope for operations that return a ComputeOperationListResult type.
-type ComputeOperationListResultResponse struct {
-	// The List Compute Operation operation response.
-	ComputeOperationListResult *ComputeOperationListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DedicatedHostGroupListResultResponse is the response envelope for operations that return a DedicatedHostGroupListResult type.
-type DedicatedHostGroupListResultResponse struct {
-	// The List Dedicated Host Group with resource group response.
-	DedicatedHostGroupListResult *DedicatedHostGroupListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DedicatedHostGroupResponse is the response envelope for operations that return a DedicatedHostGroup type.
-type DedicatedHostGroupResponse struct {
-	// Specifies information about the dedicated host group that the dedicated hosts should be assigned to. <br><br> Currently, a dedicated host can only be
-	// added to a dedicated host group at creation time. An existing dedicated host cannot be added to another dedicated host group.
-	DedicatedHostGroup *DedicatedHostGroup
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DedicatedHostListResultResponse is the response envelope for operations that return a DedicatedHostListResult type.
-type DedicatedHostListResultResponse struct {
-	// The list dedicated host operation response.
-	DedicatedHostListResult *DedicatedHostListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DedicatedHostPollerResponse is the response envelope for operations that asynchronously return a DedicatedHost type.
-type DedicatedHostPollerResponse struct {
+// CloudServiceRoleInstancesReimagePollerResponse contains the response from method CloudServiceRoleInstances.Reimage.
+type CloudServiceRoleInstancesReimagePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesReimageResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller DedicatedHostPoller
+	Poller CloudServiceRoleInstancesReimagePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DedicatedHostResponse is the response envelope for operations that return a DedicatedHost type.
-type DedicatedHostResponse struct {
-	// Specifies information about the Dedicated host.
-	DedicatedHost *DedicatedHost
-
+// CloudServiceRoleInstancesReimageResponse contains the response from method CloudServiceRoleInstances.Reimage.
+type CloudServiceRoleInstancesReimageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskAccessListResponse is the response envelope for operations that return a DiskAccessList type.
-type DiskAccessListResponse struct {
-	// The List disk access operation response.
-	DiskAccessList *DiskAccessList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiskAccessPollerResponse is the response envelope for operations that asynchronously return a DiskAccess type.
-type DiskAccessPollerResponse struct {
+// CloudServiceRoleInstancesRestartPollerResponse contains the response from method CloudServiceRoleInstances.Restart.
+type CloudServiceRoleInstancesRestartPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskAccessResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesRestartResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller DiskAccessPoller
+	Poller CloudServiceRoleInstancesRestartPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskAccessResponse is the response envelope for operations that return a DiskAccess type.
-type DiskAccessResponse struct {
-	// disk access resource.
-	DiskAccess *DiskAccess
-
+// CloudServiceRoleInstancesRestartResponse contains the response from method CloudServiceRoleInstances.Restart.
+type CloudServiceRoleInstancesRestartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskEncryptionSetListResponse is the response envelope for operations that return a DiskEncryptionSetList type.
-type DiskEncryptionSetListResponse struct {
-	// The List disk encryption set operation response.
-	DiskEncryptionSetList *DiskEncryptionSetList
-
+// CloudServiceRolesGetResponse contains the response from method CloudServiceRoles.Get.
+type CloudServiceRolesGetResponse struct {
+	CloudServiceRolesGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskEncryptionSetPollerResponse is the response envelope for operations that asynchronously return a DiskEncryptionSet type.
-type DiskEncryptionSetPollerResponse struct {
+// CloudServiceRolesGetResult contains the result from method CloudServiceRoles.Get.
+type CloudServiceRolesGetResult struct {
+	CloudServiceRole
+}
+
+// CloudServiceRolesListResponse contains the response from method CloudServiceRoles.List.
+type CloudServiceRolesListResponse struct {
+	CloudServiceRolesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServiceRolesListResult contains the result from method CloudServiceRoles.List.
+type CloudServiceRolesListResult struct {
+	CloudServiceRoleListResult
+}
+
+// CloudServicesCreateOrUpdatePollerResponse contains the response from method CloudServices.CreateOrUpdate.
+type CloudServicesCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller DiskEncryptionSetPoller
+	Poller CloudServicesCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskEncryptionSetResponse is the response envelope for operations that return a DiskEncryptionSet type.
-type DiskEncryptionSetResponse struct {
-	// disk encryption set resource.
-	DiskEncryptionSet *DiskEncryptionSet
-
+// CloudServicesCreateOrUpdateResponse contains the response from method CloudServices.CreateOrUpdate.
+type CloudServicesCreateOrUpdateResponse struct {
+	CloudServicesCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskListResponse is the response envelope for operations that return a DiskList type.
-type DiskListResponse struct {
-	// The List Disks operation response.
-	DiskList *DiskList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CloudServicesCreateOrUpdateResult contains the result from method CloudServices.CreateOrUpdate.
+type CloudServicesCreateOrUpdateResult struct {
+	CloudService
 }
 
-// DiskPollerResponse is the response envelope for operations that asynchronously return a Disk type.
-type DiskPollerResponse struct {
+// CloudServicesDeleteInstancesPollerResponse contains the response from method CloudServices.DeleteInstances.
+type CloudServicesDeleteInstancesPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesDeleteInstancesResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller DiskPoller
+	Poller CloudServicesDeleteInstancesPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskResponse is the response envelope for operations that return a Disk type.
-type DiskResponse struct {
-	// Disk resource.
-	Disk *Disk
-
+// CloudServicesDeleteInstancesResponse contains the response from method CloudServices.DeleteInstances.
+type CloudServicesDeleteInstancesResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DiskRestorePointListResponse is the response envelope for operations that return a DiskRestorePointList type.
-type DiskRestorePointListResponse struct {
-	// The List Disk Restore Points operation response.
-	DiskRestorePointList *DiskRestorePointList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiskRestorePointResponse is the response envelope for operations that return a DiskRestorePoint type.
-type DiskRestorePointResponse struct {
-	// Properties of disk restore point
-	DiskRestorePoint *DiskRestorePoint
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GalleryApplicationListResponse is the response envelope for operations that return a GalleryApplicationList type.
-type GalleryApplicationListResponse struct {
-	// The List Gallery Applications operation response.
-	GalleryApplicationList *GalleryApplicationList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GalleryApplicationPollerResponse is the response envelope for operations that asynchronously return a GalleryApplication type.
-type GalleryApplicationPollerResponse struct {
+// CloudServicesDeletePollerResponse contains the response from method CloudServices.Delete.
+type CloudServicesDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller GalleryApplicationPoller
+	Poller CloudServicesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryApplicationResponse is the response envelope for operations that return a GalleryApplication type.
-type GalleryApplicationResponse struct {
-	// Specifies information about the gallery Application Definition that you want to create or update.
-	GalleryApplication *GalleryApplication
-
+// CloudServicesDeleteResponse contains the response from method CloudServices.Delete.
+type CloudServicesDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryApplicationVersionListResponse is the response envelope for operations that return a GalleryApplicationVersionList type.
-type GalleryApplicationVersionListResponse struct {
-	// The List Gallery Application version operation response.
-	GalleryApplicationVersionList *GalleryApplicationVersionList
-
+// CloudServicesGetInstanceViewResponse contains the response from method CloudServices.GetInstanceView.
+type CloudServicesGetInstanceViewResponse struct {
+	CloudServicesGetInstanceViewResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryApplicationVersionPollerResponse is the response envelope for operations that asynchronously return a GalleryApplicationVersion type.
-type GalleryApplicationVersionPollerResponse struct {
+// CloudServicesGetInstanceViewResult contains the result from method CloudServices.GetInstanceView.
+type CloudServicesGetInstanceViewResult struct {
+	CloudServiceInstanceView
+}
+
+// CloudServicesGetResponse contains the response from method CloudServices.Get.
+type CloudServicesGetResponse struct {
+	CloudServicesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServicesGetResult contains the result from method CloudServices.Get.
+type CloudServicesGetResult struct {
+	CloudService
+}
+
+// CloudServicesListAllResponse contains the response from method CloudServices.ListAll.
+type CloudServicesListAllResponse struct {
+	CloudServicesListAllResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServicesListAllResult contains the result from method CloudServices.ListAll.
+type CloudServicesListAllResult struct {
+	CloudServiceListResult
+}
+
+// CloudServicesListResponse contains the response from method CloudServices.List.
+type CloudServicesListResponse struct {
+	CloudServicesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServicesListResult contains the result from method CloudServices.List.
+type CloudServicesListResult struct {
+	CloudServiceListResult
+}
+
+// CloudServicesPowerOffPollerResponse contains the response from method CloudServices.PowerOff.
+type CloudServicesPowerOffPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesPowerOffResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller GalleryApplicationVersionPoller
+	Poller CloudServicesPowerOffPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryApplicationVersionResponse is the response envelope for operations that return a GalleryApplicationVersion type.
-type GalleryApplicationVersionResponse struct {
-	// Specifies information about the gallery Application Version that you want to create or update.
-	GalleryApplicationVersion *GalleryApplicationVersion
-
+// CloudServicesPowerOffResponse contains the response from method CloudServices.PowerOff.
+type CloudServicesPowerOffResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryImageListResponse is the response envelope for operations that return a GalleryImageList type.
-type GalleryImageListResponse struct {
-	// The List Gallery Images operation response.
-	GalleryImageList *GalleryImageList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GalleryImagePollerResponse is the response envelope for operations that asynchronously return a GalleryImage type.
-type GalleryImagePollerResponse struct {
+// CloudServicesRebuildPollerResponse contains the response from method CloudServices.Rebuild.
+type CloudServicesRebuildPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImageResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesRebuildResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller GalleryImagePoller
+	Poller CloudServicesRebuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryImageResponse is the response envelope for operations that return a GalleryImage type.
-type GalleryImageResponse struct {
-	// Specifies information about the gallery image definition that you want to create or update.
-	GalleryImage *GalleryImage
-
+// CloudServicesRebuildResponse contains the response from method CloudServices.Rebuild.
+type CloudServicesRebuildResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryImageVersionListResponse is the response envelope for operations that return a GalleryImageVersionList type.
-type GalleryImageVersionListResponse struct {
-	// The List Gallery Image version operation response.
-	GalleryImageVersionList *GalleryImageVersionList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GalleryImageVersionPollerResponse is the response envelope for operations that asynchronously return a GalleryImageVersion type.
-type GalleryImageVersionPollerResponse struct {
+// CloudServicesReimagePollerResponse contains the response from method CloudServices.Reimage.
+type CloudServicesReimagePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesReimageResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller GalleryImageVersionPoller
+	Poller CloudServicesReimagePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryImageVersionResponse is the response envelope for operations that return a GalleryImageVersion type.
-type GalleryImageVersionResponse struct {
-	// Specifies information about the gallery image version that you want to create or update.
-	GalleryImageVersion *GalleryImageVersion
-
+// CloudServicesReimageResponse contains the response from method CloudServices.Reimage.
+type CloudServicesReimageResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryListResponse is the response envelope for operations that return a GalleryList type.
-type GalleryListResponse struct {
-	// The List Galleries operation response.
-	GalleryList *GalleryList
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GalleryPollerResponse is the response envelope for operations that asynchronously return a Gallery type.
-type GalleryPollerResponse struct {
+// CloudServicesRestartPollerResponse contains the response from method CloudServices.Restart.
+type CloudServicesRestartPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesRestartResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller GalleryPoller
+	Poller CloudServicesRestartPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GalleryResponse is the response envelope for operations that return a Gallery type.
-type GalleryResponse struct {
-	// Specifies information about the Shared Image Gallery that you want to create or update.
-	Gallery *Gallery
-
+// CloudServicesRestartResponse contains the response from method CloudServices.Restart.
+type CloudServicesRestartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
-type HTTPPollerResponse struct {
+// CloudServicesStartPollerResponse contains the response from method CloudServices.Start.
+type CloudServicesStartPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesStartResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller HTTPPoller
+	Poller CloudServicesStartPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ImageListResultResponse is the response envelope for operations that return a ImageListResult type.
-type ImageListResultResponse struct {
-	// The List Image operation response.
-	ImageListResult *ImageListResult
-
+// CloudServicesStartResponse contains the response from method CloudServices.Start.
+type CloudServicesStartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ImagePollerResponse is the response envelope for operations that asynchronously return a Image type.
-type ImagePollerResponse struct {
+// CloudServicesUpdateDomainGetUpdateDomainResponse contains the response from method CloudServicesUpdateDomain.GetUpdateDomain.
+type CloudServicesUpdateDomainGetUpdateDomainResponse struct {
+	CloudServicesUpdateDomainGetUpdateDomainResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServicesUpdateDomainGetUpdateDomainResult contains the result from method CloudServicesUpdateDomain.GetUpdateDomain.
+type CloudServicesUpdateDomainGetUpdateDomainResult struct {
+	UpdateDomain
+}
+
+// CloudServicesUpdateDomainListUpdateDomainsResponse contains the response from method CloudServicesUpdateDomain.ListUpdateDomains.
+type CloudServicesUpdateDomainListUpdateDomainsResponse struct {
+	CloudServicesUpdateDomainListUpdateDomainsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CloudServicesUpdateDomainListUpdateDomainsResult contains the result from method CloudServicesUpdateDomain.ListUpdateDomains.
+type CloudServicesUpdateDomainListUpdateDomainsResult struct {
+	UpdateDomainListResult
+}
+
+// CloudServicesUpdateDomainWalkUpdateDomainPollerResponse contains the response from method CloudServicesUpdateDomain.WalkUpdateDomain.
+type CloudServicesUpdateDomainWalkUpdateDomainPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ImageResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesUpdateDomainWalkUpdateDomainResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller ImagePoller
+	Poller CloudServicesUpdateDomainWalkUpdateDomainPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ImageResponse is the response envelope for operations that return a Image type.
-type ImageResponse struct {
-	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided,
-	// the destination virtual hard drive must not exist.
-	Image *Image
-
+// CloudServicesUpdateDomainWalkUpdateDomainResponse contains the response from method CloudServicesUpdateDomain.WalkUpdateDomain.
+type CloudServicesUpdateDomainWalkUpdateDomainResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ListUsagesResultResponse is the response envelope for operations that return a ListUsagesResult type.
-type ListUsagesResultResponse struct {
-	// The List Usages operation response.
-	ListUsagesResult *ListUsagesResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LogAnalyticsOperationResultPollerResponse is the response envelope for operations that asynchronously return a LogAnalyticsOperationResult type.
-type LogAnalyticsOperationResultPollerResponse struct {
+// CloudServicesUpdatePollerResponse contains the response from method CloudServices.Update.
+type CloudServicesUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (CloudServicesUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller LogAnalyticsOperationResultPoller
+	Poller CloudServicesUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LogAnalyticsOperationResultResponse is the response envelope for operations that return a LogAnalyticsOperationResult type.
-type LogAnalyticsOperationResultResponse struct {
-	// LogAnalytics operation status response
-	LogAnalyticsOperationResult *LogAnalyticsOperationResult
-
+// CloudServicesUpdateResponse contains the response from method CloudServices.Update.
+type CloudServicesUpdateResponse struct {
+	CloudServicesUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OSFamilyListResultResponse is the response envelope for operations that return a OSFamilyListResult type.
-type OSFamilyListResultResponse struct {
-	OSFamilyListResult *OSFamilyListResult
+// CloudServicesUpdateResult contains the result from method CloudServices.Update.
+type CloudServicesUpdateResult struct {
+	CloudService
+}
 
+// DedicatedHostGroupsCreateOrUpdateResponse contains the response from method DedicatedHostGroups.CreateOrUpdate.
+type DedicatedHostGroupsCreateOrUpdateResponse struct {
+	DedicatedHostGroupsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OSFamilyResponse is the response envelope for operations that return a OSFamily type.
-type OSFamilyResponse struct {
-	// Describes a cloud service OS family.
-	OSFamily *OSFamily
+// DedicatedHostGroupsCreateOrUpdateResult contains the result from method DedicatedHostGroups.CreateOrUpdate.
+type DedicatedHostGroupsCreateOrUpdateResult struct {
+	DedicatedHostGroup
+}
 
+// DedicatedHostGroupsDeleteResponse contains the response from method DedicatedHostGroups.Delete.
+type DedicatedHostGroupsDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OSVersionListResultResponse is the response envelope for operations that return a OSVersionListResult type.
-type OSVersionListResultResponse struct {
-	OSVersionListResult *OSVersionListResult
-
+// DedicatedHostGroupsGetResponse contains the response from method DedicatedHostGroups.Get.
+type DedicatedHostGroupsGetResponse struct {
+	DedicatedHostGroupsGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OSVersionResponse is the response envelope for operations that return a OSVersion type.
-type OSVersionResponse struct {
-	// Describes a cloud service OS version.
-	OSVersion *OSVersion
+// DedicatedHostGroupsGetResult contains the result from method DedicatedHostGroups.Get.
+type DedicatedHostGroupsGetResult struct {
+	DedicatedHostGroup
+}
 
+// DedicatedHostGroupsListByResourceGroupResponse contains the response from method DedicatedHostGroups.ListByResourceGroup.
+type DedicatedHostGroupsListByResourceGroupResponse struct {
+	DedicatedHostGroupsListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionListResultResponse is the response envelope for operations that return a PrivateEndpointConnectionListResult type.
-type PrivateEndpointConnectionListResultResponse struct {
-	// A list of private link resources
-	PrivateEndpointConnectionListResult *PrivateEndpointConnectionListResult
+// DedicatedHostGroupsListByResourceGroupResult contains the result from method DedicatedHostGroups.ListByResourceGroup.
+type DedicatedHostGroupsListByResourceGroupResult struct {
+	DedicatedHostGroupListResult
+}
 
+// DedicatedHostGroupsListBySubscriptionResponse contains the response from method DedicatedHostGroups.ListBySubscription.
+type DedicatedHostGroupsListBySubscriptionResponse struct {
+	DedicatedHostGroupsListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionPollerResponse is the response envelope for operations that asynchronously return a PrivateEndpointConnection type.
-type PrivateEndpointConnectionPollerResponse struct {
+// DedicatedHostGroupsListBySubscriptionResult contains the result from method DedicatedHostGroups.ListBySubscription.
+type DedicatedHostGroupsListBySubscriptionResult struct {
+	DedicatedHostGroupListResult
+}
+
+// DedicatedHostGroupsUpdateResponse contains the response from method DedicatedHostGroups.Update.
+type DedicatedHostGroupsUpdateResponse struct {
+	DedicatedHostGroupsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DedicatedHostGroupsUpdateResult contains the result from method DedicatedHostGroups.Update.
+type DedicatedHostGroupsUpdateResult struct {
+	DedicatedHostGroup
+}
+
+// DedicatedHostsCreateOrUpdatePollerResponse contains the response from method DedicatedHosts.CreateOrUpdate.
+type DedicatedHostsCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DedicatedHostsCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller PrivateEndpointConnectionPoller
+	Poller DedicatedHostsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionResponse is the response envelope for operations that return a PrivateEndpointConnection type.
-type PrivateEndpointConnectionResponse struct {
-	// The Private Endpoint Connection resource.
-	PrivateEndpointConnection *PrivateEndpointConnection
-
+// DedicatedHostsCreateOrUpdateResponse contains the response from method DedicatedHosts.CreateOrUpdate.
+type DedicatedHostsCreateOrUpdateResponse struct {
+	DedicatedHostsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourceListResultResponse is the response envelope for operations that return a PrivateLinkResourceListResult type.
-type PrivateLinkResourceListResultResponse struct {
-	// A list of private link resources
-	PrivateLinkResourceListResult *PrivateLinkResourceListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DedicatedHostsCreateOrUpdateResult contains the result from method DedicatedHosts.CreateOrUpdate.
+type DedicatedHostsCreateOrUpdateResult struct {
+	DedicatedHost
 }
 
-// ProximityPlacementGroupListResultResponse is the response envelope for operations that return a ProximityPlacementGroupListResult type.
-type ProximityPlacementGroupListResultResponse struct {
-	// The List Proximity Placement Group operation response.
-	ProximityPlacementGroupListResult *ProximityPlacementGroupListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProximityPlacementGroupResponse is the response envelope for operations that return a ProximityPlacementGroup type.
-type ProximityPlacementGroupResponse struct {
-	// Specifies information about the proximity placement group.
-	ProximityPlacementGroup *ProximityPlacementGroup
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecoveryWalkResponseResponse is the response envelope for operations that return a RecoveryWalkResponse type.
-type RecoveryWalkResponseResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Response after calling a manual recovery walk
-	RecoveryWalkResponse *RecoveryWalkResponse
-}
-
-// ResourceSKUsResultResponse is the response envelope for operations that return a ResourceSKUsResult type.
-type ResourceSKUsResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Resource Skus operation response.
-	ResourceSKUsResult *ResourceSKUsResult
-}
-
-// ResourceURIListResponse is the response envelope for operations that return a ResourceURIList type.
-type ResourceURIListResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List resources which are encrypted with the disk encryption set.
-	ResourceURIList *ResourceURIList
-}
-
-// RestorePointCollectionListResultResponse is the response envelope for operations that return a RestorePointCollectionListResult type.
-type RestorePointCollectionListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List restore point collection operation response.
-	RestorePointCollectionListResult *RestorePointCollectionListResult
-}
-
-// RestorePointCollectionResponse is the response envelope for operations that return a RestorePointCollection type.
-type RestorePointCollectionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Create or update Restore Point collection parameters.
-	RestorePointCollection *RestorePointCollection
-}
-
-// RestorePointPollerResponse is the response envelope for operations that asynchronously return a RestorePoint type.
-type RestorePointPollerResponse struct {
+// DedicatedHostsDeletePollerResponse contains the response from method DedicatedHosts.Delete.
+type DedicatedHostsDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RestorePointResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DedicatedHostsDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller RestorePointPoller
+	Poller DedicatedHostsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RestorePointResponse is the response envelope for operations that return a RestorePoint type.
-type RestorePointResponse struct {
+// DedicatedHostsDeleteResponse contains the response from method DedicatedHosts.Delete.
+type DedicatedHostsDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Restore Point details.
-	RestorePoint *RestorePoint
 }
 
-// RetrieveBootDiagnosticsDataResultResponse is the response envelope for operations that return a RetrieveBootDiagnosticsDataResult type.
-type RetrieveBootDiagnosticsDataResultResponse struct {
+// DedicatedHostsGetResponse contains the response from method DedicatedHosts.Get.
+type DedicatedHostsGetResponse struct {
+	DedicatedHostsGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// The SAS URIs of the console screenshot and serial log blobs.
-	RetrieveBootDiagnosticsDataResult *RetrieveBootDiagnosticsDataResult
 }
 
-// RoleInstanceListResultResponse is the response envelope for operations that return a RoleInstanceListResult type.
-type RoleInstanceListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse            *http.Response
-	RoleInstanceListResult *RoleInstanceListResult
+// DedicatedHostsGetResult contains the result from method DedicatedHosts.Get.
+type DedicatedHostsGetResult struct {
+	DedicatedHost
 }
 
-// RoleInstanceResponse is the response envelope for operations that return a RoleInstance type.
-type RoleInstanceResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse  *http.Response
-	RoleInstance *RoleInstance
-}
-
-// RoleInstanceViewResponse is the response envelope for operations that return a RoleInstanceView type.
-type RoleInstanceViewResponse struct {
+// DedicatedHostsListByHostGroupResponse contains the response from method DedicatedHosts.ListByHostGroup.
+type DedicatedHostsListByHostGroupResponse struct {
+	DedicatedHostsListByHostGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// The instance view of the role instance.
-	RoleInstanceView *RoleInstanceView
 }
 
-// RollingUpgradeStatusInfoResponse is the response envelope for operations that return a RollingUpgradeStatusInfo type.
-type RollingUpgradeStatusInfoResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The status of the latest virtual machine scale set rolling upgrade.
-	RollingUpgradeStatusInfo *RollingUpgradeStatusInfo
+// DedicatedHostsListByHostGroupResult contains the result from method DedicatedHosts.ListByHostGroup.
+type DedicatedHostsListByHostGroupResult struct {
+	DedicatedHostListResult
 }
 
-// RunCommandDocumentResponse is the response envelope for operations that return a RunCommandDocument type.
-type RunCommandDocumentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Describes the properties of a Run Command.
-	RunCommandDocument *RunCommandDocument
-}
-
-// RunCommandListResultResponse is the response envelope for operations that return a RunCommandListResult type.
-type RunCommandListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Virtual Machine operation response.
-	RunCommandListResult *RunCommandListResult
-}
-
-// RunCommandResultPollerResponse is the response envelope for operations that asynchronously return a RunCommandResult type.
-type RunCommandResultPollerResponse struct {
+// DedicatedHostsUpdatePollerResponse contains the response from method DedicatedHosts.Update.
+type DedicatedHostsUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DedicatedHostsUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller RunCommandResultPoller
+	Poller DedicatedHostsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunCommandResultResponse is the response envelope for operations that return a RunCommandResult type.
-type RunCommandResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse      *http.Response
-	RunCommandResult *RunCommandResult
-}
-
-// SSHPublicKeyGenerateKeyPairResultResponse is the response envelope for operations that return a SSHPublicKeyGenerateKeyPairResult type.
-type SSHPublicKeyGenerateKeyPairResultResponse struct {
+// DedicatedHostsUpdateResponse contains the response from method DedicatedHosts.Update.
+type DedicatedHostsUpdateResponse struct {
+	DedicatedHostsUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Response from generation of an SSH key pair.
-	SSHPublicKeyGenerateKeyPairResult *SSHPublicKeyGenerateKeyPairResult
 }
 
-// SSHPublicKeyResourceResponse is the response envelope for operations that return a SSHPublicKeyResource type.
-type SSHPublicKeyResourceResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Specifies information about the SSH public key.
-	SSHPublicKeyResource *SSHPublicKeyResource
+// DedicatedHostsUpdateResult contains the result from method DedicatedHosts.Update.
+type DedicatedHostsUpdateResult struct {
+	DedicatedHost
 }
 
-// SSHPublicKeysGroupListResultResponse is the response envelope for operations that return a SSHPublicKeysGroupListResult type.
-type SSHPublicKeysGroupListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The list SSH public keys operation response.
-	SSHPublicKeysGroupListResult *SSHPublicKeysGroupListResult
-}
-
-// SharedGalleryImageListResponse is the response envelope for operations that return a SharedGalleryImageList type.
-type SharedGalleryImageListResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Shared Gallery Images operation response.
-	SharedGalleryImageList *SharedGalleryImageList
-}
-
-// SharedGalleryImageResponse is the response envelope for operations that return a SharedGalleryImage type.
-type SharedGalleryImageResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Specifies information about the gallery image definition that you want to create or update.
-	SharedGalleryImage *SharedGalleryImage
-}
-
-// SharedGalleryImageVersionListResponse is the response envelope for operations that return a SharedGalleryImageVersionList type.
-type SharedGalleryImageVersionListResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Shared Gallery Image versions operation response.
-	SharedGalleryImageVersionList *SharedGalleryImageVersionList
-}
-
-// SharedGalleryImageVersionResponse is the response envelope for operations that return a SharedGalleryImageVersion type.
-type SharedGalleryImageVersionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Specifies information about the gallery image version that you want to create or update.
-	SharedGalleryImageVersion *SharedGalleryImageVersion
-}
-
-// SharedGalleryListResponse is the response envelope for operations that return a SharedGalleryList type.
-type SharedGalleryListResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Shared Galleries operation response.
-	SharedGalleryList *SharedGalleryList
-}
-
-// SharedGalleryResponse is the response envelope for operations that return a SharedGallery type.
-type SharedGalleryResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Specifies information about the Shared Gallery that you want to create or update.
-	SharedGallery *SharedGallery
-}
-
-// SharingUpdatePollerResponse is the response envelope for operations that asynchronously return a SharingUpdate type.
-type SharingUpdatePollerResponse struct {
+// DiskAccessesCreateOrUpdatePollerResponse contains the response from method DiskAccesses.CreateOrUpdate.
+type DiskAccessesCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskAccessesCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller SharingUpdatePoller
+	Poller DiskAccessesCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharingUpdateResponse is the response envelope for operations that return a SharingUpdate type.
-type SharingUpdateResponse struct {
+// DiskAccessesCreateOrUpdateResponse contains the response from method DiskAccesses.CreateOrUpdate.
+type DiskAccessesCreateOrUpdateResponse struct {
+	DiskAccessesCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Specifies information about the gallery sharing profile update.
-	SharingUpdate *SharingUpdate
 }
 
-// SnapshotListResponse is the response envelope for operations that return a SnapshotList type.
-type SnapshotListResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Snapshots operation response.
-	SnapshotList *SnapshotList
+// DiskAccessesCreateOrUpdateResult contains the result from method DiskAccesses.CreateOrUpdate.
+type DiskAccessesCreateOrUpdateResult struct {
+	DiskAccess
 }
 
-// SnapshotPollerResponse is the response envelope for operations that asynchronously return a Snapshot type.
-type SnapshotPollerResponse struct {
+// DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse contains the response from method DiskAccesses.DeleteAPrivateEndpointConnection.
+type DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskAccessesDeleteAPrivateEndpointConnectionResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller SnapshotPoller
+	Poller DiskAccessesDeleteAPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotResponse is the response envelope for operations that return a Snapshot type.
-type SnapshotResponse struct {
+// DiskAccessesDeleteAPrivateEndpointConnectionResponse contains the response from method DiskAccesses.DeleteAPrivateEndpointConnection.
+type DiskAccessesDeleteAPrivateEndpointConnectionResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Snapshot resource.
-	Snapshot *Snapshot
 }
 
-// UpdateDomainListResultResponse is the response envelope for operations that return a UpdateDomainListResult type.
-type UpdateDomainListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse            *http.Response
-	UpdateDomainListResult *UpdateDomainListResult
-}
-
-// UpdateDomainResponse is the response envelope for operations that return a UpdateDomain type.
-type UpdateDomainResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Defines an update domain for the cloud service.
-	UpdateDomain *UpdateDomain
-}
-
-// VirtualMachineAssessPatchesResultPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineAssessPatchesResult
-// type.
-type VirtualMachineAssessPatchesResultPollerResponse struct {
+// DiskAccessesDeletePollerResponse contains the response from method DiskAccesses.Delete.
+type DiskAccessesDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineAssessPatchesResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskAccessesDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineAssessPatchesResultPoller
+	Poller DiskAccessesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineAssessPatchesResultResponse is the response envelope for operations that return a VirtualMachineAssessPatchesResult type.
-type VirtualMachineAssessPatchesResultResponse struct {
+// DiskAccessesDeleteResponse contains the response from method DiskAccesses.Delete.
+type DiskAccessesDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes the properties of an AssessPatches result.
-	VirtualMachineAssessPatchesResult *VirtualMachineAssessPatchesResult
 }
 
-// VirtualMachineCaptureResultPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineCaptureResult type.
-type VirtualMachineCaptureResultPollerResponse struct {
+// DiskAccessesGetAPrivateEndpointConnectionResponse contains the response from method DiskAccesses.GetAPrivateEndpointConnection.
+type DiskAccessesGetAPrivateEndpointConnectionResponse struct {
+	DiskAccessesGetAPrivateEndpointConnectionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesGetAPrivateEndpointConnectionResult contains the result from method DiskAccesses.GetAPrivateEndpointConnection.
+type DiskAccessesGetAPrivateEndpointConnectionResult struct {
+	PrivateEndpointConnection
+}
+
+// DiskAccessesGetPrivateLinkResourcesResponse contains the response from method DiskAccesses.GetPrivateLinkResources.
+type DiskAccessesGetPrivateLinkResourcesResponse struct {
+	DiskAccessesGetPrivateLinkResourcesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesGetPrivateLinkResourcesResult contains the result from method DiskAccesses.GetPrivateLinkResources.
+type DiskAccessesGetPrivateLinkResourcesResult struct {
+	PrivateLinkResourceListResult
+}
+
+// DiskAccessesGetResponse contains the response from method DiskAccesses.Get.
+type DiskAccessesGetResponse struct {
+	DiskAccessesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesGetResult contains the result from method DiskAccesses.Get.
+type DiskAccessesGetResult struct {
+	DiskAccess
+}
+
+// DiskAccessesListByResourceGroupResponse contains the response from method DiskAccesses.ListByResourceGroup.
+type DiskAccessesListByResourceGroupResponse struct {
+	DiskAccessesListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesListByResourceGroupResult contains the result from method DiskAccesses.ListByResourceGroup.
+type DiskAccessesListByResourceGroupResult struct {
+	DiskAccessList
+}
+
+// DiskAccessesListPrivateEndpointConnectionsResponse contains the response from method DiskAccesses.ListPrivateEndpointConnections.
+type DiskAccessesListPrivateEndpointConnectionsResponse struct {
+	DiskAccessesListPrivateEndpointConnectionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesListPrivateEndpointConnectionsResult contains the result from method DiskAccesses.ListPrivateEndpointConnections.
+type DiskAccessesListPrivateEndpointConnectionsResult struct {
+	PrivateEndpointConnectionListResult
+}
+
+// DiskAccessesListResponse contains the response from method DiskAccesses.List.
+type DiskAccessesListResponse struct {
+	DiskAccessesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesListResult contains the result from method DiskAccesses.List.
+type DiskAccessesListResult struct {
+	DiskAccessList
+}
+
+// DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse contains the response from method DiskAccesses.UpdateAPrivateEndpointConnection.
+type DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineCaptureResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskAccessesUpdateAPrivateEndpointConnectionResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineCaptureResultPoller
+	Poller DiskAccessesUpdateAPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineCaptureResultResponse is the response envelope for operations that return a VirtualMachineCaptureResult type.
-type VirtualMachineCaptureResultResponse struct {
+// DiskAccessesUpdateAPrivateEndpointConnectionResponse contains the response from method DiskAccesses.UpdateAPrivateEndpointConnection.
+type DiskAccessesUpdateAPrivateEndpointConnectionResponse struct {
+	DiskAccessesUpdateAPrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Output of virtual machine capture operation.
-	VirtualMachineCaptureResult *VirtualMachineCaptureResult
 }
 
-// VirtualMachineExtensionImageArrayResponse is the response envelope for operations that return a []*VirtualMachineExtensionImage type.
-type VirtualMachineExtensionImageArrayResponse struct {
+// DiskAccessesUpdateAPrivateEndpointConnectionResult contains the result from method DiskAccesses.UpdateAPrivateEndpointConnection.
+type DiskAccessesUpdateAPrivateEndpointConnectionResult struct {
+	PrivateEndpointConnection
+}
+
+// DiskAccessesUpdatePollerResponse contains the response from method DiskAccesses.Update.
+type DiskAccessesUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskAccessesUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DiskAccessesUpdatePoller
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
 
+// DiskAccessesUpdateResponse contains the response from method DiskAccesses.Update.
+type DiskAccessesUpdateResponse struct {
+	DiskAccessesUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskAccessesUpdateResult contains the result from method DiskAccesses.Update.
+type DiskAccessesUpdateResult struct {
+	DiskAccess
+}
+
+// DiskEncryptionSetsCreateOrUpdatePollerResponse contains the response from method DiskEncryptionSets.CreateOrUpdate.
+type DiskEncryptionSetsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DiskEncryptionSetsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsCreateOrUpdateResponse contains the response from method DiskEncryptionSets.CreateOrUpdate.
+type DiskEncryptionSetsCreateOrUpdateResponse struct {
+	DiskEncryptionSetsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsCreateOrUpdateResult contains the result from method DiskEncryptionSets.CreateOrUpdate.
+type DiskEncryptionSetsCreateOrUpdateResult struct {
+	DiskEncryptionSet
+}
+
+// DiskEncryptionSetsDeletePollerResponse contains the response from method DiskEncryptionSets.Delete.
+type DiskEncryptionSetsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DiskEncryptionSetsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsDeleteResponse contains the response from method DiskEncryptionSets.Delete.
+type DiskEncryptionSetsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsGetResponse contains the response from method DiskEncryptionSets.Get.
+type DiskEncryptionSetsGetResponse struct {
+	DiskEncryptionSetsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsGetResult contains the result from method DiskEncryptionSets.Get.
+type DiskEncryptionSetsGetResult struct {
+	DiskEncryptionSet
+}
+
+// DiskEncryptionSetsListAssociatedResourcesResponse contains the response from method DiskEncryptionSets.ListAssociatedResources.
+type DiskEncryptionSetsListAssociatedResourcesResponse struct {
+	DiskEncryptionSetsListAssociatedResourcesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsListAssociatedResourcesResult contains the result from method DiskEncryptionSets.ListAssociatedResources.
+type DiskEncryptionSetsListAssociatedResourcesResult struct {
+	ResourceURIList
+}
+
+// DiskEncryptionSetsListByResourceGroupResponse contains the response from method DiskEncryptionSets.ListByResourceGroup.
+type DiskEncryptionSetsListByResourceGroupResponse struct {
+	DiskEncryptionSetsListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsListByResourceGroupResult contains the result from method DiskEncryptionSets.ListByResourceGroup.
+type DiskEncryptionSetsListByResourceGroupResult struct {
+	DiskEncryptionSetList
+}
+
+// DiskEncryptionSetsListResponse contains the response from method DiskEncryptionSets.List.
+type DiskEncryptionSetsListResponse struct {
+	DiskEncryptionSetsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsListResult contains the result from method DiskEncryptionSets.List.
+type DiskEncryptionSetsListResult struct {
+	DiskEncryptionSetList
+}
+
+// DiskEncryptionSetsUpdatePollerResponse contains the response from method DiskEncryptionSets.Update.
+type DiskEncryptionSetsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DiskEncryptionSetsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsUpdateResponse contains the response from method DiskEncryptionSets.Update.
+type DiskEncryptionSetsUpdateResponse struct {
+	DiskEncryptionSetsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskEncryptionSetsUpdateResult contains the result from method DiskEncryptionSets.Update.
+type DiskEncryptionSetsUpdateResult struct {
+	DiskEncryptionSet
+}
+
+// DiskRestorePointGetResponse contains the response from method DiskRestorePoint.Get.
+type DiskRestorePointGetResponse struct {
+	DiskRestorePointGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskRestorePointGetResult contains the result from method DiskRestorePoint.Get.
+type DiskRestorePointGetResult struct {
+	DiskRestorePoint
+}
+
+// DiskRestorePointListByRestorePointResponse contains the response from method DiskRestorePoint.ListByRestorePoint.
+type DiskRestorePointListByRestorePointResponse struct {
+	DiskRestorePointListByRestorePointResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DiskRestorePointListByRestorePointResult contains the result from method DiskRestorePoint.ListByRestorePoint.
+type DiskRestorePointListByRestorePointResult struct {
+	DiskRestorePointList
+}
+
+// DisksCreateOrUpdatePollerResponse contains the response from method Disks.CreateOrUpdate.
+type DisksCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DisksCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DisksCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksCreateOrUpdateResponse contains the response from method Disks.CreateOrUpdate.
+type DisksCreateOrUpdateResponse struct {
+	DisksCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksCreateOrUpdateResult contains the result from method Disks.CreateOrUpdate.
+type DisksCreateOrUpdateResult struct {
+	Disk
+}
+
+// DisksDeletePollerResponse contains the response from method Disks.Delete.
+type DisksDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DisksDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DisksDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksDeleteResponse contains the response from method Disks.Delete.
+type DisksDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksGetResponse contains the response from method Disks.Get.
+type DisksGetResponse struct {
+	DisksGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksGetResult contains the result from method Disks.Get.
+type DisksGetResult struct {
+	Disk
+}
+
+// DisksGrantAccessPollerResponse contains the response from method Disks.GrantAccess.
+type DisksGrantAccessPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DisksGrantAccessResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DisksGrantAccessPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksGrantAccessResponse contains the response from method Disks.GrantAccess.
+type DisksGrantAccessResponse struct {
+	DisksGrantAccessResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksGrantAccessResult contains the result from method Disks.GrantAccess.
+type DisksGrantAccessResult struct {
+	AccessURI
+}
+
+// DisksListByResourceGroupResponse contains the response from method Disks.ListByResourceGroup.
+type DisksListByResourceGroupResponse struct {
+	DisksListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksListByResourceGroupResult contains the result from method Disks.ListByResourceGroup.
+type DisksListByResourceGroupResult struct {
+	DiskList
+}
+
+// DisksListResponse contains the response from method Disks.List.
+type DisksListResponse struct {
+	DisksListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksListResult contains the result from method Disks.List.
+type DisksListResult struct {
+	DiskList
+}
+
+// DisksRevokeAccessPollerResponse contains the response from method Disks.RevokeAccess.
+type DisksRevokeAccessPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DisksRevokeAccessResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DisksRevokeAccessPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksRevokeAccessResponse contains the response from method Disks.RevokeAccess.
+type DisksRevokeAccessResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksUpdatePollerResponse contains the response from method Disks.Update.
+type DisksUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (DisksUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller DisksUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksUpdateResponse contains the response from method Disks.Update.
+type DisksUpdateResponse struct {
+	DisksUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DisksUpdateResult contains the result from method Disks.Update.
+type DisksUpdateResult struct {
+	Disk
+}
+
+// GalleriesCreateOrUpdatePollerResponse contains the response from method Galleries.CreateOrUpdate.
+type GalleriesCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleriesCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleriesCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesCreateOrUpdateResponse contains the response from method Galleries.CreateOrUpdate.
+type GalleriesCreateOrUpdateResponse struct {
+	GalleriesCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesCreateOrUpdateResult contains the result from method Galleries.CreateOrUpdate.
+type GalleriesCreateOrUpdateResult struct {
+	Gallery
+}
+
+// GalleriesDeletePollerResponse contains the response from method Galleries.Delete.
+type GalleriesDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleriesDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleriesDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesDeleteResponse contains the response from method Galleries.Delete.
+type GalleriesDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesGetResponse contains the response from method Galleries.Get.
+type GalleriesGetResponse struct {
+	GalleriesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesGetResult contains the result from method Galleries.Get.
+type GalleriesGetResult struct {
+	Gallery
+}
+
+// GalleriesListByResourceGroupResponse contains the response from method Galleries.ListByResourceGroup.
+type GalleriesListByResourceGroupResponse struct {
+	GalleriesListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesListByResourceGroupResult contains the result from method Galleries.ListByResourceGroup.
+type GalleriesListByResourceGroupResult struct {
+	GalleryList
+}
+
+// GalleriesListResponse contains the response from method Galleries.List.
+type GalleriesListResponse struct {
+	GalleriesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesListResult contains the result from method Galleries.List.
+type GalleriesListResult struct {
+	GalleryList
+}
+
+// GalleriesUpdatePollerResponse contains the response from method Galleries.Update.
+type GalleriesUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleriesUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleriesUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesUpdateResponse contains the response from method Galleries.Update.
+type GalleriesUpdateResponse struct {
+	GalleriesUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleriesUpdateResult contains the result from method Galleries.Update.
+type GalleriesUpdateResult struct {
+	Gallery
+}
+
+// GalleryApplicationVersionsCreateOrUpdatePollerResponse contains the response from method GalleryApplicationVersions.CreateOrUpdate.
+type GalleryApplicationVersionsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryApplicationVersionsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsCreateOrUpdateResponse contains the response from method GalleryApplicationVersions.CreateOrUpdate.
+type GalleryApplicationVersionsCreateOrUpdateResponse struct {
+	GalleryApplicationVersionsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsCreateOrUpdateResult contains the result from method GalleryApplicationVersions.CreateOrUpdate.
+type GalleryApplicationVersionsCreateOrUpdateResult struct {
+	GalleryApplicationVersion
+}
+
+// GalleryApplicationVersionsDeletePollerResponse contains the response from method GalleryApplicationVersions.Delete.
+type GalleryApplicationVersionsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryApplicationVersionsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsDeleteResponse contains the response from method GalleryApplicationVersions.Delete.
+type GalleryApplicationVersionsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsGetResponse contains the response from method GalleryApplicationVersions.Get.
+type GalleryApplicationVersionsGetResponse struct {
+	GalleryApplicationVersionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsGetResult contains the result from method GalleryApplicationVersions.Get.
+type GalleryApplicationVersionsGetResult struct {
+	GalleryApplicationVersion
+}
+
+// GalleryApplicationVersionsListByGalleryApplicationResponse contains the response from method GalleryApplicationVersions.ListByGalleryApplication.
+type GalleryApplicationVersionsListByGalleryApplicationResponse struct {
+	GalleryApplicationVersionsListByGalleryApplicationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsListByGalleryApplicationResult contains the result from method GalleryApplicationVersions.ListByGalleryApplication.
+type GalleryApplicationVersionsListByGalleryApplicationResult struct {
+	GalleryApplicationVersionList
+}
+
+// GalleryApplicationVersionsUpdatePollerResponse contains the response from method GalleryApplicationVersions.Update.
+type GalleryApplicationVersionsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryApplicationVersionsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsUpdateResponse contains the response from method GalleryApplicationVersions.Update.
+type GalleryApplicationVersionsUpdateResponse struct {
+	GalleryApplicationVersionsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationVersionsUpdateResult contains the result from method GalleryApplicationVersions.Update.
+type GalleryApplicationVersionsUpdateResult struct {
+	GalleryApplicationVersion
+}
+
+// GalleryApplicationsCreateOrUpdatePollerResponse contains the response from method GalleryApplications.CreateOrUpdate.
+type GalleryApplicationsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryApplicationsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsCreateOrUpdateResponse contains the response from method GalleryApplications.CreateOrUpdate.
+type GalleryApplicationsCreateOrUpdateResponse struct {
+	GalleryApplicationsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsCreateOrUpdateResult contains the result from method GalleryApplications.CreateOrUpdate.
+type GalleryApplicationsCreateOrUpdateResult struct {
+	GalleryApplication
+}
+
+// GalleryApplicationsDeletePollerResponse contains the response from method GalleryApplications.Delete.
+type GalleryApplicationsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryApplicationsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsDeleteResponse contains the response from method GalleryApplications.Delete.
+type GalleryApplicationsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsGetResponse contains the response from method GalleryApplications.Get.
+type GalleryApplicationsGetResponse struct {
+	GalleryApplicationsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsGetResult contains the result from method GalleryApplications.Get.
+type GalleryApplicationsGetResult struct {
+	GalleryApplication
+}
+
+// GalleryApplicationsListByGalleryResponse contains the response from method GalleryApplications.ListByGallery.
+type GalleryApplicationsListByGalleryResponse struct {
+	GalleryApplicationsListByGalleryResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsListByGalleryResult contains the result from method GalleryApplications.ListByGallery.
+type GalleryApplicationsListByGalleryResult struct {
+	GalleryApplicationList
+}
+
+// GalleryApplicationsUpdatePollerResponse contains the response from method GalleryApplications.Update.
+type GalleryApplicationsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryApplicationsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryApplicationsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsUpdateResponse contains the response from method GalleryApplications.Update.
+type GalleryApplicationsUpdateResponse struct {
+	GalleryApplicationsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryApplicationsUpdateResult contains the result from method GalleryApplications.Update.
+type GalleryApplicationsUpdateResult struct {
+	GalleryApplication
+}
+
+// GalleryImageVersionsCreateOrUpdatePollerResponse contains the response from method GalleryImageVersions.CreateOrUpdate.
+type GalleryImageVersionsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImageVersionsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryImageVersionsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsCreateOrUpdateResponse contains the response from method GalleryImageVersions.CreateOrUpdate.
+type GalleryImageVersionsCreateOrUpdateResponse struct {
+	GalleryImageVersionsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsCreateOrUpdateResult contains the result from method GalleryImageVersions.CreateOrUpdate.
+type GalleryImageVersionsCreateOrUpdateResult struct {
+	GalleryImageVersion
+}
+
+// GalleryImageVersionsDeletePollerResponse contains the response from method GalleryImageVersions.Delete.
+type GalleryImageVersionsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImageVersionsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryImageVersionsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsDeleteResponse contains the response from method GalleryImageVersions.Delete.
+type GalleryImageVersionsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsGetResponse contains the response from method GalleryImageVersions.Get.
+type GalleryImageVersionsGetResponse struct {
+	GalleryImageVersionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsGetResult contains the result from method GalleryImageVersions.Get.
+type GalleryImageVersionsGetResult struct {
+	GalleryImageVersion
+}
+
+// GalleryImageVersionsListByGalleryImageResponse contains the response from method GalleryImageVersions.ListByGalleryImage.
+type GalleryImageVersionsListByGalleryImageResponse struct {
+	GalleryImageVersionsListByGalleryImageResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsListByGalleryImageResult contains the result from method GalleryImageVersions.ListByGalleryImage.
+type GalleryImageVersionsListByGalleryImageResult struct {
+	GalleryImageVersionList
+}
+
+// GalleryImageVersionsUpdatePollerResponse contains the response from method GalleryImageVersions.Update.
+type GalleryImageVersionsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImageVersionsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryImageVersionsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsUpdateResponse contains the response from method GalleryImageVersions.Update.
+type GalleryImageVersionsUpdateResponse struct {
+	GalleryImageVersionsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImageVersionsUpdateResult contains the result from method GalleryImageVersions.Update.
+type GalleryImageVersionsUpdateResult struct {
+	GalleryImageVersion
+}
+
+// GalleryImagesCreateOrUpdatePollerResponse contains the response from method GalleryImages.CreateOrUpdate.
+type GalleryImagesCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImagesCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryImagesCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesCreateOrUpdateResponse contains the response from method GalleryImages.CreateOrUpdate.
+type GalleryImagesCreateOrUpdateResponse struct {
+	GalleryImagesCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesCreateOrUpdateResult contains the result from method GalleryImages.CreateOrUpdate.
+type GalleryImagesCreateOrUpdateResult struct {
+	GalleryImage
+}
+
+// GalleryImagesDeletePollerResponse contains the response from method GalleryImages.Delete.
+type GalleryImagesDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImagesDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryImagesDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesDeleteResponse contains the response from method GalleryImages.Delete.
+type GalleryImagesDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesGetResponse contains the response from method GalleryImages.Get.
+type GalleryImagesGetResponse struct {
+	GalleryImagesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesGetResult contains the result from method GalleryImages.Get.
+type GalleryImagesGetResult struct {
+	GalleryImage
+}
+
+// GalleryImagesListByGalleryResponse contains the response from method GalleryImages.ListByGallery.
+type GalleryImagesListByGalleryResponse struct {
+	GalleryImagesListByGalleryResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesListByGalleryResult contains the result from method GalleryImages.ListByGallery.
+type GalleryImagesListByGalleryResult struct {
+	GalleryImageList
+}
+
+// GalleryImagesUpdatePollerResponse contains the response from method GalleryImages.Update.
+type GalleryImagesUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GalleryImagesUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GalleryImagesUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesUpdateResponse contains the response from method GalleryImages.Update.
+type GalleryImagesUpdateResponse struct {
+	GalleryImagesUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GalleryImagesUpdateResult contains the result from method GalleryImages.Update.
+type GalleryImagesUpdateResult struct {
+	GalleryImage
+}
+
+// GallerySharingProfileUpdatePollerResponse contains the response from method GallerySharingProfile.Update.
+type GallerySharingProfileUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (GallerySharingProfileUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller GallerySharingProfileUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GallerySharingProfileUpdateResponse contains the response from method GallerySharingProfile.Update.
+type GallerySharingProfileUpdateResponse struct {
+	GallerySharingProfileUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GallerySharingProfileUpdateResult contains the result from method GallerySharingProfile.Update.
+type GallerySharingProfileUpdateResult struct {
+	SharingUpdate
+}
+
+// ImagesCreateOrUpdatePollerResponse contains the response from method Images.CreateOrUpdate.
+type ImagesCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ImagesCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ImagesCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesCreateOrUpdateResponse contains the response from method Images.CreateOrUpdate.
+type ImagesCreateOrUpdateResponse struct {
+	ImagesCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesCreateOrUpdateResult contains the result from method Images.CreateOrUpdate.
+type ImagesCreateOrUpdateResult struct {
+	Image
+}
+
+// ImagesDeletePollerResponse contains the response from method Images.Delete.
+type ImagesDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ImagesDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ImagesDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesDeleteResponse contains the response from method Images.Delete.
+type ImagesDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesGetResponse contains the response from method Images.Get.
+type ImagesGetResponse struct {
+	ImagesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesGetResult contains the result from method Images.Get.
+type ImagesGetResult struct {
+	Image
+}
+
+// ImagesListByResourceGroupResponse contains the response from method Images.ListByResourceGroup.
+type ImagesListByResourceGroupResponse struct {
+	ImagesListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesListByResourceGroupResult contains the result from method Images.ListByResourceGroup.
+type ImagesListByResourceGroupResult struct {
+	ImageListResult
+}
+
+// ImagesListResponse contains the response from method Images.List.
+type ImagesListResponse struct {
+	ImagesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesListResult contains the result from method Images.List.
+type ImagesListResult struct {
+	ImageListResult
+}
+
+// ImagesUpdatePollerResponse contains the response from method Images.Update.
+type ImagesUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ImagesUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ImagesUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesUpdateResponse contains the response from method Images.Update.
+type ImagesUpdateResponse struct {
+	ImagesUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ImagesUpdateResult contains the result from method Images.Update.
+type ImagesUpdateResult struct {
+	Image
+}
+
+// LogAnalyticsExportRequestRateByIntervalPollerResponse contains the response from method LogAnalytics.ExportRequestRateByInterval.
+type LogAnalyticsExportRequestRateByIntervalPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (LogAnalyticsExportRequestRateByIntervalResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller LogAnalyticsExportRequestRateByIntervalPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LogAnalyticsExportRequestRateByIntervalResponse contains the response from method LogAnalytics.ExportRequestRateByInterval.
+type LogAnalyticsExportRequestRateByIntervalResponse struct {
+	LogAnalyticsExportRequestRateByIntervalResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LogAnalyticsExportRequestRateByIntervalResult contains the result from method LogAnalytics.ExportRequestRateByInterval.
+type LogAnalyticsExportRequestRateByIntervalResult struct {
+	LogAnalyticsOperationResult
+}
+
+// LogAnalyticsExportThrottledRequestsPollerResponse contains the response from method LogAnalytics.ExportThrottledRequests.
+type LogAnalyticsExportThrottledRequestsPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (LogAnalyticsExportThrottledRequestsResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller LogAnalyticsExportThrottledRequestsPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LogAnalyticsExportThrottledRequestsResponse contains the response from method LogAnalytics.ExportThrottledRequests.
+type LogAnalyticsExportThrottledRequestsResponse struct {
+	LogAnalyticsExportThrottledRequestsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LogAnalyticsExportThrottledRequestsResult contains the result from method LogAnalytics.ExportThrottledRequests.
+type LogAnalyticsExportThrottledRequestsResult struct {
+	LogAnalyticsOperationResult
+}
+
+// OperationsListResponse contains the response from method Operations.List.
+type OperationsListResponse struct {
+	OperationsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsListResult contains the result from method Operations.List.
+type OperationsListResult struct {
+	ComputeOperationListResult
+}
+
+// ProximityPlacementGroupsCreateOrUpdateResponse contains the response from method ProximityPlacementGroups.CreateOrUpdate.
+type ProximityPlacementGroupsCreateOrUpdateResponse struct {
+	ProximityPlacementGroupsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProximityPlacementGroupsCreateOrUpdateResult contains the result from method ProximityPlacementGroups.CreateOrUpdate.
+type ProximityPlacementGroupsCreateOrUpdateResult struct {
+	ProximityPlacementGroup
+}
+
+// ProximityPlacementGroupsDeleteResponse contains the response from method ProximityPlacementGroups.Delete.
+type ProximityPlacementGroupsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProximityPlacementGroupsGetResponse contains the response from method ProximityPlacementGroups.Get.
+type ProximityPlacementGroupsGetResponse struct {
+	ProximityPlacementGroupsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProximityPlacementGroupsGetResult contains the result from method ProximityPlacementGroups.Get.
+type ProximityPlacementGroupsGetResult struct {
+	ProximityPlacementGroup
+}
+
+// ProximityPlacementGroupsListByResourceGroupResponse contains the response from method ProximityPlacementGroups.ListByResourceGroup.
+type ProximityPlacementGroupsListByResourceGroupResponse struct {
+	ProximityPlacementGroupsListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProximityPlacementGroupsListByResourceGroupResult contains the result from method ProximityPlacementGroups.ListByResourceGroup.
+type ProximityPlacementGroupsListByResourceGroupResult struct {
+	ProximityPlacementGroupListResult
+}
+
+// ProximityPlacementGroupsListBySubscriptionResponse contains the response from method ProximityPlacementGroups.ListBySubscription.
+type ProximityPlacementGroupsListBySubscriptionResponse struct {
+	ProximityPlacementGroupsListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProximityPlacementGroupsListBySubscriptionResult contains the result from method ProximityPlacementGroups.ListBySubscription.
+type ProximityPlacementGroupsListBySubscriptionResult struct {
+	ProximityPlacementGroupListResult
+}
+
+// ProximityPlacementGroupsUpdateResponse contains the response from method ProximityPlacementGroups.Update.
+type ProximityPlacementGroupsUpdateResponse struct {
+	ProximityPlacementGroupsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProximityPlacementGroupsUpdateResult contains the result from method ProximityPlacementGroups.Update.
+type ProximityPlacementGroupsUpdateResult struct {
+	ProximityPlacementGroup
+}
+
+// ResourceSKUsListResponse contains the response from method ResourceSKUs.List.
+type ResourceSKUsListResponse struct {
+	ResourceSKUsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResourceSKUsListResult contains the result from method ResourceSKUs.List.
+type ResourceSKUsListResult struct {
+	ResourceSKUsResult
+}
+
+// RestorePointCollectionsCreateOrUpdateResponse contains the response from method RestorePointCollections.CreateOrUpdate.
+type RestorePointCollectionsCreateOrUpdateResponse struct {
+	RestorePointCollectionsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsCreateOrUpdateResult contains the result from method RestorePointCollections.CreateOrUpdate.
+type RestorePointCollectionsCreateOrUpdateResult struct {
+	RestorePointCollection
+}
+
+// RestorePointCollectionsDeletePollerResponse contains the response from method RestorePointCollections.Delete.
+type RestorePointCollectionsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RestorePointCollectionsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller RestorePointCollectionsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsDeleteResponse contains the response from method RestorePointCollections.Delete.
+type RestorePointCollectionsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsGetResponse contains the response from method RestorePointCollections.Get.
+type RestorePointCollectionsGetResponse struct {
+	RestorePointCollectionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsGetResult contains the result from method RestorePointCollections.Get.
+type RestorePointCollectionsGetResult struct {
+	RestorePointCollection
+}
+
+// RestorePointCollectionsListAllResponse contains the response from method RestorePointCollections.ListAll.
+type RestorePointCollectionsListAllResponse struct {
+	RestorePointCollectionsListAllResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsListAllResult contains the result from method RestorePointCollections.ListAll.
+type RestorePointCollectionsListAllResult struct {
+	RestorePointCollectionListResult
+}
+
+// RestorePointCollectionsListResponse contains the response from method RestorePointCollections.List.
+type RestorePointCollectionsListResponse struct {
+	RestorePointCollectionsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsListResult contains the result from method RestorePointCollections.List.
+type RestorePointCollectionsListResult struct {
+	RestorePointCollectionListResult
+}
+
+// RestorePointCollectionsUpdateResponse contains the response from method RestorePointCollections.Update.
+type RestorePointCollectionsUpdateResponse struct {
+	RestorePointCollectionsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointCollectionsUpdateResult contains the result from method RestorePointCollections.Update.
+type RestorePointCollectionsUpdateResult struct {
+	RestorePointCollection
+}
+
+// RestorePointsCreatePollerResponse contains the response from method RestorePoints.Create.
+type RestorePointsCreatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RestorePointsCreateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller RestorePointsCreatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointsCreateResponse contains the response from method RestorePoints.Create.
+type RestorePointsCreateResponse struct {
+	RestorePointsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointsCreateResult contains the result from method RestorePoints.Create.
+type RestorePointsCreateResult struct {
+	RestorePoint
+}
+
+// RestorePointsDeletePollerResponse contains the response from method RestorePoints.Delete.
+type RestorePointsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (RestorePointsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller RestorePointsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointsDeleteResponse contains the response from method RestorePoints.Delete.
+type RestorePointsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointsGetResponse contains the response from method RestorePoints.Get.
+type RestorePointsGetResponse struct {
+	RestorePointsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RestorePointsGetResult contains the result from method RestorePoints.Get.
+type RestorePointsGetResult struct {
+	RestorePoint
+}
+
+// SSHPublicKeysCreateResponse contains the response from method SSHPublicKeys.Create.
+type SSHPublicKeysCreateResponse struct {
+	SSHPublicKeysCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysCreateResult contains the result from method SSHPublicKeys.Create.
+type SSHPublicKeysCreateResult struct {
+	SSHPublicKeyResource
+}
+
+// SSHPublicKeysDeleteResponse contains the response from method SSHPublicKeys.Delete.
+type SSHPublicKeysDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysGenerateKeyPairResponse contains the response from method SSHPublicKeys.GenerateKeyPair.
+type SSHPublicKeysGenerateKeyPairResponse struct {
+	SSHPublicKeysGenerateKeyPairResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysGenerateKeyPairResult contains the result from method SSHPublicKeys.GenerateKeyPair.
+type SSHPublicKeysGenerateKeyPairResult struct {
+	SSHPublicKeyGenerateKeyPairResult
+}
+
+// SSHPublicKeysGetResponse contains the response from method SSHPublicKeys.Get.
+type SSHPublicKeysGetResponse struct {
+	SSHPublicKeysGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysGetResult contains the result from method SSHPublicKeys.Get.
+type SSHPublicKeysGetResult struct {
+	SSHPublicKeyResource
+}
+
+// SSHPublicKeysListByResourceGroupResponse contains the response from method SSHPublicKeys.ListByResourceGroup.
+type SSHPublicKeysListByResourceGroupResponse struct {
+	SSHPublicKeysListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysListByResourceGroupResult contains the result from method SSHPublicKeys.ListByResourceGroup.
+type SSHPublicKeysListByResourceGroupResult struct {
+	SSHPublicKeysGroupListResult
+}
+
+// SSHPublicKeysListBySubscriptionResponse contains the response from method SSHPublicKeys.ListBySubscription.
+type SSHPublicKeysListBySubscriptionResponse struct {
+	SSHPublicKeysListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysListBySubscriptionResult contains the result from method SSHPublicKeys.ListBySubscription.
+type SSHPublicKeysListBySubscriptionResult struct {
+	SSHPublicKeysGroupListResult
+}
+
+// SSHPublicKeysUpdateResponse contains the response from method SSHPublicKeys.Update.
+type SSHPublicKeysUpdateResponse struct {
+	SSHPublicKeysUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SSHPublicKeysUpdateResult contains the result from method SSHPublicKeys.Update.
+type SSHPublicKeysUpdateResult struct {
+	SSHPublicKeyResource
+}
+
+// SharedGalleriesGetResponse contains the response from method SharedGalleries.Get.
+type SharedGalleriesGetResponse struct {
+	SharedGalleriesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SharedGalleriesGetResult contains the result from method SharedGalleries.Get.
+type SharedGalleriesGetResult struct {
+	SharedGallery
+}
+
+// SharedGalleriesListResponse contains the response from method SharedGalleries.List.
+type SharedGalleriesListResponse struct {
+	SharedGalleriesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SharedGalleriesListResult contains the result from method SharedGalleries.List.
+type SharedGalleriesListResult struct {
+	SharedGalleryList
+}
+
+// SharedGalleryImageVersionsGetResponse contains the response from method SharedGalleryImageVersions.Get.
+type SharedGalleryImageVersionsGetResponse struct {
+	SharedGalleryImageVersionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SharedGalleryImageVersionsGetResult contains the result from method SharedGalleryImageVersions.Get.
+type SharedGalleryImageVersionsGetResult struct {
+	SharedGalleryImageVersion
+}
+
+// SharedGalleryImageVersionsListResponse contains the response from method SharedGalleryImageVersions.List.
+type SharedGalleryImageVersionsListResponse struct {
+	SharedGalleryImageVersionsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SharedGalleryImageVersionsListResult contains the result from method SharedGalleryImageVersions.List.
+type SharedGalleryImageVersionsListResult struct {
+	SharedGalleryImageVersionList
+}
+
+// SharedGalleryImagesGetResponse contains the response from method SharedGalleryImages.Get.
+type SharedGalleryImagesGetResponse struct {
+	SharedGalleryImagesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SharedGalleryImagesGetResult contains the result from method SharedGalleryImages.Get.
+type SharedGalleryImagesGetResult struct {
+	SharedGalleryImage
+}
+
+// SharedGalleryImagesListResponse contains the response from method SharedGalleryImages.List.
+type SharedGalleryImagesListResponse struct {
+	SharedGalleryImagesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SharedGalleryImagesListResult contains the result from method SharedGalleryImages.List.
+type SharedGalleryImagesListResult struct {
+	SharedGalleryImageList
+}
+
+// SnapshotsCreateOrUpdatePollerResponse contains the response from method Snapshots.CreateOrUpdate.
+type SnapshotsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SnapshotsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller SnapshotsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsCreateOrUpdateResponse contains the response from method Snapshots.CreateOrUpdate.
+type SnapshotsCreateOrUpdateResponse struct {
+	SnapshotsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsCreateOrUpdateResult contains the result from method Snapshots.CreateOrUpdate.
+type SnapshotsCreateOrUpdateResult struct {
+	Snapshot
+}
+
+// SnapshotsDeletePollerResponse contains the response from method Snapshots.Delete.
+type SnapshotsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SnapshotsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller SnapshotsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsDeleteResponse contains the response from method Snapshots.Delete.
+type SnapshotsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsGetResponse contains the response from method Snapshots.Get.
+type SnapshotsGetResponse struct {
+	SnapshotsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsGetResult contains the result from method Snapshots.Get.
+type SnapshotsGetResult struct {
+	Snapshot
+}
+
+// SnapshotsGrantAccessPollerResponse contains the response from method Snapshots.GrantAccess.
+type SnapshotsGrantAccessPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SnapshotsGrantAccessResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller SnapshotsGrantAccessPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsGrantAccessResponse contains the response from method Snapshots.GrantAccess.
+type SnapshotsGrantAccessResponse struct {
+	SnapshotsGrantAccessResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsGrantAccessResult contains the result from method Snapshots.GrantAccess.
+type SnapshotsGrantAccessResult struct {
+	AccessURI
+}
+
+// SnapshotsListByResourceGroupResponse contains the response from method Snapshots.ListByResourceGroup.
+type SnapshotsListByResourceGroupResponse struct {
+	SnapshotsListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsListByResourceGroupResult contains the result from method Snapshots.ListByResourceGroup.
+type SnapshotsListByResourceGroupResult struct {
+	SnapshotList
+}
+
+// SnapshotsListResponse contains the response from method Snapshots.List.
+type SnapshotsListResponse struct {
+	SnapshotsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsListResult contains the result from method Snapshots.List.
+type SnapshotsListResult struct {
+	SnapshotList
+}
+
+// SnapshotsRevokeAccessPollerResponse contains the response from method Snapshots.RevokeAccess.
+type SnapshotsRevokeAccessPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SnapshotsRevokeAccessResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller SnapshotsRevokeAccessPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsRevokeAccessResponse contains the response from method Snapshots.RevokeAccess.
+type SnapshotsRevokeAccessResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsUpdatePollerResponse contains the response from method Snapshots.Update.
+type SnapshotsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (SnapshotsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller SnapshotsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsUpdateResponse contains the response from method Snapshots.Update.
+type SnapshotsUpdateResponse struct {
+	SnapshotsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SnapshotsUpdateResult contains the result from method Snapshots.Update.
+type SnapshotsUpdateResult struct {
+	Snapshot
+}
+
+// UsageListResponse contains the response from method Usage.List.
+type UsageListResponse struct {
+	UsageListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UsageListResult contains the result from method Usage.List.
+type UsageListResult struct {
+	ListUsagesResult
+}
+
+// VirtualMachineExtensionImagesGetResponse contains the response from method VirtualMachineExtensionImages.Get.
+type VirtualMachineExtensionImagesGetResponse struct {
+	VirtualMachineExtensionImagesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionImagesGetResult contains the result from method VirtualMachineExtensionImages.Get.
+type VirtualMachineExtensionImagesGetResult struct {
+	VirtualMachineExtensionImage
+}
+
+// VirtualMachineExtensionImagesListTypesResponse contains the response from method VirtualMachineExtensionImages.ListTypes.
+type VirtualMachineExtensionImagesListTypesResponse struct {
+	VirtualMachineExtensionImagesListTypesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionImagesListTypesResult contains the result from method VirtualMachineExtensionImages.ListTypes.
+type VirtualMachineExtensionImagesListTypesResult struct {
 	// Array of VirtualMachineExtensionImage
 	VirtualMachineExtensionImageArray []*VirtualMachineExtensionImage
 }
 
-// VirtualMachineExtensionImageResponse is the response envelope for operations that return a VirtualMachineExtensionImage type.
-type VirtualMachineExtensionImageResponse struct {
+// VirtualMachineExtensionImagesListVersionsResponse contains the response from method VirtualMachineExtensionImages.ListVersions.
+type VirtualMachineExtensionImagesListVersionsResponse struct {
+	VirtualMachineExtensionImagesListVersionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine Extension Image.
-	VirtualMachineExtensionImage *VirtualMachineExtensionImage
 }
 
-// VirtualMachineExtensionPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineExtension type.
-type VirtualMachineExtensionPollerResponse struct {
+// VirtualMachineExtensionImagesListVersionsResult contains the result from method VirtualMachineExtensionImages.ListVersions.
+type VirtualMachineExtensionImagesListVersionsResult struct {
+	// Array of VirtualMachineExtensionImage
+	VirtualMachineExtensionImageArray []*VirtualMachineExtensionImage
+}
+
+// VirtualMachineExtensionsCreateOrUpdatePollerResponse contains the response from method VirtualMachineExtensions.CreateOrUpdate.
+type VirtualMachineExtensionsCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineExtensionPoller
+	Poller VirtualMachineExtensionsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineExtensionResponse is the response envelope for operations that return a VirtualMachineExtension type.
-type VirtualMachineExtensionResponse struct {
+// VirtualMachineExtensionsCreateOrUpdateResponse contains the response from method VirtualMachineExtensions.CreateOrUpdate.
+type VirtualMachineExtensionsCreateOrUpdateResponse struct {
+	VirtualMachineExtensionsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine Extension.
-	VirtualMachineExtension *VirtualMachineExtension
 }
 
-// VirtualMachineExtensionsListResultResponse is the response envelope for operations that return a VirtualMachineExtensionsListResult type.
-type VirtualMachineExtensionsListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Extension operation response
-	VirtualMachineExtensionsListResult *VirtualMachineExtensionsListResult
+// VirtualMachineExtensionsCreateOrUpdateResult contains the result from method VirtualMachineExtensions.CreateOrUpdate.
+type VirtualMachineExtensionsCreateOrUpdateResult struct {
+	VirtualMachineExtension
 }
 
-// VirtualMachineImageResourceArrayResponse is the response envelope for operations that return a []*VirtualMachineImageResource type.
-type VirtualMachineImageResourceArrayResponse struct {
+// VirtualMachineExtensionsDeletePollerResponse contains the response from method VirtualMachineExtensions.Delete.
+type VirtualMachineExtensionsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineExtensionsDeletePoller
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
 
+// VirtualMachineExtensionsDeleteResponse contains the response from method VirtualMachineExtensions.Delete.
+type VirtualMachineExtensionsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionsGetResponse contains the response from method VirtualMachineExtensions.Get.
+type VirtualMachineExtensionsGetResponse struct {
+	VirtualMachineExtensionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionsGetResult contains the result from method VirtualMachineExtensions.Get.
+type VirtualMachineExtensionsGetResult struct {
+	VirtualMachineExtension
+}
+
+// VirtualMachineExtensionsListResponse contains the response from method VirtualMachineExtensions.List.
+type VirtualMachineExtensionsListResponse struct {
+	VirtualMachineExtensionsListResultEnvelope
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionsListResultEnvelope contains the result from method VirtualMachineExtensions.List.
+type VirtualMachineExtensionsListResultEnvelope struct {
+	VirtualMachineExtensionsListResult
+}
+
+// VirtualMachineExtensionsUpdatePollerResponse contains the response from method VirtualMachineExtensions.Update.
+type VirtualMachineExtensionsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineExtensionsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionsUpdateResponse contains the response from method VirtualMachineExtensions.Update.
+type VirtualMachineExtensionsUpdateResponse struct {
+	VirtualMachineExtensionsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineExtensionsUpdateResult contains the result from method VirtualMachineExtensions.Update.
+type VirtualMachineExtensionsUpdateResult struct {
+	VirtualMachineExtension
+}
+
+// VirtualMachineImagesEdgeZoneGetResponse contains the response from method VirtualMachineImagesEdgeZone.Get.
+type VirtualMachineImagesEdgeZoneGetResponse struct {
+	VirtualMachineImagesEdgeZoneGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesEdgeZoneGetResult contains the result from method VirtualMachineImagesEdgeZone.Get.
+type VirtualMachineImagesEdgeZoneGetResult struct {
+	VirtualMachineImage
+}
+
+// VirtualMachineImagesEdgeZoneListOffersResponse contains the response from method VirtualMachineImagesEdgeZone.ListOffers.
+type VirtualMachineImagesEdgeZoneListOffersResponse struct {
+	VirtualMachineImagesEdgeZoneListOffersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesEdgeZoneListOffersResult contains the result from method VirtualMachineImagesEdgeZone.ListOffers.
+type VirtualMachineImagesEdgeZoneListOffersResult struct {
 	// Array of VirtualMachineImageResource
 	VirtualMachineImageResourceArray []*VirtualMachineImageResource
 }
 
-// VirtualMachineImageResponse is the response envelope for operations that return a VirtualMachineImage type.
-type VirtualMachineImageResponse struct {
+// VirtualMachineImagesEdgeZoneListPublishersResponse contains the response from method VirtualMachineImagesEdgeZone.ListPublishers.
+type VirtualMachineImagesEdgeZoneListPublishersResponse struct {
+	VirtualMachineImagesEdgeZoneListPublishersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine Image.
-	VirtualMachineImage *VirtualMachineImage
 }
 
-// VirtualMachineInstallPatchesResultPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineInstallPatchesResult
-// type.
-type VirtualMachineInstallPatchesResultPollerResponse struct {
+// VirtualMachineImagesEdgeZoneListPublishersResult contains the result from method VirtualMachineImagesEdgeZone.ListPublishers.
+type VirtualMachineImagesEdgeZoneListPublishersResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineImagesEdgeZoneListResponse contains the response from method VirtualMachineImagesEdgeZone.List.
+type VirtualMachineImagesEdgeZoneListResponse struct {
+	VirtualMachineImagesEdgeZoneListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesEdgeZoneListResult contains the result from method VirtualMachineImagesEdgeZone.List.
+type VirtualMachineImagesEdgeZoneListResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineImagesEdgeZoneListSKUsResponse contains the response from method VirtualMachineImagesEdgeZone.ListSKUs.
+type VirtualMachineImagesEdgeZoneListSKUsResponse struct {
+	VirtualMachineImagesEdgeZoneListSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesEdgeZoneListSKUsResult contains the result from method VirtualMachineImagesEdgeZone.ListSKUs.
+type VirtualMachineImagesEdgeZoneListSKUsResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineImagesGetResponse contains the response from method VirtualMachineImages.Get.
+type VirtualMachineImagesGetResponse struct {
+	VirtualMachineImagesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesGetResult contains the result from method VirtualMachineImages.Get.
+type VirtualMachineImagesGetResult struct {
+	VirtualMachineImage
+}
+
+// VirtualMachineImagesListOffersResponse contains the response from method VirtualMachineImages.ListOffers.
+type VirtualMachineImagesListOffersResponse struct {
+	VirtualMachineImagesListOffersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesListOffersResult contains the result from method VirtualMachineImages.ListOffers.
+type VirtualMachineImagesListOffersResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineImagesListPublishersResponse contains the response from method VirtualMachineImages.ListPublishers.
+type VirtualMachineImagesListPublishersResponse struct {
+	VirtualMachineImagesListPublishersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesListPublishersResult contains the result from method VirtualMachineImages.ListPublishers.
+type VirtualMachineImagesListPublishersResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineImagesListResponse contains the response from method VirtualMachineImages.List.
+type VirtualMachineImagesListResponse struct {
+	VirtualMachineImagesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesListResult contains the result from method VirtualMachineImages.List.
+type VirtualMachineImagesListResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineImagesListSKUsResponse contains the response from method VirtualMachineImages.ListSKUs.
+type VirtualMachineImagesListSKUsResponse struct {
+	VirtualMachineImagesListSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineImagesListSKUsResult contains the result from method VirtualMachineImages.ListSKUs.
+type VirtualMachineImagesListSKUsResult struct {
+	// Array of VirtualMachineImageResource
+	VirtualMachineImageResourceArray []*VirtualMachineImageResource
+}
+
+// VirtualMachineRunCommandsCreateOrUpdatePollerResponse contains the response from method VirtualMachineRunCommands.CreateOrUpdate.
+type VirtualMachineRunCommandsCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineInstallPatchesResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandsCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineInstallPatchesResultPoller
+	Poller VirtualMachineRunCommandsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineInstallPatchesResultResponse is the response envelope for operations that return a VirtualMachineInstallPatchesResult type.
-type VirtualMachineInstallPatchesResultResponse struct {
+// VirtualMachineRunCommandsCreateOrUpdateResponse contains the response from method VirtualMachineRunCommands.CreateOrUpdate.
+type VirtualMachineRunCommandsCreateOrUpdateResponse struct {
+	VirtualMachineRunCommandsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// The result summary of an installation operation.
-	VirtualMachineInstallPatchesResult *VirtualMachineInstallPatchesResult
 }
 
-// VirtualMachineInstanceViewResponse is the response envelope for operations that return a VirtualMachineInstanceView type.
-type VirtualMachineInstanceViewResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The instance view of a virtual machine.
-	VirtualMachineInstanceView *VirtualMachineInstanceView
+// VirtualMachineRunCommandsCreateOrUpdateResult contains the result from method VirtualMachineRunCommands.CreateOrUpdate.
+type VirtualMachineRunCommandsCreateOrUpdateResult struct {
+	VirtualMachineRunCommand
 }
 
-// VirtualMachineListResultResponse is the response envelope for operations that return a VirtualMachineListResult type.
-type VirtualMachineListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Virtual Machine operation response.
-	VirtualMachineListResult *VirtualMachineListResult
-}
-
-// VirtualMachinePollerResponse is the response envelope for operations that asynchronously return a VirtualMachine type.
-type VirtualMachinePollerResponse struct {
+// VirtualMachineRunCommandsDeletePollerResponse contains the response from method VirtualMachineRunCommands.Delete.
+type VirtualMachineRunCommandsDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandsDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachinePoller
+	Poller VirtualMachineRunCommandsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineResponse is the response envelope for operations that return a VirtualMachine type.
-type VirtualMachineResponse struct {
+// VirtualMachineRunCommandsDeleteResponse contains the response from method VirtualMachineRunCommands.Delete.
+type VirtualMachineRunCommandsDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine.
-	VirtualMachine *VirtualMachine
 }
 
-// VirtualMachineRunCommandPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineRunCommand type.
-type VirtualMachineRunCommandPollerResponse struct {
+// VirtualMachineRunCommandsGetByVirtualMachineResponse contains the response from method VirtualMachineRunCommands.GetByVirtualMachine.
+type VirtualMachineRunCommandsGetByVirtualMachineResponse struct {
+	VirtualMachineRunCommandsGetByVirtualMachineResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineRunCommandsGetByVirtualMachineResult contains the result from method VirtualMachineRunCommands.GetByVirtualMachine.
+type VirtualMachineRunCommandsGetByVirtualMachineResult struct {
+	VirtualMachineRunCommand
+}
+
+// VirtualMachineRunCommandsGetResponse contains the response from method VirtualMachineRunCommands.Get.
+type VirtualMachineRunCommandsGetResponse struct {
+	VirtualMachineRunCommandsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineRunCommandsGetResult contains the result from method VirtualMachineRunCommands.Get.
+type VirtualMachineRunCommandsGetResult struct {
+	RunCommandDocument
+}
+
+// VirtualMachineRunCommandsListByVirtualMachineResponse contains the response from method VirtualMachineRunCommands.ListByVirtualMachine.
+type VirtualMachineRunCommandsListByVirtualMachineResponse struct {
+	VirtualMachineRunCommandsListByVirtualMachineResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineRunCommandsListByVirtualMachineResult contains the result from method VirtualMachineRunCommands.ListByVirtualMachine.
+type VirtualMachineRunCommandsListByVirtualMachineResult struct {
+	VirtualMachineRunCommandsListResult
+}
+
+// VirtualMachineRunCommandsListResponse contains the response from method VirtualMachineRunCommands.List.
+type VirtualMachineRunCommandsListResponse struct {
+	VirtualMachineRunCommandsListResultEnvelope
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineRunCommandsListResultEnvelope contains the result from method VirtualMachineRunCommands.List.
+type VirtualMachineRunCommandsListResultEnvelope struct {
+	RunCommandListResult
+}
+
+// VirtualMachineRunCommandsUpdatePollerResponse contains the response from method VirtualMachineRunCommands.Update.
+type VirtualMachineRunCommandsUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandsUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineRunCommandPoller
+	Poller VirtualMachineRunCommandsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineRunCommandResponse is the response envelope for operations that return a VirtualMachineRunCommand type.
-type VirtualMachineRunCommandResponse struct {
+// VirtualMachineRunCommandsUpdateResponse contains the response from method VirtualMachineRunCommands.Update.
+type VirtualMachineRunCommandsUpdateResponse struct {
+	VirtualMachineRunCommandsUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine run command.
-	VirtualMachineRunCommand *VirtualMachineRunCommand
 }
 
-// VirtualMachineRunCommandsListResultResponse is the response envelope for operations that return a VirtualMachineRunCommandsListResult type.
-type VirtualMachineRunCommandsListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List run command operation response
-	VirtualMachineRunCommandsListResult *VirtualMachineRunCommandsListResult
+// VirtualMachineRunCommandsUpdateResult contains the result from method VirtualMachineRunCommands.Update.
+type VirtualMachineRunCommandsUpdateResult struct {
+	VirtualMachineRunCommand
 }
 
-// VirtualMachineScaleSetExtensionListResultResponse is the response envelope for operations that return a VirtualMachineScaleSetExtensionListResult type.
-type VirtualMachineScaleSetExtensionListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List VM scale set extension operation response.
-	VirtualMachineScaleSetExtensionListResult *VirtualMachineScaleSetExtensionListResult
-}
-
-// VirtualMachineScaleSetExtensionPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineScaleSetExtension type.
-type VirtualMachineScaleSetExtensionPollerResponse struct {
+// VirtualMachineScaleSetExtensionsCreateOrUpdatePollerResponse contains the response from method VirtualMachineScaleSetExtensions.CreateOrUpdate.
+type VirtualMachineScaleSetExtensionsCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionsCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineScaleSetExtensionPoller
+	Poller VirtualMachineScaleSetExtensionsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineScaleSetExtensionResponse is the response envelope for operations that return a VirtualMachineScaleSetExtension type.
-type VirtualMachineScaleSetExtensionResponse struct {
+// VirtualMachineScaleSetExtensionsCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetExtensions.CreateOrUpdate.
+type VirtualMachineScaleSetExtensionsCreateOrUpdateResponse struct {
+	VirtualMachineScaleSetExtensionsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine Scale Set Extension.
-	VirtualMachineScaleSetExtension *VirtualMachineScaleSetExtension
 }
 
-// VirtualMachineScaleSetInstanceViewResponse is the response envelope for operations that return a VirtualMachineScaleSetInstanceView type.
-type VirtualMachineScaleSetInstanceViewResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The instance view of a virtual machine scale set.
-	VirtualMachineScaleSetInstanceView *VirtualMachineScaleSetInstanceView
+// VirtualMachineScaleSetExtensionsCreateOrUpdateResult contains the result from method VirtualMachineScaleSetExtensions.CreateOrUpdate.
+type VirtualMachineScaleSetExtensionsCreateOrUpdateResult struct {
+	VirtualMachineScaleSetExtension
 }
 
-// VirtualMachineScaleSetListOSUpgradeHistoryResponse is the response envelope for operations that return a VirtualMachineScaleSetListOSUpgradeHistory type.
-type VirtualMachineScaleSetListOSUpgradeHistoryResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// List of Virtual Machine Scale Set OS Upgrade History operation response.
-	VirtualMachineScaleSetListOSUpgradeHistory *VirtualMachineScaleSetListOSUpgradeHistory
-}
-
-// VirtualMachineScaleSetListResultResponse is the response envelope for operations that return a VirtualMachineScaleSetListResult type.
-type VirtualMachineScaleSetListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Virtual Machine operation response.
-	VirtualMachineScaleSetListResult *VirtualMachineScaleSetListResult
-}
-
-// VirtualMachineScaleSetListSKUsResultResponse is the response envelope for operations that return a VirtualMachineScaleSetListSKUsResult type.
-type VirtualMachineScaleSetListSKUsResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The Virtual Machine Scale Set List Skus operation response.
-	VirtualMachineScaleSetListSKUsResult *VirtualMachineScaleSetListSKUsResult
-}
-
-// VirtualMachineScaleSetListWithLinkResultResponse is the response envelope for operations that return a VirtualMachineScaleSetListWithLinkResult type.
-type VirtualMachineScaleSetListWithLinkResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Virtual Machine operation response.
-	VirtualMachineScaleSetListWithLinkResult *VirtualMachineScaleSetListWithLinkResult
-}
-
-// VirtualMachineScaleSetPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineScaleSet type.
-type VirtualMachineScaleSetPollerResponse struct {
+// VirtualMachineScaleSetExtensionsDeletePollerResponse contains the response from method VirtualMachineScaleSetExtensions.Delete.
+type VirtualMachineScaleSetExtensionsDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionsDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineScaleSetPoller
+	Poller VirtualMachineScaleSetExtensionsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineScaleSetResponse is the response envelope for operations that return a VirtualMachineScaleSet type.
-type VirtualMachineScaleSetResponse struct {
+// VirtualMachineScaleSetExtensionsDeleteResponse contains the response from method VirtualMachineScaleSetExtensions.Delete.
+type VirtualMachineScaleSetExtensionsDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a Virtual Machine Scale Set.
-	VirtualMachineScaleSet *VirtualMachineScaleSet
 }
 
-// VirtualMachineScaleSetVMExtensionPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineScaleSetVMExtension
-// type.
-type VirtualMachineScaleSetVMExtensionPollerResponse struct {
+// VirtualMachineScaleSetExtensionsGetResponse contains the response from method VirtualMachineScaleSetExtensions.Get.
+type VirtualMachineScaleSetExtensionsGetResponse struct {
+	VirtualMachineScaleSetExtensionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetExtensionsGetResult contains the result from method VirtualMachineScaleSetExtensions.Get.
+type VirtualMachineScaleSetExtensionsGetResult struct {
+	VirtualMachineScaleSetExtension
+}
+
+// VirtualMachineScaleSetExtensionsListResponse contains the response from method VirtualMachineScaleSetExtensions.List.
+type VirtualMachineScaleSetExtensionsListResponse struct {
+	VirtualMachineScaleSetExtensionsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetExtensionsListResult contains the result from method VirtualMachineScaleSetExtensions.List.
+type VirtualMachineScaleSetExtensionsListResult struct {
+	VirtualMachineScaleSetExtensionListResult
+}
+
+// VirtualMachineScaleSetExtensionsUpdatePollerResponse contains the response from method VirtualMachineScaleSetExtensions.Update.
+type VirtualMachineScaleSetExtensionsUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionsUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineScaleSetVMExtensionPoller
+	Poller VirtualMachineScaleSetExtensionsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineScaleSetVMExtensionResponse is the response envelope for operations that return a VirtualMachineScaleSetVMExtension type.
-type VirtualMachineScaleSetVMExtensionResponse struct {
+// VirtualMachineScaleSetExtensionsUpdateResponse contains the response from method VirtualMachineScaleSetExtensions.Update.
+type VirtualMachineScaleSetExtensionsUpdateResponse struct {
+	VirtualMachineScaleSetExtensionsUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a VMSS VM Extension.
-	VirtualMachineScaleSetVMExtension *VirtualMachineScaleSetVMExtension
 }
 
-// VirtualMachineScaleSetVMExtensionsListResultResponse is the response envelope for operations that return a VirtualMachineScaleSetVMExtensionsListResult
-// type.
-type VirtualMachineScaleSetVMExtensionsListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List VMSS VM Extension operation response
-	VirtualMachineScaleSetVMExtensionsListResult *VirtualMachineScaleSetVMExtensionsListResult
+// VirtualMachineScaleSetExtensionsUpdateResult contains the result from method VirtualMachineScaleSetExtensions.Update.
+type VirtualMachineScaleSetExtensionsUpdateResult struct {
+	VirtualMachineScaleSetExtension
 }
 
-// VirtualMachineScaleSetVMInstanceViewResponse is the response envelope for operations that return a VirtualMachineScaleSetVMInstanceView type.
-type VirtualMachineScaleSetVMInstanceViewResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The instance view of a virtual machine scale set VM.
-	VirtualMachineScaleSetVMInstanceView *VirtualMachineScaleSetVMInstanceView
-}
-
-// VirtualMachineScaleSetVMListResultResponse is the response envelope for operations that return a VirtualMachineScaleSetVMListResult type.
-type VirtualMachineScaleSetVMListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// The List Virtual Machine Scale Set VMs operation response.
-	VirtualMachineScaleSetVMListResult *VirtualMachineScaleSetVMListResult
-}
-
-// VirtualMachineScaleSetVMPollerResponse is the response envelope for operations that asynchronously return a VirtualMachineScaleSetVM type.
-type VirtualMachineScaleSetVMPollerResponse struct {
+// VirtualMachineScaleSetRollingUpgradesCancelPollerResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.Cancel.
+type VirtualMachineScaleSetRollingUpgradesCancelPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesCancelResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller VirtualMachineScaleSetVMPoller
+	Poller VirtualMachineScaleSetRollingUpgradesCancelPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualMachineScaleSetVMResponse is the response envelope for operations that return a VirtualMachineScaleSetVM type.
-type VirtualMachineScaleSetVMResponse struct {
+// VirtualMachineScaleSetRollingUpgradesCancelResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.Cancel.
+type VirtualMachineScaleSetRollingUpgradesCancelResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Describes a virtual machine scale set virtual machine.
-	VirtualMachineScaleSetVM *VirtualMachineScaleSetVM
 }
 
-// VirtualMachineSizeListResultResponse is the response envelope for operations that return a VirtualMachineSizeListResult type.
-type VirtualMachineSizeListResultResponse struct {
+// VirtualMachineScaleSetRollingUpgradesGetLatestResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.GetLatest.
+type VirtualMachineScaleSetRollingUpgradesGetLatestResponse struct {
+	VirtualMachineScaleSetRollingUpgradesGetLatestResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
 
-	// The List Virtual Machine operation response.
-	VirtualMachineSizeListResult *VirtualMachineSizeListResult
+// VirtualMachineScaleSetRollingUpgradesGetLatestResult contains the result from method VirtualMachineScaleSetRollingUpgrades.GetLatest.
+type VirtualMachineScaleSetRollingUpgradesGetLatestResult struct {
+	RollingUpgradeStatusInfo
+}
+
+// VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.StartExtensionUpgrade.
+type VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.StartExtensionUpgrade.
+type VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.StartOSUpgrade.
+type VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetRollingUpgradesStartOSUpgradePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse contains the response from method VirtualMachineScaleSetRollingUpgrades.StartOSUpgrade.
+type VirtualMachineScaleSetRollingUpgradesStartOSUpgradeResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse contains the response from method VirtualMachineScaleSetVMExtensions.CreateOrUpdate.
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMExtensionsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetVMExtensions.CreateOrUpdate.
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdateResponse struct {
+	VirtualMachineScaleSetVMExtensionsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsCreateOrUpdateResult contains the result from method VirtualMachineScaleSetVMExtensions.CreateOrUpdate.
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdateResult struct {
+	VirtualMachineScaleSetVMExtension
+}
+
+// VirtualMachineScaleSetVMExtensionsDeletePollerResponse contains the response from method VirtualMachineScaleSetVMExtensions.Delete.
+type VirtualMachineScaleSetVMExtensionsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMExtensionsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsDeleteResponse contains the response from method VirtualMachineScaleSetVMExtensions.Delete.
+type VirtualMachineScaleSetVMExtensionsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsGetResponse contains the response from method VirtualMachineScaleSetVMExtensions.Get.
+type VirtualMachineScaleSetVMExtensionsGetResponse struct {
+	VirtualMachineScaleSetVMExtensionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsGetResult contains the result from method VirtualMachineScaleSetVMExtensions.Get.
+type VirtualMachineScaleSetVMExtensionsGetResult struct {
+	VirtualMachineScaleSetVMExtension
+}
+
+// VirtualMachineScaleSetVMExtensionsListResponse contains the response from method VirtualMachineScaleSetVMExtensions.List.
+type VirtualMachineScaleSetVMExtensionsListResponse struct {
+	VirtualMachineScaleSetVMExtensionsListResultEnvelope
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsListResultEnvelope contains the result from method VirtualMachineScaleSetVMExtensions.List.
+type VirtualMachineScaleSetVMExtensionsListResultEnvelope struct {
+	VirtualMachineScaleSetVMExtensionsListResult
+}
+
+// VirtualMachineScaleSetVMExtensionsUpdatePollerResponse contains the response from method VirtualMachineScaleSetVMExtensions.Update.
+type VirtualMachineScaleSetVMExtensionsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMExtensionsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsUpdateResponse contains the response from method VirtualMachineScaleSetVMExtensions.Update.
+type VirtualMachineScaleSetVMExtensionsUpdateResponse struct {
+	VirtualMachineScaleSetVMExtensionsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMExtensionsUpdateResult contains the result from method VirtualMachineScaleSetVMExtensions.Update.
+type VirtualMachineScaleSetVMExtensionsUpdateResult struct {
+	VirtualMachineScaleSetVMExtension
+}
+
+// VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse contains the response from method VirtualMachineScaleSetVMRunCommands.CreateOrUpdate.
+type VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetVMRunCommands.CreateOrUpdate.
+type VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResponse struct {
+	VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResult contains the result from method VirtualMachineScaleSetVMRunCommands.CreateOrUpdate.
+type VirtualMachineScaleSetVMRunCommandsCreateOrUpdateResult struct {
+	VirtualMachineRunCommand
+}
+
+// VirtualMachineScaleSetVMRunCommandsDeletePollerResponse contains the response from method VirtualMachineScaleSetVMRunCommands.Delete.
+type VirtualMachineScaleSetVMRunCommandsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMRunCommandsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMRunCommandsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsDeleteResponse contains the response from method VirtualMachineScaleSetVMRunCommands.Delete.
+type VirtualMachineScaleSetVMRunCommandsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsGetResponse contains the response from method VirtualMachineScaleSetVMRunCommands.Get.
+type VirtualMachineScaleSetVMRunCommandsGetResponse struct {
+	VirtualMachineScaleSetVMRunCommandsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsGetResult contains the result from method VirtualMachineScaleSetVMRunCommands.Get.
+type VirtualMachineScaleSetVMRunCommandsGetResult struct {
+	VirtualMachineRunCommand
+}
+
+// VirtualMachineScaleSetVMRunCommandsListResponse contains the response from method VirtualMachineScaleSetVMRunCommands.List.
+type VirtualMachineScaleSetVMRunCommandsListResponse struct {
+	VirtualMachineScaleSetVMRunCommandsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsListResult contains the result from method VirtualMachineScaleSetVMRunCommands.List.
+type VirtualMachineScaleSetVMRunCommandsListResult struct {
+	VirtualMachineRunCommandsListResult
+}
+
+// VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse contains the response from method VirtualMachineScaleSetVMRunCommands.Update.
+type VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMRunCommandsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMRunCommandsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsUpdateResponse contains the response from method VirtualMachineScaleSetVMRunCommands.Update.
+type VirtualMachineScaleSetVMRunCommandsUpdateResponse struct {
+	VirtualMachineScaleSetVMRunCommandsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMRunCommandsUpdateResult contains the result from method VirtualMachineScaleSetVMRunCommands.Update.
+type VirtualMachineScaleSetVMRunCommandsUpdateResult struct {
+	VirtualMachineRunCommand
+}
+
+// VirtualMachineScaleSetVMsDeallocatePollerResponse contains the response from method VirtualMachineScaleSetVMs.Deallocate.
+type VirtualMachineScaleSetVMsDeallocatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsDeallocateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsDeallocatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsDeallocateResponse contains the response from method VirtualMachineScaleSetVMs.Deallocate.
+type VirtualMachineScaleSetVMsDeallocateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsDeletePollerResponse contains the response from method VirtualMachineScaleSetVMs.Delete.
+type VirtualMachineScaleSetVMsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsDeleteResponse contains the response from method VirtualMachineScaleSetVMs.Delete.
+type VirtualMachineScaleSetVMsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsGetInstanceViewResponse contains the response from method VirtualMachineScaleSetVMs.GetInstanceView.
+type VirtualMachineScaleSetVMsGetInstanceViewResponse struct {
+	VirtualMachineScaleSetVMsGetInstanceViewResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsGetInstanceViewResult contains the result from method VirtualMachineScaleSetVMs.GetInstanceView.
+type VirtualMachineScaleSetVMsGetInstanceViewResult struct {
+	VirtualMachineScaleSetVMInstanceView
+}
+
+// VirtualMachineScaleSetVMsGetResponse contains the response from method VirtualMachineScaleSetVMs.Get.
+type VirtualMachineScaleSetVMsGetResponse struct {
+	VirtualMachineScaleSetVMsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsGetResult contains the result from method VirtualMachineScaleSetVMs.Get.
+type VirtualMachineScaleSetVMsGetResult struct {
+	VirtualMachineScaleSetVM
+}
+
+// VirtualMachineScaleSetVMsListResponse contains the response from method VirtualMachineScaleSetVMs.List.
+type VirtualMachineScaleSetVMsListResponse struct {
+	VirtualMachineScaleSetVMsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsListResult contains the result from method VirtualMachineScaleSetVMs.List.
+type VirtualMachineScaleSetVMsListResult struct {
+	VirtualMachineScaleSetVMListResult
+}
+
+// VirtualMachineScaleSetVMsPerformMaintenancePollerResponse contains the response from method VirtualMachineScaleSetVMs.PerformMaintenance.
+type VirtualMachineScaleSetVMsPerformMaintenancePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsPerformMaintenanceResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsPerformMaintenancePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsPerformMaintenanceResponse contains the response from method VirtualMachineScaleSetVMs.PerformMaintenance.
+type VirtualMachineScaleSetVMsPerformMaintenanceResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsPowerOffPollerResponse contains the response from method VirtualMachineScaleSetVMs.PowerOff.
+type VirtualMachineScaleSetVMsPowerOffPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsPowerOffResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsPowerOffPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsPowerOffResponse contains the response from method VirtualMachineScaleSetVMs.PowerOff.
+type VirtualMachineScaleSetVMsPowerOffResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRedeployPollerResponse contains the response from method VirtualMachineScaleSetVMs.Redeploy.
+type VirtualMachineScaleSetVMsRedeployPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsRedeployResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsRedeployPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRedeployResponse contains the response from method VirtualMachineScaleSetVMs.Redeploy.
+type VirtualMachineScaleSetVMsRedeployResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsReimageAllPollerResponse contains the response from method VirtualMachineScaleSetVMs.ReimageAll.
+type VirtualMachineScaleSetVMsReimageAllPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsReimageAllResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsReimageAllPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsReimageAllResponse contains the response from method VirtualMachineScaleSetVMs.ReimageAll.
+type VirtualMachineScaleSetVMsReimageAllResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsReimagePollerResponse contains the response from method VirtualMachineScaleSetVMs.Reimage.
+type VirtualMachineScaleSetVMsReimagePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsReimageResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsReimagePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsReimageResponse contains the response from method VirtualMachineScaleSetVMs.Reimage.
+type VirtualMachineScaleSetVMsReimageResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRestartPollerResponse contains the response from method VirtualMachineScaleSetVMs.Restart.
+type VirtualMachineScaleSetVMsRestartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsRestartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsRestartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRestartResponse contains the response from method VirtualMachineScaleSetVMs.Restart.
+type VirtualMachineScaleSetVMsRestartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse contains the response from method VirtualMachineScaleSetVMs.RetrieveBootDiagnosticsData.
+type VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse struct {
+	VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResult contains the result from method VirtualMachineScaleSetVMs.RetrieveBootDiagnosticsData.
+type VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResult struct {
+	RetrieveBootDiagnosticsDataResult
+}
+
+// VirtualMachineScaleSetVMsRunCommandPollerResponse contains the response from method VirtualMachineScaleSetVMs.RunCommand.
+type VirtualMachineScaleSetVMsRunCommandPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsRunCommandResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsRunCommandPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRunCommandResponse contains the response from method VirtualMachineScaleSetVMs.RunCommand.
+type VirtualMachineScaleSetVMsRunCommandResponse struct {
+	VirtualMachineScaleSetVMsRunCommandResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsRunCommandResult contains the result from method VirtualMachineScaleSetVMs.RunCommand.
+type VirtualMachineScaleSetVMsRunCommandResult struct {
+	RunCommandResult
+}
+
+// VirtualMachineScaleSetVMsSimulateEvictionResponse contains the response from method VirtualMachineScaleSetVMs.SimulateEviction.
+type VirtualMachineScaleSetVMsSimulateEvictionResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsStartPollerResponse contains the response from method VirtualMachineScaleSetVMs.Start.
+type VirtualMachineScaleSetVMsStartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsStartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsStartResponse contains the response from method VirtualMachineScaleSetVMs.Start.
+type VirtualMachineScaleSetVMsStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsUpdatePollerResponse contains the response from method VirtualMachineScaleSetVMs.Update.
+type VirtualMachineScaleSetVMsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetVMsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsUpdateResponse contains the response from method VirtualMachineScaleSetVMs.Update.
+type VirtualMachineScaleSetVMsUpdateResponse struct {
+	VirtualMachineScaleSetVMsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetVMsUpdateResult contains the result from method VirtualMachineScaleSetVMs.Update.
+type VirtualMachineScaleSetVMsUpdateResult struct {
+	VirtualMachineScaleSetVM
+}
+
+// VirtualMachineScaleSetsConvertToSinglePlacementGroupResponse contains the response from method VirtualMachineScaleSets.ConvertToSinglePlacementGroup.
+type VirtualMachineScaleSetsConvertToSinglePlacementGroupResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsCreateOrUpdatePollerResponse contains the response from method VirtualMachineScaleSets.CreateOrUpdate.
+type VirtualMachineScaleSetsCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsCreateOrUpdateResponse contains the response from method VirtualMachineScaleSets.CreateOrUpdate.
+type VirtualMachineScaleSetsCreateOrUpdateResponse struct {
+	VirtualMachineScaleSetsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsCreateOrUpdateResult contains the result from method VirtualMachineScaleSets.CreateOrUpdate.
+type VirtualMachineScaleSetsCreateOrUpdateResult struct {
+	VirtualMachineScaleSet
+}
+
+// VirtualMachineScaleSetsDeallocatePollerResponse contains the response from method VirtualMachineScaleSets.Deallocate.
+type VirtualMachineScaleSetsDeallocatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsDeallocateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsDeallocatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsDeallocateResponse contains the response from method VirtualMachineScaleSets.Deallocate.
+type VirtualMachineScaleSetsDeallocateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsDeleteInstancesPollerResponse contains the response from method VirtualMachineScaleSets.DeleteInstances.
+type VirtualMachineScaleSetsDeleteInstancesPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsDeleteInstancesResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsDeleteInstancesPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsDeleteInstancesResponse contains the response from method VirtualMachineScaleSets.DeleteInstances.
+type VirtualMachineScaleSetsDeleteInstancesResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsDeletePollerResponse contains the response from method VirtualMachineScaleSets.Delete.
+type VirtualMachineScaleSetsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsDeleteResponse contains the response from method VirtualMachineScaleSets.Delete.
+type VirtualMachineScaleSetsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse contains the response from method VirtualMachineScaleSets.ForceRecoveryServiceFabricPlatformUpdateDomainWalk.
+type VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse struct {
+	VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResult contains the result from method VirtualMachineScaleSets.ForceRecoveryServiceFabricPlatformUpdateDomainWalk.
+type VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkResult struct {
+	RecoveryWalkResponse
+}
+
+// VirtualMachineScaleSetsGetInstanceViewResponse contains the response from method VirtualMachineScaleSets.GetInstanceView.
+type VirtualMachineScaleSetsGetInstanceViewResponse struct {
+	VirtualMachineScaleSetsGetInstanceViewResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsGetInstanceViewResult contains the result from method VirtualMachineScaleSets.GetInstanceView.
+type VirtualMachineScaleSetsGetInstanceViewResult struct {
+	VirtualMachineScaleSetInstanceView
+}
+
+// VirtualMachineScaleSetsGetOSUpgradeHistoryResponse contains the response from method VirtualMachineScaleSets.GetOSUpgradeHistory.
+type VirtualMachineScaleSetsGetOSUpgradeHistoryResponse struct {
+	VirtualMachineScaleSetsGetOSUpgradeHistoryResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsGetOSUpgradeHistoryResult contains the result from method VirtualMachineScaleSets.GetOSUpgradeHistory.
+type VirtualMachineScaleSetsGetOSUpgradeHistoryResult struct {
+	VirtualMachineScaleSetListOSUpgradeHistory
+}
+
+// VirtualMachineScaleSetsGetResponse contains the response from method VirtualMachineScaleSets.Get.
+type VirtualMachineScaleSetsGetResponse struct {
+	VirtualMachineScaleSetsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsGetResult contains the result from method VirtualMachineScaleSets.Get.
+type VirtualMachineScaleSetsGetResult struct {
+	VirtualMachineScaleSet
+}
+
+// VirtualMachineScaleSetsListAllResponse contains the response from method VirtualMachineScaleSets.ListAll.
+type VirtualMachineScaleSetsListAllResponse struct {
+	VirtualMachineScaleSetsListAllResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsListAllResult contains the result from method VirtualMachineScaleSets.ListAll.
+type VirtualMachineScaleSetsListAllResult struct {
+	VirtualMachineScaleSetListWithLinkResult
+}
+
+// VirtualMachineScaleSetsListByLocationResponse contains the response from method VirtualMachineScaleSets.ListByLocation.
+type VirtualMachineScaleSetsListByLocationResponse struct {
+	VirtualMachineScaleSetsListByLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsListByLocationResult contains the result from method VirtualMachineScaleSets.ListByLocation.
+type VirtualMachineScaleSetsListByLocationResult struct {
+	VirtualMachineScaleSetListResult
+}
+
+// VirtualMachineScaleSetsListResponse contains the response from method VirtualMachineScaleSets.List.
+type VirtualMachineScaleSetsListResponse struct {
+	VirtualMachineScaleSetsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsListResult contains the result from method VirtualMachineScaleSets.List.
+type VirtualMachineScaleSetsListResult struct {
+	VirtualMachineScaleSetListResult
+}
+
+// VirtualMachineScaleSetsListSKUsResponse contains the response from method VirtualMachineScaleSets.ListSKUs.
+type VirtualMachineScaleSetsListSKUsResponse struct {
+	VirtualMachineScaleSetsListSKUsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsListSKUsResult contains the result from method VirtualMachineScaleSets.ListSKUs.
+type VirtualMachineScaleSetsListSKUsResult struct {
+	VirtualMachineScaleSetListSKUsResult
+}
+
+// VirtualMachineScaleSetsPerformMaintenancePollerResponse contains the response from method VirtualMachineScaleSets.PerformMaintenance.
+type VirtualMachineScaleSetsPerformMaintenancePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsPerformMaintenanceResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsPerformMaintenancePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsPerformMaintenanceResponse contains the response from method VirtualMachineScaleSets.PerformMaintenance.
+type VirtualMachineScaleSetsPerformMaintenanceResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsPowerOffPollerResponse contains the response from method VirtualMachineScaleSets.PowerOff.
+type VirtualMachineScaleSetsPowerOffPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsPowerOffResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsPowerOffPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsPowerOffResponse contains the response from method VirtualMachineScaleSets.PowerOff.
+type VirtualMachineScaleSetsPowerOffResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsRedeployPollerResponse contains the response from method VirtualMachineScaleSets.Redeploy.
+type VirtualMachineScaleSetsRedeployPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsRedeployResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsRedeployPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsRedeployResponse contains the response from method VirtualMachineScaleSets.Redeploy.
+type VirtualMachineScaleSetsRedeployResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsReimageAllPollerResponse contains the response from method VirtualMachineScaleSets.ReimageAll.
+type VirtualMachineScaleSetsReimageAllPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsReimageAllResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsReimageAllPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsReimageAllResponse contains the response from method VirtualMachineScaleSets.ReimageAll.
+type VirtualMachineScaleSetsReimageAllResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsReimagePollerResponse contains the response from method VirtualMachineScaleSets.Reimage.
+type VirtualMachineScaleSetsReimagePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsReimageResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsReimagePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsReimageResponse contains the response from method VirtualMachineScaleSets.Reimage.
+type VirtualMachineScaleSetsReimageResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsRestartPollerResponse contains the response from method VirtualMachineScaleSets.Restart.
+type VirtualMachineScaleSetsRestartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsRestartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsRestartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsRestartResponse contains the response from method VirtualMachineScaleSets.Restart.
+type VirtualMachineScaleSetsRestartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse contains the response from method VirtualMachineScaleSets.SetOrchestrationServiceState.
+type VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsSetOrchestrationServiceStateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsSetOrchestrationServiceStatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsSetOrchestrationServiceStateResponse contains the response from method VirtualMachineScaleSets.SetOrchestrationServiceState.
+type VirtualMachineScaleSetsSetOrchestrationServiceStateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsStartPollerResponse contains the response from method VirtualMachineScaleSets.Start.
+type VirtualMachineScaleSetsStartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsStartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsStartResponse contains the response from method VirtualMachineScaleSets.Start.
+type VirtualMachineScaleSetsStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsUpdateInstancesPollerResponse contains the response from method VirtualMachineScaleSets.UpdateInstances.
+type VirtualMachineScaleSetsUpdateInstancesPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsUpdateInstancesResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsUpdateInstancesPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsUpdateInstancesResponse contains the response from method VirtualMachineScaleSets.UpdateInstances.
+type VirtualMachineScaleSetsUpdateInstancesResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsUpdatePollerResponse contains the response from method VirtualMachineScaleSets.Update.
+type VirtualMachineScaleSetsUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetsUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachineScaleSetsUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsUpdateResponse contains the response from method VirtualMachineScaleSets.Update.
+type VirtualMachineScaleSetsUpdateResponse struct {
+	VirtualMachineScaleSetsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineScaleSetsUpdateResult contains the result from method VirtualMachineScaleSets.Update.
+type VirtualMachineScaleSetsUpdateResult struct {
+	VirtualMachineScaleSet
+}
+
+// VirtualMachineSizesListResponse contains the response from method VirtualMachineSizes.List.
+type VirtualMachineSizesListResponse struct {
+	VirtualMachineSizesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachineSizesListResult contains the result from method VirtualMachineSizes.List.
+type VirtualMachineSizesListResult struct {
+	VirtualMachineSizeListResult
+}
+
+// VirtualMachinesAssessPatchesPollerResponse contains the response from method VirtualMachines.AssessPatches.
+type VirtualMachinesAssessPatchesPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesAssessPatchesResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesAssessPatchesPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesAssessPatchesResponse contains the response from method VirtualMachines.AssessPatches.
+type VirtualMachinesAssessPatchesResponse struct {
+	VirtualMachinesAssessPatchesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesAssessPatchesResult contains the result from method VirtualMachines.AssessPatches.
+type VirtualMachinesAssessPatchesResult struct {
+	VirtualMachineAssessPatchesResult
+}
+
+// VirtualMachinesCapturePollerResponse contains the response from method VirtualMachines.Capture.
+type VirtualMachinesCapturePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesCaptureResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesCapturePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesCaptureResponse contains the response from method VirtualMachines.Capture.
+type VirtualMachinesCaptureResponse struct {
+	VirtualMachinesCaptureResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesCaptureResult contains the result from method VirtualMachines.Capture.
+type VirtualMachinesCaptureResult struct {
+	VirtualMachineCaptureResult
+}
+
+// VirtualMachinesConvertToManagedDisksPollerResponse contains the response from method VirtualMachines.ConvertToManagedDisks.
+type VirtualMachinesConvertToManagedDisksPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesConvertToManagedDisksResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesConvertToManagedDisksPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesConvertToManagedDisksResponse contains the response from method VirtualMachines.ConvertToManagedDisks.
+type VirtualMachinesConvertToManagedDisksResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesCreateOrUpdatePollerResponse contains the response from method VirtualMachines.CreateOrUpdate.
+type VirtualMachinesCreateOrUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesCreateOrUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesCreateOrUpdateResponse contains the response from method VirtualMachines.CreateOrUpdate.
+type VirtualMachinesCreateOrUpdateResponse struct {
+	VirtualMachinesCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesCreateOrUpdateResult contains the result from method VirtualMachines.CreateOrUpdate.
+type VirtualMachinesCreateOrUpdateResult struct {
+	VirtualMachine
+}
+
+// VirtualMachinesDeallocatePollerResponse contains the response from method VirtualMachines.Deallocate.
+type VirtualMachinesDeallocatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesDeallocateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesDeallocatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesDeallocateResponse contains the response from method VirtualMachines.Deallocate.
+type VirtualMachinesDeallocateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesDeletePollerResponse contains the response from method VirtualMachines.Delete.
+type VirtualMachinesDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesDeleteResponse contains the response from method VirtualMachines.Delete.
+type VirtualMachinesDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesGeneralizeResponse contains the response from method VirtualMachines.Generalize.
+type VirtualMachinesGeneralizeResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesGetResponse contains the response from method VirtualMachines.Get.
+type VirtualMachinesGetResponse struct {
+	VirtualMachinesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesGetResult contains the result from method VirtualMachines.Get.
+type VirtualMachinesGetResult struct {
+	VirtualMachine
+}
+
+// VirtualMachinesInstallPatchesPollerResponse contains the response from method VirtualMachines.InstallPatches.
+type VirtualMachinesInstallPatchesPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesInstallPatchesResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesInstallPatchesPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesInstallPatchesResponse contains the response from method VirtualMachines.InstallPatches.
+type VirtualMachinesInstallPatchesResponse struct {
+	VirtualMachinesInstallPatchesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesInstallPatchesResult contains the result from method VirtualMachines.InstallPatches.
+type VirtualMachinesInstallPatchesResult struct {
+	VirtualMachineInstallPatchesResult
+}
+
+// VirtualMachinesInstanceViewResponse contains the response from method VirtualMachines.InstanceView.
+type VirtualMachinesInstanceViewResponse struct {
+	VirtualMachinesInstanceViewResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesInstanceViewResult contains the result from method VirtualMachines.InstanceView.
+type VirtualMachinesInstanceViewResult struct {
+	VirtualMachineInstanceView
+}
+
+// VirtualMachinesListAllResponse contains the response from method VirtualMachines.ListAll.
+type VirtualMachinesListAllResponse struct {
+	VirtualMachinesListAllResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesListAllResult contains the result from method VirtualMachines.ListAll.
+type VirtualMachinesListAllResult struct {
+	VirtualMachineListResult
+}
+
+// VirtualMachinesListAvailableSizesResponse contains the response from method VirtualMachines.ListAvailableSizes.
+type VirtualMachinesListAvailableSizesResponse struct {
+	VirtualMachinesListAvailableSizesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesListAvailableSizesResult contains the result from method VirtualMachines.ListAvailableSizes.
+type VirtualMachinesListAvailableSizesResult struct {
+	VirtualMachineSizeListResult
+}
+
+// VirtualMachinesListByLocationResponse contains the response from method VirtualMachines.ListByLocation.
+type VirtualMachinesListByLocationResponse struct {
+	VirtualMachinesListByLocationResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesListByLocationResult contains the result from method VirtualMachines.ListByLocation.
+type VirtualMachinesListByLocationResult struct {
+	VirtualMachineListResult
+}
+
+// VirtualMachinesListResponse contains the response from method VirtualMachines.List.
+type VirtualMachinesListResponse struct {
+	VirtualMachinesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesListResult contains the result from method VirtualMachines.List.
+type VirtualMachinesListResult struct {
+	VirtualMachineListResult
+}
+
+// VirtualMachinesPerformMaintenancePollerResponse contains the response from method VirtualMachines.PerformMaintenance.
+type VirtualMachinesPerformMaintenancePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesPerformMaintenanceResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesPerformMaintenancePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesPerformMaintenanceResponse contains the response from method VirtualMachines.PerformMaintenance.
+type VirtualMachinesPerformMaintenanceResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesPowerOffPollerResponse contains the response from method VirtualMachines.PowerOff.
+type VirtualMachinesPowerOffPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesPowerOffResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesPowerOffPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesPowerOffResponse contains the response from method VirtualMachines.PowerOff.
+type VirtualMachinesPowerOffResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesReapplyPollerResponse contains the response from method VirtualMachines.Reapply.
+type VirtualMachinesReapplyPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesReapplyResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesReapplyPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesReapplyResponse contains the response from method VirtualMachines.Reapply.
+type VirtualMachinesReapplyResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRedeployPollerResponse contains the response from method VirtualMachines.Redeploy.
+type VirtualMachinesRedeployPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesRedeployResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesRedeployPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRedeployResponse contains the response from method VirtualMachines.Redeploy.
+type VirtualMachinesRedeployResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesReimagePollerResponse contains the response from method VirtualMachines.Reimage.
+type VirtualMachinesReimagePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesReimageResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesReimagePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesReimageResponse contains the response from method VirtualMachines.Reimage.
+type VirtualMachinesReimageResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRestartPollerResponse contains the response from method VirtualMachines.Restart.
+type VirtualMachinesRestartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesRestartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesRestartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRestartResponse contains the response from method VirtualMachines.Restart.
+type VirtualMachinesRestartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRetrieveBootDiagnosticsDataResponse contains the response from method VirtualMachines.RetrieveBootDiagnosticsData.
+type VirtualMachinesRetrieveBootDiagnosticsDataResponse struct {
+	VirtualMachinesRetrieveBootDiagnosticsDataResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRetrieveBootDiagnosticsDataResult contains the result from method VirtualMachines.RetrieveBootDiagnosticsData.
+type VirtualMachinesRetrieveBootDiagnosticsDataResult struct {
+	RetrieveBootDiagnosticsDataResult
+}
+
+// VirtualMachinesRunCommandPollerResponse contains the response from method VirtualMachines.RunCommand.
+type VirtualMachinesRunCommandPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesRunCommandResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesRunCommandPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRunCommandResponse contains the response from method VirtualMachines.RunCommand.
+type VirtualMachinesRunCommandResponse struct {
+	VirtualMachinesRunCommandResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesRunCommandResult contains the result from method VirtualMachines.RunCommand.
+type VirtualMachinesRunCommandResult struct {
+	RunCommandResult
+}
+
+// VirtualMachinesSimulateEvictionResponse contains the response from method VirtualMachines.SimulateEviction.
+type VirtualMachinesSimulateEvictionResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesStartPollerResponse contains the response from method VirtualMachines.Start.
+type VirtualMachinesStartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesStartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesStartResponse contains the response from method VirtualMachines.Start.
+type VirtualMachinesStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesUpdatePollerResponse contains the response from method VirtualMachines.Update.
+type VirtualMachinesUpdatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualMachinesUpdateResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualMachinesUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesUpdateResponse contains the response from method VirtualMachines.Update.
+type VirtualMachinesUpdateResponse struct {
+	VirtualMachinesUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualMachinesUpdateResult contains the result from method VirtualMachines.Update.
+type VirtualMachinesUpdateResult struct {
+	VirtualMachine
 }

@@ -32,47 +32,47 @@ func NewVirtualMachineExtensionsClient(con *armcore.Connection, subscriptionID s
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsBeginCreateOrUpdateOptions) (VirtualMachineExtensionPollerResponse, error) {
+func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsBeginCreateOrUpdateOptions) (VirtualMachineExtensionsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineExtensionPollerResponse{
+	result := VirtualMachineExtensionsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineExtensionsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineExtensionPoller{
+	poller := &virtualMachineExtensionsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new VirtualMachineExtensionPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineExtensionPoller.ResumeToken().
-func (client *VirtualMachineExtensionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachineExtensionPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new VirtualMachineExtensionsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineExtensionsCreateOrUpdatePoller.ResumeToken().
+func (client *VirtualMachineExtensionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachineExtensionsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineExtensionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineExtensionPoller{
+	poller := &virtualMachineExtensionsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineExtensionPollerResponse{
+	result := VirtualMachineExtensionsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -140,47 +140,47 @@ func (client *VirtualMachineExtensionsClient) createOrUpdateHandleError(resp *az
 
 // BeginDelete - The operation to delete the extension.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsBeginDeleteOptions) (VirtualMachineExtensionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineExtensionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineExtensionsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineExtensionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineExtensionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineExtensionsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineExtensionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new VirtualMachineExtensionsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineExtensionsDeletePoller.ResumeToken().
+func (client *VirtualMachineExtensionsClient) ResumeDelete(ctx context.Context, token string) (VirtualMachineExtensionsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineExtensionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineExtensionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &virtualMachineExtensionsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachineExtensionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachineExtensionsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -247,17 +247,17 @@ func (client *VirtualMachineExtensionsClient) deleteHandleError(resp *azcore.Res
 
 // Get - The operation to get the extension.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (VirtualMachineExtensionResponse, error) {
+func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (VirtualMachineExtensionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
-		return VirtualMachineExtensionResponse{}, err
+		return VirtualMachineExtensionsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VirtualMachineExtensionResponse{}, err
+		return VirtualMachineExtensionsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineExtensionResponse{}, client.getHandleError(resp)
+		return VirtualMachineExtensionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -297,12 +297,12 @@ func (client *VirtualMachineExtensionsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineExtensionsClient) getHandleResponse(resp *azcore.Response) (VirtualMachineExtensionResponse, error) {
-	var val *VirtualMachineExtension
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineExtensionResponse{}, err
+func (client *VirtualMachineExtensionsClient) getHandleResponse(resp *azcore.Response) (VirtualMachineExtensionsGetResponse, error) {
+	result := VirtualMachineExtensionsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VirtualMachineExtension); err != nil {
+		return VirtualMachineExtensionsGetResponse{}, err
 	}
-	return VirtualMachineExtensionResponse{RawResponse: resp.Response, VirtualMachineExtension: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -319,17 +319,17 @@ func (client *VirtualMachineExtensionsClient) getHandleError(resp *azcore.Respon
 
 // List - The operation to get all extensions of a Virtual Machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (VirtualMachineExtensionsListResultResponse, error) {
+func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (VirtualMachineExtensionsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return VirtualMachineExtensionsListResultResponse{}, err
+		return VirtualMachineExtensionsListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return VirtualMachineExtensionsListResultResponse{}, err
+		return VirtualMachineExtensionsListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineExtensionsListResultResponse{}, client.listHandleError(resp)
+		return VirtualMachineExtensionsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -365,12 +365,12 @@ func (client *VirtualMachineExtensionsClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineExtensionsClient) listHandleResponse(resp *azcore.Response) (VirtualMachineExtensionsListResultResponse, error) {
-	var val *VirtualMachineExtensionsListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineExtensionsListResultResponse{}, err
+func (client *VirtualMachineExtensionsClient) listHandleResponse(resp *azcore.Response) (VirtualMachineExtensionsListResponse, error) {
+	result := VirtualMachineExtensionsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.VirtualMachineExtensionsListResult); err != nil {
+		return VirtualMachineExtensionsListResponse{}, err
 	}
-	return VirtualMachineExtensionsListResultResponse{RawResponse: resp.Response, VirtualMachineExtensionsListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -387,47 +387,47 @@ func (client *VirtualMachineExtensionsClient) listHandleError(resp *azcore.Respo
 
 // BeginUpdate - The operation to update the extension.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsBeginUpdateOptions) (VirtualMachineExtensionPollerResponse, error) {
+func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsBeginUpdateOptions) (VirtualMachineExtensionsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineExtensionPollerResponse{
+	result := VirtualMachineExtensionsUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("VirtualMachineExtensionsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineExtensionPoller{
+	poller := &virtualMachineExtensionsUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new VirtualMachineExtensionPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineExtensionPoller.ResumeToken().
-func (client *VirtualMachineExtensionsClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachineExtensionPollerResponse, error) {
+// ResumeUpdate creates a new VirtualMachineExtensionsUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineExtensionsUpdatePoller.ResumeToken().
+func (client *VirtualMachineExtensionsClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachineExtensionsUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachineExtensionsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsUpdatePollerResponse{}, err
 	}
-	poller := &virtualMachineExtensionPoller{
+	poller := &virtualMachineExtensionsUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return VirtualMachineExtensionPollerResponse{}, err
+		return VirtualMachineExtensionsUpdatePollerResponse{}, err
 	}
-	result := VirtualMachineExtensionPollerResponse{
+	result := VirtualMachineExtensionsUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionsUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

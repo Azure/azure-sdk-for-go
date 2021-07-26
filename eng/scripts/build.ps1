@@ -43,7 +43,7 @@ $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
             $removeAutorestFile = $true
         }
 
-        $autorestVersion = "@autorest/go@4.0.0-preview.23"
+        $autorestVersion = "@autorest/go@4.0.0-preview.24"
         $outputFolder = $_.path
         $root = $_.root
         autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath

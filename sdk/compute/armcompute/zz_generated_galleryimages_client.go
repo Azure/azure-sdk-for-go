@@ -33,47 +33,47 @@ func NewGalleryImagesClient(con *armcore.Connection, subscriptionID string) *Gal
 
 // BeginCreateOrUpdate - Create or update a gallery image definition.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage, options *GalleryImagesBeginCreateOrUpdateOptions) (GalleryImagePollerResponse, error) {
+func (client *GalleryImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage, options *GalleryImagesBeginCreateOrUpdateOptions) (GalleryImagesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesCreateOrUpdatePollerResponse{}, err
 	}
-	result := GalleryImagePollerResponse{
+	result := GalleryImagesCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("GalleryImagesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &galleryImagePoller{
+	poller := &galleryImagesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImagesCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new GalleryImagePoller from the specified resume token.
-// token - The value must come from a previous call to GalleryImagePoller.ResumeToken().
-func (client *GalleryImagesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GalleryImagePollerResponse, error) {
+// ResumeCreateOrUpdate creates a new GalleryImagesCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to GalleryImagesCreateOrUpdatePoller.ResumeToken().
+func (client *GalleryImagesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GalleryImagesCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("GalleryImagesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &galleryImagePoller{
+	poller := &galleryImagesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesCreateOrUpdatePollerResponse{}, err
 	}
-	result := GalleryImagePollerResponse{
+	result := GalleryImagesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImagesCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -142,47 +142,47 @@ func (client *GalleryImagesClient) createOrUpdateHandleError(resp *azcore.Respon
 
 // BeginDelete - Delete a gallery image.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *GalleryImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesBeginDeleteOptions) (GalleryImagesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, galleryName, galleryImageName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return GalleryImagesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := GalleryImagesDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("GalleryImagesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return GalleryImagesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &galleryImagesDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImagesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *GalleryImagesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new GalleryImagesDeletePoller from the specified resume token.
+// token - The value must come from a previous call to GalleryImagesDeletePoller.ResumeToken().
+func (client *GalleryImagesClient) ResumeDelete(ctx context.Context, token string) (GalleryImagesDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("GalleryImagesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return GalleryImagesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &galleryImagesDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return GalleryImagesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := GalleryImagesDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImagesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -251,17 +251,17 @@ func (client *GalleryImagesClient) deleteHandleError(resp *azcore.Response) erro
 
 // Get - Retrieves information about a gallery image definition.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryImagesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesGetOptions) (GalleryImageResponse, error) {
+func (client *GalleryImagesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesGetOptions) (GalleryImagesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, options)
 	if err != nil {
-		return GalleryImageResponse{}, err
+		return GalleryImagesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return GalleryImageResponse{}, err
+		return GalleryImagesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return GalleryImageResponse{}, client.getHandleError(resp)
+		return GalleryImagesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -298,12 +298,12 @@ func (client *GalleryImagesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *GalleryImagesClient) getHandleResponse(resp *azcore.Response) (GalleryImageResponse, error) {
-	var val *GalleryImage
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GalleryImageResponse{}, err
+func (client *GalleryImagesClient) getHandleResponse(resp *azcore.Response) (GalleryImagesGetResponse, error) {
+	result := GalleryImagesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.GalleryImage); err != nil {
+		return GalleryImagesGetResponse{}, err
 	}
-	return GalleryImageResponse{RawResponse: resp.Response, GalleryImage: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -321,18 +321,15 @@ func (client *GalleryImagesClient) getHandleError(resp *azcore.Response) error {
 
 // ListByGallery - List gallery image definitions in a gallery.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryImagesClient) ListByGallery(resourceGroupName string, galleryName string, options *GalleryImagesListByGalleryOptions) GalleryImageListPager {
-	return &galleryImageListPager{
-		pipeline: client.con.Pipeline(),
+func (client *GalleryImagesClient) ListByGallery(resourceGroupName string, galleryName string, options *GalleryImagesListByGalleryOptions) GalleryImagesListByGalleryPager {
+	return &galleryImagesListByGalleryPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByGalleryCreateRequest(ctx, resourceGroupName, galleryName, options)
 		},
-		responder: client.listByGalleryHandleResponse,
-		errorer:   client.listByGalleryHandleError,
-		advancer: func(ctx context.Context, resp GalleryImageListResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp GalleryImagesListByGalleryResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.GalleryImageList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -364,12 +361,12 @@ func (client *GalleryImagesClient) listByGalleryCreateRequest(ctx context.Contex
 }
 
 // listByGalleryHandleResponse handles the ListByGallery response.
-func (client *GalleryImagesClient) listByGalleryHandleResponse(resp *azcore.Response) (GalleryImageListResponse, error) {
-	var val *GalleryImageList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GalleryImageListResponse{}, err
+func (client *GalleryImagesClient) listByGalleryHandleResponse(resp *azcore.Response) (GalleryImagesListByGalleryResponse, error) {
+	result := GalleryImagesListByGalleryResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.GalleryImageList); err != nil {
+		return GalleryImagesListByGalleryResponse{}, err
 	}
-	return GalleryImageListResponse{RawResponse: resp.Response, GalleryImageList: val}, nil
+	return result, nil
 }
 
 // listByGalleryHandleError handles the ListByGallery error response.
@@ -387,47 +384,47 @@ func (client *GalleryImagesClient) listByGalleryHandleError(resp *azcore.Respons
 
 // BeginUpdate - Update a gallery image definition.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate, options *GalleryImagesBeginUpdateOptions) (GalleryImagePollerResponse, error) {
+func (client *GalleryImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate, options *GalleryImagesBeginUpdateOptions) (GalleryImagesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesUpdatePollerResponse{}, err
 	}
-	result := GalleryImagePollerResponse{
+	result := GalleryImagesUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("GalleryImagesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesUpdatePollerResponse{}, err
 	}
-	poller := &galleryImagePoller{
+	poller := &galleryImagesUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImagesUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new GalleryImagePoller from the specified resume token.
-// token - The value must come from a previous call to GalleryImagePoller.ResumeToken().
-func (client *GalleryImagesClient) ResumeUpdate(ctx context.Context, token string) (GalleryImagePollerResponse, error) {
+// ResumeUpdate creates a new GalleryImagesUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to GalleryImagesUpdatePoller.ResumeToken().
+func (client *GalleryImagesClient) ResumeUpdate(ctx context.Context, token string) (GalleryImagesUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("GalleryImagesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesUpdatePollerResponse{}, err
 	}
-	poller := &galleryImagePoller{
+	poller := &galleryImagesUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return GalleryImagePollerResponse{}, err
+		return GalleryImagesUpdatePollerResponse{}, err
 	}
-	result := GalleryImagePollerResponse{
+	result := GalleryImagesUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImagesUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

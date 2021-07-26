@@ -33,47 +33,47 @@ func NewCloudServiceRoleInstancesClient(con *armcore.Connection, subscriptionID 
 
 // BeginDelete - Deletes a role instance from a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginDeleteOptions) (CloudServiceRoleInstancesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServiceRoleInstancesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new CloudServiceRoleInstancesDeletePoller from the specified resume token.
+// token - The value must come from a previous call to CloudServiceRoleInstancesDeletePoller.ResumeToken().
+func (client *CloudServiceRoleInstancesClient) ResumeDelete(ctx context.Context, token string) (CloudServiceRoleInstancesDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -142,17 +142,17 @@ func (client *CloudServiceRoleInstancesClient) deleteHandleError(resp *azcore.Re
 
 // Get - Gets a role instance from a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetOptions) (RoleInstanceResponse, error) {
+func (client *CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetOptions) (CloudServiceRoleInstancesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return RoleInstanceResponse{}, err
+		return CloudServiceRoleInstancesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RoleInstanceResponse{}, err
+		return CloudServiceRoleInstancesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RoleInstanceResponse{}, client.getHandleError(resp)
+		return CloudServiceRoleInstancesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -192,12 +192,12 @@ func (client *CloudServiceRoleInstancesClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudServiceRoleInstancesClient) getHandleResponse(resp *azcore.Response) (RoleInstanceResponse, error) {
-	var val *RoleInstance
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RoleInstanceResponse{}, err
+func (client *CloudServiceRoleInstancesClient) getHandleResponse(resp *azcore.Response) (CloudServiceRoleInstancesGetResponse, error) {
+	result := CloudServiceRoleInstancesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RoleInstance); err != nil {
+		return CloudServiceRoleInstancesGetResponse{}, err
 	}
-	return RoleInstanceResponse{RawResponse: resp.Response, RoleInstance: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -215,17 +215,17 @@ func (client *CloudServiceRoleInstancesClient) getHandleError(resp *azcore.Respo
 
 // GetInstanceView - Retrieves information about the run-time state of a role instance in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) GetInstanceView(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetInstanceViewOptions) (RoleInstanceViewResponse, error) {
+func (client *CloudServiceRoleInstancesClient) GetInstanceView(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetInstanceViewOptions) (CloudServiceRoleInstancesGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return RoleInstanceViewResponse{}, err
+		return CloudServiceRoleInstancesGetInstanceViewResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RoleInstanceViewResponse{}, err
+		return CloudServiceRoleInstancesGetInstanceViewResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RoleInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
+		return CloudServiceRoleInstancesGetInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
 	}
 	return client.getInstanceViewHandleResponse(resp)
 }
@@ -262,12 +262,12 @@ func (client *CloudServiceRoleInstancesClient) getInstanceViewCreateRequest(ctx 
 }
 
 // getInstanceViewHandleResponse handles the GetInstanceView response.
-func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleResponse(resp *azcore.Response) (RoleInstanceViewResponse, error) {
-	var val *RoleInstanceView
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RoleInstanceViewResponse{}, err
+func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleResponse(resp *azcore.Response) (CloudServiceRoleInstancesGetInstanceViewResponse, error) {
+	result := CloudServiceRoleInstancesGetInstanceViewResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RoleInstanceView); err != nil {
+		return CloudServiceRoleInstancesGetInstanceViewResponse{}, err
 	}
-	return RoleInstanceViewResponse{RawResponse: resp.Response, RoleInstanceView: val}, nil
+	return result, nil
 }
 
 // getInstanceViewHandleError handles the GetInstanceView error response.
@@ -285,19 +285,19 @@ func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleError(resp *
 
 // GetRemoteDesktopFile - Gets a remote desktop file for a role instance in a cloud service.
 // If the operation fails it returns a generic error.
-func (client *CloudServiceRoleInstancesClient) GetRemoteDesktopFile(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetRemoteDesktopFileOptions) (*http.Response, error) {
+func (client *CloudServiceRoleInstancesClient) GetRemoteDesktopFile(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesGetRemoteDesktopFileOptions) (CloudServiceRoleInstancesGetRemoteDesktopFileResponse, error) {
 	req, err := client.getRemoteDesktopFileCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return nil, err
+		return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.getRemoteDesktopFileHandleError(resp)
+		return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{}, client.getRemoteDesktopFileHandleError(resp)
 	}
-	return resp.Response, nil
+	return CloudServiceRoleInstancesGetRemoteDesktopFileResponse{RawResponse: resp.Response}, nil
 }
 
 // getRemoteDesktopFileCreateRequest creates the GetRemoteDesktopFile request.
@@ -347,18 +347,15 @@ func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileHandleError(r
 // List - Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next page of role instances. Do this
 // till nextLink is null to fetch all the role instances.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesListOptions) RoleInstanceListResultPager {
-	return &roleInstanceListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServiceRoleInstancesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesListOptions) CloudServiceRoleInstancesListPager {
+	return &cloudServiceRoleInstancesListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RoleInstanceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServiceRoleInstancesListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RoleInstanceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -393,12 +390,12 @@ func (client *CloudServiceRoleInstancesClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *CloudServiceRoleInstancesClient) listHandleResponse(resp *azcore.Response) (RoleInstanceListResultResponse, error) {
-	var val *RoleInstanceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RoleInstanceListResultResponse{}, err
+func (client *CloudServiceRoleInstancesClient) listHandleResponse(resp *azcore.Response) (CloudServiceRoleInstancesListResponse, error) {
+	result := CloudServiceRoleInstancesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RoleInstanceListResult); err != nil {
+		return CloudServiceRoleInstancesListResponse{}, err
 	}
-	return RoleInstanceListResultResponse{RawResponse: resp.Response, RoleInstanceListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -418,47 +415,47 @@ func (client *CloudServiceRoleInstancesClient) listHandleError(resp *azcore.Resp
 // the storage resources that are used by them. If you do not
 // want to initialize storage resources, you can use Reimage Role Instance.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRebuildOptions) (HTTPPollerResponse, error) {
+func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRebuildOptions) (CloudServiceRoleInstancesRebuildPollerResponse, error) {
 	resp, err := client.rebuild(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRebuildPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesRebuildPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Rebuild", "", resp, client.con.Pipeline(), client.rebuildHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRebuildPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesRebuildPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesRebuildResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRebuild creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServiceRoleInstancesClient) ResumeRebuild(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRebuild creates a new CloudServiceRoleInstancesRebuildPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServiceRoleInstancesRebuildPoller.ResumeToken().
+func (client *CloudServiceRoleInstancesClient) ResumeRebuild(ctx context.Context, token string) (CloudServiceRoleInstancesRebuildPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Rebuild", token, client.con.Pipeline(), client.rebuildHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRebuildPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesRebuildPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRebuildPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesRebuildPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesRebuildResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -529,47 +526,47 @@ func (client *CloudServiceRoleInstancesClient) rebuildHandleError(resp *azcore.R
 
 // BeginReimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginReimageOptions) (HTTPPollerResponse, error) {
+func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginReimageOptions) (CloudServiceRoleInstancesReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesReimagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesReimagePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Reimage", "", resp, client.con.Pipeline(), client.reimageHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesReimagePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesReimagePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesReimageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeReimage creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServiceRoleInstancesClient) ResumeReimage(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeReimage creates a new CloudServiceRoleInstancesReimagePoller from the specified resume token.
+// token - The value must come from a previous call to CloudServiceRoleInstancesReimagePoller.ResumeToken().
+func (client *CloudServiceRoleInstancesClient) ResumeReimage(ctx context.Context, token string) (CloudServiceRoleInstancesReimagePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Reimage", token, client.con.Pipeline(), client.reimageHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesReimagePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesReimagePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesReimagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesReimagePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesReimageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -638,47 +635,47 @@ func (client *CloudServiceRoleInstancesClient) reimageHandleError(resp *azcore.R
 
 // BeginRestart - The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRestartOptions) (HTTPPollerResponse, error) {
+func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesBeginRestartOptions) (CloudServiceRoleInstancesRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRestartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesRestartPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Restart", "", resp, client.con.Pipeline(), client.restartHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRestartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesRestartPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesRestartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServiceRoleInstancesClient) ResumeRestart(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestart creates a new CloudServiceRoleInstancesRestartPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServiceRoleInstancesRestartPoller.ResumeToken().
+func (client *CloudServiceRoleInstancesClient) ResumeRestart(ctx context.Context, token string) (CloudServiceRoleInstancesRestartPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Restart", token, client.con.Pipeline(), client.restartHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRestartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServiceRoleInstancesRestartPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServiceRoleInstancesRestartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServiceRoleInstancesRestartPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceRoleInstancesRestartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

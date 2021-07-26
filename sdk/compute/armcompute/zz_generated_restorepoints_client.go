@@ -33,47 +33,47 @@ func NewRestorePointsClient(con *armcore.Connection, subscriptionID string) *Res
 
 // BeginCreate - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsBeginCreateOptions) (RestorePointPollerResponse, error) {
+func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsBeginCreateOptions) (RestorePointsCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, restorePointCollectionName, restorePointName, parameters, options)
 	if err != nil {
-		return RestorePointPollerResponse{}, err
+		return RestorePointsCreatePollerResponse{}, err
 	}
-	result := RestorePointPollerResponse{
+	result := RestorePointsCreatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("RestorePointsClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
-		return RestorePointPollerResponse{}, err
+		return RestorePointsCreatePollerResponse{}, err
 	}
-	poller := &restorePointPoller{
+	poller := &restorePointsCreatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointsCreateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreate creates a new RestorePointPoller from the specified resume token.
-// token - The value must come from a previous call to RestorePointPoller.ResumeToken().
-func (client *RestorePointsClient) ResumeCreate(ctx context.Context, token string) (RestorePointPollerResponse, error) {
+// ResumeCreate creates a new RestorePointsCreatePoller from the specified resume token.
+// token - The value must come from a previous call to RestorePointsCreatePoller.ResumeToken().
+func (client *RestorePointsClient) ResumeCreate(ctx context.Context, token string) (RestorePointsCreatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("RestorePointsClient.Create", token, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
-		return RestorePointPollerResponse{}, err
+		return RestorePointsCreatePollerResponse{}, err
 	}
-	poller := &restorePointPoller{
+	poller := &restorePointsCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return RestorePointPollerResponse{}, err
+		return RestorePointsCreatePollerResponse{}, err
 	}
-	result := RestorePointPollerResponse{
+	result := RestorePointsCreatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointsCreateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -142,47 +142,47 @@ func (client *RestorePointsClient) createHandleError(resp *azcore.Response) erro
 
 // BeginDelete - The operation to delete the restore point.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsBeginDeleteOptions) (RestorePointsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := RestorePointsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("RestorePointsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &restorePointsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *RestorePointsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new RestorePointsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to RestorePointsDeletePoller.ResumeToken().
+func (client *RestorePointsClient) ResumeDelete(ctx context.Context, token string) (RestorePointsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("RestorePointsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &restorePointsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RestorePointsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := RestorePointsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -251,17 +251,17 @@ func (client *RestorePointsClient) deleteHandleError(resp *azcore.Response) erro
 
 // Get - The operation to get the restore point.
 // If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsGetOptions) (RestorePointResponse, error) {
+func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsGetOptions) (RestorePointsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
-		return RestorePointResponse{}, err
+		return RestorePointsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RestorePointResponse{}, err
+		return RestorePointsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return RestorePointResponse{}, client.getHandleError(resp)
+		return RestorePointsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -298,12 +298,12 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *RestorePointsClient) getHandleResponse(resp *azcore.Response) (RestorePointResponse, error) {
-	var val *RestorePoint
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RestorePointResponse{}, err
+func (client *RestorePointsClient) getHandleResponse(resp *azcore.Response) (RestorePointsGetResponse, error) {
+	result := RestorePointsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RestorePoint); err != nil {
+		return RestorePointsGetResponse{}, err
 	}
-	return RestorePointResponse{RawResponse: resp.Response, RestorePoint: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.

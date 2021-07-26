@@ -33,47 +33,47 @@ func NewCloudServicesClient(con *armcore.Connection, subscriptionID string) *Clo
 
 // BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (CloudServicePollerResponse, error) {
+func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (CloudServicesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesCreateOrUpdatePollerResponse{}, err
 	}
-	result := CloudServicePollerResponse{
+	result := CloudServicesCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &cloudServicePoller{
+	poller := &cloudServicesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new CloudServicePoller from the specified resume token.
-// token - The value must come from a previous call to CloudServicePoller.ResumeToken().
-func (client *CloudServicesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (CloudServicePollerResponse, error) {
+// ResumeCreateOrUpdate creates a new CloudServicesCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesCreateOrUpdatePoller.ResumeToken().
+func (client *CloudServicesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (CloudServicesCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &cloudServicePoller{
+	poller := &cloudServicesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesCreateOrUpdatePollerResponse{}, err
 	}
-	result := CloudServicePollerResponse{
+	result := CloudServicesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -141,47 +141,47 @@ func (client *CloudServicesClient) createOrUpdateHandleError(resp *azcore.Respon
 
 // BeginDelete - Deletes a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (CloudServicesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new CloudServicesDeletePoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesDeletePoller.ResumeToken().
+func (client *CloudServicesClient) ResumeDelete(ctx context.Context, token string) (CloudServicesDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -246,47 +246,47 @@ func (client *CloudServicesClient) deleteHandleError(resp *azcore.Response) erro
 
 // BeginDeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (CloudServicesDeleteInstancesPollerResponse, error) {
 	resp, err := client.deleteInstances(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeleteInstancesPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesDeleteInstancesPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.DeleteInstances", "", resp, client.con.Pipeline(), client.deleteInstancesHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeleteInstancesPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesDeleteInstancesPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesDeleteInstancesResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDeleteInstances creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeDeleteInstances(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDeleteInstances creates a new CloudServicesDeleteInstancesPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesDeleteInstancesPoller.ResumeToken().
+func (client *CloudServicesClient) ResumeDeleteInstances(ctx context.Context, token string) (CloudServicesDeleteInstancesPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.DeleteInstances", token, client.con.Pipeline(), client.deleteInstancesHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeleteInstancesPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesDeleteInstancesPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeleteInstancesPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesDeleteInstancesPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesDeleteInstancesResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -354,17 +354,17 @@ func (client *CloudServicesClient) deleteInstancesHandleError(resp *azcore.Respo
 
 // Get - Display information about a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (CloudServiceResponse, error) {
+func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (CloudServicesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceResponse{}, err
+		return CloudServicesGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CloudServiceResponse{}, err
+		return CloudServicesGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CloudServiceResponse{}, client.getHandleError(resp)
+		return CloudServicesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -397,12 +397,12 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudServicesClient) getHandleResponse(resp *azcore.Response) (CloudServiceResponse, error) {
-	var val *CloudService
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceResponse{}, err
+func (client *CloudServicesClient) getHandleResponse(resp *azcore.Response) (CloudServicesGetResponse, error) {
+	result := CloudServicesGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CloudService); err != nil {
+		return CloudServicesGetResponse{}, err
 	}
-	return CloudServiceResponse{RawResponse: resp.Response, CloudService: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -420,17 +420,17 @@ func (client *CloudServicesClient) getHandleError(resp *azcore.Response) error {
 
 // GetInstanceView - Gets the status of a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (CloudServiceInstanceViewResponse, error) {
+func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (CloudServicesGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceInstanceViewResponse{}, err
+		return CloudServicesGetInstanceViewResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CloudServiceInstanceViewResponse{}, err
+		return CloudServicesGetInstanceViewResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CloudServiceInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
+		return CloudServicesGetInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
 	}
 	return client.getInstanceViewHandleResponse(resp)
 }
@@ -463,12 +463,12 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 }
 
 // getInstanceViewHandleResponse handles the GetInstanceView response.
-func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *azcore.Response) (CloudServiceInstanceViewResponse, error) {
-	var val *CloudServiceInstanceView
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceInstanceViewResponse{}, err
+func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *azcore.Response) (CloudServicesGetInstanceViewResponse, error) {
+	result := CloudServicesGetInstanceViewResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CloudServiceInstanceView); err != nil {
+		return CloudServicesGetInstanceViewResponse{}, err
 	}
-	return CloudServiceInstanceViewResponse{RawResponse: resp.Response, CloudServiceInstanceView: val}, nil
+	return result, nil
 }
 
 // getInstanceViewHandleError handles the GetInstanceView error response.
@@ -487,18 +487,15 @@ func (client *CloudServicesClient) getInstanceViewHandleError(resp *azcore.Respo
 // List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next page of Cloud Services. Do this
 // till nextLink is null to fetch all the Cloud Services.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesListOptions) CloudServiceListResultPager {
-	return &cloudServiceListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesListOptions) CloudServicesListPager {
+	return &cloudServicesListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp CloudServiceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServicesListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -526,12 +523,12 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *CloudServicesClient) listHandleResponse(resp *azcore.Response) (CloudServiceListResultResponse, error) {
-	var val *CloudServiceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceListResultResponse{}, err
+func (client *CloudServicesClient) listHandleResponse(resp *azcore.Response) (CloudServicesListResponse, error) {
+	result := CloudServicesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CloudServiceListResult); err != nil {
+		return CloudServicesListResponse{}, err
 	}
-	return CloudServiceListResultResponse{RawResponse: resp.Response, CloudServiceListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -551,18 +548,15 @@ func (client *CloudServicesClient) listHandleError(resp *azcore.Response) error 
 // get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) ListAll(options *CloudServicesListAllOptions) CloudServiceListResultPager {
-	return &cloudServiceListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *CloudServicesClient) ListAll(options *CloudServicesListAllOptions) CloudServicesListAllPager {
+	return &cloudServicesListAllPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.listAllHandleResponse,
-		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp CloudServiceListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp CloudServicesListAllResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -586,12 +580,12 @@ func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, opt
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *CloudServicesClient) listAllHandleResponse(resp *azcore.Response) (CloudServiceListResultResponse, error) {
-	var val *CloudServiceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceListResultResponse{}, err
+func (client *CloudServicesClient) listAllHandleResponse(resp *azcore.Response) (CloudServicesListAllResponse, error) {
+	result := CloudServicesListAllResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CloudServiceListResult); err != nil {
+		return CloudServicesListAllResponse{}, err
 	}
-	return CloudServiceListResultResponse{RawResponse: resp.Response, CloudServiceListResult: val}, nil
+	return result, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -609,47 +603,47 @@ func (client *CloudServicesClient) listAllHandleError(resp *azcore.Response) err
 
 // BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (CloudServicesPowerOffPollerResponse, error) {
 	resp, err := client.powerOff(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesPowerOffPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesPowerOffPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.PowerOff", "", resp, client.con.Pipeline(), client.powerOffHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesPowerOffPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesPowerOffPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesPowerOffResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumePowerOff creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumePowerOff(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumePowerOff creates a new CloudServicesPowerOffPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesPowerOffPoller.ResumeToken().
+func (client *CloudServicesClient) ResumePowerOff(ctx context.Context, token string) (CloudServicesPowerOffPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.PowerOff", token, client.con.Pipeline(), client.powerOffHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesPowerOffPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesPowerOffPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesPowerOffPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesPowerOffPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesPowerOffResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -716,47 +710,47 @@ func (client *CloudServicesClient) powerOffHandleError(resp *azcore.Response) er
 // that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (CloudServicesRebuildPollerResponse, error) {
 	resp, err := client.rebuild(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRebuildPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesRebuildPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.Rebuild", "", resp, client.con.Pipeline(), client.rebuildHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRebuildPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesRebuildPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesRebuildResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRebuild creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeRebuild(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRebuild creates a new CloudServicesRebuildPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesRebuildPoller.ResumeToken().
+func (client *CloudServicesClient) ResumeRebuild(ctx context.Context, token string) (CloudServicesRebuildPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Rebuild", token, client.con.Pipeline(), client.rebuildHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRebuildPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesRebuildPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRebuildPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesRebuildPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesRebuildResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -826,47 +820,47 @@ func (client *CloudServicesClient) rebuildHandleError(resp *azcore.Response) err
 
 // BeginReimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (CloudServicesReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesReimagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesReimagePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.Reimage", "", resp, client.con.Pipeline(), client.reimageHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesReimagePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesReimagePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesReimageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeReimage creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeReimage(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeReimage creates a new CloudServicesReimagePoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesReimagePoller.ResumeToken().
+func (client *CloudServicesClient) ResumeReimage(ctx context.Context, token string) (CloudServicesReimagePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Reimage", token, client.con.Pipeline(), client.reimageHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesReimagePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesReimagePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesReimagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesReimagePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesReimageResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -934,47 +928,47 @@ func (client *CloudServicesClient) reimageHandleError(resp *azcore.Response) err
 
 // BeginRestart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (CloudServicesRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRestartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesRestartPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.Restart", "", resp, client.con.Pipeline(), client.restartHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRestartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesRestartPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesRestartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRestart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeRestart(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRestart creates a new CloudServicesRestartPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesRestartPoller.ResumeToken().
+func (client *CloudServicesClient) ResumeRestart(ctx context.Context, token string) (CloudServicesRestartPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Restart", token, client.con.Pipeline(), client.restartHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRestartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesRestartPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRestartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesRestartPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesRestartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1042,47 +1036,47 @@ func (client *CloudServicesClient) restartHandleError(resp *azcore.Response) err
 
 // BeginStart - Starts the cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (CloudServicesStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesStartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesStartPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.Start", "", resp, client.con.Pipeline(), client.startHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesStartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesStartPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesStartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeStart creates a new CloudServicesStartPoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesStartPoller.ResumeToken().
+func (client *CloudServicesClient) ResumeStart(ctx context.Context, token string) (CloudServicesStartPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Start", token, client.con.Pipeline(), client.startHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesStartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &cloudServicesStartPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesStartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesStartPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesStartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -1147,47 +1141,47 @@ func (client *CloudServicesClient) startHandleError(resp *azcore.Response) error
 
 // BeginUpdate - Update a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (CloudServicePollerResponse, error) {
+func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (CloudServicesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesUpdatePollerResponse{}, err
 	}
-	result := CloudServicePollerResponse{
+	result := CloudServicesUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("CloudServicesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesUpdatePollerResponse{}, err
 	}
-	poller := &cloudServicePoller{
+	poller := &cloudServicesUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new CloudServicePoller from the specified resume token.
-// token - The value must come from a previous call to CloudServicePoller.ResumeToken().
-func (client *CloudServicesClient) ResumeUpdate(ctx context.Context, token string) (CloudServicePollerResponse, error) {
+// ResumeUpdate creates a new CloudServicesUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to CloudServicesUpdatePoller.ResumeToken().
+func (client *CloudServicesClient) ResumeUpdate(ctx context.Context, token string) (CloudServicesUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesUpdatePollerResponse{}, err
 	}
-	poller := &cloudServicePoller{
+	poller := &cloudServicesUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesUpdatePollerResponse{}, err
 	}
-	result := CloudServicePollerResponse{
+	result := CloudServicesUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServicesUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil

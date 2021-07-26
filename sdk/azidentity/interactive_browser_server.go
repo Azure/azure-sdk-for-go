@@ -74,7 +74,7 @@ func (s *server) Start(reqState string, port int) string {
 			}
 			_, err := w.Write([]byte(page))
 			if err != nil {
-				page = failPage
+				page = failPage //nolint:ineffassign
 			}
 		}()
 

@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const okPage = `
@@ -70,7 +72,10 @@ func (s *server) Start(reqState string, port int) string {
 			if s.err != nil {
 				page = failPage
 			}
-			w.Write([]byte(page)) // nolint:errcheck
+			_, err := w.Write([]byte(page))
+			if err != nil {
+				page = failPage
+			}
 		}()
 
 		qp := r.URL.Query()
@@ -101,7 +106,10 @@ func (s *server) Start(reqState string, port int) string {
 // Stop will shut down the local HTTP server.
 func (s *server) Stop() {
 	close(s.done)
-	s.s.Shutdown(context.Background()) // nolint:errcheck
+	err := s.s.Shutdown(context.Background())
+	if err != nil {
+		azcore.Log().Write(LogCredential, fmt.Sprintf("There was an error shutting down the local HTTP server. %v", err.Error()))
+	}
 }
 
 // WaitForCallback will wait until Azure interactive login has called us back with an authorization code or error.

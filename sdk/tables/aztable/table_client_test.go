@@ -117,7 +117,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	require.NoError(err)
 
 	filter := "RowKey eq '1'"
-	queryOptions := &QueryOptions{Filter: &filter}
+	listOptions := &ListOptions{Filter: &filter}
 
 	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 	require.NoError(err)
@@ -138,7 +138,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	require.Nil(updateErr)
 
 	var qResp TableEntityQueryByteResponseResponse
-	pager := client.Query(queryOptions)
+	pager := client.List(listOptions)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -167,7 +167,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	require.NoError(err)
 
 	filter := "RowKey eq '1'"
-	query := &QueryOptions{Filter: &filter}
+	list := &ListOptions{Filter: &filter}
 
 	// 2. Query for basic Entity
 	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
@@ -189,7 +189,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 
 	// 5. Query for new entity
 	var qResp TableEntityQueryByteResponseResponse
-	pager := client.Query(query)
+	pager := client.List(list)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -220,11 +220,11 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	}
 
 	filter := "RowKey lt '5'"
-	query := &QueryOptions{Filter: &filter}
+	list := &ListOptions{Filter: &filter}
 	expectedCount := 4
 
 	var resp TableEntityQueryByteResponseResponse
-	pager := client.Query(query)
+	pager := client.List(list)
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		require.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
@@ -269,10 +269,10 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 
 	filter := "RowKey lt '5'"
 	expectedCount := 4
-	query := &QueryOptions{Filter: &filter}
+	options := &ListOptions{Filter: &filter}
 
 	var resp TableEntityQueryByteResponseResponse
-	pager := client.Query(query)
+	pager := client.List(options)
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		require.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))

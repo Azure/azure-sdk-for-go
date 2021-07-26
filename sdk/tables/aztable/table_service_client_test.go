@@ -101,7 +101,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 
 	// Query for tables with no pagination. The filter should exclude one table from the results
 	filter := fmt.Sprintf("TableName ge '%s' and TableName lt '%s'", prefix1, prefix2)
-	pager := context.client.Query(&QueryOptions{Filter: &filter})
+	pager := context.client.List(&ListOptions{Filter: &filter})
 
 	resultCount := 0
 	for pager.NextPage(ctx) {
@@ -114,7 +114,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 
 	// Query for tables with pagination
 	top := int32(2)
-	pager = context.client.Query(&QueryOptions{Filter: &filter, Top: &top})
+	pager = context.client.List(&ListOptions{Filter: &filter, Top: &top})
 
 	resultCount = 0
 	pageCount := 0
@@ -127,6 +127,45 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 	require.NoError(pager.Err())
 	require.Equal(resultCount, tableCount-1)
 	require.Equal(pageCount, int(top))
+}
+
+func clearAllTables(context *testContext) error {
+	pager := context.client.List(nil)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, v := range resp.TableQueryResponse.Value {
+			_, err := context.client.Delete(ctx, *v.TableName)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return pager.Err()
+}
+
+func (s *tableServiceClientLiveTests) TestListTables() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	tableName, err := getTableName(context)
+	require.NoError(err)
+
+	err = clearAllTables(context)
+	require.NoError(err)
+
+	for i := 0; i < 5; i++ {
+		_, err := context.client.Create(ctx, fmt.Sprintf("%v%v", tableName, i))
+		require.NoError(err)
+	}
+
+	count := 0
+	pager := context.client.List(nil)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		count += len(resp.TableQueryResponse.Value)
+	}
+
+	require.NoError(pager.Err())
+	require.Equal(5, count)
 }
 
 func (s *tableServiceClientLiveTests) TestGetStatistics() {

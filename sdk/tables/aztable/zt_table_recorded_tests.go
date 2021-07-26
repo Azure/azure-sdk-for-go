@@ -103,11 +103,30 @@ func recordedTestTeardown(key string) {
 	}
 }
 
+func insertNEntities(pk string, n int, client *TableClient) error {
+	for i := 0; i < n; i++ {
+		e := &map[string]interface{}{
+			"PartitionKey": pk,
+			"RowKey":       fmt.Sprint(i),
+			"Value":        i + 1,
+		}
+		marshalled, err := json.Marshal(e)
+		if err != nil {
+			return err
+		}
+		_, err = client.AddEntity(ctx, marshalled)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // cleans up the specified tables. If tables is nil, all tables will be deleted
 func cleanupTables(context *testContext, tables *[]string) {
 	c := context.client
 	if tables == nil {
-		pager := c.Query(nil)
+		pager := c.List(nil)
 		for pager.NextPage(ctx) {
 			for _, t := range pager.PageResponse().TableQueryResponse.Value {
 				_, err := c.Delete(ctx, *t.TableName)

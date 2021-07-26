@@ -21,7 +21,7 @@ import (
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 type TableEntityQueryResponsePager interface {
@@ -35,7 +35,7 @@ type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
 	current           *TableEntityQueryByteResponseResponse
 	tableQueryOptions *TableQueryEntitiesOptions
-	queryOptions      *QueryOptions
+	queryOptions      *ListOptions
 	err               error
 }
 
@@ -47,7 +47,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp TableEntityQueryResponseResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 
 	c, err := castToByteResponse(&resp)
 	if err != nil {
@@ -65,7 +65,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryByteResponseResponse {
@@ -89,7 +89,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
 type TableQueryResponsePager interface {
@@ -103,7 +103,7 @@ type tableQueryResponsePager struct {
 	client            *tableClient
 	current           *TableQueryResponseResponse
 	tableQueryOptions *TableQueryOptions
-	queryOptions      *QueryOptions
+	queryOptions      *ListOptions
 	err               error
 }
 
@@ -115,7 +115,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp TableQueryResponseResponse
-	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions)
+	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
@@ -126,7 +126,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
 	return *p.current

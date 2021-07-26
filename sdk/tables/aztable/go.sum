@@ -5,6 +5,8 @@ github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2 h1:UC4vfOhW2l0f2QOCQpOxJS4/
 github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2/go.mod h1:MVdrcUC4Hup35qHym3VdzoW+NBgBxrta9Vei97jRtM8=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.2 h1:3W8umQHRg0DXV5KvmbqU43uFi8MKvqLHQCE8L8v6Xds=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.2/go.mod h1:acANgl9stsT5xflESXKjZx4rhZJSr0TGgTDYY0xJPIE=
+github.com/Azure/azure-sdk-for-go/sdk/to v0.1.4 h1:3w4gk+uYOwplGhID1fDP305/8bI5Aug3URoC1V493KU=
+github.com/Azure/azure-sdk-for-go/sdk/to v0.1.4/go.mod h1:UL/d4lvWAzSJUuX+19uKdN0ktyjoOyQhgY+HWNgtIYI=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dnaeon/go-vcr v1.1.0 h1:ReYa/UBrRyQdant9B4fNHGoCNKw6qh6P0fsdGmZpR7c=

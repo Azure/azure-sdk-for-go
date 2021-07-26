@@ -1,0 +1,47 @@
+---
+version: 1
+interactions:
+- request:
+    body: <StorageServiceProperties><Cors><CorsRule><AllowedHeaders>x-ms-meta-data*</AllowedHeaders><AllowedMethods>PUT</AllowedMethods><AllowedOrigins>www.xyz.com</AllowedOrigins><ExposedHeaders>x-ms-meta-source*</ExposedHeaders><MaxAgeInSeconds>500</MaxAgeInSeconds></CorsRule><CorsRule><AllowedHeaders>x-ms-meta-data*</AllowedHeaders><AllowedMethods>PUT</AllowedMethods><AllowedOrigins>www.xyz.com</AllowedOrigins><ExposedHeaders>x-ms-meta-source*</ExposedHeaders><MaxAgeInSeconds>500</MaxAgeInSeconds></CorsRule><CorsRule><AllowedHeaders>x-ms-meta-data*</AllowedHeaders><AllowedMethods>PUT</AllowedMethods><AllowedOrigins>www.xyz.com</AllowedOrigins><ExposedHeaders>x-ms-meta-source*</ExposedHeaders><MaxAgeInSeconds>500</MaxAgeInSeconds></CorsRule><CorsRule><AllowedHeaders>x-ms-meta-data*</AllowedHeaders><AllowedMethods>PUT</AllowedMethods><AllowedOrigins>www.xyz.com</AllowedOrigins><ExposedHeaders>x-ms-meta-source*</ExposedHeaders><MaxAgeInSeconds>500</MaxAgeInSeconds></CorsRule><CorsRule><AllowedHeaders>x-ms-meta-data*</AllowedHeaders><AllowedMethods>PUT</AllowedMethods><AllowedOrigins>www.xyz.com</AllowedOrigins><ExposedHeaders>x-ms-meta-source*</ExposedHeaders><MaxAgeInSeconds>500</MaxAgeInSeconds></CorsRule><CorsRule><AllowedHeaders>x-ms-meta-data*</AllowedHeaders><AllowedMethods>PUT</AllowedMethods><AllowedOrigins>www.xyz.com</AllowedOrigins><ExposedHeaders>x-ms-meta-source*</ExposedHeaders><MaxAgeInSeconds>500</MaxAgeInSeconds></CorsRule></Cors></StorageServiceProperties>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "1488"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 21 Jul 2021 18:46:03 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/?comp=properties&restype=service
+    method: PUT
+  response:
+    body: |-
+      <?xml version="1.0" encoding="utf-8"?><m:error xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><m:code>InvalidXmlDocument</m:code><m:message xml:lang="en-US">XML specified is not syntactically valid.
+      RequestId:a3fe73f8-7002-0084-4b60-7e9a74000000
+      Time:2021-07-21T18:46:04.7286836Z</m:message></m:error>
+    headers:
+      Content-Length:
+      - "327"
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 21 Jul 2021 18:46:03 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Error-Code:
+      - InvalidXmlDocument
+      X-Ms-Request-Id:
+      - a3fe73f8-7002-0084-4b60-7e9a74000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 400 XML specified is not syntactically valid.
+    code: 400
+    duration: ""

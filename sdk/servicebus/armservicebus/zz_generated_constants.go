@@ -7,7 +7,7 @@
 
 package armservicebus
 
-const telemetryInfo = "azsdk-go-armservicebus/<version>"
+const telemetryInfo = "azsdk-go-armservicebus/v0.1.0"
 
 type AccessRights string
 

@@ -1,8 +1,8 @@
-# Azure Container Registry Module for Go
+# Azure Service Bus Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/servicebus/armservicebus)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/servicebus/armservicebus)
 
-The `armservicebus` module provides operations for working with Azure Container Registry.
+The `armservicebus` module provides operations for working with Azure Service Bus.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/servicebus/armservicebus)
 
@@ -17,7 +17,7 @@ The `armservicebus` module provides operations for working with Azure Container 
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Container Registry module:
+Install the Azure Service Bus module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/servicebus/armservicebus
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/servicebus/armservicebus
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Container Registry.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Service Bus.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure servicebus
+## Connecting to Azure Service Bus
 
 Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
@@ -45,16 +45,16 @@ For more information on ARM connections, please see the documentation for `armco
 
 ## Clients
 
-Azure Container Registry modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure Service Bus modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armservicebus.NewRegistriesClient(con, "<subscription ID>")
+client := armservicebus.NewRegionsClient(con, "<subscription ID>")
 ```
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `servicebus` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Service Bus` label.
 
 # Contributing
 

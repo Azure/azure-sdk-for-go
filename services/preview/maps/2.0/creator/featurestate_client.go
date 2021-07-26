@@ -11,10 +11,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // FeatureStateClient contains the methods for the FeatureState group.
@@ -24,8 +25,10 @@ type FeatureStateClient struct {
 }
 
 // NewFeatureStateClient creates a new instance of FeatureStateClient with the specified values.
-func NewFeatureStateClient(con *Connection) *FeatureStateClient {
-	return &FeatureStateClient{con: con}
+func NewFeatureStateClient(con *Connection, xmsClientID *string) *FeatureStateClient {
+	return &FeatureStateClient{
+		con: NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+	}
 }
 
 // CreateStateset - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -86,7 +89,7 @@ func (client *FeatureStateClient) createStatesetHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StatesetCreatedResponseResponse{}, err
 	}
-return StatesetCreatedResponseResponse{RawResponse: resp.Response, StatesetCreatedResponse: val}, nil
+	return StatesetCreatedResponseResponse{RawResponse: resp.Response, StatesetCreatedResponse: val}, nil
 }
 
 // createStatesetHandleError handles the CreateStateset error response.
@@ -95,7 +98,7 @@ func (client *FeatureStateClient) createStatesetHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -153,7 +156,7 @@ func (client *FeatureStateClient) deleteStateHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -206,7 +209,7 @@ func (client *FeatureStateClient) deleteStatesetHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -263,7 +266,7 @@ func (client *FeatureStateClient) getStatesHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FeatureStatesStructureResponse{}, err
 	}
-return FeatureStatesStructureResponse{RawResponse: resp.Response, FeatureStatesStructure: val}, nil
+	return FeatureStatesStructureResponse{RawResponse: resp.Response, FeatureStatesStructure: val}, nil
 }
 
 // getStatesHandleError handles the GetStates error response.
@@ -272,7 +275,7 @@ func (client *FeatureStateClient) getStatesHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -326,7 +329,7 @@ func (client *FeatureStateClient) getStatesetHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StatesetGetResponseResponse{}, err
 	}
-return StatesetGetResponseResponse{RawResponse: resp.Response, StatesetGetResponse: val}, nil
+	return StatesetGetResponseResponse{RawResponse: resp.Response, StatesetGetResponse: val}, nil
 }
 
 // getStatesetHandleError handles the GetStateset error response.
@@ -335,7 +338,7 @@ func (client *FeatureStateClient) getStatesetHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -348,7 +351,7 @@ func (client *FeatureStateClient) getStatesetHandleError(resp *azcore.Response) 
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API allows the caller to fetch a list of all previously successfully created statesets.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *FeatureStateClient) ListStateset(options *FeatureStateListStatesetOptions) (StatesetListResponsePager) {
+func (client *FeatureStateClient) ListStateset(options *FeatureStateListStatesetOptions) StatesetListResponsePager {
 	return &statesetListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -384,7 +387,7 @@ func (client *FeatureStateClient) listStatesetHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StatesetListResponseResponse{}, err
 	}
-return StatesetListResponseResponse{RawResponse: resp.Response, StatesetListResponse: val}, nil
+	return StatesetListResponseResponse{RawResponse: resp.Response, StatesetListResponse: val}, nil
 }
 
 // listStatesetHandleError handles the ListStateset error response.
@@ -393,7 +396,7 @@ func (client *FeatureStateClient) listStatesetHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -446,7 +449,7 @@ func (client *FeatureStateClient) putStatesetHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -503,10 +506,9 @@ func (client *FeatureStateClient) updateStatesHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

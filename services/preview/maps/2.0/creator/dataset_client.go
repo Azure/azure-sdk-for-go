@@ -11,11 +11,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // DatasetClient contains the methods for the Dataset group.
@@ -25,8 +26,10 @@ type DatasetClient struct {
 }
 
 // NewDatasetClient creates a new instance of DatasetClient with the specified values.
-func NewDatasetClient(con *Connection) *DatasetClient {
-	return &DatasetClient{con: con}
+func NewDatasetClient(con *Connection, xmsClientID *string) *DatasetClient {
+	return &DatasetClient{
+		con: NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+	}
 }
 
 // BeginCreate - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -53,7 +56,7 @@ func (client *DatasetClient) BeginCreate(ctx context.Context, conversionID strin
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("DatasetClient.Create",resp, client.con.Pipeline(), client.createHandleError)
+	pt, err := azcore.NewLROPoller("DatasetClient.Create", resp, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -70,7 +73,7 @@ func (client *DatasetClient) BeginCreate(ctx context.Context, conversionID strin
 // ResumeCreate creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
 func (client *DatasetClient) ResumeCreate(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("DatasetClient.Create",token, client.con.Pipeline(), client.createHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("DatasetClient.Create", token, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -119,7 +122,7 @@ func (client *DatasetClient) create(ctx context.Context, conversionID string, op
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
@@ -150,7 +153,7 @@ func (client *DatasetClient) createHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -204,7 +207,7 @@ func (client *DatasetClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -275,7 +278,7 @@ func (client *DatasetClient) getHandleResponse(resp *azcore.Response) (DatasetDe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DatasetDetailInfoResponse{}, err
 	}
-return DatasetDetailInfoResponse{RawResponse: resp.Response, DatasetDetailInfo: val}, nil
+	return DatasetDetailInfoResponse{RawResponse: resp.Response, DatasetDetailInfo: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -284,7 +287,7 @@ func (client *DatasetClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -351,7 +354,7 @@ func (client *DatasetClient) getOperationHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -387,7 +390,7 @@ func (client *DatasetClient) getOperationHandleError(resp *azcore.Response) erro
 // "facility-2.0", "featureCounts": { "directoryInfo": 2, "category": 10, "facility": 1, "level": 3, "unit": 183, "zone": 3, "verticalPenetration": 6, "opening":
 // 48, "areaElement": 108 } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DatasetClient) List(options *DatasetListOptions) (DatasetListResponsePager) {
+func (client *DatasetClient) List(options *DatasetListOptions) DatasetListResponsePager {
 	return &datasetListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -423,7 +426,7 @@ func (client *DatasetClient) listHandleResponse(resp *azcore.Response) (DatasetL
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DatasetListResponseResponse{}, err
 	}
-return DatasetListResponseResponse{RawResponse: resp.Response, DatasetListResponse: val}, nil
+	return DatasetListResponseResponse{RawResponse: resp.Response, DatasetListResponse: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -432,10 +435,9 @@ func (client *DatasetClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

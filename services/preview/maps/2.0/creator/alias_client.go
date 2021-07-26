@@ -11,10 +11,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AliasClient contains the methods for the Alias group.
@@ -24,8 +25,10 @@ type AliasClient struct {
 }
 
 // NewAliasClient creates a new instance of AliasClient with the specified values.
-func NewAliasClient(con *Connection) *AliasClient {
-	return &AliasClient{con: con}
+func NewAliasClient(con *Connection, xmsClientID *string) *AliasClient {
+	return &AliasClient{
+		con: NewConnection(con.cp.geography, ClientIdCredScaffold{con.cp.cred, xmsClientID}, con.cp.options),
+	}
 }
 
 // Assign - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -82,7 +85,7 @@ func (client *AliasClient) assignHandleResponse(resp *azcore.Response) (AliasLis
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasListItemResponse{}, err
 	}
-return AliasListItemResponse{RawResponse: resp.Response, AliasListItem: val}, nil
+	return AliasListItemResponse{RawResponse: resp.Response, AliasListItem: val}, nil
 }
 
 // assignHandleError handles the Assign error response.
@@ -91,7 +94,7 @@ func (client *AliasClient) assignHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -165,7 +168,7 @@ func (client *AliasClient) createHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -222,7 +225,7 @@ func (client *AliasClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -285,7 +288,7 @@ func (client *AliasClient) getDetailsHandleResponse(resp *azcore.Response) (Alia
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasListItemResponse{}, err
 	}
-return AliasListItemResponse{RawResponse: resp.Response, AliasListItem: val}, nil
+	return AliasListItemResponse{RawResponse: resp.Response, AliasListItem: val}, nil
 }
 
 // getDetailsHandleError handles the GetDetails error response.
@@ -294,7 +297,7 @@ func (client *AliasClient) getDetailsHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -318,7 +321,7 @@ func (client *AliasClient) getDetailsHandleError(resp *azcore.Response) error {
 // null, "lastUpdatedTimestamp":
 // "2020-02-18T19:53:33.123Z" } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AliasClient) List(options *AliasListOptions) (AliasListResponsePager) {
+func (client *AliasClient) List(options *AliasListOptions) AliasListResponsePager {
 	return &aliasListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -354,7 +357,7 @@ func (client *AliasClient) listHandleResponse(resp *azcore.Response) (AliasListR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasListResponseResponse{}, err
 	}
-return AliasListResponseResponse{RawResponse: resp.Response, AliasListResponse: val}, nil
+	return AliasListResponseResponse{RawResponse: resp.Response, AliasListResponse: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -363,10 +366,9 @@ func (client *AliasClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

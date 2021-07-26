@@ -71,53 +71,53 @@ func (client *tableClient) createCreateRequest(ctx context.Context, tablePropert
 func (client *tableClient) createHandleResponse(resp *azcore.Response) (interface{}, error) {
 	switch resp.StatusCode {
 	case http.StatusCreated:
-	var val *TableResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return nil, err
-	}
-	result := TableResponseResponse{RawResponse: resp.Response, TableResponse: val}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
-	}
-	if val := resp.Header.Get("Date"); val != "" {
-		date, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return TableResponseResponse{}, err
+		var val *TableResponse
+		if err := resp.UnmarshalAsJSON(&val); err != nil {
+			return nil, err
 		}
-		result.Date = &date
-	}
-	if val := resp.Header.Get("Preference-Applied"); val != "" {
-		result.PreferenceApplied = &val
-	}
-	return result, nil
+		result := TableResponseResponse{RawResponse: resp.Response, TableResponse: val}
+		if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+			result.ClientRequestID = &val
+		}
+		if val := resp.Header.Get("x-ms-request-id"); val != "" {
+			result.RequestID = &val
+		}
+		if val := resp.Header.Get("x-ms-version"); val != "" {
+			result.Version = &val
+		}
+		if val := resp.Header.Get("Date"); val != "" {
+			date, err := time.Parse(time.RFC1123, val)
+			if err != nil {
+				return TableResponseResponse{}, err
+			}
+			result.Date = &date
+		}
+		if val := resp.Header.Get("Preference-Applied"); val != "" {
+			result.PreferenceApplied = &val
+		}
+		return result, nil
 	case http.StatusNoContent:
-	result := TableCreateResponse{RawResponse: resp.Response}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
-	}
-	if val := resp.Header.Get("Date"); val != "" {
-		date, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return TableCreateResponse{}, err
+		result := TableCreateResponse{RawResponse: resp.Response}
+		if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+			result.ClientRequestID = &val
 		}
-		result.Date = &date
-	}
-	if val := resp.Header.Get("Preference-Applied"); val != "" {
-		result.PreferenceApplied = &val
-	}
-	return result, nil
+		if val := resp.Header.Get("x-ms-request-id"); val != "" {
+			result.RequestID = &val
+		}
+		if val := resp.Header.Get("x-ms-version"); val != "" {
+			result.Version = &val
+		}
+		if val := resp.Header.Get("Date"); val != "" {
+			date, err := time.Parse(time.RFC1123, val)
+			if err != nil {
+				return TableCreateResponse{}, err
+			}
+			result.Date = &date
+		}
+		if val := resp.Header.Get("Preference-Applied"); val != "" {
+			result.PreferenceApplied = &val
+		}
+		return result, nil
 	default:
 		return nil, fmt.Errorf("unhandled HTTP status code %d", resp.StatusCode)
 	}
@@ -129,7 +129,7 @@ func (client *tableClient) createHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -201,7 +201,7 @@ func (client *tableClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -291,7 +291,7 @@ func (client *tableClient) deleteEntityHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -372,7 +372,7 @@ func (client *tableClient) getAccessPolicyHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -436,71 +436,71 @@ func (client *tableClient) insertEntityCreateRequest(ctx context.Context, table 
 func (client *tableClient) insertEntityHandleResponse(resp *azcore.Response) (interface{}, error) {
 	switch resp.StatusCode {
 	case http.StatusCreated:
-	var val map[string]interface{}
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return nil, err
-	}
-	result := MapOfInterfaceResponse{RawResponse: resp.Response, Value: val}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
-	}
-	if val := resp.Header.Get("Date"); val != "" {
-		date, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return MapOfInterfaceResponse{}, err
+		var val map[string]interface{}
+		if err := resp.UnmarshalAsJSON(&val); err != nil {
+			return nil, err
 		}
-		result.Date = &date
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
-	}
-	if val := resp.Header.Get("x-ms-continuation-NextPartitionKey"); val != "" {
-		result.XMSContinuationNextPartitionKey = &val
-	}
-	if val := resp.Header.Get("x-ms-continuation-NextRowKey"); val != "" {
-		result.XMSContinuationNextRowKey = &val
-	}
-	if val := resp.Header.Get("Preference-Applied"); val != "" {
-		result.PreferenceApplied = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
-	}
-	return result, nil
+		result := MapOfInterfaceResponse{RawResponse: resp.Response, Value: val}
+		if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+			result.ClientRequestID = &val
+		}
+		if val := resp.Header.Get("x-ms-request-id"); val != "" {
+			result.RequestID = &val
+		}
+		if val := resp.Header.Get("x-ms-version"); val != "" {
+			result.Version = &val
+		}
+		if val := resp.Header.Get("Date"); val != "" {
+			date, err := time.Parse(time.RFC1123, val)
+			if err != nil {
+				return MapOfInterfaceResponse{}, err
+			}
+			result.Date = &date
+		}
+		if val := resp.Header.Get("ETag"); val != "" {
+			result.ETag = &val
+		}
+		if val := resp.Header.Get("x-ms-continuation-NextPartitionKey"); val != "" {
+			result.XMSContinuationNextPartitionKey = &val
+		}
+		if val := resp.Header.Get("x-ms-continuation-NextRowKey"); val != "" {
+			result.XMSContinuationNextRowKey = &val
+		}
+		if val := resp.Header.Get("Preference-Applied"); val != "" {
+			result.PreferenceApplied = &val
+		}
+		if val := resp.Header.Get("Content-Type"); val != "" {
+			result.ContentType = &val
+		}
+		return result, nil
 	case http.StatusNoContent:
-	result := TableInsertEntityResponse{RawResponse: resp.Response}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
-	}
-	if val := resp.Header.Get("Date"); val != "" {
-		date, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return TableInsertEntityResponse{}, err
+		result := TableInsertEntityResponse{RawResponse: resp.Response}
+		if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+			result.ClientRequestID = &val
 		}
-		result.Date = &date
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
-	}
-	if val := resp.Header.Get("Preference-Applied"); val != "" {
-		result.PreferenceApplied = &val
-	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
-	}
-	return result, nil
+		if val := resp.Header.Get("x-ms-request-id"); val != "" {
+			result.RequestID = &val
+		}
+		if val := resp.Header.Get("x-ms-version"); val != "" {
+			result.Version = &val
+		}
+		if val := resp.Header.Get("Date"); val != "" {
+			date, err := time.Parse(time.RFC1123, val)
+			if err != nil {
+				return TableInsertEntityResponse{}, err
+			}
+			result.Date = &date
+		}
+		if val := resp.Header.Get("ETag"); val != "" {
+			result.ETag = &val
+		}
+		if val := resp.Header.Get("Preference-Applied"); val != "" {
+			result.PreferenceApplied = &val
+		}
+		if val := resp.Header.Get("Content-Type"); val != "" {
+			result.ContentType = &val
+		}
+		return result, nil
 	default:
 		return nil, fmt.Errorf("unhandled HTTP status code %d", resp.StatusCode)
 	}
@@ -512,7 +512,7 @@ func (client *tableClient) insertEntityHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -610,7 +610,7 @@ func (client *tableClient) mergeEntityHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -704,10 +704,10 @@ func (client *tableClient) queryHandleError(resp *azcore.Response) error {
 		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // QueryEntities - Queries entities in a table.
 // If the operation fails it returns the *TableServiceError error type.
@@ -808,7 +808,7 @@ func (client *tableClient) queryEntitiesHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -922,7 +922,7 @@ func (client *tableClient) queryEntityWithPartitionAndRowKeyHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -970,7 +970,7 @@ func (client *tableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	}
 	req.Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		TableACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if options != nil && options.TableACL != nil {
@@ -1007,7 +1007,7 @@ func (client *tableClient) setAccessPolicyHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1105,10 +1105,9 @@ func (client *tableClient) updateEntityHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

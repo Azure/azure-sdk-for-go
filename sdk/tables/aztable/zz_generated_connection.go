@@ -68,7 +68,6 @@ func (c *connection) Endpoint() string {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() (azcore.Pipeline) {
+func (c *connection) Pipeline() azcore.Pipeline {
 	return c.p
 }
-

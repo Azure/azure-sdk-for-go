@@ -12,6 +12,8 @@ type AppResourceProvisioningState string
 const (
 	// Creating ...
 	Creating AppResourceProvisioningState = "Creating"
+	// Deleting ...
+	Deleting AppResourceProvisioningState = "Deleting"
 	// Failed ...
 	Failed AppResourceProvisioningState = "Failed"
 	// Succeeded ...
@@ -22,7 +24,7 @@ const (
 
 // PossibleAppResourceProvisioningStateValues returns an array of possible values for the AppResourceProvisioningState const type.
 func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState {
-	return []AppResourceProvisioningState{Creating, Failed, Succeeded, Updating}
+	return []AppResourceProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
 }
 
 // ConfigServerState enumerates the values for config server state.
@@ -52,6 +54,8 @@ type DeploymentResourceProvisioningState string
 const (
 	// DeploymentResourceProvisioningStateCreating ...
 	DeploymentResourceProvisioningStateCreating DeploymentResourceProvisioningState = "Creating"
+	// DeploymentResourceProvisioningStateDeleting ...
+	DeploymentResourceProvisioningStateDeleting DeploymentResourceProvisioningState = "Deleting"
 	// DeploymentResourceProvisioningStateFailed ...
 	DeploymentResourceProvisioningStateFailed DeploymentResourceProvisioningState = "Failed"
 	// DeploymentResourceProvisioningStateSucceeded ...
@@ -62,7 +66,7 @@ const (
 
 // PossibleDeploymentResourceProvisioningStateValues returns an array of possible values for the DeploymentResourceProvisioningState const type.
 func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourceProvisioningState {
-	return []DeploymentResourceProvisioningState{DeploymentResourceProvisioningStateCreating, DeploymentResourceProvisioningStateFailed, DeploymentResourceProvisioningStateSucceeded, DeploymentResourceProvisioningStateUpdating}
+	return []DeploymentResourceProvisioningState{DeploymentResourceProvisioningStateCreating, DeploymentResourceProvisioningStateDeleting, DeploymentResourceProvisioningStateFailed, DeploymentResourceProvisioningStateSucceeded, DeploymentResourceProvisioningStateUpdating}
 }
 
 // DeploymentResourceStatus enumerates the values for deployment resource status.
@@ -266,6 +270,21 @@ const (
 // PossibleTraceProxyStateValues returns an array of possible values for the TraceProxyState const type.
 func PossibleTraceProxyStateValues() []TraceProxyState {
 	return []TraceProxyState{TraceProxyStateFailed, TraceProxyStateNotAvailable, TraceProxyStateSucceeded, TraceProxyStateUpdating}
+}
+
+// TrafficDirection enumerates the values for traffic direction.
+type TrafficDirection string
+
+const (
+	// Inbound ...
+	Inbound TrafficDirection = "Inbound"
+	// Outbound ...
+	Outbound TrafficDirection = "Outbound"
+)
+
+// PossibleTrafficDirectionValues returns an array of possible values for the TrafficDirection const type.
+func PossibleTrafficDirectionValues() []TrafficDirection {
+	return []TrafficDirection{Inbound, Outbound}
 }
 
 // UserSourceType enumerates the values for user source type.

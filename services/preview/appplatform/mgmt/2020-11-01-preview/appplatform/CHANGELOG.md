@@ -1,13 +1,9 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. ApplicationInsightsAgentVersions.MarshalJSON() ([]byte, error)
-1. AvailableRuntimeVersions.MarshalJSON() ([]byte, error)
-1. DeploymentInstance.MarshalJSON() ([]byte, error)
-1. NetworkProfileOutboundIPs.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. RequiredTraffic.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. MetricDimension.ToBeExportedForShoebox

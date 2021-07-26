@@ -109,7 +109,7 @@ func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future 
 func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result DeploymentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

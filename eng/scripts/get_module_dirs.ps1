@@ -6,7 +6,7 @@ function Get-ModuleDirs ([string] $serviceDir) {
   $modDirs = [Collections.Generic.List[String]]@()
 
   # find each module directory under $serviceDir
-  Get-Childitem -recurse -path $serviceDir -filter go.mod | foreach-object {
+  Get-ChildItem -recurse -path $serviceDir -filter go.mod | ForEach-Object {
     $cdir = $_.Directory
     Write-Host "Adding $cdir to list of module paths"
     $modDirs.Add($cdir)

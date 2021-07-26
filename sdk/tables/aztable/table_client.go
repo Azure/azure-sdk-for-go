@@ -41,8 +41,8 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 	return t.service.Delete(ctx, t.Name)
 }
 
-// Query queries the entities using the specified QueryOptions.
-// QueryOptions can specify the following properties to affect the query results returned:
+// List queries the entities using the specified ListOptions.
+// ListOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An Odata filter expression that limits results to those entities that satisfy the filter expression.
 // For example, the following expression would return only entities with a PartitionKey of 'foo': "PartitionKey eq 'foo'"
@@ -53,40 +53,19 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 // Top: The maximum number of entities that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// Query returns a Pager, which allows iteration through each page of results. Example:
+// List returns a Pager, which allows iteration through each page of results. Example:
 //
-// pager := client.Query(nil)
+// pager := client.List(nil)
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponsePager {
-	if queryOptions == nil {
-		queryOptions = &QueryOptions{}
-	}
+func (t *TableClient) List(queryOptions *ListOptions) TableEntityQueryResponsePager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
 		queryOptions:      queryOptions,
 		tableQueryOptions: &TableQueryEntitiesOptions{}}
-}
-
-// List returns all the entities in a table
-//
-// List returns a Pager, which allows iteration through each page of results. Example:
-//
-// pager := client.List()
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
-// }
-// err := pager.Err()
-func (t *TableClient) List() TableEntityQueryResponsePager {
-	return &tableEntityQueryResponsePager{
-		tableClient:       t,
-		queryOptions:      &QueryOptions{},
-		tableQueryOptions: &TableQueryEntitiesOptions{},
-	}
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.

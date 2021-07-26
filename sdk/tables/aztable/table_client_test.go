@@ -5,7 +5,6 @@ package aztable
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -113,7 +112,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 
 	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(&QueryOptions{Filter: &filter})
+	pager := client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -130,7 +129,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	_, updateErr := client.UpdateEntity(ctx, mergeProperty, nil, Merge)
 	assert.Nil(updateErr)
 
-	pager = client.Query(&QueryOptions{Filter: &filter})
+	pager = client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -154,7 +153,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 
 	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(&QueryOptions{Filter: &filter})
+	pager := client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -171,7 +170,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
 	require.Nil(updateErr)
 
-	pager = client.Query(&QueryOptions{Filter: &filter})
+	pager = client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -231,7 +230,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	expectedCount := 4
 	var resp TableEntityQueryResponseResponse
 	var models []simpleEntity
-	pager := client.Query(&QueryOptions{Filter: &filter})
+	pager := client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
@@ -282,7 +281,7 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	filter := "RowKey lt '5'"
 	expectedCount := 4
 	var resp TableEntityQueryResponseResponse
-	pager := client.Query(&QueryOptions{Filter: &filter})
+	pager := client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		assert.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
@@ -370,7 +369,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(&QueryOptions{Filter: &filter})
+	pager := client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -416,7 +415,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	}
 
-	pager = client.Query(&QueryOptions{Filter: &filter})
+	pager = client.List(&ListOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -476,28 +475,6 @@ func (s *tableClientLiveTests) TestInvalidEntity() {
 
 	assert.NotNil(err)
 	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
-}
-
-func (s *tableClientLiveTests) TestListEntities() {
-	require := require.New(s.T())
-	client, delete := s.init(true)
-	defer delete()
-
-	err := insertNEntities("partition", 5, client)
-	require.NoError(err)
-
-	count := 0
-	pager := client.List()
-	for pager.NextPage(context.Background()) {
-		resp := pager.PageResponse()
-		for _, e := range resp.TableEntityQueryResponse.Value {
-			require.Equal(e["PartitionKey"].(string), "partition")
-			count += 1
-		}
-	}
-	err = pager.Err()
-	require.NoError(err)
-	require.Equal(5, count)
 }
 
 // setup the test environment

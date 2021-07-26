@@ -127,7 +127,7 @@ func insertNEntities(pk string, n int, client *TableClient) error {
 func cleanupTables(context *testContext, tables *[]string) {
 	c := context.client
 	if tables == nil {
-		pager := c.Query(nil)
+		pager := c.List(nil)
 		for pager.NextPage(ctx) {
 			for _, t := range pager.PageResponse().TableQueryResponse.Value {
 				_, err := c.Delete(ctx, *t.TableName)

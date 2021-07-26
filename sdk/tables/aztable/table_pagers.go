@@ -43,7 +43,7 @@ type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
 	current           *TableEntityQueryResponseResponse
 	tableQueryOptions *TableQueryEntitiesOptions
-	queryOptions      *QueryOptions
+	queryOptions      *ListOptions
 	err               error
 }
 
@@ -55,7 +55,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp TableEntityQueryResponseResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 	if p.err == nil {
 		castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
 	}
@@ -140,7 +140,7 @@ type tableQueryResponsePager struct {
 	client            *tableClient
 	current           *TableQueryResponseResponse
 	tableQueryOptions *TableQueryOptions
-	queryOptions      *QueryOptions
+	queryOptions      *ListOptions
 	err               error
 }
 
@@ -152,7 +152,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp TableQueryResponseResponse
-	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions)
+	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0

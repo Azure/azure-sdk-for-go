@@ -1,0 +1,11 @@
+{
+    "commit": "949ff43c349ae94aec6cd972eb005ab3f65e6ffc",
+    "readme": "/_/azure-rest-api-specs/specification/servicebus/resource-manager/readme.md",
+    "tag": "package-2018-01-preview",
+    "use": "@autorest/go@4.0.0-preview.24",
+    "repository_url": "https://github.com/Azure/azure-rest-api-specs.git",
+    "autorest_command": "autorest --use=@autorest/go@4.0.0-preview.24 --version:3.3.2 --go --track2 --go-sdk-folder=/_/azure-sdk-for-go --file-prefix=\"zz_generated_\" --clear-output-folder=false /_/azure-rest-api-specs/specification/servicebus/resource-manager/readme.md",
+    "additional_properties": {
+      "additional_options": " --version:3.3.2 --go --track2 --file-prefix=\"zz_generated_\" --clear-output-folder=false"
+    }
+}

@@ -38,7 +38,7 @@ const (
 const (
 	headerContentType             = "Content-Type"
 	headerContentTransferEncoding = "Content-Transfer-Encoding"
-	error_empty_transaction       = "Transaction cannot be empty."
+	error_empty_transaction       = "transaction cannot be empty"
 )
 
 type OdataErrorMessage struct {
@@ -94,13 +94,6 @@ type TableTransactionResponse struct {
 
 type TableSubmitTransactionOptions struct {
 	RequestID *string
-}
-
-//nolint
-var defaultChangesetHeaders = map[string]string{
-	"Accept":       "application/json;odata=minimalmetadata",
-	"Content-Type": "application/json",
-	"Prefer":       "return-no-content",
 }
 
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
@@ -206,10 +199,15 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 		// This is a failure and the body is json
 		return TableTransactionResponse{}, newTableTransactionError(bytesBody)
 	}
+
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
-	outerPart, err := mpReader.NextPart()        //nolint There is an error here
-	innerBytes, err := ioutil.ReadAll(outerPart) //nolint There is an error here
+	outerPart, err := mpReader.NextPart()
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+
+	innerBytes, err := ioutil.ReadAll(outerPart) //nolint
 	innerBoundary := getBoundaryName(innerBytes)
 	reader = bytes.NewReader(innerBytes)
 	mpReader = multipart.NewReader(reader, innerBoundary)
@@ -286,7 +284,6 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 
 // generateEntitySubset generates body payload for particular batch entity
 func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAction, writer *multipart.Writer) error {
-
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
@@ -321,10 +318,6 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 			return err
 		}
 	case Add:
-		err = toOdataAnnotatedDictionary(&entity)
-		if err != nil {
-			return err
-		}
 		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
 		if err != nil {
 			return err
@@ -332,10 +325,6 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
-		err = toOdataAnnotatedDictionary(&entity)
-		if err != nil {
-			return err
-		}
 		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
@@ -350,10 +339,6 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateReplace:
 		fallthrough
 	case UpsertReplace:
-		err = toOdataAnnotatedDictionary(&entity)
-		if err != nil {
-			return err
-		}
 		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 		if err != nil {
 			return err

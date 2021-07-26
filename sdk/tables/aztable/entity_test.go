@@ -6,7 +6,6 @@ package aztable
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -56,39 +55,6 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	}
 
 	require.Equal(count, 1)
-}
-
-func createEdmEntity(count int, pk string) EdmEntity {
-	return EdmEntity{
-		Entity: Entity{
-			PartitionKey: pk,
-			RowKey:       fmt.Sprint(count),
-		},
-		Properties: map[string]interface{}{
-			"Bool":     false,
-			"Int32":    int32(1234),
-			"Int64":    EdmInt64(123456789012),
-			"Double":   1234.1234,
-			"String":   "test",
-			"Guid":     EdmGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
-			"DateTime": EdmDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
-			"Binary":   EdmBinary("SomeBinary"),
-		},
-	}
-}
-
-func requireSameDateTime(r *require.Assertions, time1, time2 interface{}) {
-	t1 := time.Time(time1.(EdmDateTime))
-	t2 := time.Time(time2.(EdmDateTime))
-	r.Equal(t1.Year(), t2.Year())
-	r.Equal(t1.Month(), t2.Month())
-	r.Equal(t1.Day(), t2.Day())
-	r.Equal(t1.Hour(), t2.Hour())
-	r.Equal(t1.Minute(), t2.Minute())
-	r.Equal(t1.Second(), t2.Second())
-	z1, _ := t1.Zone()
-	z2, _ := t2.Zone()
-	r.Equal(z1, z2)
 }
 
 func (s *tableClientLiveTests) TestEdmMarshalling() {

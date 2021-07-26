@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable1aw91yk4gnxsv"}'
+    body: '{"TableName":"gotableqyr2uxfpxphl9"}'
     form: {}
     headers:
       Accept:
@@ -19,76 +19,76 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:30 GMT
+      - Mon, 26 Jul 2021 20:23:35 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotable1aw91yk4gnxsv"}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotableqyr2uxfpxphl9"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Thu, 15 Jul 2021 21:50:29 GMT
+      - Mon, 26 Jul 2021 20:23:35 GMT
       Location:
-      - https://seankaneprim.table.core.windows.net/Tables('gotable1aw91yk4gnxsv')
+      - https://seankaneprim.table.core.windows.net/Tables('gotableqyr2uxfpxphl9')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 51d65c8d-7002-002d-64c3-795b06000000
+      - 4bf66b53-5002-0077-1f5c-823de1000000
       X-Ms-Version:
       - "2019-02-02"
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: "--batch_517517d3-328a-434c-6249-4c7147146920\r\nContent-Type: multipart/mixed;
-      boundary=changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\n\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+    body: "--batch_cc9aaa4d-bc76-46d4-6095-a1699a3c09ed\r\nContent-Type: multipart/mixed;
+      boundary=changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\n\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":1,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":1,\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":2,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":2,\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":3,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":3,\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":4,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"4\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":4,\"PartitionKey\":\"partition\",\"RowKey\":\"4\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":5,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"5\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":5,\"PartitionKey\":\"partition\",\"RowKey\":\"5\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":6,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"6\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":6,\"PartitionKey\":\"partition\",\"RowKey\":\"6\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":7,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"7\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":7,\"PartitionKey\":\"partition\",\"RowKey\":\"7\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":8,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"8\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":8,\"PartitionKey\":\"partition\",\"RowKey\":\"8\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":9,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"9\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      194\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":9,\"PartitionKey\":\"partition\",\"RowKey\":\"9\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      262\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":10,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"10\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_a8e2d1d0-0d7b-4c37-7399-f96e348a8270--\r\n\r\n--batch_517517d3-328a-434c-6249-4c7147146920--\r\n"
+      196\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Integer\":10,\"PartitionKey\":\"partition\",\"RowKey\":\"10\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_84fe6f6c-3438-40b7-6065-78ab685d467a--\r\n\r\n--batch_cc9aaa4d-bc76-46d4-6095-a1699a3c09ed--\r\n"
     form: {}
     headers:
       Accept:
@@ -96,85 +96,85 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "7210"
+      - "6550"
       Content-Type:
-      - multipart/mixed; boundary=batch_517517d3-328a-434c-6249-4c7147146920
+      - multipart/mixed; boundary=batch_cc9aaa4d-bc76-46d4-6095-a1699a3c09ed
       Dataserviceversion:
       - "3.0"
       User-Agent:
       - azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5; Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:31 GMT
+      - Mon, 26 Jul 2021 20:23:35 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.core.windows.net/$batch
     method: POST
   response:
-    body: "--batchresponse_9eb910d6-b04b-453d-af1b-e4a186620bca\r\nContent-Type: multipart/mixed;
-      boundary=changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+    body: "--batchresponse_72a61e9f-59a7-47a1-89cf-b43a2f98c46f\r\nContent-Type: multipart/mixed;
+      boundary=changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='1')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='1')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='1')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='1')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='2')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='2')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='2')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='2')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='3')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='3')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='3')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='3')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='4')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='4')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='4')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='4')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='5')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='5')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='5')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='5')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='6')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='6')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='6')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='6')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='7')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='7')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='7')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='7')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='8')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='8')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='8')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='8')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='9')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='9')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b\r\nContent-Type:
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='9')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='9')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 204 No
       Content\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied:
-      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='10')\r\nDataServiceId:
-      https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv(PartitionKey='partition',RowKey='10')\r\nETag:
-      W/\"datetime'2021-07-15T21%3A50%3A30.5388809Z'\"\r\n\r\n\r\n--changesetresponse_277256ec-1385-4863-b3cd-baa3aca2f29b--\r\n--batchresponse_9eb910d6-b04b-453d-af1b-e4a186620bca--\r\n"
+      return-no-content\r\nDataServiceVersion: 3.0;\r\nLocation: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='10')\r\nDataServiceId:
+      https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9(PartitionKey='partition',RowKey='10')\r\nETag:
+      W/\"datetime'2021-07-26T20%3A23%3A35.943476Z'\"\r\n\r\n\r\n--changesetresponse_ba7a7faf-0f36-4683-af12-776271ecc8e5--\r\n--batchresponse_72a61e9f-59a7-47a1-89cf-b43a2f98c46f--\r\n"
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
-      - multipart/mixed; boundary=batchresponse_9eb910d6-b04b-453d-af1b-e4a186620bca
+      - multipart/mixed; boundary=batchresponse_72a61e9f-59a7-47a1-89cf-b43a2f98c46f
       Date:
-      - Thu, 15 Jul 2021 21:50:29 GMT
+      - Mon, 26 Jul 2021 20:23:35 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 51d65ca8-7002-002d-7dc3-795b06000000
+      - 4bf66b94-5002-0077-5d5c-823de1000000
       X-Ms-Version:
       - "2019-02-02"
     status: 202 Accepted
@@ -194,26 +194,28 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:31 GMT
+      - Mon, 26 Jul 2021 20:23:36 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/gotable1aw91yk4gnxsv()
+    url: https://seankaneprim.table.core.windows.net/gotableqyr2uxfpxphl9()
     method: GET
   response:
-    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#gotable1aw91yk4gnxsv","value":[{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"1","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":1.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"10","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":10.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"2","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":2.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"3","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":3.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"4","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":4.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"5","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":5.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"6","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":6.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"7","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":7.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"8","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":8.0,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A50%3A30.5388809Z''\"","PartitionKey":"partition","RowKey":"9","Timestamp":"2021-07-15T21:50:30.5388809Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":9.0,"String":"someString"}]}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#gotableqyr2uxfpxphl9","value":[{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"1","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":1,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"10","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":10,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"2","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":2,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"3","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":3,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"4","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":4,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"5","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":5,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"6","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":6,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"7","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":7,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"8","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":8,"String":"someString"},{"odata.etag":"W/\"datetime''2021-07-26T20%3A23%3A35.943476Z''\"","PartitionKey":"partition","RowKey":"9","Timestamp":"2021-07-26T20:23:35.943476Z","Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":9,"String":"someString"}]}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Thu, 15 Jul 2021 21:50:30 GMT
+      - Mon, 26 Jul 2021 20:23:35 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      Vary:
+      - Origin
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 51d65ce1-7002-002d-34c3-795b06000000
+      - 4bf66c14-5002-0077-575c-823de1000000
       X-Ms-Version:
       - "2019-02-02"
     status: 200 OK
@@ -231,10 +233,10 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:32 GMT
+      - Mon, 26 Jul 2021 20:23:36 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/Tables('gotable1aw91yk4gnxsv')
+    url: https://seankaneprim.table.core.windows.net/Tables('gotableqyr2uxfpxphl9')
     method: DELETE
   response:
     body: ""
@@ -244,13 +246,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 15 Jul 2021 21:50:30 GMT
+      - Mon, 26 Jul 2021 20:23:35 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 51d65d2a-7002-002d-79c3-795b06000000
+      - 4bf66c82-5002-0077-435c-823de1000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content

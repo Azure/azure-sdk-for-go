@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotableiw13ixxtlwtnx"}'
+    body: '{"TableName":"gotableiddhwkza2vslf"}'
     form: {}
     headers:
       Accept:
@@ -19,24 +19,24 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:46:39 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.cosmos.azure.com/Tables
     method: POST
   response:
-    body: '{"TableName":"gotableiw13ixxtlwtnx","odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    body: '{"TableName":"gotableiddhwkza2vslf","odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
     headers:
       Content-Type:
       - application/json;odata=minimalmetadata
       Date:
-      - Thu, 15 Jul 2021 21:46:38 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       Etag:
-      - W/"datetime'2021-07-15T21%3A46%3A38.8518920Z'"
+      - W/"datetime'2021-07-26T21%3A18%3A15.3752584Z'"
       Location:
-      - https://seankaneprim.table.cosmos.azure.com/Tables('gotableiw13ixxtlwtnx')
+      - https://seankaneprim.table.cosmos.azure.com/Tables('gotableiddhwkza2vslf')
       X-Ms-Request-Id:
-      - 24b0da8b-5e18-4c1f-b6db-fa0c1439530e
+      - 3869038a-1afc-4dab-a0f1-2bd12d58e8c4
     status: 201 Created
     code: 201
     duration: ""
@@ -61,24 +61,24 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:46:40 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.cosmos.azure.com/gotableiw13ixxtlwtnx
+    url: https://seankaneprim.table.cosmos.azure.com/gotableiddhwkza2vslf
     method: POST
   response:
     body: ""
     headers:
       Date:
-      - Thu, 15 Jul 2021 21:46:38 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       Etag:
-      - W/"datetime'2021-07-15T21%3A46%3A39.6188680Z'"
+      - W/"datetime'2021-07-26T21%3A18%3A16.0509960Z'"
       Location:
-      - https://seankaneprim.table.cosmos.azure.com/gotableiw13ixxtlwtnx(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.cosmos.azure.com/gotableiddhwkza2vslf(PartitionKey='partition',RowKey='1')
       Preference-Applied:
       - return-no-content
       X-Ms-Request-Id:
-      - 379d9f0b-f2b2-4d80-b27d-8edb7565baf5
+      - 6db82780-e646-45b3-b91d-1ee0814e84da
     status: 204 No Content
     code: 204
     duration: ""
@@ -98,18 +98,18 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:46:40 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.cosmos.azure.com/gotableiw13ixxtlwtnx(PartitionKey='partition',RowKey='1')
+    url: https://seankaneprim.table.cosmos.azure.com/gotableiddhwkza2vslf(PartitionKey='partition',RowKey='1')
     method: DELETE
   response:
     body: ""
     headers:
       Date:
-      - Thu, 15 Jul 2021 21:46:38 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       X-Ms-Request-Id:
-      - 2ad39a11-c825-459c-a301-f67973a0788d
+      - f81c6fe7-089d-44c7-859a-f80aa984b7bc
     status: 204 No Content
     code: 204
     duration: ""
@@ -125,18 +125,18 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:46:40 GMT
+      - Mon, 26 Jul 2021 21:18:16 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.cosmos.azure.com/Tables('gotableiw13ixxtlwtnx')
+    url: https://seankaneprim.table.cosmos.azure.com/Tables('gotableiddhwkza2vslf')
     method: DELETE
   response:
     body: ""
     headers:
       Date:
-      - Thu, 15 Jul 2021 21:46:39 GMT
+      - Mon, 26 Jul 2021 21:18:15 GMT
       X-Ms-Request-Id:
-      - 98c27751-7675-40af-9204-2e0f99701583
+      - 636f3ce6-e5e8-4a9a-8d2e-68a979584c07
     status: 204 No Content
     code: 204
     duration: ""

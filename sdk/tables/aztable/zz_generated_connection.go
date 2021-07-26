@@ -9,6 +9,7 @@ package aztable
 
 import (
 	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 

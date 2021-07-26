@@ -1,0 +1,713 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:33 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: GET
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables","value":[{"TableName":"gotable1v1a7j87nvs5o"},{"TableName":"gotable5jq3v0tq94aql0"},{"TableName":"gotable5jq3v0tq94aql1"},{"TableName":"gotable5jq3v0tq94aql2"},{"TableName":"gotable5jq3v0tq94aql3"},{"TableName":"gotable5jq3v0tq94aql4"},{"TableName":"gotablekyd305p8fhn460"},{"TableName":"gotablekyd305p8fhn461"},{"TableName":"gotablekyd305p8fhn462"},{"TableName":"gotablekyd305p8fhn463"},{"TableName":"gotablekyd305p8fhn464"}]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:33 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf5925b-d002-0079-7380-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotable1v1a7j87nvs5o')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:33 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf592d4-d002-0079-6580-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotable5jq3v0tq94aql0')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:33 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59332-d002-0079-3f80-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotable5jq3v0tq94aql1')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:33 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59365-d002-0079-7280-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotable5jq3v0tq94aql2')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59394-d002-0079-2080-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotable5jq3v0tq94aql3')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf593f1-d002-0079-7a80-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotable5jq3v0tq94aql4')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59437-d002-0079-3f80-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablekyd305p8fhn460')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59477-d002-0079-7e80-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablekyd305p8fhn461')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf594b1-d002-0079-3780-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablekyd305p8fhn462')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf594e9-d002-0079-6f80-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablekyd305p8fhn463')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf5952d-d002-0079-3180-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablekyd305p8fhn464')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59575-d002-0079-7480-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: '{"TableName":"gotablebyhusoz3ewumo0"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "37"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: POST
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablebyhusoz3ewumo0"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:34 GMT
+      Location:
+      - https://seankaneprim.table.core.windows.net/Tables('gotablebyhusoz3ewumo0')
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf595ad-d002-0079-2980-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: '{"TableName":"gotablebyhusoz3ewumo1"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "37"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: POST
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablebyhusoz3ewumo1"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      Location:
+      - https://seankaneprim.table.core.windows.net/Tables('gotablebyhusoz3ewumo1')
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf595fa-d002-0079-7280-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: '{"TableName":"gotablebyhusoz3ewumo2"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "37"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: POST
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablebyhusoz3ewumo2"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      Location:
+      - https://seankaneprim.table.core.windows.net/Tables('gotablebyhusoz3ewumo2')
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf5963a-d002-0079-2e80-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: '{"TableName":"gotablebyhusoz3ewumo3"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "37"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: POST
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablebyhusoz3ewumo3"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      Location:
+      - https://seankaneprim.table.core.windows.net/Tables('gotablebyhusoz3ewumo3')
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf59673-d002-0079-6580-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: '{"TableName":"gotablebyhusoz3ewumo4"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "37"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: POST
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablebyhusoz3ewumo4"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      Location:
+      - https://seankaneprim.table.core.windows.net/Tables('gotablebyhusoz3ewumo4')
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf596a6-d002-0079-1780-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 20 Jul 2021 16:01:36 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: GET
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables","value":[{"TableName":"gotablebyhusoz3ewumo0"},{"TableName":"gotablebyhusoz3ewumo1"},{"TableName":"gotablebyhusoz3ewumo2"},{"TableName":"gotablebyhusoz3ewumo3"},{"TableName":"gotablebyhusoz3ewumo4"}]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Tue, 20 Jul 2021 16:01:35 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - dbf596db-d002-0079-4980-7d1451000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 200 OK
+    code: 200
+    duration: ""

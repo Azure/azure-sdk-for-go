@@ -32,7 +32,7 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 		require.Equal(r.StatusCode, http.StatusNoContent)
 	}
 
-	pager := client.Query(nil)
+	pager := client.List(nil)
 	count := 0
 	for pager.NextPage(ctx) {
 		response := pager.PageResponse()
@@ -69,8 +69,8 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	var qResp TableEntityQueryByteResponseResponse
 	filter := "RowKey eq '1'"
-	query := &QueryOptions{Filter: &filter}
-	pager := client.Query(query)
+	list := &ListOptions{Filter: &filter}
+	pager := client.List(list)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -125,7 +125,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	}
 
-	pager = client.Query(query)
+	pager = client.List(list)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}

@@ -41,8 +41,8 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	require.Equal(receivedEntity.RowKey, "rk001")
 
 	queryString := "PartitionKey eq 'pk001'"
-	queryOptions := QueryOptions{Filter: &queryString}
-	pager := client.Query(&queryOptions)
+	listOptions := ListOptions{Filter: &queryString}
+	pager := client.List(&listOptions)
 	count := 0
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()

@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotablev9ymy16fzote2"}'
+    body: '{"TableName":"gotablek9778z5927xtv"}'
     form: {}
     headers:
       Accept:
@@ -16,39 +16,39 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:43 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/Tables
+    url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.metadata":"https://chrisstablesprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablev9ymy16fzote2"}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablek9778z5927xtv"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Mon, 05 Apr 2021 05:02:37 GMT
+      - Thu, 15 Jul 2021 21:47:42 GMT
       Location:
-      - https://chrisstablesprim.table.core.windows.net/Tables('gotablev9ymy16fzote2')
+      - https://seankaneprim.table.core.windows.net/Tables('gotablek9778z5927xtv')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebe3-e002-0019-49d8-29b4af000000
+      - 32f1ec8a-7002-005f-0dc3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":1,"PartitionKey":"partition","RowKey":"1","StringProp":"some
-      string 1"}'
+    body: '{"Bool":true,"Integer":1,"PartitionKey":"partition","RowKey":"1","String":"some
+      string 1","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -56,7 +56,7 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "98"
+      - "125"
       Content-Type:
       - application/json
       Dataserviceversion:
@@ -64,13 +64,13 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2
+    url: https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv
     method: POST
   response:
     body: ""
@@ -80,13 +80,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='1')
       Date:
-      - Mon, 05 Apr 2021 05:02:37 GMT
+      - Thu, 15 Jul 2021 21:47:42 GMT
       Etag:
-      - W/"datetime'2021-04-05T05%3A02%3A38.4885381Z'"
+      - W/"datetime'2021-07-15T21%3A47%3A43.1505573Z'"
       Location:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='1')
       Preference-Applied:
       - return-no-content
       Server:
@@ -94,15 +94,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebec-e002-0019-50d8-29b4af000000
+      - 32f1ecb5-7002-005f-34c3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
     code: 204
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":2,"PartitionKey":"partition","RowKey":"2","StringProp":"some
-      string 2"}'
+    body: '{"Bool":true,"Integer":2,"PartitionKey":"partition","RowKey":"2","String":"some
+      string 2","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -110,7 +110,7 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "98"
+      - "125"
       Content-Type:
       - application/json
       Dataserviceversion:
@@ -118,13 +118,13 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2
+    url: https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv
     method: POST
   response:
     body: ""
@@ -134,13 +134,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='2')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='2')
       Date:
-      - Mon, 05 Apr 2021 05:02:37 GMT
+      - Thu, 15 Jul 2021 21:47:42 GMT
       Etag:
-      - W/"datetime'2021-04-05T05%3A02%3A38.5946142Z'"
+      - W/"datetime'2021-07-15T21%3A47%3A43.2566321Z'"
       Location:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='2')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='2')
       Preference-Applied:
       - return-no-content
       Server:
@@ -148,15 +148,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebf1-e002-0019-55d8-29b4af000000
+      - 32f1ecd8-7002-005f-52c3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
     code: 204
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":3,"PartitionKey":"partition","RowKey":"3","StringProp":"some
-      string 3"}'
+    body: '{"Bool":true,"Integer":3,"PartitionKey":"partition","RowKey":"3","String":"some
+      string 3","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -164,7 +164,7 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "98"
+      - "125"
       Content-Type:
       - application/json
       Dataserviceversion:
@@ -172,13 +172,13 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2
+    url: https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv
     method: POST
   response:
     body: ""
@@ -188,13 +188,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='3')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='3')
       Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:42 GMT
       Etag:
-      - W/"datetime'2021-04-05T05%3A02%3A38.6866808Z'"
+      - W/"datetime'2021-07-15T21%3A47%3A43.3667092Z'"
       Location:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='3')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='3')
       Preference-Applied:
       - return-no-content
       Server:
@@ -202,15 +202,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebf3-e002-0019-57d8-29b4af000000
+      - 32f1ed05-7002-005f-7cc3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
     code: 204
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":4,"PartitionKey":"partition","RowKey":"4","StringProp":"some
-      string 4"}'
+    body: '{"Bool":true,"Integer":4,"PartitionKey":"partition","RowKey":"4","String":"some
+      string 4","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -218,7 +218,7 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "98"
+      - "125"
       Content-Type:
       - application/json
       Dataserviceversion:
@@ -226,13 +226,13 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2
+    url: https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv
     method: POST
   response:
     body: ""
@@ -242,13 +242,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='4')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='4')
       Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:42 GMT
       Etag:
-      - W/"datetime'2021-04-05T05%3A02%3A38.7727417Z'"
+      - W/"datetime'2021-07-15T21%3A47%3A43.48079Z'"
       Location:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='4')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='4')
       Preference-Applied:
       - return-no-content
       Server:
@@ -256,15 +256,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebf5-e002-0019-59d8-29b4af000000
+      - 32f1ed2e-7002-005f-23c3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
     code: 204
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":5,"PartitionKey":"partition","RowKey":"5","StringProp":"some
-      string 5"}'
+    body: '{"Bool":true,"Integer":5,"PartitionKey":"partition","RowKey":"5","String":"some
+      string 5","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -272,7 +272,7 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "98"
+      - "125"
       Content-Type:
       - application/json
       Dataserviceversion:
@@ -280,13 +280,13 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2
+    url: https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv
     method: POST
   response:
     body: ""
@@ -296,13 +296,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='5')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='5')
       Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:42 GMT
       Etag:
-      - W/"datetime'2021-04-05T05%3A02%3A38.8487963Z'"
+      - W/"datetime'2021-07-15T21%3A47%3A43.5858643Z'"
       Location:
-      - https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2(PartitionKey='partition',RowKey='5')
+      - https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv(PartitionKey='partition',RowKey='5')
       Preference-Applied:
       - return-no-content
       Server:
@@ -310,7 +310,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebfb-e002-0019-5cd8-29b4af000000
+      - 32f1ed50-7002-005f-45c3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
@@ -327,19 +327,19 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:39 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablev9ymy16fzote2()?%24filter=RowKey+lt+%275%27
+    url: https://seankaneprim.table.core.windows.net/gotablek9778z5927xtv()?%24filter=RowKey+lt+%275%27
     method: GET
   response:
-    body: '{"odata.metadata":"https://chrisstablesprim.table.core.windows.net/$metadata#gotablev9ymy16fzote2","value":[{"odata.etag":"W/\"datetime''2021-04-05T05%3A02%3A38.4885381Z''\"","PartitionKey":"partition","RowKey":"1","Timestamp":"2021-04-05T05:02:38.4885381Z","BoolProp":true,"IntProp":1,"StringProp":"some
-      string 1"},{"odata.etag":"W/\"datetime''2021-04-05T05%3A02%3A38.5946142Z''\"","PartitionKey":"partition","RowKey":"2","Timestamp":"2021-04-05T05:02:38.5946142Z","BoolProp":true,"IntProp":2,"StringProp":"some
-      string 2"},{"odata.etag":"W/\"datetime''2021-04-05T05%3A02%3A38.6866808Z''\"","PartitionKey":"partition","RowKey":"3","Timestamp":"2021-04-05T05:02:38.6866808Z","BoolProp":true,"IntProp":3,"StringProp":"some
-      string 3"},{"odata.etag":"W/\"datetime''2021-04-05T05%3A02%3A38.7727417Z''\"","PartitionKey":"partition","RowKey":"4","Timestamp":"2021-04-05T05:02:38.7727417Z","BoolProp":true,"IntProp":4,"StringProp":"some
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#gotablek9778z5927xtv","value":[{"odata.etag":"W/\"datetime''2021-07-15T21%3A47%3A43.1505573Z''\"","PartitionKey":"partition","RowKey":"1","Timestamp":"2021-07-15T21:47:43.1505573Z","Bool":true,"Integer":1,"String":"some
+      string 1"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A47%3A43.2566321Z''\"","PartitionKey":"partition","RowKey":"2","Timestamp":"2021-07-15T21:47:43.2566321Z","Bool":true,"Integer":2,"String":"some
+      string 2"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A47%3A43.3667092Z''\"","PartitionKey":"partition","RowKey":"3","Timestamp":"2021-07-15T21:47:43.3667092Z","Bool":true,"Integer":3,"String":"some
+      string 3"},{"odata.etag":"W/\"datetime''2021-07-15T21%3A47%3A43.48079Z''\"","PartitionKey":"partition","RowKey":"4","Timestamp":"2021-07-15T21:47:43.48079Z","Bool":true,"Integer":4,"String":"some
       string 4"}]}'
     headers:
       Cache-Control:
@@ -347,13 +347,13 @@ interactions:
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:43 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfebfe-e002-0019-5ed8-29b4af000000
+      - 32f1ed69-7002-005f-5ec3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 200 OK
@@ -368,13 +368,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 05 Apr 2021 05:02:39 GMT
+      - Thu, 15 Jul 2021 21:47:44 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/Tables('gotablev9ymy16fzote2')
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablek9778z5927xtv')
     method: DELETE
   response:
     body: ""
@@ -384,13 +384,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 05 Apr 2021 05:02:38 GMT
+      - Thu, 15 Jul 2021 21:47:43 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 95cfec00-e002-0019-60d8-29b4af000000
+      - 32f1ed9c-7002-005f-11c3-795c49000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content

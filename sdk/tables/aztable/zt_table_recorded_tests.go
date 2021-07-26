@@ -5,14 +5,14 @@ package aztable
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"math"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type testContext struct {
@@ -52,12 +52,6 @@ func cosmosURI(accountName string, endpointSuffix string) string {
 	return fmt.Sprintf("https://%v.table.%v/", accountName, endpointSuffix)
 }
 
-func failIfNotNil(a *assert.Assertions, e error) {
-	if e != nil {
-		a.FailNow(e.Error())
-	}
-}
-
 // create the test specific TableClient and wire it up to recordings
 func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode recording.RecordMode) {
 	var accountName string
@@ -65,36 +59,37 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 	var cred *SharedKeyCredential
 	var secret string
 	var uri string
-	assert := assert.New(t)
+	require := require.New(t)
 
 	// init the test framework
-	context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
+	context := recording.NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
 	r, err := recording.NewRecording(context, mode)
-	assert.Nil(err)
+	require.NoError(err)
 
 	if endpointType == StorageEndpoint {
 		accountName, err = r.GetRecordedVariable(storageAccountNameEnvVar, recording.Default)
-		failIfNotNil(assert, err)
+		require.NoError(err)
 		suffix = r.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.Default)
 		secret, err = r.GetRecordedVariable(storageAccountKeyEnvVar, recording.Secret_Base64String)
-		failIfNotNil(assert, err)
+		require.NoError(err)
 		cred, err = NewSharedKeyCredential(accountName, secret)
-		failIfNotNil(assert, err)
+		require.NoError(err)
 		uri = storageURI(accountName, suffix)
 	} else {
 		accountName, err = r.GetRecordedVariable(cosmosAccountNameEnnVar, recording.Default)
-		failIfNotNil(assert, err)
+		require.NoError(err)
 		suffix = r.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, recording.Default)
 		secret, err = r.GetRecordedVariable(cosmosAccountKeyEnvVar, recording.Secret_Base64String)
-		failIfNotNil(assert, err)
+		require.NoError(err)
 		cred, err = NewSharedKeyCredential(accountName, secret)
-		failIfNotNil(assert, err)
+		require.NoError(err)
 		uri = cosmosURI(accountName, suffix)
 		cosmosTestsMap[testName] = true
 	}
 
 	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: r, Retry: azcore.RetryOptions{MaxRetries: -1}})
-	assert.Nil(err)
+	require.NoError(err)
+
 	clientsMap[testName] = &testContext{client: client, recording: r, context: &context}
 }
 
@@ -143,66 +138,83 @@ func getTableName(context *testContext, prefix ...string) (string, error) {
 	}
 }
 
-func createSimpleEntities(count int, pk string) *[]map[string]interface{} {
-	result := make([]map[string]interface{}, count)
+type basicTestEntity struct {
+	Entity
+	Integer int32
+	String  string
+	Bool    bool
+}
 
+func marshalBasicEntity(b basicTestEntity, require *require.Assertions) *[]byte {
+	r, e := json.Marshal(b)
+	require.NoError(e)
+	return &r
+}
+
+type complexTestEntity struct {
+	Entity
+	Integer  int
+	String   string
+	Bool     bool
+	Float    float32
+	DateTime time.Time
+	Byte     []byte
+	// Integer64 int64 // Need to add type hints for ints/floats above 32bits
+	// Float64   float64
+}
+
+func createSimpleEntity(count int, pk string) basicTestEntity {
+	return basicTestEntity{
+		Entity: Entity{
+			PartitionKey: pk,
+			RowKey:       fmt.Sprint(count),
+		},
+		String:  fmt.Sprintf("some string %d", count),
+		Integer: int32(count),
+		Bool:    true,
+	}
+}
+
+// Use this for a replaced entity to assert a property (Bool) is removed
+func createSimpleEntityNoBool(count int, pk string) map[string]interface{} {
+	m := make(map[string]interface{})
+	m[partitionKey] = pk
+	m[rowKey] = fmt.Sprint(count)
+	m["String"] = fmt.Sprintf("some string %d", count)
+	m["Integer"] = int32(count)
+	return m
+}
+
+func createSimpleEntities(count int, pk string) *[]basicTestEntity {
+	result := make([]basicTestEntity, count)
 	for i := 1; i <= count; i++ {
-		var e = map[string]interface{}{
-			partitionKey: pk,
-			rowKey:       fmt.Sprint(i),
-			"StringProp": fmt.Sprintf("some string %d", i),
-			"IntProp":    i,
-			"BoolProp":   true,
-		}
-		result[i-1] = e
+		result[i-1] = createSimpleEntity(i, pk)
 	}
 	return &result
 }
 
-func createComplexMapEntities(context *testContext, count int, pk string) *[]map[string]interface{} {
-	result := make([]map[string]interface{}, count)
-
-	for i := 1; i <= count; i++ {
-		var e = map[string]interface{}{
-			partitionKey:          pk,
-			rowKey:                fmt.Sprint(i),
-			"StringProp":          fmt.Sprintf("some string %d", i),
-			"IntProp":             i,
-			"BoolProp":            true,
-			"SomeBinaryProperty":  []byte("some bytes"),
-			"SomeDateProperty":    context.recording.Now(),
-			"SomeDoubleProperty0": float64(1),
-			"SomeDoubleProperty1": float64(1.2345),
-			"SomeGuidProperty":    context.recording.UUID(),
-			"SomeInt64Property":   (int64)(math.MaxInt64),
-			"SomeIntProperty":     42,
-			"SomeStringProperty":  "some string",
-		}
-		result[i-1] = e
+func createComplexEntity(i int, pk string) complexTestEntity {
+	return complexTestEntity{
+		Entity: Entity{
+			PartitionKey: "partition",
+			RowKey:       fmt.Sprint(i),
+		},
+		Integer:  int(i),
+		String:   "someString",
+		Bool:     true,
+		Float:    3.14159,
+		DateTime: time.Date(2021, time.July, 13, 0, 0, 0, 0, time.UTC),
+		Byte:     []byte("somebytes"),
+		// Integer64: int64(math.Pow(2, 33)),
+		// Float64:   math.Pow(2, 33.1),
 	}
-	return &result
 }
 
-func createComplexEntities(context *testContext, count int, pk string) *[]complexEntity {
-	result := make([]complexEntity, count)
+func createComplexEntities(count int, pk string) *[]complexTestEntity {
+	result := make([]complexTestEntity, count)
 
-	sp := "some pointer to string"
 	for i := 1; i <= count; i++ {
-		var e = complexEntity{
-			PartitionKey:          "partition",
-			ETag:                  "*",
-			RowKey:                "row",
-			Timestamp:             context.recording.Now(),
-			SomeBinaryProperty:    []byte("some bytes"),
-			SomeDateProperty:      context.recording.Now(),
-			SomeDoubleProperty0:   float64(1),
-			SomeDoubleProperty1:   float64(1.2345),
-			SomeGuidProperty:      context.recording.UUID(),
-			SomeInt64Property:     math.MaxInt64,
-			SomeIntProperty:       42,
-			SomeStringProperty:    "some string",
-			SomePtrStringProperty: &sp}
-		result[i-1] = e
+		result[i-1] = createComplexEntity(i, pk)
 	}
 	return &result
 }

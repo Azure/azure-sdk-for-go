@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable1msfgttesz2cp"}'
+    body: '{"TableName":"gotableps3e7q02v0n3b"}'
     form: {}
     headers:
       Accept:
@@ -16,34 +16,104 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 20:34:59 GMT
+      - Thu, 15 Jul 2021 21:46:49 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    url: https://seankaneprim.table.cosmos.azure.com/Tables
     method: POST
   response:
-    body: '{"TableName":"gotable1msfgttesz2cp","odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    body: '{"TableName":"gotableps3e7q02v0n3b","odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
     headers:
       Content-Type:
       - application/json;odata=minimalmetadata
       Date:
-      - Fri, 21 May 2021 20:35:00 GMT
+      - Thu, 15 Jul 2021 21:46:48 GMT
       Etag:
-      - W/"datetime'2021-05-21T20%3A35%3A00.7158280Z'"
+      - W/"datetime'2021-07-15T21%3A46%3A48.2743304Z'"
       Location:
-      - https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable1msfgttesz2cp')
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - https://seankaneprim.table.cosmos.azure.com/Tables('gotableps3e7q02v0n3b')
       X-Ms-Request-Id:
-      - a06787e1-1d41-432c-92bc-45ab333cf72d
-    status: 201 Ok
+      - a4f889e8-1e83-4aeb-a292-7ce8efa86da9
+    status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":1,"PartitionKey":"partition","RowKey":"1","StringProp":"some
+    body: '{"Bool":true,"Integer":1,"PartitionKey":"partition","RowKey":"1","String":"some
+      string 1","Timestamp":"0001-01-01T00:00:00Z"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "125"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Thu, 15 Jul 2021 21:46:49 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/gotableps3e7q02v0n3b(PartitionKey='partition',RowKey='1')
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 15 Jul 2021 21:46:48 GMT
+      Etag:
+      - W/"datetime'2021-07-15T21%3A46%3A49.0265608Z'"
+      X-Ms-Request-Id:
+      - 4533f4f6-3628-486f-a87a-959a95e18288
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Thu, 15 Jul 2021 21:46:50 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/gotableps3e7q02v0n3b(PartitionKey='partition',RowKey='1')
+    method: GET
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.cosmos.azure.com/gotableps3e7q02v0n3b/$metadata#gotableps3e7q02v0n3b/@Element","odata.etag":"W/\"datetime''2021-07-15T21%3A46%3A49.0265608Z''\"","PartitionKey":"partition","RowKey":"1","Bool":true,"Integer":1,"String":"some
+      string 1","Timestamp":"2021-07-15T21:46:49.0265608Z"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Thu, 15 Jul 2021 21:46:48 GMT
+      Etag:
+      - W/"datetime'2021-07-15T21%3A46%3A49.0265608Z'"
+      X-Ms-Request-Id:
+      - 1fd2baf0-db4c-4b8c-8f06-24fd9e5d7ffd
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: '{"Integer":1,"MergeProperty":"foo","PartitionKey":"partition","RowKey":"1","String":"some
       string 1"}'
     form: {}
     headers:
@@ -52,35 +122,31 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "98"
+      - "100"
       Content-Type:
       - application/json
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 20:35:01 GMT
+      - Thu, 15 Jul 2021 21:46:50 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/gotable1msfgttesz2cp(PartitionKey='partition',RowKey='1')
+    url: https://seankaneprim.table.cosmos.azure.com/gotableps3e7q02v0n3b(PartitionKey='partition',RowKey='1')
     method: PUT
   response:
     body: ""
     headers:
-      Content-Length:
-      - "0"
       Content-Type:
       - application/json
       Date:
-      - Fri, 21 May 2021 20:35:00 GMT
+      - Thu, 15 Jul 2021 21:46:48 GMT
       Etag:
-      - W/"datetime'2021-05-21T20%3A35%3A01.3144584Z'"
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - W/"datetime'2021-07-15T21%3A46%3A49.2600328Z'"
       X-Ms-Request-Id:
-      - ae166874-a09d-4ddb-83cf-72d2728bcbbc
+      - f59cdaf4-0a57-4010-89a2-05ffeb5c9954
     status: 204 No Content
     code: 204
     duration: ""
@@ -95,101 +161,25 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 20:35:01 GMT
+      - Thu, 15 Jul 2021 21:46:50 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/gotable1msfgttesz2cp()?%24filter=RowKey+eq+%271%27
+    url: https://seankaneprim.table.cosmos.azure.com/gotableps3e7q02v0n3b()?%24filter=RowKey+eq+%271%27
     method: GET
   response:
-    body: '{"value":[{"odata.etag":"W/\"datetime''2021-05-21T20%3A35%3A01.3144584Z''\"","PartitionKey":"partition","RowKey":"1","BoolProp":true,"IntProp":1,"StringProp":"some
-      string 1","Timestamp":"2021-05-21T20:35:01.3144584Z"}],"odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#gotable1msfgttesz2cp"}'
+    body: '{"value":[{"odata.etag":"W/\"datetime''2021-07-15T21%3A46%3A49.2600328Z''\"","PartitionKey":"partition","RowKey":"1","Integer":1,"MergeProperty":"foo","String":"some
+      string 1","Timestamp":"2021-07-15T21:46:49.2600328Z"}],"odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#gotableps3e7q02v0n3b"}'
     headers:
       Content-Type:
       - application/json;odata=minimalmetadata
       Date:
-      - Fri, 21 May 2021 20:35:00 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - Thu, 15 Jul 2021 21:46:48 GMT
       X-Ms-Request-Id:
-      - d091e8e7-5c01-4fd7-8637-fc7960d805b2
-    status: 200 Ok
-    code: 200
-    duration: ""
-- request:
-    body: '{"MergeProperty":"foo","PartitionKey":"partition","RowKey":"1"}'
-    form: {}
-    headers:
-      Accept:
-      - application/json
-      Authorization:
-      - sanitized
-      Content-Length:
-      - "63"
-      Content-Type:
-      - application/json
-      Dataserviceversion:
-      - "3.0"
-      User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
-        Windows_NT)
-      X-Ms-Date:
-      - Fri, 21 May 2021 20:35:01 GMT
-      X-Ms-Version:
-      - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/gotable1msfgttesz2cp(PartitionKey='partition',RowKey='1')
-    method: PUT
-  response:
-    body: ""
-    headers:
-      Content-Length:
-      - "0"
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 21 May 2021 20:35:00 GMT
-      Etag:
-      - W/"datetime'2021-05-21T20%3A35%3A01.4885384Z'"
-      Server:
-      - Microsoft-HTTPAPI/2.0
-      X-Ms-Request-Id:
-      - 54960acf-d75a-4bf5-b2eb-b20a4e546c72
-    status: 204 No Content
-    code: 204
-    duration: ""
-- request:
-    body: ""
-    form: {}
-    headers:
-      Accept:
-      - application/json;odata=minimalmetadata
-      Authorization:
-      - sanitized
-      Dataserviceversion:
-      - "3.0"
-      User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
-        Windows_NT)
-      X-Ms-Date:
-      - Fri, 21 May 2021 20:35:01 GMT
-      X-Ms-Version:
-      - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/gotable1msfgttesz2cp()?%24filter=RowKey+eq+%271%27
-    method: GET
-  response:
-    body: '{"value":[{"odata.etag":"W/\"datetime''2021-05-21T20%3A35%3A01.4885384Z''\"","PartitionKey":"partition","RowKey":"1","MergeProperty":"foo","Timestamp":"2021-05-21T20:35:01.4885384Z"}],"odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#gotable1msfgttesz2cp"}'
-    headers:
-      Content-Type:
-      - application/json;odata=minimalmetadata
-      Date:
-      - Fri, 21 May 2021 20:35:00 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
-      X-Ms-Request-Id:
-      - 656e83b0-2e58-4c39-beec-116830e09468
-    status: 200 Ok
+      - ac45b82d-f4e3-4fa7-849c-edd95107f111
+    status: 200 OK
     code: 200
     duration: ""
 - request:
@@ -201,25 +191,21 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 20:35:01 GMT
+      - Thu, 15 Jul 2021 21:46:50 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable1msfgttesz2cp')
+    url: https://seankaneprim.table.cosmos.azure.com/Tables('gotableps3e7q02v0n3b')
     method: DELETE
   response:
     body: ""
     headers:
-      Content-Length:
-      - "0"
       Date:
-      - Fri, 21 May 2021 20:35:01 GMT
-      Server:
-      - Microsoft-HTTPAPI/2.0
+      - Thu, 15 Jul 2021 21:46:48 GMT
       X-Ms-Request-Id:
-      - 6d490fec-695f-4191-9f6c-50c27bafe0ef
+      - 6dffaf18-6188-47c4-8899-68f0267e8a87
     status: 204 No Content
     code: 204
     duration: ""

@@ -8,6 +8,7 @@ This document is intended for users that are familiar with an older version of t
 
 * [Prerequisites](#prerequisites)
 * [General Changes](#general-changes)
+* [Breaking Changes](#breaking-changes)
     * [Authentication](#authentication)
     * [Error Handling](#error-handling)
     * [Long Running Operations](#long-running-operations)
@@ -17,13 +18,13 @@ This document is intended for users that are familiar with an older version of t
 
 ## Prerequisites
 
-Go 1.13 or above.
+The last 2 released stable versions of Go are supported.
 
 ## General Changes
 
 The latest Azure SDK For Go for management modules is using the [Go Modules](https://github.com/golang/go/wiki/Modules) to manage the dependencies. We ship every RP as an individual module to create a more flexible user experience.
 
-The important breaking changes are listed in the following sections:
+## Breaking Changes
 
 ### Authentication
 

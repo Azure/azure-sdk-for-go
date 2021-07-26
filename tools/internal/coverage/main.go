@@ -21,9 +21,9 @@ type Package struct {
 	CoverageGoal float64 `json:"CoverageGoal"`
 }
 
-const (
-	coverageXmlFile = "coverage.xml"
-)
+// const (
+// 	coverageXmlFile = "coverage.xml"
+// )
 
 var configFile, _ = filepath.Abs(filepath.Join("..", "eng", "config.json"))
 
@@ -40,6 +40,7 @@ func filterFiles(path string, info os.FileInfo, err error) error {
 		return err
 	}
 	if strings.Contains(path, "coverage.xml") {
+		fmt.Println("Found coverage.xml file at ", path)
 		coverageFiles = append(coverageFiles, path)
 	}
 	return nil

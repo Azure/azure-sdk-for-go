@@ -69,6 +69,7 @@ func ReadConfigData() *CodeCoverage {
 func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 	for _, covFile := range covFiles {
 		for _, p := range configData.Packages {
+			fmt.Printf("Checking against package: %v\n", p.Name)
 			if strings.Contains(covFile, p.Name) {
 				return p.CoverageGoal
 			}

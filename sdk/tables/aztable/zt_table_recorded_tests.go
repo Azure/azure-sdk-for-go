@@ -45,11 +45,11 @@ var clientsMap map[string]*testContext = make(map[string]*testContext)
 var cosmosTestsMap map[string]bool = make(map[string]bool)
 
 func storageURI(accountName string, endpointSuffix string) string {
-	return "https://" + accountName + ".table." + endpointSuffix
+	return fmt.Sprintf("https://%v.table.%v/", accountName, endpointSuffix)
 }
 
 func cosmosURI(accountName string, endpointSuffix string) string {
-	return "https://" + accountName + ".table." + endpointSuffix
+	return fmt.Sprintf("https://%v.table.%v/", accountName, endpointSuffix)
 }
 
 func failIfNotNil(a *assert.Assertions, e error) {

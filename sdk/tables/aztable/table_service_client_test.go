@@ -8,9 +8,11 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -165,6 +167,209 @@ func (s *tableServiceClientLiveTests) TestListTables() {
 
 	require.NoError(pager.Err())
 	require.Equal(5, count)
+}
+
+func (s *tableServiceClientLiveTests) TestGetStatistics() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	s.T().Skip() // TODO: need to change URL to -secondary https://docs.microsoft.com/en-us/rest/api/storageservices/get-table-service-stats
+	resp, err := context.client.GetStatistics(ctx, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+}
+
+func (s *tableServiceClientLiveTests) TestGetProperties() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	resp, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+}
+
+func (s *tableServiceClientLiveTests) TestSetLogging() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	logging := Logging{
+		Read:    to.BoolPtr(true),
+		Write:   to.BoolPtr(true),
+		Delete:  to.BoolPtr(true),
+		Version: to.StringPtr("1.0"),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(5),
+		},
+	}
+	props := TableServiceProperties{Logging: &logging}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.Logging.Read, *received.StorageServiceProperties.Logging.Read)
+	require.Equal(*props.Logging.Write, *received.StorageServiceProperties.Logging.Write)
+	require.Equal(*props.Logging.Delete, *received.StorageServiceProperties.Logging.Delete)
+	require.Equal(*props.Logging.RetentionPolicy.Enabled, *received.StorageServiceProperties.Logging.RetentionPolicy.Enabled)
+	require.Equal(*props.Logging.RetentionPolicy.Days, *received.StorageServiceProperties.Logging.RetentionPolicy.Days)
+}
+
+func (s *tableServiceClientLiveTests) TestSetHoursMetrics() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	metrics := Metrics{
+		Enabled:     to.BoolPtr(true),
+		IncludeAPIs: to.BoolPtr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(5),
+		},
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{HourMetrics: &metrics}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.HourMetrics.Enabled, *received.StorageServiceProperties.HourMetrics.Enabled)
+	require.Equal(*props.HourMetrics.IncludeAPIs, *received.StorageServiceProperties.HourMetrics.IncludeAPIs)
+	require.Equal(*props.HourMetrics.RetentionPolicy.Days, *received.StorageServiceProperties.HourMetrics.RetentionPolicy.Days)
+	require.Equal(*props.HourMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.HourMetrics.RetentionPolicy.Enabled)
+}
+
+func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	metrics := Metrics{
+		Enabled:     to.BoolPtr(true),
+		IncludeAPIs: to.BoolPtr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(5),
+		},
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{MinuteMetrics: &metrics}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.MinuteMetrics.Enabled, *received.StorageServiceProperties.MinuteMetrics.Enabled)
+	require.Equal(*props.MinuteMetrics.IncludeAPIs, *received.StorageServiceProperties.MinuteMetrics.IncludeAPIs)
+	require.Equal(*props.MinuteMetrics.RetentionPolicy.Days, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Days)
+	require.Equal(*props.MinuteMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Enabled)
+}
+
+func (s *tableServiceClientLiveTests) TestSetCors() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	corsRules1 := CorsRule{
+		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
+		AllowedMethods:  to.StringPtr("PUT"),
+		AllowedOrigins:  to.StringPtr("www.xyz.com"),
+		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Int32Ptr(500),
+	}
+	props := TableServiceProperties{Cors: []*CorsRule{&corsRules1}}
+
+	resp, err := context.client.SetProperties(ctx, props, nil)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	time.Sleep(45 * time.Second)
+
+	received, err := context.client.GetProperties(ctx, nil)
+	require.NoError(err)
+
+	require.Equal(*props.Cors[0].AllowedHeaders, *received.StorageServiceProperties.Cors[0].AllowedHeaders)
+	require.Equal(*props.Cors[0].AllowedMethods, *received.StorageServiceProperties.Cors[0].AllowedMethods)
+	require.Equal(*props.Cors[0].AllowedOrigins, *received.StorageServiceProperties.Cors[0].AllowedOrigins)
+	require.Equal(*props.Cors[0].ExposedHeaders, *received.StorageServiceProperties.Cors[0].ExposedHeaders)
+	require.Equal(*props.Cors[0].MaxAgeInSeconds, *received.StorageServiceProperties.Cors[0].MaxAgeInSeconds)
+}
+
+func (s *tableServiceClientLiveTests) TestSetTooManyCors() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	corsRules1 := CorsRule{
+		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
+		AllowedMethods:  to.StringPtr("PUT"),
+		AllowedOrigins:  to.StringPtr("www.xyz.com"),
+		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
+		MaxAgeInSeconds: to.Int32Ptr(500),
+	}
+	props := TableServiceProperties{Cors: make([]*CorsRule, 0)}
+	for i := 0; i < 6; i++ {
+		props.Cors = append(props.Cors, &corsRules1)
+	}
+
+	_, err := context.client.SetProperties(ctx, props, nil)
+	require.Error(err)
+}
+
+func (s *tableServiceClientLiveTests) TestRetentionTooLong() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
+		s.T().Skip()
+	}
+
+	metrics := Metrics{
+		Enabled:     to.BoolPtr(true),
+		IncludeAPIs: to.BoolPtr(true),
+		RetentionPolicy: &RetentionPolicy{
+			Enabled: to.BoolPtr(true),
+			Days:    to.Int32Ptr(366),
+		},
+		Version: to.StringPtr("1.0"),
+	}
+	props := TableServiceProperties{MinuteMetrics: &metrics}
+
+	_, err := context.client.SetProperties(ctx, props, nil)
+	require.Error(err)
 }
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {

@@ -2,7 +2,7 @@
     "Packages": [
         {
             "Name": "azidentity",
-            "CoverageGoal": 0.68
+            "CoverageGoal": 0.60
         },
         {
             "Name": "azcore",

@@ -31,7 +31,7 @@ function Process-Sdk ($path) {
     }
 
     if (!$skipBuild) {
-        Write-Host "##[command]Executing go build -v ./... in " $path
+        Write-Host "##[command]Executing go build -x -v ./... in " $path
         go build -x -v ./...
         Write-Host "##[command]Build Complete!"
 

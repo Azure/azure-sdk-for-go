@@ -7,8 +7,6 @@
 
 package aztable
 
-
-
 import (
 	"regexp"
 	"strings"

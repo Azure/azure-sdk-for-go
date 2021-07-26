@@ -33,11 +33,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
-		alias: (*alias)(&a),
+		alias:  (*alias)(&a),
 		Expiry: (*timeRFC3339)(a.Expiry),
-		Start: (*timeRFC3339)(a.Start),
+		Start:  (*timeRFC3339)(a.Start),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -48,7 +48,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -72,9 +72,9 @@ type CorsRule struct {
 	AllowedMethods *string `xml:"AllowedMethods"`
 
 	// REQUIRED; The origin domains that are permitted to make a request against the service via CORS. The origin domain is the domain from which the request
-// originates. Note that the origin must be an exact
-// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains
-// to make requests via CORS.
+	// originates. Note that the origin must be an exact
+	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains
+	// to make requests via CORS.
 	AllowedOrigins *string `xml:"AllowedOrigins"`
 
 	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
@@ -86,8 +86,8 @@ type CorsRule struct {
 
 type GeoReplication struct {
 	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary.
-// Primary writes after this point in time may or may
-// not be available for reads.
+	// Primary writes after this point in time may or may
+	// not be available for reads.
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location.
@@ -101,7 +101,7 @@ func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 		*alias
 		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
 	}{
-		alias: (*alias)(&g),
+		alias:        (*alias)(&g),
 		LastSyncTime: (*timeRFC1123)(g.LastSyncTime),
 	}
 	return e.EncodeElement(aux, start)
@@ -271,8 +271,8 @@ type TableInsertEntityOptions struct {
 // TableMergeEntityOptions contains the optional parameters for the Table.MergeEntity method.
 type TableMergeEntityOptions struct {
 	// Match condition for an entity to be updated. If specified and a matching entity is not found, an error will be raised. To force an unconditional update,
-// set to the wildcard character (*). If not specified, an insert will be performed when no existing entity is found to update and a merge will be performed
-// if an existing entity is found.
+	// set to the wildcard character (*). If not specified, an insert will be performed when no existing entity is found to update and a merge will be performed
+	// if an existing entity is found.
 	IfMatch *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
@@ -419,8 +419,8 @@ type TableSetAccessPolicyOptions struct {
 // TableUpdateEntityOptions contains the optional parameters for the Table.UpdateEntity method.
 type TableUpdateEntityOptions struct {
 	// Match condition for an entity to be updated. If specified and a matching entity is not found, an error will be raised. To force an unconditional update,
-// set to the wildcard character (*). If not specified, an insert will be performed when no existing entity is found to update and a replace will be performed
-// if an existing entity is found.
+	// set to the wildcard character (*). If not specified, an insert will be performed when no existing entity is found to update and a replace will be performed
+	// if an existing entity is found.
 	IfMatch *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
@@ -439,4 +439,3 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 		m[k] = v
 	}
 }
-

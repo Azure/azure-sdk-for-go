@@ -38,7 +38,7 @@ const (
 const (
 	headerContentType             = "Content-Type"
 	headerContentTransferEncoding = "Content-Transfer-Encoding"
-	error_empty_transaction       = "Transaction cannot be empty."
+	error_empty_transaction       = "transaction cannot be empty"
 )
 
 type OdataErrorMessage struct {
@@ -94,13 +94,6 @@ type TableTransactionResponse struct {
 
 type TableSubmitTransactionOptions struct {
 	RequestID *string
-}
-
-//nolint
-var defaultChangesetHeaders = map[string]string{
-	"Accept":       "application/json;odata=minimalmetadata",
-	"Content-Type": "application/json",
-	"Prefer":       "return-no-content",
 }
 
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
@@ -206,10 +199,19 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 		// This is a failure and the body is json
 		return TableTransactionResponse{}, newTableTransactionError(bytesBody)
 	}
+
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
-	outerPart, err := mpReader.NextPart()        //nolint There is an error here
-	innerBytes, err := ioutil.ReadAll(outerPart) //nolint There is an error here
+	outerPart, err := mpReader.NextPart()
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+
+	innerBytes, err := ioutil.ReadAll(outerPart)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+
 	innerBoundary := getBoundaryName(innerBytes)
 	reader = bytes.NewReader(innerBytes)
 	mpReader = multipart.NewReader(reader, innerBoundary)

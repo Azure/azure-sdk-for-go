@@ -203,8 +203,6 @@ func createComplexEntity(i int, pk string) complexTestEntity {
 		Float:    3.14159,
 		DateTime: time.Date(2021, time.July, 13, 0, 0, 0, 0, time.UTC),
 		Byte:     []byte("somebytes"),
-		// Integer64: int64(math.Pow(2, 33)),
-		// Float64:   math.Pow(2, 33.1),
 	}
 }
 

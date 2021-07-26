@@ -9,8 +9,9 @@ package weather
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type AirAndPollen struct {
@@ -27,7 +28,7 @@ type AirAndPollen struct {
 	Type *string `json:"type,omitempty"`
 
 	// Value of the given type above. Values associated with mold, grass, weed and tree are in units of parts per cubic meter. Both air quality and UV are indices,
-// so they are unitless.
+	// so they are unitless.
 	Value *int32 `json:"value,omitempty"`
 }
 
@@ -36,18 +37,18 @@ type AirAndPollen struct {
 // response, with the highest priority alert being returned at the top of the response.
 type AlertArea struct {
 	// Full details associated with the alert. Returned if details=True. This field is always returned in the language(s) of choice by the issuing provider
-// and Azure Maps only returns what is created by the
-// provider. Please note, some countries/regions may offer their native language and English. Language parameter won’t apply to this field.
+	// and Azure Maps only returns what is created by the
+	// provider. Please note, some countries/regions may offer their native language and English. Language parameter won’t apply to this field.
 	AlertDetails *string `json:"alertDetails,omitempty"`
 
 	// Language of the alertDetails. This field helps to point out that the language of the alertDetails may differ from the requested language parameter. Returned
-// if details=True. Language code has been
-// derived from the ISO 639-1 Alpha-2 codes.
+	// if details=True. Language code has been
+	// derived from the ISO 639-1 Alpha-2 codes.
 	AlertDetailsLanguageCode *string `json:"alertDetailsLanguageCode,omitempty"`
 
 	// The end date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert crosses multiple time zones the returned
-// time in the response is the local time to the
-// requested coordinate location.
+	// time in the response is the local time to the
+	// requested coordinate location.
 	EndTime *string `json:"endTime,omitempty"`
 
 	// The latest status of the alert in the current area.
@@ -57,8 +58,8 @@ type AlertArea struct {
 	Name *string `json:"name,omitempty"`
 
 	// The start date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert crosses multiple time zones the returned
-// time in the response is the local time to the
-// requested coordinate location.
+	// time in the response is the local time to the
+	// requested coordinate location.
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Text summarizing the alert in the returned area.
@@ -99,7 +100,7 @@ type CurrentConditions struct {
 	HasPrecipitation *bool `json:"hasPrecipitation,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Indicates the time of the day. True indicates 'day',', false indicates 'night.
@@ -139,11 +140,11 @@ type CurrentConditions struct {
 	TemperatureSummary *TemperatureSummary `json:"temperatureSummary,omitempty"`
 
 	// Measure of the strength of the ultraviolet radiation from the sun. Supported values are:
-// * 0-2 - Low danger from the sun's UV rays or the average person.
-// * 3-5 - Moderate risk of harm from unprotected sun exposure.
-// * 6-7 - High risk of harm from unprotected sun exposure.
-// * 8-10 - Very high risk of harm from unprotected sun exposure.
-// * 11+ - Extreme risk of harm from unprotected sun exposure.
+	// * 0-2 - Low danger from the sun's UV rays or the average person.
+	// * 3-5 - Moderate risk of harm from unprotected sun exposure.
+	// * 6-7 - High risk of harm from unprotected sun exposure.
+	// * 8-10 - Very high risk of harm from unprotected sun exposure.
+	// * 11+ - Extreme risk of harm from unprotected sun exposure.
 	UvIndex *int32 `json:"uvIndex,omitempty"`
 
 	// Phrase associated with the uvIndex.
@@ -262,36 +263,36 @@ type DailyForecastSummary struct {
 // DailyIndex - Information about a daily index.
 type DailyIndex struct {
 	// Describes the direction of the value and categoryValue. For example, when ascending=True, the poorest index value is 0 and the best index value is 10.
-// When ascending=True, the poorest index value is
-// 10 and the best index value is 0.
+	// When ascending=True, the poorest index value is
+	// 10 and the best index value is 0.
 	Ascending *bool `json:"ascending,omitempty"`
 
 	// Textual description for categoryValue corresponding to the level that the index value falls under, for example "Very Good".
 	Category *string `json:"category,omitempty"`
 
 	// Level that the index value falls under, represented by an integer. This value can be 1 through 5 and should be used in combination with the ascending
-// flag because it can differ among indices. For
-// example, the following values apply for Mosquito Activity: Low=1, Moderate=2, High=3, Very High=4, and Extreme=5.
+	// flag because it can differ among indices. For
+	// example, the following values apply for Mosquito Activity: Low=1, Moderate=2, High=3, Very High=4, and Extreme=5.
 	CategoryValue *int32 `json:"categoryValue,omitempty"`
 
 	// Date and time of the current observation displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
 	DateTime *string `json:"dateTime,omitempty"`
 
 	// A textual explanation that can be used for display purposes to summarize the index value and category. For example, when the index value for Flight Delays
-// is very good, the description will be
-// "Conditions are excellent for flying!".
+	// is very good, the description will be
+	// "Conditions are excellent for flying!".
 	Description *string `json:"description,omitempty"`
 
 	// Numeric ID used to identify the specific index. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts] for details and to
-// see the supported index IDs. For example, the
-// index ID can support UI visualization scenarios.
+	// see the supported index IDs. For example, the
+	// index ID can support UI visualization scenarios.
 	IndexID *int32 `json:"indexId,omitempty"`
 
 	// Name of the index, for example, "Construction", "Outdoor Activity", "Flight Delays".
 	IndexName *string `json:"indexName,omitempty"`
 
 	// Index value. Ranges from 0.0 to 10.0. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts] for details and to see the supported
-// ranges.
+	// ranges.
 	Value *float32 `json:"value,omitempty"`
 }
 
@@ -334,7 +335,7 @@ type DayOrNight struct {
 	IceProbability *int32 `json:"iceProbability,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Phrase description of the icon. Displayed in specified language. For example, 'Sunny'.
@@ -344,8 +345,8 @@ type DayOrNight struct {
 	LocalSource *LocalSource `json:"localSource,omitempty"`
 
 	// Phrase description of the forecast in specified language. Azure Maps attempts to keep this phrase under 100 characters in length, but some languages/weather
-// events may result in a longer phrase
-// length, exceeding 100 characters.
+	// events may result in a longer phrase
+	// length, exceeding 100 characters.
 	LongPhrase *string `json:"longPhrase,omitempty"`
 
 	// Description of the intensity.
@@ -364,8 +365,8 @@ type DayOrNight struct {
 	RainProbability *int32 `json:"rainProbability,omitempty"`
 
 	// Phrase description of the forecast in specified language. Azure Maps attempts to keep this phrase under 30 characters in length, but some languages/weather
-// events may result in a longer phrase length,
-// exceeding 30 characters.
+	// events may result in a longer phrase length,
+	// exceeding 30 characters.
 	ShortPhrase *string `json:"shortPhrase,omitempty"`
 
 	// Snow
@@ -459,7 +460,7 @@ type ForecastInterval struct {
 	Dbz *float64 `json:"dbz,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// The first minute for the interval.
@@ -478,23 +479,23 @@ type ForecastInterval struct {
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Key that specifies the threshold value. Along with precipitationType, can be used to determine the simplifiedColor. If dbz is zero, not present in the
-// response.
+	// response.
 	Threshold *string `json:"threshold,omitempty"`
 }
 
 type HazardDetail struct {
 	// A unique identifier (non-displayable) for each type of hazard: LightRain, ModerateRain, HeavyRain, LightMix, ModerateMix, HeavyMix, LightSnow, ModerateSnow,
-// HeavySnow, LightIce, ModerateIce, HeavyIce,
-// Hail, LargeHail, SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning, FlashFloodWarning, TornadoWarning,
-// TsunamiWarning, SevereThunderstormWarning.
+	// HeavySnow, LightIce, ModerateIce, HeavyIce,
+	// Hail, LargeHail, SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning, FlashFloodWarning, TornadoWarning,
+	// TsunamiWarning, SevereThunderstormWarning.
 	HazardCode *string `json:"hazardCode,omitempty"`
 
 	// A severity/hazard index.
-// * 0 - No hazard.
-// * 1 - Be informed, be aware.
-// * 2 - Pay attention, be prepared.
-// * 3 - Take action.
-// * 4 - Life threatening, emergency.
+	// * 0 - No hazard.
+	// * 1 - Be informed, be aware.
+	// * 2 - Pay attention, be prepared.
+	// * 3 - Take action.
+	// * 4 - Life threatening, emergency.
 	HazardIndex *int32 `json:"hazardIndex,omitempty"`
 
 	// A displayable short phrase describing the forecasted conditions and precipitation intensity/type.
@@ -524,7 +525,7 @@ type HourlyForecast struct {
 	IceProbability *int32 `json:"iceProbability,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Phrase description of the weather icon.
@@ -561,11 +562,11 @@ type HourlyForecast struct {
 	TotalLiquid *WeatherUnit `json:"totalLiquid,omitempty"`
 
 	// Measure of the strength of the ultraviolet radiation from the sun. Supported values are:
-// * 0-2 - Low danger from the sun's UV rays or the average person.
-// * 3-5 - Moderate risk of harm from unprotected sun exposure.
-// * 6-7 - High risk of harm from unprotected sun exposure.
-// * 8-10 - Very high risk of harm from unprotected sun exposure.
-// * 11+ - Extreme risk of harm from unprotected sun exposure.
+	// * 0-2 - Low danger from the sun's UV rays or the average person.
+	// * 3-5 - Moderate risk of harm from unprotected sun exposure.
+	// * 6-7 - High risk of harm from unprotected sun exposure.
+	// * 8-10 - Very high risk of harm from unprotected sun exposure.
+	// * 11+ - Extreme risk of harm from unprotected sun exposure.
 	UvIndex *int32 `json:"uvIndex,omitempty"`
 
 	// Phrase associated with the uvIndex.
@@ -604,7 +605,7 @@ type IntervalSummary struct {
 	EndMinute *int32 `json:"endMinute,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Long summary phrase. Phrase length is 60+ characters.
@@ -635,12 +636,12 @@ type LocalSource struct {
 	ID *int32 `json:"id,omitempty"`
 
 	// Name of the local data provider. Name is displayed in the language specified by language code in URL, if available. Otherwise, Name is displayed in English
-// or the language in which the name was
-// provided.
+	// or the language in which the name was
+	// provided.
 	Name *string `json:"name,omitempty"`
 
 	// Weather code provided by the local data provider. This weather code allows the forecast to be matched to icons provided by the local data provider instead
-// of Azure Maps icons.
+	// of Azure Maps icons.
 	WeatherCode *string `json:"weatherCode,omitempty"`
 }
 
@@ -673,7 +674,7 @@ type MinuteForecastSummary struct {
 	BriefPhrase60 *string `json:"briefPhrase60,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Long summary phrase for the next 120 minutes. Phrase length is 60+ characters.
@@ -734,7 +735,7 @@ type QuarterDayForecast struct {
 	Ice *WeatherUnit `json:"ice,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Phrase description of the icon. Displayed in specified language. For example, 'Sunny'.
@@ -819,19 +820,19 @@ type SevereWeatherAlert struct {
 	Description *SevereWeatherAlertDescription `json:"description,omitempty"`
 
 	// A disclaimer regarding the source of the alert information. This field is not always available. For example, disclaimer may include details about the
-// delays or potential issues related to the alarm.
+	// delays or potential issues related to the alarm.
 	Disclaimer *string `json:"disclaimer,omitempty"`
 
 	// Severity level of the alert. This field is not available for all countries and therefore not always returned.
 	Level *string `json:"level,omitempty"`
 
 	// Number signifying the importance or ranking order of the given alert within the country/region it has originated. A lower number signifies a higher priority.
-// For example, 1 is the highest priority.
-// The number varies by country/region and can change over time as each country/region evolves their alert systems.
+	// For example, 1 is the highest priority.
+	// The number varies by country/region and can change over time as each country/region evolves their alert systems.
 	Priority *int32 `json:"priority,omitempty"`
 
 	// The provider of the alert information. By default the source is returned in English (en-US). The alerts are from official Government Meteorological Agencies
-// and leading global weather alert providers.
+	// and leading global weather alert providers.
 	Source *string `json:"source,omitempty"`
 
 	// A numerical identifier associated with the source provider name of the alert data.
@@ -880,12 +881,12 @@ func (s SevereWeatherAlertsResponse) MarshalJSON() ([]byte, error) {
 // SunGlare - A rating that indicates how blinding the sun is for the driver.
 type SunGlare struct {
 	// If the vehicle heading value is not provided for a waypoint, then the service will calculate a heading based upon the location of neighboring waypoints
-// if provided.
+	// if provided.
 	CalculatedVehicleHeading *int32 `json:"calculatedVehicleHeading,omitempty"`
 
 	// An index from 0 to 100 indicating sun glare intensity for a driver. A value of 50 and above can be considered a hazard for some drivers and a value of
-// 100 signifies the driver is driving straight into
-// the sun and atmospheric conditions are clear allowing for the full intensity of the sun to blind the driver.
+	// 100 signifies the driver is driving straight into
+	// the sun and atmospheric conditions are clear allowing for the full intensity of the sun to blind the driver.
 	GlareIndex *int32 `json:"glareIndex,omitempty"`
 }
 
@@ -959,26 +960,26 @@ type WeatherAlongRouteSummary struct {
 	Hazards *WeatherHazards `json:"hazards,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 }
 
 // WeatherGetCurrentConditionsOptions contains the optional parameters for the Weather.GetCurrentConditions method.
 type WeatherGetCurrentConditionsOptions struct {
 	// Return full details for the current conditions. Available values are
-// * `true` - Returns full details. By default all details are returned.
-// * `false` - Returns a truncated version of the current condition data, which includes observation date time, weather phrase, icon code, precipitation
-// indicator flag, and temperature.
+	// * `true` - Returns full details. By default all details are returned.
+	// * `false` - Returns a truncated version of the current condition data, which includes observation date time, weather phrase, icon code, precipitation
+	// indicator flag, and temperature.
 	Details *string
 	// Time frame of the returned weather conditions. By default, the most current weather conditions will be returned. Default value is 0. Supported values
-// are:
-// * `0` - Return the most current weather conditions.
-// * `6` - Return weather conditions from past 6 hours.
-// * `24` - Return weather conditions from past 24 hours.
+	// are:
+	// * `0` - Return the most current weather conditions.
+	// * `6` - Return weather conditions from past 6 hours.
+	// * `24` - Return weather conditions from past 24 hours.
 	Duration *int32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Specifies to return the data in either metric units or imperial units. Default value is metric.
 	Unit *WeatherDataUnit
@@ -987,15 +988,15 @@ type WeatherGetCurrentConditionsOptions struct {
 // WeatherGetDailyForecastOptions contains the optional parameters for the Weather.GetDailyForecast method.
 type WeatherGetDailyForecastOptions struct {
 	// Specifies for how many days the daily forecast responses are returned. Available values are
-// * `1` - Return forecast data for the next day. Returned by default.
-// * `5` - Return forecast data for the next 5 days.
-// * `10` - Return forecast data for the next 10 days.
-// * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
-// * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
+	// * `1` - Return forecast data for the next day. Returned by default.
+	// * `5` - Return forecast data for the next 5 days.
+	// * `10` - Return forecast data for the next 10 days.
+	// * `25` - Return forecast data for the next 25 days. Only available in S1 SKU.
+	// * `45` - Return forecast data for the next 45 days. Only available in S1 SKU.
 	Duration *int32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Specifies to return the data in either metric units or imperial units. Default value is metric.
 	Unit *WeatherDataUnit
@@ -1004,37 +1005,37 @@ type WeatherGetDailyForecastOptions struct {
 // WeatherGetDailyIndicesOptions contains the optional parameters for the Weather.GetDailyIndices method.
 type WeatherGetDailyIndicesOptions struct {
 	// Specifies for how many days the daily indices are returned. By default, the indices data for the current day will be returned. When requesting future
-// indices data, the current day is included in the response as day 1. Available values are
-// * `1` - Return daily index data for the current day. Default value.
-// * `5` - Return 5 days of daily index data starting from the current day.
-// * `10` - Return 10 days of daily index data starting from the current day.
-// * `15` - Return 15 days of daily index data starting from the current day.
+	// indices data, the current day is included in the response as day 1. Available values are
+	// * `1` - Return daily index data for the current day. Default value.
+	// * `5` - Return 5 days of daily index data starting from the current day.
+	// * `10` - Return 10 days of daily index data starting from the current day.
+	// * `15` - Return 15 days of daily index data starting from the current day.
 	Duration *int32
 	// Numeric index group identifier that can be used for restricting returned results to the corresponding subset of indices (index group). Cannot be paired
-// with `indexId`. Please refer to [Weather Service Concepts](https://aka.ms/AzureMapsWeatherConcepts) for details and to see the supported index groups.
+	// with `indexId`. Please refer to [Weather Service Concepts](https://aka.ms/AzureMapsWeatherConcepts) for details and to see the supported index groups.
 	IndexGroupID *int32
 	// Numeric index identifier that can be used for restricting returned results to the corresponding index type. Cannot be paired with `indexGroupId`. Please
-// refer to [Weather Service Concepts](https://aka.ms/AzureMapsWeatherConcepts) for details and to see the supported indices.
+	// refer to [Weather Service Concepts](https://aka.ms/AzureMapsWeatherConcepts) for details and to see the supported indices.
 	IndexID *int32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 }
 
 // WeatherGetHourlyForecastOptions contains the optional parameters for the Weather.GetHourlyForecast method.
 type WeatherGetHourlyForecastOptions struct {
 	// Time frame of the returned weather forecast. By default, the forecast data for next hour will be returned. Available values are
-// * `1` - Return forecast data for the next hour. Default value.
-// * `12` - Return hourly forecast for next 12 hours.
-// * `24` - Return hourly forecast for next 24 hours.
-// * `72` - Return hourly forecast for next 72 hours (3 days).
-// * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
-// * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
+	// * `1` - Return forecast data for the next hour. Default value.
+	// * `12` - Return hourly forecast for next 12 hours.
+	// * `24` - Return hourly forecast for next 24 hours.
+	// * `72` - Return hourly forecast for next 72 hours (3 days).
+	// * `120` - Return hourly forecast for next 120 hours (5 days). Only available in S1 SKU.
+	// * `240` - Return hourly forecast for next 240 hours (10 days). Only available in S1 SKU.
 	Duration *int32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Specifies to return the data in either metric units or imperial units. Default value is metric.
 	Unit *WeatherDataUnit
@@ -1043,27 +1044,27 @@ type WeatherGetHourlyForecastOptions struct {
 // WeatherGetMinuteForecastOptions contains the optional parameters for the Weather.GetMinuteForecast method.
 type WeatherGetMinuteForecastOptions struct {
 	// Specifies time interval in minutes for the returned weather forecast. Supported values are
-// * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
-// * `5` - Retrieve forecasts for 5-minute intervals.
-// * `15` - Retrieve forecasts for 15-minute intervals.
+	// * `1` - Retrieve forecast for 1-minute intervals. Returned by default.
+	// * `5` - Retrieve forecasts for 5-minute intervals.
+	// * `15` - Retrieve forecasts for 15-minute intervals.
 	Interval *int32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 }
 
 // WeatherGetQuarterDayForecastOptions contains the optional parameters for the Weather.GetQuarterDayForecast method.
 type WeatherGetQuarterDayForecastOptions struct {
 	// Specifies for how many days the quester-day forecast responses are returned. Supported values are:
-// * `1` - Return forecast data for the next day. Returned by default.
-// * `5` - Return forecast data for the next 5 days.
-// * `10` - Return forecast data for next 10 days.
-// * `15` - Return forecast data for the next 15 days.
+	// * `1` - Return forecast data for the next day. Returned by default.
+	// * `5` - Return forecast data for the next 5 days.
+	// * `10` - Return forecast data for next 10 days.
+	// * `15` - Return forecast data for the next 15 days.
 	Duration *int32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Specifies to return the data in either metric units or imperial units. Default value is metric.
 	Unit *WeatherDataUnit
@@ -1072,20 +1073,20 @@ type WeatherGetQuarterDayForecastOptions struct {
 // WeatherGetSevereWeatherAlertsOptions contains the optional parameters for the Weather.GetSevereWeatherAlerts method.
 type WeatherGetSevereWeatherAlertsOptions struct {
 	// Return full details for the severe weather alerts. Available values are
-// * `true` - Returns full details. By default all details are returned.
-// * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of alert details (`alertDetails`).
+	// * `true` - Returns full details. By default all details are returned.
+	// * `false` - Returns a truncated version of the alerts data, which excludes the area-specific full description of alert details (`alertDetails`).
 	Details *string
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 }
 
 // WeatherGetWeatherAlongRouteOptions contains the optional parameters for the Weather.GetWeatherAlongRoute method.
 type WeatherGetWeatherAlongRouteOptions struct {
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used. Default value is en-us.
-// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used. Default value is en-us.
+	// Please refer to [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 }
 
@@ -1095,11 +1096,11 @@ type WeatherHazards struct {
 	HazardDetails []*HazardDetail `json:"hazardDetails,omitempty"`
 
 	// A severity/hazard index.
-// * 0 - No hazard.
-// * 1 - Be informed, be aware.
-// * 2 - Pay attention, be prepared.
-// * 3 - Take action.
-// * 4 - Life threatening, emergency.
+	// * 0 - No hazard.
+	// * 1 - Be informed, be aware.
+	// * 2 - Pay attention, be prepared.
+	// * 3 - Take action.
+	// * 4 - Life threatening, emergency.
 	MaxHazardIndex *int32 `json:"maxHazardIndex,omitempty"`
 }
 
@@ -1113,17 +1114,17 @@ func (w WeatherHazards) MarshalJSON() ([]byte, error) {
 
 type WeatherNotification struct {
 	// A unique identifier (non-displayable) for each type of hazard: LightRain, ModerateRain, HeavyRain, LightMix, ModerateMix, HeavyMix, LightSnow, ModerateSnow,
-// HeavySnow, LightIce, ModerateIce, HeavyIce,
-// Hail, LargeHail, SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning, FlashFloodWarning, TornadoWarning,
-// TsunamiWarning, SevereThunderstormWarning.
+	// HeavySnow, LightIce, ModerateIce, HeavyIce,
+	// Hail, LargeHail, SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning, FlashFloodWarning, TornadoWarning,
+	// TsunamiWarning, SevereThunderstormWarning.
 	HazardCode *string `json:"hazardCode,omitempty"`
 
 	// A severity/hazard index.
-// * 0 - No hazard.
-// * 1 - Be informed, be aware.
-// * 2 - Pay attention, be prepared.
-// * 3 - Take action.
-// * 4 - Life threatening, emergency.
+	// * 0 - No hazard.
+	// * 1 - Be informed, be aware.
+	// * 2 - Pay attention, be prepared.
+	// * 3 - Take action.
+	// * 4 - Life threatening, emergency.
 	HazardIndex *int32 `json:"hazardIndex,omitempty"`
 
 	// A displayable short phrase describing the forecasted conditions and precipitation intensity/type.
@@ -1139,7 +1140,7 @@ type WeatherUnit struct {
 	Unit *string `json:"unit,omitempty"`
 
 	// Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	UnitType *int32 `json:"unitType,omitempty"`
 
 	// Rounded value.
@@ -1163,14 +1164,14 @@ type WeatherWaypoint struct {
 	Hazards *WeatherHazards `json:"hazards,omitempty"`
 
 	// Numeric value representing an image that displays the iconPhrase. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	IconCode *int32 `json:"iconCode,omitempty"`
 
 	// Indicates the time of the day. True indicates 'day',', false indicates 'night.
 	IsDayTime *bool `json:"isDayTime,omitempty"`
 
 	// Estimation of thunderstorm intensity on an open scale. A value of 0 means there is no thunderstorm; values of 1 and higher mean there is a thunderstorm
-// in increasing intensity.
+	// in increasing intensity.
 	LightningCount *int32 `json:"lightningCount,omitempty"`
 
 	// List of weather hazard notifications.
@@ -1225,9 +1226,9 @@ type WindDetails struct {
 // WindDirection - Wind direction
 type WindDirection struct {
 	// Wind direction in Azimuth degrees, starting at true North and continuing in clockwise direction. North is 0 degrees, east is 90 degrees, south is 180
-// degrees, west is 270 degrees. Possible values
-// 0-359.
-	Degrees *int32 `json:"degrees,omitempty"`
+	// degrees, west is 270 degrees. Possible values
+	// 0-359.
+	Degrees *float32 `json:"degrees,omitempty"`
 
 	// Direction abbreviation in the specified language.
 	LocalizedDescription *string `json:"localizedDescription,omitempty"`
@@ -1239,7 +1240,7 @@ type WindSpeed struct {
 	Unit *string `json:"unit,omitempty"`
 
 	// Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to Weather Service Concepts [https://aka.ms/AzureMapsWeatherConcepts]
-// for details.
+	// for details.
 	UnitType *int32 `json:"unitType,omitempty"`
 
 	// Rounded value of the speed.
@@ -1255,4 +1256,3 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 		m[k] = v
 	}
 }
-

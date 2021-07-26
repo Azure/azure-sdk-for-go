@@ -207,11 +207,7 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 		return TableTransactionResponse{}, err
 	}
 
-	innerBytes, err := ioutil.ReadAll(outerPart)
-	if err != nil {
-		return TableTransactionResponse{}, err
-	}
-
+	innerBytes, err := ioutil.ReadAll(outerPart) //nolint
 	innerBoundary := getBoundaryName(innerBytes)
 	reader = bytes.NewReader(innerBytes)
 	mpReader = multipart.NewReader(reader, innerBoundary)

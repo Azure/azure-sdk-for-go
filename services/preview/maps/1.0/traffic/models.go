@@ -9,8 +9,9 @@ package traffic
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // CoordinatesPair - A location represented as a latitude and longitude.
@@ -84,26 +85,26 @@ type TrafficFlowSegmentResult struct {
 // TrafficFlowSegmentResultFlowSegmentData - Flow Segment Data property
 type TrafficFlowSegmentResultFlowSegmentData struct {
 	// Includes the coordinates describing the shape of the segment. Coordinates are shifted from the road depending on the zoom level to support high quality
-// visualization in every scale.
+	// visualization in every scale.
 	Coordinates *TrafficFlowSegmentResultFlowSegmentDataCoordinates `json:"coordinates,omitempty"`
 
 	// READ-ONLY; The confidence is a measure of the quality of the provided travel time and speed. A value of 1 means full confidence, that the response contains
-// the highest quality data. Lower values indicate the
-// degree that the response may vary from the actual conditions on the road. Any value greater than 0.6 means the information was based on real-time probe
-// input. A value of 0.5 means the reported speed
-// is based on historical info. A value between 0.5 and 0.6 has a calculated weighted average between historical and live speeds.
+	// the highest quality data. Lower values indicate the
+	// degree that the response may vary from the actual conditions on the road. Any value greater than 0.6 means the information was based on real-time probe
+	// input. A value of 0.5 means the reported speed
+	// is based on historical info. A value between 0.5 and 0.6 has a calculated weighted average between historical and live speeds.
 	Confidence *float32 `json:"confidence,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current average speed at the selected point, in the units requested. This is calculated from the currentTravelTime and the length of the
-// selected segment.
+	// selected segment.
 	CurrentSpeed *int32 `json:"currentSpeed,omitempty" azure:"ro"`
 
 	// READ-ONLY; Current travel time in seconds based on fused real-time measurements between the defined locations in the specified direction.
 	CurrentTravelTime *int32 `json:"currentTravelTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Functional Road Class. This indicates the road type: 0: Motorway, freeway or other major road. 1: Major road, less important than a motorway.
-// 2: Other major road. 3: Secondary road. 4: Local
-// connecting road. 5: Local road of high importance. 6: Local road.
+	// 2: Other major road. 3: Secondary road. 4: Local
+	// connecting road. 5: Local road of high importance. 6: Local road.
 	Frc *string `json:"frc,omitempty" azure:"ro"`
 
 	// READ-ONLY; The free flow speed expected under ideal conditions, expressed in the units requested. This is related to the freeFlowTravelTime.
@@ -113,7 +114,7 @@ type TrafficFlowSegmentResultFlowSegmentData struct {
 	FreeFlowTravelTime *int32 `json:"freeFlowTravelTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; OpenLR code for segment
-	Openlr *float32 `json:"openlr,omitempty" azure:"ro"`
+	Openlr interface{} `json:"openlr,omitempty" azure:"ro"`
 
 	// READ-ONLY; This indicates the software version that generated the response.
 	Version *string `json:"@version,omitempty" azure:"ro"`
@@ -146,7 +147,7 @@ type TrafficGetTrafficFlowSegmentOptions struct {
 // TrafficGetTrafficFlowTileOptions contains the optional parameters for the Traffic.GetTrafficFlowTile method.
 type TrafficGetTrafficFlowTileOptions struct {
 	// The value of the width of the line representing traffic. This value is a multiplier and the accepted values range from 1 - 20. The default value is 10.
-// This parameter is not valid when format is pbf.
+	// This parameter is not valid when format is pbf.
 	Thickness *int32
 }
 
@@ -157,22 +158,22 @@ type TrafficGetTrafficIncidentDetailOptions struct {
 	// The type of vector geometry added to incidents (returned in the <v> element of the response).
 	Geometries *IncidentGeometryType
 	// [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the output language. Supported languages are ar, ca, cs, da, de, el, en,
-// en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt, lv, nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details. When invalid language code
-// is provided response is returned in English. When incident cause or description does not have translation, English description is returned.
+	// en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt, lv, nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details. When invalid language code
+	// is provided response is returned in English. When incident cause or description does not have translation, English description is returned.
 	Language *string
 	// Boolean on whether to return the original position of the incident (<op>) as well as the one shifted to the beginning of the traffic tube (<op>)
 	OriginalPosition *bool
 	// The projection used to specify the coordinates in the request and response. [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html)
-// (default) or [EPSG4326](http://spatialreference.org/ref/epsg/4326/)
+	// (default) or [EPSG4326](http://spatialreference.org/ref/epsg/4326/)
 	Projection *ProjectionStandard
 }
 
 // TrafficGetTrafficIncidentTileOptions contains the optional parameters for the Traffic.GetTrafficIncidentTile method.
 type TrafficGetTrafficIncidentTileOptions struct {
 	// Reference value for the state of traffic at a particular time, obtained from the Viewport API call, trafficModelId attribute in trafficState field. It
-// is updated every minute, and is valid for two minutes before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic
-// information.
+	// is updated every minute, and is valid for two minutes before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic
+	// information.
 	TrafficState *string
 }
 
@@ -231,15 +232,15 @@ type TrafficIncidentPoi struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The icon category associated with this incident. Values are numbers in the range 0-13, with the following meanings -- 0: Unknown, 1: Accident,
-// 2: Fog, 3: Dangerous Conditions, 4: Rain, 5: Ice, 6: Jam,
-// 7: Lane Closed, 8: Road Closed, 9: Road Works, 10: Wind, 11: Flooding, 12: Detour, 13: Cluster
+	// 2: Fog, 3: Dangerous Conditions, 4: Rain, 5: Ice, 6: Jam,
+	// 7: Lane Closed, 8: Road Closed, 9: Road Works, 10: Wind, 11: Flooding, 12: Detour, 13: Cluster
 	Ic *int32 `json:"ic,omitempty" azure:"ro"`
 
 	// READ-ONLY; Length of the incident in meters
 	L *int32 `json:"l,omitempty" azure:"ro"`
 
 	// READ-ONLY; The point where an icon of the cluster or raw incident should be drawn, expressed in the requested projection. This is affected by traffic
-// style, zoom level and road type
+	// style, zoom level and road type
 	P *TrafficIncidentPoiP `json:"p,omitempty" azure:"ro"`
 
 	// READ-ONLY; The road number(s) affected by the incident. Multiple road numbers will delimited by slashes
@@ -319,4 +320,3 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 		m[k] = v
 	}
 }
-

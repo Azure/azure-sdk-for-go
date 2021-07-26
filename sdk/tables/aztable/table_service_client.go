@@ -65,7 +65,8 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 //
 // List returns a Pager, which allows iteration through each page of results. Example:
 //
-// pager := client.List(nil)
+// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
+// pager := client.List(options) // Pass in 'nil' if you want to return all Tables for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))

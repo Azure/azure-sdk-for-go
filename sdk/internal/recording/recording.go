@@ -19,6 +19,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -454,11 +455,11 @@ func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
 		originalURLHost := req.URL.Host
 		req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
 		req.URL.Host = "localhost:5001"
-		fmt.Println(req.URL.String())
+		req.URL.Scheme = "https"
 		fmt.Println(req.URL.Host, req.Header.Get("x-recording-upstream-base-uri"), req.URL.Path, req.Method)
 		req.Header.Set(recordingIdHeader, recordingId)
 		req.Header.Set(recordingModeHeader, recordMode)
-		fmt.Println("MAKING THE HTTP CALL")
+		fmt.Println("MAKING THE HTTP CALL TO: ", req.URL.String())
 		response, err := http.DefaultClient.Do(req)
 		if err != nil {
 			fmt.Println("ERROR: ", err)
@@ -506,4 +507,37 @@ func StopRecording(t *testing.T) error {
 	}
 	fmt.Println("Stopped recording")
 	return nil
+}
+
+type RecordingOptions struct {
+	MaxRetries int32
+}
+
+func (o *RecordingOptions) init() {
+	if o.MaxRetries != 0 {
+		o.MaxRetries = 0
+	}
+}
+
+type recordingPolicy struct {
+	options RecordingOptions
+}
+
+func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
+	if o == nil {
+		o = &RecordingOptions{}
+	}
+	p := &recordingPolicy{options: *o}
+	p.options.init()
+	return p
+}
+
+func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+	req.Host = "localhost:5001"
+	req.URL.Scheme = "https"
+	req.URL.Host = "localhost:5001"
+
+	fmt.Println("URL: ", req.URL.String())
+
+	return req.Next()
 }

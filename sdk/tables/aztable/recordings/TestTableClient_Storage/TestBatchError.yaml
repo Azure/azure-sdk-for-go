@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotablepqb1rkgf82uab"}'
+    body: '{"TableName":"gotableonrrfq12v28e4"}'
     form: {}
     headers:
       Accept:
@@ -16,39 +16,38 @@ interactions:
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 18:23:31 GMT
+      - Thu, 15 Jul 2021 21:50:13 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/Tables
+    url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.metadata":"https://chrisstablesprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablepqb1rkgf82uab"}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotableonrrfq12v28e4"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:12 GMT
       Location:
-      - https://chrisstablesprim.table.core.windows.net/Tables('gotablepqb1rkgf82uab')
+      - https://seankaneprim.table.core.windows.net/Tables('gotableonrrfq12v28e4')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - fef5bddc-1002-000d-2f6e-4efcc0000000
+      - 919d9e74-3002-004e-6fc3-79c6fd000000
       X-Ms-Version:
       - "2019-02-02"
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: '{"BoolProp":true,"IntProp":3,"PartitionKey":"partition","RowKey":"3","SomeBinaryProperty":"c29tZSBieXRlcw==","SomeBinaryProperty@odata.type":"Edm.Binary","SomeDateProperty":"2021-05-21T18:23:32.659245Z","SomeDateProperty@odata.type":"Edm.DateTime","SomeDoubleProperty0":1,"SomeDoubleProperty0@odata.type":"Edm.Double","SomeDoubleProperty1":1.2345,"SomeDoubleProperty1@odata.type":"Edm.Double","SomeGuidProperty":"4c51dc80-5e1c-4a79-4b58-8b5d1a887417","SomeGuidProperty@odata.type":"Edm.Guid","SomeInt64Property":"9223372036854775807","SomeInt64Property@odata.type":"Edm.Int64","SomeIntProperty":42,"SomeStringProperty":"some
-      string","StringProp":"some string 3"}'
+    body: '{"Bool":true,"Byte":"c29tZWJ5dGVz","DateTime":"2021-07-13T00:00:00Z","Float":3.14159,"Integer":3,"PartitionKey":"partition","RowKey":"3","String":"someString","Timestamp":"0001-01-01T00:00:00Z"}'
     form: {}
     headers:
       Accept:
@@ -56,7 +55,7 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "662"
+      - "194"
       Content-Type:
       - application/json
       Dataserviceversion:
@@ -64,13 +63,13 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:14 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/gotablepqb1rkgf82uab
+    url: https://seankaneprim.table.core.windows.net/gotableonrrfq12v28e4
     method: POST
   response:
     body: ""
@@ -80,13 +79,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://chrisstablesprim.table.core.windows.net/gotablepqb1rkgf82uab(PartitionKey='partition',RowKey='3')
+      - https://seankaneprim.table.core.windows.net/gotableonrrfq12v28e4(PartitionKey='partition',RowKey='3')
       Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:12 GMT
       Etag:
-      - W/"datetime'2021-05-21T18%3A23%3A32.8055163Z'"
+      - W/"datetime'2021-07-15T21%3A50%3A13.1513731Z'"
       Location:
-      - https://chrisstablesprim.table.core.windows.net/gotablepqb1rkgf82uab(PartitionKey='partition',RowKey='3')
+      - https://seankaneprim.table.core.windows.net/gotableonrrfq12v28e4(PartitionKey='partition',RowKey='3')
       Preference-Applied:
       - return-no-content
       Server:
@@ -94,30 +93,27 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - fef5bdf4-1002-000d-446e-4efcc0000000
+      - 919d9f04-3002-004e-74c3-79c6fd000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
     code: 204
     duration: ""
 - request:
-    body: "--batch_082f04d4-15cc-43be-66be-49e083de268c\r\nContent-Type: multipart/mixed;
-      boundary=changeset_239ec220-4c24-4f16-5cbf-8fbd53fd6135\r\n\r\n--changeset_239ec220-4c24-4f16-5cbf-8fbd53fd6135\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.core.windows.net/gotablepqb1rkgf82uab?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+    body: "--batch_ebe3c2c9-e659-4741-4aa9-3cde003d089a\r\nContent-Type: multipart/mixed;
+      boundary=changeset_ac013381-52b5-4ade-74f1-c359107c6b47\r\n\r\n--changeset_ac013381-52b5-4ade-74f1-c359107c6b47\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableonrrfq12v28e4?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      662\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":1,\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-21T18:23:32.659245Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"24322eae-ac26-4914-7a51-4291c19121c7\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 1\"}\r\n--changeset_239ec220-4c24-4f16-5cbf-8fbd53fd6135\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.core.windows.net/gotablepqb1rkgf82uab?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":1,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_ac013381-52b5-4ade-74f1-c359107c6b47\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableonrrfq12v28e4?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      662\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":2,\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-21T18:23:32.659245Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"ea15bdd7-a18a-45f7-52b5-f2dafe05af3c\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 2\"}\r\n--changeset_239ec220-4c24-4f16-5cbf-8fbd53fd6135\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.core.windows.net/gotablepqb1rkgf82uab?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":2,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_ac013381-52b5-4ade-74f1-c359107c6b47\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://seankaneprim.table.core.windows.net/gotableonrrfq12v28e4?%24format=application%2Fjson%3Bodata%3Dminimalmetadata
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Length:
-      662\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
-      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"BoolProp\":true,\"IntProp\":3,\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeBinaryProperty@odata.type\":\"Edm.Binary\",\"SomeDateProperty\":\"2021-05-21T18:23:32.659245Z\",\"SomeDateProperty@odata.type\":\"Edm.DateTime\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty0@odata.type\":\"Edm.Double\",\"SomeDoubleProperty1\":1.2345,\"SomeDoubleProperty1@odata.type\":\"Edm.Double\",\"SomeGuidProperty\":\"4c51dc80-5e1c-4a79-4b58-8b5d1a887417\",\"SomeGuidProperty@odata.type\":\"Edm.Guid\",\"SomeInt64Property\":\"9223372036854775807\",\"SomeInt64Property@odata.type\":\"Edm.Int64\",\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
-      string\",\"StringProp\":\"some string 3\"}\r\n--changeset_239ec220-4c24-4f16-5cbf-8fbd53fd6135--\r\n\r\n--batch_082f04d4-15cc-43be-66be-49e083de268c--\r\n"
+      260\r\nContent-Type: application/json\r\nDataserviceversion: 3.0\r\nPrefer:
+      return-no-content\r\nX-Ms-Version: 2019-02-02\r\n\r\n{\"Bool\":true,\"Byte\":\"c29tZWJ5dGVz\",\"DateTime\":\"2021-07-13T00:00:00Z\",\"Float\":3.14159,\"Float@odata.type\":\"Edm.Double\",\"Integer\":3,\"Integer@odata.type\":\"Edm.Double\",\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"String\":\"someString\",\"Timestamp\":\"0001-01-01T00:00:00Z\"}\r\n--changeset_ac013381-52b5-4ade-74f1-c359107c6b47--\r\n\r\n--batch_ebe3c2c9-e659-4741-4aa9-3cde003d089a--\r\n"
     form: {}
     headers:
       Accept:
@@ -125,39 +121,39 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "3547"
+      - "2329"
       Content-Type:
-      - multipart/mixed; boundary=batch_082f04d4-15cc-43be-66be-49e083de268c
+      - multipart/mixed; boundary=batch_ebe3c2c9-e659-4741-4aa9-3cde003d089a
       Dataserviceversion:
       - "3.0"
       User-Agent:
-      - azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2; Windows_NT)
+      - azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5; Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:14 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/$batch
+    url: https://seankaneprim.table.core.windows.net/$batch
     method: POST
   response:
-    body: "--batchresponse_38af3102-a3c4-4d6b-9ad4-0d936fb607d7\r\nContent-Type: multipart/mixed;
-      boundary=changesetresponse_a33fe87c-1503-4bd5-971b-a32caf04061f\r\n\r\n--changesetresponse_a33fe87c-1503-4bd5-971b-a32caf04061f\r\nContent-Type:
+    body: "--batchresponse_61fdc5a5-761a-4a06-b2e2-46a04023783d\r\nContent-Type: multipart/mixed;
+      boundary=changesetresponse_a4bb513b-0239-47b0-aa39-43d5e59c46cf\r\n\r\n--changesetresponse_a4bb513b-0239-47b0-aa39-43d5e59c46cf\r\nContent-Type:
       application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 409 Conflict\r\nX-Content-Type-Options:
       nosniff\r\nCache-Control: no-cache\r\nPreference-Applied: return-no-content\r\nDataServiceVersion:
       3.0;\r\nContent-Type: application/json;odata=minimalmetadata;streaming=true;charset=utf-8\r\n\r\n{\"odata.error\":{\"code\":\"EntityAlreadyExists\",\"message\":{\"lang\":\"en-US\",\"value\":\"2:The
-      specified entity already exists.\\nRequestId:fef5be0e-1002-000d-5d6e-4efcc0000000\\nTime:2021-05-21T18:23:32.8905761Z\"}}}\r\n--changesetresponse_a33fe87c-1503-4bd5-971b-a32caf04061f--\r\n--batchresponse_38af3102-a3c4-4d6b-9ad4-0d936fb607d7--\r\n"
+      specified entity already exists.\\nRequestId:919d9f4d-3002-004e-3dc3-79c6fd000000\\nTime:2021-07-15T21:50:13.2804650Z\"}}}\r\n--changesetresponse_a4bb513b-0239-47b0-aa39-43d5e59c46cf--\r\n--batchresponse_61fdc5a5-761a-4a06-b2e2-46a04023783d--\r\n"
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
-      - multipart/mixed; boundary=batchresponse_38af3102-a3c4-4d6b-9ad4-0d936fb607d7
+      - multipart/mixed; boundary=batchresponse_61fdc5a5-761a-4a06-b2e2-46a04023783d
       Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:12 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - fef5be0e-1002-000d-5d6e-4efcc0000000
+      - 919d9f4d-3002-004e-3dc3-79c6fd000000
       X-Ms-Version:
       - "2019-02-02"
     status: 202 Accepted
@@ -172,13 +168,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:14 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://chrisstablesprim.table.core.windows.net/Tables('gotablepqb1rkgf82uab')
+    url: https://seankaneprim.table.core.windows.net/Tables('gotableonrrfq12v28e4')
     method: DELETE
   response:
     body: ""
@@ -188,13 +184,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 21 May 2021 18:23:32 GMT
+      - Thu, 15 Jul 2021 21:50:12 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - fef5be1c-1002-000d-6b6e-4efcc0000000
+      - 919d9fa1-3002-004e-10c3-79c6fd000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content

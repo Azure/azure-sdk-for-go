@@ -62,7 +62,7 @@ func (e *TableTransactionError) Error() string {
 
 type TableTransactionAction struct {
 	ActionType TableTransactionActionType
-	Entity     map[string]interface{}
+	Entity     []byte
 	ETag       string
 }
 
@@ -297,7 +297,11 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		return err
 	}
 	var req *azcore.Request
-	var entity map[string]interface{} = transactionAction.Entity
+	var entity map[string]interface{}
+	err = json.Unmarshal(transactionAction.Entity, &entity)
+	if err != nil {
+		return err
+	}
 
 	if _, ok := entity[partitionKey]; !ok {
 		return fmt.Errorf("entity properties must contain a %s property", partitionKey)

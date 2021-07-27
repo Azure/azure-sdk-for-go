@@ -137,9 +137,8 @@ func (s *recordingTests) TestRecordedVariablesSanitized() {
 }
 
 func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	expectedVariableName := "someVariable"
 	expectedVariableValue := "foobar"
@@ -148,38 +147,39 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	variablesMap := map[string]string{}
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	target.GetOptionalEnvVar(expectedVariableName, expectedVariableValue, NoSanitization)
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	// check that a variables file was created with the correct variable
 	err = target.unmarshalVariablesFile(variablesMap)
 	require.NoError(err)
 	actualValue, ok := variablesMap[expectedVariableName]
-	assert.True(ok)
-	assert.Equal(expectedVariableValue, actualValue)
+	require.True(ok)
+	require.Equal(expectedVariableValue, actualValue)
 
 	variablesMap = map[string]string{}
 	target2, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	// add a new variable to the existing batch
 	target2.GetOptionalEnvVar(addedVariableName, addedVariableValue, NoSanitization)
 
 	err = target2.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	// check that a variables file was created with the variables loaded from the previous recording
-	target2.unmarshalVariablesFile(variablesMap)
+	err = target2.unmarshalVariablesFile(variablesMap)
+	require.NoError(err)
 	actualValue, ok = variablesMap[addedVariableName]
-	assert.Truef(ok, fmt.Sprintf("Should have found %s", addedVariableName))
-	assert.Equal(addedVariableValue, actualValue)
+	require.Truef(ok, fmt.Sprintf("Should have found %s", addedVariableName))
+	require.Equal(addedVariableValue, actualValue)
 	actualValue, ok = variablesMap[expectedVariableName]
-	assert.Truef(ok, fmt.Sprintf("Should have found %s", expectedVariableName))
-	assert.Equal(expectedVariableValue, actualValue)
+	require.Truef(ok, fmt.Sprintf("Should have found %s", expectedVariableName))
+	require.Equal(expectedVariableValue, actualValue)
 }
 
 func (s *recordingTests) TestUUID() {
@@ -284,6 +284,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	target.recorder.SetTransport(rt)
 
 	path, err := target.GenerateAlphaNumericID("", 5, true)
+	require.NoError(err)
 	reqUrl := server.URL() + "/" + path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
@@ -371,5 +372,5 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 func (s *recordingTests) TearDownSuite() {
 	// cleanup test files
 	err := os.RemoveAll("recordings")
-	assert.Nil(s.T(), err)
+	require.Nil(s.T(), err)
 }

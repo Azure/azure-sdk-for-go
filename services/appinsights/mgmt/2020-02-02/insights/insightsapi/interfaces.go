@@ -8,7 +8,7 @@ package insightsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2020-02-02-preview/insights"
+	"github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2020-02-02/insights"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -183,13 +183,3 @@ type ComponentsClientAPI interface {
 }
 
 var _ ComponentsClientAPI = (*insights.ComponentsClient)(nil)
-
-// ComponentLinkedStorageAccountsClientAPI contains the set of methods on the ComponentLinkedStorageAccountsClient type.
-type ComponentLinkedStorageAccountsClientAPI interface {
-	CreateAndUpdate(ctx context.Context, resourceGroupName string, resourceName string, linkedStorageAccountsProperties insights.ComponentLinkedStorageAccounts) (result insights.ComponentLinkedStorageAccounts, err error)
-	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, resourceName string) (result insights.ComponentLinkedStorageAccounts, err error)
-	Update(ctx context.Context, resourceGroupName string, resourceName string, linkedStorageAccountsProperties insights.ComponentLinkedStorageAccountsPatch) (result insights.ComponentLinkedStorageAccounts, err error)
-}
-
-var _ ComponentLinkedStorageAccountsClientAPI = (*insights.ComponentLinkedStorageAccountsClient)(nil)

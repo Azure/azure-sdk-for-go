@@ -92,8 +92,8 @@ func (l *Logger) Writef(cls LogClassification, format string, a ...interface{}) 
 	l.lst(cls, fmt.Sprintf(format, a...))
 }
 
-// for testing purposes
-func (l *Logger) resetClassifications() {
+// for testing purposes, nolint is a false positive
+func (l *Logger) resetClassifications() { //nolint:unused
 	l.cls = nil
 }
 

@@ -36,13 +36,13 @@ func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode)
     var cred *SharedKeyCredential
     var secret string
     var uri string
-    require := require.New(t)
+    assert := assert.New(t)
 
     // init the test framework
-    context := recording.NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
+    context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
     //mode should be recording.Playback. This will automatically record if no test recording is available and playback if it is.
-    recording, err := recording.NewRecording(context, mode)
-    require.NoError(err)
+    recording, err := recording.NewRecording(context, mode) 
+    assert.Nil(err)
 ```
 
 After creating the TestContext, it must be passed to a new instance of `Recording` along with the current test mode.
@@ -52,7 +52,7 @@ After creating the TestContext, it must be passed to a new instance of `Recordin
 //func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
 //  <...>
     record, err := recording.NewRecording(context, mode)
-    require.NoError(err)
+    assert.Nil(err)
 ```
 
 ### Initializing recorded variables
@@ -82,7 +82,7 @@ The last step is to instrument your client by replacing its transport with your 
     // Set our client's HTTPClient to our recording instance.
     // Optionally, we can also configure MaxRetries to -1 to avoid the default retry behavior.
     client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
-    require.NoError(err)
+    assert.Nil(err)
 
     // either return your client instance, or store it somewhere that your test can use it for test execution.
     clientsMap[testName] = &testState{client: client, recording: recording, context: &context}
@@ -126,7 +126,7 @@ import (
 
     "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
     "github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
-    "github.com/stretchr/testify/require"
+    "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/suite"
 )
 
@@ -142,7 +142,7 @@ func TestServiceClient_Storage(t *testing.T) {
 }
 
 func (s *tableServiceClientLiveTests) TestCreateTable() {
-    require := require.New(s.T())
+    assert := assert.New(s.T())
     context := getTestState(s.T().Name())
     // generate a random recorded value for our table name.
     tableName, err := context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
@@ -150,8 +150,8 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
     resp, err := context.client.Create(ctx, tableName)
     defer context.client.Delete(ctx, tableName)
 
-    require.NoError(err)
-    require.Equal(*resp.TableResponse.TableName, tableName)
+    assert.Nil(err)
+    assert.Equal(*resp.TableResponse.TableName, tableName)
 }
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {

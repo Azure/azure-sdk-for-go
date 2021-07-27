@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -137,10 +136,10 @@ func (s *sanitizerTests) TestAddUrlSanitizerSanitizes() {
 }
 
 func (s *sanitizerTests) TearDownSuite() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	// cleanup test files
 	err := os.RemoveAll("testfiles")
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func getTestFileName(t *testing.T, addSuffix bool) string {

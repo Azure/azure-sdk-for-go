@@ -16,7 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/dnaeon/go-vcr/cassette"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -30,33 +30,33 @@ func TestRecording(t *testing.T) {
 }
 
 func (s *recordingTests) TestInitializeRecording() {
-	assert := assert.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	require := require.New(s.T())
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	expectedMode := Playback
 
 	target, err := NewRecording(context, expectedMode)
-	assert.Nil(err)
-	assert.NotNil(target.RecordingFile)
-	assert.NotNil(target.VariablesFile)
-	assert.Equal(expectedMode, target.Mode)
+	require.NoError(err)
+	require.NotNil(target.RecordingFile)
+	require.NotNil(target.VariablesFile)
+	require.Equal(expectedMode, target.Mode)
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func (s *recordingTests) TestStopDoesNotSaveVariablesWhenNoVariablesExist() {
-	assert := assert.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	require := require.New(s.T())
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	_, err = ioutil.ReadFile(target.VariablesFile)
-	assert.Equal(true, os.IsNotExist(err))
+	require.Equal(true, os.IsNotExist(err))
 }
 
 func (s *recordingTests) TestRecordedVariables() {
@@ -97,9 +97,8 @@ func (s *recordingTests) TestRecordedVariables() {
 }
 
 func (s *recordingTests) TestRecordedVariablesSanitized() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	SanitizedStringVar := "sanitizedvar"
 	SanitizedBase64StrigVar := "sanitizedbase64var"
@@ -108,32 +107,32 @@ func (s *recordingTests) TestRecordedVariablesSanitized() {
 	variablesMap := map[string]string{}
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	// call GetOptionalRecordedVariable with the Secret_String VariableType arg
-	assert.Equal(secret, target.GetOptionalEnvVar(SanitizedStringVar, secret, Secret_String))
+	require.Equal(secret, target.GetOptionalEnvVar(SanitizedStringVar, secret, Secret_String))
 
 	// call GetOptionalRecordedVariable with the Secret_Base64String VariableType arg
-	assert.Equal(secretBase64, target.GetOptionalEnvVar(SanitizedBase64StrigVar, secretBase64, Secret_Base64String))
+	require.Equal(secretBase64, target.GetOptionalEnvVar(SanitizedBase64StrigVar, secretBase64, Secret_Base64String))
 
 	// Calling Stop will save the variables and apply the sanitization options
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	// check that a variables file was created with the correct variables
 	err = target.unmarshalVariablesFile(variablesMap)
 	require.NoError(err)
 	actualValue, ok := variablesMap[SanitizedStringVar]
-	assert.Equal(true, ok)
+	require.Equal(true, ok)
 	// the saved value is sanitized
-	assert.Equal(SanitizedValue, actualValue)
+	require.Equal(SanitizedValue, actualValue)
 
 	err = target.unmarshalVariablesFile(variablesMap)
 	require.NoError(err)
 	actualValue, ok = variablesMap[SanitizedBase64StrigVar]
-	assert.Equal(true, ok)
+	require.Equal(true, ok)
 	// the saved value is sanitized
-	assert.Equal(SanitizedBase64Value, actualValue)
+	require.Equal(SanitizedBase64Value, actualValue)
 }
 
 func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables() {
@@ -183,58 +182,58 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 }
 
 func (s *recordingTests) TestUUID() {
-	assert := assert.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	require := require.New(s.T())
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	recordedUUID1 := target.UUID()
 	recordedUUID1a := target.UUID()
-	assert.NotEqual(recordedUUID1.String(), recordedUUID1a.String())
+	require.NotEqual(recordedUUID1.String(), recordedUUID1a.String())
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	target2, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	recordedUUID2 := target2.UUID()
 
 	// The two generated UUIDs should be the same since target2 loaded the saved random seed from target
-	assert.Equal(recordedUUID1.String(), recordedUUID2.String())
+	require.Equal(recordedUUID1.String(), recordedUUID2.String())
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func (s *recordingTests) TestNow() {
-	assert := assert.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	require := require.New(s.T())
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	recordedNow1 := target.Now()
 
 	time.Sleep(time.Millisecond * 100)
 
 	recordedNow1a := target.Now()
-	assert.Equal(recordedNow1.UnixNano(), recordedNow1a.UnixNano())
+	require.Equal(recordedNow1.UnixNano(), recordedNow1a.UnixNano())
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	target2, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	recordedNow2 := target2.Now()
 
 	// The two generated nows should be the same since target2 loaded the saved random seed from target
-	assert.Equal(recordedNow1.UnixNano(), recordedNow2.UnixNano())
+	require.Equal(recordedNow1.UnixNano(), recordedNow2.UnixNano())
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func (s *recordingTests) TestGenerateAlphaNumericID() {

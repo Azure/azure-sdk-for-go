@@ -1,0 +1,80 @@
+Param(
+    [string] $serviceDir
+)
+
+$cwd = Get-Location
+
+# 0. Find all test directories
+Write-Host "Finding test directories..."
+$testDirs = . $PSScriptRoot/get_test_dirs.ps1 -serviceDir sdk/$serviceDir
+# Issues here, not returning any objects
+Write-Host "Found test directories $testDirs"
+$temp = Get-Location
+Write-Host "Currently in $temp"
+
+# 0b. Verify there are test files with tests to run in at least one of these directories
+$testDirs | ForEach-Object {
+    Write-Host $_
+    if (Select-String -path $_ -pattern 'Test' -simpleMatch) {
+        break
+    }
+    # There are no tests in the file, so we can silently exit
+    Exit 0
+}
+
+Write-Host "Proceeding to run tests and add coverage"
+# Exit 0
+
+# 1. Run tests
+foreach ($td in $testDirs) {
+    Push-Location $td
+    $temp = Get-Location
+    Write-Host "Currently in $temp"
+    Write-Host "##[command] Executing go test -run ""^Test"" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
+    go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
+    if (!$?) {
+        Write-Host "There was an error running the tests"
+        Exit $LASTEXITCODE
+    } else {
+        Write-Host "`nSuccessfully ran test suite at $temp`n"
+    }
+    # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
+    if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
+        Write-Host "##[command] Deleting empty coverage file"
+        Remove-Item coverage.txt
+        Exit 0
+    }
+}
+
+Set-Location $cwd
+$temp = Get-Location
+Write-Host "Currently in $temp"
+
+# 2. Install coverage tools needed
+go get github.com/jstemmer/go-junit-report
+go get github.com/axw/gocov/gocov
+go get github.com/AlekSi/gocov-xml
+go get github.com/matm/gocov-html
+go get -u github.com/wadey/gocovmerge
+
+$coverageFiles = [Collections.Generic.List[String]]@()
+Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
+    $covFile = $_.FullName
+    Write-Host "Adding $covFile to the list of code coverage files"
+    $coverageFiles.Add($covFile)
+}
+
+# merge coverage files
+gocovmerge $coverageFiles > mergedCoverage.txt
+gocov convert ./mergedCoverage.txt > ./coverage.json
+if (!$?) {
+    Write-Host "Issues converting the mergedCoverage.txt to a json file"
+    Exit $LASTEXITCODE
+}
+
+# gocov converts rely on standard input
+Get-Content ./coverage.json | gocov-xml > ./coverage.xml
+Get-Content ./coverage.json | gocov-html > ./coverage.html
+
+# use internal tool to fail if coverage is too low
+go run ./tools/internal/coverage/main.go -serviceDir $serviceDir

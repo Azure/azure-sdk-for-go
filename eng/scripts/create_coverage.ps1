@@ -2,9 +2,9 @@
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
-  $covFile = $_.FullName
-  Write-Host "Adding $covFile to the list of code coverage files"
-  $coverageFiles.Add($covFile)
+    $covFile = $_.FullName
+    Write-Host "Adding $covFile to the list of code coverage files"
+    $coverageFiles.Add($covFile)
 }
 
 # merge coverage files

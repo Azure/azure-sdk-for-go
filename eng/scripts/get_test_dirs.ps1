@@ -17,5 +17,6 @@ Get-ChildItem -recurse -path $serviceDir -filter *_test.go | ForEach-Object {
     }
 }
 
+Write-Host $testDirs
 # return the list of test directories
 return $testDirs

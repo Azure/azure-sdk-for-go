@@ -76,3 +76,37 @@ func (rbp *responseBodyProgress) Read(p []byte) (n int, err error) {
 func (rbp *responseBodyProgress) Close() error {
 	return rbp.responseBody.Close()
 }
+
+// This struct is used when sending a body to the network
+type requestResponseBodyProgress struct {
+	body   ReadSeekCloser
+	pr     ProgressReceiver
+	offset int64
+}
+
+func NewRequestResponseBodyProgress(body ReadSeekCloser, pr ProgressReceiver) *requestResponseBodyProgress {
+	return &requestResponseBodyProgress{body: body, pr: pr, offset: 0}
+}
+
+func (rbp *requestResponseBodyProgress) Read(p []byte) (int, error) {
+	n, err := rbp.body.Read(p)
+	if err != nil {
+		return n, err
+	}
+
+	// Invokes the user's callback method to report progress
+	rbp.offset, err = rbp.body.Seek(rbp.offset, io.SeekCurrent)
+	if err != nil {
+		return int(rbp.offset), err
+	}
+	rbp.pr(rbp.offset)
+	return n, err
+}
+
+func (rbp *requestResponseBodyProgress) Seek(offset int64, whence int) (int64, error) {
+	return rbp.body.Seek(offset, whence)
+}
+
+func (rbp *requestResponseBodyProgress) Close() error {
+	return rbp.body.Close()
+}

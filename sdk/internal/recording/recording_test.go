@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -60,6 +61,7 @@ func (s *recordingTests) TestStopDoesNotSaveVariablesWhenNoVariablesExist() {
 
 func (s *recordingTests) TestRecordedVariables() {
 	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	nonExistingEnvVar := "nonExistingEnvVar"
@@ -80,14 +82,15 @@ func (s *recordingTests) TestRecordedVariables() {
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
-	val, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
+	_, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
 	assert.Equal(expectedVariableValue, val)
 
 	err = target.Stop()
 	assert.Nil(err)
 
 	// check that a variables file was created with the correct variable
-	target.unmarshalVariablesFile(variablesMap)
+	err = target.unmarshalVariablesFile(variablesMap)
+	require.NoError(err)
 	actualValue, ok := variablesMap[nonExistingEnvVar]
 	assert.Equal(true, ok)
 	assert.Equal(expectedVariableValue, actualValue)
@@ -95,6 +98,7 @@ func (s *recordingTests) TestRecordedVariables() {
 
 func (s *recordingTests) TestRecordedVariablesSanitized() {
 	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	SanitizedStringVar := "sanitizedvar"
@@ -117,13 +121,15 @@ func (s *recordingTests) TestRecordedVariablesSanitized() {
 	assert.Nil(err)
 
 	// check that a variables file was created with the correct variables
-	target.unmarshalVariablesFile(variablesMap)
+	err = target.unmarshalVariablesFile(variablesMap)
+	require.NoError(err)
 	actualValue, ok := variablesMap[SanitizedStringVar]
 	assert.Equal(true, ok)
 	// the saved value is sanitized
 	assert.Equal(SanitizedValue, actualValue)
 
-	target.unmarshalVariablesFile(variablesMap)
+	err = target.unmarshalVariablesFile(variablesMap)
+	require.NoError(err)
 	actualValue, ok = variablesMap[SanitizedBase64StrigVar]
 	assert.Equal(true, ok)
 	// the saved value is sanitized
@@ -132,6 +138,7 @@ func (s *recordingTests) TestRecordedVariablesSanitized() {
 
 func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables() {
 	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	expectedVariableName := "someVariable"
@@ -149,7 +156,8 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	assert.Nil(err)
 
 	// check that a variables file was created with the correct variable
-	target.unmarshalVariablesFile(variablesMap)
+	err = target.unmarshalVariablesFile(variablesMap)
+	require.NoError(err)
 	actualValue, ok := variablesMap[expectedVariableName]
 	assert.True(ok)
 	assert.Equal(expectedVariableValue, actualValue)
@@ -230,39 +238,42 @@ func (s *recordingTests) TestNow() {
 }
 
 func (s *recordingTests) TestGenerateAlphaNumericID() {
-	assert := assert.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	require := require.New(s.T())
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	prefix := "myprefix"
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	generated1, err := target.GenerateAlphaNumericID(prefix, 10, true)
+	require.NoError(err)
 
-	assert.Equal(10, len(generated1))
-	assert.Equal(true, strings.HasPrefix(generated1, prefix))
+	require.Equal(10, len(generated1))
+	require.Equal(true, strings.HasPrefix(generated1, prefix))
 
 	generated1a, err := target.GenerateAlphaNumericID(prefix, 10, true)
-	assert.NotEqual(generated1, generated1a)
+	require.NoError(err)
+	require.NotEqual(generated1, generated1a)
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	target2, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	generated2, err := target2.GenerateAlphaNumericID(prefix, 10, true)
-
+	require.NoError(err)
 	// The two generated Ids should be the same since target2 loaded the saved random seed from target
-	assert.Equal(generated2, generated1)
+	require.Equal(generated2, generated1)
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
@@ -278,7 +289,8 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
 
 	// record the request
-	target.Do(req)
+	_, err = target.Do(req)
+	require.NoError(err)
 	err = target.Stop()
 	assert.Nil(err)
 
@@ -299,13 +311,15 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	req, _ = http.NewRequest(http.MethodPost, reqUrl, nil)
 
 	// playback the request
-	target.Do(req)
+	_, err = target.Do(req)
+	require.NoError(err)
 	err = target.Stop()
 	assert.Nil(err)
 }
 
 func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() {
 	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
@@ -321,7 +335,8 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
 
 	// record the request
-	target.Do(req)
+	_, err = target.Do(req)
+	require.NoError(err)
 	err = target.Stop()
 	assert.Nil(err)
 
@@ -342,6 +357,7 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 
 	// playback the request
 	_, err = target.Do(req)
+	require.NoError(err)
 	assert.Equal(missingRequestError(req), err.Error())
 	// mark succeeded
 	err = target.Stop()

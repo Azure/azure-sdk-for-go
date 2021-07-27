@@ -405,6 +405,9 @@ func (r *Recording) unmarshalVariablesFile(out interface{}) error {
 		}
 	} else {
 		err = yaml.Unmarshal(data, out)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

@@ -60,7 +60,6 @@ func (s *recordingTests) TestStopDoesNotSaveVariablesWhenNoVariablesExist() {
 }
 
 func (s *recordingTests) TestRecordedVariables() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
@@ -69,31 +68,32 @@ func (s *recordingTests) TestRecordedVariables() {
 	variablesMap := map[string]string{}
 
 	target, err := NewRecording(context, Playback)
-	assert.Nil(err)
+	require.NoError(err)
 
 	// optional variables always succeed.
-	assert.Equal(expectedVariableValue, target.GetOptionalEnvVar(nonExistingEnvVar, expectedVariableValue, NoSanitization))
+	require.Equal(expectedVariableValue, target.GetOptionalEnvVar(nonExistingEnvVar, expectedVariableValue, NoSanitization))
 
 	// non existent variables return an error
 	val, err := target.GetEnvVar(nonExistingEnvVar, NoSanitization)
 	// mark test as succeeded
-	assert.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
+	require.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
 	_, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
-	assert.Equal(expectedVariableValue, val)
+	require.NoError(err)
+	require.Equal(expectedVariableValue, val)
 
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	// check that a variables file was created with the correct variable
 	err = target.unmarshalVariablesFile(variablesMap)
 	require.NoError(err)
 	actualValue, ok := variablesMap[nonExistingEnvVar]
-	assert.Equal(true, ok)
-	assert.Equal(expectedVariableValue, actualValue)
+	require.Equal(true, ok)
+	require.Equal(expectedVariableValue, actualValue)
 }
 
 func (s *recordingTests) TestRecordedVariablesSanitized() {
@@ -272,15 +272,15 @@ func (s *recordingTests) TestGenerateAlphaNumericID() {
 }
 
 func (s *recordingTests) TestRecordRequestsAndDoMatching() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
-	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
+	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
 
 	target, err := NewRecording(context, Playback)
+	require.NoError(err)
 	target.recorder.SetTransport(rt)
 
 	path, err := target.GenerateAlphaNumericID("", 5, true)
@@ -292,21 +292,23 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	_, err = target.Do(req)
 	require.NoError(err)
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	rec, err := cassette.Load(target.SessionName)
-	assert.Nil(err)
+	require.NoError(err)
 
 	for _, i := range rec.Interactions {
-		assert.Equal(reqUrl, i.Request.URL)
+		require.Equal(reqUrl, i.Request.URL)
 	}
 
 	// re-initialize the recording
 	target, err = NewRecording(context, Playback)
+	require.NoError(err)
 	target.recorder.SetTransport(rt)
 
 	// re-create the random url using the recorded variables
 	path, err = target.GenerateAlphaNumericID("", 5, true)
+	require.NoError(err)
 	reqUrl = server.URL() + "/" + path
 	req, _ = http.NewRequest(http.MethodPost, reqUrl, nil)
 
@@ -314,11 +316,10 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	_, err = target.Do(req)
 	require.NoError(err)
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
@@ -327,9 +328,11 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	rt := NewMockRoundTripper(server)
 
 	target, err := NewRecording(context, Playback)
+	require.NoError(err)
 	target.recorder.SetTransport(rt)
 
 	path, err := target.GenerateAlphaNumericID("", 5, true)
+	require.NoError(err)
 	reqUrl := server.URL() + "/" + path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
@@ -338,17 +341,18 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	_, err = target.Do(req)
 	require.NoError(err)
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 
 	rec, err := cassette.Load(target.SessionName)
-	assert.Nil(err)
+	require.NoError(err)
 
 	for _, i := range rec.Interactions {
-		assert.Equal(reqUrl, i.Request.URL)
+		require.Equal(reqUrl, i.Request.URL)
 	}
 
 	// re-initialize the recording
 	target, err = NewRecording(context, Playback)
+	require.NoError(err)
 	target.recorder.SetTransport(rt)
 
 	// re-create the random url using the recorded variables
@@ -358,14 +362,13 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	// playback the request
 	_, err = target.Do(req)
 	require.NoError(err)
-	assert.Equal(missingRequestError(req), err.Error())
+	require.Equal(missingRequestError(req), err.Error())
 	// mark succeeded
 	err = target.Stop()
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func (s *recordingTests) TearDownSuite() {
-
 	// cleanup test files
 	err := os.RemoveAll("recordings")
 	assert.Nil(s.T(), err)

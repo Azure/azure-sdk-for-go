@@ -94,7 +94,3 @@ func Parse(uuidStr string) UUID {
 	}
 	return uuidVal
 }
-
-func (u UUID) bytes() []byte {
-	return u[:]
-}

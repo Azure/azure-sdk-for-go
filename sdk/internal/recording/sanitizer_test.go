@@ -47,7 +47,8 @@ func (s *sanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
 
 	_, err := r.RoundTrip(req)
 	require.NoError(err)
-	r.Stop()
+	err = r.Stop()
+	require.NoError(err)
 
 	require.Equal(SanitizedValue, req.Header.Get(authHeader))
 
@@ -78,7 +79,8 @@ func (s *sanitizerTests) TestAddSanitizedHeadersSanitizes() {
 
 	_, err := r.RoundTrip(req)
 	require.NoError(err)
-	r.Stop()
+	err = r.Stop()
+	require.NoError(err)
 
 	require.Equal(SanitizedValue, req.Header.Get(customHeader1))
 	require.Equal(SanitizedValue, req.Header.Get(customHeader2))
@@ -118,7 +120,8 @@ func (s *sanitizerTests) TestAddUrlSanitizerSanitizes() {
 
 	_, err := r.RoundTrip(req)
 	require.NoError(err)
-	r.Stop()
+	err = r.Stop()
+	require.NoError(err)
 
 	rec, err := cassette.Load(getTestFileName(s.T(), false))
 	require.NoError(err)

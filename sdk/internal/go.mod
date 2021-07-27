@@ -3,6 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/internal
 go 1.14
 
 require (
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dnaeon/go-vcr v1.2.0
 	github.com/stretchr/testify v1.7.0

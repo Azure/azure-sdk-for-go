@@ -26,7 +26,7 @@ const (
 	provStateStarted   = `{ "properties": { "provisioningState": "Started" } }`
 	provStateUpdating  = `{ "properties": { "provisioningState": "Updating" } }`
 	provStateSucceeded = `{ "properties": { "provisioningState": "Succeeded" }, "field": "value" }`
-	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }` //nolint:deadcode
+	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }` //nolint
 	statusInProgress   = `{ "status": "InProgress" }`
 	statusSucceeded    = `{ "status": "Succeeded" }`
 	statusCanceled     = `{ "status": "Canceled" }`
@@ -306,6 +306,9 @@ func TestNewLROPollerSuccessNoContent(t *testing.T) {
 		t.Fatal(err)
 	}
 	poller, err = NewLROPollerFromResumeToken("pollerID", tk, pl, handleError)
+	if err != nil {
+		t.Fatal(err)
+	}
 	var result mockType
 	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
 	if err != nil {

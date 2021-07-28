@@ -40,9 +40,9 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 	tableName, err := getTableName(context)
 	require.NoError(err)
 
-	_, err = context.client.Create(ctx, tableName)
+	_, err = context.client.CreateTable(ctx, tableName)
 	delete := func() {
-		_, err := context.client.Delete(ctx, tableName)
+		_, err := context.client.DeleteTable(ctx, tableName)
 		if err != nil {
 			fmt.Printf("Error cleaning up test. %v\n", err.Error())
 		}
@@ -51,7 +51,7 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 	require.NoError(err)
 
 	// Create a duplicate table to produce an error
-	_, err = context.client.Create(ctx, tableName)
+	_, err = context.client.CreateTable(ctx, tableName)
 	var svcErr *runtime.ResponseError
 	errors.As(err, &svcErr)
 	require.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
@@ -63,9 +63,9 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
 	tableName, err := getTableName(context)
 	require.NoError(err)
 
-	resp, err := context.client.Create(ctx, tableName)
+	resp, err := context.client.CreateTable(ctx, tableName)
 	delete := func() {
-		_, err := context.client.Delete(ctx, tableName)
+		_, err := context.client.DeleteTable(ctx, tableName)
 		if err != nil {
 			fmt.Printf("Error cleaning up test. %v\n", err.Error())
 		}
@@ -94,13 +94,13 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 			name, _ := getTableName(context, prefix2)
 			tableNames[i] = name
 		}
-		_, err := context.client.Create(ctx, tableNames[i])
+		_, err := context.client.CreateTable(ctx, tableNames[i])
 		require.NoError(err)
 	}
 
 	// Query for tables with no pagination. The filter should exclude one table from the results
 	filter := fmt.Sprintf("TableName ge '%s' and TableName lt '%s'", prefix1, prefix2)
-	pager := context.client.List(&ListOptions{Filter: &filter})
+	pager := context.client.ListTables(&ListOptions{Filter: &filter})
 
 	resultCount := 0
 	for pager.NextPage(ctx) {
@@ -113,7 +113,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 
 	// Query for tables with pagination
 	top := int32(2)
-	pager = context.client.List(&ListOptions{Filter: &filter, Top: &top})
+	pager = context.client.ListTables(&ListOptions{Filter: &filter, Top: &top})
 
 	resultCount = 0
 	pageCount := 0
@@ -129,11 +129,11 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 }
 
 func clearAllTables(context *testContext) error {
-	pager := context.client.List(nil)
+	pager := context.client.ListTables(nil)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 		for _, v := range resp.TableQueryResponse.Value {
-			_, err := context.client.Delete(ctx, *v.TableName)
+			_, err := context.client.DeleteTable(ctx, *v.TableName)
 			if err != nil {
 				return err
 			}
@@ -152,12 +152,12 @@ func (s *tableServiceClientLiveTests) TestListTables() {
 	require.NoError(err)
 
 	for i := 0; i < 5; i++ {
-		_, err := context.client.Create(ctx, fmt.Sprintf("%v%v", tableName, i))
+		_, err := context.client.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i))
 		require.NoError(err)
 	}
 
 	count := 0
-	pager := context.client.List(nil)
+	pager := context.client.ListTables(nil)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 		count += len(resp.TableQueryResponse.Value)

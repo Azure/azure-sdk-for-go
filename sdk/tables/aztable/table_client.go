@@ -34,12 +34,12 @@ func NewTableClient(tableName string, serviceURL string, cred azcore.Credential,
 
 // Create creates the table with the tableName specified when NewTableClient was called.
 func (t *TableClient) Create(ctx context.Context) (TableResponseResponse, error) {
-	return t.service.Create(ctx, t.Name)
+	return t.service.CreateTable(ctx, t.Name)
 }
 
 // Delete deletes the table with the tableName specified when NewTableClient was called.
 func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
-	return t.service.Delete(ctx, t.Name)
+	return t.service.DeleteTable(ctx, t.Name)
 }
 
 // List queries the entities using the specified ListOptions.

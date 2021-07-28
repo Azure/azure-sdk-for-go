@@ -7,48 +7,46 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-func TestLoggingDefault(t *testing.T) {
+func TestLoggingdefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
-	azcore.SetListener(nil)
-	Log().Write(azcore.LogRequest, "this should work just fine")
+	Log().SetListener(nil)
+	Log().Write(LogRequest, "this should work just fine")
 
-	log := map[azcore.LogClassification]string{}
-	azcore.SetListener(func(cls azcore.LogClassification, msg string) {
+	log := map[LogClassification]string{}
+	Log().SetListener(func(cls LogClassification, msg string) {
 		log[cls] = msg
 	})
 	const req = "this is a request"
-	Log().Write(azcore.LogRequest, req)
+	Log().Write(LogRequest, req)
 	const resp = "this is a response: %d"
-	Log().Writef(azcore.LogResponse, resp, http.StatusOK)
+	Log().Writef(LogResponse, resp, http.StatusOK)
 	if l := len(log); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
-	if log[azcore.LogRequest] != req {
-		t.Fatalf("unexpected log request: %s", log[azcore.LogRequest])
+	if log[LogRequest] != req {
+		t.Fatalf("unexpected log request: %s", log[LogRequest])
 	}
-	if log[azcore.LogResponse] != fmt.Sprintf(resp, http.StatusOK) {
-		t.Fatalf("unexpected log response: %s", log[azcore.LogResponse])
+	if log[LogResponse] != fmt.Sprintf(resp, http.StatusOK) {
+		t.Fatalf("unexpected log response: %s", log[LogResponse])
 	}
 }
 
 func TestLoggingClassification(t *testing.T) {
-	log := map[azcore.LogClassification]string{}
-	azcore.SetListener(func(cls azcore.LogClassification, msg string) {
+	log := map[LogClassification]string{}
+	Log().SetListener(func(cls LogClassification, msg string) {
 		log[cls] = msg
 	})
-	azcore.SetClassifications(azcore.LogRequest)
+	Log().SetClassifications(LogRequest)
 	defer Log().resetClassifications()
-	Log().Write(azcore.LogResponse, "this shouldn't be in the log")
-	if s, ok := log[azcore.LogResponse]; ok {
+	Log().Write(LogResponse, "this shouldn't be in the log")
+	if s, ok := log[LogResponse]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
 	const req = "this is a request"
-	Log().Write(azcore.LogRequest, req)
-	if log[azcore.LogRequest] != req {
-		t.Fatalf("unexpected log entry: %s", log[azcore.LogRequest])
+	Log().Write(LogRequest, req)
+	if log[LogRequest] != req {
+		t.Fatalf("unexpected log entry: %s", log[LogRequest])
 	}
 }

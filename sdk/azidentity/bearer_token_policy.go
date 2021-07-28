@@ -34,11 +34,11 @@ type bearerTokenPolicy struct {
 	options azcore.TokenRequestOptions
 }
 
-func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationPolicyOptions) *bearerTokenPolicy {
+func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationOptions) *bearerTokenPolicy {
 	return &bearerTokenPolicy{
 		cond:    sync.NewCond(&sync.Mutex{}),
 		creds:   creds,
-		options: opts.Options,
+		options: opts.TokenRequest,
 	}
 }
 
@@ -100,8 +100,8 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 		b.expiresOn = tk.ExpiresOn
 		b.unlock()
 	}
-	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Request.Header.Set(azcore.HeaderAuthorization, header)
+	req.Request.Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Request.Header.Set(headerAuthorization, header)
 	return req.Next()
 }
 

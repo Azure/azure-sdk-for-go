@@ -29,7 +29,7 @@ func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope str
 	return azcore.NewPipeline(
 		srv,
 		azcore.NewRetryPolicy(&retryOpts),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewLogPolicy(nil))
 }
 
@@ -55,7 +55,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 		t.Fatalf("Expected nil error but received one")
 	}
 	const expectedToken = bearerTokenPrefix + tokenValue
-	if token := resp.Request.Header.Get(azcore.HeaderAuthorization); token != expectedToken {
+	if token := resp.Request.Header.Get(headerAuthorization); token != expectedToken {
 		t.Fatalf("expected token '%s', got '%s'", expectedToken, token)
 	}
 }

@@ -102,8 +102,8 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
-func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
+func (c *InteractiveBrowserCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

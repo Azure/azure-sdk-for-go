@@ -14,10 +14,7 @@ import (
 
 // The UUID reserved variants.
 const (
-	reservedNCS       byte = 0x80
-	reservedRFC4122   byte = 0x40
-	reservedMicrosoft byte = 0x20
-	reservedFuture    byte = 0x00
+	reservedRFC4122 byte = 0x40
 )
 
 func init() {
@@ -96,8 +93,4 @@ func Parse(uuidStr string) UUID {
 		char(uuidStr[34:36]),
 	}
 	return uuidVal
-}
-
-func (u UUID) bytes() []byte {
-	return u[:]
 }

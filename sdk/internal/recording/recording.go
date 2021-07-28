@@ -157,7 +157,10 @@ func (r *Recording) Do(req *http.Request) (*http.Response, error) {
 // Stop stops the recording and saves them, including any captured variables, to disk
 func (r *Recording) Stop() error {
 
-	r.recorder.Stop()
+	err := r.recorder.Stop()
+	if err != nil {
+		return err
+	}
 	if r.Mode == Live {
 		return nil
 	}
@@ -405,6 +408,9 @@ func (r *Recording) unmarshalVariablesFile(out interface{}) error {
 		}
 	} else {
 		err = yaml.Unmarshal(data, out)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

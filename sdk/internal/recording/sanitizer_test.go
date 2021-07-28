@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -32,7 +32,7 @@ func TestRecordingSanitizer(t *testing.T) {
 }
 
 func (s *sanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
@@ -44,21 +44,23 @@ func (s *sanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
 	req, _ := http.NewRequest(http.MethodPost, server.URL(), nil)
 	req.Header.Add(authHeader, "superSecret")
 
-	r.RoundTrip(req)
-	r.Stop()
+	_, err := r.RoundTrip(req)
+	require.NoError(err)
+	err = r.Stop()
+	require.NoError(err)
 
-	assert.Equal(SanitizedValue, req.Header.Get(authHeader))
+	require.Equal(SanitizedValue, req.Header.Get(authHeader))
 
 	rec, err := cassette.Load(getTestFileName(s.T(), false))
-	assert.Nil(err)
+	require.NoError(err)
 
 	for _, i := range rec.Interactions {
-		assert.Equal(SanitizedValue, i.Request.Headers.Get(authHeader))
+		require.Equal(SanitizedValue, i.Request.Headers.Get(authHeader))
 	}
 }
 
 func (s *sanitizerTests) TestAddSanitizedHeadersSanitizes() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
@@ -74,25 +76,27 @@ func (s *sanitizerTests) TestAddSanitizedHeadersSanitizes() {
 	safeValue := "safeValue"
 	req.Header.Add(nonSanitizedHeader, safeValue)
 
-	r.RoundTrip(req)
-	r.Stop()
+	_, err := r.RoundTrip(req)
+	require.NoError(err)
+	err = r.Stop()
+	require.NoError(err)
 
-	assert.Equal(SanitizedValue, req.Header.Get(customHeader1))
-	assert.Equal(SanitizedValue, req.Header.Get(customHeader2))
-	assert.Equal(safeValue, req.Header.Get(nonSanitizedHeader))
+	require.Equal(SanitizedValue, req.Header.Get(customHeader1))
+	require.Equal(SanitizedValue, req.Header.Get(customHeader2))
+	require.Equal(safeValue, req.Header.Get(nonSanitizedHeader))
 
 	rec, err := cassette.Load(getTestFileName(s.T(), false))
-	assert.Nil(err)
+	require.NoError(err)
 
 	for _, i := range rec.Interactions {
-		assert.Equal(SanitizedValue, i.Request.Headers.Get(customHeader1))
-		assert.Equal(SanitizedValue, i.Request.Headers.Get(customHeader2))
-		assert.Equal(safeValue, i.Request.Headers.Get(nonSanitizedHeader))
+		require.Equal(SanitizedValue, i.Request.Headers.Get(customHeader1))
+		require.Equal(SanitizedValue, i.Request.Headers.Get(customHeader2))
+		require.Equal(safeValue, i.Request.Headers.Get(nonSanitizedHeader))
 	}
 }
 
 func (s *sanitizerTests) TestAddUrlSanitizerSanitizes() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	secret := "secretvalue"
 	secretBody := "some body content that contains a " + secret
 	server, cleanup := mock.NewServer()
@@ -113,27 +117,29 @@ func (s *sanitizerTests) TestAddUrlSanitizerSanitizes() {
 
 	req, _ := http.NewRequest(http.MethodPost, baseUrl+secret, closerFromString(secretBody))
 
-	r.RoundTrip(req)
-	r.Stop()
+	_, err := r.RoundTrip(req)
+	require.NoError(err)
+	err = r.Stop()
+	require.NoError(err)
 
 	rec, err := cassette.Load(getTestFileName(s.T(), false))
-	assert.Nil(err)
+	require.NoError(err)
 
 	for _, i := range rec.Interactions {
-		assert.NotContains(i.Response.Body, secret)
-		assert.NotContains(i.Request.URL, secret)
-		assert.NotContains(i.Request.Body, secret)
-		assert.Contains(i.Request.URL, SanitizedValue)
-		assert.Contains(i.Request.Body, SanitizedValue)
-		assert.Contains(i.Response.Body, SanitizedValue)
+		require.NotContains(i.Response.Body, secret)
+		require.NotContains(i.Request.URL, secret)
+		require.NotContains(i.Request.Body, secret)
+		require.Contains(i.Request.URL, SanitizedValue)
+		require.Contains(i.Request.Body, SanitizedValue)
+		require.Contains(i.Response.Body, SanitizedValue)
 	}
 }
 
 func (s *sanitizerTests) TearDownSuite() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	// cleanup test files
 	err := os.RemoveAll("testfiles")
-	assert.Nil(err)
+	require.NoError(err)
 }
 
 func getTestFileName(t *testing.T, addSuffix bool) string {

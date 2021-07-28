@@ -20,7 +20,7 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - pwsh: /eng/scripts/run_tests.ps1
+  - pwsh: ./eng/scripts/run_tests.ps1
     displayName: 'Run Tests and Create Coverage'
     workingDirectory: '${{parameters.GoWorkspace}}'
 

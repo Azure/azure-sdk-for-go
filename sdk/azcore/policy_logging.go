@@ -36,7 +36,7 @@ func NewLogPolicy(o *LogOptions) Policy {
 	return &logPolicy{options: *o}
 }
 
-// logPolicyOpValues is the strucsst containing the per-operation values
+// logPolicyOpValues is the struct containing the per-operation values
 type logPolicyOpValues struct {
 	try   int32
 	start time.Time

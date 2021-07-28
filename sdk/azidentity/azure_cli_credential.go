@@ -68,8 +68,8 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 	return at, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
-func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
+func (c *AzureCLICredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 
@@ -188,3 +188,5 @@ func parseExpirationDate(input string) (*time.Time, error) {
 	}
 	return &expirationDate, nil
 }
+
+var _ azcore.TokenCredential = (*AzureCLICredential)(nil)

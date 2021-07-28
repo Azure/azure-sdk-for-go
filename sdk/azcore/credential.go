@@ -23,7 +23,7 @@ type AuthenticationOptions struct {
 
 // Credential represents any credential type.
 type Credential interface {
-	// AuthenticationPolicy returns a policy that requests the credential and applies it to the HTTP request.
+	// NewAuthenticationPolicy returns a policy that requests the credential and applies it to the HTTP request.
 	NewAuthenticationPolicy(options AuthenticationOptions) Policy
 }
 
@@ -31,7 +31,7 @@ type Credential interface {
 // Use this type when implementing a stateless credential as a first-class function.
 type credentialFunc func(options AuthenticationOptions) Policy
 
-// AuthenticationPolicy implements the Credential interface on credentialFunc.
+// NewAuthenticationPolicy implements the Credential interface on credentialFunc.
 func (cf credentialFunc) NewAuthenticationPolicy(options AuthenticationOptions) Policy {
 	return cf(options)
 }

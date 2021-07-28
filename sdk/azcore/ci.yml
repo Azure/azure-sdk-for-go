@@ -9,6 +9,7 @@ pr:
   paths:
     include:
     - sdk/azcore/
+    - eng/
 
 
 stages:

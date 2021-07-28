@@ -9,6 +9,7 @@ pr:
   paths:
     include:
     - sdk/internal/
+    - eng/
 
 stages:
 - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml

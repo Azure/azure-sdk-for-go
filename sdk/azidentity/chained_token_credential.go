@@ -16,6 +16,8 @@ type ChainedTokenCredential struct {
 	sources []azcore.TokenCredential
 }
 
+var _ azcore.TokenCredential = (*ChainedTokenCredential)(nil)
+
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
 func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
@@ -68,8 +70,8 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	return nil, credErr
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
-func (c *ChainedTokenCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
+func (c *ChainedTokenCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

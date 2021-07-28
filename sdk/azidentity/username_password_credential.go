@@ -38,6 +38,8 @@ type UsernamePasswordCredential struct {
 	password string // Gets the user account's password
 }
 
+var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)
+
 // NewUsernamePasswordCredential constructs a new UsernamePasswordCredential with the details needed to authenticate against Azure Active Directory with
 // a simple username and password.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
@@ -77,7 +79,7 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 	return tk, err
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
-func (c *UsernamePasswordCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
+func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

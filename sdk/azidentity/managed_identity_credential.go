@@ -49,6 +49,8 @@ type ManagedIdentityCredential struct {
 	client *managedIdentityClient
 }
 
+var _ azcore.TokenCredential = (*ManagedIdentityCredential)(nil)
+
 // NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource that has a managed identity.
 // id: The ID that corresponds to the user assigned managed identity. Defaults to the identity's client ID. To use another identifier,
 // pass in the value for the identifier here AND choose the correct ID kind to be used in the request by setting ManagedIdentityIDKind in the options.
@@ -107,8 +109,8 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 	return tk, err
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
+// NewAuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
 // NOTE: The TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes.
-func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+func (c *ManagedIdentityCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

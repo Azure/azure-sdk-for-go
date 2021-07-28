@@ -51,6 +51,8 @@ type ClientCertificateCredential struct {
 	sendCertificateChain bool          // Determines whether to include the certificate chain in the claims to retreive a token
 }
 
+var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)
+
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
@@ -216,7 +218,7 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
-func (c *ClientCertificateCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
+func (c *ClientCertificateCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }

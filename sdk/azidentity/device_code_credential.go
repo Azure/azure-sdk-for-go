@@ -167,8 +167,8 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 	}
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
-func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
+func (c *DeviceCodeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

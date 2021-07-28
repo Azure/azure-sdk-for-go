@@ -36,6 +36,8 @@ type ClientSecretCredential struct {
 	clientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
 }
 
+var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)
+
 // NewClientSecretCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
@@ -73,9 +75,9 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
+// NewAuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
 // to get the bearer token.
-func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+func (c *ClientSecretCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

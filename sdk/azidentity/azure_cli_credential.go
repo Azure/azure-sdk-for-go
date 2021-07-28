@@ -39,6 +39,8 @@ type AzureCLICredential struct {
 	tokenProvider AzureCLITokenProvider
 }
 
+var _ azcore.TokenCredential = (*AzureCLICredential)(nil)
+
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
@@ -68,8 +70,8 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 	return at, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
-func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
+func (c *AzureCLICredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

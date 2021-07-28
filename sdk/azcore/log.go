@@ -9,8 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 )
 
-// LogClassification is used to group entries.  Each group can be toggled on or off.
-type LogClassification string
+type LogClassification logger.LogClassification
 
 const (
 	// LogRequest entries contain information about HTTP requests.

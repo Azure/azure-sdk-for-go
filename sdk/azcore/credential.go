@@ -12,10 +12,13 @@ import (
 
 // AuthenticationOptions contains various options used to create a credential policy.
 type AuthenticationOptions struct {
-	// Options contains the TokenRequestOptions that includes a scopes field which contains
+	// TokenRequest is a TokenRequestOptions that includes a scopes field which contains
 	// the list of OAuth2 authentication scopes used when requesting a token.
 	// This field is ignored for other forms of authentication (e.g. shared key).
 	TokenRequest TokenRequestOptions
+	// AuxiliaryTenants contains a list of additional tenant IDs to be used to authenticate
+	// in cross-tenant applications.
+	AuxiliaryTenants []string
 }
 
 // Credential represents any credential type.

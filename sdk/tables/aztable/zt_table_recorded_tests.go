@@ -126,10 +126,10 @@ func insertNEntities(pk string, n int, client *TableClient) error {
 func cleanupTables(context *testContext, tables *[]string) {
 	c := context.client
 	if tables == nil {
-		pager := c.List(nil)
+		pager := c.ListTables(nil)
 		for pager.NextPage(ctx) {
 			for _, t := range pager.PageResponse().TableQueryResponse.Value {
-				_, err := c.Delete(ctx, *t.TableName)
+				_, err := c.DeleteTable(ctx, *t.TableName)
 				if err != nil {
 					fmt.Printf("Error cleaning up tables. %v\n", err.Error())
 				}
@@ -137,7 +137,7 @@ func cleanupTables(context *testContext, tables *[]string) {
 		}
 	} else {
 		for _, t := range *tables {
-			_, err := c.Delete(ctx, t)
+			_, err := c.DeleteTable(ctx, t)
 			if err != nil {
 				fmt.Printf("There was an error cleaning up tests. %v\n", err.Error())
 			}

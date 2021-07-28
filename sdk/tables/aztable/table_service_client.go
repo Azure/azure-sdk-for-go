@@ -40,7 +40,7 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
+func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (TableResponseResponse, error) {
 	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
 	if err == nil {
 		tableResp := resp.(TableResponseResponse)
@@ -50,7 +50,7 @@ func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResp
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDeleteResponse, error) {
+func (t *TableServiceClient) DeleteTable(ctx context.Context, name string) (TableDeleteResponse, error) {
 	return t.client.Delete(ctx, name, nil)
 }
 
@@ -72,7 +72,7 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) List(listOptions *ListOptions) TableQueryResponsePager {
+func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResponsePager {
 	return &tableQueryResponsePager{
 		client:            t.client,
 		queryOptions:      listOptions,

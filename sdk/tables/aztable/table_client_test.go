@@ -5,17 +5,15 @@ package aztable
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -46,435 +44,271 @@ func (s *tableClientLiveTests) TestServiceErrors() {
 	_, err := client.Create(ctx)
 	var svcErr *runtime.ResponseError
 	errors.As(err, &svcErr)
-	assert.Equal(s.T(), svcErr.RawResponse().StatusCode, http.StatusConflict)
+	require.Equal(s.T(), svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 
 func (s *tableClientLiveTests) TestCreateTable() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	client, delete := s.init(false)
 	defer delete()
 
 	resp, err := client.Create(ctx)
 
-	assert.Nil(err)
-	assert.Equal(*resp.TableResponse.TableName, client.Name)
+	require.NoError(err)
+	require.Equal(*resp.TableResponse.TableName, client.Name)
 }
 
 func (s *tableClientLiveTests) TestAddEntity() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
-	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
-	assert.Nil(err)
+	marshalledEntity, err := json.Marshal((*entitiesToCreate)[0])
+	require.NoError(err)
+	resp, err := client.AddEntity(ctx, marshalledEntity)
+	require.NoError(err)
+	require.NotNil(resp)
 }
 
 func (s *tableClientLiveTests) TestAddComplexEntity() {
-	assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
+	require := require.New(s.T())
+	// context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
 	defer delete()
 
-	entitiesToCreate := createComplexEntities(context, 1, "partition")
+	entitiesToCreate := createComplexEntities(1, "partition")
 
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, e)
+		marshalledEntity, err := json.Marshal(e)
+		require.NoError(err)
+		_, err = client.AddEntity(ctx, marshalledEntity)
 		var svcErr *runtime.ResponseError
 		errors.As(err, &svcErr)
-		assert.Nilf(err, getStringFromBody(svcErr))
+		require.Nilf(err, getStringFromBody(svcErr))
 	}
 }
 
 func (s *tableClientLiveTests) TestDeleteEntity() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
-	entitiesToCreate := createSimpleEntities(1, "partition")
+	simpleEntity := createSimpleEntity(1, "partition")
 
-	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
-	assert.Nil(err)
-	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][partitionKey].(string), (*entitiesToCreate)[0][rowKey].(string), "*")
-	assert.Nil(delErr)
+	marshalledEntity, err := json.Marshal(simpleEntity)
+	require.NoError(err)
+	_, err = client.AddEntity(ctx, marshalledEntity)
+	require.NoError(err)
+	_, delErr := client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, nil)
+	require.Nil(delErr)
 }
 
 func (s *tableClientLiveTests) TestMergeEntity() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
-	entitiesToCreate := createSimpleEntities(1, "partition")
+	entityToCreate := createSimpleEntity(1, "partition")
+	marshalled := marshalBasicEntity(entityToCreate, require)
 
-	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
-	assert.Nil(err)
+	_, err := client.AddEntity(ctx, *marshalled)
+	require.NoError(err)
 
-	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(&QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	preMerge := qResp.TableEntityQueryResponse.Value[0]
+	listOptions := &ListOptions{Filter: &filter}
 
-	mergeProp := "MergeProperty"
-	val := "foo"
-	var mergeProperty = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[0][partitionKey],
-		rowKey:       (*entitiesToCreate)[0][rowKey],
-		mergeProp:    val,
-	}
+	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
+	require.NoError(err)
 
-	_, updateErr := client.UpdateEntity(ctx, mergeProperty, nil, Merge)
-	assert.Nil(updateErr)
+	var unMarshalledPreMerge map[string]interface{}
+	err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
+	require.NoError(err)
 
-	pager = client.Query(&QueryOptions{Filter: &filter})
+	var mapEntity map[string]interface{}
+	err = json.Unmarshal(*marshalled, &mapEntity)
+	require.NoError(err)
+	mapEntity["MergeProperty"] = "foo"
+
+	reMarshalled, err := json.Marshal(mapEntity)
+	require.NoError(err)
+
+	_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, Merge)
+	require.Nil(updateErr)
+
+	var qResp TableEntityQueryByteResponseResponse
+	pager := client.List(listOptions)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
 	postMerge := qResp.TableEntityQueryResponse.Value[0]
+	var unmarshalledPostMerge map[string]interface{}
+	err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
+	require.NoError(err)
 
-	// The merged entity has all its properties + the merged property
-	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
-	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
+	require.Equal(unmarshalledPostMerge["PartitionKey"], unMarshalledPreMerge["PartitionKey"])
+	require.Equal(unmarshalledPostMerge["MergeProperty"], "foo")
+
+	_, ok := unMarshalledPreMerge["MergeProperty"]
+	require.False(ok)
 }
 
 func (s *tableClientLiveTests) TestUpsertEntity() {
-	assert := assert.New(s.T())
 	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
-	entitiesToCreate := createSimpleEntities(1, "partition")
+	// 1. Create Basic Entity
+	entityToCreate := createSimpleEntity(1, "partition")
+	marshalled := marshalBasicEntity(entityToCreate, require)
 
-	_, err := client.UpsertEntity(ctx, (*entitiesToCreate)[0], Replace)
+	_, err := client.UpsertEntity(ctx, *marshalled, Replace)
+	require.NoError(err)
+
+	filter := "RowKey eq '1'"
+	list := &ListOptions{Filter: &filter}
+
+	// 2. Query for basic Entity
+	preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
+	require.NoError(err)
+
+	var unMarshalledPreMerge map[string]interface{}
+	err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
+	require.NoError(err)
+
+	// 3. Create same entity without Bool property, add "MergeProperty" prop
+	mapEntity := createSimpleEntityNoBool(1, "partition")
+	mapEntity["MergeProperty"] = "foo"
+
+	reMarshalled, err := json.Marshal(mapEntity)
+
+	// 4. Replace Entity with "bool"-less entity
+	_, err = client.UpsertEntity(ctx, reMarshalled, Replace)
 	require.Nil(err)
 
-	var qResp TableEntityQueryResponseResponse
-	filter := "RowKey eq '1'"
-	pager := client.Query(&QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	preMerge := qResp.TableEntityQueryResponse.Value[0]
-
-	mergeProp := "MergeProperty"
-	val := "foo"
-	var mergeProperty = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[0][partitionKey],
-		rowKey:       (*entitiesToCreate)[0][rowKey],
-		mergeProp:    val,
-	}
-
-	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
-	require.Nil(updateErr)
-
-	pager = client.Query(&QueryOptions{Filter: &filter})
+	// 5. Query for new entity
+	var qResp TableEntityQueryByteResponseResponse
+	pager := client.List(list)
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
 	postMerge := qResp.TableEntityQueryResponse.Value[0]
+	var unmarshalledPostMerge map[string]interface{}
+	err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 
-	// The merged entity has only the standard properties + the merged property
-	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
-	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
-}
+	// 6. Make assertions
+	require.Less(len(unmarshalledPostMerge), len(unMarshalledPreMerge))
+	require.Equal(unmarshalledPostMerge["MergeProperty"], "foo")
 
-func (s *tableClientLiveTests) TestGetEntity() {
-	assert := assert.New(s.T())
-	require := require.New(s.T())
-	client, delete := s.init(true)
-	defer delete()
-
-	// Add 5 entities
-	entitiesToCreate := createSimpleEntities(1, "partition")
-	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, e)
-		assert.Nil(err)
-	}
-
-	resp, err := client.GetEntity(ctx, "partition", "1")
-	require.Nil(err)
-	e := resp.Value
-	_, ok := e[partitionKey].(string)
-	assert.True(ok)
-	_, ok = e[rowKey].(string)
-	assert.True(ok)
-	_, ok = e[timestamp].(string)
-	assert.True(ok)
-	_, ok = e[etagOdata].(string)
-	assert.True(ok)
-	_, ok = e["StringProp"].(string)
-	assert.True(ok)
-	//TODO: fix when serialization is implemented
-	_, ok = e["IntProp"].(float64)
-	assert.True(ok)
-	_, ok = e["BoolProp"].(bool)
-	assert.True(ok)
+	_, ok := unmarshalledPostMerge["Bool"]
+	require.Falsef(ok, "Bool property should not be available in the merged entity")
 }
 
 func (s *tableClientLiveTests) TestQuerySimpleEntity() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, e)
-		assert.Nil(err)
+		marshalledEntity, err := json.Marshal(e)
+		require.NoError(err)
+		_, err = client.AddEntity(ctx, marshalledEntity)
+		require.NoError(err)
 	}
 
 	filter := "RowKey lt '5'"
+	list := &ListOptions{Filter: &filter}
 	expectedCount := 4
-	var resp TableEntityQueryResponseResponse
-	var models []simpleEntity
-	pager := client.Query(&QueryOptions{Filter: &filter})
+
+	var resp TableEntityQueryByteResponseResponse
+	pager := client.List(list)
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
-		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
-		err := resp.TableEntityQueryResponse.AsModels(&models)
-		assert.Nil(err)
-		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
+		require.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
 	}
-	resp = pager.PageResponse()
-	assert.Nil(pager.Err())
+
 	for i, e := range resp.TableEntityQueryResponse.Value {
-		_, ok := e[partitionKey].(string)
-		assert.True(ok)
-		assert.Equal(e[partitionKey], models[i].PartitionKey)
-		_, ok = e[rowKey].(string)
-		assert.True(ok)
-		assert.Equal(e[rowKey], models[i].RowKey)
-		_, ok = e[timestamp].(string)
-		assert.True(ok)
-		_, ok = e[etagOdata].(string)
-		assert.True(ok)
-		assert.Equal(e[etagOdata], models[i].ETag)
-		_, ok = e["StringProp"].(string)
-		assert.True(ok)
-		//TODO: fix when serialization is implemented
-		_, ok = e["IntProp"].(float64)
-		assert.Equal(int(e["IntProp"].(float64)), models[i].IntProp)
-		assert.True(ok)
-		_, ok = e["BoolProp"].(bool)
-		assert.Equal((*entitiesToCreate)[i]["BoolProp"], e["BoolProp"])
-		assert.Equal(e["BoolProp"], models[i].BoolProp)
-		assert.True(ok)
+		var mapModel map[string]interface{}
+		err := json.Unmarshal(e, &mapModel)
+		require.NoError(err)
+
+		_, ok := mapModel[timestamp]
+		require.True(ok)
+
+		_, ok = mapModel[etagOdata]
+		require.True(ok)
+
+		var b basicTestEntity
+		err = json.Unmarshal(e, &b)
+		require.NoError(err)
+
+		require.Equal(b.PartitionKey, "partition")
+		require.Equal(b.RowKey, fmt.Sprint(i+1))
+		require.Equal(b.String, (*entitiesToCreate)[i].String)
+		require.Equal(b.Integer, (*entitiesToCreate)[i].Integer)
+		require.Equal(b.Bool, (*entitiesToCreate)[i].Bool)
 	}
 }
 
 func (s *tableClientLiveTests) TestQueryComplexEntity() {
-	assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
+	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
 	// Add 5 entities
-	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
+	entitiesToCreate := createComplexEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, e)
-		assert.Nil(err)
+		marshalledEntity, err := json.Marshal(e)
+		require.NoError(err)
+		_, err = client.AddEntity(ctx, marshalledEntity)
+		require.NoError(err)
 	}
 
 	filter := "RowKey lt '5'"
 	expectedCount := 4
-	var resp TableEntityQueryResponseResponse
-	pager := client.Query(&QueryOptions{Filter: &filter})
+	options := &ListOptions{Filter: &filter}
+
+	var resp TableEntityQueryByteResponseResponse
+	pager := client.List(options)
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
-		assert.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
+		require.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
+
+		for idx, entity := range resp.TableEntityQueryResponse.Value {
+			model := complexTestEntity{}
+			err := json.Unmarshal(entity, &model)
+			require.NoError(err)
+
+			require.Equal(model.PartitionKey, "partition")
+			require.Equal(model.RowKey, (*entitiesToCreate)[idx].RowKey)
+			require.Equal(model.Integer, (*entitiesToCreate)[idx].Integer)
+			require.Equal(model.String, (*entitiesToCreate)[idx].String)
+			require.Equal(model.Bool, (*entitiesToCreate)[idx].Bool)
+			require.Equal(model.Float, (*entitiesToCreate)[idx].Float)
+			require.Equal(model.DateTime, (*entitiesToCreate)[idx].DateTime)
+			require.Equal(model.Byte, (*entitiesToCreate)[idx].Byte)
+		}
 	}
-	resp = pager.PageResponse()
-	assert.Nil(pager.Err())
-	for _, e := range resp.TableEntityQueryResponse.Value {
-		_, ok := e[partitionKey].(string)
-		assert.True(ok)
-		_, ok = e[rowKey].(string)
-		assert.True(ok)
-		_, ok = e[timestamp].(string)
-		assert.True(ok)
-		_, ok = e[etagOdata].(string)
-		assert.True(ok)
-		_, ok = e["StringProp"].(string)
-		assert.True(ok)
-		//TODO: fix when serialization is implemented
-		_, ok = e["IntProp"].(float64)
-		assert.True(ok)
-		_, ok = e["BoolProp"].(bool)
-		assert.True(ok)
-		_, ok = e["SomeBinaryProperty"].([]byte)
-		assert.True(ok)
-		_, ok = e["SomeDateProperty"].(time.Time)
-		assert.True(ok)
-		_, ok = e["SomeDoubleProperty0"].(float64)
-		assert.True(ok)
-		_, ok = e["SomeDoubleProperty1"].(float64)
-		assert.True(ok)
-		_, ok = e["SomeGuidProperty"].(uuid.UUID)
-		assert.True(ok)
-		_, ok = e["SomeInt64Property"].(int64)
-		assert.True(ok)
-		//TODO: fix when serialization is implemented
-		_, ok = e["SomeIntProperty"].(float64)
-		assert.True(ok)
-		_, ok = e["SomeStringProperty"].(string)
-		assert.True(ok)
-	}
-}
-
-func (s *tableClientLiveTests) TestBatchAdd() {
-	assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
-	defer delete()
-
-	entitiesToCreate := createComplexMapEntities(context, 10, "partition")
-	batch := make([]TableTransactionAction, 10)
-
-	for i, e := range *entitiesToCreate {
-		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
-	}
-
-	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.Nil(err)
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(r.StatusCode, http.StatusNoContent)
-	}
-}
-
-func (s *tableClientLiveTests) TestBatchMixed() {
-	assert := assert.New(s.T())
-	require := require.New(s.T())
-	context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
-	defer delete()
-
-	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
-	batch := make([]TableTransactionAction, 3)
-
-	// Add the first 3 entities.
-	for i := range batch {
-		batch[i] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]}
-	}
-
-	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	require.Nil(err)
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(http.StatusNoContent, r.StatusCode)
-	}
-
-	var qResp TableEntityQueryResponseResponse
-	filter := "RowKey eq '1'"
-	pager := client.Query(&QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	preMerge := qResp.TableEntityQueryResponse.Value[0]
-
-	// create a new batch slice.
-	batch = make([]TableTransactionAction, 5)
-
-	// create a merge action for the first added entity
-	mergeProp := "MergeProperty"
-	val := "foo"
-	var mergeProperty = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[0][partitionKey],
-		rowKey:       (*entitiesToCreate)[0][rowKey],
-		mergeProp:    val,
-	}
-	batch[0] = TableTransactionAction{ActionType: UpdateMerge, Entity: mergeProperty, ETag: (*resp.TransactionResponses)[0].Header.Get(etag)}
-
-	// create a delete action for the second added entity
-	batch[1] = TableTransactionAction{ActionType: Delete, Entity: (*entitiesToCreate)[1]}
-
-	// create an upsert action to replace the third added entity with a new value
-	replaceProp := "ReplaceProperty"
-	var replaceProperties = map[string]interface{}{
-		partitionKey: (*entitiesToCreate)[2][partitionKey],
-		rowKey:       (*entitiesToCreate)[2][rowKey],
-		replaceProp:  val,
-	}
-	batch[2] = TableTransactionAction{ActionType: UpsertReplace, Entity: replaceProperties}
-
-	// Add the remaining 2 entities.
-	batch[3] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[3]}
-	batch[4] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[4]}
-
-	//batch = batch[1:]
-
-	resp, err = client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	require.Nil(err)
-
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(http.StatusNoContent, r.StatusCode)
-
-	}
-
-	pager = client.Query(&QueryOptions{Filter: &filter})
-	for pager.NextPage(ctx) {
-		qResp = pager.PageResponse()
-	}
-	postMerge := qResp.TableEntityQueryResponse.Value[0]
-
-	// The merged entity has all its properties + the merged property
-	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
-	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
-}
-
-func (s *tableClientLiveTests) TestBatchError() {
-	assert := assert.New(s.T())
-	require := require.New(s.T())
-	context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
-	defer delete()
-
-	entitiesToCreate := createComplexMapEntities(context, 3, "partition")
-
-	// Create the batch.
-	batch := make([]TableTransactionAction, 0, 3)
-
-	// Sending an empty batch throws.
-	_, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.NotNil(err)
-	assert.Equal(error_empty_transaction, err.Error())
-
-	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-	_, err = client.AddEntity(ctx, (*entitiesToCreate)[2])
-	assert.Nil(err)
-
-	// Add the entities to the batch
-	for i := 0; i < cap(batch); i++ {
-		batch = append(batch, TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]})
-	}
-
-	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
-	assert.NotNil(err)
-	te, ok := err.(*TableTransactionError)
-	require.Truef(ok, "err should be of type TableTransactionError")
-	assert.Equal("EntityAlreadyExists", te.OdataError.Code)
-	assert.Equal(2, te.FailedEntityIndex)
-	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 }
 
 func (s *tableClientLiveTests) TestInvalidEntity() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
 
-	badEntity := &map[string]interface{}{
+	badEntity := map[string]interface{}{
 		"Value":  10,
 		"String": "stringystring",
 	}
 
-	_, err := client.AddEntity(ctx, *badEntity)
+	badEntityMarshalled, err := json.Marshal(badEntity)
+	_, err = client.AddEntity(ctx, badEntityMarshalled)
 
-	assert.NotNil(err)
-	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
+	require.NotNil(err)
+	require.Contains(err.Error(), partitionKeyRowKeyError.Error())
 }
 
 // setup the test environment
@@ -487,17 +321,18 @@ func (s *tableClientLiveTests) AfterTest(suite string, test string) {
 	recordedTestTeardown(s.T().Name())
 }
 
-func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
-	assert := assert.New(s.T())
+func (s *tableClientLiveTests) init(createTable bool) (*TableClient, func()) {
+	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, _ := getTableName(context)
 	client := context.client.NewTableClient(tableName)
-	if doCreate {
+	if createTable {
 		_, err := client.Create(ctx)
+		// fmt.Println("CREATE ERROR: ", err.Error())
 		if err != nil {
 			var svcErr *runtime.ResponseError
 			errors.As(err, &svcErr)
-			assert.FailNow(getStringFromBody(svcErr))
+			require.FailNow(getStringFromBody(svcErr))
 		}
 	}
 	return client, func() {

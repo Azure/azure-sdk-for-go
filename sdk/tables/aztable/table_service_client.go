@@ -45,7 +45,7 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
+func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (TableResponseResponse, error) {
 	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
 	if err == nil {
 		tableResp := resp.(TableResponseResponse)
@@ -55,12 +55,12 @@ func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResp
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDeleteResponse, error) {
+func (t *TableServiceClient) DeleteTable(ctx context.Context, name string) (TableDeleteResponse, error) {
 	return t.client.Delete(ctx, name, nil)
 }
 
-// Query queries the existing tables using the specified QueryOptions.
-// QueryOptions can specify the following properties to affect the query results returned:
+// List queries the existing tables using the specified ListOptions.
+// ListOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An Odata filter expression that limits results to those tables that satisfy the filter expression.
 // For example, the following expression would return only tables with a TableName of 'foo': "TableName eq 'foo'"
@@ -68,16 +68,21 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// Query returns a Pager, which allows iteration through each page of results. Example:
+// List returns a Pager, which allows iteration through each page of results. Example:
 //
-// pager := client.Query(nil)
+// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
+// pager := client.List(options) // Pass in 'nil' if you want to return all Tables for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) Query(queryOptions *QueryOptions) TableQueryResponsePager {
-	return &tableQueryResponsePager{client: t.client, queryOptions: queryOptions, tableQueryOptions: new(TableQueryOptions)}
+func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResponsePager {
+	return &tableQueryResponsePager{
+		client:            t.client,
+		queryOptions:      listOptions,
+		tableQueryOptions: new(TableQueryOptions),
+	}
 }
 
 // GetStatistics retrieves all the statistics for an account with Geo-redundancy established.

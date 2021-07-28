@@ -8,12 +8,10 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -37,49 +35,49 @@ func TestServiceClient_Cosmos(t *testing.T) {
 }
 
 func (s *tableServiceClientLiveTests) TestServiceErrors() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
-	failIfNotNil(assert, err)
+	require.NoError(err)
 
-	_, err = context.client.Create(ctx, tableName)
+	_, err = context.client.CreateTable(ctx, tableName)
 	delete := func() {
-		_, err := context.client.Delete(ctx, tableName)
+		_, err := context.client.DeleteTable(ctx, tableName)
 		if err != nil {
 			fmt.Printf("Error cleaning up test. %v\n", err.Error())
 		}
 	}
 	defer delete()
-	failIfNotNil(assert, err)
+	require.NoError(err)
 
 	// Create a duplicate table to produce an error
-	_, err = context.client.Create(ctx, tableName)
+	_, err = context.client.CreateTable(ctx, tableName)
 	var svcErr *runtime.ResponseError
 	errors.As(err, &svcErr)
-	assert.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
+	require.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 
 func (s *tableServiceClientLiveTests) TestCreateTable() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
-	failIfNotNil(assert, err)
+	require.NoError(err)
 
-	resp, err := context.client.Create(ctx, tableName)
+	resp, err := context.client.CreateTable(ctx, tableName)
 	delete := func() {
-		_, err := context.client.Delete(ctx, tableName)
+		_, err := context.client.DeleteTable(ctx, tableName)
 		if err != nil {
 			fmt.Printf("Error cleaning up test. %v\n", err.Error())
 		}
 	}
 	defer delete()
 
-	failIfNotNil(assert, err)
-	assert.Equal(*resp.TableResponse.TableName, tableName)
+	require.NoError(err)
+	require.Equal(*resp.TableResponse.TableName, tableName)
 }
 
 func (s *tableServiceClientLiveTests) TestQueryTable() {
-	assert := assert.New(s.T())
+	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableCount := 5
 	tableNames := make([]string, tableCount)
@@ -96,13 +94,13 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 			name, _ := getTableName(context, prefix2)
 			tableNames[i] = name
 		}
-		_, err := context.client.Create(ctx, tableNames[i])
-		assert.Nil(err)
+		_, err := context.client.CreateTable(ctx, tableNames[i])
+		require.NoError(err)
 	}
 
 	// Query for tables with no pagination. The filter should exclude one table from the results
 	filter := fmt.Sprintf("TableName ge '%s' and TableName lt '%s'", prefix1, prefix2)
-	pager := context.client.Query(&QueryOptions{Filter: &filter})
+	pager := context.client.ListTables(&ListOptions{Filter: &filter})
 
 	resultCount := 0
 	for pager.NextPage(ctx) {
@@ -110,12 +108,12 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 		resultCount += len(resp.TableQueryResponse.Value)
 	}
 
-	assert.Nil(pager.Err())
-	assert.Equal(resultCount, tableCount-1)
+	require.NoError(pager.Err())
+	require.Equal(resultCount, tableCount-1)
 
 	// Query for tables with pagination
 	top := int32(2)
-	pager = context.client.Query(&QueryOptions{Filter: &filter, Top: &top})
+	pager = context.client.ListTables(&ListOptions{Filter: &filter, Top: &top})
 
 	resultCount = 0
 	pageCount := 0
@@ -125,9 +123,48 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 		pageCount++
 	}
 
-	assert.Nil(pager.Err())
-	assert.Equal(resultCount, tableCount-1)
-	assert.Equal(pageCount, int(top))
+	require.NoError(pager.Err())
+	require.Equal(resultCount, tableCount-1)
+	require.Equal(pageCount, int(top))
+}
+
+func clearAllTables(context *testContext) error {
+	pager := context.client.ListTables(nil)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, v := range resp.TableQueryResponse.Value {
+			_, err := context.client.DeleteTable(ctx, *v.TableName)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return pager.Err()
+}
+
+func (s *tableServiceClientLiveTests) TestListTables() {
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	tableName, err := getTableName(context)
+	require.NoError(err)
+
+	err = clearAllTables(context)
+	require.NoError(err)
+
+	for i := 0; i < 5; i++ {
+		_, err := context.client.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i))
+		require.NoError(err)
+	}
+
+	count := 0
+	pager := context.client.ListTables(nil)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		count += len(resp.TableQueryResponse.Value)
+	}
+
+	require.NoError(pager.Err())
+	require.Equal(5, count)
 }
 
 func (s *tableServiceClientLiveTests) TestGetStatistics() {
@@ -178,7 +215,7 @@ func (s *tableServiceClientLiveTests) TestSetLogging() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -212,7 +249,7 @@ func (s *tableServiceClientLiveTests) TestSetHoursMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -245,7 +282,7 @@ func (s *tableServiceClientLiveTests) TestSetMinuteMetrics() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)
@@ -276,7 +313,7 @@ func (s *tableServiceClientLiveTests) TestSetCors() {
 	require.NoError(err)
 	require.NotNil(resp)
 
-	time.Sleep(45 * time.Second)
+	// time.Sleep(45 * time.Second)
 
 	received, err := context.client.GetProperties(ctx, nil)
 	require.NoError(err)

@@ -82,3 +82,5 @@ func createChainedErrorMessage(errList []*CredentialUnavailableError) string {
 
 	return msg
 }
+
+var _ azcore.TokenCredential = (*ChainedTokenCredential)(nil)

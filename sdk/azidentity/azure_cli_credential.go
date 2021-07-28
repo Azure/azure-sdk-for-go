@@ -188,3 +188,5 @@ func parseExpirationDate(input string) (*time.Time, error) {
 	}
 	return &expirationDate, nil
 }
+
+var _ azcore.TokenCredential = (*AzureCLICredential)(nil)

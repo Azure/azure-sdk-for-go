@@ -220,3 +220,5 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 func (c *ClientCertificateCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)

@@ -81,3 +81,5 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

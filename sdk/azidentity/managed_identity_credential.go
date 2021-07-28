@@ -112,3 +112,5 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 func (c *ManagedIdentityCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*ManagedIdentityCredential)(nil)

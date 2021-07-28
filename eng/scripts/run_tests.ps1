@@ -5,25 +5,31 @@ Param(
 $cwd = Get-Location
 
 # 0. Find all test directories
-Write-Host "Finding test directories..."
-$testDirs = . $PSScriptRoot/get_test_dirs.ps1 -serviceDir sdk/$serviceDir
+Write-Host "Finding test directories in 'sdk/$serviceDir'"
+$testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir sdk/$serviceDir
 # Issues here, not returning any objects
 Write-Host "Found test directories $testDirs"
 $temp = Get-Location
 Write-Host "Currently in $temp"
 
+$runTests = $false
 # 0b. Verify there are test files with tests to run in at least one of these directories
 $testDirs | ForEach-Object {
-    Write-Host $_
-    if (Select-String -path $_ -pattern 'Test' -simpleMatch) {
-        break
+    Write-Host "[Loop]: Currently in: $_"
+    Get-ChildItem -Path $_ -Filter *_test.go | ForEach-Object {
+        Write-Host "[Loop]: $_"
+        if (Select-String -path $_ -pattern 'Test' -SimpleMatch) {
+            $runTests = $true
+        }
     }
-    # There are no tests in the file, so we can silently exit
-    Exit 0
+
+    if (!$runTests) {
+        Write-Host "There were no test files found."
+        Exit 0
+    }
 }
 
 Write-Host "Proceeding to run tests and add coverage"
-# Exit 0
 
 # 1. Run tests
 foreach ($td in $testDirs) {
@@ -36,7 +42,7 @@ foreach ($td in $testDirs) {
         Write-Host "There was an error running the tests"
         Exit $LASTEXITCODE
     } else {
-        Write-Host "`nSuccessfully ran test suite at $temp`n"
+        Write-Host "" "Successfully ran test suite at $temp" ""
     }
     # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
     if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {

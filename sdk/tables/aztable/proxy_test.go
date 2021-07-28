@@ -30,34 +30,9 @@ func Test_TestProxyPolicy(t *testing.T) {
 
 	fmt.Println("CALLING CREATE")
 	_, err = client.Create(ctx)
-	fmt.Println("Create err: ", err.Error())
-	require.NoError(err)
-
-	fmt.Println("CALLING DELETE")
-	_, err = client.Delete(ctx)
-	fmt.Println("Delete err: ", err)
-	require.NoError(err)
-}
-
-func Test_TestProxyTransport(t *testing.T) {
-	require := require.New(t)
-	err := recording.StartRecording(t)
-	require.NoError(err)
-	defer recording.StopRecording(t)
-
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(err)
-	testProxyTransport := recording.TestProxyTransport{}
-	options := TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
-		HTTPClient: testProxyTransport,
+	if err != nil {
+		fmt.Println("Create err: ", err.Error())
 	}
-	client, err := NewTableClient("testproxy", "https://seankaneprim.table.core.windows.net", cred, &options)
-	require.NoError(err)
-
-	fmt.Println("CALLING CREATE")
-	_, err = client.Create(ctx)
-	fmt.Println("Create err: ", err.Error())
 	require.NoError(err)
 
 	fmt.Println("CALLING DELETE")

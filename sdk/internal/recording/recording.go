@@ -533,11 +533,15 @@ func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
 }
 
 func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
-	req.Host = "localhost:5001"
+	originalURLHost := req.URL.Host
 	req.URL.Scheme = "https"
 	req.URL.Host = "localhost:5001"
+	req.Host = originalURLHost
 
-	fmt.Println("URL: ", req.URL.String())
+	req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
+	fmt.Println(req.Header.Get("x-recording-upstream-base-uri"))
+
+	fmt.Println("URL hit: ", req.URL.String())
 
 	return req.Next()
 }

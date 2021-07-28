@@ -18,7 +18,7 @@ authentication. This document illustrates the most common scenario.
 Migration from older versions of Azure management libraries for Go
 ------------------------------------------------------------------
 
-If you are an existing user of the older version of Azure management library for Go (packages that are located under [`/services`](https://github.com/Azure/azure-sdk-for-go/tree/main/services)), and you are looking for a migration guide to upgrade to the latest version of the SDK, please refer to [this migration guide](https://github.com/Azure/azure-sdk-for-go/tree/main/services) for detailed instructions.
+If you are an existing user of the older version of Azure management library for Go (packages that are located under [`/services`](https://github.com/Azure/azure-sdk-for-go/tree/main/services)), and you are looking for a migration guide to upgrade to the latest version of the SDK, please refer to [this migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/MIGRATION_GUIDE.md) for detailed instructions.
 
 Prerequisites
 -------------

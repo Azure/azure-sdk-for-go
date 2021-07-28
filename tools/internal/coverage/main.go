@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -79,6 +80,10 @@ func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 }
 
 func main() {
+
+	serviceDir := flag.String("serviceDirectory", "", "Service Directory")
+	flag.Parse()
+
 	coverageFiles = make([]string, 0)
 	rootPath, err := filepath.Abs(".")
 	check(err)
@@ -86,7 +91,7 @@ func main() {
 	FindCoverageFiles(rootPath)
 
 	configData := ReadConfigData()
-	coverageGoal := findCoverageGoal(coverageFiles, configData)
+	coverageGoal := findCoverageGoal([]string{*serviceDir}, configData)
 
 	fmt.Printf("Failing if the coverage is below %.2f\n", coverageGoal)
 

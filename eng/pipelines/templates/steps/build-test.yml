@@ -47,7 +47,7 @@ steps:
       env:
         GO111MODULE: 'on'
 
-    - pwsh: ../eng/scripts/create_coverage.ps1
+    - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'
       workingDirectory: '${{parameters.GoWorkspace}}sdk'
 

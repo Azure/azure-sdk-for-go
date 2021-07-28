@@ -18,8 +18,8 @@ func TestLoggingDefault(t *testing.T) {
 	SetListener(nil)
 	logger.Log().Write(logger.LogRequest, "this should work just fine")
 
-	log := map[logger.LogClassification]string{}
-	SetListener(func(cls logger.LogClassification, msg string) {
+	log := map[LogClassification]string{}
+	SetListener(func(cls LogClassification, msg string) {
 		log[cls] = msg
 	})
 	const req = "this is a request"
@@ -29,27 +29,28 @@ func TestLoggingDefault(t *testing.T) {
 	if l := len(log); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
-	if log[logger.LogRequest] != req {
-		t.Fatalf("unexpected log request: %s", log[logger.LogRequest])
+	if log[LogRequest] != req {
+		t.Fatalf("unexpected log request: %s", log[LogRequest])
 	}
-	if log[logger.LogResponse] != fmt.Sprintf(resp, http.StatusOK) {
-		t.Fatalf("unexpected log response: %s", log[logger.LogResponse])
+	if log[LogResponse] != fmt.Sprintf(resp, http.StatusOK) {
+		t.Fatalf("unexpected log response: %s", log[LogResponse])
 	}
 }
 
 func TestLoggingClassification(t *testing.T) {
-	log := map[logger.LogClassification]string{}
-	SetListener(func(cls logger.LogClassification, msg string) {
+	log := map[LogClassification]string{}
+	SetListener(func(cls LogClassification, msg string) {
 		log[cls] = msg
 	})
 	SetClassifications(LogRequest)
+	defer resetClassifications()
 	logger.Log().Write(logger.LogResponse, "this shouldn't be in the log")
-	if s, ok := log[logger.LogResponse]; ok {
+	if s, ok := log[LogResponse]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
 	const req = "this is a request"
 	logger.Log().Write(logger.LogRequest, req)
-	if log[logger.LogRequest] != req {
-		t.Fatalf("unexpected log entry: %s", log[logger.LogRequest])
+	if log[LogRequest] != req {
+		t.Fatalf("unexpected log entry: %s", log[LogRequest])
 	}
 }

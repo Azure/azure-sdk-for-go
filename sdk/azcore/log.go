@@ -6,6 +6,8 @@
 package azcore
 
 import (
+	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 )
 
@@ -36,12 +38,26 @@ func SetClassifications(cls ...LogClassification) {
 	logger.Log().SetClassifications(input...)
 }
 
-// Listener is the function signature invoked when writing log entries.
-// A Listener is required to perform its own synchronization if it's expected to be called
-// from multiple Go routines
 type Listener func(LogClassification, string)
 
-func SetListener(lst interface{}) {
-	l := lst.(logger.Listener)
-	logger.Log().SetListener(l)
+func transform(lst Listener) logger.Listener {
+	return func(l logger.LogClassification, msg string) {
+		azcoreL := LogClassification(l)
+		lst(azcoreL, msg)
+	}
+}
+
+func SetListener(lst Listener) {
+	if lst == nil {
+		fmt.Println("nil listener")
+		logger.Log().SetListener(nil)
+	} else {
+		fmt.Println("Not nil listener")
+		logger.Log().SetListener(transform(lst))
+	}
+}
+
+// for testing purposes
+func resetClassifications() {
+	logger.Log().SetClassifications([]logger.LogClassification{}...)
 }

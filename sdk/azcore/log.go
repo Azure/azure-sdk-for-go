@@ -9,8 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 )
 
-// SetClassifications is used to control which classifications are written to
-// the log.  By default all log classifications are writen.
+// LogClassification is used to group entries.  Each group can be toggled on or off
 type LogClassification logger.LogClassification
 
 const (
@@ -53,6 +52,7 @@ func transform(lst Listener) logger.Listener {
 	}
 }
 
+// SetListener will set the Logger to write to the specified Listener.
 func SetListener(lst Listener) {
 	if lst == nil {
 		logger.Log().SetListener(nil)

@@ -6,11 +6,11 @@
 package azcore
 
 import (
-	"fmt"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 )
 
+// SetClassifications is used to control which classifications are written to
+// the log.  By default all log classifications are writen.
 type LogClassification logger.LogClassification
 
 const (
@@ -30,6 +30,8 @@ const (
 	LogLongRunningOperation LogClassification = "LongRunningOperation"
 )
 
+// SetClassifications is used to control which classifications are written to
+// the log.  By default all log classifications are writen.
 func SetClassifications(cls ...LogClassification) {
 	input := make([]logger.LogClassification, 0)
 	for _, l := range cls {
@@ -38,8 +40,12 @@ func SetClassifications(cls ...LogClassification) {
 	logger.Log().SetClassifications(input...)
 }
 
+// Listener is the function signature invoked when writing log entries.
+// A Listener is required to perform its own synchronization if it's expected to be called
+// from multiple Go routines
 type Listener func(LogClassification, string)
 
+// transform to convert the azcore.Listener type into a usable one for internal.logger module
 func transform(lst Listener) logger.Listener {
 	return func(l logger.LogClassification, msg string) {
 		azcoreL := LogClassification(l)
@@ -49,10 +55,8 @@ func transform(lst Listener) logger.Listener {
 
 func SetListener(lst Listener) {
 	if lst == nil {
-		fmt.Println("nil listener")
 		logger.Log().SetListener(nil)
 	} else {
-		fmt.Println("Not nil listener")
 		logger.Log().SetListener(transform(lst))
 	}
 }

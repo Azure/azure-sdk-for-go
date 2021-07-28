@@ -174,31 +174,8 @@ var (
 )
 ```
 
-***Create a resource group***
+***Write a function to create a resource group***
 ```go
-func init() {
-	ctx = context.Background()
-	subscriptionId = os.Getenv("SUBSCRIPTION_ID")
-}
-
-func main() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
-		Logging: azcore.LogOptions{
-			IncludeBody: true,
-		},
-	})
-
-	defer cleanup(conn)
-
-	if err := createResourceGroup(ctx, conn); err != nil {
-		panic(err)
-	}
-})
-
 func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
@@ -210,64 +187,31 @@ func createResourceGroup(ctx context.Context, connection *armcore.Connection) (a
 }
 ```
 
+***Invoking the `createResourceGroup` function in main***
+```go
+func main() {
+    cred, err := azidentity.NewDefaultAzureCredential(nil)
+    if err != nil {
+        log.Fatalf("authentication failure: %+v", err)
+    }
+    conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+        Logging: azcore.LogOptions{
+            IncludeBody: true,
+        },
+    })
+    
+    resourceGroup, err := createResourceGroup(ctx, conn)
+    if err != nil {
+        log.Fatalf("cannot create resource group: %+v", err)
+    }
+    log.Printf("Resource Group %s created", *resourceGroup.ID)
+}
+```
+
 Let's demonstrate management client's usage by showing additional samples
 
 Example: Managing Resource Groups
 ---------------------------------
-
-***Import the packages***
-```go
-import {
-    "github.com/Azure/azure-sdk-for-go/sdk/armcore"
-    "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-    "github.com/Azure/azure-sdk-for-go/sdk/to"
-}
-```
-
-***Define the required variables***
-```go
-var (
-	ctx               context.Context
-	subscriptionId    string
-	location          = "westus2"
-	resourceGroupName = "resourceGroupName"
-	resourceGroupID string
-)
-```
-***Authentication and Setup***
-```go
-func init() {
-	ctx = context.Background()
-	subscriptionId = os.Getenv("SUBSCRIPTION_ID")
-}
-
-func main() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
-		Logging: azcore.LogOptions{
-			IncludeBody: true,
-		},
-	})
-
-	defer cleanup(conn)
-
-	if err := updateResourceGroup(ctx, conn); err != nil {
-		panic(err)
-	}
-
-	if err := listResourceGroups(ctx, conn); err != nil {
-		panic(err)
-	}
-
-	if err := deleteResourceGroup(ctx, conn); err != nil {
-		panic(err)
-	}
-})
-```
 
 ***Update a resource group***
 
@@ -320,6 +264,45 @@ func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) er
 }
 ```
 
+***Invoking the update, list and delete of resource group in the main function***
+```go
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("authentication failure: %+v", err)
+	}
+	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+		Logging: azcore.LogOptions{
+			IncludeBody: true,
+		},
+	})
+
+
+    resourceGroup, err := createResourceGroup(ctx, conn)
+    if err != nil {
+        log.Fatalf("cannot create resource group: %+v", err)
+    }
+    log.Printf("Resource Group %s created", *resourceGroup.ID)
+
+	updatedRG, err := updateResourceGroup(ctx, conn)
+	if err != nil {
+        log.Fatalf("cannot update resource group: %+v", err)
+	}
+	log.Printf("Resource Group %s updated", *updatedRG.ID)
+
+	rgList, err := listResourceGroups(ctx, conn)
+	if err != nil {
+        log.Fatalf("cannot list resource group: %+v", err)
+	}
+	log.Printf("We totally have %d resource groups", len(rgList))
+
+	if err := deleteResourceGroup(ctx, conn); err != nil {
+        log.Fatalf("cannot delete resource group: %+v", err)
+	}
+	log.Printf("Resource Group deleted")
+})
+```
+
 Example: Managing Virtual Machines
 ---------------------------------
 In addition to resource groups, we will also use Virtual Machine as an example and show how to manage how to create a Virtual Machine which involves three Azure services (Resource Group, Network and Compute)
@@ -331,17 +314,16 @@ Long Running Operations
 In the samples above, you might notice that some operations has a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (In short, LRO). For resource managment libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
 
 ```go
-interval :=  5*time.Second
-resp, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
+poller, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
 if err != nil {
 	// handle error...
 }
-w, err = resp.PollUntilDone(context.Background(), interval)
+resp, err = poller.PollUntilDone(context.Background(), 5*time.Second)
 if err != nil {
 	// handle error...
 }
 fmt.Printf("LRO done")
-process(w)
+// dealing with `resp`
 ```
 Note that you will need to pass a polling interval to ```PollUntilDone``` and tell the poller how often it should try to get the status. This number is usually small but it's best to consult the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on best practices and recommdend intervals for your specific use cases.
 

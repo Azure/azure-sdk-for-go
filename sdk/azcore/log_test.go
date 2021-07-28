@@ -19,13 +19,13 @@ func TestLoggingDefault(t *testing.T) {
 	logger.Log().Write(logger.LogRequest, "this should work just fine")
 
 	log := map[logger.LogClassification]string{}
-	logger.SetListener(func(cls logger.LogClassification, msg string) {
+	SetListener(func(cls logger.LogClassification, msg string) {
 		log[cls] = msg
 	})
 	const req = "this is a request"
-	logger.Write(logger.LogRequest, req)
+	logger.Log().Write(logger.LogRequest, req)
 	const resp = "this is a response: %d"
-	logger.Writef(logger.LogResponse, resp, http.StatusOK)
+	logger.Log().Writef(logger.LogResponse, resp, http.StatusOK)
 	if l := len(log); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
@@ -39,17 +39,16 @@ func TestLoggingDefault(t *testing.T) {
 
 func TestLoggingClassification(t *testing.T) {
 	log := map[logger.LogClassification]string{}
-	logger.SetListener(func(cls logger.LogClassification, msg string) {
+	SetListener(func(cls logger.LogClassification, msg string) {
 		log[cls] = msg
 	})
-	logger.SetClassifications(logger.LogRequest)
-	defer logger.resetClassifications()
-	logger.Write(logger.LogResponse, "this shouldn't be in the log")
+	SetClassifications(LogRequest)
+	logger.Log().Write(logger.LogResponse, "this shouldn't be in the log")
 	if s, ok := log[logger.LogResponse]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
 	const req = "this is a request"
-	logger.Write(logger.LogRequest, req)
+	logger.Log().Write(logger.LogRequest, req)
 	if log[logger.LogRequest] != req {
 		t.Fatalf("unexpected log entry: %s", log[logger.LogRequest])
 	}

@@ -28,10 +28,20 @@ const (
 	LogLongRunningOperation LogClassification = "LongRunningOperation"
 )
 
-func SetClassifications(cls ...logger.LogClassification) {
-	logger.Log().SetClassifications(cls)
+func SetClassifications(cls ...LogClassification) {
+	input := make([]logger.LogClassification, 0)
+	for _, l := range cls {
+		input = append(input, logger.LogClassification(l))
+	}
+	logger.Log().SetClassifications(input...)
 }
 
-func SetListener(lst logger.Listener) {
-	logger.Log().SetListener(lst)
+// Listener is the function signature invoked when writing log entries.
+// A Listener is required to perform its own synchronization if it's expected to be called
+// from multiple Go routines
+type Listener func(LogClassification, string)
+
+func SetListener(lst interface{}) {
+	l := lst.(logger.Listener)
+	logger.Log().SetListener(l)
 }

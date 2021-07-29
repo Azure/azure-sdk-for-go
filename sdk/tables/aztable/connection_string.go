@@ -73,6 +73,7 @@ func parseConnectionString(connStr string) (string, *azcore.Credential, error) {
 		}
 		return sharedAccessSignature, nil, errors.New("there is not support for SharedAccessSignature yet")
 		// cred = azcore.SharedAccessSignature(sharedAccessSignature)
+		// TODO: fix this when shared access signatures are added.
 	}
 	defaultProtocol, ok := connStrMap["DefaultEndpointsProtocol"]
 	if !ok {
@@ -95,32 +96,6 @@ func parseConnectionString(connStr string) (string, *azcore.Credential, error) {
 	if err != nil {
 		return "", nil, err
 	}
-
-	// primary, okPrimary := pairsMap["tableendpoint"]
-	// secondary, okSecondary := pairsMap["tablesecondaryendpoint"]
-	// if !okPrimary {
-	// 	if okSecondary {
-	// 		return serviceURL, cred, errors.New("Connection string specifies only secondary connection")
-	// 	}
-	// 	if endpointsProtocol, ok := pairsMap["defaultendpointsprotocol"]; ok {
-	// 		if accountName, ok := pairsMap["accountname"]; ok {
-	// 			if endpointSuffix, ok := pairsMap["endpointsuffix"]; ok {
-	// 				primary = fmt.Sprintf("%v://%v.table.%v", endpointsProtocol, accountName, endpointSuffix)
-	// 				secondary = fmt.Sprintf("%v-secondary.table.%v", accountName, endpointSuffix)
-	// 				okPrimary = true
-	// 				okSecondary = true
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// if !okPrimary {
-
-	// }
-
-	// if serviceURL, ok = pairsMap["tableendpoint"]; !ok {
-	// 	return serviceURL, cred, errors.New("Connection string does not specify")
-	// }
 
 	return serviceURL, &cred, nil
 }

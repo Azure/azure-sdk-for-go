@@ -1,7 +1,6 @@
 package aztable
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -12,20 +11,35 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
+func createTableClientForRecording(t *testing.T, tableName string, serviceURL string) (*TableClient, error) {
+	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	options := &TableClientOptions{
+		Scopes:         []string{AADAuthenticationScope},
+		PerCallOptions: []azcore.Policy{policy},
+	}
+	return NewTableClient(tableName, serviceURL, cred, options)
+}
+
+func createTableServiceClientForRecording(t *testing.T, serviceURL string) (*TableServiceClient, error) {
+	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	options := &TableClientOptions{
+		Scopes:         []string{AADAuthenticationScope},
+		PerCallOptions: []azcore.Policy{policy},
+	}
+	return NewTableServiceClient(serviceURL, cred, options)
+}
+
 func Test_TestProxyPolicy(t *testing.T) {
 	require := require.New(t)
 	err := recording.StartRecording(t, nil)
 	require.NoError(err)
 	defer recording.StopRecording(t, nil)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(err)
-	recordingPolicy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
-	options := TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
-		PerCallOptions: []azcore.Policy{recordingPolicy},
-	}
-	client, err := NewTableClient("testproxy", "https://seankaneprim.table.core.windows.net", cred, &options)
+	client, err := createTableClientForRecording(t, "testproxy", "https://seankaneprim.table.core.windows.net")
 	require.NoError(err)
 
 	_, err = client.Create(ctx)

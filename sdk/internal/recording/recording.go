@@ -418,7 +418,8 @@ var modeMap = map[RecordMode]recorder.Mode{
 
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
 
-var baseProxyURL = "https://localhost:5001"
+var baseProxyURLSecure = "https://localhost:5001"
+var baseProxyURL = "http://localhost:5000"
 var startURL = baseProxyURL + "/record/start"
 var stopURL = baseProxyURL + "/record/stop"
 
@@ -433,45 +434,24 @@ var client = http.Client{
 	Transport: tr,
 }
 
-type TestProxyTransport struct{}
+type RecordingOptions struct {
+	MaxRetries   int32
+	UseHTTPS     bool
+	host string
+	scheme       string
+}
 
 func getTestId(t *testing.T) string {
 	cwd, err := os.Getwd()
 	if err != nil {
 		t.Errorf("Could not find current working directory")
 	}
-	// cwd = cwd + "/recordings/"
 	cwd = "."
 	fmt.Printf("TestID: %v.%v\n", cwd, t.Name())
 	return fmt.Sprintf("%v.%v", cwd, t.Name())
 }
 
-var DoCounter = 0
-
-func (t TestProxyTransport) Do(req *http.Request) (*http.Response, error) {
-	if recordMode == "record" || recordMode == "playback" {
-		DoCounter += 1
-		fmt.Println("In DO: ", DoCounter)
-		originalURLHost := req.URL.Host
-		req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
-		req.URL.Host = "localhost:5001"
-		req.URL.Scheme = "https"
-		fmt.Println(req.URL.Host, req.Header.Get("x-recording-upstream-base-uri"), req.URL.Path, req.Method)
-		req.Header.Set(recordingIdHeader, recordingId)
-		req.Header.Set(recordingModeHeader, recordMode)
-		fmt.Println("MAKING THE HTTP CALL TO: ", req.URL.String())
-		response, err := http.DefaultClient.Do(req)
-		if err != nil {
-			fmt.Println("ERROR: ", err)
-		}
-		fmt.Printf("CALL MADE\n\n")
-		fmt.Println(response.StatusCode, response.Header)
-		return response, err
-	}
-	return nil, errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
-}
-
-func StartRecording(t *testing.T) error {
+func StartRecording(t *testing.T, options *RecordingOptions) error {
 	if recordMode == "" {
 		return errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
 	}
@@ -509,13 +489,16 @@ func StopRecording(t *testing.T) error {
 	return nil
 }
 
-type RecordingOptions struct {
-	MaxRetries int32
-}
-
 func (o *RecordingOptions) init() {
 	if o.MaxRetries != 0 {
 		o.MaxRetries = 0
+	}
+	if o.UseHTTPS {
+		o.host = baseProxyURLSecure
+		o.scheme = "https"
+	} else {
+		o.host = baseProxyURL
+		o.scheme = "http"
 	}
 }
 
@@ -535,8 +518,8 @@ func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
 func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
 	originalURLHost := req.URL.Host
 	req.URL.Scheme = "https"
-	req.URL.Host = "localhost:5001"
-	req.Host = originalURLHost
+	req.URL.Host = p.options.host
+	req.Host = p.options.host
 
 	req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
 	fmt.Println(req.Header.Get("x-recording-upstream-base-uri"))

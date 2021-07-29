@@ -418,10 +418,10 @@ var modeMap = map[RecordMode]recorder.Mode{
 
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
 
-var baseProxyURLSecure = "https://localhost:5001"
-var baseProxyURL = "http://localhost:5000"
-var startURL = baseProxyURL + "/record/start"
-var stopURL = baseProxyURL + "/record/stop"
+var baseProxyURLSecure = "localhost:5001"
+var baseProxyURL = "localhost:5000"
+var startURL = baseProxyURLSecure + "/record/start"
+var stopURL = baseProxyURLSecure + "/record/stop"
 
 var recordingId string
 var recordingIdHeader = "x-recording-id"
@@ -435,10 +435,10 @@ var client = http.Client{
 }
 
 type RecordingOptions struct {
-	MaxRetries   int32
-	UseHTTPS     bool
-	host string
-	scheme       string
+	MaxRetries int32
+	UseHTTPS   bool
+	host       string
+	scheme     string
 }
 
 func getTestId(t *testing.T) string {
@@ -458,7 +458,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 	fmt.Println("Starting recording...")
 	testId := getTestId(t)
 	fmt.Println("Recording ID: ", testId)
-	req, err := http.NewRequest("POST", startURL, nil)
+	req, err := http.NewRequest("POST", "https://"+startURL, nil)
 	fmt.Println("URL: ", req.URL.String())
 	if err != nil {
 		return err
@@ -473,7 +473,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 }
 
 func StopRecording(t *testing.T) error {
-	req, err := http.NewRequest("POST", stopURL, nil)
+	req, err := http.NewRequest("POST", "https://"+stopURL, nil)
 	if err != nil {
 		return err
 	}

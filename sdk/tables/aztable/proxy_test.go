@@ -14,13 +14,13 @@ var AADAuthenticationScope = "https://storage.azure.com/.default"
 
 func Test_TestProxyPolicy(t *testing.T) {
 	require := require.New(t)
-	err := recording.StartRecording(t)
+	err := recording.StartRecording(t, nil)
 	require.NoError(err)
 	defer recording.StopRecording(t)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(err)
-	recordingPolicy := recording.NewRecordingPolicy(nil)
+	recordingPolicy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	options := TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{recordingPolicy},

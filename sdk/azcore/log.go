@@ -6,13 +6,11 @@
 package azcore
 
 import (
-	"fmt"
-	"os"
-	"time"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 )
 
-// LogClassification is used to group entries.  Each group can be toggled on or off.
-type LogClassification string
+// LogClassification is used to group entries.  Each group can be toggled on or off
+type LogClassification logger.LogClassification
 
 const (
 	// LogRequest entries contain information about HTTP requests.
@@ -31,86 +29,39 @@ const (
 	LogLongRunningOperation LogClassification = "LongRunningOperation"
 )
 
-// Listener is the function signature invoked when writing log entries.
-// A Listener is required to perform its own synchronization if it's
-// expected to be called from multiple Go routines.
-type Listener func(LogClassification, string)
-
-// Logger controls which classifications to log and writing to the underlying log.
-type Logger struct {
-	cls []LogClassification
-	lst Listener
+// SetClassifications is used to control which classifications are written to
+// the log.  By default all log classifications are writen.
+func SetClassifications(cls ...LogClassification) {
+	input := make([]logger.LogClassification, 0)
+	for _, l := range cls {
+		input = append(input, logger.LogClassification(l))
+	}
+	logger.Log().SetClassifications(input...)
 }
 
-// SetClassifications is used to control which classifications are written to
-// the log.  By default all log classifications are written.
-func (l *Logger) SetClassifications(cls ...LogClassification) {
-	l.cls = cls
+// Listener is the function signature invoked when writing log entries.
+// A Listener is required to perform its own synchronization if it's expected to be called
+// from multiple Go routines
+type Listener func(LogClassification, string)
+
+// transform to convert the azcore.Listener type into a usable one for internal.logger module
+func transform(lst Listener) logger.Listener {
+	return func(l logger.LogClassification, msg string) {
+		azcoreL := LogClassification(l)
+		lst(azcoreL, msg)
+	}
 }
 
 // SetListener will set the Logger to write to the specified Listener.
-func (l *Logger) SetListener(lst Listener) {
-	l.lst = lst
+func SetListener(lst Listener) {
+	if lst == nil {
+		logger.Log().SetListener(nil)
+	} else {
+		logger.Log().SetListener(transform(lst))
+	}
 }
 
-// Should returns true if the specified log classification should be written to the log.
-// By default all log classifications will be logged.  Call SetClassification() to limit
-// the log classifications for logging.
-// If no listener has been set this will return false.
-// Calling this method is useful when the message to log is computationally expensive
-// and you want to avoid the overhead if its log classification is not enabled.
-func (l *Logger) Should(cls LogClassification) bool {
-	if l.lst == nil {
-		return false
-	}
-	if l.cls == nil || len(l.cls) == 0 {
-		return true
-	}
-	for _, c := range l.cls {
-		if c == cls {
-			return true
-		}
-	}
-	return false
-}
-
-// Write invokes the underlying Listener with the specified classification and message.
-// If the classification shouldn't be logged or there is no listener then Write does nothing.
-func (l *Logger) Write(cls LogClassification, message string) {
-	if !l.Should(cls) {
-		return
-	}
-	l.lst(cls, message)
-}
-
-// Writef invokes the underlying Listener with the specified classification and formatted message.
-// If the classification shouldn't be logged or there is no listener then Writef does nothing.
-func (l *Logger) Writef(cls LogClassification, format string, a ...interface{}) {
-	if !l.Should(cls) {
-		return
-	}
-	l.lst(cls, fmt.Sprintf(format, a...))
-}
-
-// for testing purposes, nolint is a false positive
-func (l *Logger) resetClassifications() { //nolint:unused
-	l.cls = nil
-}
-
-var logger Logger
-
-// Log returns the process-wide logger.
-func Log() *Logger {
-	return &logger
-}
-
-func init() {
-	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
-		// cls could be enhanced to support a comma-delimited list of log classifications
-		logger.lst = func(cls LogClassification, msg string) {
-			// simple console logger, it writes to stderr in the following format:
-			// [time-stamp] Classification: message
-			fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
-		}
-	}
+// for testing purposes
+func resetClassifications() {
+	logger.Log().SetClassifications([]logger.LogClassification{}...)
 }

@@ -16,6 +16,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 )
 
 // ErrorUnmarshaller is the func to invoke when the endpoint returns an error response that requires unmarshalling.
@@ -200,13 +202,13 @@ func (l *LROPoller) FinalResponse(ctx context.Context, respType interface{}) (*h
 // into the respType interface that is provided.
 func (l *LROPoller) PollUntilDone(ctx context.Context, freq time.Duration, respType interface{}) (*http.Response, error) {
 	logPollUntilDoneExit := func(v interface{}) {
-		Log().Writef(LogLongRunningOperation, "END PollUntilDone() for %T: %v", l.lro, v)
+		logger.Log().Writef(logger.LogLongRunningOperation, "END PollUntilDone() for %T: %v", l.lro, v)
 	}
-	Log().Writef(LogLongRunningOperation, "BEGIN PollUntilDone() for %T", l.lro)
+	logger.Log().Writef(logger.LogLongRunningOperation, "BEGIN PollUntilDone() for %T", l.lro)
 	if l.resp != nil {
 		// initial check for a retry-after header existing on the initial response
 		if retryAfter := RetryAfter(l.resp.Response); retryAfter > 0 {
-			Log().Writef(LogLongRunningOperation, "initial Retry-After delay for %s", retryAfter.String())
+			logger.Log().Writef(logger.LogLongRunningOperation, "initial Retry-After delay for %s", retryAfter.String())
 			if err := delay(ctx, retryAfter); err != nil {
 				logPollUntilDoneExit(err)
 				return nil, err
@@ -229,10 +231,10 @@ func (l *LROPoller) PollUntilDone(ctx context.Context, freq time.Duration, respT
 		}
 		d := freq
 		if retryAfter := RetryAfter(resp); retryAfter > 0 {
-			Log().Writef(LogLongRunningOperation, "Retry-After delay for %s", retryAfter.String())
+			logger.Log().Writef(logger.LogLongRunningOperation, "Retry-After delay for %s", retryAfter.String())
 			d = retryAfter
 		} else {
-			Log().Writef(LogLongRunningOperation, "delay for %s", d.String())
+			logger.Log().Writef(logger.LogLongRunningOperation, "delay for %s", d.String())
 		}
 		if err = delay(ctx, d); err != nil {
 			logPollUntilDoneExit(err)

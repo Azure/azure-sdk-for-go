@@ -426,6 +426,7 @@ var stopURL = baseProxyURLSecure + "/record/stop"
 var recordingId string
 var recordingIdHeader = "x-recording-id"
 var recordingModeHeader = "x-recording-mode"
+var recordingUpstreamUriHeader = "x-recording-upstream-base-uri"
 
 var tr = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -441,40 +442,64 @@ type RecordingOptions struct {
 	scheme     string
 }
 
+func defaultOptions() *RecordingOptions {
+	return &RecordingOptions{
+		MaxRetries: 0,
+		UseHTTPS:   true,
+		host:       "localhost:5001",
+		scheme:     "https",
+	}
+}
+
+func (r RecordingOptions) HostScheme() string {
+	if r.UseHTTPS {
+		return "https://localhost:5001"
+	}
+	return "http://localhost:5000"
+}
+
 func getTestId(t *testing.T) string {
 	cwd, err := os.Getwd()
 	if err != nil {
 		t.Errorf("Could not find current working directory")
 	}
-	cwd = "."
-	fmt.Printf("TestID: %v.%v\n", cwd, t.Name())
-	return fmt.Sprintf("%v.%v", cwd, t.Name())
+	cwd = "./recordings/" + t.Name()
+	return cwd
 }
 
 func StartRecording(t *testing.T, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
 	if recordMode == "" {
 		return errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
 	}
-	fmt.Println("Starting recording...")
 	testId := getTestId(t)
-	fmt.Println("Recording ID: ", testId)
-	req, err := http.NewRequest("POST", "https://"+startURL, nil)
-	fmt.Println("URL: ", req.URL.String())
+
+	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
+
+	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
 	}
+
 	req.Header.Set("x-recording-file", testId)
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
 	recordingId = resp.Header.Get(recordingIdHeader)
-	fmt.Println("Received recording id: ", recordingId)
 	return nil
 }
 
-func StopRecording(t *testing.T) error {
-	req, err := http.NewRequest("POST", "https://"+stopURL, nil)
+func StopRecording(t *testing.T, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+
+	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
+	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
 	}
@@ -486,7 +511,6 @@ func StopRecording(t *testing.T) error {
 	if err != nil {
 		t.Errorf(err.Error())
 	}
-	fmt.Println("Stopped recording")
 	return nil
 }
 
@@ -522,16 +546,9 @@ func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err er
 	req.URL.Host = p.options.host
 	req.Host = p.options.host
 
-	fmt.Println("Recording ID: ", recordingId)
-
-	req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
-	req.Header.Set("x-recording-mode", "record")
-	req.Header.Set("x-recording-id", recordingId)
-	fmt.Println(req.Header.Get("x-recording-upstream-base-uri"))
-	fmt.Println(req.Header.Get("x-recording-mode"))
-	fmt.Println(req.Header.Get("x-recording-id"))
-
-	fmt.Println("URL hit: ", req.URL.String())
+	req.Header.Set(recordingUpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.scheme, originalURLHost))
+	req.Header.Set(recordingModeHeader, recordMode)
+	req.Header.Set(recordingIdHeader, recordingId)
 
 	return req.Next()
 }

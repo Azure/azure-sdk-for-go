@@ -16,7 +16,7 @@ func Test_TestProxyPolicy(t *testing.T) {
 	require := require.New(t)
 	err := recording.StartRecording(t, nil)
 	require.NoError(err)
-	defer recording.StopRecording(t)
+	defer recording.StopRecording(t, nil)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(err)
@@ -28,15 +28,9 @@ func Test_TestProxyPolicy(t *testing.T) {
 	client, err := NewTableClient("testproxy", "https://seankaneprim.table.core.windows.net", cred, &options)
 	require.NoError(err)
 
-	fmt.Println("CALLING CREATE")
 	_, err = client.Create(ctx)
-	if err != nil {
-		fmt.Println("Create err: ", err.Error())
-	}
 	require.NoError(err)
 
-	fmt.Println("CALLING DELETE")
 	_, err = client.Delete(ctx)
-	fmt.Println("Delete err: ", err)
 	require.NoError(err)
 }

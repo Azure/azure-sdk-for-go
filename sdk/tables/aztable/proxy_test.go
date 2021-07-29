@@ -1,6 +1,8 @@
 package aztable
 
 import (
+	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -33,14 +35,23 @@ func createTableServiceClientForRecording(t *testing.T, serviceURL string) (*Tab
 	return NewTableServiceClient(serviceURL, cred, options)
 }
 
-func initClientTest(t *testing.T, createTable bool) (*TableClient, func()) {
-	client, err := createTableClientForRecording(t, "createPseudoRandomName", "https://seankaneprim.table.core.windows.net")
+func initClientTest(t *testing.T, service string, createTable bool) (*TableClient, func()) {
+	var serviceURL string
+	if service == string(StorageEndpoint) {
+		serviceURL = storageURI("seankaneprim", "core.windows.net")
+	} else if service == string(CosmosEndpoint) {
+		serviceURL = cosmosURI("seankaneprim", "cosmos.azure.com")
+	}
+	client, err := createTableClientForRecording(t, "createPseudoRandomName", serviceURL)
 	require.NoError(t, err)
 
 	err = recording.StartRecording(t, nil)
 	require.NoError(t, err)
 
-	client.Create(nil)
+	if createTable {
+		_, err = client.Create(context.Background())
+		require.NoError(t, err)
+	}
 
 	return client, func() {
 		err = recording.StopRecording(t, nil)

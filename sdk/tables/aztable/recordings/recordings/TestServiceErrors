@@ -15,7 +15,48 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Thu, 29 Jul 2021 21:34:41 GMT",
+        "x-ms-date": "Thu, 29 Jul 2021 21:57:33 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "TableName": "createPseudoRandomName"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+        "Date": "Thu, 29 Jul 2021 21:57:34 GMT",
+        "Location": "https://seankaneprim.table.core.windows.net/Tables(\u0027createPseudoRandomName\u0027)",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-request-id": "11b9aa07-6002-0021-37c4-84cc0e000000",
+        "x-ms-version": "2019-02-02"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element",
+        "TableName": "createPseudoRandomName"
+      }
+    },
+    {
+      "RequestUri": "https://seankaneprim.table.core.windows.net/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/Tables",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "38",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
+        "x-ms-date": "Thu, 29 Jul 2021 21:57:34 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -25,14 +66,14 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Thu, 29 Jul 2021 21:34:42 GMT",
+        "Date": "Thu, 29 Jul 2021 21:57:34 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "ee2f2922-4002-00a0-13c1-846cd4000000",
+        "x-ms-request-id": "11b9aa91-6002-0021-03c4-84cc0e000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
@@ -40,7 +81,7 @@
           "code": "TableAlreadyExists",
           "message": {
             "lang": "en-US",
-            "value": "The table specified already exists.\nRequestId:ee2f2922-4002-00a0-13c1-846cd4000000\nTime:2021-07-29T21:34:42.3290257Z"
+            "value": "The table specified already exists.\nRequestId:11b9aa91-6002-0021-03c4-84cc0e000000\nTime:2021-07-29T21:57:35.3133883Z"
           }
         }
       }

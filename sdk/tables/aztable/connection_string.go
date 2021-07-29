@@ -21,7 +21,7 @@ func NewTableClientFromConnectionString(tableName string, connectionString strin
 	return NewTableClient(tableName, endpoint, *credential, options)
 }
 
-func NewTableServiceClientFrommConnectionString(connectionString string, options *TableClientOptions) (*TableServiceClient, error) {
+func NewTableServiceClientFromConnectionString(connectionString string, options *TableClientOptions) (*TableServiceClient, error) {
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
 		return nil, err

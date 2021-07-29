@@ -25,6 +25,10 @@ function Process-Sdk ($path) {
             $outputFolder = $path
         }
         autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        if ($LASTEXITCODE) {
+            Write-Host "##[error]Error running autorest.go"
+            exit $LASTEXITCODE
+        }
         if ($removeAutorestFile) {
             Remove-Item $autorestPath
         }

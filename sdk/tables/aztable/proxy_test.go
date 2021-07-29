@@ -33,6 +33,21 @@ func createTableServiceClientForRecording(t *testing.T, serviceURL string) (*Tab
 	return NewTableServiceClient(serviceURL, cred, options)
 }
 
+func initClientTest(t *testing.T, createTable bool) (*TableClient, func()) {
+	client, err := createTableClientForRecording(t, "createPseudoRandomName", "https://seankaneprim.table.core.windows.net")
+	require.NoError(t, err)
+
+	err = recording.StartRecording(t, nil)
+	require.NoError(t, err)
+
+	client.Create(nil)
+
+	return client, func() {
+		err = recording.StopRecording(t, nil)
+		require.NoError(t, err)
+	}
+}
+
 func Test_TestProxyPolicy(t *testing.T) {
 	require := require.New(t)
 	err := recording.StartRecording(t, nil)

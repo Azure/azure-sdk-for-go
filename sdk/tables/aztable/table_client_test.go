@@ -36,15 +36,17 @@ func TestTableClient_Cosmos(t *testing.T) {
 	suite.Run(t, &cosmos)
 }
 
-func (s *tableClientLiveTests) TestServiceErrors() {
-	client, delete := s.init(true)
+func TestServiceErrors(t *testing.T) {
+	client, delete := initClientTest(t, true)
+	// client, delete := s.init(true)
 	defer delete()
 
 	// Create a duplicate table to produce an error
 	_, err := client.Create(ctx)
+	require.Error(t, err)
 	var svcErr *runtime.ResponseError
 	errors.As(err, &svcErr)
-	require.Equal(s.T(), svcErr.RawResponse().StatusCode, http.StatusConflict)
+	require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 
 func (s *tableClientLiveTests) TestCreateTable() {

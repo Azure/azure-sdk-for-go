@@ -39,20 +39,20 @@ func TestTableClient_Cosmos(t *testing.T) {
 }
 
 func TestServiceErrors(t *testing.T) {
-	// for _, service := range services {
-	// 	t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
-	defer delete()
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
 
-	// Create a duplicate table to produce an error
-	_, err := client.Create(ctx)
-	require.Error(t, err)
-	fmt.Println("HERE")
-	var svcErr *runtime.ResponseError
-	errors.As(err, &svcErr)
-	require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
-	// 	})
-	// }
+			// Create a duplicate table to produce an error
+			_, err := client.Create(ctx)
+			require.Error(t, err)
+
+			var svcErr *runtime.ResponseError
+			errors.As(err, &svcErr)
+			require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
+		})
+	}
 }
 
 func (s *tableClientLiveTests) TestCreateTable() {

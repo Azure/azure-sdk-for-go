@@ -48,3 +48,23 @@ func TestConnectionStringParserCustomDomain(t *testing.T) {
 	require.Equal(serviceURL, "www.mydomain.com")
 	require.NotNil(cred)
 }
+
+func TestConnectionStringParserInvalid(t *testing.T) {
+	badConnectionStrings := []string{
+		"",
+		"foobar",
+		"foo;bar;baz",
+		"foo=;bar=;",
+		"=",
+		";",
+		"=;==",
+		"foobar=baz=foo"
+	}
+	require := require.New(t)
+
+	for _, badConnStr := range badConnectionStrings {
+		_, _, err := parseConnectionString(badConnStr)
+		require.Error(err)
+		require.Contains(err.Error(), ErrConnectionString.Error())
+	}
+}

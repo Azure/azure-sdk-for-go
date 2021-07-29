@@ -31,6 +31,7 @@ func NewTableServiceClientFrommConnectionString(connectionString string, options
 
 func convertConnStrToMap(connStr string) (map[string]string, error) {
 	ret := make(map[string]string)
+	connStr = strings.TrimRight(connStr, ";")
 
 	splitString := strings.Split(connStr, ";")
 	if len(splitString) == 0 {
@@ -81,6 +82,12 @@ func parseConnectionString(connStr string) (string, *azcore.Credential, error) {
 	endpointSuffix, ok := connStrMap["EndpointSuffix"]
 	if !ok {
 		endpointSuffix = "core.windows.net"
+	}
+
+	tableEndpoint, ok := connStrMap["TableEndpoint"]
+	if ok {
+		cred, err = NewSharedKeyCredential(accountName, accountKey)
+		return tableEndpoint, &cred, err
 	}
 	serviceURL = fmt.Sprintf("%v://%v.table.%v", defaultProtocol, accountName, endpointSuffix)
 

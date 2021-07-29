@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## `v56.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2020-02-02/insights`
+- `github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2019-06-01/automation`
+- `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch`
+- `github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2019-11-01/costmanagement`
+- `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-04-01/machinelearningservices`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-05-01/storagecache`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-10-01/consumption` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/consumption/mgmt/2019-10-01/consumption/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
+
 ## `v55.8.0`
 
 ### New Packages

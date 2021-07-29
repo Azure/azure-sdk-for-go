@@ -11,7 +11,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-04-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-04-01/machinelearningservices"
 )
 
 const (
@@ -21,16 +21,49 @@ const (
 type AllocationState = original.AllocationState
 
 const (
-	Resizing AllocationState = original.Resizing
-	Steady   AllocationState = original.Steady
+	AllocationStateResizing AllocationState = original.AllocationStateResizing
+	AllocationStateSteady   AllocationState = original.AllocationStateSteady
+)
+
+type ApplicationSharingPolicy = original.ApplicationSharingPolicy
+
+const (
+	ApplicationSharingPolicyPersonal ApplicationSharingPolicy = original.ApplicationSharingPolicyPersonal
+	ApplicationSharingPolicyShared   ApplicationSharingPolicy = original.ApplicationSharingPolicyShared
 )
 
 type ClusterPurpose = original.ClusterPurpose
 
 const (
-	DenseProd ClusterPurpose = original.DenseProd
-	DevTest   ClusterPurpose = original.DevTest
-	FastProd  ClusterPurpose = original.FastProd
+	ClusterPurposeDenseProd ClusterPurpose = original.ClusterPurposeDenseProd
+	ClusterPurposeDevTest   ClusterPurpose = original.ClusterPurposeDevTest
+	ClusterPurposeFastProd  ClusterPurpose = original.ClusterPurposeFastProd
+)
+
+type ComputeInstanceAuthorizationType = original.ComputeInstanceAuthorizationType
+
+const (
+	ComputeInstanceAuthorizationTypePersonal ComputeInstanceAuthorizationType = original.ComputeInstanceAuthorizationTypePersonal
+)
+
+type ComputeInstanceState = original.ComputeInstanceState
+
+const (
+	ComputeInstanceStateCreateFailed    ComputeInstanceState = original.ComputeInstanceStateCreateFailed
+	ComputeInstanceStateCreating        ComputeInstanceState = original.ComputeInstanceStateCreating
+	ComputeInstanceStateDeleting        ComputeInstanceState = original.ComputeInstanceStateDeleting
+	ComputeInstanceStateJobRunning      ComputeInstanceState = original.ComputeInstanceStateJobRunning
+	ComputeInstanceStateRestarting      ComputeInstanceState = original.ComputeInstanceStateRestarting
+	ComputeInstanceStateRunning         ComputeInstanceState = original.ComputeInstanceStateRunning
+	ComputeInstanceStateSettingUp       ComputeInstanceState = original.ComputeInstanceStateSettingUp
+	ComputeInstanceStateSetupFailed     ComputeInstanceState = original.ComputeInstanceStateSetupFailed
+	ComputeInstanceStateStarting        ComputeInstanceState = original.ComputeInstanceStateStarting
+	ComputeInstanceStateStopped         ComputeInstanceState = original.ComputeInstanceStateStopped
+	ComputeInstanceStateStopping        ComputeInstanceState = original.ComputeInstanceStateStopping
+	ComputeInstanceStateUnknown         ComputeInstanceState = original.ComputeInstanceStateUnknown
+	ComputeInstanceStateUnusable        ComputeInstanceState = original.ComputeInstanceStateUnusable
+	ComputeInstanceStateUserSettingUp   ComputeInstanceState = original.ComputeInstanceStateUserSettingUp
+	ComputeInstanceStateUserSetupFailed ComputeInstanceState = original.ComputeInstanceStateUserSetupFailed
 )
 
 type ComputeType = original.ComputeType
@@ -38,24 +71,27 @@ type ComputeType = original.ComputeType
 const (
 	ComputeTypeAKS               ComputeType = original.ComputeTypeAKS
 	ComputeTypeAmlCompute        ComputeType = original.ComputeTypeAmlCompute
+	ComputeTypeComputeInstance   ComputeType = original.ComputeTypeComputeInstance
 	ComputeTypeDatabricks        ComputeType = original.ComputeTypeDatabricks
 	ComputeTypeDataFactory       ComputeType = original.ComputeTypeDataFactory
 	ComputeTypeDataLakeAnalytics ComputeType = original.ComputeTypeDataLakeAnalytics
 	ComputeTypeHDInsight         ComputeType = original.ComputeTypeHDInsight
+	ComputeTypeSynapseSpark      ComputeType = original.ComputeTypeSynapseSpark
 	ComputeTypeVirtualMachine    ComputeType = original.ComputeTypeVirtualMachine
 )
 
 type ComputeTypeBasicCompute = original.ComputeTypeBasicCompute
 
 const (
-	ComputeTypeAKS1               ComputeTypeBasicCompute = original.ComputeTypeAKS1
-	ComputeTypeAmlCompute1        ComputeTypeBasicCompute = original.ComputeTypeAmlCompute1
-	ComputeTypeCompute            ComputeTypeBasicCompute = original.ComputeTypeCompute
-	ComputeTypeDatabricks1        ComputeTypeBasicCompute = original.ComputeTypeDatabricks1
-	ComputeTypeDataFactory1       ComputeTypeBasicCompute = original.ComputeTypeDataFactory1
-	ComputeTypeDataLakeAnalytics1 ComputeTypeBasicCompute = original.ComputeTypeDataLakeAnalytics1
-	ComputeTypeHDInsight1         ComputeTypeBasicCompute = original.ComputeTypeHDInsight1
-	ComputeTypeVirtualMachine1    ComputeTypeBasicCompute = original.ComputeTypeVirtualMachine1
+	ComputeTypeBasicComputeComputeTypeAKS               ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeAKS
+	ComputeTypeBasicComputeComputeTypeAmlCompute        ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeAmlCompute
+	ComputeTypeBasicComputeComputeTypeCompute           ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeCompute
+	ComputeTypeBasicComputeComputeTypeComputeInstance   ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeComputeInstance
+	ComputeTypeBasicComputeComputeTypeDatabricks        ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeDatabricks
+	ComputeTypeBasicComputeComputeTypeDataFactory       ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeDataFactory
+	ComputeTypeBasicComputeComputeTypeDataLakeAnalytics ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeDataLakeAnalytics
+	ComputeTypeBasicComputeComputeTypeHDInsight         ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeHDInsight
+	ComputeTypeBasicComputeComputeTypeVirtualMachine    ComputeTypeBasicCompute = original.ComputeTypeBasicComputeComputeTypeVirtualMachine
 )
 
 type ComputeTypeBasicComputeNodesInformation = original.ComputeTypeBasicComputeNodesInformation
@@ -74,41 +110,123 @@ const (
 	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = original.ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine
 )
 
+type ComputeTypeBasicCreateServiceRequest = original.ComputeTypeBasicCreateServiceRequest
+
+const (
+	ComputeTypeBasicCreateServiceRequestComputeTypeACI                  ComputeTypeBasicCreateServiceRequest = original.ComputeTypeBasicCreateServiceRequestComputeTypeACI
+	ComputeTypeBasicCreateServiceRequestComputeTypeAKS                  ComputeTypeBasicCreateServiceRequest = original.ComputeTypeBasicCreateServiceRequestComputeTypeAKS
+	ComputeTypeBasicCreateServiceRequestComputeTypeCreateServiceRequest ComputeTypeBasicCreateServiceRequest = original.ComputeTypeBasicCreateServiceRequestComputeTypeCreateServiceRequest
+	ComputeTypeBasicCreateServiceRequestComputeTypeCustom               ComputeTypeBasicCreateServiceRequest = original.ComputeTypeBasicCreateServiceRequestComputeTypeCustom
+)
+
+type ComputeTypeBasicServiceResponseBase = original.ComputeTypeBasicServiceResponseBase
+
+const (
+	ComputeTypeBasicServiceResponseBaseComputeTypeACI                 ComputeTypeBasicServiceResponseBase = original.ComputeTypeBasicServiceResponseBaseComputeTypeACI
+	ComputeTypeBasicServiceResponseBaseComputeTypeAKS                 ComputeTypeBasicServiceResponseBase = original.ComputeTypeBasicServiceResponseBaseComputeTypeAKS
+	ComputeTypeBasicServiceResponseBaseComputeTypeCustom              ComputeTypeBasicServiceResponseBase = original.ComputeTypeBasicServiceResponseBaseComputeTypeCustom
+	ComputeTypeBasicServiceResponseBaseComputeTypeServiceResponseBase ComputeTypeBasicServiceResponseBase = original.ComputeTypeBasicServiceResponseBaseComputeTypeServiceResponseBase
+)
+
+type DeploymentType = original.DeploymentType
+
+const (
+	DeploymentTypeBatch                DeploymentType = original.DeploymentTypeBatch
+	DeploymentTypeGRPCRealtimeEndpoint DeploymentType = original.DeploymentTypeGRPCRealtimeEndpoint
+	DeploymentTypeHTTPRealtimeEndpoint DeploymentType = original.DeploymentTypeHTTPRealtimeEndpoint
+)
+
 type EncryptionStatus = original.EncryptionStatus
 
 const (
-	Disabled EncryptionStatus = original.Disabled
-	Enabled  EncryptionStatus = original.Enabled
+	EncryptionStatusDisabled EncryptionStatus = original.EncryptionStatusDisabled
+	EncryptionStatusEnabled  EncryptionStatus = original.EncryptionStatusEnabled
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeApplication     IdentityType = original.IdentityTypeApplication
+	IdentityTypeKey             IdentityType = original.IdentityTypeKey
+	IdentityTypeManagedIdentity IdentityType = original.IdentityTypeManagedIdentity
+	IdentityTypeUser            IdentityType = original.IdentityTypeUser
+)
+
+type LoadBalancerType = original.LoadBalancerType
+
+const (
+	LoadBalancerTypeInternalLoadBalancer LoadBalancerType = original.LoadBalancerTypeInternalLoadBalancer
+	LoadBalancerTypePublicIP             LoadBalancerType = original.LoadBalancerTypePublicIP
 )
 
 type NodeState = original.NodeState
 
 const (
-	Idle      NodeState = original.Idle
-	Leaving   NodeState = original.Leaving
-	Preempted NodeState = original.Preempted
-	Preparing NodeState = original.Preparing
-	Running   NodeState = original.Running
-	Unusable  NodeState = original.Unusable
+	NodeStateIdle      NodeState = original.NodeStateIdle
+	NodeStateLeaving   NodeState = original.NodeStateLeaving
+	NodeStatePreempted NodeState = original.NodeStatePreempted
+	NodeStatePreparing NodeState = original.NodeStatePreparing
+	NodeStateRunning   NodeState = original.NodeStateRunning
+	NodeStateUnusable  NodeState = original.NodeStateUnusable
+)
+
+type OperationName = original.OperationName
+
+const (
+	OperationNameCreate  OperationName = original.OperationNameCreate
+	OperationNameDelete  OperationName = original.OperationNameDelete
+	OperationNameReimage OperationName = original.OperationNameReimage
+	OperationNameRestart OperationName = original.OperationNameRestart
+	OperationNameStart   OperationName = original.OperationNameStart
+	OperationNameStop    OperationName = original.OperationNameStop
+)
+
+type OperationStatus = original.OperationStatus
+
+const (
+	OperationStatusCreateFailed  OperationStatus = original.OperationStatusCreateFailed
+	OperationStatusDeleteFailed  OperationStatus = original.OperationStatusDeleteFailed
+	OperationStatusInProgress    OperationStatus = original.OperationStatusInProgress
+	OperationStatusReimageFailed OperationStatus = original.OperationStatusReimageFailed
+	OperationStatusRestartFailed OperationStatus = original.OperationStatusRestartFailed
+	OperationStatusStartFailed   OperationStatus = original.OperationStatusStartFailed
+	OperationStatusStopFailed    OperationStatus = original.OperationStatusStopFailed
+	OperationStatusSucceeded     OperationStatus = original.OperationStatusSucceeded
+)
+
+type OrderString = original.OrderString
+
+const (
+	OrderStringCreatedAtAsc  OrderString = original.OrderStringCreatedAtAsc
+	OrderStringCreatedAtDesc OrderString = original.OrderStringCreatedAtDesc
+	OrderStringUpdatedAtAsc  OrderString = original.OrderStringUpdatedAtAsc
+	OrderStringUpdatedAtDesc OrderString = original.OrderStringUpdatedAtDesc
+)
+
+type OsType = original.OsType
+
+const (
+	OsTypeLinux   OsType = original.OsTypeLinux
+	OsTypeWindows OsType = original.OsTypeWindows
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
-	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
-	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
-	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved     PrivateEndpointServiceConnectionStatus = original.Approved
-	Disconnected PrivateEndpointServiceConnectionStatus = original.Disconnected
-	Pending      PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected     PrivateEndpointServiceConnectionStatus = original.Rejected
-	Timeout      PrivateEndpointServiceConnectionStatus = original.Timeout
+	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusDisconnected
+	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
+	PrivateEndpointServiceConnectionStatusTimeout      PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusTimeout
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -126,15 +244,15 @@ const (
 type QuotaUnit = original.QuotaUnit
 
 const (
-	Count QuotaUnit = original.Count
+	QuotaUnitCount QuotaUnit = original.QuotaUnitCount
 )
 
 type ReasonCode = original.ReasonCode
 
 const (
-	NotAvailableForRegion       ReasonCode = original.NotAvailableForRegion
-	NotAvailableForSubscription ReasonCode = original.NotAvailableForSubscription
-	NotSpecified                ReasonCode = original.NotSpecified
+	ReasonCodeNotAvailableForRegion       ReasonCode = original.ReasonCodeNotAvailableForRegion
+	ReasonCodeNotAvailableForSubscription ReasonCode = original.ReasonCodeNotAvailableForSubscription
+	ReasonCodeNotSpecified                ReasonCode = original.ReasonCodeNotSpecified
 )
 
 type RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccess
@@ -148,23 +266,30 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None                       ResourceIdentityType = original.None
-	SystemAssigned             ResourceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type SSHPublicAccess = original.SSHPublicAccess
+
+const (
+	SSHPublicAccessDisabled SSHPublicAccess = original.SSHPublicAccessDisabled
+	SSHPublicAccessEnabled  SSHPublicAccess = original.SSHPublicAccessEnabled
 )
 
 type Status = original.Status
 
 const (
-	Failure                              Status = original.Failure
-	InvalidQuotaBelowClusterMinimum      Status = original.InvalidQuotaBelowClusterMinimum
-	InvalidQuotaExceedsSubscriptionLimit Status = original.InvalidQuotaExceedsSubscriptionLimit
-	InvalidVMFamilyName                  Status = original.InvalidVMFamilyName
-	OperationNotEnabledForRegion         Status = original.OperationNotEnabledForRegion
-	OperationNotSupportedForSku          Status = original.OperationNotSupportedForSku
-	Success                              Status = original.Success
-	Undefined                            Status = original.Undefined
+	StatusFailure                              Status = original.StatusFailure
+	StatusInvalidQuotaBelowClusterMinimum      Status = original.StatusInvalidQuotaBelowClusterMinimum
+	StatusInvalidQuotaExceedsSubscriptionLimit Status = original.StatusInvalidQuotaExceedsSubscriptionLimit
+	StatusInvalidVMFamilyName                  Status = original.StatusInvalidVMFamilyName
+	StatusOperationNotEnabledForRegion         Status = original.StatusOperationNotEnabledForRegion
+	StatusOperationNotSupportedForSku          Status = original.StatusOperationNotSupportedForSku
+	StatusSuccess                              Status = original.StatusSuccess
+	StatusUndefined                            Status = original.StatusUndefined
 )
 
 type Status1 = original.Status1
@@ -178,8 +303,8 @@ const (
 type UnderlyingResourceAction = original.UnderlyingResourceAction
 
 const (
-	Delete UnderlyingResourceAction = original.Delete
-	Detach UnderlyingResourceAction = original.Detach
+	UnderlyingResourceActionDelete UnderlyingResourceAction = original.UnderlyingResourceActionDelete
+	UnderlyingResourceActionDetach UnderlyingResourceAction = original.UnderlyingResourceActionDetach
 )
 
 type UsageUnit = original.UsageUnit
@@ -188,51 +313,152 @@ const (
 	UsageUnitCount UsageUnit = original.UsageUnitCount
 )
 
+type VMPriceOSType = original.VMPriceOSType
+
+const (
+	VMPriceOSTypeLinux   VMPriceOSType = original.VMPriceOSTypeLinux
+	VMPriceOSTypeWindows VMPriceOSType = original.VMPriceOSTypeWindows
+)
+
 type VMPriority = original.VMPriority
 
 const (
-	Dedicated   VMPriority = original.Dedicated
-	LowPriority VMPriority = original.LowPriority
+	VMPriorityDedicated   VMPriority = original.VMPriorityDedicated
+	VMPriorityLowPriority VMPriority = original.VMPriorityLowPriority
 )
 
+type VMTier = original.VMTier
+
+const (
+	VMTierLowPriority VMTier = original.VMTierLowPriority
+	VMTierSpot        VMTier = original.VMTierSpot
+	VMTierStandard    VMTier = original.VMTierStandard
+)
+
+type ValueFormat = original.ValueFormat
+
+const (
+	ValueFormatJSON ValueFormat = original.ValueFormatJSON
+)
+
+type VariantType = original.VariantType
+
+const (
+	VariantTypeControl   VariantType = original.VariantTypeControl
+	VariantTypeTreatment VariantType = original.VariantTypeTreatment
+)
+
+type WebServiceState = original.WebServiceState
+
+const (
+	WebServiceStateFailed        WebServiceState = original.WebServiceStateFailed
+	WebServiceStateHealthy       WebServiceState = original.WebServiceStateHealthy
+	WebServiceStateTransitioning WebServiceState = original.WebServiceStateTransitioning
+	WebServiceStateUnhealthy     WebServiceState = original.WebServiceStateUnhealthy
+	WebServiceStateUnschedulable WebServiceState = original.WebServiceStateUnschedulable
+)
+
+type ACIServiceCreateRequest = original.ACIServiceCreateRequest
+type ACIServiceCreateRequestDataCollection = original.ACIServiceCreateRequestDataCollection
+type ACIServiceCreateRequestEncryptionProperties = original.ACIServiceCreateRequestEncryptionProperties
+type ACIServiceCreateRequestVnetConfiguration = original.ACIServiceCreateRequestVnetConfiguration
+type ACIServiceResponse = original.ACIServiceResponse
+type ACIServiceResponseDataCollection = original.ACIServiceResponseDataCollection
+type ACIServiceResponseEncryptionProperties = original.ACIServiceResponseEncryptionProperties
+type ACIServiceResponseEnvironmentImageRequest = original.ACIServiceResponseEnvironmentImageRequest
+type ACIServiceResponseVnetConfiguration = original.ACIServiceResponseVnetConfiguration
 type AKS = original.AKS
 type AKSProperties = original.AKSProperties
+type AKSReplicaStatus = original.AKSReplicaStatus
+type AKSReplicaStatusError = original.AKSReplicaStatusError
+type AKSServiceCreateRequest = original.AKSServiceCreateRequest
+type AKSServiceCreateRequestAutoScaler = original.AKSServiceCreateRequestAutoScaler
+type AKSServiceCreateRequestDataCollection = original.AKSServiceCreateRequestDataCollection
+type AKSServiceCreateRequestLivenessProbeRequirements = original.AKSServiceCreateRequestLivenessProbeRequirements
+type AKSServiceResponse = original.AKSServiceResponse
+type AKSServiceResponseAutoScaler = original.AKSServiceResponseAutoScaler
+type AKSServiceResponseDataCollection = original.AKSServiceResponseDataCollection
+type AKSServiceResponseDeploymentStatus = original.AKSServiceResponseDeploymentStatus
+type AKSServiceResponseEnvironmentImageRequest = original.AKSServiceResponseEnvironmentImageRequest
+type AKSServiceResponseLivenessProbeRequirements = original.AKSServiceResponseLivenessProbeRequirements
+type AKSVariantResponse = original.AKSVariantResponse
 type AksComputeSecrets = original.AksComputeSecrets
 type AksNetworkingConfiguration = original.AksNetworkingConfiguration
 type AmlCompute = original.AmlCompute
 type AmlComputeNodeInformation = original.AmlComputeNodeInformation
 type AmlComputeNodesInformation = original.AmlComputeNodesInformation
+type AmlComputeNodesInformationIterator = original.AmlComputeNodesInformationIterator
+type AmlComputeNodesInformationPage = original.AmlComputeNodesInformationPage
 type AmlComputeProperties = original.AmlComputeProperties
 type AmlUserFeature = original.AmlUserFeature
+type AssignedUser = original.AssignedUser
+type AuthKeys = original.AuthKeys
+type AutoPauseProperties = original.AutoPauseProperties
+type AutoScaleProperties = original.AutoScaleProperties
+type AutoScaler = original.AutoScaler
 type BaseClient = original.BaseClient
+type BasicAKSVariantResponse = original.BasicAKSVariantResponse
 type BasicCompute = original.BasicCompute
 type BasicComputeNodesInformation = original.BasicComputeNodesInformation
 type BasicComputeSecrets = original.BasicComputeSecrets
+type BasicCreateEndpointVariantRequest = original.BasicCreateEndpointVariantRequest
+type BasicCreateServiceRequest = original.BasicCreateServiceRequest
+type BasicServiceResponseBase = original.BasicServiceResponseBase
+type Client = original.Client
 type ClusterUpdateParameters = original.ClusterUpdateParameters
 type ClusterUpdateProperties = original.ClusterUpdateProperties
 type Compute = original.Compute
+type ComputeInstance = original.ComputeInstance
+type ComputeInstanceApplication = original.ComputeInstanceApplication
+type ComputeInstanceConnectivityEndpoints = original.ComputeInstanceConnectivityEndpoints
+type ComputeInstanceCreatedBy = original.ComputeInstanceCreatedBy
+type ComputeInstanceLastOperation = original.ComputeInstanceLastOperation
+type ComputeInstanceProperties = original.ComputeInstanceProperties
+type ComputeInstanceSSHSettings = original.ComputeInstanceSSHSettings
 type ComputeNodesInformation = original.ComputeNodesInformation
 type ComputeResource = original.ComputeResource
 type ComputeSecrets = original.ComputeSecrets
 type ComputeSecretsModel = original.ComputeSecretsModel
+type ContainerRegistry = original.ContainerRegistry
+type ContainerRegistryResponse = original.ContainerRegistryResponse
+type ContainerResourceRequirements = original.ContainerResourceRequirements
+type CosmosDbSettings = original.CosmosDbSettings
+type CreateEndpointVariantRequest = original.CreateEndpointVariantRequest
+type CreateServiceRequest = original.CreateServiceRequest
+type CreateServiceRequestEnvironmentImageRequest = original.CreateServiceRequestEnvironmentImageRequest
+type CreateServiceRequestKeys = original.CreateServiceRequestKeys
 type DataFactory = original.DataFactory
 type DataLakeAnalytics = original.DataLakeAnalytics
 type DataLakeAnalyticsProperties = original.DataLakeAnalyticsProperties
 type Databricks = original.Databricks
 type DatabricksComputeSecrets = original.DatabricksComputeSecrets
 type DatabricksProperties = original.DatabricksProperties
+type DatasetReference = original.DatasetReference
+type EncryptionProperties = original.EncryptionProperties
 type EncryptionProperty = original.EncryptionProperty
+type EnvironmentImageRequest = original.EnvironmentImageRequest
+type EnvironmentImageRequestEnvironment = original.EnvironmentImageRequestEnvironment
+type EnvironmentImageRequestEnvironmentReference = original.EnvironmentImageRequestEnvironmentReference
+type EnvironmentImageResponse = original.EnvironmentImageResponse
+type EnvironmentImageResponseEnvironment = original.EnvironmentImageResponseEnvironment
+type EnvironmentImageResponseEnvironmentReference = original.EnvironmentImageResponseEnvironmentReference
+type EnvironmentReference = original.EnvironmentReference
 type Error = original.Error
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
+type EstimatedVMPrice = original.EstimatedVMPrice
+type EstimatedVMPrices = original.EstimatedVMPrices
 type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
-type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
+type IdentityForCmk = original.IdentityForCmk
+type ImageAsset = original.ImageAsset
 type KeyVaultProperties = original.KeyVaultProperties
 type ListAmlUserFeatureResult = original.ListAmlUserFeatureResult
 type ListAmlUserFeatureResultIterator = original.ListAmlUserFeatureResultIterator
 type ListAmlUserFeatureResultPage = original.ListAmlUserFeatureResultPage
+type ListNotebookKeysResult = original.ListNotebookKeysResult
+type ListStorageAccountKeysResult = original.ListStorageAccountKeysResult
 type ListUsagesResult = original.ListUsagesResult
 type ListUsagesResultIterator = original.ListUsagesResultIterator
 type ListUsagesResultPage = original.ListUsagesResultPage
@@ -240,12 +466,34 @@ type ListWorkspaceKeysResult = original.ListWorkspaceKeysResult
 type ListWorkspaceQuotas = original.ListWorkspaceQuotas
 type ListWorkspaceQuotasIterator = original.ListWorkspaceQuotasIterator
 type ListWorkspaceQuotasPage = original.ListWorkspaceQuotasPage
+type LivenessProbeRequirements = original.LivenessProbeRequirements
 type MachineLearningComputeClient = original.MachineLearningComputeClient
 type MachineLearningComputeCreateOrUpdateFuture = original.MachineLearningComputeCreateOrUpdateFuture
 type MachineLearningComputeDeleteFuture = original.MachineLearningComputeDeleteFuture
+type MachineLearningComputeStartFuture = original.MachineLearningComputeStartFuture
+type MachineLearningComputeStopFuture = original.MachineLearningComputeStopFuture
 type MachineLearningComputeUpdateFuture = original.MachineLearningComputeUpdateFuture
+type MachineLearningServiceCreateOrUpdateFuture = original.MachineLearningServiceCreateOrUpdateFuture
+type Model = original.Model
+type ModelDataCollection = original.ModelDataCollection
+type ModelDockerSection = original.ModelDockerSection
+type ModelDockerSectionBaseImageRegistry = original.ModelDockerSectionBaseImageRegistry
+type ModelDockerSectionResponse = original.ModelDockerSectionResponse
+type ModelDockerSectionResponseBaseImageRegistry = original.ModelDockerSectionResponseBaseImageRegistry
+type ModelEnvironmentDefinition = original.ModelEnvironmentDefinition
+type ModelEnvironmentDefinitionDocker = original.ModelEnvironmentDefinitionDocker
+type ModelEnvironmentDefinitionPython = original.ModelEnvironmentDefinitionPython
+type ModelEnvironmentDefinitionR = original.ModelEnvironmentDefinitionR
+type ModelEnvironmentDefinitionResponse = original.ModelEnvironmentDefinitionResponse
+type ModelEnvironmentDefinitionResponseDocker = original.ModelEnvironmentDefinitionResponseDocker
+type ModelEnvironmentDefinitionResponsePython = original.ModelEnvironmentDefinitionResponsePython
+type ModelEnvironmentDefinitionResponseR = original.ModelEnvironmentDefinitionResponseR
+type ModelEnvironmentDefinitionResponseSpark = original.ModelEnvironmentDefinitionResponseSpark
+type ModelEnvironmentDefinitionSpark = original.ModelEnvironmentDefinitionSpark
+type ModelPythonSection = original.ModelPythonSection
+type ModelSparkSection = original.ModelSparkSection
 type NodeStateCounts = original.NodeStateCounts
-type NotebookListCredentialsResult = original.NotebookListCredentialsResult
+type NotebookAccessTokenResult = original.NotebookAccessTokenResult
 type NotebookPreparationError = original.NotebookPreparationError
 type NotebookResourceInfo = original.NotebookResourceInfo
 type NotebooksClient = original.NotebooksClient
@@ -257,7 +505,12 @@ type OperationsClient = original.OperationsClient
 type PaginatedComputeResourcesList = original.PaginatedComputeResourcesList
 type PaginatedComputeResourcesListIterator = original.PaginatedComputeResourcesListIterator
 type PaginatedComputeResourcesListPage = original.PaginatedComputeResourcesListPage
+type PaginatedServiceList = original.PaginatedServiceList
+type PaginatedServiceListIterator = original.PaginatedServiceListIterator
+type PaginatedServiceListPage = original.PaginatedServiceListPage
+type PaginatedWorkspaceConnectionsList = original.PaginatedWorkspaceConnectionsList
 type Password = original.Password
+type PersonalComputeInstanceSettings = original.PersonalComputeInstanceSettings
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
@@ -270,6 +523,11 @@ type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionSt
 type QuotaBaseProperties = original.QuotaBaseProperties
 type QuotaUpdateParameters = original.QuotaUpdateParameters
 type QuotasClient = original.QuotasClient
+type RCranPackage = original.RCranPackage
+type RGitHubPackage = original.RGitHubPackage
+type RGitHubPackageResponse = original.RGitHubPackageResponse
+type RSection = original.RSection
+type RSectionResponse = original.RSectionResponse
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type Resource = original.Resource
 type ResourceID = original.ResourceID
@@ -280,14 +538,27 @@ type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type Restriction = original.Restriction
 type SKUCapability = original.SKUCapability
 type ScaleSettings = original.ScaleSettings
+type ScriptReference = original.ScriptReference
+type ScriptsToExecute = original.ScriptsToExecute
+type ServiceManagedResourcesSettings = original.ServiceManagedResourcesSettings
 type ServicePrincipalCredentials = original.ServicePrincipalCredentials
+type ServiceResource = original.ServiceResource
+type ServiceResponseBase = original.ServiceResponseBase
+type ServiceResponseBaseError = original.ServiceResponseBaseError
+type SetupScripts = original.SetupScripts
 type SharedPrivateLinkResource = original.SharedPrivateLinkResource
 type SharedPrivateLinkResourceProperty = original.SharedPrivateLinkResourceProperty
 type Sku = original.Sku
 type SkuListResult = original.SkuListResult
 type SkuListResultIterator = original.SkuListResultIterator
 type SkuListResultPage = original.SkuListResultPage
+type SparkMavenPackage = original.SparkMavenPackage
 type SslConfiguration = original.SslConfiguration
+type StorageAccountClient = original.StorageAccountClient
+type SynapseSpark = original.SynapseSpark
+type SynapseSparkPoolProperties = original.SynapseSparkPoolProperties
+type SynapseSparkProperties = original.SynapseSparkProperties
+type SystemData = original.SystemData
 type SystemService = original.SystemService
 type UpdateWorkspaceQuotas = original.UpdateWorkspaceQuotas
 type UpdateWorkspaceQuotasResult = original.UpdateWorkspaceQuotasResult
@@ -295,14 +566,22 @@ type Usage = original.Usage
 type UsageName = original.UsageName
 type UsagesClient = original.UsagesClient
 type UserAccountCredentials = original.UserAccountCredentials
+type UserAssignedIdentity = original.UserAssignedIdentity
 type VirtualMachine = original.VirtualMachine
+type VirtualMachineImage = original.VirtualMachineImage
 type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineSSHCredentials = original.VirtualMachineSSHCredentials
 type VirtualMachineSecrets = original.VirtualMachineSecrets
 type VirtualMachineSize = original.VirtualMachineSize
 type VirtualMachineSizeListResult = original.VirtualMachineSizeListResult
 type VirtualMachineSizesClient = original.VirtualMachineSizesClient
+type VnetConfiguration = original.VnetConfiguration
 type Workspace = original.Workspace
+type WorkspaceClient = original.WorkspaceClient
+type WorkspaceConnection = original.WorkspaceConnection
+type WorkspaceConnectionDto = original.WorkspaceConnectionDto
+type WorkspaceConnectionProps = original.WorkspaceConnectionProps
+type WorkspaceConnectionsClient = original.WorkspaceConnectionsClient
 type WorkspaceFeaturesClient = original.WorkspaceFeaturesClient
 type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListResultIterator = original.WorkspaceListResultIterator
@@ -314,9 +593,22 @@ type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
+type WorkspacesResyncKeysFuture = original.WorkspacesResyncKeysFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAmlComputeNodesInformationIterator(page AmlComputeNodesInformationPage) AmlComputeNodesInformationIterator {
+	return original.NewAmlComputeNodesInformationIterator(page)
+}
+func NewAmlComputeNodesInformationPage(cur AmlComputeNodesInformation, getNextPage func(context.Context, AmlComputeNodesInformation) (AmlComputeNodesInformation, error)) AmlComputeNodesInformationPage {
+	return original.NewAmlComputeNodesInformationPage(cur, getNextPage)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewListAmlUserFeatureResultIterator(page ListAmlUserFeatureResultPage) ListAmlUserFeatureResultIterator {
 	return original.NewListAmlUserFeatureResultIterator(page)
@@ -360,6 +652,12 @@ func NewPaginatedComputeResourcesListIterator(page PaginatedComputeResourcesList
 func NewPaginatedComputeResourcesListPage(cur PaginatedComputeResourcesList, getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
 	return original.NewPaginatedComputeResourcesListPage(cur, getNextPage)
 }
+func NewPaginatedServiceListIterator(page PaginatedServiceListPage) PaginatedServiceListIterator {
+	return original.NewPaginatedServiceListIterator(page)
+}
+func NewPaginatedServiceListPage(cur PaginatedServiceList, getNextPage func(context.Context, PaginatedServiceList) (PaginatedServiceList, error)) PaginatedServiceListPage {
+	return original.NewPaginatedServiceListPage(cur, getNextPage)
+}
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
@@ -384,6 +682,12 @@ func NewSkuListResultIterator(page SkuListResultPage) SkuListResultIterator {
 func NewSkuListResultPage(cur SkuListResult, getNextPage func(context.Context, SkuListResult) (SkuListResult, error)) SkuListResultPage {
 	return original.NewSkuListResultPage(cur, getNextPage)
 }
+func NewStorageAccountClient(subscriptionID string) StorageAccountClient {
+	return original.NewStorageAccountClient(subscriptionID)
+}
+func NewStorageAccountClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountClient {
+	return original.NewStorageAccountClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }
@@ -398,6 +702,18 @@ func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID stri
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceClient(subscriptionID string) WorkspaceClient {
+	return original.NewWorkspaceClient(subscriptionID)
+}
+func NewWorkspaceClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceClient {
+	return original.NewWorkspaceClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceConnectionsClient(subscriptionID string) WorkspaceConnectionsClient {
+	return original.NewWorkspaceConnectionsClient(subscriptionID)
+}
+func NewWorkspaceConnectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceConnectionsClient {
+	return original.NewWorkspaceConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspaceFeaturesClient(subscriptionID string) WorkspaceFeaturesClient {
 	return original.NewWorkspaceFeaturesClient(subscriptionID)
@@ -420,8 +736,17 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
+func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
+	return original.PossibleApplicationSharingPolicyValues()
+}
 func PossibleClusterPurposeValues() []ClusterPurpose {
 	return original.PossibleClusterPurposeValues()
+}
+func PossibleComputeInstanceAuthorizationTypeValues() []ComputeInstanceAuthorizationType {
+	return original.PossibleComputeInstanceAuthorizationTypeValues()
+}
+func PossibleComputeInstanceStateValues() []ComputeInstanceState {
+	return original.PossibleComputeInstanceStateValues()
 }
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()
@@ -432,14 +757,41 @@ func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSec
 func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
 	return original.PossibleComputeTypeBasicComputeValues()
 }
+func PossibleComputeTypeBasicCreateServiceRequestValues() []ComputeTypeBasicCreateServiceRequest {
+	return original.PossibleComputeTypeBasicCreateServiceRequestValues()
+}
+func PossibleComputeTypeBasicServiceResponseBaseValues() []ComputeTypeBasicServiceResponseBase {
+	return original.PossibleComputeTypeBasicServiceResponseBaseValues()
+}
 func PossibleComputeTypeValues() []ComputeType {
 	return original.PossibleComputeTypeValues()
+}
+func PossibleDeploymentTypeValues() []DeploymentType {
+	return original.PossibleDeploymentTypeValues()
 }
 func PossibleEncryptionStatusValues() []EncryptionStatus {
 	return original.PossibleEncryptionStatusValues()
 }
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
+func PossibleLoadBalancerTypeValues() []LoadBalancerType {
+	return original.PossibleLoadBalancerTypeValues()
+}
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()
+}
+func PossibleOperationNameValues() []OperationName {
+	return original.PossibleOperationNameValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
+}
+func PossibleOrderStringValues() []OrderString {
+	return original.PossibleOrderStringValues()
+}
+func PossibleOsTypeValues() []OsType {
+	return original.PossibleOsTypeValues()
 }
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
@@ -462,6 +814,9 @@ func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
+func PossibleSSHPublicAccessValues() []SSHPublicAccess {
+	return original.PossibleSSHPublicAccessValues()
+}
 func PossibleStatus1Values() []Status1 {
 	return original.PossibleStatus1Values()
 }
@@ -474,8 +829,23 @@ func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 func PossibleUsageUnitValues() []UsageUnit {
 	return original.PossibleUsageUnitValues()
 }
+func PossibleVMPriceOSTypeValues() []VMPriceOSType {
+	return original.PossibleVMPriceOSTypeValues()
+}
 func PossibleVMPriorityValues() []VMPriority {
 	return original.PossibleVMPriorityValues()
+}
+func PossibleVMTierValues() []VMTier {
+	return original.PossibleVMTierValues()
+}
+func PossibleValueFormatValues() []ValueFormat {
+	return original.PossibleValueFormatValues()
+}
+func PossibleVariantTypeValues() []VariantType {
+	return original.PossibleVariantTypeValues()
+}
+func PossibleWebServiceStateValues() []WebServiceState {
+	return original.PossibleWebServiceStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

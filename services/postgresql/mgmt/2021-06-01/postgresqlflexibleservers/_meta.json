@@ -1,5 +1,5 @@
 {
-  "commit": "8dff86df71bee429af84ea4713288ef3cdd1db2f",
+  "commit": "d44548ad7b612f382879f7feafe9c19d5c063a18",
   "readme": "/_/azure-rest-api-specs/specification/postgresql/resource-manager/readme.md",
   "tag": "package-flexibleserver-2021-06",
   "use": "@microsoft.azure/autorest.go@2.1.183",

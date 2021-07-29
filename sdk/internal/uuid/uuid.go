@@ -7,10 +7,9 @@
 package uuid
 
 import (
+	"crypto/rand"
 	"fmt"
-	"math/rand"
 	"strconv"
-	"time"
 )
 
 // The UUID reserved variants.
@@ -18,34 +17,18 @@ const (
 	reservedRFC4122 byte = 0x40
 )
 
-func init() {
-	rand.Seed(time.Now().Unix())
-}
-
 // A UUID representation compliant with specification in RFC 4122 document.
 type UUID [16]byte
 
 // New returns a new uuid using RFC 4122 algorithm.
 func New() UUID {
 	u := UUID{}
-	// Set all bits to randomly (or pseudo-randomly) chosen values.
-	// math/rand.Read() is no-fail so we omit any error checking.
+	// Set all bits to pseudo-random values.
 	// NOTE: this takes a process-wide lock
-	rand.Read(u[:])
-	u[8] = (u[8] | reservedRFC4122) & 0x7F // u.setVariant(ReservedRFC4122)
-
-	var version byte = 4
-	u[6] = (u[6] & 0xF) | (version << 4) // u.setVersion(4)
-	return u
-}
-
-// FromSource returns a new uuid based on the supplied rand.Source as a seed.
-func FromSource(src rand.Source) UUID {
-	u := UUID{}
-	// Set all bits to randomly (or pseudo-randomly) chosen values.
-	// math/rand.Read() is no-fail so we omit any error checking.
-	rnd := rand.New(src)
-	rnd.Read(u[:])
+	_, err := rand.Read(u[:])
+	if err != nil {
+		panic(err) //We never expect to get here
+	}
 	u[8] = (u[8] | reservedRFC4122) & 0x7F // u.setVariant(ReservedRFC4122)
 
 	var version byte = 4

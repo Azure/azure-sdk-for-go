@@ -74,12 +74,6 @@ const (
 	OperationOriginUser         OperationOrigin = original.OperationOriginUser
 )
 
-type ResourceIdentityType = original.ResourceIdentityType
-
-const (
-	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
-)
-
 type ServerHAState = original.ServerHAState
 
 const (
@@ -166,7 +160,6 @@ type FlexibleServerEditionCapability = original.FlexibleServerEditionCapability
 type GetPrivateDNSZoneSuffixClient = original.GetPrivateDNSZoneSuffixClient
 type HighAvailability = original.HighAvailability
 type HyperscaleNodeEditionCapability = original.HyperscaleNodeEditionCapability
-type Identity = original.Identity
 type LocationBasedCapabilitiesClient = original.LocationBasedCapabilitiesClient
 type MaintenanceWindow = original.MaintenanceWindow
 type NameAvailability = original.NameAvailability
@@ -177,13 +170,8 @@ type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
-type Plan = original.Plan
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type ResourceModelWithAllowedPropertySet = original.ResourceModelWithAllowedPropertySet
-type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAllowedPropertySetIdentity
-type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
-type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
 type RestartParameter = original.RestartParameter
 type Server = original.Server
 type ServerForUpdate = original.ServerForUpdate
@@ -322,9 +310,6 @@ func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 }
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
-}
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleServerHAStateValues() []ServerHAState {
 	return original.PossibleServerHAStateValues()

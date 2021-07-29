@@ -469,6 +469,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 		return err
 	}
 	recordingId = resp.Header.Get(recordingIdHeader)
+	fmt.Println("Received recording id: ", recordingId)
 	return nil
 }
 
@@ -521,8 +522,14 @@ func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err er
 	req.URL.Host = p.options.host
 	req.Host = p.options.host
 
+	fmt.Println("Recording ID: ", recordingId)
+
 	req.Header.Set("x-recording-upstream-base-uri", originalURLHost)
+	req.Header.Set("x-recording-mode", "record")
+	req.Header.Set("x-recording-id", recordingId)
 	fmt.Println(req.Header.Get("x-recording-upstream-base-uri"))
+	fmt.Println(req.Header.Get("x-recording-mode"))
+	fmt.Println(req.Header.Get("x-recording-id"))
 
 	fmt.Println("URL hit: ", req.URL.String())
 

@@ -23,9 +23,10 @@ steps:
   - task: PowerShell@2
     inputs:
       targetType: 'filePath'
-      filePath: '/eng/scripts/run_tests.ps1'
+      filePath: /eng/scripts/run_tests.ps1
       workingDirectory: '${{parameters.GoWorkspace}}'
       arguments: '${{parameters.ServiceDirectory}}'
+      displayName: 'Run Tests and Create Coverage'
   # - pwsh: ./eng/scripts/run_tests.ps1
   #   displayName: 'Run Tests and Create Coverage'
   #   workingDirectory: '${{parameters.GoWorkspace}}'

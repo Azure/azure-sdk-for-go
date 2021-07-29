@@ -71,7 +71,7 @@ func parseConnectionString(connStr string) (string, *azcore.Credential, error) {
 		if !ok {
 			return serviceURL, nil, ErrConnectionString
 		}
-		return sharedAccessSignature, nil, errors.New("there is not support for SharedAccessSignature yet")
+		return sharedAccessSignature, nil, errors.New("a SharedAccessSignature are not supported")
 		// cred = azcore.SharedAccessSignature(sharedAccessSignature)
 		// TODO: fix this when shared access signatures are added.
 	}

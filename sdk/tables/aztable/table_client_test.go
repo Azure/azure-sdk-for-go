@@ -73,21 +73,15 @@ func TestCreateTable(t *testing.T) {
 func TestAddEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			if service == "storage" {
-				// Storage issue with authentication
-				t.Skip()
-			}
 			client, delete := initClientTest(t, service, true)
 			defer delete()
 
-			entitiesToCreate := createSimpleEntities(1, "partition")
+			simpleEntity := createSimpleEntity(1, "partition")
 
-			marshalledEntity, err := json.Marshal((*entitiesToCreate)[0])
+			marshalledEntity, err := json.Marshal(simpleEntity)
 			require.NoError(t, err)
-
-			resp, err := client.AddEntity(ctx, marshalledEntity)
+			_, err = client.AddEntity(ctx, marshalledEntity)
 			require.NoError(t, err)
-			require.NotNil(t, resp)
 		})
 	}
 }
@@ -95,23 +89,22 @@ func TestAddEntity(t *testing.T) {
 func TestAddComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			if service == "storage" {
-				// Storage issue with authentication
-				t.Skip()
-			}
+			// if service == "storage" {
+			// 	// Storage issue with authentication
+			// 	t.Skip()
+			// }
 			client, delete := initClientTest(t, service, true)
 			defer delete()
 
-			entitiesToCreate := createComplexEntities(1, "partition")
+			entity := createComplexEntity(1, "partition")
 
-			for _, e := range *entitiesToCreate {
-				marshalledEntity, err := json.Marshal(e)
-				require.NoError(t, err)
-				_, err = client.AddEntity(ctx, marshalledEntity)
-				var svcErr *runtime.ResponseError
-				errors.As(err, &svcErr)
-				require.Nilf(t, err, getStringFromBody(svcErr))
-			}
+			marshalledEntity, err := json.Marshal(entity)
+			require.NoError(t, err)
+			_, err = client.AddEntity(ctx, marshalledEntity)
+			var svcErr *runtime.ResponseError
+			errors.As(err, &svcErr)
+			require.Nilf(t, err, getStringFromBody(svcErr))
+
 		})
 	}
 }

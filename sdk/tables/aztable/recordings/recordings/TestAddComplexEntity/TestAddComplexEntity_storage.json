@@ -15,7 +15,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:22:35 GMT",
+        "x-ms-date": "Fri, 30 Jul 2021 16:52:00 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -25,7 +25,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Fri, 30 Jul 2021 16:22:35 GMT",
+        "Date": "Fri, 30 Jul 2021 16:52:00 GMT",
         "Location": "https://seankaneprim.table.core.windows.net/Tables(\u0027tableName1098819688\u0027)",
         "Server": [
           "Windows-Azure-Table/1.0",
@@ -33,7 +33,7 @@
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "e2e6e4f9-0002-0008-355f-85f27a000000",
+        "x-ms-request-id": "2086d803-a002-003e-2163-857f0a000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
@@ -57,7 +57,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:22:35 GMT",
+        "x-ms-date": "Fri, 30 Jul 2021 16:52:00 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -71,30 +71,24 @@
         "String": "someString",
         "Timestamp": "0001-01-01T00:00:00Z"
       },
-      "StatusCode": 403,
+      "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Fri, 30 Jul 2021 16:22:35 GMT",
+        "Content-Length": "0",
+        "DataServiceId": "https://seankaneprim.table.core.windows.net/tableName1098819688(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+        "Date": "Fri, 30 Jul 2021 16:52:00 GMT",
+        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A52%3A01.6876909Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.core.windows.net/tableName1098819688(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "e2e6e536-0002-0008-695f-85f27a000000",
+        "x-ms-request-id": "2086d83c-a002-003e-5663-857f0a000000",
         "x-ms-version": "2019-02-02"
       },
-      "ResponseBody": {
-        "odata.error": {
-          "code": "AuthorizationPermissionMismatch",
-          "message": {
-            "lang": "en-US",
-            "value": "This request is not authorized to perform this operation using this permission.\nRequestId:e2e6e536-0002-0008-695f-85f27a000000\nTime:2021-07-30T16:22:36.5506686Z"
-          }
-        }
-      }
+      "ResponseBody": null
     },
     {
       "RequestUri": "https://seankaneprim.table.core.windows.net/Tables(\u0027tableName1098819688\u0027)",
@@ -108,7 +102,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:22:35 GMT",
+        "x-ms-date": "Fri, 30 Jul 2021 16:52:00 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -116,13 +110,13 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Fri, 30 Jul 2021 16:22:35 GMT",
+        "Date": "Fri, 30 Jul 2021 16:52:01 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "e2e6e588-0002-0008-375f-85f27a000000",
+        "x-ms-request-id": "2086d86f-a002-003e-0863-857f0a000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null

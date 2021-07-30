@@ -15,7 +15,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:36:08 GMT",
+        "x-ms-date": "Fri, 30 Jul 2021 16:49:54 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -24,11 +24,11 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Fri, 30 Jul 2021 16:36:09 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A36%3A10.0220936Z\u0027\u0022",
+        "Date": "Fri, 30 Jul 2021 16:49:55 GMT",
+        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A49%3A56.0484872Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName4289488389\u0027)",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "c0cbff43-a54e-4b97-ad69-fb38accfc8f6"
+        "x-ms-request-id": "974b8b21-27d4-4a5a-9c53-70307f5ffe63"
       },
       "ResponseBody": {
         "TableName": "tableName4289488389",
@@ -51,7 +51,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:36:09 GMT",
+        "x-ms-date": "Fri, 30 Jul 2021 16:49:55 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -64,11 +64,11 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:36:10 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A36%3A10.7384840Z\u0027\u0022",
+        "Date": "Fri, 30 Jul 2021 16:49:55 GMT",
+        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A49%3A56.6963720Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/tableName4289488389(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "ff7b2dc1-685c-43c1-977d-9bcca078b280"
+        "x-ms-request-id": "f629456d-dfc8-4e98-99fc-d4308ecb14c7"
       },
       "ResponseBody": null
     },
@@ -84,14 +84,14 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:36:09 GMT",
+        "x-ms-date": "Fri, 30 Jul 2021 16:49:55 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:36:10 GMT",
-        "x-ms-request-id": "6e53542f-b84e-4d97-9234-18682a700fc9"
+        "Date": "Fri, 30 Jul 2021 16:49:56 GMT",
+        "x-ms-request-id": "f2e227ec-ad5f-4c4c-82ca-e2d547ad709f"
       },
       "ResponseBody": null
     }

@@ -43,7 +43,7 @@ func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(azcore.HeaderContentType) != azcore.HeaderURLEncoded {
+	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatal("Unexpected value for Content-Type header")
 	}
 	body, err := ioutil.ReadAll(req.Request.Body)

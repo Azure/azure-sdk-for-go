@@ -11,7 +11,7 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-03-01/storagecache"
+	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-05-01/storagecache"
 )
 
 const (
@@ -21,46 +21,48 @@ const (
 type CacheIdentityType = original.CacheIdentityType
 
 const (
-	None           CacheIdentityType = original.None
-	SystemAssigned CacheIdentityType = original.SystemAssigned
+	CacheIdentityTypeNone                       CacheIdentityType = original.CacheIdentityTypeNone
+	CacheIdentityTypeSystemAssigned             CacheIdentityType = original.CacheIdentityTypeSystemAssigned
+	CacheIdentityTypeSystemAssignedUserAssigned CacheIdentityType = original.CacheIdentityTypeSystemAssignedUserAssigned
+	CacheIdentityTypeUserAssigned               CacheIdentityType = original.CacheIdentityTypeUserAssigned
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DomainJoinedType = original.DomainJoinedType
 
 const (
-	Error DomainJoinedType = original.Error
-	No    DomainJoinedType = original.No
-	Yes   DomainJoinedType = original.Yes
+	DomainJoinedTypeError DomainJoinedType = original.DomainJoinedTypeError
+	DomainJoinedTypeNo    DomainJoinedType = original.DomainJoinedTypeNo
+	DomainJoinedTypeYes   DomainJoinedType = original.DomainJoinedTypeYes
 )
 
 type FirmwareStatusType = original.FirmwareStatusType
 
 const (
-	Available   FirmwareStatusType = original.Available
-	Unavailable FirmwareStatusType = original.Unavailable
+	FirmwareStatusTypeAvailable   FirmwareStatusType = original.FirmwareStatusTypeAvailable
+	FirmwareStatusTypeUnavailable FirmwareStatusType = original.FirmwareStatusTypeUnavailable
 )
 
 type HealthStateType = original.HealthStateType
 
 const (
-	Degraded      HealthStateType = original.Degraded
-	Down          HealthStateType = original.Down
-	Flushing      HealthStateType = original.Flushing
-	Healthy       HealthStateType = original.Healthy
-	Stopped       HealthStateType = original.Stopped
-	Stopping      HealthStateType = original.Stopping
-	Transitioning HealthStateType = original.Transitioning
-	Unknown       HealthStateType = original.Unknown
-	Upgrading     HealthStateType = original.Upgrading
+	HealthStateTypeDegraded      HealthStateType = original.HealthStateTypeDegraded
+	HealthStateTypeDown          HealthStateType = original.HealthStateTypeDown
+	HealthStateTypeFlushing      HealthStateType = original.HealthStateTypeFlushing
+	HealthStateTypeHealthy       HealthStateType = original.HealthStateTypeHealthy
+	HealthStateTypeStopped       HealthStateType = original.HealthStateTypeStopped
+	HealthStateTypeStopping      HealthStateType = original.HealthStateTypeStopping
+	HealthStateTypeTransitioning HealthStateType = original.HealthStateTypeTransitioning
+	HealthStateTypeUnknown       HealthStateType = original.HealthStateTypeUnknown
+	HealthStateTypeUpgrading     HealthStateType = original.HealthStateTypeUpgrading
 )
 
 type MetricAggregationType = original.MetricAggregationType
@@ -86,27 +88,27 @@ const (
 type NfsAccessRuleScope = original.NfsAccessRuleScope
 
 const (
-	Default NfsAccessRuleScope = original.Default
-	Host    NfsAccessRuleScope = original.Host
-	Network NfsAccessRuleScope = original.Network
+	NfsAccessRuleScopeDefault NfsAccessRuleScope = original.NfsAccessRuleScopeDefault
+	NfsAccessRuleScopeHost    NfsAccessRuleScope = original.NfsAccessRuleScopeHost
+	NfsAccessRuleScopeNetwork NfsAccessRuleScope = original.NfsAccessRuleScopeNetwork
 )
 
 type ProvisioningStateType = original.ProvisioningStateType
 
 const (
-	Cancelled ProvisioningStateType = original.Cancelled
-	Creating  ProvisioningStateType = original.Creating
-	Deleting  ProvisioningStateType = original.Deleting
-	Failed    ProvisioningStateType = original.Failed
-	Succeeded ProvisioningStateType = original.Succeeded
-	Updating  ProvisioningStateType = original.Updating
+	ProvisioningStateTypeCancelled ProvisioningStateType = original.ProvisioningStateTypeCancelled
+	ProvisioningStateTypeCreating  ProvisioningStateType = original.ProvisioningStateTypeCreating
+	ProvisioningStateTypeDeleting  ProvisioningStateType = original.ProvisioningStateTypeDeleting
+	ProvisioningStateTypeFailed    ProvisioningStateType = original.ProvisioningStateTypeFailed
+	ProvisioningStateTypeSucceeded ProvisioningStateType = original.ProvisioningStateTypeSucceeded
+	ProvisioningStateTypeUpdating  ProvisioningStateType = original.ProvisioningStateTypeUpdating
 )
 
 type ReasonCode = original.ReasonCode
 
 const (
-	NotAvailableForSubscription ReasonCode = original.NotAvailableForSubscription
-	QuotaID                     ReasonCode = original.QuotaID
+	ReasonCodeNotAvailableForSubscription ReasonCode = original.ReasonCodeNotAvailableForSubscription
+	ReasonCodeQuotaID                     ReasonCode = original.ReasonCodeQuotaID
 )
 
 type StorageTargetType = original.StorageTargetType
@@ -154,6 +156,7 @@ type CacheDirectorySettings = original.CacheDirectorySettings
 type CacheEncryptionSettings = original.CacheEncryptionSettings
 type CacheHealth = original.CacheHealth
 type CacheIdentity = original.CacheIdentity
+type CacheIdentityUserAssignedIdentitiesValue = original.CacheIdentityUserAssignedIdentitiesValue
 type CacheNetworkSettings = original.CacheNetworkSettings
 type CacheProperties = original.CacheProperties
 type CacheSecuritySettings = original.CacheSecuritySettings
@@ -195,8 +198,12 @@ type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Restriction = original.Restriction
 type SkusClient = original.SkusClient
 type StorageTarget = original.StorageTarget
+type StorageTargetClient = original.StorageTargetClient
+type StorageTargetFlushFuture = original.StorageTargetFlushFuture
 type StorageTargetProperties = original.StorageTargetProperties
 type StorageTargetResource = original.StorageTargetResource
+type StorageTargetResumeFuture = original.StorageTargetResumeFuture
+type StorageTargetSuspendFuture = original.StorageTargetSuspendFuture
 type StorageTargetsClient = original.StorageTargetsClient
 type StorageTargetsCreateOrUpdateFuture = original.StorageTargetsCreateOrUpdateFuture
 type StorageTargetsDNSRefreshFuture = original.StorageTargetsDNSRefreshFuture
@@ -257,6 +264,12 @@ func NewSkusClient(subscriptionID string) SkusClient {
 }
 func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
 	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewStorageTargetClient(subscriptionID string) StorageTargetClient {
+	return original.NewStorageTargetClient(subscriptionID)
+}
+func NewStorageTargetClientWithBaseURI(baseURI string, subscriptionID string) StorageTargetClient {
+	return original.NewStorageTargetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewStorageTargetsClient(subscriptionID string) StorageTargetsClient {
 	return original.NewStorageTargetsClient(subscriptionID)

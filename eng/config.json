@@ -1,0 +1,12 @@
+{
+    "Packages": [
+        {
+            "Name": "azidentity",
+            "CoverageGoal": 0.68
+        },
+        {
+            "Name": "azcore",
+            "CoverageGoal": 0.68
+        }
+    ]
+}

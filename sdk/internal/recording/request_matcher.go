@@ -26,7 +26,6 @@ type RequestMatcher struct {
 }
 
 type StringMatcher func(reqVal string, recVal string) bool
-type matcherWrapper func(matcher StringMatcher, testContext TestContext) bool
 
 var ignoredHeaders = map[string]struct{}{
 	"Date":                   {},

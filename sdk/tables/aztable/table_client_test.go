@@ -134,7 +134,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	reMarshalled, err := json.Marshal(mapEntity)
 	require.NoError(err)
 
-	_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, Merge)
+	_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, MergeEntity)
 	require.Nil(updateErr)
 
 	var qResp TableEntityQueryByteResponseResponse
@@ -154,7 +154,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	require.False(ok)
 }
 
-func (s *tableClientLiveTests) TestUpsertEntity() {
+func (s *tableClientLiveTests) TestInsertEntity() {
 	require := require.New(s.T())
 	client, delete := s.init(true)
 	defer delete()
@@ -163,7 +163,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	entityToCreate := createSimpleEntity(1, "partition")
 	marshalled := marshalBasicEntity(entityToCreate, require)
 
-	_, err := client.UpsertEntity(ctx, *marshalled, Replace)
+	_, err := client.InsertEntity(ctx, *marshalled, ReplaceEntity)
 	require.NoError(err)
 
 	filter := "RowKey eq '1'"
@@ -184,7 +184,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	reMarshalled, err := json.Marshal(mapEntity)
 
 	// 4. Replace Entity with "bool"-less entity
-	_, err = client.UpsertEntity(ctx, reMarshalled, Replace)
+	_, err = client.InsertEntity(ctx, reMarshalled, ReplaceEntity)
 	require.Nil(err)
 
 	// 5. Query for new entity
@@ -336,7 +336,7 @@ func (s *tableClientLiveTests) init(createTable bool) (*TableClient, func()) {
 		}
 	}
 	return client, func() {
-		_, err := client.Delete(ctx)
+		_, err := client.Delete(ctx, nil)
 		if err != nil {
 			fmt.Printf("Error deleting table. %v\n", err.Error())
 		}

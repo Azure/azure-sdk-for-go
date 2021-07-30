@@ -5,108 +5,61 @@
 
 package azcore
 
-import "io"
-
-// ********** The following is common between the request body AND the response body.
+import (
+	"io"
+)
 
 // ProgressReceiver defines the signature of a callback function invoked as progress is reported.
 type ProgressReceiver func(bytesTransferred int64)
 
-// ********** The following are specific to the request body (a ReadSeekCloser)
-
-// This struct is used when sending a body to the network
-type requestBodyProgress struct {
-	requestBody ReadSeekCloser // Seeking is required to support retries
-	pr          ProgressReceiver
-}
-
-// NewRequestBodyProgress adds progress reporting to an HTTP request's body stream.
-func NewRequestBodyProgress(requestBody ReadSeekCloser, pr ProgressReceiver) ReadSeekCloser {
-	return &requestBodyProgress{requestBody: requestBody, pr: pr}
-}
-
-// Read reads a block of data from an inner stream and reports progress
-func (rbp *requestBodyProgress) Read(p []byte) (n int, err error) {
-	n, err = rbp.requestBody.Read(p)
-	if err != nil {
-		return
-	}
-	// Invokes the user's callback method to report progress
-	position, err := rbp.requestBody.Seek(0, io.SeekCurrent)
-	if err != nil {
-		return
-	}
-	rbp.pr(position)
-	return
-}
-
-func (rbp *requestBodyProgress) Seek(offset int64, whence int) (offsetFromStart int64, err error) {
-	return rbp.requestBody.Seek(offset, whence)
-}
-
-// requestBodyProgress supports Close but the underlying stream may not; if it does, Close will close it.
-func (rbp *requestBodyProgress) Close() error {
-	return rbp.requestBody.Close()
-}
-
-// ********** The following are specific to the response body (a ReadCloser)
-
-// This struct is used when sending a body to the network
-type responseBodyProgress struct {
-	responseBody io.ReadCloser
-	pr           ProgressReceiver
-	offset       int64
-}
-
-// NewResponseBodyProgress adds progress reporting to an HTTP response's body stream.
-func NewResponseBodyProgress(responseBody io.ReadCloser, pr ProgressReceiver) io.ReadCloser {
-	return &responseBodyProgress{responseBody: responseBody, pr: pr, offset: 0}
-}
-
-// Read reads a block of data from an inner stream and reports progress
-func (rbp *responseBodyProgress) Read(p []byte) (n int, err error) {
-	n, err = rbp.responseBody.Read(p)
-	rbp.offset += int64(n)
-
-	// Invokes the user's callback method to report progress
-	rbp.pr(rbp.offset)
-	return
-}
-
-func (rbp *responseBodyProgress) Close() error {
-	return rbp.responseBody.Close()
-}
-
-// This struct is used when sending a body to the network
-type requestResponseBodyProgress struct {
-	body   ReadSeekCloser
+type progress struct {
+	rc     io.ReadCloser
+	rsc    ReadSeekCloser
 	pr     ProgressReceiver
 	offset int64
 }
 
-func NewRequestResponseBodyProgress(body ReadSeekCloser, pr ProgressReceiver) *requestResponseBodyProgress {
-	return &requestResponseBodyProgress{body: body, pr: pr, offset: 0}
+func NewRequestProgress(body ReadSeekCloser, pr ProgressReceiver) ReadSeekCloser {
+	return &progress{
+		rc:     body,
+		rsc:    body,
+		pr:     pr,
+		offset: 0,
+	}
 }
 
-func (rbp *requestResponseBodyProgress) Read(p []byte) (int, error) {
-	n, err := rbp.body.Read(p)
-	if err != nil {
-		return n, err
+func NewResponseProgress(body io.ReadCloser, pr ProgressReceiver) io.ReadCloser {
+	return &progress{
+		rc:     body,
+		rsc:    nil,
+		pr:     pr,
+		offset: 0,
 	}
+}
 
-	// Invokes the user's callback method to report progress
-	rbp.offset, err = rbp.body.Seek(rbp.offset, io.SeekCurrent)
-	if err != nil {
-		return int(rbp.offset), err
+// Read reads a block of data from an inner stream and reports progress
+func (p *progress) Read(b []byte) (n int, err error) {
+	n, err = p.rc.Read(b)
+	if err != nil && err != io.EOF {
+		return
 	}
-	rbp.pr(rbp.offset)
+	p.offset += int64(n)
+	// Invokes the user's callback method to report progress
+	p.pr(p.offset)
+	return
+}
+
+// Seek only expects a zero or from beginning.
+func (p *progress) Seek(offset int64, whence int) (int64, error) {
+	// This should only ever be called with offset = 0 and whence = io.SeekStart
+	n, err := p.rsc.Seek(offset, whence)
+	if err == nil {
+		p.offset = int64(n)
+	}
 	return n, err
 }
 
-func (rbp *requestResponseBodyProgress) Seek(offset int64, whence int) (int64, error) {
-	return rbp.body.Seek(offset, whence)
-}
-
-func (rbp *requestResponseBodyProgress) Close() error {
-	return rbp.body.Close()
+// requestBodyProgress supports Close but the underlying stream may not; if it does, Close will close it.
+func (p *progress) Close() error {
+	return p.rc.Close()
 }

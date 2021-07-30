@@ -82,7 +82,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	return newByteArrayResponse(resp)
 }
 
-// AddEntity adds an entity from an arbitrary interface value to the table.
+// AddEntity adds an entity from an arbitrary interface value to the table. This method will fail if the entity already exists
 // An entity must be a byte slice ([]byte) that can be json.Marshalled into a map[string]interface{}
 func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}, error) {
 	var mapEntity map[string]interface{}

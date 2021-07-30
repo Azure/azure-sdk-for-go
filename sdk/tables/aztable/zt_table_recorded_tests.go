@@ -253,16 +253,16 @@ func createEdmEntity(count int, pk string) EdmEntity {
 	}
 }
 
-func requireSameDateTime(r *require.Assertions, time1, time2 interface{}) {
+func requireSameDateTime(t *testing.T, time1, time2 interface{}) {
 	t1 := time.Time(time1.(EdmDateTime))
 	t2 := time.Time(time2.(EdmDateTime))
-	r.Equal(t1.Year(), t2.Year())
-	r.Equal(t1.Month(), t2.Month())
-	r.Equal(t1.Day(), t2.Day())
-	r.Equal(t1.Hour(), t2.Hour())
-	r.Equal(t1.Minute(), t2.Minute())
-	r.Equal(t1.Second(), t2.Second())
+	require.Equal(t, t1.Year(), t2.Year())
+	require.Equal(t, t1.Month(), t2.Month())
+	require.Equal(t, t1.Day(), t2.Day())
+	require.Equal(t, t1.Hour(), t2.Hour())
+	require.Equal(t, t1.Minute(), t2.Minute())
+	require.Equal(t, t1.Second(), t2.Second())
 	z1, _ := t1.Zone()
 	z2, _ := t2.Zone()
-	r.Equal(z1, z2)
+	require.Equal(t, z1, z2)
 }

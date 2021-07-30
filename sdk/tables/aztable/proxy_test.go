@@ -84,18 +84,24 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		accountName = "fakestorageaccount"
+	}
+	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	if !ok {
 		t.Log("STORAGE KEY")
+		accountKey = "fakekey"
 	}
 	serviceURL := storageURI(accountName, "core.windows.net")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
-	return createTableClientForRecording(t, "createPseudoRandomName", serviceURL, cred)
+	tableName, err := createRandomName(t, "tableName")
+	require.NoError(t, err)
+	return createTableClientForRecording(t, tableName, serviceURL, cred)
 }
 
 func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	accountName, ok := os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
 	if !ok {
-		accountName = "fakestorageaccount"
+		accountName = "fakecosmosaccount"
 	}
 	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
 	if !ok {
@@ -105,7 +111,9 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
-	return createTableClientForRecording(t, "createPseudoRandomName", serviceURL, cred)
+	tableName, err := createRandomName(t, "tableName")
+	require.NoError(t, err)
+	return createTableClientForRecording(t, tableName, serviceURL, cred)
 }
 
 func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {

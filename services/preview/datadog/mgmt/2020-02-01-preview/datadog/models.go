@@ -1412,6 +1412,7 @@ type MonitorResourceUpdateParameters struct {
 	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
 	// Tags - The new tags of the monitor resource.
 	Tags map[string]*string `json:"tags"`
+	Sku  *ResourceSku       `json:"sku,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MonitorResourceUpdateParameters.
@@ -1422,6 +1423,9 @@ func (mrup MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if mrup.Tags != nil {
 		objectMap["tags"] = mrup.Tags
+	}
+	if mrup.Sku != nil {
+		objectMap["sku"] = mrup.Sku
 	}
 	return json.Marshal(objectMap)
 }
@@ -1503,6 +1507,49 @@ func (future *MonitorsDeleteFuture) result(client MonitorsClient) (ar autorest.R
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// MonitorsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type MonitorsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MonitorsClient) (MonitorResource, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *MonitorsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for MonitorsUpdateFuture.Result.
+func (future *MonitorsUpdateFuture) result(client MonitorsClient) (mr MonitorResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		mr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("datadog.MonitorsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
+		mr, err = client.UpdateResponder(mr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datadog.MonitorsUpdateFuture", "Result", mr.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 

@@ -87,7 +87,7 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *Registr
 		pipeline: azcore.NewPipeline(o.HTTPClient,
 			azcore.NewTelemetryPolicy(&o.Telemetry),
 			azcore.NewRetryPolicy(&o.Retry),
-			cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
+			cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 			azcore.NewLogPolicy(&o.Logging)),
 		options: *o,
 	}

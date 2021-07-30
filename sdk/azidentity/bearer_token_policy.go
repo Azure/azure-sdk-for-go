@@ -4,7 +4,9 @@
 package azidentity
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
@@ -16,97 +18,158 @@ const (
 )
 
 type bearerTokenPolicy struct {
-	// cond is used to synchronize token refresh.  the locker
-	// must be locked when updating the following shared state.
-	cond *sync.Cond
-
-	// renewing indicates that the token is in the process of being refreshed
-	renewing bool
-
-	// header contains the authorization header value
-	header string
-
-	// expiresOn is when the token will expire
-	expiresOn time.Time
-
+	// mainResource is the resource to be retreived using the tenant specified in the credential
+	mainResource *expiringResource
+	// auxResources are additional resources that are required for cross-tenant applications
+	auxResources map[string]*expiringResource
 	// the following fields are read-only
 	creds   azcore.TokenCredential
 	options azcore.TokenRequestOptions
 }
 
-func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationPolicyOptions) *bearerTokenPolicy {
-	return &bearerTokenPolicy{
-		cond:    sync.NewCond(&sync.Mutex{}),
-		creds:   creds,
-		options: opts.Options,
+type expiringResource struct {
+	// cond is used to synchronize access to the shared resource embodied by the remaining fields
+	cond *sync.Cond
+
+	// acquiring indicates that some thread/goroutine is in the process of acquiring/updating the resource
+	acquiring bool
+
+	// resource contains the value of the shared resource
+	resource interface{}
+
+	// expiration indicates when the shared resource expires; it is 0 if the resource was never acquired
+	expiration time.Time
+
+	// acquireResource is the callback function that actually acquires the resource
+	acquireResource acquireResource
+}
+
+type acquireResource func(state interface{}) (newResource interface{}, newExpiration time.Time, err error)
+
+type acquiringResourceState struct {
+	req *azcore.Request
+	p   bearerTokenPolicy
+}
+
+// acquire acquires or updates the resource; only one
+// thread/goroutine at a time ever calls this function
+func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
+	s := state.(acquiringResourceState)
+	tk, err := s.p.creds.GetToken(s.req.Context(), s.p.options)
+	if err != nil {
+		return nil, time.Time{}, err
 	}
+	return tk, tk.ExpiresOn, nil
+}
+
+func newExpiringResource(ar acquireResource) *expiringResource {
+	return &expiringResource{cond: sync.NewCond(&sync.Mutex{}), acquireResource: ar}
+}
+
+func (er *expiringResource) GetResource(state interface{}) (interface{}, error) {
+	// If the resource is expiring within this time window, update it eagerly.
+	// This allows other threads/goroutines to keep running by using the not-yet-expired
+	// resource value while one thread/goroutine updates the resource.
+	const window = 2 * time.Minute // This example updates the resource 2 minutes prior to expiration
+
+	now, acquire, resource := time.Now(), false, er.resource
+	// acquire exclusive lock
+	er.cond.L.Lock()
+	for {
+		if er.expiration.IsZero() || er.expiration.Before(now) {
+			// The resource was never acquired or has expired
+			if !er.acquiring {
+				// If another thread/goroutine is not acquiring/updating the resource, this thread/goroutine will do it
+				er.acquiring, acquire = true, true
+				break
+			}
+			// Getting here means that this thread/goroutine will wait for the updated resource
+		} else if er.expiration.Add(-window).Before(now) {
+			// The resource is valid but is expiring within the time window
+			if !er.acquiring {
+				// If another thread/goroutine is not acquiring/renewing the resource, this thread/goroutine will do it
+				er.acquiring, acquire = true, true
+				break
+			}
+			// This thread/goroutine will use the existing resource value while another updates it
+			resource = er.resource
+			break
+		} else {
+			// The resource is not close to expiring, this thread/goroutine should use its current value
+			resource = er.resource
+			break
+		}
+		// If we get here, wait for the new resource value to be acquired/updated
+		er.cond.Wait()
+	}
+	er.cond.L.Unlock() // Release the lock so no threads/goroutines are blocked
+
+	var err error
+	if acquire {
+		// This thread/goroutine has been selected to acquire/update the resource
+		var expiration time.Time
+		resource, expiration, err = er.acquireResource(state)
+
+		// Atomically, update the shared resource's new value & expiration.
+		er.cond.L.Lock()
+		if err == nil {
+			// No error, update resource & expiration
+			er.resource, er.expiration = resource, expiration
+		}
+		er.acquiring = false // Indicate that no thread/goroutine is currently acquiring the resrouce
+
+		// Wake up any waiting threads/goroutines since there is a resource they can ALL use
+		er.cond.L.Unlock()
+		er.cond.Broadcast()
+	}
+	return resource, err // Return the resource this thread/goroutine can use
+}
+
+func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationOptions) *bearerTokenPolicy {
+	p := &bearerTokenPolicy{
+		creds:        creds,
+		options:      opts.TokenRequest,
+		mainResource: newExpiringResource(acquire),
+	}
+	if len(opts.AuxiliaryTenants) > 0 {
+		p.auxResources = map[string]*expiringResource{}
+	}
+	for _, t := range opts.AuxiliaryTenants {
+		p.auxResources[t] = newExpiringResource(acquire)
+
+	}
+	return p
 }
 
 func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
-	if req.URL.Scheme != "https" {
-		// HTTPS must be used, otherwise the tokens are at the risk of being exposed
-		return nil, &AuthenticationFailedError{msg: "token credentials require a URL using the HTTPS protocol scheme"}
+	as := acquiringResourceState{
+		p:   *b,
+		req: req,
 	}
-	// create a "refresh window" before the token's real expiration date.
-	// this allows callers to continue to use the old token while the
-	// refresh is in progress.
-	const window = 2 * time.Minute
-	now, getToken, header := time.Now(), false, ""
-	// acquire exclusive lock
-	b.cond.L.Lock()
-	for {
-		if b.expiresOn.IsZero() || b.expiresOn.Before(now) {
-			// token was never obtained or has expired
-			if !b.renewing {
-				// another go routine isn't refreshing the token so this one will
-				b.renewing = true
-				getToken = true
-				break
-			}
-			// getting here means this go routine will wait for the token to refresh
-		} else if b.expiresOn.Add(-window).Before(now) {
-			// token is within the expiration window
-			if !b.renewing {
-				// another go routine isn't refreshing the token so this one will
-				b.renewing = true
-				getToken = true
-				break
-			}
-			// this go routine will use the existing token while another refreshes it
-			header = b.header
-			break
-		} else {
-			// token is not expiring yet so use it as-is
-			header = b.header
-			break
+	tk, err := b.mainResource.GetResource(as)
+	if err != nil {
+		return nil, err
+	}
+	if token, ok := tk.(*azcore.AccessToken); ok {
+		req.Request.Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+		req.Request.Header.Set(headerAuthorization, fmt.Sprintf("Bearer %s", token.Token))
+	}
+	auxTokens := []string{}
+	for tenant, er := range b.auxResources {
+		bCopy := *b
+		bCopy.options.TenantID = tenant
+		auxAS := acquiringResourceState{
+			p:   bCopy,
+			req: req,
 		}
-		// wait for the token to refresh
-		b.cond.Wait()
-	}
-	b.cond.L.Unlock()
-	if getToken {
-		// this go routine has been elected to refresh the token
-		tk, err := b.creds.GetToken(req.Context(), b.options)
-		// update shared state
-		b.cond.L.Lock()
-		// to avoid a deadlock if GetToken() fails we MUST reset b.renewing to false before returning
-		b.renewing = false
+		auxTk, err := er.GetResource(auxAS)
 		if err != nil {
-			b.unlock()
 			return nil, err
 		}
-		header = bearerTokenPrefix + tk.Token
-		b.header = header
-		b.expiresOn = tk.ExpiresOn
-		b.unlock()
+		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", bearerTokenPrefix, auxTk.(*azcore.AccessToken).Token))
 	}
-	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Request.Header.Set(azcore.HeaderAuthorization, header)
+	if len(auxTokens) > 0 {
+		req.Request.Header.Set(headerAuxiliaryAuthorization, strings.Join(auxTokens, ", "))
+	}
 	return req.Next()
-}
-
-// signal any waiters that the token has been refreshed
-func (b *bearerTokenPolicy) unlock() {
-	b.cond.Broadcast()
-	b.cond.L.Unlock()
 }

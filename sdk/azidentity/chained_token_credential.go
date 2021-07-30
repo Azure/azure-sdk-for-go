@@ -68,8 +68,8 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	return nil, credErr
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
-func (c *ChainedTokenCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
+func (c *ChainedTokenCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 
@@ -82,3 +82,5 @@ func createChainedErrorMessage(errList []*CredentialUnavailableError) string {
 
 	return msg
 }
+
+var _ azcore.TokenCredential = (*ChainedTokenCredential)(nil)

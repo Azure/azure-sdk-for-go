@@ -63,7 +63,7 @@ func TestTelemetryDefaultUserAgent(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, UserAgent) {
+	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, UserAgent) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
@@ -92,7 +92,7 @@ func TestTelemetryCustom(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+UserAgent) {
+	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+UserAgent) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }

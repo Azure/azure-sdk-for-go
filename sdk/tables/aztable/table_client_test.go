@@ -89,10 +89,6 @@ func TestAddEntity(t *testing.T) {
 func TestAddComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			// if service == "storage" {
-			// 	// Storage issue with authentication
-			// 	t.Skip()
-			// }
 			client, delete := initClientTest(t, service, true)
 			defer delete()
 

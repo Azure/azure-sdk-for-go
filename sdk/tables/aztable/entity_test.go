@@ -6,55 +6,59 @@ package aztable
 import (
 	"encoding/json"
 	"fmt"
+	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func (s *tableClientLiveTests) TestAddBasicEntity() {
-	require := require.New(s.T())
-	client, delete := s.init(true)
-	defer delete()
+func TestAddBasicEntity(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
 
-	basicEntity := basicTestEntity{
-		Entity: Entity{
-			PartitionKey: "pk001",
-			RowKey:       "rk001",
-		},
-		Integer: 10,
-		String:  "abcdef",
-		Bool:    true,
+			basicEntity := basicTestEntity{
+				Entity: Entity{
+					PartitionKey: "pk001",
+					RowKey:       "rk001",
+				},
+				Integer: 10,
+				String:  "abcdef",
+				Bool:    true,
+			}
+
+			marshalled, err := json.Marshal(basicEntity)
+			require.Nil(t, err)
+			_, err = client.AddEntity(ctx, marshalled)
+			require.Nil(t, err)
+
+			resp, err := client.GetEntity(ctx, "pk001", "rk001", nil)
+			require.Nil(t, err)
+
+			receivedEntity := basicTestEntity{}
+			err = json.Unmarshal(resp.Value, &receivedEntity)
+			require.Nil(t, err)
+			require.Equal(t, receivedEntity.PartitionKey, "pk001")
+			require.Equal(t, receivedEntity.RowKey, "rk001")
+
+			queryString := "PartitionKey eq 'pk001'"
+			listOptions := ListOptions{Filter: &queryString}
+			pager := client.List(&listOptions)
+			count := 0
+			for pager.NextPage(ctx) {
+				resp := pager.PageResponse()
+				for _, e := range resp.TableEntityQueryResponse.Value {
+					err = json.Unmarshal(e, &receivedEntity)
+					require.NoError(t, err)
+					require.Equal(t, receivedEntity.PartitionKey, "pk001")
+					require.Equal(t, receivedEntity.RowKey, "rk001")
+					count += 1
+				}
+			}
+
+			require.Equal(t, count, 1)
+		})
 	}
-
-	marshalled, err := json.Marshal(basicEntity)
-	require.Nil(err)
-	_, err = client.AddEntity(ctx, marshalled)
-	require.Nil(err)
-
-	resp, err := client.GetEntity(ctx, "pk001", "rk001", nil)
-	require.Nil(err)
-
-	receivedEntity := basicTestEntity{}
-	err = json.Unmarshal(resp.Value, &receivedEntity)
-	require.Nil(err)
-	require.Equal(receivedEntity.PartitionKey, "pk001")
-	require.Equal(receivedEntity.RowKey, "rk001")
-
-	queryString := "PartitionKey eq 'pk001'"
-	listOptions := ListOptions{Filter: &queryString}
-	pager := client.List(&listOptions)
-	count := 0
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
-		for _, e := range resp.TableEntityQueryResponse.Value {
-			err = json.Unmarshal(e, &receivedEntity)
-			require.NoError(err)
-			require.Equal(receivedEntity.PartitionKey, "pk001")
-			require.Equal(receivedEntity.RowKey, "rk001")
-			count += 1
-		}
-	}
-
-	require.Equal(count, 1)
 }
 
 func (s *tableClientLiveTests) TestEdmMarshalling() {

@@ -4,6 +4,7 @@
 package aztable
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -34,7 +35,29 @@ func TestServiceClient_Cosmos(t *testing.T) {
 	suite.Run(t, &cosmos)
 }
 
-func (s *tableServiceClientLiveTests) TestServiceErrors() {
+func TestServiceErrorsServiceClient(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			service, delete := initServiceTest(t, service)
+			defer delete()
+			_, err := service.CreateTable(context.Background(), "tableName")
+			require.NoError(t, err)
+
+			// Create a duplicate table to produce an error
+			_, err = service.CreateTable(context.Background(), "tableName")
+			require.Error(t, err)
+
+			var svcErr *runtime.ResponseError
+			errors.As(err, &svcErr)
+			require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
+
+			_, err = service.DeleteTable(context.Background(), "tableName")
+			require.NoError(t, err)
+		})
+	}
+}
+
+func (s *tableServiceClientLiveTests) TestServiceErrors2() {
 	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)

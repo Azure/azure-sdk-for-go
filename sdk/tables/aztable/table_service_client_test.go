@@ -57,46 +57,27 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 	}
 }
 
-func (s *tableServiceClientLiveTests) TestServiceErrors2() {
-	require := require.New(s.T())
-	context := getTestContext(s.T().Name())
-	tableName, err := getTableName(context)
-	require.NoError(err)
+func TestCreateTableFromService(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			service, delete := initServiceTest(t, service)
+			defer delete()
+			tableName, err := createRandomName(t, "tableName")
+			require.NoError(t, err)
 
-	_, err = context.client.CreateTable(ctx, tableName)
-	delete := func() {
-		_, err := context.client.DeleteTable(ctx, tableName)
-		if err != nil {
-			fmt.Printf("Error cleaning up test. %v\n", err.Error())
-		}
+			resp, err := service.CreateTable(ctx, tableName)
+			deleteTable := func() {
+				_, err := service.DeleteTable(ctx, tableName)
+				if err != nil {
+					fmt.Printf("Error cleaning up test. %v\n", err.Error())
+				}
+			}
+			defer deleteTable()
+
+			require.NoError(t, err)
+			require.Equal(t, *resp.TableResponse.TableName, tableName)
+		})
 	}
-	defer delete()
-	require.NoError(err)
-
-	// Create a duplicate table to produce an error
-	_, err = context.client.CreateTable(ctx, tableName)
-	var svcErr *runtime.ResponseError
-	errors.As(err, &svcErr)
-	require.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
-}
-
-func (s *tableServiceClientLiveTests) TestCreateTable() {
-	require := require.New(s.T())
-	context := getTestContext(s.T().Name())
-	tableName, err := getTableName(context)
-	require.NoError(err)
-
-	resp, err := context.client.CreateTable(ctx, tableName)
-	delete := func() {
-		_, err := context.client.DeleteTable(ctx, tableName)
-		if err != nil {
-			fmt.Printf("Error cleaning up test. %v\n", err.Error())
-		}
-	}
-	defer delete()
-
-	require.NoError(err)
-	require.Equal(*resp.TableResponse.TableName, tableName)
 }
 
 func (s *tableServiceClientLiveTests) TestQueryTable() {
@@ -165,29 +146,44 @@ func clearAllTables(context *testContext) error {
 	return pager.Err()
 }
 
-func (s *tableServiceClientLiveTests) TestListTables() {
-	require := require.New(s.T())
-	context := getTestContext(s.T().Name())
-	tableName, err := getTableName(context)
-	require.NoError(err)
+func TestListTables(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			service, delete := initServiceTest(t, service)
+			defer delete()
+			tableName, err := createRandomName(t, "tableName")
+			require.NoError(t, err)
 
-	err = clearAllTables(context)
-	require.NoError(err)
+			err = clearAllTables2(service)
+			require.NoError(t, err)
 
-	for i := 0; i < 5; i++ {
-		_, err := context.client.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i))
-		require.NoError(err)
+			for i := 0; i < 5; i++ {
+				_, err := service.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i))
+				require.NoError(t, err)
+			}
+
+			count := 0
+			pager := service.ListTables(nil)
+			for pager.NextPage(ctx) {
+				resp := pager.PageResponse()
+				count += len(resp.TableQueryResponse.Value)
+			}
+
+			require.NoError(t, pager.Err())
+			require.Equal(t, 5, count)
+
+			deleteTable := func() {
+				for i := 0; i < 5; i++ {
+					_, err := service.DeleteTable(ctx, fmt.Sprintf("%v%v", tableName, i))
+					if err != nil {
+						fmt.Printf("Error cleaning up test. %v\n", err.Error())
+					}
+				}
+			}
+			defer deleteTable()
+
+		})
 	}
-
-	count := 0
-	pager := context.client.ListTables(nil)
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
-		count += len(resp.TableQueryResponse.Value)
-	}
-
-	require.NoError(pager.Err())
-	require.Equal(5, count)
 }
 
 func (s *tableServiceClientLiveTests) TestGetStatistics() {

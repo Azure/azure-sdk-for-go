@@ -2,6 +2,8 @@ package aztable
 
 import (
 	"context"
+	"fmt"
+	"hash/fnv"
 	"os"
 	"testing"
 
@@ -133,4 +135,24 @@ func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 	return createTableServiceClientForRecording(t, serviceURL, cred)
+}
+
+func createRandomName(t *testing.T, prefix string) (string, error) {
+	h := fnv.New32a()
+	_, err := h.Write([]byte(t.Name()))
+	return prefix + fmt.Sprint(h.Sum32()), err
+}
+
+func clearAllTables2(service *TableServiceClient) error {
+	pager := service.ListTables(nil)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, v := range resp.TableQueryResponse.Value {
+			_, err := service.DeleteTable(ctx, *v.TableName)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return pager.Err()
 }

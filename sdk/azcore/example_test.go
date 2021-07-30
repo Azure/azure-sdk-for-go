@@ -48,23 +48,16 @@ func ExampleRequest_SetBody() {
 	}
 }
 
-func ExampleLogger_Should() {
-	// you can create your own logging classification as needed
-	const LogExpensiveThing azcore.LogClassification = "ExpensiveThing"
-	if azcore.Log().Should(LogExpensiveThing) {
-		// perform expensive calculation only when enabled
-		azcore.Log().Write(LogExpensiveThing, "expensive log message")
-	}
-}
-
-func ExampleLogger_SetClassifications() {
+// false positive by linter
+func ExampleLogger_SetClassifications() { //nolint:govet
 	// only log HTTP requests and responses
-	azcore.Log().SetClassifications(azcore.LogRequest, azcore.LogResponse)
+	azcore.SetClassifications(azcore.LogRequest, azcore.LogResponse)
 }
 
-func ExampleLogger_SetListener() {
+// false positive by linter
+func ExampleLogger_SetListener() { //nolint:govet
 	// a simple logger that writes to stdout
-	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
+	azcore.SetListener(func(cls azcore.LogClassification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
 }

@@ -143,7 +143,7 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-func clearAllTables2(service *TableServiceClient) error {
+func clearAllTables(service *TableServiceClient) error {
 	pager := service.ListTables(nil)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
@@ -155,4 +155,13 @@ func clearAllTables2(service *TableServiceClient) error {
 		}
 	}
 	return pager.Err()
+}
+
+// This looks up an environment variable and if it is not found, returns the recordedValue
+func getEnvVariable(varName string, recordedValue string) string {
+	val, ok := os.LookupEnv(varName)
+	if !ok {
+		return recordedValue
+	}
+	return val
 }

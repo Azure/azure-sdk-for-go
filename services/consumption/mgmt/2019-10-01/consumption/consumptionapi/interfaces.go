@@ -95,7 +95,7 @@ var _ ReservationRecommendationsClientAPI = (*consumption.ReservationRecommendat
 
 // ReservationRecommendationDetailsClientAPI contains the set of methods on the ReservationRecommendationDetailsClient type.
 type ReservationRecommendationDetailsClientAPI interface {
-	Get(ctx context.Context, billingScope string, scope consumption.Scope11, region string, term consumption.Term, lookBackPeriod consumption.LookBackPeriod, product string) (result consumption.ReservationRecommendationDetailsModel, err error)
+	Get(ctx context.Context, billingScope string, scope consumption.Scope14, region string, term consumption.Term, lookBackPeriod consumption.LookBackPeriod, product string) (result consumption.ReservationRecommendationDetailsModel, err error)
 }
 
 var _ ReservationRecommendationDetailsClientAPI = (*consumption.ReservationRecommendationDetailsClient)(nil)
@@ -143,23 +143,23 @@ var _ AggregatedCostClientAPI = (*consumption.AggregatedCostClient)(nil)
 
 // EventsClientAPI contains the set of methods on the EventsClient type.
 type EventsClientAPI interface {
-	List(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string) (result consumption.EventsPage, err error)
-	ListComplete(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string) (result consumption.EventsIterator, err error)
+	List(ctx context.Context, startDate string, endDate string, scope string) (result consumption.EventsPage, err error)
+	ListComplete(ctx context.Context, startDate string, endDate string, scope string) (result consumption.EventsIterator, err error)
 }
 
 var _ EventsClientAPI = (*consumption.EventsClient)(nil)
 
 // LotsClientAPI contains the set of methods on the LotsClient type.
 type LotsClientAPI interface {
-	List(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.LotsPage, err error)
-	ListComplete(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.LotsIterator, err error)
+	List(ctx context.Context, scope string) (result consumption.LotsPage, err error)
+	ListComplete(ctx context.Context, scope string) (result consumption.LotsIterator, err error)
 }
 
 var _ LotsClientAPI = (*consumption.LotsClient)(nil)
 
 // CreditsClientAPI contains the set of methods on the CreditsClient type.
 type CreditsClientAPI interface {
-	Get(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.CreditSummary, err error)
+	Get(ctx context.Context, scope string) (result consumption.CreditSummary, err error)
 }
 
 var _ CreditsClientAPI = (*consumption.CreditsClient)(nil)

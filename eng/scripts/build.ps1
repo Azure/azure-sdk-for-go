@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$format, [switch]tidy, [string]$config = "autorest.md", [string]$outputFolder)
+param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
 . $PSScriptRoot/get_module_dirs.ps1

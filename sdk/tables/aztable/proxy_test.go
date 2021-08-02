@@ -205,12 +205,24 @@ func TestMain(m *testing.M) {
 	cmd := exec.Command("test-proxy", "--storage-location", "./recordings/")
 
 	go func() {
-		err := cmd.Start()
+		stdout, err := cmd.StdoutPipe()
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = cmd.Start()
 		if err != nil {
 			fmt.Println("Error running the test proxy")
 			panic(err)
 		}
 		fmt.Println("Running test-proxy in the background")
+
+		readBytes := make([]byte, 512)
+		_, err = stdout.Read(readBytes)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("ReadBytes: ", string(readBytes))
 	}()
 
 	exitCode := m.Run()

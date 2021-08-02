@@ -64,9 +64,6 @@ steps:
       if ($IsWindows){
         Get-Process
       }
-      else{
-        jobs
-      }
     displayName: "Check Processes"
 
   - pwsh: |

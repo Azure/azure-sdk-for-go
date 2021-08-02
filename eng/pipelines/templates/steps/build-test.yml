@@ -34,8 +34,8 @@ steps:
         $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
         foreach ($td in $testDirs) {
           pushd $td
-          Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
-          go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
+          Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
+          go test -run "^Test" -v -coverprofile coverage.txt . | go-junit-report -set-exit-code > report.xml
           # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
           if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
             Write-Host "##[command]Deleting empty coverage file"

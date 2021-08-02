@@ -68,8 +68,6 @@ steps:
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-        Write-Host "Running test proxy in the background..."
-        test-proxy --storage-location ./recordings/ &
         Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic .
         # | go-junit-report -set-exit-code > report.xml

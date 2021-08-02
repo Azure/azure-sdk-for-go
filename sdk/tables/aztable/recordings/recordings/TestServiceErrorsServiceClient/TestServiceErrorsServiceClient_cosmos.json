@@ -15,7 +15,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 15:18:08 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 16:13:48 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -24,11 +24,11 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Fri, 30 Jul 2021 15:18:09 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T15%3A18%3A09.7426440Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 16:13:47 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T16%3A13%3A47.5764232Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName\u0027)",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "1eec563e-4289-45e9-a489-c6b6396b02c1"
+        "x-ms-request-id": "7d156414-4e5b-4dde-923c-e297cb63dd51"
       },
       "ResponseBody": {
         "TableName": "tableName",
@@ -50,7 +50,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 15:18:09 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 16:13:48 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -59,12 +59,12 @@
       "StatusCode": 409,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Fri, 30 Jul 2021 15:18:09 GMT",
+        "Date": "Mon, 02 Aug 2021 16:13:47 GMT",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "c8d5eabf-6b31-40a2-9b4c-1729793319dd"
+        "x-ms-request-id": "9261e445-6c91-4c92-b7ed-73ba0702fd1b"
       },
       "ResponseBody": [
-        "{\u0022odata.error\u0022:{\u0022code\u0022:\u0022TableAlreadyExists\u0022,\u0022message\u0022:{\u0022lang\u0022:\u0022en-us\u0022,\u0022value\u0022:\u0022The specified table already exists.\\nRequestID:c8d5eabf-6b31-40a2-9b4c-1729793319dd\\n\u0022}}}\r\n"
+        "{\u0022odata.error\u0022:{\u0022code\u0022:\u0022TableAlreadyExists\u0022,\u0022message\u0022:{\u0022lang\u0022:\u0022en-us\u0022,\u0022value\u0022:\u0022The specified table already exists.\\nRequestID:9261e445-6c91-4c92-b7ed-73ba0702fd1b\\n\u0022}}}\r\n"
       ]
     },
     {
@@ -79,14 +79,14 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 15:18:09 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 16:13:49 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 15:18:10 GMT",
-        "x-ms-request-id": "bfc5c2fa-0d19-4f36-97ee-a03ac8cf0c5f"
+        "Date": "Mon, 02 Aug 2021 16:13:48 GMT",
+        "x-ms-request-id": "80400d9a-0b81-49aa-beb3-8e7132a054a0"
       },
       "ResponseBody": null
     }

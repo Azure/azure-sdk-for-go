@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -228,7 +227,7 @@ func TestSetLogging(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	time.Sleep(45 * time.Second)
+	testSleep()
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -259,7 +258,7 @@ func TestSetHoursMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	time.Sleep(45 * time.Second)
+	testSleep()
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -289,7 +288,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	time.Sleep(45 * time.Second)
+	testSleep()
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -317,7 +316,7 @@ func TestSetCors(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	time.Sleep(45 * time.Second)
+	testSleep()
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)

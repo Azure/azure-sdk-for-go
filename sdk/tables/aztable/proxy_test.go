@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"hash/fnv"
 	"os"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -109,7 +111,7 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 		accountKey = "fakekey"
 	}
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
-	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	cred, err := createSharedKey(accountName, accountKey)
 	require.NoError(t, err)
 	tableName, err := createRandomName(t, "tableName")
 	require.NoError(t, err)
@@ -120,7 +122,6 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		accountName = "fakestorageaccount"
-		t.Log("STORAGE KEY")
 	}
 	serviceURL := storageURI(accountName, "core.windows.net")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -129,18 +130,10 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 }
 
 func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
-	accountName, ok := os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
-	if !ok {
-		t.Log("No cosmos account name provided.")
-		accountName = "fakestorageaccount"
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
-	if !ok {
-		t.Log("No key provided for cosmos")
-		accountKey = "fakekey"
-	}
+	accountName := getEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := getEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakekey")
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
-	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	cred, err := createSharedKey(accountName, accountKey)
 	require.NoError(t, err)
 	return createTableServiceClientForRecording(t, serviceURL, cred)
 }
@@ -172,4 +165,39 @@ func getEnvVariable(varName string, recordedValue string) string {
 		return recordedValue
 	}
 	return val
+}
+
+func createSharedKey(accountName, accountKey string) (azcore.Credential, error) {
+	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+		return NewSharedKeyCredential(accountName, accountKey)
+	}
+
+	return NewFakeCredential(accountName, accountKey), nil
+}
+
+type FakeCredential struct {
+	accountName string
+	accountKey  string
+}
+
+func NewFakeCredential(accountName, accountKey string) *FakeCredential {
+	return &FakeCredential{
+		accountName: accountName,
+		accountKey:  accountKey,
+	}
+}
+
+func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+		// Do nothing, authentication headers are stripped from recordings
+		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
+		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+		return req.Next()
+	})
+}
+
+func testSleep() {
+	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+		time.Sleep(45 * time.Second)
+	}
 }

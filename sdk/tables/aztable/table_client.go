@@ -82,8 +82,8 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	return newByteArrayResponse(resp)
 }
 
-// AddEntity adds an entity from a byte slice to the table, this method will return an error if the PartitionKey and RowKey already exist in the table.
-// An entity must be a byte slice ([]byte) that can be json.Marshalled into a map[string]interface{}
+// AddEntity adds an entity (described by a JSON byte slice) to the table. This method returns an error if an entity with
+// the same PartitionKey and RowKey already exists in the table.
 func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
@@ -141,8 +141,9 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 	return nil, errors.New("Invalid EntityUpdateMode")
 }
 
-// InsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity will be replaced or merged according to the updateMode parameter.
-// If the entity exists and updateMode is Merge, the property values present in the specified entity will be merged with the existing entity rather than replaced.
+// InsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity is
+// replaced or merged as specified the updateMode parameter. If the entity exists and updateMode is Merge, the property
+// values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode) (interface{}, error) {
 	var mapEntity map[string]interface{}

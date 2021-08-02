@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/require"
@@ -164,7 +165,7 @@ func TestGetStatistics(t *testing.T) {
 	t.Skip()
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
-	accountName := getEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
 	fmt.Println(serviceURL)
 	service, err := createTableServiceClientForRecording(t, serviceURL, cred)
@@ -207,7 +208,7 @@ func TestSetLogging(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	testSleep()
+	recording.Sleep(45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -238,7 +239,7 @@ func TestSetHoursMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	testSleep()
+	recording.Sleep(45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -268,7 +269,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	testSleep()
+	recording.Sleep(45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -296,7 +297,7 @@ func TestSetCors(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	testSleep()
+	recording.Sleep(45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)

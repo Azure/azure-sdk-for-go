@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/Tables",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/Tables",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -15,7 +15,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:15 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:01 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -24,11 +24,11 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Fri, 30 Jul 2021 16:44:17 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A16.9291784Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:02:01 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A01.5497224Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName978986389\u0027)",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "54711b0e-28a3-4b0f-b8f0-175d6934e037"
+        "x-ms-request-id": "e9291aba-7233-4c68-a8e2-ebdcaac6b3d7"
       },
       "ResponseBody": {
         "TableName": "tableName978986389",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName978986389",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/tableName978986389",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -51,7 +51,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:16 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:02 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -64,16 +64,16 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:44:17 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A17.6776200Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:02:01 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.1867528Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/tableName978986389(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "01a44ccf-3e72-4c36-8a40-070601bfa191"
+        "x-ms-request-id": "2c98279e-9097-4312-a7bd-fe4782695dfe"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName978986389",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/tableName978986389",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -88,7 +88,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:16 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:02 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -101,16 +101,16 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:44:17 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A17.9507208Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:02:02 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.3116808Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/tableName978986389(PartitionKey=\u0027partition\u0027,RowKey=\u00272\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "9846240e-5286-46c7-a6f2-10baf9a0bb54"
+        "x-ms-request-id": "e1b9e14f-b4f8-4e83-bb8e-d3fb5c79d306"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName978986389",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/tableName978986389",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -125,7 +125,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:17 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:03 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -138,16 +138,16 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:44:17 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A18.2055944Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:02:02 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.4440840Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/tableName978986389(PartitionKey=\u0027partition\u0027,RowKey=\u00273\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "e04031c9-41c3-4690-a26a-88ce772ffd1f"
+        "x-ms-request-id": "83965c23-e9e3-464d-9cdd-ae04d2464dbb"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName978986389",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/tableName978986389",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -162,7 +162,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:17 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:03 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -175,16 +175,16 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:44:18 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A18.4607752Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:02:02 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.5690120Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/tableName978986389(PartitionKey=\u0027partition\u0027,RowKey=\u00274\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "0bcf4196-ec9f-4965-9222-a35b52da3c3f"
+        "x-ms-request-id": "3343dbb9-e680-4fb6-aa69-b023a918ac87"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName978986389",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/tableName978986389",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -199,7 +199,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:17 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:03 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -212,16 +212,16 @@
       },
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:44:18 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A18.7149320Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:02:02 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.6977288Z\u0027\u0022",
         "Location": "https://seankaneprim.table.cosmos.azure.com/tableName978986389(PartitionKey=\u0027partition\u0027,RowKey=\u00275\u0027)",
         "Preference-Applied": "return-no-content",
-        "x-ms-request-id": "465d3c8b-02ad-4b4d-b5d8-a0e5b976b1aa"
+        "x-ms-request-id": "fc29c204-724e-44d5-a7ec-1e6ebfeb60cc"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName978986389()?%24filter=RowKey\u002Blt\u002B%275%27",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/tableName978986389()?%24filter=RowKey\u002Blt\u002B%275%27",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -233,61 +233,61 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:17 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:03 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Fri, 30 Jul 2021 16:44:18 GMT",
+        "Date": "Mon, 02 Aug 2021 18:02:02 GMT",
         "Transfer-Encoding": "chunked",
-        "x-ms-request-id": "13370b75-4a85-4745-8681-9f55fe028ae4"
+        "x-ms-request-id": "17b4e9ec-ea75-4962-b6bf-6346b715458a"
       },
       "ResponseBody": {
         "value": [
           {
-            "odata.etag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A17.6776200Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.1867528Z\u0027\u0022",
             "Bool": true,
             "Integer": 1,
             "PartitionKey": "partition",
             "RowKey": "1",
             "String": "some string 1",
-            "Timestamp": "2021-07-30T16:44:17.6776200Z"
+            "Timestamp": "2021-08-02T18:02:02.1867528Z"
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A17.9507208Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.3116808Z\u0027\u0022",
             "Bool": true,
             "Integer": 2,
             "PartitionKey": "partition",
             "RowKey": "2",
             "String": "some string 2",
-            "Timestamp": "2021-07-30T16:44:17.9507208Z"
+            "Timestamp": "2021-08-02T18:02:02.3116808Z"
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A18.2055944Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.4440840Z\u0027\u0022",
             "Bool": true,
             "Integer": 3,
             "PartitionKey": "partition",
             "RowKey": "3",
             "String": "some string 3",
-            "Timestamp": "2021-07-30T16:44:18.2055944Z"
+            "Timestamp": "2021-08-02T18:02:02.4440840Z"
           },
           {
-            "odata.etag": "W/\u0022datetime\u00272021-07-30T16%3A44%3A18.4607752Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272021-08-02T18%3A02%3A02.5690120Z\u0027\u0022",
             "Bool": true,
             "Integer": 4,
             "PartitionKey": "partition",
             "RowKey": "4",
             "String": "some string 4",
-            "Timestamp": "2021-07-30T16:44:18.4607752Z"
+            "Timestamp": "2021-08-02T18:02:02.5690120Z"
           }
         ],
         "odata.metadata": "https://seankaneprim.table.cosmos.azure.com/$metadata#tableName978986389"
       }
     },
     {
-      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName978986389\u0027)",
+      "RequestUri": "https://fakestorageaccount.table.cosmos.azure.com/Tables(\u0027tableName978986389\u0027)",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -298,14 +298,14 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:44:18 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:02:03 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "Date": "Fri, 30 Jul 2021 16:44:19 GMT",
-        "x-ms-request-id": "bd3371f7-75ad-4ccc-bff6-230f26f37e9e"
+        "Date": "Mon, 02 Aug 2021 18:02:02 GMT",
+        "x-ms-request-id": "321043e2-6362-406a-bd06-86943ba97a42"
       },
       "ResponseBody": null
     }

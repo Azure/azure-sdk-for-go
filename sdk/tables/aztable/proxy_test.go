@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -92,6 +91,10 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 		t.Log("STORAGE KEY")
 		accountKey = "fakekey"
 	}
+
+	err := recording.AddUriSanitizer("fakestorageaccount", "seankaneprim", nil)
+	require.NoError(t, err)
+
 	serviceURL := storageURI(accountName, "core.windows.net")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -110,6 +113,10 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 		t.Log("COSMOS KEY")
 		accountKey = "fakekey"
 	}
+
+	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	require.NoError(t, err)
+
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 	cred, err := createSharedKey(accountName, accountKey)
 	require.NoError(t, err)
@@ -119,10 +126,11 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 }
 
 func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		accountName = "fakestorageaccount"
-	}
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+
+	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	require.NoError(t, err)
+
 	serviceURL := storageURI(accountName, "core.windows.net")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
@@ -130,8 +138,12 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 }
 
 func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
-	accountName := getEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := getEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakekey")
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakekey")
+
+	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	require.NoError(t, err)
+
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 	cred, err := createSharedKey(accountName, accountKey)
 	require.NoError(t, err)
@@ -156,15 +168,6 @@ func clearAllTables(service *TableServiceClient) error {
 		}
 	}
 	return pager.Err()
-}
-
-// This looks up an environment variable and if it is not found, returns the recordedValue
-func getEnvVariable(varName string, recordedValue string) string {
-	val, ok := os.LookupEnv(varName)
-	if !ok {
-		return recordedValue
-	}
-	return val
 }
 
 func createSharedKey(accountName, accountKey string) (azcore.Credential, error) {
@@ -194,16 +197,4 @@ func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 		return req.Next()
 	})
-}
-
-func testSleep() {
-	if os.Getenv("AZURE_RECORD_MODE") == "record" {
-		time.Sleep(45 * time.Second)
-	}
-}
-
-func liveOnly(t *testing.T) {
-	if os.Getenv("AZURE_RECORD_MODE") != "record" {
-		t.Skip("Live Test Only")
-	}
 }

@@ -9,12 +9,13 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/require"
 )
 
 func TestBatchAdd(t *testing.T) {
-	liveOnly(t)
+	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -50,7 +51,7 @@ func TestBatchAdd(t *testing.T) {
 }
 
 func TestBatchMixed(t *testing.T) {
-	liveOnly(t)
+	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -152,7 +153,7 @@ func TestBatchMixed(t *testing.T) {
 }
 
 func TestBatchError(t *testing.T) {
-	liveOnly(t)
+	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -192,7 +193,7 @@ func TestBatchError(t *testing.T) {
 }
 
 func TestBatchComplex(t *testing.T) {
-	liveOnly(t)
+	recording.LiveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)

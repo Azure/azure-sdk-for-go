@@ -6,7 +6,9 @@
 package recording
 
 import (
+	"bytes"
 	"crypto/tls"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -514,6 +516,30 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 	return nil
 }
 
+func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+	bodyContent := map[string]string{
+		"value": replacement,
+		"regex": regex,
+	}
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
 func (o *RecordingOptions) init() {
 	if o.MaxRetries != 0 {
 		o.MaxRetries = 0
@@ -551,4 +577,27 @@ func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err er
 	req.Header.Set(recordingIdHeader, recordingId)
 
 	return req.Next()
+}
+
+// This looks up an environment variable and if it is not found, returns the recordedValue
+func GetEnvVariable(varName string, recordedValue string) string {
+	val, ok := os.LookupEnv(varName)
+	if !ok {
+		return recordedValue
+	}
+	return val
+}
+
+func LiveOnly(t *testing.T) {
+	if os.Getenv("AZURE_RECORD_MODE") != "record" {
+		t.Skip("Live Test Only")
+	}
+}
+
+// Function for sleeping during a test for `duration` seconds. This method will only execute when
+// AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
+func Sleep(duration int) {
+	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+		time.Sleep(time.Duration(duration) * time.Second)
+	}
 }

@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://seankaneprim.table.core.windows.net/Tables",
+      "RequestUri": "https://fakestorageaccount.table.core.windows.net/Tables",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -15,7 +15,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:41:24 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:01:55 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -25,7 +25,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Fri, 30 Jul 2021 16:41:24 GMT",
+        "Date": "Mon, 02 Aug 2021 18:01:54 GMT",
         "Location": "https://seankaneprim.table.core.windows.net/Tables(\u0027tableName1539808374\u0027)",
         "Server": [
           "Windows-Azure-Table/1.0",
@@ -33,7 +33,7 @@
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "77a9a321-5002-0077-7561-853de1000000",
+        "x-ms-request-id": "a05b60f4-9002-0057-3ac8-874646000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
@@ -42,7 +42,7 @@
       }
     },
     {
-      "RequestUri": "https://seankaneprim.table.core.windows.net/tableName1539808374",
+      "RequestUri": "https://fakestorageaccount.table.core.windows.net/tableName1539808374",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -57,7 +57,7 @@
         "dataserviceversion": "3.0",
         "prefer": "return-no-content",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:41:24 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:01:55 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -73,8 +73,8 @@
         "Cache-Control": "no-cache",
         "Content-Length": "0",
         "DataServiceId": "https://seankaneprim.table.core.windows.net/tableName1539808374(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
-        "Date": "Fri, 30 Jul 2021 16:41:25 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A41%3A25.5858771Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:01:54 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A01%3A55.3111703Z\u0027\u0022",
         "Location": "https://seankaneprim.table.core.windows.net/tableName1539808374(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
@@ -82,13 +82,13 @@
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "77a9a368-5002-0077-3861-853de1000000",
+        "x-ms-request-id": "a05b6144-9002-0057-06c8-874646000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.core.windows.net/tableName1539808374(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+      "RequestUri": "https://fakestorageaccount.table.core.windows.net/tableName1539808374(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -100,7 +100,7 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:41:24 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:01:56 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -108,8 +108,8 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Fri, 30 Jul 2021 16:41:25 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A41%3A25.5858771Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:01:54 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A01%3A55.3111703Z\u0027\u0022",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -117,22 +117,22 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Origin",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "77a9a3a4-5002-0077-7361-853de1000000",
+        "x-ms-request-id": "a05b6179-9002-0057-3ac8-874646000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
         "odata.metadata": "https://seankaneprim.table.core.windows.net/$metadata#tableName1539808374/@Element",
-        "odata.etag": "W/\u0022datetime\u00272021-07-30T16%3A41%3A25.5858771Z\u0027\u0022",
+        "odata.etag": "W/\u0022datetime\u00272021-08-02T18%3A01%3A55.3111703Z\u0027\u0022",
         "PartitionKey": "partition",
         "RowKey": "1",
-        "Timestamp": "2021-07-30T16:41:25.5858771Z",
+        "Timestamp": "2021-08-02T18:01:55.3111703Z",
         "Bool": true,
         "Integer": 1,
         "String": "some string 1"
       }
     },
     {
-      "RequestUri": "https://seankaneprim.table.core.windows.net/tableName1539808374(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+      "RequestUri": "https://fakestorageaccount.table.core.windows.net/tableName1539808374(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -147,7 +147,7 @@
         "dataserviceversion": "3.0",
         "If-Match": "*",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:41:24 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:01:56 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -163,20 +163,20 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Fri, 30 Jul 2021 16:41:25 GMT",
-        "ETag": "W/\u0022datetime\u00272021-07-30T16%3A41%3A25.8573524Z\u0027\u0022",
+        "Date": "Mon, 02 Aug 2021 18:01:54 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T18%3A01%3A55.5861844Z\u0027\u0022",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "77a9a3cd-5002-0077-1861-853de1000000",
+        "x-ms-request-id": "a05b61ac-9002-0057-6dc8-874646000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://seankaneprim.table.core.windows.net/tableName1539808374()?%24filter=RowKey\u002Beq\u002B%271%27",
+      "RequestUri": "https://fakestorageaccount.table.core.windows.net/tableName1539808374()?%24filter=RowKey\u002Beq\u002B%271%27",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -188,7 +188,7 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:41:25 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:01:56 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -196,7 +196,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Fri, 30 Jul 2021 16:41:25 GMT",
+        "Date": "Mon, 02 Aug 2021 18:01:54 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -204,17 +204,17 @@
         "Transfer-Encoding": "chunked",
         "Vary": "Origin",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "77a9a3f9-5002-0077-4361-853de1000000",
+        "x-ms-request-id": "a05b61da-9002-0057-19c8-874646000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
         "odata.metadata": "https://seankaneprim.table.core.windows.net/$metadata#tableName1539808374",
         "value": [
           {
-            "odata.etag": "W/\u0022datetime\u00272021-07-30T16%3A41%3A25.8573524Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272021-08-02T18%3A01%3A55.5861844Z\u0027\u0022",
             "PartitionKey": "partition",
             "RowKey": "1",
-            "Timestamp": "2021-07-30T16:41:25.8573524Z",
+            "Timestamp": "2021-08-02T18:01:55.5861844Z",
             "Bool": true,
             "Integer": 1,
             "MergeProperty": "foo",
@@ -224,7 +224,7 @@
       }
     },
     {
-      "RequestUri": "https://seankaneprim.table.core.windows.net/Tables(\u0027tableName1539808374\u0027)",
+      "RequestUri": "https://fakestorageaccount.table.core.windows.net/Tables(\u0027tableName1539808374\u0027)",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -235,7 +235,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
-        "x-ms-date": "Fri, 30 Jul 2021 16:41:25 GMT",
+        "x-ms-date": "Mon, 02 Aug 2021 18:01:56 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -243,13 +243,13 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Fri, 30 Jul 2021 16:41:25 GMT",
+        "Date": "Mon, 02 Aug 2021 18:01:55 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "77a9a435-5002-0077-7e61-853de1000000",
+        "x-ms-request-id": "a05b621b-9002-0057-56c8-874646000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null

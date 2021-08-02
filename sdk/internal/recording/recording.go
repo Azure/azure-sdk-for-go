@@ -25,7 +25,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/prometheus/common/log"
 	"gopkg.in/yaml.v2"
 )
 
@@ -477,7 +476,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 		options = defaultOptions()
 	}
 	if recordMode == "" {
-		log.Warn("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
+		fmt.Println("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
 		recordMode = "playback"
 	}
 	testId := getTestId(t)

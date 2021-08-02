@@ -70,7 +70,7 @@ steps:
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-        if $(-not $IsWindows){
+        if (-not $IsWindows){
           Write-Host "On Linux, starting test proxy"
           $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)" &
         }

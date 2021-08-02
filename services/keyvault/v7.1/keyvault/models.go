@@ -2518,7 +2518,7 @@ type KeyOperationsParameters struct {
 
 // KeyProperties properties of the key pair backing a certificate.
 type KeyProperties struct {
-	// Exportable - Indicates if the private key can be exported.
+	// Exportable - Not supported in this version. Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
 	// KeyType - The type of key pair to be used for the certificate. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
 	KeyType JSONWebKeyType `json:"kty,omitempty"`

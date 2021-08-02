@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.2-preview/keyvault"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/keyvault/v7.2/keyvault"
 
 // Action the action that will be executed.
 type Action struct {
@@ -257,7 +257,7 @@ func (cip CertificateImportParameters) MarshalJSON() ([]byte, error) {
 type CertificateInfoObject struct {
 	// Certificates - Certificates needed from customer
 	Certificates *[]SecurityDomainCertificateItem `json:"certificates,omitempty"`
-	// Required - Customer to specify the number of certificates (minimum 2 and maximum 10) to restore security domain
+	// Required - Customer to specify the number of certificates (minimum 2 and maximum 10) to restore Security Domain
 	Required *int32 `json:"required,omitempty"`
 }
 
@@ -1113,8 +1113,6 @@ type DeletedKeyBundle struct {
 	Tags map[string]*string `json:"tags"`
 	// Managed - READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty"`
-	// ReleasePolicy - The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DeletedKeyBundle.
@@ -1131,9 +1129,6 @@ func (dkb DeletedKeyBundle) MarshalJSON() ([]byte, error) {
 	}
 	if dkb.Tags != nil {
 		objectMap["tags"] = dkb.Tags
-	}
-	if dkb.ReleasePolicy != nil {
-		objectMap["release_policy"] = dkb.ReleasePolicy
 	}
 	return json.Marshal(objectMap)
 }
@@ -2053,22 +2048,6 @@ func NewDeletedStorageListResultPage(cur DeletedStorageListResult, getNextPage f
 	}
 }
 
-// EncDataSet ...
-type EncDataSet struct {
-	// Data - Array of encrypted security domain
-	Data *[]EncDataSetItem `json:"data,omitempty"`
-	// Kdf - The key derivation function used
-	Kdf *string `json:"kdf,omitempty"`
-}
-
-// EncDataSetItem ...
-type EncDataSetItem struct {
-	// CompactJwe - Encrypted data
-	CompactJwe *string `json:"compact_jwe,omitempty"`
-	// Tag - hsm backup tag
-	Tag *string `json:"tag,omitempty"`
-}
-
 // Error the key vault server error.
 type Error struct {
 	// Code - READ-ONLY; The error code.
@@ -2196,6 +2175,49 @@ func (future *FullRestoreOperationFuture) result(client BaseClient) (ro RestoreO
 		ro, err = client.FullRestoreOperationResponder(ro.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "keyvault.FullRestoreOperationFuture", "Result", ro.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// HSMSecurityDomainDownloadFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type HSMSecurityDomainDownloadFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(HSMSecurityDomainClient) (SecurityDomainObject, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *HSMSecurityDomainDownloadFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for HSMSecurityDomainDownloadFuture.Result.
+func (future *HSMSecurityDomainDownloadFuture) result(client HSMSecurityDomainClient) (sdo SecurityDomainObject, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainDownloadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		sdo.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("keyvault.HSMSecurityDomainDownloadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sdo.Response.Response, err = future.GetResult(sender); err == nil && sdo.Response.Response.StatusCode != http.StatusNoContent {
+		sdo, err = client.DownloadResponder(sdo.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainDownloadFuture", "Result", sdo.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2349,22 +2371,12 @@ type JSONWebKey struct {
 	Y *string `json:"y,omitempty"`
 }
 
-// Key ...
-type Key struct {
-	// EncKey - Compact JWE wrapped share
-	EncKey *string `json:"enc_key,omitempty"`
-	// X5t256 - SHA 256 hash of certificate
-	X5t256 *string `json:"x5t_256,omitempty"`
-}
-
 // KeyAttributes the attributes of a key managed by the key vault service.
 type KeyAttributes struct {
 	// RecoverableDays - READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty"`
 	// RecoveryLevel - READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval. Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription', 'CustomizedRecoverablePurgeable', 'CustomizedRecoverable', 'CustomizedRecoverableProtectedSubscription'
 	RecoveryLevel DeletionRecoveryLevel `json:"recoveryLevel,omitempty"`
-	// Exportable - Indicates if the private key can be exported.
-	Exportable *bool `json:"exportable,omitempty"`
 	// Enabled - Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// NotBefore - Not before date in UTC.
@@ -2380,9 +2392,6 @@ type KeyAttributes struct {
 // MarshalJSON is the custom marshaler for KeyAttributes.
 func (ka KeyAttributes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ka.Exportable != nil {
-		objectMap["exportable"] = ka.Exportable
-	}
 	if ka.Enabled != nil {
 		objectMap["enabled"] = ka.Enabled
 	}
@@ -2406,8 +2415,6 @@ type KeyBundle struct {
 	Tags map[string]*string `json:"tags"`
 	// Managed - READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty"`
-	// ReleasePolicy - The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyBundle.
@@ -2421,9 +2428,6 @@ func (kb KeyBundle) MarshalJSON() ([]byte, error) {
 	}
 	if kb.Tags != nil {
 		objectMap["tags"] = kb.Tags
-	}
-	if kb.ReleasePolicy != nil {
-		objectMap["release_policy"] = kb.ReleasePolicy
 	}
 	return json.Marshal(objectMap)
 }
@@ -2442,8 +2446,6 @@ type KeyCreateParameters struct {
 	Tags map[string]*string `json:"tags"`
 	// Curve - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'P256K'
 	Curve JSONWebKeyCurveName `json:"crv,omitempty"`
-	// ReleasePolicy - The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyCreateParameters.
@@ -2470,16 +2472,7 @@ func (kcp KeyCreateParameters) MarshalJSON() ([]byte, error) {
 	if kcp.Curve != "" {
 		objectMap["crv"] = kcp.Curve
 	}
-	if kcp.ReleasePolicy != nil {
-		objectMap["release_policy"] = kcp.ReleasePolicy
-	}
 	return json.Marshal(objectMap)
-}
-
-// KeyExportParameters the export key parameters.
-type KeyExportParameters struct {
-	// Environment - The target environment assertion.
-	Environment *string `json:"env,omitempty"`
 }
 
 // KeyImportParameters the key import parameters.
@@ -2492,8 +2485,6 @@ type KeyImportParameters struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 	// Tags - Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags"`
-	// ReleasePolicy - The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyImportParameters.
@@ -2510,9 +2501,6 @@ func (kip KeyImportParameters) MarshalJSON() ([]byte, error) {
 	}
 	if kip.Tags != nil {
 		objectMap["tags"] = kip.Tags
-	}
-	if kip.ReleasePolicy != nil {
-		objectMap["release_policy"] = kip.ReleasePolicy
 	}
 	return json.Marshal(objectMap)
 }
@@ -2716,6 +2704,12 @@ type KeyOperationResult struct {
 	Kid *string `json:"kid,omitempty"`
 	// Result - READ-ONLY; a URL-encoded base64 string
 	Result *string `json:"value,omitempty"`
+	// Iv - READ-ONLY; a URL-encoded base64 string
+	Iv *string `json:"iv,omitempty"`
+	// AuthenticationTag - READ-ONLY; a URL-encoded base64 string
+	AuthenticationTag *string `json:"tag,omitempty"`
+	// AdditionalAuthenticatedData - READ-ONLY; a URL-encoded base64 string
+	AdditionalAuthenticatedData *string `json:"aad,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyOperationResult.
@@ -2740,7 +2734,7 @@ type KeyOperationsParameters struct {
 
 // KeyProperties properties of the key pair backing a certificate.
 type KeyProperties struct {
-	// Exportable - Indicates if the private key can be exported.
+	// Exportable - Not supported in this version. Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
 	// KeyType - The type of key pair to be used for the certificate. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct', 'OctHSM'
 	KeyType JSONWebKeyType `json:"kty,omitempty"`
@@ -2750,14 +2744,6 @@ type KeyProperties struct {
 	ReuseKey *bool `json:"reuse_key,omitempty"`
 	// Curve - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'P256K'
 	Curve JSONWebKeyCurveName `json:"crv,omitempty"`
-}
-
-// KeyReleasePolicy ...
-type KeyReleasePolicy struct {
-	// ContentType - Content type and version of key release policy
-	ContentType *string `json:"contentType,omitempty"`
-	// Data - Blob encoding the policy rules under which the key can be exported. (a URL-encoded base64 string)
-	Data *string `json:"data,omitempty"`
 }
 
 // KeyRestoreParameters the key restore parameters.
@@ -2781,8 +2767,6 @@ type KeyUpdateParameters struct {
 	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
 	// Tags - Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags"`
-	// ReleasePolicy - The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyUpdateParameters.
@@ -2796,9 +2780,6 @@ func (kup KeyUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if kup.Tags != nil {
 		objectMap["tags"] = kup.Tags
-	}
-	if kup.ReleasePolicy != nil {
-		objectMap["release_policy"] = kup.ReleasePolicy
 	}
 	return json.Marshal(objectMap)
 }
@@ -2857,14 +2838,14 @@ func (pcsrr PendingCertificateSigningRequestResult) MarshalJSON() ([]byte, error
 
 // Permission role definition permissions.
 type Permission struct {
-	// Actions - Allowed actions.
+	// Actions - Action permissions that are granted.
 	Actions *[]string `json:"actions,omitempty"`
-	// NotActions - Denied actions.
+	// NotActions - Action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
 	NotActions *[]string `json:"notActions,omitempty"`
-	// DataActions - Allowed Data actions.
-	DataActions *[]string `json:"dataActions,omitempty"`
-	// NotDataActions - Denied Data actions.
-	NotDataActions *[]string `json:"notDataActions,omitempty"`
+	// DataActions - Data action permissions that are granted.
+	DataActions *[]DataAction `json:"dataActions,omitempty"`
+	// NotDataActions - Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
+	NotDataActions *[]DataAction `json:"notDataActions,omitempty"`
 }
 
 // RestoreOperation restore operation
@@ -2886,6 +2867,7 @@ type RestoreOperation struct {
 
 // RestoreOperationParameters ...
 type RestoreOperationParameters struct {
+	// SasTokenParameters - SAS token parameter object containing Azure storage resourceUri and token
 	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
 	// FolderToRestore - The Folder name of the blob where the previous successful full backup was stored
 	FolderToRestore *string `json:"folderToRestore,omitempty"`
@@ -3094,8 +3076,8 @@ type RoleAssignmentProperties struct {
 
 // RoleAssignmentPropertiesWithScope role assignment properties with scope.
 type RoleAssignmentPropertiesWithScope struct {
-	// Scope - The role assignment scope.
-	Scope *string `json:"scope,omitempty"`
+	// Scope - Possible values include: 'Global', 'Keys'
+	Scope RoleScope `json:"scope,omitempty"`
 	// RoleDefinitionID - The role definition ID.
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID.
@@ -3104,12 +3086,13 @@ type RoleAssignmentPropertiesWithScope struct {
 
 // RoleDefinition role definition.
 type RoleDefinition struct {
+	autorest.Response `json:"-"`
 	// ID - READ-ONLY; The role definition ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The role definition name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The role definition type.
-	Type *string `json:"type,omitempty"`
+	// Type - READ-ONLY; The role definition type. Possible values include: 'MicrosoftAuthorizationroleDefinitions'
+	Type RoleDefinitionType `json:"type,omitempty"`
 	// RoleDefinitionProperties - Role definition properties.
 	*RoleDefinitionProperties `json:"properties,omitempty"`
 }
@@ -3152,12 +3135,12 @@ func (rd *RoleDefinition) UnmarshalJSON(body []byte) error {
 			}
 		case "type":
 			if v != nil {
-				var typeVar string
+				var typeVar RoleDefinitionType
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				rd.Type = &typeVar
+				rd.Type = typeVar
 			}
 		case "properties":
 			if v != nil {
@@ -3172,6 +3155,12 @@ func (rd *RoleDefinition) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// RoleDefinitionCreateParameters role definition create parameters.
+type RoleDefinitionCreateParameters struct {
+	// Properties - Role definition properties.
+	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
 }
 
 // RoleDefinitionFilter role Definitions filter
@@ -3345,12 +3334,12 @@ type RoleDefinitionProperties struct {
 	RoleName *string `json:"roleName,omitempty"`
 	// Description - The role definition description.
 	Description *string `json:"description,omitempty"`
-	// RoleType - The role type.
-	RoleType *string `json:"type,omitempty"`
+	// RoleType - The role type. Possible values include: 'BuiltInRole', 'CustomRole'
+	RoleType RoleType `json:"type,omitempty"`
 	// Permissions - Role definition permissions.
 	Permissions *[]Permission `json:"permissions,omitempty"`
 	// AssignableScopes - Role definition assignable scopes.
-	AssignableScopes *[]string `json:"assignableScopes,omitempty"`
+	AssignableScopes *[]RoleScope `json:"assignableScopes,omitempty"`
 }
 
 // SasDefinitionAttributes the SAS definition management attributes.
@@ -4010,7 +3999,7 @@ type SecurityDomainCertificateItem struct {
 type SecurityDomainJSONWebKey struct {
 	// Kid - Key identifier.
 	Kid *string `json:"kid,omitempty"`
-	// Kty - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. For security domain this value must be RSA
+	// Kty - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. For Security Domain this value must be RSA.
 	Kty    *string   `json:"kty,omitempty"`
 	KeyOps *[]string `json:"key_ops,omitempty"`
 	// N - RSA modulus.
@@ -4029,29 +4018,11 @@ type SecurityDomainJSONWebKey struct {
 	Alg *string `json:"alg,omitempty"`
 }
 
-// SecurityDomainObject security domain
+// SecurityDomainObject the Security Domain.
 type SecurityDomainObject struct {
 	autorest.Response `json:"-"`
-	Data              *SecurityDomainObjectData `json:"data,omitempty"`
-}
-
-// SecurityDomainObjectData ...
-type SecurityDomainObjectData struct {
-	// EncData - Array of encrypted data set
-	EncData *EncDataSet `json:"EncData,omitempty"`
-	// SharedKeys - Array of shared keys
-	SharedKeys *SecurityDomainObjectDataSharedKeys `json:"SharedKeys,omitempty"`
-	Version    *int32                              `json:"version,omitempty"`
-}
-
-// SecurityDomainObjectDataSharedKeys array of shared keys
-type SecurityDomainObjectDataSharedKeys struct {
-	// KeyAlgorithm - The Algorithm used for shared keys
-	KeyAlgorithm *string `json:"key_algorithm,omitempty"`
-	// Required - The number of keys (minimum 2 and maximum 10) required for security domain.
-	Required *int32 `json:"required,omitempty"`
-	// EncShares - Compact JWE wrapped shares array
-	EncShares *[]Key `json:"enc_shares,omitempty"`
+	// Value - The Security Domain.
+	Value *string `json:"value,omitempty"`
 }
 
 // SecurityDomainOperationStatus ...
@@ -4060,28 +4031,6 @@ type SecurityDomainOperationStatus struct {
 	// Status - operation status. Possible values include: 'Success', 'InProgress', 'Failed'
 	Status        OperationStatus `json:"status,omitempty"`
 	StatusDetails *string         `json:"status_details,omitempty"`
-}
-
-// SecurityDomainUploadObject security domain object uploaded to a new pool
-type SecurityDomainUploadObject struct {
-	Value *SecurityDomainUploadObjectValue `json:"value,omitempty"`
-}
-
-// SecurityDomainUploadObjectValue ...
-type SecurityDomainUploadObjectValue struct {
-	// EncData - Array of encrypted data set
-	EncData *EncDataSet `json:"EncData,omitempty"`
-	// WrappedKey - Key object containing the encryption key used to encrypt EncData object
-	WrappedKey *SecurityDomainUploadObjectValueWrappedKey `json:"WrappedKey,omitempty"`
-}
-
-// SecurityDomainUploadObjectValueWrappedKey key object containing the encryption key used to encrypt
-// EncData object
-type SecurityDomainUploadObjectValueWrappedKey struct {
-	// EncKey - Encryption key used to encrypt the EncData
-	EncKey *string `json:"enc_key,omitempty"`
-	// X5t256 - Thumbprint used to determine which certificate was used to encrypt the enc_key field
-	X5t256 *string `json:"x5t_256,omitempty"`
 }
 
 // SelectiveKeyRestoreOperation selective Key Restore operation
@@ -4146,6 +4095,7 @@ func (future *SelectiveKeyRestoreOperationMethodFuture) result(client BaseClient
 
 // SelectiveKeyRestoreOperationParameters ...
 type SelectiveKeyRestoreOperationParameters struct {
+	// SasTokenParameters - SAS token parameter object containing Azure storage resourceUri and token
 	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
 	// Folder - The Folder name of the blob where the previous successful full backup was stored
 	Folder *string `json:"folder,omitempty"`

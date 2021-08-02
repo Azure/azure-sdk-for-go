@@ -8,7 +8,7 @@ package keyvaultapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.2-preview/keyvault"
+	"github.com/Azure/azure-sdk-for-go/services/keyvault/v7.2/keyvault"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -30,7 +30,6 @@ type BaseClientAPI interface {
 	DeleteSecret(ctx context.Context, vaultBaseURL string, secretName string) (result keyvault.DeletedSecretBundle, err error)
 	DeleteStorageAccount(ctx context.Context, vaultBaseURL string, storageAccountName string) (result keyvault.DeletedStorageBundle, err error)
 	Encrypt(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters keyvault.KeyOperationsParameters) (result keyvault.KeyOperationResult, err error)
-	ExportKey(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters keyvault.KeyExportParameters) (result keyvault.KeyBundle, err error)
 	FullBackup(ctx context.Context, vaultBaseURL string, azureStorageBlobContainerURI *keyvault.SASTokenParameter) (result keyvault.FullBackupFuture, err error)
 	FullBackupStatus(ctx context.Context, vaultBaseURL string, jobID string) (result keyvault.FullBackupOperation, err error)
 	FullRestoreOperation(ctx context.Context, vaultBaseURL string, restoreBlobDetails *keyvault.RestoreOperationParameters) (result keyvault.FullRestoreOperationFuture, err error)
@@ -118,6 +117,9 @@ var _ BaseClientAPI = (*keyvault.BaseClient)(nil)
 
 // RoleDefinitionsClientAPI contains the set of methods on the RoleDefinitionsClient type.
 type RoleDefinitionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, vaultBaseURL string, scope string, roleDefinitionName string, parameters keyvault.RoleDefinitionCreateParameters) (result keyvault.RoleDefinition, err error)
+	Delete(ctx context.Context, vaultBaseURL string, scope string, roleDefinitionName string) (result keyvault.RoleDefinition, err error)
+	Get(ctx context.Context, vaultBaseURL string, scope string, roleDefinitionName string) (result keyvault.RoleDefinition, err error)
 	List(ctx context.Context, vaultBaseURL string, scope string, filter string) (result keyvault.RoleDefinitionListResultPage, err error)
 	ListComplete(ctx context.Context, vaultBaseURL string, scope string, filter string) (result keyvault.RoleDefinitionListResultIterator, err error)
 }
@@ -137,9 +139,10 @@ var _ RoleAssignmentsClientAPI = (*keyvault.RoleAssignmentsClient)(nil)
 
 // HSMSecurityDomainClientAPI contains the set of methods on the HSMSecurityDomainClient type.
 type HSMSecurityDomainClientAPI interface {
-	Download(ctx context.Context, vaultBaseURL string, certificateInfoObject keyvault.CertificateInfoObject) (result keyvault.SecurityDomainObject, err error)
+	Download(ctx context.Context, vaultBaseURL string, certificateInfoObject keyvault.CertificateInfoObject) (result keyvault.HSMSecurityDomainDownloadFuture, err error)
+	DownloadPending(ctx context.Context, vaultBaseURL string) (result keyvault.SecurityDomainOperationStatus, err error)
 	TransferKeyMethod(ctx context.Context, vaultBaseURL string) (result keyvault.TransferKey, err error)
-	Upload(ctx context.Context, vaultBaseURL string, securityDomain keyvault.SecurityDomainUploadObject) (result keyvault.HSMSecurityDomainUploadFuture, err error)
+	Upload(ctx context.Context, vaultBaseURL string, securityDomain keyvault.SecurityDomainObject) (result keyvault.HSMSecurityDomainUploadFuture, err error)
 	UploadPending(ctx context.Context, vaultBaseURL string) (result keyvault.SecurityDomainOperationStatus, err error)
 }
 

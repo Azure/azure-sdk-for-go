@@ -26,18 +26,19 @@ func NewHSMSecurityDomainClient() HSMSecurityDomainClient {
 	return HSMSecurityDomainClient{New()}
 }
 
-// Download retrieves Security domain from HSM enclave
+// Download retrieves the Security Domain from the managed HSM. Calling this endpoint can be used to activate a
+// provisioned managed HSM resource.
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
-// certificateInfoObject - security domain download operation requires customer to provide N certificates
-// (minimum 3 and maximum 10) containing public key in JWK format.
-func (client HSMSecurityDomainClient) Download(ctx context.Context, vaultBaseURL string, certificateInfoObject CertificateInfoObject) (result SecurityDomainObject, err error) {
+// certificateInfoObject - the Security Domain download operation requires customer to provide N certificates
+// (minimum 3 and maximum 10) containing a public key in JWK format.
+func (client HSMSecurityDomainClient) Download(ctx context.Context, vaultBaseURL string, certificateInfoObject CertificateInfoObject) (result HSMSecurityDomainDownloadFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HSMSecurityDomainClient.Download")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -62,16 +63,9 @@ func (client HSMSecurityDomainClient) Download(ctx context.Context, vaultBaseURL
 		return
 	}
 
-	resp, err := client.DownloadSender(req)
+	result, err = client.DownloadSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Download", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DownloadResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Download", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Download", nil, "Failure sending request")
 		return
 	}
 
@@ -84,7 +78,7 @@ func (client HSMSecurityDomainClient) DownloadPreparer(ctx context.Context, vaul
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
-	const APIVersion = "7.2-preview"
+	const APIVersion = "7.2"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -101,13 +95,89 @@ func (client HSMSecurityDomainClient) DownloadPreparer(ctx context.Context, vaul
 
 // DownloadSender sends the Download request. The method will close the
 // http.Response Body if it receives an error.
-func (client HSMSecurityDomainClient) DownloadSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client HSMSecurityDomainClient) DownloadSender(req *http.Request) (future HSMSecurityDomainDownloadFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // DownloadResponder handles the response to the Download request. The method always
 // closes the http.Response Body.
 func (client HSMSecurityDomainClient) DownloadResponder(resp *http.Response) (result SecurityDomainObject, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// DownloadPending retrieves the Security Domain download operation status
+// Parameters:
+// vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
+func (client HSMSecurityDomainClient) DownloadPending(ctx context.Context, vaultBaseURL string) (result SecurityDomainOperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HSMSecurityDomainClient.DownloadPending")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DownloadPendingPreparer(ctx, vaultBaseURL)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "DownloadPending", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DownloadPendingSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "DownloadPending", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DownloadPendingResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "DownloadPending", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// DownloadPendingPreparer prepares the DownloadPending request.
+func (client HSMSecurityDomainClient) DownloadPendingPreparer(ctx context.Context, vaultBaseURL string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"vaultBaseUrl": vaultBaseURL,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{vaultBaseUrl}", urlParameters),
+		autorest.WithPath("/securitydomain/download/pending"))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DownloadPendingSender sends the DownloadPending request. The method will close the
+// http.Response Body if it receives an error.
+func (client HSMSecurityDomainClient) DownloadPendingSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// DownloadPendingResponder handles the response to the DownloadPending request. The method always
+// closes the http.Response Body.
+func (client HSMSecurityDomainClient) DownloadPendingResponder(resp *http.Response) (result SecurityDomainOperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -117,7 +187,7 @@ func (client HSMSecurityDomainClient) DownloadResponder(resp *http.Response) (re
 	return
 }
 
-// TransferKeyMethod retrieve security domain transfer key
+// TransferKeyMethod retrieve Security Domain transfer key
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
 func (client HSMSecurityDomainClient) TransferKeyMethod(ctx context.Context, vaultBaseURL string) (result TransferKey, err error) {
@@ -159,7 +229,7 @@ func (client HSMSecurityDomainClient) TransferKeyMethodPreparer(ctx context.Cont
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
-	const APIVersion = "7.2-preview"
+	const APIVersion = "7.2"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -167,7 +237,7 @@ func (client HSMSecurityDomainClient) TransferKeyMethodPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{vaultBaseUrl}", urlParameters),
-		autorest.WithPath("/securitydomain/transferkey"),
+		autorest.WithPath("/securitydomain/upload"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -190,11 +260,11 @@ func (client HSMSecurityDomainClient) TransferKeyMethodResponder(resp *http.Resp
 	return
 }
 
-// Upload request Security domain upload operation
+// Upload restore the provided Security Domain.
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
-// securityDomain - security domain
-func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL string, securityDomain SecurityDomainUploadObject) (result HSMSecurityDomainUploadFuture, err error) {
+// securityDomain - the Security Domain to be restored.
+func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL string, securityDomain SecurityDomainObject) (result HSMSecurityDomainUploadFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HSMSecurityDomainClient.Upload")
 		defer func() {
@@ -207,17 +277,7 @@ func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL s
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: securityDomain,
-			Constraints: []validation.Constraint{{Target: "securityDomain.Value", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "securityDomain.Value.EncData", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "securityDomain.Value.EncData.Data", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "securityDomain.Value.EncData.Data", Name: validation.UniqueItems, Rule: true, Chain: nil}}},
-						{Target: "securityDomain.Value.EncData.Kdf", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-					{Target: "securityDomain.Value.WrappedKey", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "securityDomain.Value.WrappedKey.EncKey", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "securityDomain.Value.WrappedKey.X5t256", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-				}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "securityDomain.Value", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("keyvault.HSMSecurityDomainClient", "Upload", err.Error())
 	}
 
@@ -237,7 +297,7 @@ func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL s
 }
 
 // UploadPreparer prepares the Upload request.
-func (client HSMSecurityDomainClient) UploadPreparer(ctx context.Context, vaultBaseURL string, securityDomain SecurityDomainUploadObject) (*http.Request, error) {
+func (client HSMSecurityDomainClient) UploadPreparer(ctx context.Context, vaultBaseURL string, securityDomain SecurityDomainObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"vaultBaseUrl": vaultBaseURL,
 	}
@@ -271,14 +331,14 @@ func (client HSMSecurityDomainClient) UploadSender(req *http.Request) (future HS
 func (client HSMSecurityDomainClient) UploadResponder(resp *http.Response) (result SecurityDomainOperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// UploadPending get Security domain upload operation status
+// UploadPending get Security Domain upload operation status
 // Parameters:
 // vaultBaseURL - the vault name, for example https://myvault.vault.azure.net.
 func (client HSMSecurityDomainClient) UploadPending(ctx context.Context, vaultBaseURL string) (result SecurityDomainOperationStatus, err error) {

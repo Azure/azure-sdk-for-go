@@ -21,6 +21,75 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{AutoRenew, EmailContacts}
 }
 
+// DataAction enumerates the values for data action.
+type DataAction string
+
+const (
+	// BackupHsmKeys Backup HSM keys.
+	BackupHsmKeys DataAction = "Microsoft.KeyVault/managedHsm/keys/backup/action"
+	// CreateHsmKey Create an HSM key.
+	CreateHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/create"
+	// DecryptHsmKey Decrypt using an HSM key.
+	DecryptHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/decrypt/action"
+	// DeleteHsmKey Delete an HSM key.
+	DeleteHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/delete"
+	// DeleteRoleAssignment Delete role assignment.
+	DeleteRoleAssignment DataAction = "Microsoft.KeyVault/managedHsm/roleAssignments/delete/action"
+	// DownloadHsmSecurityDomain Download an HSM security domain.
+	DownloadHsmSecurityDomain DataAction = "Microsoft.KeyVault/managedHsm/securitydomain/download/action"
+	// EncryptHsmKey Encrypt using an HSM key.
+	EncryptHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/encrypt/action"
+	// ExportHsmKey Export an HSM key.
+	ExportHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/export/action"
+	// GetRoleAssignment Get role assignment.
+	GetRoleAssignment DataAction = "Microsoft.KeyVault/managedHsm/roleAssignments/read/action"
+	// ImportHsmKey Import an HSM key.
+	ImportHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/import/action"
+	// PurgeDeletedHsmKey Purge a deleted HSM key.
+	PurgeDeletedHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/deletedKeys/delete"
+	// ReadDeletedHsmKey Read deleted HSM key.
+	ReadDeletedHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/deletedKeys/read/action"
+	// ReadHsmBackupStatus Read an HSM backup status.
+	ReadHsmBackupStatus DataAction = "Microsoft.KeyVault/managedHsm/backup/status/action"
+	// ReadHsmKey Read HSM key metadata.
+	ReadHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/read/action"
+	// ReadHsmRestoreStatus Read an HSM restore status.
+	ReadHsmRestoreStatus DataAction = "Microsoft.KeyVault/managedHsm/restore/status/action"
+	// ReadHsmSecurityDomainStatus Check the status of the HSM security domain exchange file.
+	ReadHsmSecurityDomainStatus DataAction = "Microsoft.KeyVault/managedHsm/securitydomain/upload/read"
+	// ReadHsmSecurityDomainTransferKey Download an HSM security domain transfer key.
+	ReadHsmSecurityDomainTransferKey DataAction = "Microsoft.KeyVault/managedHsm/securitydomain/transferkey/read"
+	// ReadRoleDefinition Get role definition.
+	ReadRoleDefinition DataAction = "Microsoft.KeyVault/managedHsm/roleDefinitions/read/action"
+	// RecoverDeletedHsmKey Recover deleted HSM key.
+	RecoverDeletedHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/deletedKeys/recover/action"
+	// RestoreHsmKeys Restore HSM keys.
+	RestoreHsmKeys DataAction = "Microsoft.KeyVault/managedHsm/keys/restore/action"
+	// SignHsmKey Sign using an HSM key.
+	SignHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/sign/action"
+	// StartHsmBackup Start an HSM backup.
+	StartHsmBackup DataAction = "Microsoft.KeyVault/managedHsm/backup/start/action"
+	// StartHsmRestore Start an HSM restore.
+	StartHsmRestore DataAction = "Microsoft.KeyVault/managedHsm/restore/start/action"
+	// UnwrapHsmKey Unwrap using an HSM key.
+	UnwrapHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/unwrap/action"
+	// UploadHsmSecurityDomain Upload an HSM security domain.
+	UploadHsmSecurityDomain DataAction = "Microsoft.KeyVault/managedHsm/securitydomain/upload/action"
+	// VerifyHsmKey Verify using an HSM key.
+	VerifyHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/verify/action"
+	// WrapHsmKey Wrap using an HSM key.
+	WrapHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/wrap/action"
+	// WriteHsmKey Update an HSM key.
+	WriteHsmKey DataAction = "Microsoft.KeyVault/managedHsm/keys/write/action"
+	// WriteRoleAssignment Create or update role assignment.
+	WriteRoleAssignment DataAction = "Microsoft.KeyVault/managedHsm/roleAssignments/write/action"
+)
+
+// PossibleDataActionValues returns an array of possible values for the DataAction const type.
+func PossibleDataActionValues() []DataAction {
+	return []DataAction{BackupHsmKeys, CreateHsmKey, DecryptHsmKey, DeleteHsmKey, DeleteRoleAssignment, DownloadHsmSecurityDomain, EncryptHsmKey, ExportHsmKey, GetRoleAssignment, ImportHsmKey, PurgeDeletedHsmKey, ReadDeletedHsmKey, ReadHsmBackupStatus, ReadHsmKey, ReadHsmRestoreStatus, ReadHsmSecurityDomainStatus, ReadHsmSecurityDomainTransferKey, ReadRoleDefinition, RecoverDeletedHsmKey, RestoreHsmKeys, SignHsmKey, StartHsmBackup, StartHsmRestore, UnwrapHsmKey, UploadHsmSecurityDomain, VerifyHsmKey, WrapHsmKey, WriteHsmKey, WriteRoleAssignment}
+}
+
 // DeletionRecoveryLevel enumerates the values for deletion recovery level.
 type DeletionRecoveryLevel string
 
@@ -136,8 +205,6 @@ const (
 	Decrypt JSONWebKeyOperation = "decrypt"
 	// Encrypt ...
 	Encrypt JSONWebKeyOperation = "encrypt"
-	// Export ...
-	Export JSONWebKeyOperation = "export"
 	// Import ...
 	Import JSONWebKeyOperation = "import"
 	// Sign ...
@@ -152,7 +219,7 @@ const (
 
 // PossibleJSONWebKeyOperationValues returns an array of possible values for the JSONWebKeyOperation const type.
 func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
-	return []JSONWebKeyOperation{Decrypt, Encrypt, Export, Import, Sign, UnwrapKey, Verify, WrapKey}
+	return []JSONWebKeyOperation{Decrypt, Encrypt, Import, Sign, UnwrapKey, Verify, WrapKey}
 }
 
 // JSONWebKeySignatureAlgorithm enumerates the values for json web key signature algorithm.
@@ -258,6 +325,49 @@ const (
 // PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
 func PossibleOperationStatusValues() []OperationStatus {
 	return []OperationStatus{Failed, InProgress, Success}
+}
+
+// RoleDefinitionType enumerates the values for role definition type.
+type RoleDefinitionType string
+
+const (
+	// MicrosoftAuthorizationroleDefinitions ...
+	MicrosoftAuthorizationroleDefinitions RoleDefinitionType = "Microsoft.Authorization/roleDefinitions"
+)
+
+// PossibleRoleDefinitionTypeValues returns an array of possible values for the RoleDefinitionType const type.
+func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
+	return []RoleDefinitionType{MicrosoftAuthorizationroleDefinitions}
+}
+
+// RoleScope enumerates the values for role scope.
+type RoleScope string
+
+const (
+	// Global Global scope
+	Global RoleScope = "/"
+	// Keys Keys scope
+	Keys RoleScope = "/keys"
+)
+
+// PossibleRoleScopeValues returns an array of possible values for the RoleScope const type.
+func PossibleRoleScopeValues() []RoleScope {
+	return []RoleScope{Global, Keys}
+}
+
+// RoleType enumerates the values for role type.
+type RoleType string
+
+const (
+	// BuiltInRole Built in role.
+	BuiltInRole RoleType = "AKVBuiltInRole"
+	// CustomRole Custom role.
+	CustomRole RoleType = "CustomRole"
+)
+
+// PossibleRoleTypeValues returns an array of possible values for the RoleType const type.
+func PossibleRoleTypeValues() []RoleType {
+	return []RoleType{BuiltInRole, CustomRole}
 }
 
 // SasTokenType enumerates the values for sas token type.

@@ -4,9 +4,7 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
-	"log"
 	"os"
-	"os/exec"
 	"strings"
 	"testing"
 

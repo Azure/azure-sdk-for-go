@@ -11,30 +11,10 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
 )
-
-type tableServiceClientLiveTests struct {
-	suite.Suite
-	endpointType EndpointType
-	mode         recording.RecordMode
-}
-
-// Hookup to the testing framework
-func TestServiceClient_Storage(t *testing.T) {
-	storage := tableServiceClientLiveTests{endpointType: StorageEndpoint, mode: recording.Playback /* change to Record to re-record tests */}
-	suite.Run(t, &storage)
-}
-
-// Hookup to the testing framework
-func TestServiceClient_Cosmos(t *testing.T) {
-	cosmos := tableServiceClientLiveTests{endpointType: CosmosEndpoint, mode: recording.Playback /* change to Record to re-record tests */}
-	suite.Run(t, &cosmos)
-}
 
 func TestServiceErrorsServiceClient(t *testing.T) {
 	for _, service := range services {
@@ -206,7 +186,7 @@ func TestGetProperties(t *testing.T) {
 	require.NotNil(t, resp)
 }
 
-// Logging is only availble on storage accounts
+// Logging is only available on storage accounts
 func TestSetLogging(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
@@ -365,14 +345,4 @@ func TestRetentionTooLong(t *testing.T) {
 
 	_, err := service.SetProperties(ctx, props, nil)
 	require.Error(t, err)
-}
-
-func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {
-	// setup the test environment
-	recordedTestSetup(s.T(), s.T().Name(), s.endpointType, s.mode)
-}
-
-func (s *tableServiceClientLiveTests) AfterTest(suite string, test string) {
-	// teardown the test context
-	recordedTestTeardown(s.T().Name())
 }

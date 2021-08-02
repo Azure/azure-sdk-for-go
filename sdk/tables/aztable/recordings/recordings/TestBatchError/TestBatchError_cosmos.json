@@ -1,0 +1,131 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/Tables",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "35",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
+        "x-ms-date": "Mon, 02 Aug 2021 16:29:11 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "TableName": "tableName3265552871"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Mon, 02 Aug 2021 16:29:11 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T16%3A29%3A11.5465736Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName3265552871\u0027)",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "4e936b23-6b7a-4214-b13c-8860e6bb26a9"
+      },
+      "ResponseBody": {
+        "TableName": "tableName3265552871",
+        "odata.metadata": "https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+      }
+    },
+    {
+      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/tableName3265552871",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/tableName3265552871",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "194",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "prefer": "return-no-content",
+        "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
+        "x-ms-date": "Mon, 02 Aug 2021 16:29:12 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "Bool": true,
+        "Byte": "c29tZWJ5dGVz",
+        "DateTime": "2021-07-13T00:00:00Z",
+        "Float": 3.14159,
+        "Integer": 3,
+        "PartitionKey": "partition",
+        "RowKey": "3",
+        "String": "someString",
+        "Timestamp": "0001-01-01T00:00:00Z"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Mon, 02 Aug 2021 16:29:11 GMT",
+        "ETag": "W/\u0022datetime\u00272021-08-02T16%3A29%3A12.1677320Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/tableName3265552871(PartitionKey=\u0027partition\u0027,RowKey=\u00273\u0027)",
+        "Preference-Applied": "return-no-content",
+        "x-ms-request-id": "e36da9b2-9275-44b4-bd22-bc94982f1f71"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/$batch",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/$batch",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "2128",
+        "Content-Type": "multipart/mixed; boundary=batch_4427f2d1-bca8-4daf-7f87-2e86637061c7",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
+        "x-ms-date": "Mon, 02 Aug 2021 16:29:13 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": "LS1iYXRjaF80NDI3ZjJkMS1iY2E4LTRkYWYtN2Y4Ny0yZTg2NjM3MDYxYzcNCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT1jaGFuZ2VzZXRfMzUxYWNlMjUtNzA2MC00NjMyLTc1YzYtMmRjZmE3MGNhMWRmDQoNCi0tY2hhbmdlc2V0XzM1MWFjZTI1LTcwNjAtNDYzMi03NWM2LTJkY2ZhNzBjYTFkZg0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUE9TVCBodHRwczovL3NlYW5rYW5lcHJpbS50YWJsZS5jb3Ntb3MuYXp1cmUuY29tL3RhYmxlTmFtZTMyNjU1NTI4NzE/JTI0Zm9ybWF0PWFwcGxpY2F0aW9uJTJGanNvbiUzQm9kYXRhJTNEbWluaW1hbG1ldGFkYXRhIEhUVFAvMS4xDQpBY2NlcHQ6IGFwcGxpY2F0aW9uL2pzb247b2RhdGE9bWluaW1hbG1ldGFkYXRhDQpDb250ZW50LUxlbmd0aDogMTk0DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24NCkRhdGFzZXJ2aWNldmVyc2lvbjogMy4wDQpQcmVmZXI6IHJldHVybi1uby1jb250ZW50DQpYLU1zLVZlcnNpb246IDIwMTktMDItMDINCg0KeyJCb29sIjp0cnVlLCJCeXRlIjoiYzI5dFpXSjVkR1Z6IiwiRGF0ZVRpbWUiOiIyMDIxLTA3LTEzVDAwOjAwOjAwWiIsIkZsb2F0IjozLjE0MTU5LCJJbnRlZ2VyIjoxLCJQYXJ0aXRpb25LZXkiOiJwYXJ0aXRpb24iLCJSb3dLZXkiOiIxIiwiU3RyaW5nIjoic29tZVN0cmluZyIsIlRpbWVzdGFtcCI6IjAwMDEtMDEtMDFUMDA6MDA6MDBaIn0NCi0tY2hhbmdlc2V0XzM1MWFjZTI1LTcwNjAtNDYzMi03NWM2LTJkY2ZhNzBjYTFkZg0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUE9TVCBodHRwczovL3NlYW5rYW5lcHJpbS50YWJsZS5jb3Ntb3MuYXp1cmUuY29tL3RhYmxlTmFtZTMyNjU1NTI4NzE/JTI0Zm9ybWF0PWFwcGxpY2F0aW9uJTJGanNvbiUzQm9kYXRhJTNEbWluaW1hbG1ldGFkYXRhIEhUVFAvMS4xDQpBY2NlcHQ6IGFwcGxpY2F0aW9uL2pzb247b2RhdGE9bWluaW1hbG1ldGFkYXRhDQpDb250ZW50LUxlbmd0aDogMTk0DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24NCkRhdGFzZXJ2aWNldmVyc2lvbjogMy4wDQpQcmVmZXI6IHJldHVybi1uby1jb250ZW50DQpYLU1zLVZlcnNpb246IDIwMTktMDItMDINCg0KeyJCb29sIjp0cnVlLCJCeXRlIjoiYzI5dFpXSjVkR1Z6IiwiRGF0ZVRpbWUiOiIyMDIxLTA3LTEzVDAwOjAwOjAwWiIsIkZsb2F0IjozLjE0MTU5LCJJbnRlZ2VyIjoyLCJQYXJ0aXRpb25LZXkiOiJwYXJ0aXRpb24iLCJSb3dLZXkiOiIyIiwiU3RyaW5nIjoic29tZVN0cmluZyIsIlRpbWVzdGFtcCI6IjAwMDEtMDEtMDFUMDA6MDA6MDBaIn0NCi0tY2hhbmdlc2V0XzM1MWFjZTI1LTcwNjAtNDYzMi03NWM2LTJkY2ZhNzBjYTFkZg0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUE9TVCBodHRwczovL3NlYW5rYW5lcHJpbS50YWJsZS5jb3Ntb3MuYXp1cmUuY29tL3RhYmxlTmFtZTMyNjU1NTI4NzE/JTI0Zm9ybWF0PWFwcGxpY2F0aW9uJTJGanNvbiUzQm9kYXRhJTNEbWluaW1hbG1ldGFkYXRhIEhUVFAvMS4xDQpBY2NlcHQ6IGFwcGxpY2F0aW9uL2pzb247b2RhdGE9bWluaW1hbG1ldGFkYXRhDQpDb250ZW50LUxlbmd0aDogMTk0DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24NCkRhdGFzZXJ2aWNldmVyc2lvbjogMy4wDQpQcmVmZXI6IHJldHVybi1uby1jb250ZW50DQpYLU1zLVZlcnNpb246IDIwMTktMDItMDINCg0KeyJCb29sIjp0cnVlLCJCeXRlIjoiYzI5dFpXSjVkR1Z6IiwiRGF0ZVRpbWUiOiIyMDIxLTA3LTEzVDAwOjAwOjAwWiIsIkZsb2F0IjozLjE0MTU5LCJJbnRlZ2VyIjozLCJQYXJ0aXRpb25LZXkiOiJwYXJ0aXRpb24iLCJSb3dLZXkiOiIzIiwiU3RyaW5nIjoic29tZVN0cmluZyIsIlRpbWVzdGFtcCI6IjAwMDEtMDEtMDFUMDA6MDA6MDBaIn0NCi0tY2hhbmdlc2V0XzM1MWFjZTI1LTcwNjAtNDYzMi03NWM2LTJkY2ZhNzBjYTFkZi0tDQoNCi0tYmF0Y2hfNDQyN2YyZDEtYmNhOC00ZGFmLTdmODctMmU4NjYzNzA2MWM3LS0NCg==",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Type": "multipart/mixed; boundary=batchresponse_49dd5479-f004-4571-8d46-d1f6c5af16c8",
+        "Date": "Mon, 02 Aug 2021 16:29:11 GMT",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "a2559e85-c4ca-4fe5-89a0-5e1e4509f426"
+      },
+      "ResponseBody": "LS1iYXRjaHJlc3BvbnNlXzQ5ZGQ1NDc5LWYwMDQtNDU3MS04ZDQ2LWQxZjZjNWFmMTZjOA0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PWNoYW5nZXNldHJlc3BvbnNlX2E0M2VlNmYxLWEzMWEtNGUyMy1iMTc4LWI5MzVhOTgwODMzMw0KDQotLWNoYW5nZXNldHJlc3BvbnNlX2E0M2VlNmYxLWEzMWEtNGUyMy1iMTc4LWI5MzVhOTgwODMzMwpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHAKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5CgpIVFRQLzEuMSA0MDkgQ29uZmxpY3QNCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbjtvZGF0YT1mdWxsbWV0YWRhdGENCg0KeyJvZGF0YS5lcnJvciI6eyJjb2RlIjoiRW50aXR5QWxyZWFkeUV4aXN0cyIsIm1lc3NhZ2UiOnsibGFuZyI6ImVuLXVzIiwidmFsdWUiOiIyOlRoZSBzcGVjaWZpZWQgZW50aXR5IGFscmVhZHkgZXhpc3RzLlxuXG5SZXF1ZXN0SUQ6YTI1NTllODUtYzRjYS00ZmU1LTg5YTAtNWUxZTQ1MDlmNDI2XG4ifX19DQotLWNoYW5nZXNldHJlc3BvbnNlX2E0M2VlNmYxLWEzMWEtNGUyMy1iMTc4LWI5MzVhOTgwODMzMy0tCi0tYmF0Y2hyZXNwb25zZV80OWRkNTQ3OS1mMDA0LTQ1NzEtOGQ0Ni1kMWY2YzVhZjE2YzgtLQ0K"
+    },
+    {
+      "RequestUri": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName3265552871\u0027)",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/Tables(\u0027tableName3265552871\u0027)",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-aztable/\u003Cversion\u003E azsdk-go-aztable/\u003Cversion\u003E azcore/v0.16.2 (go1.16.5; Windows_NT)",
+        "x-ms-date": "Mon, 02 Aug 2021 16:29:13 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Mon, 02 Aug 2021 16:29:12 GMT",
+        "x-ms-request-id": "4eae3068-ee9c-4c26-9326-d2c65e7888e8"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

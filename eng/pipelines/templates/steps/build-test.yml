@@ -56,18 +56,27 @@ steps:
       }
       else {
         # ref https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.1#example-8--create-a-detached-process-on-linux
-        nohup '$(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)"' & 
+        # nohup '$(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)"' & 
       }
     displayName: "Run Test-Proxy"
 
   - pwsh: |
-      Get-Process
+      if ($IsWindows){
+        Get-Process
+      }
+      else{
+        jobs
+      }
     displayName: "Check Processes"
 
   - pwsh: |
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
+        if $(-not $IsWindows){
+          Write-Host "On Linux, starting test proxy"
+          $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)" &
+        }
         Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic .
         # | go-junit-report -set-exit-code > report.xml

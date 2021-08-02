@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
+	"log"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 
@@ -197,4 +199,25 @@ func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 		return req.Next()
 	})
+}
+
+func TestMain(m *testing.M) {
+	// Start the test proxy
+	cmd := exec.Command("test-proxy", "--storage-location", "./recordings/")
+
+	go func() {
+		err := cmd.Start()
+		if err != nil {
+			fmt.Println("Error running the test proxy")
+			panic(err)
+		}
+		fmt.Println("Running test-proxy in the background")
+	}()
+
+	exitCode := m.Run()
+	os.Exit(exitCode)
+	err := cmd.Process.Kill()
+	if err != nil {
+		log.Fatal("failed to kill the process: ", err)
+	}
 }

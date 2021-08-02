@@ -4,9 +4,9 @@
 #  GO_WORKSPACE_PATH <- location of copied sources directory
 #  GO_PATH <- The value that should be set for the GO_PATH environment variable
 Param(
-  [string] $goWorkSpaceDir,
-  [string] $orgOrUser = "Azure",
-  [string] $repo = "azure-sdk-for-go"
+    [string] $goWorkSpaceDir,
+    [string] $orgOrUser = "Azure",
+    [string] $repo = "azure-sdk-for-go"
 )
 $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
@@ -24,6 +24,6 @@ Write-Host "Root of new Go Workspace is $goWorkSpaceDir"
 Copy-Item -Container -Recurse -Path "$repoRoot/*" -Destination $CreatedGoWorkspaceSrc
 
 return New-Object PSObject -Property @{
-  GO_WORKSPACE_PATH = Resolve-Path $CreatedGoWorkspaceSrc
-  GO_PATH = Resolve-Path $goWorkSpaceDir
+    GO_WORKSPACE_PATH = Resolve-Path $CreatedGoWorkspaceSrc
+    GO_PATH           = Resolve-Path $goWorkSpaceDir
 }

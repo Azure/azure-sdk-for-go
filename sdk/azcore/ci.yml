@@ -3,11 +3,13 @@ trigger:
   paths:
     include:
     - sdk/azcore/
+    - eng/
 
 pr:
   paths:
     include:
     - sdk/azcore/
+    - eng/
 
 
 stages:

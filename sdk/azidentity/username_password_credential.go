@@ -77,7 +77,9 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 	return tk, err
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
-func (c *UsernamePasswordCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
+func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

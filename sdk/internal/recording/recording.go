@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
+	"github.com/prometheus/common/log"
 	"gopkg.in/yaml.v2"
 )
 
@@ -419,6 +420,8 @@ var modeMap = map[RecordMode]recorder.Mode{
 }
 
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
+var ModeRecording = "record"
+var ModePlayback = "playback"
 
 var baseProxyURLSecure = "localhost:5001"
 var baseProxyURL = "localhost:5000"
@@ -474,7 +477,8 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 		options = defaultOptions()
 	}
 	if recordMode == "" {
-		return errors.New("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\"")
+		log.Warn("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
+		recordMode = "playback"
 	}
 	testId := getTestId(t)
 
@@ -589,7 +593,7 @@ func GetEnvVariable(varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if os.Getenv("AZURE_RECORD_MODE") != "record" {
+	if GetRecordMode() == ModeRecording {
 		t.Skip("Live Test Only")
 	}
 }
@@ -597,7 +601,11 @@ func LiveOnly(t *testing.T) {
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
 func Sleep(duration int) {
-	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+	if GetRecordMode() == ModePlayback {
 		time.Sleep(time.Duration(duration) * time.Second)
 	}
+}
+
+func GetRecordMode() string {
+	return recordMode
 }

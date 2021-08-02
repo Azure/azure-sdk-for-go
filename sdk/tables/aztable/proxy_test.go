@@ -174,7 +174,7 @@ func clearAllTables(service *TableServiceClient) error {
 }
 
 func createSharedKey(accountName, accountKey string) (azcore.Credential, error) {
-	if os.Getenv("AZURE_RECORD_MODE") == "record" {
+	if recording.GetRecordMode() == recording.ModeRecording {
 		return NewSharedKeyCredential(accountName, accountKey)
 	}
 

@@ -200,6 +200,7 @@ func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions
 	})
 }
 
+/*
 func TestMain(m *testing.M) {
 	// Start the test proxy
 	cmd := exec.Command("test-proxy", "--storage-location", "./recordings/")
@@ -232,3 +233,4 @@ func TestMain(m *testing.M) {
 		log.Fatal("failed to kill the process: ", err)
 	}
 }
+*/

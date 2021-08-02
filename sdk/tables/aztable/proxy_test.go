@@ -96,7 +96,7 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	serviceURL := storageURI(accountName, "core.windows.net")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
-	
+
 	tableName, err := createRandomName(t, "tableName")
 	require.NoError(t, err)
 
@@ -168,6 +168,13 @@ func clearAllTables(service *TableServiceClient) error {
 		}
 	}
 	return pager.Err()
+}
+
+func createAADCredential() (azcore.Credential, error) {
+	if recording.GetRecordMode() == recording.ModeRecording {
+		return azidentity.NewDefaultAzureCredential(nil)
+	}
+	return NewFakeCredential("accountName", "accountKey"), nil
 }
 
 func createSharedKey(accountName, accountKey string) (azcore.Credential, error) {

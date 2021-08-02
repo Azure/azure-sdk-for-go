@@ -194,7 +194,6 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 
 func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		// Do nothing, authentication headers are stripped from recordings
 		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 		return req.Next()

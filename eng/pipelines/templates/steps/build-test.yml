@@ -40,6 +40,16 @@ steps:
     env:
       GO111MODULE: 'on'
 
+  - task: UseDotNet@2
+    displayName: "Use .NET Core SDK"
+    inputs:
+      packageType: sdk
+      version: 5.0.205
+
+  - pwsh: |
+      dotnet tool install azure.sdk.tools.testproxy --global --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk/nuget/v3/index.json -version 1.0.0-dev.20210722.1
+    displayName: "Install TestProxy"
+
   - pwsh: |
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {

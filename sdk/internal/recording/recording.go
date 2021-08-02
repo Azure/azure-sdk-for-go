@@ -478,6 +478,8 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 	if recordMode == "" {
 		fmt.Println("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
 		recordMode = "playback"
+	} else {
+		fmt.Println("AZURE_RECORD_MODE: ", recordMode)
 	}
 	testId := getTestId(t)
 

@@ -83,6 +83,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
+      AZURE_RECORD_MODE: 'playback'
 
   - pwsh: |
       $coverageFiles = [Collections.Generic.List[String]]@()

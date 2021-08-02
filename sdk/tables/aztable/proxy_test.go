@@ -89,20 +89,17 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	if !ok {
 		accountName = "fakestorageaccount"
 	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		t.Log("STORAGE KEY")
-		accountKey = "fakekey"
-	}
 
 	err := recording.AddUriSanitizer("fakestorageaccount", "seankaneprim", nil)
 	require.NoError(t, err)
 
 	serviceURL := storageURI(accountName, "core.windows.net")
-	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
+	
 	tableName, err := createRandomName(t, "tableName")
 	require.NoError(t, err)
+
 	return createTableClientForRecording(t, tableName, serviceURL, cred)
 }
 

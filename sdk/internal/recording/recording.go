@@ -592,7 +592,7 @@ func GetEnvVariable(varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if GetRecordMode() == ModeRecording {
+	if GetRecordMode() != ModeRecording {
 		t.Skip("Live Test Only")
 	}
 }
@@ -600,7 +600,7 @@ func LiveOnly(t *testing.T) {
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
 func Sleep(duration int) {
-	if GetRecordMode() == ModePlayback {
+	if GetRecordMode() == ModeRecording {
 		time.Sleep(time.Duration(duration) * time.Second)
 	}
 }

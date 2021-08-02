@@ -47,33 +47,18 @@ steps:
       version: 5.0.205
 
   - pwsh: |
-      dotnet tool install azure.sdk.tools.testproxy --tool-path $(Build.BinariesDirectory)/test-proxy --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk/nuget/v3/index.json --version 1.0.0-dev.20210722.1
-    displayName: "Install TestProxy"
-
-  - pwsh: |
-      if ($IsWindows) {
-        Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe -ArgumentList "--storage-location '$(Build.SourcesDirectory)'" -NoNewWindow -PassThru
-      }
-      else {
-        # ref https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.1#example-8--create-a-detached-process-on-linux
-        # nohup '$(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)"' & 
-      }
-    displayName: "Run Test-Proxy"
-
-  - pwsh: |
-      if ($IsWindows){
-        Get-Process
-      }
-    displayName: "Check Processes"
+      docker run `
+      --detach `
+      -v $(Build.SourcesDirectory):/etc/testproxy `
+      -p 5001:5001 `
+      -p 5000:5000 `
+      azsdkengsys.azurecr.io/engsys/ubuntu_testproxy_server:latest
+    displayName: 'Run the docker container'
 
   - pwsh: |
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-        if (-not $IsWindows){
-          Write-Host "On Linux, starting test proxy"
-          $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)" &
-        }
         Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic .
         # | go-junit-report -set-exit-code > report.xml

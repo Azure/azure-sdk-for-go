@@ -14,6 +14,7 @@ import (
 )
 
 func TestBatchAdd(t *testing.T) {
+	liveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -49,6 +50,7 @@ func TestBatchAdd(t *testing.T) {
 }
 
 func TestBatchMixed(t *testing.T) {
+	liveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -118,7 +120,9 @@ func TestBatchMixed(t *testing.T) {
 
 			// Add the remaining 2 entities.
 			marshalled4thEntity, err := json.Marshal((*entitiesToCreate)[3])
+			require.NoError(t, err)
 			marshalled5thEntity, err := json.Marshal((*entitiesToCreate)[4])
+			require.NoError(t, err)
 			batch[3] = TableTransactionAction{ActionType: Add, Entity: marshalled4thEntity}
 			batch[4] = TableTransactionAction{ActionType: Add, Entity: marshalled5thEntity}
 
@@ -145,10 +149,10 @@ func TestBatchMixed(t *testing.T) {
 			require.Equalf(t, unMarshaledPostMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 		})
 	}
-
 }
 
 func TestBatchError(t *testing.T) {
+	liveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -188,6 +192,7 @@ func TestBatchError(t *testing.T) {
 }
 
 func TestBatchComplex(t *testing.T) {
+	liveOnly(t)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)

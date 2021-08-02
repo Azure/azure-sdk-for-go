@@ -201,3 +201,9 @@ func testSleep() {
 		time.Sleep(45 * time.Second)
 	}
 }
+
+func liveOnly(t *testing.T) {
+	if os.Getenv("AZURE_RECORD_MODE") != "record" {
+		t.Skip("Live Test Only")
+	}
+}

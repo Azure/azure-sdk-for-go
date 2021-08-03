@@ -1,9 +1,19 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
 ### New Funcs
 
-1. Location.MarshalJSON() ([]byte, error)
-1. Policies.MarshalJSON() ([]byte, error)
-1. TenantIDDescription.MarshalJSON() ([]byte, error)
+1. NewOperationClient() OperationClient
+1. NewOperationClientWithBaseURI(string) OperationClient
+1. OperationClient.Get(context.Context, string) (CreationResult, error)
+1. OperationClient.GetPreparer(context.Context, string) (*http.Request, error)
+1. OperationClient.GetResponder(*http.Response) (CreationResult, error)
+1. OperationClient.GetSender(*http.Request) (*http.Response, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. ErrorResponseBody
+1. OperationClient

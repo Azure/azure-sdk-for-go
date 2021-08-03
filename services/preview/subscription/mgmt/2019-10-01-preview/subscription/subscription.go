@@ -106,7 +106,9 @@ func (client Client) CancelResponder(resp *http.Response) (result CanceledSubscr
 
 // CreateAlias create Alias Subscription.
 // Parameters:
-// aliasName - alias Name
+// aliasName - name for this subscription creation request also known as alias. Note that this is not the same
+// as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+// creation.
 func (client Client) CreateAlias(ctx context.Context, aliasName string, body PutAliasRequest) (result CreateAliasFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateAlias")
@@ -452,7 +454,9 @@ func (client Client) CreateSubscriptionInEnrollmentAccountResponder(resp *http.R
 
 // DeleteAlias delete Alias.
 // Parameters:
-// aliasName - alias Name
+// aliasName - name for this subscription creation request also known as alias. Note that this is not the same
+// as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+// creation.
 func (client Client) DeleteAlias(ctx context.Context, aliasName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.DeleteAlias")
@@ -597,7 +601,9 @@ func (client Client) EnableResponder(resp *http.Response) (result EnabledSubscri
 
 // GetAlias get Alias Subscription.
 // Parameters:
-// aliasName - alias Name
+// aliasName - name for this subscription creation request also known as alias. Note that this is not the same
+// as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+// creation.
 func (client Client) GetAlias(ctx context.Context, aliasName string) (result PutAliasResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetAlias")

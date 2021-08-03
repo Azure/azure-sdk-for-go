@@ -18,6 +18,13 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*subscription.OperationsClient)(nil)
 
+// OperationClientAPI contains the set of methods on the OperationClient type.
+type OperationClientAPI interface {
+	Get(ctx context.Context, operationID string) (result subscription.CreationResult, err error)
+}
+
+var _ OperationClientAPI = (*subscription.OperationClient)(nil)
+
 // FactoryClientAPI contains the set of methods on the FactoryClient type.
 type FactoryClientAPI interface {
 	CreateSubscriptionInEnrollmentAccount(ctx context.Context, enrollmentAccountName string, body subscription.CreationParameters) (result subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture, err error)

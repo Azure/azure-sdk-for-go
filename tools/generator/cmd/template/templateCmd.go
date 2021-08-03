@@ -68,6 +68,7 @@ type Flags struct {
 	PackageTitle string
 }
 
+// GeneratePackageByTemplate creates a new set of files based on the things in template directory
 func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	root, err := filepath.Abs(flags.SDKRoot)
 	if err != nil {

@@ -79,7 +79,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	} else {
 		absTemplateDir = filepath.Join(root, flags.TemplatePath)
 	}
-	fileList, err := os.ReadDir(absTemplateDir)
+	fileList, err := ioutil.ReadDir(absTemplateDir)
 	if err != nil {
 		return fmt.Errorf("cannot read the directory '%s': %+v", absTemplateDir, err)
 	}

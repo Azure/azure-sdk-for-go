@@ -42,7 +42,7 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 
 	_, err = context.client.CreateTable(ctx, tableName)
 	delete := func() {
-		_, err := context.client.DeleteTable(ctx, tableName)
+		_, err := context.client.DeleteTable(ctx, tableName, nil)
 		if err != nil {
 			fmt.Printf("Error cleaning up test. %v\n", err.Error())
 		}
@@ -65,7 +65,7 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
 
 	resp, err := context.client.CreateTable(ctx, tableName)
 	delete := func() {
-		_, err := context.client.DeleteTable(ctx, tableName)
+		_, err := context.client.DeleteTable(ctx, tableName, nil)
 		if err != nil {
 			fmt.Printf("Error cleaning up test. %v\n", err.Error())
 		}
@@ -133,7 +133,7 @@ func clearAllTables(context *testContext) error {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 		for _, v := range resp.TableQueryResponse.Value {
-			_, err := context.client.DeleteTable(ctx, *v.TableName)
+			_, err := context.client.DeleteTable(ctx, *v.TableName, nil)
 			if err != nil {
 				return err
 			}

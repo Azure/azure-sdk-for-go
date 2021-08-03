@@ -50,8 +50,11 @@ func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (Tabl
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) DeleteTable(ctx context.Context, name string) (TableDeleteResponse, error) {
-	return t.client.Delete(ctx, name, nil)
+func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *TableDeleteOptions) (TableDeleteResponse, error) {
+	if options == nil {
+		options = &TableDeleteOptions{}
+	}
+	return t.client.Delete(ctx, name, options)
 }
 
 // List queries the existing tables using the specified ListOptions.

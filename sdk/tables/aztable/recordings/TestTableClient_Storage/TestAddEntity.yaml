@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable71ug01elhk9wn"}'
+    body: '{"TableName":"gotabled7jd6vj608h1o"}'
     form: {}
     headers:
       Accept:
@@ -19,28 +19,28 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:51 GMT
+      - Tue, 03 Aug 2021 15:24:57 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotable71ug01elhk9wn"}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotabled7jd6vj608h1o"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Thu, 15 Jul 2021 21:50:51 GMT
+      - Tue, 03 Aug 2021 15:24:56 GMT
       Location:
-      - https://seankaneprim.table.core.windows.net/Tables('gotable71ug01elhk9wn')
+      - https://seankaneprim.table.core.windows.net/Tables('gotabled7jd6vj608h1o')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 985cf67b-f002-008a-26c3-79b3c4000000
+      - 4fc78663-9002-0068-277b-888ee5000000
       X-Ms-Version:
       - "2019-02-02"
     status: 201 Created
@@ -67,10 +67,10 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:52 GMT
+      - Tue, 03 Aug 2021 15:24:57 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/gotable71ug01elhk9wn
+    url: https://seankaneprim.table.core.windows.net/gotabled7jd6vj608h1o
     method: POST
   response:
     body: ""
@@ -80,13 +80,13 @@ interactions:
       Content-Length:
       - "0"
       Dataserviceid:
-      - https://seankaneprim.table.core.windows.net/gotable71ug01elhk9wn(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.core.windows.net/gotabled7jd6vj608h1o(PartitionKey='partition',RowKey='1')
       Date:
-      - Thu, 15 Jul 2021 21:50:51 GMT
+      - Tue, 03 Aug 2021 15:24:56 GMT
       Etag:
-      - W/"datetime'2021-07-15T21%3A50%3A51.4773752Z'"
+      - W/"datetime'2021-08-03T15%3A24%3A57.081626Z'"
       Location:
-      - https://seankaneprim.table.core.windows.net/gotable71ug01elhk9wn(PartitionKey='partition',RowKey='1')
+      - https://seankaneprim.table.core.windows.net/gotabled7jd6vj608h1o(PartitionKey='partition',RowKey='1')
       Preference-Applied:
       - return-no-content
       Server:
@@ -94,7 +94,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 985cf6ca-f002-008a-73c3-79b3c4000000
+      - 4fc7868c-9002-0068-4c7b-888ee5000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content
@@ -112,10 +112,10 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 15 Jul 2021 21:50:52 GMT
+      - Tue, 03 Aug 2021 15:24:57 GMT
       X-Ms-Version:
       - "2019-02-02"
-    url: https://seankaneprim.table.core.windows.net/Tables('gotable71ug01elhk9wn')
+    url: https://seankaneprim.table.core.windows.net/Tables('gotabled7jd6vj608h1o')
     method: DELETE
   response:
     body: ""
@@ -125,13 +125,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 15 Jul 2021 21:50:51 GMT
+      - Tue, 03 Aug 2021 15:24:56 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 985cf6f0-f002-008a-16c3-79b3c4000000
+      - 4fc786bb-9002-0068-767b-888ee5000000
       X-Ms-Version:
       - "2019-02-02"
     status: 204 No Content

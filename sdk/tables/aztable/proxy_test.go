@@ -141,27 +141,64 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 }
 
 func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
-	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	var cred azcore.Credential
+	accountName := "fakestorageaccount"
+	if recording.InPlayback() {
+		cred = NewFakeCredential(accountName, "fakeAccountKey")
+	} else {
+		accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+		if !ok {
+			accountName = "fakestorageaccount"
+		}
 
-	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-	require.NoError(t, err)
+		err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+		require.NoError(t, err)
+
+		cred, err = azidentity.NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+	}
+
+	// accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+
+	// err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	// require.NoError(t, err)
 
 	serviceURL := storageURI(accountName, "core.windows.net")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
+	// cred, err := azidentity.NewDefaultAzureCredential(nil)
+	// require.NoError(t, err)
 	return createTableServiceClientForRecording(t, serviceURL, cred)
 }
 
 func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
-	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakekey")
+	var cred azcore.Credential
+	accountName := "fakestorageaccount"
+	if recording.InPlayback() {
+		cred = NewFakeCredential(accountName, "fakeAccountKey")
+	} else {
+		accountName, ok := os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
+		if !ok {
+			accountName = "fakecosmosaccount"
+		}
+		accountKey, ok := os.LookupEnv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
+		if !ok {
+			t.Log("COSMOS KEY")
+			accountKey = "fakekey"
+		}
 
-	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-	require.NoError(t, err)
+		err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+		require.NoError(t, err)
+		cred, err = NewSharedKeyCredential(accountName, accountKey)
+		require.NoError(t, err)
+	}
+	// accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	// accountKey := recording.GetEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakekey")
+
+	// err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	// require.NoError(t, err)
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
-	cred, err := createSharedKey(accountName, accountKey)
-	require.NoError(t, err)
+	// cred, err := createSharedKey(accountName, accountKey)
+	// require.NoError(t, err)
 	return createTableServiceClientForRecording(t, serviceURL, cred)
 }
 

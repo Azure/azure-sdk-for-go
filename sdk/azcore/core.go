@@ -203,3 +203,6 @@ func IsNullValue(v interface{}) bool {
 	// no sentinel object for this *t
 	return false
 }
+
+// ETag is a property used for optimistic concurrency during updates
+type ETag string

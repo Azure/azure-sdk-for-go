@@ -610,3 +610,7 @@ func Sleep(duration int) {
 func GetRecordMode() string {
 	return recordMode
 }
+
+func InPlayback() bool {
+	return GetRecordMode() == ModePlayback
+}

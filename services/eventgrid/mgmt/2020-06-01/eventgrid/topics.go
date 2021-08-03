@@ -75,6 +75,7 @@ func (client TopicsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"api-version": APIVersion,
 	}
 
+	topicInfo.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -684,13 +685,13 @@ func (client TopicsClient) ListSharedAccessKeysResponder(resp *http.Response) (r
 // resourceGroupName - the name of the resource group within the user's subscription.
 // topicName - name of the topic.
 // regenerateKeyRequest - request body to regenerate key.
-func (client TopicsClient) RegenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest) (result TopicSharedAccessKeys, err error) {
+func (client TopicsClient) RegenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest) (result TopicsRegenerateKeyFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TopicsClient.RegenerateKey")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -707,16 +708,9 @@ func (client TopicsClient) RegenerateKey(ctx context.Context, resourceGroupName 
 		return
 	}
 
-	resp, err := client.RegenerateKeySender(req)
+	result, err = client.RegenerateKeySender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "RegenerateKey", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.RegenerateKeyResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "RegenerateKey", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "RegenerateKey", nil, "Failure sending request")
 		return
 	}
 
@@ -748,8 +742,17 @@ func (client TopicsClient) RegenerateKeyPreparer(ctx context.Context, resourceGr
 
 // RegenerateKeySender sends the RegenerateKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client TopicsClient) RegenerateKeySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client TopicsClient) RegenerateKeySender(req *http.Request) (future TopicsRegenerateKeyFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always

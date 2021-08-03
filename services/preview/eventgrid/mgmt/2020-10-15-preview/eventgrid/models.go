@@ -879,6 +879,8 @@ type Domain struct {
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Identity - Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Domain resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -948,6 +950,15 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 				}
 				d.Identity = &identity
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				d.SystemData = &systemData
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1001,7 +1012,7 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 
 // DomainProperties properties of the Domain.
 type DomainProperties struct {
-	// PrivateEndpointConnections - List of private endpoint connections.
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the domain. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'
 	ProvisioningState DomainProvisioningState `json:"provisioningState,omitempty"`
@@ -1023,9 +1034,6 @@ type DomainProperties struct {
 // MarshalJSON is the custom marshaler for DomainProperties.
 func (dp DomainProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dp.PrivateEndpointConnections != nil {
-		objectMap["privateEndpointConnections"] = dp.PrivateEndpointConnections
-	}
 	if dp.InputSchema != "" {
 		objectMap["inputSchema"] = dp.InputSchema
 	}
@@ -1425,8 +1433,10 @@ func (future *DomainsUpdateFuture) result(client DomainsClient) (d Domain, err e
 // DomainTopic domain Topic.
 type DomainTopic struct {
 	autorest.Response `json:"-"`
-	// DomainTopicProperties - Properties of the Domain Topic.
+	// DomainTopicProperties - READ-ONLY; Properties of the Domain Topic.
 	*DomainTopicProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Domain Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the resource.
@@ -1438,9 +1448,6 @@ type DomainTopic struct {
 // MarshalJSON is the custom marshaler for DomainTopic.
 func (dt DomainTopic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dt.DomainTopicProperties != nil {
-		objectMap["properties"] = dt.DomainTopicProperties
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1461,6 +1468,15 @@ func (dt *DomainTopic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dt.DomainTopicProperties = &domainTopicProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				dt.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -1497,8 +1513,14 @@ func (dt *DomainTopic) UnmarshalJSON(body []byte) error {
 
 // DomainTopicProperties properties of the Domain Topic.
 type DomainTopicProperties struct {
-	// ProvisioningState - Provisioning state of the domain topic. Possible values include: 'DomainTopicProvisioningStateCreating', 'DomainTopicProvisioningStateUpdating', 'DomainTopicProvisioningStateDeleting', 'DomainTopicProvisioningStateSucceeded', 'DomainTopicProvisioningStateCanceled', 'DomainTopicProvisioningStateFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state of the domain topic. Possible values include: 'DomainTopicProvisioningStateCreating', 'DomainTopicProvisioningStateUpdating', 'DomainTopicProvisioningStateDeleting', 'DomainTopicProvisioningStateSucceeded', 'DomainTopicProvisioningStateCanceled', 'DomainTopicProvisioningStateFailed'
 	ProvisioningState DomainTopicProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DomainTopicProperties.
+func (dtp DomainTopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DomainTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1581,12 +1603,12 @@ func (future *DomainTopicsDeleteFuture) result(client DomainTopicsClient) (ar au
 	return
 }
 
-// DomainTopicsListResult result of the List Domain Topics operation
+// DomainTopicsListResult result of the List Domain Topics operation.
 type DomainTopicsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - A collection of Domain Topics
+	// Value - A collection of Domain Topics.
 	Value *[]DomainTopic `json:"value,omitempty"`
-	// NextLink - A link for the next page of domain topics
+	// NextLink - A link for the next page of domain topics.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1929,7 +1951,7 @@ type EventChannel struct {
 	autorest.Response `json:"-"`
 	// EventChannelProperties - Properties of the EventChannel.
 	*EventChannelProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Event Channel resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
@@ -2449,7 +2471,7 @@ type EventSubscription struct {
 	autorest.Response `json:"-"`
 	// EventSubscriptionProperties - Properties of the event subscription.
 	*EventSubscriptionProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Event Subscription resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
@@ -5221,7 +5243,7 @@ type PartnerNamespace struct {
 	autorest.Response `json:"-"`
 	// PartnerNamespaceProperties - Properties of the partner namespace.
 	*PartnerNamespaceProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Partner Namespace resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -5665,7 +5687,7 @@ type PartnerRegistration struct {
 	autorest.Response `json:"-"`
 	// PartnerRegistrationProperties - Properties of the partner registration.
 	*PartnerRegistrationProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Partner Registration resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -6076,7 +6098,7 @@ type PartnerTopic struct {
 	*PartnerTopicProperties `json:"properties,omitempty"`
 	// Identity - Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Partner Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -8906,7 +8928,7 @@ type SystemTopic struct {
 	*SystemTopicProperties `json:"properties,omitempty"`
 	// Identity - Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to System Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -9487,6 +9509,8 @@ type Topic struct {
 	Kind ResourceKind `json:"kind,omitempty"`
 	// ExtendedLocation - Extended location of the resource.
 	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -9580,6 +9604,15 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 				}
 				t.ExtendedLocation = &extendedLocation
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				t.SystemData = &systemData
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -9633,6 +9666,7 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 
 // TopicProperties properties of the Topic
 type TopicProperties struct {
+	// PrivateEndpointConnections - READ-ONLY
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the topic. Possible values include: 'TopicProvisioningStateCreating', 'TopicProvisioningStateUpdating', 'TopicProvisioningStateDeleting', 'TopicProvisioningStateSucceeded', 'TopicProvisioningStateCanceled', 'TopicProvisioningStateFailed'
 	ProvisioningState TopicProvisioningState `json:"provisioningState,omitempty"`
@@ -9654,9 +9688,6 @@ type TopicProperties struct {
 // MarshalJSON is the custom marshaler for TopicProperties.
 func (tp TopicProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tp.PrivateEndpointConnections != nil {
-		objectMap["privateEndpointConnections"] = tp.PrivateEndpointConnections
-	}
 	if tp.InputSchema != "" {
 		objectMap["inputSchema"] = tp.InputSchema
 	}

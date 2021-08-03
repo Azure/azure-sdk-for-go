@@ -10,8 +10,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const defaultResourceThrottleRetryPolicyMaxWaitTime time.Duration = 60 * time.Second
-const defaultResourceThrottleRetryPolicyRetryCount int = 9
+const (
+	defaultResourceThrottleRetryPolicyMaxWaitTime time.Duration = 60 * time.Second
+	defaultResourceThrottleRetryPolicyRetryCount  int           = 9
+)
 
 // resourceThrottleRetryPolicy retries on HTTP 429.
 type resourceThrottleRetryPolicy struct {

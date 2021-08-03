@@ -5,8 +5,10 @@ package aztable
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"hash/fnv"
+	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -21,9 +23,16 @@ var AADAuthenticationScope = "https://storage.azure.com/.default"
 
 func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
 	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.TLSClientConfig.InsecureSkipVerify = true
+	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	defaultHttpClient := &http.Client{
+		Transport: transport,
+	}
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
+		HTTPClient: defaultHttpClient,
 	}
 	return NewTableClient(tableName, serviceURL, cred, options)
 }

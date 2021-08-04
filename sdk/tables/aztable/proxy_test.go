@@ -66,7 +66,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 	}
 
 	return client, func() {
-		_, err = client.Delete(context.Background())
+		_, err = client.Delete(context.Background(), nil)
 		require.NoError(t, err)
 		err = recording.StopRecording(t, nil)
 		require.NoError(t, err)
@@ -222,7 +222,7 @@ func clearAllTables(service *TableServiceClient) error {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 		for _, v := range resp.TableQueryResponse.Value {
-			_, err := service.DeleteTable(ctx, *v.TableName)
+			_, err := service.DeleteTable(ctx, *v.TableName, nil)
 			if err != nil {
 				return err
 			}

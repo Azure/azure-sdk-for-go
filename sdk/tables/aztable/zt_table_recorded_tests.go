@@ -75,7 +75,7 @@ func cleanupTables(context *testContext, tables *[]string) {
 		pager := c.ListTables(nil)
 		for pager.NextPage(ctx) {
 			for _, t := range pager.PageResponse().TableQueryResponse.Value {
-				_, err := c.DeleteTable(ctx, *t.TableName)
+				_, err := c.DeleteTable(ctx, *t.TableName, nil)
 				if err != nil {
 					fmt.Printf("Error cleaning up tables. %v\n", err.Error())
 				}
@@ -83,7 +83,7 @@ func cleanupTables(context *testContext, tables *[]string) {
 		}
 	} else {
 		for _, t := range *tables {
-			_, err := c.DeleteTable(ctx, t)
+			_, err := c.DeleteTable(ctx, t, nil)
 			if err != nil {
 				fmt.Printf("There was an error cleaning up tests. %v\n", err.Error())
 			}

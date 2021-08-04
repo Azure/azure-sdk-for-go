@@ -4,6 +4,8 @@
 package azcosmos
 
 import (
+	"errors"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -23,7 +25,27 @@ func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosCli
 	return &CosmosClient{Endpoint: endpoint, connection: connection}, nil
 }
 
-// GetCosmosDatabase returns a CosmosDatabase object for the database with the specified id.
-func (c *CosmosClient) GetCosmosDatabase(id string) *CosmosDatabase {
-	return newCosmosDatabase(id, c)
+// GetCosmosDatabase returns a CosmosDatabase object.
+// id - The id of the database.
+func (c *CosmosClient) GetCosmosDatabase(id string) (*CosmosDatabase, error) {
+	if id == "" {
+		return nil, errors.New("id is required")
+	}
+
+	return newCosmosDatabase(id, c), nil
+}
+
+// GetCosmosContainer returns a CosmosContainer object.
+// databaseId - The id of the database.
+// containerId - The id of the container.
+func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string) (*CosmosContainer, error) {
+	if databaseId == "" {
+		return nil, errors.New("databaseId is required")
+	}
+
+	if containerId == "" {
+		return nil, errors.New("containerId is required")
+	}
+
+	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
 }

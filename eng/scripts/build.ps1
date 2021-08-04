@@ -20,7 +20,7 @@ function Process-Sdk ($path) {
             $removeAutorestFile = $true
         }
 
-        $autorestVersion = "@autorest/go@4.0.0-preview.23"
+        $autorestVersion = "@autorest/go@4.0.0-preview.25"
         if ($outputFolder -eq '') {
             $outputFolder = $path
         }

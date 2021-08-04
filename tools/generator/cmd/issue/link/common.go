@@ -27,7 +27,7 @@ type Readme string
 
 // IsMgmt returns true when the readme belongs to a mgmt plane package
 func (r Readme) IsMgmt() bool {
-	return strings.Index(string(r), mgmtSegment) >= 0
+	return strings.Contains(string(r), mgmtSegment)
 }
 
 // GetReadmePathFromChangedFiles ...

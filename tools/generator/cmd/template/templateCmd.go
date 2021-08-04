@@ -6,6 +6,7 @@ package template
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -40,7 +41,9 @@ func Command() *cobra.Command {
 	}
 
 	BindFlags(templateCmd.Flags())
-	templateCmd.MarkFlagRequired("package-title")
+	if err := templateCmd.MarkFlagRequired("package-title"); err != nil {
+		log.Fatal(err)
+	}
 
 	return templateCmd
 }

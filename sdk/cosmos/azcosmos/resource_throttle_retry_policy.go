@@ -66,7 +66,7 @@ func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response,
 			// retry
 		case <-req.Context().Done():
 			err = req.Context().Err()
-			azcore.Log().Writef("ResourceThrottleRetryPolicy", "abort due to %v", err)
+			azcore.Log().Writef(azcore.LogRetryPolicy, "ResourceThrottleRetryPolicy abort due to %v", err)
 			return resp, err
 		}
 	}

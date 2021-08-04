@@ -128,7 +128,7 @@ func getNewContents(c *delta.Content) []string {
 			returns := ""
 			if v.Returns != nil {
 				returns = *v.Returns
-				if strings.Index(returns, ",") > -1 {
+				if strings.Contains(returns, ",") {
 					returns = fmt.Sprintf("(%s)", returns)
 				}
 			}

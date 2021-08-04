@@ -60,7 +60,7 @@ steps:
         }
         else {
           # ref https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.1#example-8--create-a-detached-process-on-linux
-          '$(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)"' &
+          $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(Build.SourcesDirectory)" &
         }
 
         Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"

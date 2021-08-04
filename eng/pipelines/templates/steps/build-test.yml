@@ -59,11 +59,11 @@ steps:
 
         # This should be moved out of the loop, and only started once.
         if ($IsWindows) {
-          Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe -ArgumentList "--storage-location '$(td)'" -NoNewWindow -PassThru
+          Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe -ArgumentList "--storage-location $td" -NoNewWindow -PassThru
         }
         else {
           # ref https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.1#example-8--create-a-detached-process-on-linux
-          $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location "$(td)" &
+          $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location $td &
         }
 
         Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"

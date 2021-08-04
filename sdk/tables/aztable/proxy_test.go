@@ -32,7 +32,7 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
-		HTTPClient: defaultHttpClient,
+		HTTPClient:     defaultHttpClient,
 	}
 	return NewTableClient(tableName, serviceURL, cred, options)
 }

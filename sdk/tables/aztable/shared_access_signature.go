@@ -154,16 +154,26 @@ type AccountSignatureProperties struct {
 	Protocol SasProtocol
 }
 
+type TableSignatureProperties struct {
+	TableName         string
+	Permissions       AccountSasPermissions
+	Expiry            *time.Time
+	Start             *time.Time
+	PolicyId          string
+	Protocol          SasProtocol
+	IpAddress         string
+	StartPartitionKey string
+	StartRowKey       string
+	EndPartitionKey   string
+	EndRowKey         string
+}
+
 var X_MS_VERSION = "2020-08-04"
 
 // GenerateAccountSignature creates a signature that delegates service-level operations.
 func GenerateAccountSignature(cred SharedKeyCredential, properties AccountSignatureProperties) (string, error) {
 	sas := newSharedAccessSignature(cred, X_MS_VERSION)
 	return sas.generateAccount("t", properties)
-}
-
-type TableSignatureProperties struct {
-	TableName string
 }
 
 func GenerateTableSignature(cred SharedKeyCredential, properties TableSignatureProperties) (string, error) {
@@ -196,7 +206,11 @@ func (s *sharedAccessSignature) generateAccount(service string, properties Accou
 }
 
 func (s *sharedAccessSignature) generateTable(properties TableSignatureProperties) (string, error) {
-	return "", nil
+	s.addBase(properties.Permissions, properties.Expiry, properties.Start, properties.IpAddress, properties.Protocol, s.version)
+	s.addId(properties.PolicyId)
+	s.addTableAccessRanges(properties.TableName, properties.StartPartitionKey, properties.StartRowKey, properties.EndPartitionKey, properties.EndRowKey)
+	s.addResourceSignature("table", strings.ToLower(properties.TableName))
+	return s.getToken()
 }
 
 func toUtcDatetime(t *time.Time) string {
@@ -222,6 +236,50 @@ func (s *sharedAccessSignature) addAccountSignature() error {
 	signedString := s.buildStringToSign()
 
 	signed, err := s.cred.ComputeHMACSHA256(signedString)
+	if err != nil {
+		return err
+	}
+	s.addQuery(queryStringSignedSignature, signed)
+	return nil
+}
+
+func (s *sharedAccessSignature) addId(id string) {
+	s.addQuery(queryStringSignedIdentifier, id)
+}
+
+func (s *sharedAccessSignature) addTableAccessRanges(tableName, startPk, startRk, endPk, endRk string) {
+	s.addQuery(querySignedTableName, tableName)
+	s.addQuery(querySignedStartPk, startPk)
+	s.addQuery(querySignedEndPk, endPk)
+	s.addQuery(querySignedStartRk, startRk)
+	s.addQuery(querySignedEndRk, endRk)
+}
+
+func (s *sharedAccessSignature) addResourceSignature(service, path string) error {
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	canonicalizedResource := "/" + service + "/" + s.cred.accountName + path + "\n"
+	fmt.Println(canonicalizedResource)
+
+	stringToSign := s.getValueToAppend(queryStringSignedPermission)
+	stringToSign += s.getValueToAppend(queryStringSignedStart)
+	stringToSign += s.getValueToAppend(queryStringSignedExpiry)
+	stringToSign += canonicalizedResource
+	stringToSign += s.getValueToAppend(queryStringSignedIdentifier)
+	stringToSign += s.getValueToAppend(queryStringSignedIp)
+	stringToSign += s.getValueToAppend(querySignedProtocol)
+	stringToSign += s.getValueToAppend(querySignedVersion)
+
+	stringToSign += s.getValueToAppend(querySignedStartPk)
+	stringToSign += s.getValueToAppend(querySignedStartRk)
+	stringToSign += s.getValueToAppend(querySignedEndPk)
+	stringToSign += s.getValueToAppend(querySignedEndRk)
+
+	stringToSign = strings.TrimSuffix(stringToSign, "\n")
+
+	signed, err := s.cred.ComputeHMACSHA256(stringToSign)
 	if err != nil {
 		return err
 	}

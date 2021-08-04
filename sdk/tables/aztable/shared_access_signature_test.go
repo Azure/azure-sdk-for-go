@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"testing"
@@ -65,6 +66,57 @@ func TestCreateSAS(t *testing.T) {
 	client, err := NewTableClient("sastable", fmt.Sprintf("https://%v.table.core.windows.net", accountName), sascred, nil)
 	require.NoError(t, err)
 	_, err = client.Create(context.Background())
+	require.NoError(t, err)
+
+	_, err = client.Delete(context.Background())
+	require.NoError(t, err)
+}
+
+func TestCreateTableSAS(t *testing.T) {
+	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	require.NoError(t, err)
+
+	start := time.Now().UTC()       //time.Date(2021, time.August, 3, 18, 0, 6, 0, time.UTC)
+	end := start.Add(time.Hour * 4) //time.Date(2021, time.August, 4, 2, 0, 6, 0, time.UTC)
+
+	properties := TableSignatureProperties{
+		TableName: "tablesastable",
+		Permissions: AccountSasPermissions{
+			Read:   true,
+			Write:  true,
+			Delete: true,
+			List:   true,
+			Add:    true,
+			Create: true,
+			Update: true,
+		},
+		Start:    &start,
+		Expiry:   &end,
+	}
+
+	key, err := GenerateTableSignature(*cred, properties)
+	require.NoError(t, err)
+	fmt.Println(key)
+
+	sascred, err := NewAzureSasCredential(key)
+	require.NoError(t, err)
+
+	client, err := NewTableClient(properties.TableName, fmt.Sprintf("https://%v.table.core.windows.net", accountName), sascred, nil)
+	require.NoError(t, err)
+	_, err = client.Create(context.Background())
+	require.NoError(t, err)
+
+	simpleEntity := map[string]string{
+		"PartitionKey": "pk001",
+		"RowKey":       "rk001",
+		"Value":        "4",
+	}
+	marshalled, err := json.Marshal(simpleEntity)
+	require.NoError(t, err)
+
+	_, err = client.AddEntity(context.Background(), marshalled)
 	require.NoError(t, err)
 
 	_, err = client.Delete(context.Background())

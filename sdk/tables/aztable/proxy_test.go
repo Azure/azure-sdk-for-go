@@ -6,8 +6,11 @@ package aztable
 import (
 	"context"
 	"crypto/tls"
+	"crypto/x509"
+	"encoding/pem"
 	"fmt"
 	"hash/fnv"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -21,11 +24,47 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
+var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
+
+func getRootCas(filePath *string) (*x509.CertPool, error) {
+	rootCAs, err := x509.SystemCertPool()
+	if err != nil {
+		rootCAs = x509.NewCertPool()
+	}
+
+	certs, err := ioutil.ReadFile(*filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	block, _ := pem.Decode(certs)
+
+
+	cert, err := x509.ParseCertificate(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(cert)
+
+	rootCAs.AddCert(cert)
+	return rootCAs, nil
+}
+
 func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
 	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	transport := http.DefaultTransport.(*http.Transport).Clone()
-	transport.TLSClientConfig.InsecureSkipVerify = true
-	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	// transport.TLSClientConfig.InsecureSkipVerify = true
+
+	rootCAs, err := getRootCas(&localCertFile)
+	if err != nil {
+		return nil, err
+	}
+	transport.TLSClientConfig = &tls.Config{
+		InsecureSkipVerify: false,
+		RootCAs:            rootCAs,
+		MinVersion:         tls.VersionTLS12,
+	}
+	// transport.TLSClientConfig.MinVersion = tls.VersionTLS12
 	defaultHttpClient := &http.Client{
 		Transport: transport,
 	}
@@ -39,9 +78,26 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 
 func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {
 	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	// transport.TLSClientConfig.InsecureSkipVerify = true
+
+	rootCAs, err := getRootCas(&localCertFile)
+	if err != nil {
+		return nil, err
+	}
+	transport.TLSClientConfig = &tls.Config{
+		InsecureSkipVerify: false,
+		RootCAs:            rootCAs,
+		MinVersion:         tls.VersionTLS12,
+	}
+	// transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	defaultHttpClient := &http.Client{
+		Transport: transport,
+	}
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
+		HTTPClient:     defaultHttpClient,
 	}
 	return NewTableServiceClient(serviceURL, cred, options)
 }

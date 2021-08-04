@@ -44,6 +44,9 @@ func Command() *cobra.Command {
 	if err := templateCmd.MarkFlagRequired("package-title"); err != nil {
 		log.Fatal(err)
 	}
+	if err := templateCmd.MarkFlagRequired("commit"); err != nil {
+		log.Fatal(err)
+	}
 
 	return templateCmd
 }
@@ -53,6 +56,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("go-sdk-folder", ".", "Specifies the path of root of azure-sdk-for-go")
 	flagSet.String("template-path", "tools/generator/template/rpName/packageName", "Specifies the path of the template")
 	flagSet.String("package-title", "", "Specifies the title of this package")
+	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 }
 
 // ParseFlags parses the flags to a Flags struct
@@ -61,6 +65,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SDKRoot:      flags.GetString(flagSet, "go-sdk-folder"),
 		TemplatePath: flags.GetString(flagSet, "template-path"),
 		PackageTitle: flags.GetString(flagSet, "package-title"),
+		Commit:       flags.GetString(flagSet, "commit"),
 	}
 }
 
@@ -69,6 +74,7 @@ type Flags struct {
 	SDKRoot      string
 	TemplatePath string
 	PackageTitle string
+	Commit       string
 }
 
 // GeneratePackageByTemplate creates a new set of files based on the things in template directory
@@ -89,7 +95,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageTitle)
+	buildReplaceMap(rpName, packageName, flags.PackageTitle, flags.Commit)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -113,12 +119,13 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageTitle string) {
+func buildReplaceMap(rpName, packageName, packageTitle, commitID string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
 	replaceMap[PackageNameKey] = packageName
 	replaceMap[PackageTitleKey] = packageTitle
+	replaceMap[CommitIDKey] = commitID
 }
 
 func readAndReplace(path string) (string, error) {
@@ -157,5 +164,6 @@ const (
 	RPNameKey       = "{{rpName}}"
 	PackageNameKey  = "{{packageName}}"
 	PackageTitleKey = "{{PackageTitle}}"
+	CommitIDKey     = "{{commitID}}"
 	FilenameSuffix  = ".tpl"
 )

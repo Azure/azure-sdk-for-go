@@ -52,7 +52,13 @@ func (a *AzureSasCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOpt
 		}
 		req.URL = newUrl
 
-		return req.Next()
+		fmt.Println(req.URL.String())
+
+		resp, err := req.Next()
+
+		fmt.Println(resp.Request.URL.String())
+
+		return resp, err
 	})
 }
 
@@ -105,6 +111,12 @@ func (a *AccountSasPermissions) String() string {
 	if a.Read {
 		ret += "r"
 	}
+	if a.Add {
+		ret += "a"
+	}
+	if a.Update {
+		ret += "u"
+	}
 	if a.Write {
 		ret += "w"
 	}
@@ -114,14 +126,8 @@ func (a *AccountSasPermissions) String() string {
 	if a.List {
 		ret += "l"
 	}
-	if a.Add {
-		ret += "a"
-	}
 	if a.Create {
 		ret += "c"
-	}
-	if a.Update {
-		ret += "u"
 	}
 	if a.Process {
 		ret += "p"
@@ -168,7 +174,7 @@ type TableSignatureProperties struct {
 	EndRowKey         string
 }
 
-var X_MS_VERSION = "2020-08-04"
+var X_MS_VERSION = "2019-02-02"
 
 // GenerateAccountSignature creates a signature that delegates service-level operations.
 func GenerateAccountSignature(cred SharedKeyCredential, properties AccountSignatureProperties) (string, error) {
@@ -318,13 +324,16 @@ func (s *sharedAccessSignature) addQuery(name, val string) {
 
 func (s *sharedAccessSignature) getToken() (string, error) {
 	fmt.Println(s.queryMap)
-	pairsList := make([]string, 0)
+	// pairsList := make([]string, 0)
+	params := url.Values{}
 	for k, v := range s.queryMap {
 		if v != "" {
-			pairsList = append(pairsList, fmt.Sprintf("%v=%v", k, v))
+			// pairsList = append(pairsList, fmt.Sprintf("%v=%v", k, url.QueryEscape(v)))
+			params.Add(k, v)
 		}
 	}
-	return "?" + strings.Join(pairsList, "&"), nil
+	encoded := params.Encode()
+	return encoded, nil //"?" + strings.Join(pairsList, "&"), nil
 }
 
 const (

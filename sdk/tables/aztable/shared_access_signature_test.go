@@ -14,19 +14,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSasCreateTable(t *testing.T) {
-
-	tempSAS := "blahblahblah"
-	sasCredential, err := NewAzureSasCredential(tempSAS)
-	require.NoError(t, err)
-
-	client, err := NewTableClient("sastable", "https://seankaneprim.table.core.windows.net", sasCredential, nil)
-	require.NoError(t, err)
-
-	_, err = client.Create(context.Background())
-	require.NoError(t, err)
-}
-
 func TestCreateSAS(t *testing.T) {
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
@@ -78,22 +65,35 @@ func TestCreateTableSAS(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	start := time.Now().UTC()       //time.Date(2021, time.August, 3, 18, 0, 6, 0, time.UTC)
-	end := start.Add(time.Hour * 4) //time.Date(2021, time.August, 4, 2, 0, 6, 0, time.UTC)
+	c, err := NewTableClient("tablesastable", fmt.Sprintf("https://%v.table.core.windows.net", accountName), cred, nil)
+	require.NoError(t, err)
+	_, err = c.Create(context.Background())
+	require.NoError(t, err)
+
+	delete := func() {
+		_, err := c.Delete(context.Background())
+		if err != nil {
+			fmt.Println("There was an issue cleaning up the table")
+		}
+	}
+	defer delete()
+
+	start := time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)
+	end := time.Date(2021, time.August, 14, 0, 0, 0, 0, time.UTC)
 
 	properties := TableSignatureProperties{
-		TableName: "tablesastable",
+		TableName: "uttablebfd90c40",
 		Permissions: AccountSasPermissions{
-			Read:   true,
-			Write:  true,
-			Delete: true,
-			List:   true,
+			Read:   false,
+			Write:  false,
+			Delete: false,
+			List:   false,
 			Add:    true,
-			Create: true,
-			Update: true,
+			Create: false,
+			Update: false,
 		},
-		Start:    &start,
-		Expiry:   &end,
+		Start:  &start,
+		Expiry: &end,
 	}
 
 	key, err := GenerateTableSignature(*cred, properties)

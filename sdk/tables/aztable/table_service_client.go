@@ -6,6 +6,7 @@ package aztable
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -142,6 +143,26 @@ func (t *TableServiceClient) SetProperties(ctx context.Context, properties Table
 		options = &ServiceSetPropertiesOptions{}
 	}
 	return t.service.SetProperties(ctx, properties, options)
+}
+
+func (s TableServiceClient) CanGetAccountSASToken() bool {
+	return s.cred != nil
+}
+
+// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
+	return AccountSASSignatureValues{
+		Version: SASVersion,
+
+		Permissions:   permissions.String(),
+		Services:      "t",
+		ResourceTypes: resources.String(),
+
+		StartTime:  start.UTC(),
+		ExpiryTime: expiry.UTC(),
+	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
 }
 
 func isCosmosEndpoint(url string) bool {

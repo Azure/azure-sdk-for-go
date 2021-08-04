@@ -154,7 +154,7 @@ func (p *AccountSASPermissions) Parse(s string) error {
 // The AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Services field.
 type AccountSASServices struct {
-	Blob, Queue, File bool
+	Blob, Queue, File, Table bool
 }
 
 // String produces the SAS services string for an Azure Storage account.
@@ -170,6 +170,9 @@ func (s AccountSASServices) String() string {
 	if s.File {
 		buffer.WriteRune('f')
 	}
+	if s.Table {
+		buffer.WriteRune('t')
+	}
 	return buffer.String()
 }
 
@@ -184,6 +187,8 @@ func (a *AccountSASServices) Parse(s string) error {
 			a.Queue = true
 		case 'f':
 			a.File = true
+		case 't':
+			a.Table = true
 		default:
 			return fmt.Errorf("Invalid service character: '%v'", r)
 		}

@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+
 // BlobSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type BlobSASSignatureValues struct {

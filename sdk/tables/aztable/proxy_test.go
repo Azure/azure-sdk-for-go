@@ -7,7 +7,6 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/pem"
 	"fmt"
 	"hash/fnv"
 	"io/ioutil"
@@ -24,7 +23,7 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
-var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
+var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pem"
 
 func getRootCas(filePath *string) (*x509.CertPool, error) {
 	rootCAs, err := x509.SystemCertPool()
@@ -32,21 +31,15 @@ func getRootCas(filePath *string) (*x509.CertPool, error) {
 		rootCAs = x509.NewCertPool()
 	}
 
-	certs, err := ioutil.ReadFile(*filePath)
+	cert, err := ioutil.ReadFile(*filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	block, _ := pem.Decode(certs)
-
-
-	cert, err := x509.ParseCertificate(block.Bytes)
-	if err != nil {
-		return nil, err
+	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
+		fmt.Println("No certs appended, using system certs only")
 	}
-	fmt.Println(cert)
-
-	rootCAs.AddCert(cert)
+	fmt.Println(rootCAs)
 	return rootCAs, nil
 }
 
@@ -59,12 +52,8 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 	if err != nil {
 		return nil, err
 	}
-	transport.TLSClientConfig = &tls.Config{
-		InsecureSkipVerify: false,
-		RootCAs:            rootCAs,
-		MinVersion:         tls.VersionTLS12,
-	}
-	// transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	transport.TLSClientConfig.RootCAs = rootCAs
+	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
 	defaultHttpClient := &http.Client{
 		Transport: transport,
 	}
@@ -85,12 +74,8 @@ func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred 
 	if err != nil {
 		return nil, err
 	}
-	transport.TLSClientConfig = &tls.Config{
-		InsecureSkipVerify: false,
-		RootCAs:            rootCAs,
-		MinVersion:         tls.VersionTLS12,
-	}
-	// transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	transport.TLSClientConfig.RootCAs = rootCAs
+	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
 	defaultHttpClient := &http.Client{
 		Transport: transport,
 	}
@@ -321,38 +306,3 @@ func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions
 		return req.Next()
 	})
 }
-
-/*
-func TestMain(m *testing.M) {
-	// Start the test proxy
-	cmd := exec.Command("test-proxy", "--storage-location", "./recordings/")
-
-	go func() {
-		stdout, err := cmd.StdoutPipe()
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = cmd.Start()
-		if err != nil {
-			fmt.Println("Error running the test proxy")
-			panic(err)
-		}
-		fmt.Println("Running test-proxy in the background")
-
-		readBytes := make([]byte, 512)
-		_, err = stdout.Read(readBytes)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Println("ReadBytes: ", string(readBytes))
-	}()
-
-	exitCode := m.Run()
-	os.Exit(exitCode)
-	err := cmd.Process.Kill()
-	if err != nil {
-		log.Fatal("failed to kill the process: ", err)
-	}
-}
-*/

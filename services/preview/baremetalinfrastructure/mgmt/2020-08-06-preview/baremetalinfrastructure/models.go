@@ -599,7 +599,7 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - Displayed AzureBareMetal operation information
 	Display *Display `json:"display,omitempty"`
-	// IsDataAction - indicates whether an operation is a data action or not.
+	// IsDataAction - READ-ONLY; indicates whether an operation is a data action or not.
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
@@ -608,9 +608,6 @@ func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if o.Display != nil {
 		objectMap["display"] = o.Display
-	}
-	if o.IsDataAction != nil {
-		objectMap["isDataAction"] = o.IsDataAction
 	}
 	return json.Marshal(objectMap)
 }

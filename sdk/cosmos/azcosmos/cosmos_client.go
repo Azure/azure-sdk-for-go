@@ -22,3 +22,8 @@ func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosCli
 	connection := options.getClientConnection()
 	return &CosmosClient{Endpoint: endpoint, connection: connection}, nil
 }
+
+// GetCosmosDatabase returns a CosmosDatabase object for the database with the specified id.
+func (c *CosmosClient) GetCosmosDatabase(id string) *CosmosDatabase {
+	return newCosmosDatabase(id, c)
+}

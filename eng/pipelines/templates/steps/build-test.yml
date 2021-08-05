@@ -27,6 +27,7 @@ steps:
       workingDirectory: '${{parameters.GoWorkspace}}'
       arguments: '${{parameters.ServiceDirectory}}'
       displayName: 'Run Tests and Create Coverage'
+      pwsh: true
   # - pwsh: ./eng/scripts/run_tests.ps1
   #   displayName: 'Run Tests and Create Coverage'
   #   workingDirectory: '${{parameters.GoWorkspace}}'

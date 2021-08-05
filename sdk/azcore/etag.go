@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -21,8 +22,8 @@ func NewETag(value string) *ETag {
 type ComparisonType string
 
 const (
-	Strong         ComparisonType = "strong"
-	WeakComparison ComparisonType = "weak"
+	Strong ComparisonType = "strong"
+	Weak   ComparisonType = "weak"
 )
 
 func (e ETag) Equals(right ETag, comparisonKind ComparisonType) bool {
@@ -40,7 +41,7 @@ func (e ETag) Equals(right ETag, comparisonKind ComparisonType) bool {
 	rightStart := right.getStart()
 
 	leftValue := (*e.value)[leftStart:]
-	rightValue := (*e.value)[rightStart:]
+	rightValue := (*right.value)[rightStart:]
 
 	return leftValue == rightValue
 }

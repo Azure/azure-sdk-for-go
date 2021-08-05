@@ -6,7 +6,6 @@
 package azcore
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -111,6 +110,115 @@ func TestEtagEquality(t *testing.T) {
 		t.Fatalf("Expected etags to not be equal")
 	}
 	if weakTag2.Equals(*strongTag2, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+}
+
+func TestEtagAny(t *testing.T) {
+	anyETag := ETagAny()
+	star := NewETag("*")
+	weakStar := NewETag("W\"*\"")
+	quotedStart := NewETag("\"*\"")
+
+	if !anyETag.Equals(*anyETag, Strong) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !anyETag.Equals(*ETagAny(), Strong) {
+		t.Fatalf("Expected etags to be equal")
+	}
+
+	if !star.Equals(*star, Strong) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !star.Equals(*ETagAny(), Strong) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !star.Equals(*anyETag, Strong) {
+		t.Fatalf("Expected etags to be equal")
+	}
+
+	if star.Equals(*weakStar, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakStar.Equals(*ETagAny(), Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if quotedStart.Equals(*weakStar, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+
+
+	if star.Equals(*quotedStart, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if !ETagAny().Equals(*star, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+}
+
+func TestEtagWeakComparison(t *testing.T) {
+	// W/""
+	weakTag := NewETag("W/\"\"");
+	// W/"1"
+	weakTag1 := NewETag("W/\"1\"");
+	// W/"Two"
+	weakTagTwo := NewETag("W/\"Two\"");
+	// W/"two"
+	weakTagtwo := NewETag("W/\"two\"");
+	// "1"
+	strongTag1 := NewETag("\"1\"");
+	// "Two"
+	strongTagTwo := NewETag("\"Two\"");
+	// "two"
+	strongTagtwo := NewETag("\"two\"");
+
+	if !weakTag.Equals(*weakTag, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !weakTag1.Equals(*weakTag1, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !weakTagTwo.Equals(*weakTagTwo, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !weakTagtwo.Equals(*weakTagtwo, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !strongTag1.Equals(*strongTag1, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !strongTagTwo.Equals(*strongTagTwo, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !strongTagtwo.Equals(*strongTagtwo, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+
+	if weakTag.Equals(*weakTag1, Weak) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTag1.Equals(*weakTagTwo, Weak) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+
+	if !weakTag1.Equals(*strongTag1, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+	if !weakTagTwo.Equals(*strongTagTwo, Weak) {
+		t.Fatalf("Expected etags to be equal")
+	}
+
+	if strongTagTwo.Equals(*weakTag1, Weak) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if strongTagTwo.Equals(*weakTagtwo, Weak) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+
+	if strongTagTwo.Equals(*strongTagtwo, Weak) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTagTwo.Equals(*weakTagtwo, Weak) {
 		t.Fatalf("Expected etags to not be equal")
 	}
 }

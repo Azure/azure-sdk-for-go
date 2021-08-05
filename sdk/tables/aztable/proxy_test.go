@@ -46,7 +46,7 @@ func getRootCas(filePath *string) (*x509.CertPool, error) {
 
 func getHTTPClient() (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
-	transport.TLSClientConfig.InsecureSkipVerify = true
+	// transport.TLSClientConfig.InsecureSkipVerify = true
 
 	rootCAs, err := getRootCas(&localCertFile)
 	if err != nil {

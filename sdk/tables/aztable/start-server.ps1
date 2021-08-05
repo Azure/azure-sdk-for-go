@@ -40,6 +40,7 @@ if ($mode -eq "start"){
     # else we need to create it
     else {
         Write-Host "Attempting creation of Docker host $CONTAINER_NAME"
+        Write-Host "docker container create -v ${repoRoot}:/etc/testproxy -p 5001:5001 -p 5000:5000 --name $CONTAINER_NAME $IMAGE_SOURCE"
         docker container create -v ${repoRoot}:/etc/testproxy -p 5001:5001 -p 5000:5000 --name $CONTAINER_NAME $IMAGE_SOURCE
     }
 

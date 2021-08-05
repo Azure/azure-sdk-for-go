@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "db37dbb98e65cafab6397ff3a33e5df3599bfbfe",
   "readme": "/_/azure-rest-api-specs/specification/marketplaceordering/resource-manager/readme.md",
   "tag": "package-2015-06-01",
   "use": "@microsoft.azure/autorest.go@2.1.183",

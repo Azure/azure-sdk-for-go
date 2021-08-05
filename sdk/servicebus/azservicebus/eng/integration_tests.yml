@@ -1,0 +1,68 @@
+pr: none
+
+variables:
+  GOPATH: '$(system.defaultWorkingDirectory)/work'
+  sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+  GO111MODULE: 'on'
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+steps:
+  - task: GoTool@0
+    inputs:
+      version: '1.14'
+    displayName: "Select Go Version"
+
+  - script: |
+      set -e
+      mkdir -p '$(GOPATH)/bin'
+      mkdir -p '$(sdkPath)'
+      shopt -s extglob
+      mv !(work) '$(sdkPath)'
+      echo '##vso[task.prependpath]$(GOPATH)/bin'
+      go version
+    displayName: 'Create Go Workspace'
+
+  - script: |
+      set -e
+      go get github.com/jstemmer/go-junit-report
+      go get github.com/axw/gocov/gocov
+      go get github.com/AlekSi/gocov-xml
+      go get -u github.com/matm/gocov-html
+      go get github.com/fzipp/gocyclo/cmd/gocyclo
+      go get golang.org/x/lint/golint
+    displayName: 'Install Dependencies'
+    workingDirectory: '$(sdkPath)'
+
+  - script: |
+      set -e
+      curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.4/terraform_0.12.4_linux_amd64.zip
+      unzip /tmp/terraform.zip -d /tmp
+      mkdir -p ~/bin
+      export PATH="~/bin:$PATH"
+      make test-cover
+      make destroy-sb
+      gocov convert cover.out > coverage.json
+      gocov-xml < coverage.json > coverage.xml
+      gocov-html < coverage.json > coverage.html
+    displayName: 'Run Integration Tests'
+    workingDirectory: '$(sdkPath)'
+    env:
+      ARM_SUBSCRIPTION_ID: $(go-live-azure-subscription-id)
+      ARM_CLIENT_ID: $(go-live-sb-azure-client-id)
+      ARM_CLIENT_SECRET: $(go-live-sb-azure-client-secret)
+      ARM_TENANT_ID: $(go-live-tenant-id)
+      GO111MODULE: on
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: $(sdkPath)/report.xml
+      failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura 
+      summaryFileLocation: $(sdkPath)/coverage.xml
+      additionalCodeCoverageFiles: $(sdkPath)/coverage.html

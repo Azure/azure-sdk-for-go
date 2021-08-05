@@ -66,48 +66,51 @@ func TestETagWeak(t *testing.T) {
 	}
 }
 
-/*
+func TestEtagEquality(t *testing.T) {
+	weakTag := NewETag("W/\"\"")
+	weakTag1 := NewETag("W/\"1\"")
+	weakTag2 := NewETag("W/\"Two\"")
+	strongTag1 := NewETag("\"1\"")
+	strongTag2 := NewETag("\"Two\"")
+	strongTagValidChars := NewETag("\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
+	weakTagValidChars := NewETag("W/\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
 
-func TestEtagStars(t *testing.T) {
-	anyETag := ETagAny()
-	star := NewETag("*")
-	// weakStar := NewETag("W\"*\"")
-	quotedStar := NewETag("\"*\"")
-
-	strongETag := NewETag("\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
-
-	if anyETag.Equals(*anyETag, Strong) {
+	if weakTag.Equals(*weakTag, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTag1.Equals(*weakTag1, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTag2.Equals(*weakTag2, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTagValidChars.Equals(*weakTagValidChars, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if !strongTag1.Equals(*strongTag1, Strong) {
 		t.Fatalf("Expected etags to be equal")
 	}
-	if anyETag.Equals(*ETagAny(), Strong) {
+	if !strongTag2.Equals(*strongTag2, Strong) {
 		t.Fatalf("Expected etags to be equal")
 	}
-	if anyETag.Equals(*strongETag, Strong) {
+	if !strongTagValidChars.Equals(*strongTagValidChars, Strong) {
 		t.Fatalf("Expected etags to be equal")
 	}
 
-	// expectEqual(t, star, star)
-	// expectEqual(t, star, ETagAny())
-	// expectEqual(t, star, anyETag)
-
-	// expectNotEqual(t, star, weakStar)
-	// expectNotEqual(t, weakStar, ETagAny())
-	// expectNotEqual(t, quotedStar, weakStar)
-
-	expectNotEqual(t, star, quotedStar)
-	expectEqual(t, anyETag, star)
-}
-*/
-
-func expectEqual(t *testing.T, left *ETag, right *ETag) {
-	if !left.Equals(*right, Strong) {
-		fmt.Println(*left.value, *right.value)
-		t.Fatalf("Expected etags to be equal")
+	if weakTag.Equals(*weakTag1, Strong) {
+		t.Fatalf("Expected etags to not be equal")
 	}
-}
+	if weakTagValidChars.Equals(*strongTagValidChars, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
 
-func expectNotEqual(t *testing.T, left *ETag, right *ETag) {
-	if left.Equals(*right, Strong) {
+	if weakTag1.Equals(*weakTag2, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTag1.Equals(*strongTag1, Strong) {
+		t.Fatalf("Expected etags to not be equal")
+	}
+	if weakTag2.Equals(*strongTag2, Strong) {
 		t.Fatalf("Expected etags to not be equal")
 	}
 }

@@ -33,7 +33,7 @@ func (e ETag) Equals(right ETag, comparisonKind ComparisonType) bool {
 	}
 
 	if comparisonKind == Strong {
-		return !e.IsWeak() && right.IsWeak() && *e.value == *right.value
+		return !e.IsWeak() && !right.IsWeak() && *e.value == *right.value
 	}
 
 	leftStart := e.getStart()

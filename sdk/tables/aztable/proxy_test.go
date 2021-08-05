@@ -23,7 +23,7 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
-var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pem"
+var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
 
 func getRootCas(filePath *string) (*x509.CertPool, error) {
 	rootCAs, err := x509.SystemCertPool()
@@ -33,20 +33,20 @@ func getRootCas(filePath *string) (*x509.CertPool, error) {
 
 	cert, err := ioutil.ReadFile(*filePath)
 	if err != nil {
+		fmt.Println("error opening cert file")
 		return nil, err
 	}
 
 	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
 		fmt.Println("No certs appended, using system certs only")
 	}
-	fmt.Println(rootCAs)
+
 	return rootCAs, nil
 }
 
-func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
-	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+func getHTTPClient() (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
-	// transport.TLSClientConfig.InsecureSkipVerify = true
+	transport.TLSClientConfig.InsecureSkipVerify = true
 
 	rootCAs, err := getRootCas(&localCertFile)
 	if err != nil {
@@ -57,32 +57,30 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 	defaultHttpClient := &http.Client{
 		Transport: transport,
 	}
+	return defaultHttpClient, nil
+}
+
+func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
+	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	client, err := getHTTPClient()
+	require.NoError(t, err)
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
-		HTTPClient:     defaultHttpClient,
+		HTTPClient:     client,
 	}
+	fmt.Println("service url: ", serviceURL)
 	return NewTableClient(tableName, serviceURL, cred, options)
 }
 
 func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {
 	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
-	transport := http.DefaultTransport.(*http.Transport).Clone()
-	// transport.TLSClientConfig.InsecureSkipVerify = true
-
-	rootCAs, err := getRootCas(&localCertFile)
-	if err != nil {
-		return nil, err
-	}
-	transport.TLSClientConfig.RootCAs = rootCAs
-	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
-	defaultHttpClient := &http.Client{
-		Transport: transport,
-	}
+	client, err := getHTTPClient()
+	require.NoError(t, err)
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
-		HTTPClient:     defaultHttpClient,
+		HTTPClient:     client,
 	}
 	return NewTableServiceClient(serviceURL, cred, options)
 }
@@ -137,10 +135,12 @@ func initServiceTest(t *testing.T, service string) (*TableServiceClient, func())
 func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
 	accountName := "fakestorageaccount"
+	var ok bool
 	if recording.InPlayback() {
+		fmt.Println("IN PLAYBACK")
 		cred = NewFakeCredential(accountName, "fakeAccountKey")
 	} else {
-		accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+		accountName, ok = os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 		if !ok {
 			accountName = "fakestorageaccount"
 		}
@@ -151,6 +151,7 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 		cred, err = azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
 	}
+	fmt.Println("ACCOUNTNAME: ", accountName)
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 
@@ -163,10 +164,11 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
 	accountName := "fakestorageaccount"
+	var ok bool
 	if recording.InPlayback() {
 		cred = NewFakeCredential(accountName, "fakeAccountKey")
 	} else {
-		accountName, ok := os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
+		accountName, ok = os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
 		if !ok {
 			accountName = "fakecosmosaccount"
 		}
@@ -181,6 +183,7 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
 		require.NoError(t, err)
 	}
+	fmt.Println("ACCOUNTNAME: ", accountName)
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 

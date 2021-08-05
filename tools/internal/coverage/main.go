@@ -77,8 +77,6 @@ func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 }
 
 func main() {
-	// var serviceDir string
-	// flag.StringVar(&serviceDir, "serviceDirectory", "", "The service directory to check the coverage for")
 	serviceDir := flag.String("serviceDirectory", "", "Service Directory")
 	flag.Parse()
 

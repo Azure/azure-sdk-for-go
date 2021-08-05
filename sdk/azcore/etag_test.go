@@ -40,12 +40,12 @@ func TestEtagEquals(t *testing.T) {
 
 func TestETagWeak(t *testing.T) {
 	et1 := NewETag("tag")
-	if !et1.IsWeak() {
+	if et1.IsWeak() {
 		t.Fatalf("Expected to be weak")
 	}
 
 	et2 := NewETag("\"tag\"")
-	if !et2.IsWeak() {
+	if et2.IsWeak() {
 		t.Fatalf("Expected to be weak")
 	}
 
@@ -60,7 +60,7 @@ func TestETagWeak(t *testing.T) {
 	}
 
 	et5 := ETagAny()
-	if !et5.IsWeak() {
+	if et5.IsWeak() {
 		t.Fatalf("Expected to be weak")
 	}
 }

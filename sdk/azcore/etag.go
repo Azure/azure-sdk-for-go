@@ -14,18 +14,42 @@ type ETag struct {
 	value *string
 }
 
-func NewEtag(value string) *ETag {
+func NewETag(value string) *ETag {
 	return &ETag{value: &value}
 }
 
-func (e ETag) Equals(right ETag) bool {
+type ComparisonType string
+
+const (
+	Strong         ComparisonType = "strong"
+	WeakComparison ComparisonType = "weak"
+)
+
+func (e ETag) Equals(right ETag, comparisonKind ComparisonType) bool {
 	// ETags are != if one value is null
 	if *e.value == "" || *right.value == "" {
 		// If both are null, they are considered equal
 		return *e.value == *right.value
 	}
 
-	return true
+	if comparisonKind == Strong {
+		return !e.IsWeak() && right.IsWeak() && *e.value == *right.value
+	}
+
+	leftStart := e.getStart()
+	rightStart := right.getStart()
+
+	leftValue := (*e.value)[leftStart:]
+	rightValue := (*e.value)[rightStart:]
+
+	return leftValue == rightValue
+}
+
+func (e ETag) getStart() int {
+	if e.IsWeak() {
+		return 2
+	}
+	return 0
 }
 
 func (e ETag) String() string {
@@ -37,5 +61,14 @@ func (e ETag) HasValue() bool {
 }
 
 func (e ETag) IsWeak() bool {
+	// fmt.Println(e.value != nil)
+	// fmt.Println(len(*e.value) >= 4)
+	// fmt.Println(strings.HasPrefix(*e.value, "W/\""))
+	// fmt.Println(strings.HasSuffix(*e.value, "\""))
 	return e.value != nil && len(*e.value) >= 4 && strings.HasPrefix(*e.value, "W/\"") && strings.HasSuffix(*e.value, "\"")
+}
+
+func ETagAny() *ETag {
+	any := "*"
+	return &ETag{value: &any}
 }

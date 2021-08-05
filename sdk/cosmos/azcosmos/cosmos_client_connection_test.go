@@ -21,4 +21,10 @@ func TestPathGeneration(t *testing.T) {
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}
+
+	expected = "dbs/esc%40ped"
+	actual = connection.getPath("", pathSegmentDatabase, "esc@ped")
+	if actual != expected {
+		t.Errorf("Expected %s, got %s", expected, actual)
+	}
 }

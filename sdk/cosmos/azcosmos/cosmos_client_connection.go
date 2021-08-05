@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -25,6 +26,6 @@ func (cc *cosmosClientConnection) getPath(parentPath string, pathSegment string,
 	}
 	completePath.WriteString(pathSegment)
 	completePath.WriteString("/")
-	completePath.WriteString(id)
+	completePath.WriteString(url.QueryEscape(id))
 	return completePath.String()
 }

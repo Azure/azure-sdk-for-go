@@ -37,7 +37,7 @@ foreach ($td in $testDirs) {
     $temp = Get-Location
     Write-Host "Currently in $temp"
     Write-Host "##[command] Executing go test -run ""^Test"" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
-    go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
+    go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml
     if (!$?) {
         Write-Host "There was an error running the tests"
         Exit $LASTEXITCODE

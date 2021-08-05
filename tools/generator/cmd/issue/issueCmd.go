@@ -197,10 +197,6 @@ func isGoReleaseRequest(issue *github.Issue) bool {
 	return issueHasLabel(issue, "Go")
 }
 
-func isTrack2ReleaseRequest(issue *github.Issue) bool {
-	return issueHasLabel(issue, "Track2")
-}
-
 func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request, error) {
 	var requests []request.Request
 	var errResult error

@@ -23,9 +23,7 @@ type ChangelogContext interface {
 
 // ChangelogProcessor processes the metadata and output changelog with the desired format
 type ChangelogProcessor struct {
-	ctx              ChangelogContext
-	metadataLocation string
-	readme           string
+	ctx ChangelogContext
 }
 
 // NewChangelogProcessorFromContext returns a new ChangelogProcessor

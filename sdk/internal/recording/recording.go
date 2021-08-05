@@ -468,8 +468,7 @@ func getTestId(t *testing.T) string {
 	if err != nil {
 		t.Errorf("Could not find current working directory")
 	}
-	// cwd = "./recordings/" + t.Name() + ".json"
-	cwd = "./" + t.Name() + ".json"
+	cwd = "./recordings/" + t.Name() + ".json"
 	return cwd
 }
 

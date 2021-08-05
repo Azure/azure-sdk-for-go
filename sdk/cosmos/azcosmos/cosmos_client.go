@@ -22,7 +22,9 @@ type CosmosClient struct {
 // options - Optional CosmosClient options.  Pass nil to accept default values.
 func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosClientOptions) (*CosmosClient, error) {
 	connection := options.getClientConnection()
-	return &CosmosClient{Endpoint: endpoint, connection: connection}, nil
+	return &CosmosClient{
+		Endpoint:   endpoint,
+		connection: connection}, nil
 }
 
 // GetCosmosDatabase returns a CosmosDatabase object.

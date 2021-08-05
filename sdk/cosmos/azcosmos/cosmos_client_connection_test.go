@@ -10,14 +10,14 @@ import (
 func TestPathGeneration(t *testing.T) {
 	connection := &cosmosClientConnection{}
 
-	expected := "/dbs/testdb/colls/testcoll"
-	actual := connection.getPath("/dbs/testdb", "colls", "testcoll")
+	expected := "dbs/testdb/colls/testcoll"
+	actual := connection.getPath("dbs/testdb", pathSegmentCollection, "testcoll")
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 
-	expected = "/dbs/testdb"
-	actual = connection.getPath("", "/dbs", "testdb")
+	expected = "dbs/testdb"
+	actual = connection.getPath("", pathSegmentDatabase, "testdb")
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}

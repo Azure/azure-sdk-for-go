@@ -10,8 +10,13 @@ type CosmosContainer struct {
 	Id string
 	// The database that contains the container
 	Database *CosmosDatabase
+	// The resource link
+	link string
 }
 
 func newCosmosContainer(id string, database *CosmosDatabase) *CosmosContainer {
-	return &CosmosContainer{Id: id, Database: database}
+	return &CosmosContainer{
+		Id:       id,
+		Database: database,
+		link:     database.client.connection.getPath(database.link, pathSegmentCollection, id)}
 }

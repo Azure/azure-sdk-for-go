@@ -24,10 +24,14 @@ type resourceThrottleRetryPolicy struct {
 
 func newResourceThrottleRetryPolicy(o *CosmosClientOptions) *resourceThrottleRetryPolicy {
 	if o.RateLimitedRetry == nil {
-		return &resourceThrottleRetryPolicy{MaxWaitTime: defaultResourceThrottleRetryPolicyMaxWaitTime, MaxRetryCount: defaultResourceThrottleRetryPolicyRetryCount}
+		return &resourceThrottleRetryPolicy{
+			MaxWaitTime:   defaultResourceThrottleRetryPolicyMaxWaitTime,
+			MaxRetryCount: defaultResourceThrottleRetryPolicyRetryCount}
 	}
 
-	return &resourceThrottleRetryPolicy{MaxWaitTime: o.RateLimitedRetry.MaxRetryWaitTime, MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
+	return &resourceThrottleRetryPolicy{
+		MaxWaitTime:   o.RateLimitedRetry.MaxRetryWaitTime,
+		MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
 }
 
 func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response, error) {

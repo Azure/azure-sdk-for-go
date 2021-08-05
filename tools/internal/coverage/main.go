@@ -22,11 +22,7 @@ type Package struct {
 	CoverageGoal float64 `json:"CoverageGoal"`
 }
 
-const (
-	coverageXmlFile = "coverage.xml"
-)
-
-var configFile, _ = filepath.Abs(filepath.Join("..", "eng", "config.json"))
+var configFile, _ = filepath.Abs(filepath.Join("eng", "config.json"))
 
 func check(e error) {
 	if e != nil {

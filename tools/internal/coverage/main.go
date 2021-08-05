@@ -66,6 +66,7 @@ func ReadConfigData() *CodeCoverage {
 func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 	for _, covFile := range covFiles {
 		for _, p := range configData.Packages {
+			fmt.Printf("covFile: '%v' p: '%v'\n", covFile, p.Name)
 			if strings.Contains(covFile, p.Name) {
 				return p.CoverageGoal
 			}
@@ -76,9 +77,12 @@ func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 }
 
 func main() {
-
+	// var serviceDir string
+	// flag.StringVar(&serviceDir, "serviceDirectory", "", "The service directory to check the coverage for")
 	serviceDir := flag.String("serviceDirectory", "", "Service Directory")
 	flag.Parse()
+
+	fmt.Println("serviceDir: ", *serviceDir)
 
 	coverageFiles = make([]string, 0)
 	rootPath, err := filepath.Abs(".")

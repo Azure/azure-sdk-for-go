@@ -84,5 +84,5 @@ Get-Content ./coverage.json | gocov-xml > ./coverage.xml
 Get-Content ./coverage.json | gocov-html > ./coverage.html
 
 # use internal tool to fail if coverage is too low
-Write-Host "##[command] go run ./tools/internal/coverage/main.go serviceDirectory $serviceDir"
-go run ./tools/internal/coverage/main.go serviceDirectory $serviceDir
+Write-Host "##[command] go run ./tools/internal/coverage/main.go -serviceDirectory $serviceDir"
+go run ./tools/internal/coverage/main.go -serviceDirectory $serviceDir

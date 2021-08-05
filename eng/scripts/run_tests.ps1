@@ -31,7 +31,7 @@ $testDirs | ForEach-Object {
 
 Write-Host "Proceeding to run tests and add coverage"
 
-go get github.com/jstemmer/go-junit-report@v0.0.1
+go get github.com/jstemmer/go-junit-report
 
 # 1. Run tests
 foreach ($td in $testDirs) {
@@ -59,10 +59,10 @@ $temp = Get-Location
 Write-Host "Currently in $temp"
 
 # 2. Install coverage tools needed
-go get github.com/axw/gocov/gocov@v1.0.0
-go get github.com/AlekSi/gocov-xml  # Cannot find version on github
-go get github.com/matm/gocov-html@v1.1
-go get -u github.com/wadey/gocovmerge  # Cannot find version on GitHub
+go get github.com/axw/gocov/gocov
+go get github.com/AlekSi/gocov-xml
+go get github.com/matm/gocov-html
+go get -u github.com/wadey/gocovmerge
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {

@@ -2,7 +2,7 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute)
 
-The `armcompute` module provides operations for working with Azure compute.
+The `armcompute` module provides operations for working with Azure Compute.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/compute/armcompute)
 

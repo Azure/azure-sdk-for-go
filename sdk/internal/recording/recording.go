@@ -8,6 +8,7 @@ package recording
 import (
 	"bytes"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -467,7 +468,8 @@ func getTestId(t *testing.T) string {
 	if err != nil {
 		t.Errorf("Could not find current working directory")
 	}
-	cwd = "./recordings/" + t.Name() + ".json"
+	// cwd = "./recordings/" + t.Name() + ".json"
+	cwd = "./" + t.Name() + ".json"
 	return cwd
 }
 
@@ -588,9 +590,10 @@ func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err er
 }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
-func GetEnvVariable(varName string, recordedValue string) string {
+func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 	val, ok := os.LookupEnv(varName)
 	if !ok {
+		t.Logf("Could not find environment variable: %v", varName)
 		return recordedValue
 	}
 	return val
@@ -620,4 +623,62 @@ func InPlayback() bool {
 
 func InRecord() bool {
 	return GetRecordMode() == ModeRecording
+}
+
+type FakeCredential struct {
+	accountName string
+	accountKey  string
+}
+
+func NewFakeCredential(accountName, accountKey string) *FakeCredential {
+	return &FakeCredential{
+		accountName: accountName,
+		accountKey:  accountKey,
+	}
+}
+
+func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
+		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+		return req.Next()
+	})
+}
+
+var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
+
+func getRootCas(filePath *string) (*x509.CertPool, error) {
+	rootCAs, err := x509.SystemCertPool()
+	if err != nil {
+		rootCAs = x509.NewCertPool()
+	}
+
+	cert, err := ioutil.ReadFile(*filePath)
+	if err != nil {
+		fmt.Println("error opening cert file")
+		return nil, err
+	}
+
+	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
+		fmt.Println("No certs appended, using system certs only")
+	}
+
+	return rootCAs, nil
+}
+
+func GetHTTPClient() (*http.Client, error) {
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+
+	rootCAs, err := getRootCas(&localCertFile)
+	if err != nil {
+		return nil, err
+	}
+
+	transport.TLSClientConfig.RootCAs = rootCAs
+	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+
+	defaultHttpClient := &http.Client{
+		Transport: transport,
+	}
+	return defaultHttpClient, nil
 }

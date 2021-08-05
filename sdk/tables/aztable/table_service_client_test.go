@@ -165,7 +165,7 @@ func TestGetStatistics(t *testing.T) {
 	t.Skip()
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
-	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
 	fmt.Println(serviceURL)
 	service, err := createTableServiceClientForRecording(t, serviceURL, cred)

@@ -39,7 +39,7 @@ steps:
 
   - pwsh: |
       Write-Host "##[command]Check source file formatting in $(pwd)"
-      gofmt -s -l -d .
+      gofmt -s -l -d . >&2
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true

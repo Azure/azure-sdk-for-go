@@ -48,6 +48,7 @@ foreach ($td in $testDirs) {
     go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml
     if (!$?) {
         Write-Host "There was an error running the tests"
+        go test -run "^Test" -v -coverprofile coverage.txt $td  # The error is not shown so I am going to re-run to get the error
         Exit $LASTEXITCODE
     } else {
         Write-Host "" "Successfully ran test suite at $temp" ""
@@ -61,8 +62,6 @@ foreach ($td in $testDirs) {
 }
 
 Set-Location $cwd
-$temp = Get-Location
-Write-Host "Currently in $temp"
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {

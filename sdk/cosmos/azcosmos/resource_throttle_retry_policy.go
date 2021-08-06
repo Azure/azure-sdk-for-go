@@ -8,10 +8,13 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	sdkruntime "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
-const defaultMaxWaitTime time.Duration = 60 * time.Second
-const defaultRetryCount int = 9
+const (
+	defaultResourceThrottleRetryPolicyMaxWaitTime time.Duration = 60 * time.Second
+	defaultResourceThrottleRetryPolicyRetryCount  int           = 9
+)
 
 // resourceThrottleRetryPolicy retries on HTTP 429.
 type resourceThrottleRetryPolicy struct {
@@ -21,10 +24,14 @@ type resourceThrottleRetryPolicy struct {
 
 func newResourceThrottleRetryPolicy(o *CosmosClientOptions) *resourceThrottleRetryPolicy {
 	if o.RateLimitedRetry == nil {
-		return &resourceThrottleRetryPolicy{MaxWaitTime: defaultMaxWaitTime, MaxRetryCount: defaultRetryCount}
+		return &resourceThrottleRetryPolicy{
+			MaxWaitTime:   defaultResourceThrottleRetryPolicyMaxWaitTime,
+			MaxRetryCount: defaultResourceThrottleRetryPolicyRetryCount}
 	}
 
-	return &resourceThrottleRetryPolicy{MaxWaitTime: o.RateLimitedRetry.MaxRetryWaitTime, MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
+	return &resourceThrottleRetryPolicy{
+		MaxWaitTime:   o.RateLimitedRetry.MaxRetryWaitTime,
+		MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
 }
 
 func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
@@ -37,9 +44,12 @@ func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response,
 	var err error
 	var cumulativeWaitTime time.Duration
 	for attempts := 0; attempts < p.MaxRetryCount; attempts++ {
-		// make the original request
-		resp, err = req.Next()
+		err = req.RewindBody()
+		if err != nil {
+			return resp, newFrameError(err)
+		}
 
+		resp, err = req.Next()
 		if err != nil || resp.StatusCode != http.StatusTooManyRequests {
 			return resp, err
 		}
@@ -49,6 +59,18 @@ func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response,
 		cumulativeWaitTime += retryAfterDuration
 
 		if retryAfterDuration > p.MaxWaitTime || cumulativeWaitTime > p.MaxWaitTime {
+			return resp, err
+		}
+
+		// drain before retrying so nothing is leaked
+		resp.Drain()
+
+		select {
+		case <-time.After(retryAfterDuration):
+			// retry
+		case <-req.Context().Done():
+			err = req.Context().Err()
+			azcore.Log().Writef(azcore.LogRetryPolicy, "ResourceThrottleRetryPolicy abort due to %v", err)
 			return resp, err
 		}
 	}
@@ -67,4 +89,9 @@ func parseRetryAfter(retryAfter string) time.Duration {
 	}
 
 	return retryAfterDuration
+}
+
+func newFrameError(inner error) error {
+	// skip ourselves
+	return sdkruntime.NewFrameError(inner, false, 1, azcore.StackFrameCount)
 }

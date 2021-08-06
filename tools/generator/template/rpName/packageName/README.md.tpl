@@ -17,7 +17,7 @@ The `{{packageName}}` module provides operations for working with Azure {{Packag
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure AgFood module:
+Install the Azure {{PackageTitle}} module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/{{rpName}}/{{packageName}}

@@ -32,9 +32,9 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - pwsh: |
-      Write-Host "##[command]Check source file formatting in $(pwd)"
-      gofmt -s -l -d .
+  - script: |
+      echo Check source file formatting in $(pwd)
+      gofmt -s -l -d . | tee >&2
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true

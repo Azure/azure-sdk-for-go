@@ -48,7 +48,6 @@ steps:
       -p 5000:5000 `
       azsdkengsys.azurecr.io/engsys/testproxy-lin:latest
     displayName: 'Run the docker container'
-    condition: and(succeeded(), true)
     condition: and(succeeded(), ne($(Agent.OS),'Windows_NT')
 
   - pwsh: |
@@ -60,6 +59,8 @@ steps:
       azsdkengsys.azurecr.io/engsys/testproxy-win:latest
     displayName: 'Run the docker container'
     condition: and(succeeded(), eq($(Agent.OS),'Windows_NT')
+
+
 
   - pwsh: |
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))

@@ -17,10 +17,10 @@ type CosmosContainerProperties struct {
 	LastModified *UnixTime `json:"_ts,omitempty"`
 	// DefaultTimeToLive contains the default time to live in seconds for items in the container.
 	// For more information see https://docs.microsoft.com/azure/cosmos-db/time-to-live#time-to-live-configurations
-	DefaultTimeToLive int `json:"defaultTtl,omitempty"`
+	DefaultTimeToLive *int `json:"defaultTtl,omitempty"`
 	// AnalyticalStoreTimeToLiveInSeconds contains the default time to live in seconds for analytical store in the container.
 	// For more information see https://docs.microsoft.com/azure/cosmos-db/analytical-store-introduction#analytical-ttl
-	AnalyticalStoreTimeToLiveInSeconds int `json:"analyticalStorageTtl,omitempty"`
+	AnalyticalStoreTimeToLiveInSeconds *int `json:"analyticalStorageTtl,omitempty"`
 	// PartitionKeyDefinition contains the partition key definition of the container
 	PartitionKeyDefinition *PartitionKeyDefinition `json:"partitionKey,omitempty"`
 	// Container represented by these properties

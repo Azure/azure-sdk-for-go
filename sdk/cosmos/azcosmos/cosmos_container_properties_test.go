@@ -59,6 +59,14 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		t.Errorf("Expected otherProperties.LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), otherProperties.LastModified.Time.UTC())
 	}
 
+	if otherProperties.AnalyticalStoreTimeToLiveInSeconds != nil {
+		t.Errorf("Expected otherProperties.AnalyticalStoreTimeToLiveInSeconds to be nil, but got %d", *otherProperties.AnalyticalStoreTimeToLiveInSeconds)
+	}
+
+	if otherProperties.DefaultTimeToLive != nil {
+		t.Errorf("Expected otherProperties.DefaultTimeToLive to be nil, but got %d", *otherProperties.DefaultTimeToLive)
+	}
+
 	if otherProperties.PartitionKeyDefinition == nil {
 		t.Errorf("Expected otherProperties.PartitionKeyDefinition to be not nil, but got nil")
 	}
@@ -81,11 +89,11 @@ func TestContainerPropertiesSerializationWithTTL(t *testing.T) {
 		t.Fatal(err, string(jsonString))
 	}
 
-	if properties.DefaultTimeToLive != 10 {
+	if *properties.DefaultTimeToLive != 10 {
 		t.Errorf("Expected properties.DefaultTimeToLive to be %d, but got %d", 10, properties.DefaultTimeToLive)
 	}
 
-	if properties.AnalyticalStoreTimeToLiveInSeconds != 20 {
+	if *properties.AnalyticalStoreTimeToLiveInSeconds != 20 {
 		t.Errorf("Expected properties.AnalyticalStoreTimeToLiveInSeconds to be %d, but got %d", 20, properties.AnalyticalStoreTimeToLiveInSeconds)
 	}
 }

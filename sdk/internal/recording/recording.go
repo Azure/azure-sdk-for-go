@@ -644,15 +644,20 @@ func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions
 	})
 }
 
-var localCertFile = "C:/github.com/azure-sdk-tools/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
+func getRootCas() (*x509.CertPool, error) {
+	localFile, ok := os.LookupEnv("PROXY_CERT")
 
-func getRootCas(filePath *string) (*x509.CertPool, error) {
 	rootCAs, err := x509.SystemCertPool()
 	if err != nil {
 		rootCAs = x509.NewCertPool()
 	}
 
-	cert, err := ioutil.ReadFile(*filePath)
+	if !ok {
+		fmt.Println("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
+		return rootCAs, nil
+	}
+
+	cert, err := ioutil.ReadFile(*&localFile)
 	if err != nil {
 		fmt.Println("error opening cert file")
 		return nil, err
@@ -668,7 +673,7 @@ func getRootCas(filePath *string) (*x509.CertPool, error) {
 func GetHTTPClient() (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 
-	rootCAs, err := getRootCas(&localCertFile)
+	rootCAs, err := getRootCas()
 	if err != nil {
 		return nil, err
 	}

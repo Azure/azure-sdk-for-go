@@ -52,7 +52,6 @@ steps:
 #         $SUDO update-ca-certificates
 #     displayName: 'Trust Certificate (Linux)'
 #     condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'))
-
 #   - pwsh: |
 #         Write-Host "Trust Actions Here"
 #     displayName: 'Trust Certificate (Windows)'

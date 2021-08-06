@@ -7,11 +7,6 @@ parameters:
 
 steps:
 
-  - template: /eng/common/pipelines/templates/steps/verify-links.yml
-    parameters:
-      Directory: sdk/${{ parameters.ServiceDirectory }}
-      CheckLinkGuidance: $true
-
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version
@@ -44,5 +39,10 @@ steps:
     condition: succeededOrFailed()
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - template: /eng/common/pipelines/templates/steps/verify-links.yml
+    parameters:
+      Directory: sdk/${{ parameters.ServiceDirectory }}
+      CheckLinkGuidance: $true
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml

@@ -48,7 +48,7 @@ For more information on ARM connections, please see the documentation for `armco
 Azure Container Service modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armcontainerservice.{{NewClientMethod}}(con, "<subscription ID>")
+client := armcontainerservice.NewManagedClustersClient(con, "<subscription ID>")
 ```
 
 ## Provide Feedback

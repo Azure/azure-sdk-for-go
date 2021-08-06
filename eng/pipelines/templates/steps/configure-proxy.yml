@@ -4,7 +4,7 @@ parameters:
 steps:
   - pwsh: |
         $certUri = "https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pfx"
-        $certLocation = "$(Build.SourcesDirectory)/dotnet-devcert.pfx"
+        $certLocation = "$(Build.SourcesDirectory)/dotnet-devcert.crt"
 
         Invoke-WebRequest `
             -Uri $certUri `
@@ -14,5 +14,5 @@ steps:
 
         Write-Host "##vso[task.setvariable variable=PROXY_CERT]$certLocation"
     displayName: 'Download and Trust Certificate'
-    
+
 

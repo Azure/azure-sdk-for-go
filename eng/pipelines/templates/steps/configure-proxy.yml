@@ -11,6 +11,8 @@ steps:
             -OutFile $certLocation -UseBasicParsing
 
         dotnet dev-certs https --clean --import $certLocation -p "password"
+
+        Write-Host "##vso[task.setvariable variable=PROXY_CERT]$certLocation"
     displayName: 'Download and Trust Certificate'
     
 

@@ -1,8 +1,8 @@
 # Azure Resource Manager Core Client Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/armcore)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20armcore%20-%20ci?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1844&branchName=master)
-[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/main)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20armcore%20-%20ci?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1844&branchName=main)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/main)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/main)
 
 The `armcore` module provides functions and types for Go SDK ARM client modules.
 These modules follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).

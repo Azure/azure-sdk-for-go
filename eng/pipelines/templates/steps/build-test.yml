@@ -40,32 +40,31 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - task: UseDotNet@2
-    displayName: "Use .NET Core SDK"
-    inputs:
-      packageType: sdk
-      version: 5.0.205
+  - pwsh: |
+      docker run `
+      --detach `
+      -v $(Build.SourcesDirectory):/etc/testproxy `
+      -p 5001:5001 `
+      -p 5000:5000 `
+      azsdkengsys.azurecr.io/engsys/testproxy-lin:latest
+    displayName: 'Run the docker container'
+    condition: and(succeeded(), true)
+    condition: and(succeeded(), ne($(Agent.OS),'Windows_NT')
 
   - pwsh: |
-      dotnet tool install azure.sdk.tools.testproxy --tool-path $(Build.BinariesDirectory)/test-proxy --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk/nuget/v3/index.json --version 1.0.0-dev.20210729.1
-    displayName: "Install TestProxy"
+      docker run `
+      --detach `
+      -v $(Build.SourcesDirectory):/etc/testproxy `
+      -p 5001:5001 `
+      -p 5000:5000 `
+      azsdkengsys.azurecr.io/engsys/testproxy-win:latest
+    displayName: 'Run the docker container'
+    condition: and(succeeded(), eq($(Agent.OS),'Windows_NT')
 
   - pwsh: |
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-
-        Write-Host "Starting test proxy from $td..."
-
-        # This should be moved out of the loop, and only started once.
-        if ($IsWindows) {
-          Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe -ArgumentList "--storage-location $td" -NoNewWindow -PassThru
-        }
-        else {
-          # ref https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.1#example-8--create-a-detached-process-on-linux
-          $(Build.BinariesDirectory)/test-proxy/test-proxy --storage-location $td &
-        }
-
         Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -v -coverprofile coverage.txt . | go-junit-report -set-exit-code > report.xml
         # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report

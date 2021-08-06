@@ -32,7 +32,7 @@ $testDirs | ForEach-Object {
 Write-Host "Downloading coverage tools"
 $cwd = Get-Location
 Set-Location ./tools/internal/coverage
-go get -v
+go get -v .
 Set-Location $cwd
 
 Write-Host "Proceeding to run tests and add coverage"

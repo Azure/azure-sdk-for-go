@@ -92,7 +92,8 @@ func TestEtagAny(t *testing.T) {
 	require.Falsef(t, StrongEquals(quotedStart, weakStar), "Expected etags to be equal")
 
 	require.Falsef(t, StrongEquals(star, quotedStart), "Expected etags to be equal")
-	require.Falsef(t, StrongEquals(ETagAny(), star), "Expected etags to be equal")
+
+	require.Truef(t, StrongEquals(ETagAny(), star), "Expected etags to be equal")
 }
 
 func TestETagWeakComparison(t *testing.T) {

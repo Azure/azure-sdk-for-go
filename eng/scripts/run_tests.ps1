@@ -29,15 +29,13 @@ $testDirs | ForEach-Object {
     }
 }
 
-Write-Host "Proceeding to run tests and add coverage"
-
+Write-Host "Downloading coverage tools"
 $cwd = Get-Location
-
 Set-Location ./tools/internal/coverage
 go mod download
-
 Set-Location $cwd
-# go get github.com/jstemmer/go-junit-report
+
+Write-Host "Proceeding to run tests and add coverage"
 
 # 1. Run tests
 foreach ($td in $testDirs) {
@@ -45,7 +43,7 @@ foreach ($td in $testDirs) {
     $temp = Get-Location
     Write-Host "Currently in $temp"
     Write-Host "##[command] Executing go test -run ""^Test"" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
-    go test -run "^Test" -v -coverprofile coverage.txt $td #| go-junit-report -set-exit-code > report.xml
+    go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml
     if (!$?) {
         Write-Host "There was an error running the tests"
         Exit $LASTEXITCODE
@@ -63,12 +61,6 @@ foreach ($td in $testDirs) {
 Set-Location $cwd
 $temp = Get-Location
 Write-Host "Currently in $temp"
-
-# # 2. Install coverage tools needed
-# go get github.com/axw/gocov/gocov
-# go get github.com/AlekSi/gocov-xml
-# go get github.com/matm/gocov-html
-# go get -u github.com/wadey/gocovmerge
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {

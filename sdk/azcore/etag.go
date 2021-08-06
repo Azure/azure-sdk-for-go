@@ -11,6 +11,7 @@ import (
 
 // ETag is a property used for optimistic concurrency during updates
 // ETag is a validator based on https://tools.ietf.org/html/rfc7232#section-2.3.2
+// An ETag can be empty ("") or nil. A nil etag represents the absence of an ETag, while an empty ETag is a valid ETag (e.g. https://www.rfc-editor.org/rfc/rfc7232.html#section-2.3)
 type ETag *string
 
 // StrongEquals does a strong comparison of two ETags. StrongEquals returns true when both

@@ -1,0 +1,29 @@
+parameters:
+  ServiceDirectory: ''
+
+steps:
+  - pwsh: |
+
+    displayName: 'Download and Trust Certificate'
+    
+  - pwsh: |
+      docker run `
+      --detach `
+      -v $(Build.SourcesDirectory):/etc/testproxy `
+      -p 5001:5001 `
+      -p 5000:5000 `
+      azsdkengsys.azurecr.io/engsys/testproxy-lin:latest
+    displayName: 'Run the docker container'
+    condition: and(succeeded(), ne($(Agent.OS),'Windows_NT'))
+
+  - pwsh: |
+      docker run `
+      --detach `
+      -v $(Build.SourcesDirectory):/etc/testproxy `
+      -p 5001:5001 `
+      -p 5000:5000 `
+      azsdkengsys.azurecr.io/engsys/testproxy-win:latest
+    displayName: 'Run the docker container'
+    condition: and(succeeded(), eq($(Agent.OS),'Windows_NT'))
+    
+

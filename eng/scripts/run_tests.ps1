@@ -30,9 +30,11 @@ $testDirs | ForEach-Object {
 }
 
 Write-Host "Downloading coverage tools"
-$cwd = Get-Location
-Set-Location ./tools/internal/coverage
-go get -v .
+go get github.com/jstemmer/go-junit-report
+go get github.com/axw/gocov/gocov
+go get github.com/AlekSi/gocov-xml
+go get github.com/matm/gocov-html
+go get -u github.com/wadey/gocovmerge
 Set-Location $cwd
 
 Write-Host "Proceeding to run tests and add coverage"

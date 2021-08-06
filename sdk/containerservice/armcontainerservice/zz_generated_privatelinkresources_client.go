@@ -30,19 +30,19 @@ func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID strin
 	return &PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
 }
 
-// List - Gets a list of private link resources in the specified managed cluster. The operation returns properties of each private link resource.
+// List - To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourcesClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesListOptions) (PrivateLinkResourcesListResultResponse, error) {
+func (client *PrivateLinkResourcesClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesListOptions) (PrivateLinkResourcesListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkResourcesListResultResponse{}, err
+		return PrivateLinkResourcesListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourcesListResultResponse{}, err
+		return PrivateLinkResourcesListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourcesListResultResponse{}, client.listHandleError(resp)
+		return PrivateLinkResourcesListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -68,19 +68,19 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateLinkResourcesClient) listHandleResponse(resp *azcore.Response) (PrivateLinkResourcesListResultResponse, error) {
-	var val *PrivateLinkResourcesListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourcesListResultResponse{}, err
+func (client *PrivateLinkResourcesClient) listHandleResponse(resp *azcore.Response) (PrivateLinkResourcesListResponse, error) {
+	result := PrivateLinkResourcesListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourcesListResult); err != nil {
+		return PrivateLinkResourcesListResponse{}, err
 	}
-	return PrivateLinkResourcesListResultResponse{RawResponse: resp.Response, PrivateLinkResourcesListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

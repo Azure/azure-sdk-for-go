@@ -13,221 +13,560 @@ import (
 	"time"
 )
 
-// AgentPoolAvailableVersionsResponse is the response envelope for operations that return a AgentPoolAvailableVersions type.
-type AgentPoolAvailableVersionsResponse struct {
-	// The list of available versions for an agent pool.
-	AgentPoolAvailableVersions *AgentPoolAvailableVersions
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AgentPoolListResultResponse is the response envelope for operations that return a AgentPoolListResult type.
-type AgentPoolListResultResponse struct {
-	// The response from the List Agent Pools operation.
-	AgentPoolListResult *AgentPoolListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AgentPoolPollerResponse is the response envelope for operations that asynchronously return a AgentPool type.
-type AgentPoolPollerResponse struct {
+// AgentPoolsCreateOrUpdatePollerResponse contains the response from method AgentPools.CreateOrUpdate.
+type AgentPoolsCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AgentPoolResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (AgentPoolsCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller AgentPoolPoller
+	Poller AgentPoolsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolResponse is the response envelope for operations that return a AgentPool type.
-type AgentPoolResponse struct {
-	// Agent Pool.
-	AgentPool *AgentPool
-
+// AgentPoolsCreateOrUpdateResponse contains the response from method AgentPools.CreateOrUpdate.
+type AgentPoolsCreateOrUpdateResponse struct {
+	AgentPoolsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolUpgradeProfileResponse is the response envelope for operations that return a AgentPoolUpgradeProfile type.
-type AgentPoolUpgradeProfileResponse struct {
-	// The list of available upgrades for an agent pool.
-	AgentPoolUpgradeProfile *AgentPoolUpgradeProfile
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AgentPoolsCreateOrUpdateResult contains the result from method AgentPools.CreateOrUpdate.
+type AgentPoolsCreateOrUpdateResult struct {
+	AgentPool
 }
 
-// CredentialResultsResponse is the response envelope for operations that return a CredentialResults type.
-type CredentialResultsResponse struct {
-	// The list of credential result response.
-	CredentialResults *CredentialResults
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
-type HTTPPollerResponse struct {
+// AgentPoolsDeletePollerResponse contains the response from method AgentPools.Delete.
+type AgentPoolsDeletePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (AgentPoolsDeleteResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller HTTPPoller
+	Poller AgentPoolsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MaintenanceConfigurationListResultResponse is the response envelope for operations that return a MaintenanceConfigurationListResult type.
-type MaintenanceConfigurationListResultResponse struct {
-	// The response from the List maintenance configurations operation.
-	MaintenanceConfigurationListResult *MaintenanceConfigurationListResult
-
+// AgentPoolsDeleteResponse contains the response from method AgentPools.Delete.
+type AgentPoolsDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MaintenanceConfigurationResponse is the response envelope for operations that return a MaintenanceConfiguration type.
-type MaintenanceConfigurationResponse struct {
-	// maintenance configuration.
-	MaintenanceConfiguration *MaintenanceConfiguration
-
+// AgentPoolsGetAvailableAgentPoolVersionsResponse contains the response from method AgentPools.GetAvailableAgentPoolVersions.
+type AgentPoolsGetAvailableAgentPoolVersionsResponse struct {
+	AgentPoolsGetAvailableAgentPoolVersionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClusterAccessProfileResponse is the response envelope for operations that return a ManagedClusterAccessProfile type.
-type ManagedClusterAccessProfileResponse struct {
-	// Managed cluster Access Profile.
-	ManagedClusterAccessProfile *ManagedClusterAccessProfile
+// AgentPoolsGetAvailableAgentPoolVersionsResult contains the result from method AgentPools.GetAvailableAgentPoolVersions.
+type AgentPoolsGetAvailableAgentPoolVersionsResult struct {
+	AgentPoolAvailableVersions
+}
 
+// AgentPoolsGetResponse contains the response from method AgentPools.Get.
+type AgentPoolsGetResponse struct {
+	AgentPoolsGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClusterListResultResponse is the response envelope for operations that return a ManagedClusterListResult type.
-type ManagedClusterListResultResponse struct {
-	// The response from the List Managed Clusters operation.
-	ManagedClusterListResult *ManagedClusterListResult
+// AgentPoolsGetResult contains the result from method AgentPools.Get.
+type AgentPoolsGetResult struct {
+	AgentPool
+}
 
+// AgentPoolsGetUpgradeProfileResponse contains the response from method AgentPools.GetUpgradeProfile.
+type AgentPoolsGetUpgradeProfileResponse struct {
+	AgentPoolsGetUpgradeProfileResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClusterPollerResponse is the response envelope for operations that asynchronously return a ManagedCluster type.
-type ManagedClusterPollerResponse struct {
+// AgentPoolsGetUpgradeProfileResult contains the result from method AgentPools.GetUpgradeProfile.
+type AgentPoolsGetUpgradeProfileResult struct {
+	AgentPoolUpgradeProfile
+}
+
+// AgentPoolsListResponse contains the response from method AgentPools.List.
+type AgentPoolsListResponse struct {
+	AgentPoolsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AgentPoolsListResult contains the result from method AgentPools.List.
+type AgentPoolsListResult struct {
+	AgentPoolListResult
+}
+
+// AgentPoolsUpgradeNodeImageVersionPollerResponse contains the response from method AgentPools.UpgradeNodeImageVersion.
+type AgentPoolsUpgradeNodeImageVersionPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClusterResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (AgentPoolsUpgradeNodeImageVersionResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller ManagedClusterPoller
+	Poller AgentPoolsUpgradeNodeImageVersionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClusterResponse is the response envelope for operations that return a ManagedCluster type.
-type ManagedClusterResponse struct {
-	// Managed cluster.
-	ManagedCluster *ManagedCluster
-
+// AgentPoolsUpgradeNodeImageVersionResponse contains the response from method AgentPools.UpgradeNodeImageVersion.
+type AgentPoolsUpgradeNodeImageVersionResponse struct {
+	AgentPoolsUpgradeNodeImageVersionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClusterUpgradeProfileResponse is the response envelope for operations that return a ManagedClusterUpgradeProfile type.
-type ManagedClusterUpgradeProfileResponse struct {
-	// The list of available upgrades for compute pools.
-	ManagedClusterUpgradeProfile *ManagedClusterUpgradeProfile
+// AgentPoolsUpgradeNodeImageVersionResult contains the result from method AgentPools.UpgradeNodeImageVersion.
+type AgentPoolsUpgradeNodeImageVersionResult struct {
+	AgentPool
+}
 
+// MaintenanceConfigurationsCreateOrUpdateResponse contains the response from method MaintenanceConfigurations.CreateOrUpdate.
+type MaintenanceConfigurationsCreateOrUpdateResponse struct {
+	MaintenanceConfigurationsCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OSOptionProfileResponse is the response envelope for operations that return a OSOptionProfile type.
-type OSOptionProfileResponse struct {
-	// The OS option profile.
-	OSOptionProfile *OSOptionProfile
+// MaintenanceConfigurationsCreateOrUpdateResult contains the result from method MaintenanceConfigurations.CreateOrUpdate.
+type MaintenanceConfigurationsCreateOrUpdateResult struct {
+	MaintenanceConfiguration
+}
 
+// MaintenanceConfigurationsDeleteResponse contains the response from method MaintenanceConfigurations.Delete.
+type MaintenanceConfigurationsDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationListResultResponse is the response envelope for operations that return a OperationListResult type.
-type OperationListResultResponse struct {
-	// The List Compute Operation operation response.
-	OperationListResult *OperationListResult
-
+// MaintenanceConfigurationsGetResponse contains the response from method MaintenanceConfigurations.Get.
+type MaintenanceConfigurationsGetResponse struct {
+	MaintenanceConfigurationsGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OutboundEnvironmentEndpointCollectionResponse is the response envelope for operations that return a OutboundEnvironmentEndpointCollection type.
-type OutboundEnvironmentEndpointCollectionResponse struct {
-	// Collection of OutboundEnvironmentEndpoint
-	OutboundEnvironmentEndpointCollection *OutboundEnvironmentEndpointCollection
+// MaintenanceConfigurationsGetResult contains the result from method MaintenanceConfigurations.Get.
+type MaintenanceConfigurationsGetResult struct {
+	MaintenanceConfiguration
+}
 
+// MaintenanceConfigurationsListByManagedClusterResponse contains the response from method MaintenanceConfigurations.ListByManagedCluster.
+type MaintenanceConfigurationsListByManagedClusterResponse struct {
+	MaintenanceConfigurationsListByManagedClusterResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionListResultResponse is the response envelope for operations that return a PrivateEndpointConnectionListResult type.
-type PrivateEndpointConnectionListResultResponse struct {
-	// A list of private endpoint connections
-	PrivateEndpointConnectionListResult *PrivateEndpointConnectionListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MaintenanceConfigurationsListByManagedClusterResult contains the result from method MaintenanceConfigurations.ListByManagedCluster.
+type MaintenanceConfigurationsListByManagedClusterResult struct {
+	MaintenanceConfigurationListResult
 }
 
-// PrivateEndpointConnectionResponse is the response envelope for operations that return a PrivateEndpointConnection type.
-type PrivateEndpointConnectionResponse struct {
-	// A private endpoint connection
-	PrivateEndpointConnection *PrivateEndpointConnection
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourceResponse is the response envelope for operations that return a PrivateLinkResource type.
-type PrivateLinkResourceResponse struct {
-	// A private link resource
-	PrivateLinkResource *PrivateLinkResource
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListResultResponse is the response envelope for operations that return a PrivateLinkResourcesListResult type.
-type PrivateLinkResourcesListResultResponse struct {
-	// A list of private link resources
-	PrivateLinkResourcesListResult *PrivateLinkResourcesListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RunCommandResultPollerResponse is the response envelope for operations that asynchronously return a RunCommandResult type.
-type RunCommandResultPollerResponse struct {
+// ManagedClustersCreateOrUpdatePollerResponse contains the response from method ManagedClusters.CreateOrUpdate.
+type ManagedClustersCreateOrUpdatePollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error)
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersCreateOrUpdateResponse, error)
 
 	// Poller contains an initialized poller.
-	Poller RunCommandResultPoller
+	Poller ManagedClustersCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunCommandResultResponse is the response envelope for operations that return a RunCommandResult type.
-type RunCommandResultResponse struct {
+// ManagedClustersCreateOrUpdateResponse contains the response from method ManagedClusters.CreateOrUpdate.
+type ManagedClustersCreateOrUpdateResponse struct {
+	ManagedClustersCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
 
-	// run command result.
-	RunCommandResult *RunCommandResult
+// ManagedClustersCreateOrUpdateResult contains the result from method ManagedClusters.CreateOrUpdate.
+type ManagedClustersCreateOrUpdateResult struct {
+	ManagedCluster
+}
+
+// ManagedClustersDeletePollerResponse contains the response from method ManagedClusters.Delete.
+type ManagedClustersDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersDeleteResponse contains the response from method ManagedClusters.Delete.
+type ManagedClustersDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersGetAccessProfileResponse contains the response from method ManagedClusters.GetAccessProfile.
+type ManagedClustersGetAccessProfileResponse struct {
+	ManagedClustersGetAccessProfileResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersGetAccessProfileResult contains the result from method ManagedClusters.GetAccessProfile.
+type ManagedClustersGetAccessProfileResult struct {
+	ManagedClusterAccessProfile
+}
+
+// ManagedClustersGetCommandResultResponse contains the response from method ManagedClusters.GetCommandResult.
+type ManagedClustersGetCommandResultResponse struct {
+	ManagedClustersGetCommandResultResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersGetCommandResultResult contains the result from method ManagedClusters.GetCommandResult.
+type ManagedClustersGetCommandResultResult struct {
+	RunCommandResult
+}
+
+// ManagedClustersGetOSOptionsResponse contains the response from method ManagedClusters.GetOSOptions.
+type ManagedClustersGetOSOptionsResponse struct {
+	ManagedClustersGetOSOptionsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersGetOSOptionsResult contains the result from method ManagedClusters.GetOSOptions.
+type ManagedClustersGetOSOptionsResult struct {
+	OSOptionProfile
+}
+
+// ManagedClustersGetResponse contains the response from method ManagedClusters.Get.
+type ManagedClustersGetResponse struct {
+	ManagedClustersGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersGetResult contains the result from method ManagedClusters.Get.
+type ManagedClustersGetResult struct {
+	ManagedCluster
+}
+
+// ManagedClustersGetUpgradeProfileResponse contains the response from method ManagedClusters.GetUpgradeProfile.
+type ManagedClustersGetUpgradeProfileResponse struct {
+	ManagedClustersGetUpgradeProfileResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersGetUpgradeProfileResult contains the result from method ManagedClusters.GetUpgradeProfile.
+type ManagedClustersGetUpgradeProfileResult struct {
+	ManagedClusterUpgradeProfile
+}
+
+// ManagedClustersListByResourceGroupResponse contains the response from method ManagedClusters.ListByResourceGroup.
+type ManagedClustersListByResourceGroupResponse struct {
+	ManagedClustersListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersListByResourceGroupResult contains the result from method ManagedClusters.ListByResourceGroup.
+type ManagedClustersListByResourceGroupResult struct {
+	ManagedClusterListResult
+}
+
+// ManagedClustersListClusterAdminCredentialsResponse contains the response from method ManagedClusters.ListClusterAdminCredentials.
+type ManagedClustersListClusterAdminCredentialsResponse struct {
+	ManagedClustersListClusterAdminCredentialsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersListClusterAdminCredentialsResult contains the result from method ManagedClusters.ListClusterAdminCredentials.
+type ManagedClustersListClusterAdminCredentialsResult struct {
+	CredentialResults
+}
+
+// ManagedClustersListClusterMonitoringUserCredentialsResponse contains the response from method ManagedClusters.ListClusterMonitoringUserCredentials.
+type ManagedClustersListClusterMonitoringUserCredentialsResponse struct {
+	ManagedClustersListClusterMonitoringUserCredentialsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersListClusterMonitoringUserCredentialsResult contains the result from method ManagedClusters.ListClusterMonitoringUserCredentials.
+type ManagedClustersListClusterMonitoringUserCredentialsResult struct {
+	CredentialResults
+}
+
+// ManagedClustersListClusterUserCredentialsResponse contains the response from method ManagedClusters.ListClusterUserCredentials.
+type ManagedClustersListClusterUserCredentialsResponse struct {
+	ManagedClustersListClusterUserCredentialsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersListClusterUserCredentialsResult contains the result from method ManagedClusters.ListClusterUserCredentials.
+type ManagedClustersListClusterUserCredentialsResult struct {
+	CredentialResults
+}
+
+// ManagedClustersListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClusters.ListOutboundNetworkDependenciesEndpoints.
+type ManagedClustersListOutboundNetworkDependenciesEndpointsResponse struct {
+	ManagedClustersListOutboundNetworkDependenciesEndpointsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersListOutboundNetworkDependenciesEndpointsResult contains the result from method ManagedClusters.ListOutboundNetworkDependenciesEndpoints.
+type ManagedClustersListOutboundNetworkDependenciesEndpointsResult struct {
+	OutboundEnvironmentEndpointCollection
+}
+
+// ManagedClustersListResponse contains the response from method ManagedClusters.List.
+type ManagedClustersListResponse struct {
+	ManagedClustersListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersListResult contains the result from method ManagedClusters.List.
+type ManagedClustersListResult struct {
+	ManagedClusterListResult
+}
+
+// ManagedClustersResetAADProfilePollerResponse contains the response from method ManagedClusters.ResetAADProfile.
+type ManagedClustersResetAADProfilePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersResetAADProfileResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersResetAADProfilePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersResetAADProfileResponse contains the response from method ManagedClusters.ResetAADProfile.
+type ManagedClustersResetAADProfileResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersResetServicePrincipalProfilePollerResponse contains the response from method ManagedClusters.ResetServicePrincipalProfile.
+type ManagedClustersResetServicePrincipalProfilePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersResetServicePrincipalProfileResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersResetServicePrincipalProfilePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersResetServicePrincipalProfileResponse contains the response from method ManagedClusters.ResetServicePrincipalProfile.
+type ManagedClustersResetServicePrincipalProfileResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersRotateClusterCertificatesPollerResponse contains the response from method ManagedClusters.RotateClusterCertificates.
+type ManagedClustersRotateClusterCertificatesPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersRotateClusterCertificatesResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersRotateClusterCertificatesPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersRotateClusterCertificatesResponse contains the response from method ManagedClusters.RotateClusterCertificates.
+type ManagedClustersRotateClusterCertificatesResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersRunCommandPollerResponse contains the response from method ManagedClusters.RunCommand.
+type ManagedClustersRunCommandPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersRunCommandResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersRunCommandPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersRunCommandResponse contains the response from method ManagedClusters.RunCommand.
+type ManagedClustersRunCommandResponse struct {
+	ManagedClustersRunCommandResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersRunCommandResult contains the result from method ManagedClusters.RunCommand.
+type ManagedClustersRunCommandResult struct {
+	RunCommandResult
+}
+
+// ManagedClustersStartPollerResponse contains the response from method ManagedClusters.Start.
+type ManagedClustersStartPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersStartResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersStartResponse contains the response from method ManagedClusters.Start.
+type ManagedClustersStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersStopPollerResponse contains the response from method ManagedClusters.Stop.
+type ManagedClustersStopPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersStopResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersStopPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersStopResponse contains the response from method ManagedClusters.Stop.
+type ManagedClustersStopResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersUpdateTagsPollerResponse contains the response from method ManagedClusters.UpdateTags.
+type ManagedClustersUpdateTagsPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedClustersUpdateTagsResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedClustersUpdateTagsPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersUpdateTagsResponse contains the response from method ManagedClusters.UpdateTags.
+type ManagedClustersUpdateTagsResponse struct {
+	ManagedClustersUpdateTagsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedClustersUpdateTagsResult contains the result from method ManagedClusters.UpdateTags.
+type ManagedClustersUpdateTagsResult struct {
+	ManagedCluster
+}
+
+// OperationsListResponse contains the response from method Operations.List.
+type OperationsListResponse struct {
+	OperationsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsListResult contains the result from method Operations.List.
+type OperationsListResult struct {
+	OperationListResult
+}
+
+// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
+type PrivateEndpointConnectionsDeletePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller PrivateEndpointConnectionsDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
+type PrivateEndpointConnectionsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
+type PrivateEndpointConnectionsGetResponse struct {
+	PrivateEndpointConnectionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
+type PrivateEndpointConnectionsGetResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
+type PrivateEndpointConnectionsListResponse struct {
+	PrivateEndpointConnectionsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
+type PrivateEndpointConnectionsListResult struct {
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateEndpointConnectionsUpdateResponse contains the response from method PrivateEndpointConnections.Update.
+type PrivateEndpointConnectionsUpdateResponse struct {
+	PrivateEndpointConnectionsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionsUpdateResult contains the result from method PrivateEndpointConnections.Update.
+type PrivateEndpointConnectionsUpdateResult struct {
+	PrivateEndpointConnection
+}
+
+// PrivateLinkResourcesListResponse contains the response from method PrivateLinkResources.List.
+type PrivateLinkResourcesListResponse struct {
+	PrivateLinkResourcesListResultEnvelope
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesListResultEnvelope contains the result from method PrivateLinkResources.List.
+type PrivateLinkResourcesListResultEnvelope struct {
+	PrivateLinkResourcesListResult
+}
+
+// ResolvePrivateLinkServiceIDPOSTResponse contains the response from method ResolvePrivateLinkServiceID.POST.
+type ResolvePrivateLinkServiceIDPOSTResponse struct {
+	ResolvePrivateLinkServiceIDPOSTResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ResolvePrivateLinkServiceIDPOSTResult contains the result from method ResolvePrivateLinkServiceID.POST.
+type ResolvePrivateLinkServiceIDPOSTResult struct {
+	PrivateLinkResource
 }

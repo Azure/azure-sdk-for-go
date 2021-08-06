@@ -33,47 +33,47 @@ func NewAgentPoolsClient(con *armcore.Connection, subscriptionID string) *AgentP
 
 // BeginCreateOrUpdate - Creates or updates an agent pool in the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool, options *AgentPoolsBeginCreateOrUpdateOptions) (AgentPoolPollerResponse, error) {
+func (client *AgentPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool, options *AgentPoolsBeginCreateOrUpdateOptions) (AgentPoolsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, agentPoolName, parameters, options)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsCreateOrUpdatePollerResponse{}, err
 	}
-	result := AgentPoolPollerResponse{
+	result := AgentPoolsCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AgentPoolsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &agentPoolPoller{
+	poller := &agentPoolsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new AgentPoolPoller from the specified resume token.
-// token - The value must come from a previous call to AgentPoolPoller.ResumeToken().
-func (client *AgentPoolsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AgentPoolPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new AgentPoolsCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to AgentPoolsCreateOrUpdatePoller.ResumeToken().
+func (client *AgentPoolsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AgentPoolsCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AgentPoolsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &agentPoolPoller{
+	poller := &agentPoolsCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsCreateOrUpdatePollerResponse{}, err
 	}
-	result := AgentPoolPollerResponse{
+	result := AgentPoolsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolsCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
@@ -121,7 +121,7 @@ func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -140,55 +140,55 @@ func (client *AgentPoolsClient) createOrUpdateHandleError(resp *azcore.Response)
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginDelete - Deletes the agent pool in the specified managed cluster.
+// BeginDelete - Deletes an agent pool in the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsBeginDeleteOptions) (AgentPoolsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AgentPoolsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := AgentPoolsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AgentPoolsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AgentPoolsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &agentPoolsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *AgentPoolsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new AgentPoolsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to AgentPoolsDeletePoller.ResumeToken().
+func (client *AgentPoolsClient) ResumeDelete(ctx context.Context, token string) (AgentPoolsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AgentPoolsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AgentPoolsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &agentPoolsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return AgentPoolsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := AgentPoolsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// Delete - Deletes the agent pool in the specified managed cluster.
+// Delete - Deletes an agent pool in the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
@@ -230,7 +230,7 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -249,19 +249,19 @@ func (client *AgentPoolsClient) deleteHandleError(resp *azcore.Response) error {
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// Get - Gets the details of the agent pool by managed cluster and resource group.
+// Get - Gets the specified managed cluster agent pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsGetOptions) (AgentPoolResponse, error) {
+func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsGetOptions) (AgentPoolsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
-		return AgentPoolResponse{}, err
+		return AgentPoolsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AgentPoolResponse{}, err
+		return AgentPoolsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AgentPoolResponse{}, client.getHandleError(resp)
+		return AgentPoolsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -291,19 +291,19 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AgentPoolsClient) getHandleResponse(resp *azcore.Response) (AgentPoolResponse, error) {
-	var val *AgentPool
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AgentPoolResponse{}, err
+func (client *AgentPoolsClient) getHandleResponse(resp *azcore.Response) (AgentPoolsGetResponse, error) {
+	result := AgentPoolsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AgentPool); err != nil {
+		return AgentPoolsGetResponse{}, err
 	}
-	return AgentPoolResponse{RawResponse: resp.Response, AgentPool: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -319,19 +319,20 @@ func (client *AgentPoolsClient) getHandleError(resp *azcore.Response) error {
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// GetAvailableAgentPoolVersions - Gets a list of supported versions for the specified agent pool.
+// GetAvailableAgentPoolVersions - See supported Kubernetes versions [https://docs.microsoft.com/azure/aks/supported-kubernetes-versions] for more details
+// about the version lifecycle.
 // If the operation fails it returns a generic error.
-func (client *AgentPoolsClient) GetAvailableAgentPoolVersions(ctx context.Context, resourceGroupName string, resourceName string, options *AgentPoolsGetAvailableAgentPoolVersionsOptions) (AgentPoolAvailableVersionsResponse, error) {
+func (client *AgentPoolsClient) GetAvailableAgentPoolVersions(ctx context.Context, resourceGroupName string, resourceName string, options *AgentPoolsGetAvailableAgentPoolVersionsOptions) (AgentPoolsGetAvailableAgentPoolVersionsResponse, error) {
 	req, err := client.getAvailableAgentPoolVersionsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return AgentPoolAvailableVersionsResponse{}, err
+		return AgentPoolsGetAvailableAgentPoolVersionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AgentPoolAvailableVersionsResponse{}, err
+		return AgentPoolsGetAvailableAgentPoolVersionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AgentPoolAvailableVersionsResponse{}, client.getAvailableAgentPoolVersionsHandleError(resp)
+		return AgentPoolsGetAvailableAgentPoolVersionsResponse{}, client.getAvailableAgentPoolVersionsHandleError(resp)
 	}
 	return client.getAvailableAgentPoolVersionsHandleResponse(resp)
 }
@@ -357,19 +358,19 @@ func (client *AgentPoolsClient) getAvailableAgentPoolVersionsCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getAvailableAgentPoolVersionsHandleResponse handles the GetAvailableAgentPoolVersions response.
-func (client *AgentPoolsClient) getAvailableAgentPoolVersionsHandleResponse(resp *azcore.Response) (AgentPoolAvailableVersionsResponse, error) {
-	var val *AgentPoolAvailableVersions
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AgentPoolAvailableVersionsResponse{}, err
+func (client *AgentPoolsClient) getAvailableAgentPoolVersionsHandleResponse(resp *azcore.Response) (AgentPoolsGetAvailableAgentPoolVersionsResponse, error) {
+	result := AgentPoolsGetAvailableAgentPoolVersionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AgentPoolAvailableVersions); err != nil {
+		return AgentPoolsGetAvailableAgentPoolVersionsResponse{}, err
 	}
-	return AgentPoolAvailableVersionsResponse{RawResponse: resp.Response, AgentPoolAvailableVersions: val}, nil
+	return result, nil
 }
 
 // getAvailableAgentPoolVersionsHandleError handles the GetAvailableAgentPoolVersions error response.
@@ -384,19 +385,19 @@ func (client *AgentPoolsClient) getAvailableAgentPoolVersionsHandleError(resp *a
 	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-// GetUpgradeProfile - Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
+// GetUpgradeProfile - Gets the upgrade profile for an agent pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsGetUpgradeProfileOptions) (AgentPoolUpgradeProfileResponse, error) {
+func (client *AgentPoolsClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsGetUpgradeProfileOptions) (AgentPoolsGetUpgradeProfileResponse, error) {
 	req, err := client.getUpgradeProfileCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
-		return AgentPoolUpgradeProfileResponse{}, err
+		return AgentPoolsGetUpgradeProfileResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return AgentPoolUpgradeProfileResponse{}, err
+		return AgentPoolsGetUpgradeProfileResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return AgentPoolUpgradeProfileResponse{}, client.getUpgradeProfileHandleError(resp)
+		return AgentPoolsGetUpgradeProfileResponse{}, client.getUpgradeProfileHandleError(resp)
 	}
 	return client.getUpgradeProfileHandleResponse(resp)
 }
@@ -426,19 +427,19 @@ func (client *AgentPoolsClient) getUpgradeProfileCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUpgradeProfileHandleResponse handles the GetUpgradeProfile response.
-func (client *AgentPoolsClient) getUpgradeProfileHandleResponse(resp *azcore.Response) (AgentPoolUpgradeProfileResponse, error) {
-	var val *AgentPoolUpgradeProfile
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AgentPoolUpgradeProfileResponse{}, err
+func (client *AgentPoolsClient) getUpgradeProfileHandleResponse(resp *azcore.Response) (AgentPoolsGetUpgradeProfileResponse, error) {
+	result := AgentPoolsGetUpgradeProfileResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AgentPoolUpgradeProfile); err != nil {
+		return AgentPoolsGetUpgradeProfileResponse{}, err
 	}
-	return AgentPoolUpgradeProfileResponse{RawResponse: resp.Response, AgentPoolUpgradeProfile: val}, nil
+	return result, nil
 }
 
 // getUpgradeProfileHandleError handles the GetUpgradeProfile error response.
@@ -454,20 +455,17 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleError(resp *azcore.Respon
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// List - Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
+// List - Gets a list of agent pools in the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) List(resourceGroupName string, resourceName string, options *AgentPoolsListOptions) AgentPoolListResultPager {
-	return &agentPoolListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *AgentPoolsClient) List(resourceGroupName string, resourceName string, options *AgentPoolsListOptions) AgentPoolsListPager {
+	return &agentPoolsListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp AgentPoolListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp AgentPoolsListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AgentPoolListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -492,19 +490,19 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AgentPoolsClient) listHandleResponse(resp *azcore.Response) (AgentPoolListResultResponse, error) {
-	var val *AgentPoolListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AgentPoolListResultResponse{}, err
+func (client *AgentPoolsClient) listHandleResponse(resp *azcore.Response) (AgentPoolsListResponse, error) {
+	result := AgentPoolsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.AgentPoolListResult); err != nil {
+		return AgentPoolsListResponse{}, err
 	}
-	return AgentPoolListResultResponse{RawResponse: resp.Response, AgentPoolListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -520,55 +518,59 @@ func (client *AgentPoolsClient) listHandleError(resp *azcore.Response) error {
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginUpgradeNodeImageVersion - Upgrade node image version of an agent pool to the latest.
+// BeginUpgradeNodeImageVersion - Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS provides
+// one new image per week with the latest updates. For more details on node image
+// versions, see: https://docs.microsoft.com/azure/aks/node-image-upgrade
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) BeginUpgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsBeginUpgradeNodeImageVersionOptions) (AgentPoolPollerResponse, error) {
+func (client *AgentPoolsClient) BeginUpgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsBeginUpgradeNodeImageVersionOptions) (AgentPoolsUpgradeNodeImageVersionPollerResponse, error) {
 	resp, err := client.upgradeNodeImageVersion(ctx, resourceGroupName, resourceName, agentPoolName, options)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsUpgradeNodeImageVersionPollerResponse{}, err
 	}
-	result := AgentPoolPollerResponse{
+	result := AgentPoolsUpgradeNodeImageVersionPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("AgentPoolsClient.UpgradeNodeImageVersion", "", resp, client.con.Pipeline(), client.upgradeNodeImageVersionHandleError)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsUpgradeNodeImageVersionPollerResponse{}, err
 	}
-	poller := &agentPoolPoller{
+	poller := &agentPoolsUpgradeNodeImageVersionPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolsUpgradeNodeImageVersionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpgradeNodeImageVersion creates a new AgentPoolPoller from the specified resume token.
-// token - The value must come from a previous call to AgentPoolPoller.ResumeToken().
-func (client *AgentPoolsClient) ResumeUpgradeNodeImageVersion(ctx context.Context, token string) (AgentPoolPollerResponse, error) {
+// ResumeUpgradeNodeImageVersion creates a new AgentPoolsUpgradeNodeImageVersionPoller from the specified resume token.
+// token - The value must come from a previous call to AgentPoolsUpgradeNodeImageVersionPoller.ResumeToken().
+func (client *AgentPoolsClient) ResumeUpgradeNodeImageVersion(ctx context.Context, token string) (AgentPoolsUpgradeNodeImageVersionPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("AgentPoolsClient.UpgradeNodeImageVersion", token, client.con.Pipeline(), client.upgradeNodeImageVersionHandleError)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsUpgradeNodeImageVersionPollerResponse{}, err
 	}
-	poller := &agentPoolPoller{
+	poller := &agentPoolsUpgradeNodeImageVersionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return AgentPoolPollerResponse{}, err
+		return AgentPoolsUpgradeNodeImageVersionPollerResponse{}, err
 	}
-	result := AgentPoolPollerResponse{
+	result := AgentPoolsUpgradeNodeImageVersionPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AgentPoolsUpgradeNodeImageVersionResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// UpgradeNodeImageVersion - Upgrade node image version of an agent pool to the latest.
+// UpgradeNodeImageVersion - Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS provides one
+// new image per week with the latest updates. For more details on node image
+// versions, see: https://docs.microsoft.com/azure/aks/node-image-upgrade
 // If the operation fails it returns the *CloudError error type.
 func (client *AgentPoolsClient) upgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsBeginUpgradeNodeImageVersionOptions) (*azcore.Response, error) {
 	req, err := client.upgradeNodeImageVersionCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
@@ -610,7 +612,7 @@ func (client *AgentPoolsClient) upgradeNodeImageVersionCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

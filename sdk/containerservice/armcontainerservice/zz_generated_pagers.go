@@ -10,49 +10,29 @@ package armcontainerservice
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 	"reflect"
 )
 
-// AgentPoolListResultPager provides iteration over AgentPoolListResult pages.
-type AgentPoolListResultPager interface {
+type AgentPoolsListPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current AgentPoolListResultResponse.
-	PageResponse() AgentPoolListResultResponse
+	// PageResponse returns the current AgentPoolsListResponse.
+	PageResponse() AgentPoolsListResponse
 }
 
-type agentPoolListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type agentPoolListResultHandleError func(*azcore.Response) error
-
-type agentPoolListResultHandleResponse func(*azcore.Response) (AgentPoolListResultResponse, error)
-
-type agentPoolListResultAdvancePage func(context.Context, AgentPoolListResultResponse) (*azcore.Request, error)
-
-type agentPoolListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester agentPoolListResultCreateRequest
-	// callback for handling response errors
-	errorer agentPoolListResultHandleError
-	// callback for handling the HTTP response
-	responder agentPoolListResultHandleResponse
-	// callback for advancing to the next page
-	advancer agentPoolListResultAdvancePage
-	// contains the current response
-	current AgentPoolListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type agentPoolsListPager struct {
+	client    *AgentPoolsClient
+	current   AgentPoolsListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, AgentPoolsListResponse) (*azcore.Request, error)
 }
 
-func (p *agentPoolListResultPager) Err() error {
+func (p *agentPoolsListPager) Err() error {
 	return p.err
 }
 
-func (p *agentPoolListResultPager) NextPage(ctx context.Context) bool {
+func (p *agentPoolsListPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -67,16 +47,16 @@ func (p *agentPoolListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -85,50 +65,29 @@ func (p *agentPoolListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *agentPoolListResultPager) PageResponse() AgentPoolListResultResponse {
+func (p *agentPoolsListPager) PageResponse() AgentPoolsListResponse {
 	return p.current
 }
 
-// MaintenanceConfigurationListResultPager provides iteration over MaintenanceConfigurationListResult pages.
-type MaintenanceConfigurationListResultPager interface {
+type MaintenanceConfigurationsListByManagedClusterPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current MaintenanceConfigurationListResultResponse.
-	PageResponse() MaintenanceConfigurationListResultResponse
+	// PageResponse returns the current MaintenanceConfigurationsListByManagedClusterResponse.
+	PageResponse() MaintenanceConfigurationsListByManagedClusterResponse
 }
 
-type maintenanceConfigurationListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type maintenanceConfigurationListResultHandleError func(*azcore.Response) error
-
-type maintenanceConfigurationListResultHandleResponse func(*azcore.Response) (MaintenanceConfigurationListResultResponse, error)
-
-type maintenanceConfigurationListResultAdvancePage func(context.Context, MaintenanceConfigurationListResultResponse) (*azcore.Request, error)
-
-type maintenanceConfigurationListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester maintenanceConfigurationListResultCreateRequest
-	// callback for handling response errors
-	errorer maintenanceConfigurationListResultHandleError
-	// callback for handling the HTTP response
-	responder maintenanceConfigurationListResultHandleResponse
-	// callback for advancing to the next page
-	advancer maintenanceConfigurationListResultAdvancePage
-	// contains the current response
-	current MaintenanceConfigurationListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type maintenanceConfigurationsListByManagedClusterPager struct {
+	client    *MaintenanceConfigurationsClient
+	current   MaintenanceConfigurationsListByManagedClusterResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, MaintenanceConfigurationsListByManagedClusterResponse) (*azcore.Request, error)
 }
 
-func (p *maintenanceConfigurationListResultPager) Err() error {
+func (p *maintenanceConfigurationsListByManagedClusterPager) Err() error {
 	return p.err
 }
 
-func (p *maintenanceConfigurationListResultPager) NextPage(ctx context.Context) bool {
+func (p *maintenanceConfigurationsListByManagedClusterPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -143,16 +102,16 @@ func (p *maintenanceConfigurationListResultPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByManagedClusterHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByManagedClusterHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -161,50 +120,29 @@ func (p *maintenanceConfigurationListResultPager) NextPage(ctx context.Context) 
 	return true
 }
 
-func (p *maintenanceConfigurationListResultPager) PageResponse() MaintenanceConfigurationListResultResponse {
+func (p *maintenanceConfigurationsListByManagedClusterPager) PageResponse() MaintenanceConfigurationsListByManagedClusterResponse {
 	return p.current
 }
 
-// ManagedClusterListResultPager provides iteration over ManagedClusterListResult pages.
-type ManagedClusterListResultPager interface {
+type ManagedClustersListByResourceGroupPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current ManagedClusterListResultResponse.
-	PageResponse() ManagedClusterListResultResponse
+	// PageResponse returns the current ManagedClustersListByResourceGroupResponse.
+	PageResponse() ManagedClustersListByResourceGroupResponse
 }
 
-type managedClusterListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type managedClusterListResultHandleError func(*azcore.Response) error
-
-type managedClusterListResultHandleResponse func(*azcore.Response) (ManagedClusterListResultResponse, error)
-
-type managedClusterListResultAdvancePage func(context.Context, ManagedClusterListResultResponse) (*azcore.Request, error)
-
-type managedClusterListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester managedClusterListResultCreateRequest
-	// callback for handling response errors
-	errorer managedClusterListResultHandleError
-	// callback for handling the HTTP response
-	responder managedClusterListResultHandleResponse
-	// callback for advancing to the next page
-	advancer managedClusterListResultAdvancePage
-	// contains the current response
-	current ManagedClusterListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type managedClustersListByResourceGroupPager struct {
+	client    *ManagedClustersClient
+	current   ManagedClustersListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ManagedClustersListByResourceGroupResponse) (*azcore.Request, error)
 }
 
-func (p *managedClusterListResultPager) Err() error {
+func (p *managedClustersListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *managedClusterListResultPager) NextPage(ctx context.Context) bool {
+func (p *managedClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -219,16 +157,16 @@ func (p *managedClusterListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -237,50 +175,29 @@ func (p *managedClusterListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *managedClusterListResultPager) PageResponse() ManagedClusterListResultResponse {
+func (p *managedClustersListByResourceGroupPager) PageResponse() ManagedClustersListByResourceGroupResponse {
 	return p.current
 }
 
-// OutboundEnvironmentEndpointCollectionPager provides iteration over OutboundEnvironmentEndpointCollection pages.
-type OutboundEnvironmentEndpointCollectionPager interface {
+type ManagedClustersListOutboundNetworkDependenciesEndpointsPager interface {
 	azcore.Pager
-
-	// PageResponse returns the current OutboundEnvironmentEndpointCollectionResponse.
-	PageResponse() OutboundEnvironmentEndpointCollectionResponse
+	// PageResponse returns the current ManagedClustersListOutboundNetworkDependenciesEndpointsResponse.
+	PageResponse() ManagedClustersListOutboundNetworkDependenciesEndpointsResponse
 }
 
-type outboundEnvironmentEndpointCollectionCreateRequest func(context.Context) (*azcore.Request, error)
-
-type outboundEnvironmentEndpointCollectionHandleError func(*azcore.Response) error
-
-type outboundEnvironmentEndpointCollectionHandleResponse func(*azcore.Response) (OutboundEnvironmentEndpointCollectionResponse, error)
-
-type outboundEnvironmentEndpointCollectionAdvancePage func(context.Context, OutboundEnvironmentEndpointCollectionResponse) (*azcore.Request, error)
-
-type outboundEnvironmentEndpointCollectionPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester outboundEnvironmentEndpointCollectionCreateRequest
-	// callback for handling response errors
-	errorer outboundEnvironmentEndpointCollectionHandleError
-	// callback for handling the HTTP response
-	responder outboundEnvironmentEndpointCollectionHandleResponse
-	// callback for advancing to the next page
-	advancer outboundEnvironmentEndpointCollectionAdvancePage
-	// contains the current response
-	current OutboundEnvironmentEndpointCollectionResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
+type managedClustersListOutboundNetworkDependenciesEndpointsPager struct {
+	client    *ManagedClustersClient
+	current   ManagedClustersListOutboundNetworkDependenciesEndpointsResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ManagedClustersListOutboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error)
 }
 
-func (p *outboundEnvironmentEndpointCollectionPager) Err() error {
+func (p *managedClustersListOutboundNetworkDependenciesEndpointsPager) Err() error {
 	return p.err
 }
 
-func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Context) bool {
+func (p *managedClustersListOutboundNetworkDependenciesEndpointsPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -295,16 +212,16 @@ func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listOutboundNetworkDependenciesEndpointsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -313,6 +230,61 @@ func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Contex
 	return true
 }
 
-func (p *outboundEnvironmentEndpointCollectionPager) PageResponse() OutboundEnvironmentEndpointCollectionResponse {
+func (p *managedClustersListOutboundNetworkDependenciesEndpointsPager) PageResponse() ManagedClustersListOutboundNetworkDependenciesEndpointsResponse {
+	return p.current
+}
+
+type ManagedClustersListPager interface {
+	azcore.Pager
+	// PageResponse returns the current ManagedClustersListResponse.
+	PageResponse() ManagedClustersListResponse
+}
+
+type managedClustersListPager struct {
+	client    *ManagedClustersClient
+	current   ManagedClustersListResponse
+	err       error
+	requester func(context.Context) (*azcore.Request, error)
+	advancer  func(context.Context, ManagedClustersListResponse) (*azcore.Request, error)
+}
+
+func (p *managedClustersListPager) Err() error {
+	return p.err
+}
+
+func (p *managedClustersListPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ManagedClusterListResult.NextLink == nil || len(*p.current.ManagedClusterListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.con.Pipeline().Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *managedClustersListPager) PageResponse() ManagedClustersListResponse {
 	return p.current
 }

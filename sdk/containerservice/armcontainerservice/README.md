@@ -4,7 +4,7 @@
 
 The `armcontainerservice` module provides operations for working with Azure Container Service.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/containerservice/armcontainerservice)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containerservice/armcontainerservice)
 
 # Getting started
 
@@ -17,7 +17,7 @@ The `armcontainerservice` module provides operations for working with Azure Cont
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure AgFood module:
+Install the Azure Container Service module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/containerservice/armcontainerservice
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/containerservice/armcontainerservic
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure AgFood.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Container Service.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -48,7 +48,7 @@ For more information on ARM connections, please see the documentation for `armco
 Azure Container Service modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armagfood.NewManagedClustersClient(con, "<subscription ID>")
+client := armcontainerservice.{{NewClientMethod}}(con, "<subscription ID>")
 ```
 
 ## Provide Feedback
@@ -72,4 +72,5 @@ This project has adopted the
 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information, see the
 [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
-or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
+additional questions or comments.

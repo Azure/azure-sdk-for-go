@@ -32,17 +32,17 @@ func NewMaintenanceConfigurationsClient(con *armcore.Connection, subscriptionID 
 
 // CreateOrUpdate - Creates or updates a maintenance configuration in the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *MaintenanceConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configName string, parameters MaintenanceConfiguration, options *MaintenanceConfigurationsCreateOrUpdateOptions) (MaintenanceConfigurationResponse, error) {
+func (client *MaintenanceConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configName string, parameters MaintenanceConfiguration, options *MaintenanceConfigurationsCreateOrUpdateOptions) (MaintenanceConfigurationsCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, configName, parameters, options)
 	if err != nil {
-		return MaintenanceConfigurationResponse{}, err
+		return MaintenanceConfigurationsCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MaintenanceConfigurationResponse{}, err
+		return MaintenanceConfigurationsCreateOrUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MaintenanceConfigurationResponse{}, client.createOrUpdateHandleError(resp)
+		return MaintenanceConfigurationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
@@ -72,19 +72,19 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (MaintenanceConfigurationResponse, error) {
-	var val *MaintenanceConfiguration
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MaintenanceConfigurationResponse{}, err
+func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (MaintenanceConfigurationsCreateOrUpdateResponse, error) {
+	result := MaintenanceConfigurationsCreateOrUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MaintenanceConfiguration); err != nil {
+		return MaintenanceConfigurationsCreateOrUpdateResponse{}, err
 	}
-	return MaintenanceConfigurationResponse{RawResponse: resp.Response, MaintenanceConfiguration: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -100,21 +100,21 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateHandleError(resp *a
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// Delete - Deletes the maintenance configuration in the specified managed cluster.
+// Delete - Deletes a maintenance configuration.
 // If the operation fails it returns the *CloudError error type.
-func (client *MaintenanceConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, configName string, options *MaintenanceConfigurationsDeleteOptions) (*http.Response, error) {
+func (client *MaintenanceConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, configName string, options *MaintenanceConfigurationsDeleteOptions) (MaintenanceConfigurationsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, configName, options)
 	if err != nil {
-		return nil, err
+		return MaintenanceConfigurationsDeleteResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return MaintenanceConfigurationsDeleteResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return MaintenanceConfigurationsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return MaintenanceConfigurationsDeleteResponse{RawResponse: resp.Response}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -142,7 +142,7 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -161,19 +161,19 @@ func (client *MaintenanceConfigurationsClient) deleteHandleError(resp *azcore.Re
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// Get - Gets the details of maintenance configurations by managed cluster and resource group.
+// Get - Gets the specified maintenance configuration of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *MaintenanceConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, configName string, options *MaintenanceConfigurationsGetOptions) (MaintenanceConfigurationResponse, error) {
+func (client *MaintenanceConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, configName string, options *MaintenanceConfigurationsGetOptions) (MaintenanceConfigurationsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, configName, options)
 	if err != nil {
-		return MaintenanceConfigurationResponse{}, err
+		return MaintenanceConfigurationsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return MaintenanceConfigurationResponse{}, err
+		return MaintenanceConfigurationsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return MaintenanceConfigurationResponse{}, client.getHandleError(resp)
+		return MaintenanceConfigurationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -203,19 +203,19 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *azcore.Response) (MaintenanceConfigurationResponse, error) {
-	var val *MaintenanceConfiguration
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MaintenanceConfigurationResponse{}, err
+func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *azcore.Response) (MaintenanceConfigurationsGetResponse, error) {
+	result := MaintenanceConfigurationsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MaintenanceConfiguration); err != nil {
+		return MaintenanceConfigurationsGetResponse{}, err
 	}
-	return MaintenanceConfigurationResponse{RawResponse: resp.Response, MaintenanceConfiguration: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -231,21 +231,17 @@ func (client *MaintenanceConfigurationsClient) getHandleError(resp *azcore.Respo
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ListByManagedCluster - Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of each maintenance
-// configuration.
+// ListByManagedCluster - Gets a list of maintenance configurations in the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *MaintenanceConfigurationsClient) ListByManagedCluster(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsListByManagedClusterOptions) MaintenanceConfigurationListResultPager {
-	return &maintenanceConfigurationListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *MaintenanceConfigurationsClient) ListByManagedCluster(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsListByManagedClusterOptions) MaintenanceConfigurationsListByManagedClusterPager {
+	return &maintenanceConfigurationsListByManagedClusterPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
 		},
-		responder: client.listByManagedClusterHandleResponse,
-		errorer:   client.listByManagedClusterHandleError,
-		advancer: func(ctx context.Context, resp MaintenanceConfigurationListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp MaintenanceConfigurationsListByManagedClusterResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.MaintenanceConfigurationListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -270,19 +266,19 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterCreateRequest
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
-func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleResponse(resp *azcore.Response) (MaintenanceConfigurationListResultResponse, error) {
-	var val *MaintenanceConfigurationListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MaintenanceConfigurationListResultResponse{}, err
+func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleResponse(resp *azcore.Response) (MaintenanceConfigurationsListByManagedClusterResponse, error) {
+	result := MaintenanceConfigurationsListByManagedClusterResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.MaintenanceConfigurationListResult); err != nil {
+		return MaintenanceConfigurationsListByManagedClusterResponse{}, err
 	}
-	return MaintenanceConfigurationListResultResponse{RawResponse: resp.Response, MaintenanceConfigurationListResult: val}, nil
+	return result, nil
 }
 
 // listByManagedClusterHandleError handles the ListByManagedCluster error response.

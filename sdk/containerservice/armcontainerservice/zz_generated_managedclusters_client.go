@@ -31,55 +31,55 @@ func NewManagedClustersClient(con *armcore.Connection, subscriptionID string) *M
 	return &ManagedClustersClient{con: con, subscriptionID: subscriptionID}
 }
 
-// BeginCreateOrUpdate - Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
+// BeginCreateOrUpdate - Creates or updates a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster, options *ManagedClustersBeginCreateOrUpdateOptions) (ManagedClusterPollerResponse, error) {
+func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster, options *ManagedClustersBeginCreateOrUpdateOptions) (ManagedClustersCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersCreateOrUpdatePollerResponse{}, err
 	}
-	result := ManagedClusterPollerResponse{
+	result := ManagedClustersCreateOrUpdatePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &managedClusterPoller{
+	poller := &managedClustersCreateOrUpdatePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClusterResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeCreateOrUpdate creates a new ManagedClusterPoller from the specified resume token.
-// token - The value must come from a previous call to ManagedClusterPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ManagedClusterPollerResponse, error) {
+// ResumeCreateOrUpdate creates a new ManagedClustersCreateOrUpdatePoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersCreateOrUpdatePoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ManagedClustersCreateOrUpdatePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersCreateOrUpdatePollerResponse{}, err
 	}
-	poller := &managedClusterPoller{
+	poller := &managedClustersCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersCreateOrUpdatePollerResponse{}, err
 	}
-	result := ManagedClusterPollerResponse{
+	result := ManagedClustersCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClusterResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersCreateOrUpdateResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
+// CreateOrUpdate - Creates or updates a managed cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster, options *ManagedClustersBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
@@ -117,7 +117,7 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -136,55 +136,55 @@ func (client *ManagedClustersClient) createOrUpdateHandleError(resp *azcore.Resp
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginDelete - Deletes the managed cluster with a specified resource group and name.
+// BeginDelete - Deletes a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginDeleteOptions) (ManagedClustersDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new ManagedClustersDeletePoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersDeletePoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeDelete(ctx context.Context, token string) (ManagedClustersDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// Delete - Deletes the managed cluster with a specified resource group and name.
+// Delete - Deletes a managed cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
@@ -222,7 +222,7 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -241,19 +241,19 @@ func (client *ManagedClustersClient) deleteHandleError(resp *azcore.Response) er
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// Get - Gets the details of the managed cluster with a specified resource group and name.
+// Get - Gets a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersGetOptions) (ManagedClusterResponse, error) {
+func (client *ManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersGetOptions) (ManagedClustersGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ManagedClusterResponse{}, err
+		return ManagedClustersGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ManagedClusterResponse{}, err
+		return ManagedClustersGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ManagedClusterResponse{}, client.getHandleError(resp)
+		return ManagedClustersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -279,19 +279,19 @@ func (client *ManagedClustersClient) getCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedClustersClient) getHandleResponse(resp *azcore.Response) (ManagedClusterResponse, error) {
-	var val *ManagedCluster
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ManagedClusterResponse{}, err
+func (client *ManagedClustersClient) getHandleResponse(resp *azcore.Response) (ManagedClustersGetResponse, error) {
+	result := ManagedClustersGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ManagedCluster); err != nil {
+		return ManagedClustersGetResponse{}, err
 	}
-	return ManagedClusterResponse{RawResponse: resp.Response, ManagedCluster: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,22 +307,21 @@ func (client *ManagedClustersClient) getHandleError(resp *azcore.Response) error
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// GetAccessProfile - Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name. WARNING: This
-// API will be deprecated. Instead use ListClusterUserCredentials
-// [https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials] or ListClusterAdminCredentials
-// [https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials] .
+// GetAccessProfile - WARNING: This API will be deprecated. Instead use ListClusterUserCredentials [https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials]
+// or ListClusterAdminCredentials
+// [https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials] .
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) GetAccessProfile(ctx context.Context, resourceGroupName string, resourceName string, roleName string, options *ManagedClustersGetAccessProfileOptions) (ManagedClusterAccessProfileResponse, error) {
+func (client *ManagedClustersClient) GetAccessProfile(ctx context.Context, resourceGroupName string, resourceName string, roleName string, options *ManagedClustersGetAccessProfileOptions) (ManagedClustersGetAccessProfileResponse, error) {
 	req, err := client.getAccessProfileCreateRequest(ctx, resourceGroupName, resourceName, roleName, options)
 	if err != nil {
-		return ManagedClusterAccessProfileResponse{}, err
+		return ManagedClustersGetAccessProfileResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ManagedClusterAccessProfileResponse{}, err
+		return ManagedClustersGetAccessProfileResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ManagedClusterAccessProfileResponse{}, client.getAccessProfileHandleError(resp)
+		return ManagedClustersGetAccessProfileResponse{}, client.getAccessProfileHandleError(resp)
 	}
 	return client.getAccessProfileHandleResponse(resp)
 }
@@ -352,19 +351,19 @@ func (client *ManagedClustersClient) getAccessProfileCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getAccessProfileHandleResponse handles the GetAccessProfile response.
-func (client *ManagedClustersClient) getAccessProfileHandleResponse(resp *azcore.Response) (ManagedClusterAccessProfileResponse, error) {
-	var val *ManagedClusterAccessProfile
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ManagedClusterAccessProfileResponse{}, err
+func (client *ManagedClustersClient) getAccessProfileHandleResponse(resp *azcore.Response) (ManagedClustersGetAccessProfileResponse, error) {
+	result := ManagedClustersGetAccessProfileResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ManagedClusterAccessProfile); err != nil {
+		return ManagedClustersGetAccessProfileResponse{}, err
 	}
-	return ManagedClusterAccessProfileResponse{RawResponse: resp.Response, ManagedClusterAccessProfile: val}, nil
+	return result, nil
 }
 
 // getAccessProfileHandleError handles the GetAccessProfile error response.
@@ -380,19 +379,19 @@ func (client *ManagedClustersClient) getAccessProfileHandleError(resp *azcore.Re
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// GetCommandResult - Get command result from previous runCommand invoke.
+// GetCommandResult - Gets the results of a command which has been run on the Managed Cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) GetCommandResult(ctx context.Context, resourceGroupName string, resourceName string, commandID string, options *ManagedClustersGetCommandResultOptions) (RunCommandResultResponse, error) {
+func (client *ManagedClustersClient) GetCommandResult(ctx context.Context, resourceGroupName string, resourceName string, commandID string, options *ManagedClustersGetCommandResultOptions) (ManagedClustersGetCommandResultResponse, error) {
 	req, err := client.getCommandResultCreateRequest(ctx, resourceGroupName, resourceName, commandID, options)
 	if err != nil {
-		return RunCommandResultResponse{}, err
+		return ManagedClustersGetCommandResultResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return RunCommandResultResponse{}, err
+		return ManagedClustersGetCommandResultResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return RunCommandResultResponse{}, client.getCommandResultHandleError(resp)
+		return ManagedClustersGetCommandResultResponse{}, client.getCommandResultHandleError(resp)
 	}
 	return client.getCommandResultHandleResponse(resp)
 }
@@ -422,19 +421,19 @@ func (client *ManagedClustersClient) getCommandResultCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getCommandResultHandleResponse handles the GetCommandResult response.
-func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *azcore.Response) (RunCommandResultResponse, error) {
-	var val *RunCommandResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RunCommandResultResponse{}, err
+func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *azcore.Response) (ManagedClustersGetCommandResultResponse, error) {
+	result := ManagedClustersGetCommandResultResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.RunCommandResult); err != nil {
+		return ManagedClustersGetCommandResultResponse{}, err
 	}
-	return RunCommandResultResponse{RawResponse: resp.Response, RunCommandResult: val}, nil
+	return result, nil
 }
 
 // getCommandResultHandleError handles the GetCommandResult error response.
@@ -452,17 +451,17 @@ func (client *ManagedClustersClient) getCommandResultHandleError(resp *azcore.Re
 
 // GetOSOptions - Gets supported OS options in the specified subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) GetOSOptions(ctx context.Context, location string, options *ManagedClustersGetOSOptionsOptions) (OSOptionProfileResponse, error) {
+func (client *ManagedClustersClient) GetOSOptions(ctx context.Context, location string, options *ManagedClustersGetOSOptionsOptions) (ManagedClustersGetOSOptionsResponse, error) {
 	req, err := client.getOSOptionsCreateRequest(ctx, location, options)
 	if err != nil {
-		return OSOptionProfileResponse{}, err
+		return ManagedClustersGetOSOptionsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return OSOptionProfileResponse{}, err
+		return ManagedClustersGetOSOptionsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return OSOptionProfileResponse{}, client.getOSOptionsHandleError(resp)
+		return ManagedClustersGetOSOptionsResponse{}, client.getOSOptionsHandleError(resp)
 	}
 	return client.getOSOptionsHandleResponse(resp)
 }
@@ -484,7 +483,7 @@ func (client *ManagedClustersClient) getOSOptionsCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.ResourceType != nil {
 		reqQP.Set("resource-type", *options.ResourceType)
 	}
@@ -494,12 +493,12 @@ func (client *ManagedClustersClient) getOSOptionsCreateRequest(ctx context.Conte
 }
 
 // getOSOptionsHandleResponse handles the GetOSOptions response.
-func (client *ManagedClustersClient) getOSOptionsHandleResponse(resp *azcore.Response) (OSOptionProfileResponse, error) {
-	var val *OSOptionProfile
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OSOptionProfileResponse{}, err
+func (client *ManagedClustersClient) getOSOptionsHandleResponse(resp *azcore.Response) (ManagedClustersGetOSOptionsResponse, error) {
+	result := ManagedClustersGetOSOptionsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OSOptionProfile); err != nil {
+		return ManagedClustersGetOSOptionsResponse{}, err
 	}
-	return OSOptionProfileResponse{RawResponse: resp.Response, OSOptionProfile: val}, nil
+	return result, nil
 }
 
 // getOSOptionsHandleError handles the GetOSOptions error response.
@@ -515,19 +514,19 @@ func (client *ManagedClustersClient) getOSOptionsHandleError(resp *azcore.Respon
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// GetUpgradeProfile - Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
+// GetUpgradeProfile - Gets the upgrade profile of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersGetUpgradeProfileOptions) (ManagedClusterUpgradeProfileResponse, error) {
+func (client *ManagedClustersClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersGetUpgradeProfileOptions) (ManagedClustersGetUpgradeProfileResponse, error) {
 	req, err := client.getUpgradeProfileCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ManagedClusterUpgradeProfileResponse{}, err
+		return ManagedClustersGetUpgradeProfileResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return ManagedClusterUpgradeProfileResponse{}, err
+		return ManagedClustersGetUpgradeProfileResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return ManagedClusterUpgradeProfileResponse{}, client.getUpgradeProfileHandleError(resp)
+		return ManagedClustersGetUpgradeProfileResponse{}, client.getUpgradeProfileHandleError(resp)
 	}
 	return client.getUpgradeProfileHandleResponse(resp)
 }
@@ -553,19 +552,19 @@ func (client *ManagedClustersClient) getUpgradeProfileCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUpgradeProfileHandleResponse handles the GetUpgradeProfile response.
-func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *azcore.Response) (ManagedClusterUpgradeProfileResponse, error) {
-	var val *ManagedClusterUpgradeProfile
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ManagedClusterUpgradeProfileResponse{}, err
+func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *azcore.Response) (ManagedClustersGetUpgradeProfileResponse, error) {
+	result := ManagedClustersGetUpgradeProfileResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ManagedClusterUpgradeProfile); err != nil {
+		return ManagedClustersGetUpgradeProfileResponse{}, err
 	}
-	return ManagedClusterUpgradeProfileResponse{RawResponse: resp.Response, ManagedClusterUpgradeProfile: val}, nil
+	return result, nil
 }
 
 // getUpgradeProfileHandleError handles the GetUpgradeProfile error response.
@@ -581,20 +580,17 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleError(resp *azcore.R
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// List - Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
+// List - Gets a list of managed clusters in the specified subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) List(options *ManagedClustersListOptions) ManagedClusterListResultPager {
-	return &managedClusterListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *ManagedClustersClient) List(options *ManagedClustersListOptions) ManagedClustersListPager {
+	return &managedClustersListPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp ManagedClusterListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedClustersListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedClusterListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -611,19 +607,19 @@ func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, opti
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedClustersClient) listHandleResponse(resp *azcore.Response) (ManagedClusterListResultResponse, error) {
-	var val *ManagedClusterListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ManagedClusterListResultResponse{}, err
+func (client *ManagedClustersClient) listHandleResponse(resp *azcore.Response) (ManagedClustersListResponse, error) {
+	result := ManagedClustersListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ManagedClusterListResult); err != nil {
+		return ManagedClustersListResponse{}, err
 	}
-	return ManagedClusterListResultResponse{RawResponse: resp.Response, ManagedClusterListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -639,20 +635,17 @@ func (client *ManagedClustersClient) listHandleError(resp *azcore.Response) erro
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ListByResourceGroup - Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
+// ListByResourceGroup - Lists managed clusters in the specified subscription and resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListByResourceGroup(resourceGroupName string, options *ManagedClustersListByResourceGroupOptions) ManagedClusterListResultPager {
-	return &managedClusterListResultPager{
-		pipeline: client.con.Pipeline(),
+func (client *ManagedClustersClient) ListByResourceGroup(resourceGroupName string, options *ManagedClustersListByResourceGroupOptions) ManagedClustersListByResourceGroupPager {
+	return &managedClustersListByResourceGroupPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp ManagedClusterListResultResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedClustersListByResourceGroupResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedClusterListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -673,19 +666,19 @@ func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ManagedClusterListResultResponse, error) {
-	var val *ManagedClusterListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ManagedClusterListResultResponse{}, err
+func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *azcore.Response) (ManagedClustersListByResourceGroupResponse, error) {
+	result := ManagedClustersListByResourceGroupResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.ManagedClusterListResult); err != nil {
+		return ManagedClustersListByResourceGroupResponse{}, err
 	}
-	return ManagedClusterListResultResponse{RawResponse: resp.Response, ManagedClusterListResult: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -701,19 +694,19 @@ func (client *ManagedClustersClient) listByResourceGroupHandleError(resp *azcore
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ListClusterAdminCredentials - Gets cluster admin credential of the managed cluster with a specified resource group and name.
+// ListClusterAdminCredentials - Lists the admin credentials of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListClusterAdminCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersListClusterAdminCredentialsOptions) (CredentialResultsResponse, error) {
+func (client *ManagedClustersClient) ListClusterAdminCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersListClusterAdminCredentialsOptions) (ManagedClustersListClusterAdminCredentialsResponse, error) {
 	req, err := client.listClusterAdminCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return CredentialResultsResponse{}, err
+		return ManagedClustersListClusterAdminCredentialsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CredentialResultsResponse{}, err
+		return ManagedClustersListClusterAdminCredentialsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CredentialResultsResponse{}, client.listClusterAdminCredentialsHandleError(resp)
+		return ManagedClustersListClusterAdminCredentialsResponse{}, client.listClusterAdminCredentialsHandleError(resp)
 	}
 	return client.listClusterAdminCredentialsHandleResponse(resp)
 }
@@ -739,7 +732,7 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsCreateRequest(ct
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -749,12 +742,12 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsCreateRequest(ct
 }
 
 // listClusterAdminCredentialsHandleResponse handles the ListClusterAdminCredentials response.
-func (client *ManagedClustersClient) listClusterAdminCredentialsHandleResponse(resp *azcore.Response) (CredentialResultsResponse, error) {
-	var val *CredentialResults
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CredentialResultsResponse{}, err
+func (client *ManagedClustersClient) listClusterAdminCredentialsHandleResponse(resp *azcore.Response) (ManagedClustersListClusterAdminCredentialsResponse, error) {
+	result := ManagedClustersListClusterAdminCredentialsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CredentialResults); err != nil {
+		return ManagedClustersListClusterAdminCredentialsResponse{}, err
 	}
-	return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
+	return result, nil
 }
 
 // listClusterAdminCredentialsHandleError handles the ListClusterAdminCredentials error response.
@@ -770,19 +763,19 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsHandleError(resp
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ListClusterMonitoringUserCredentials - Gets cluster monitoring user credential of the managed cluster with a specified resource group and name.
+// ListClusterMonitoringUserCredentials - Lists the cluster monitoring user credentials of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListClusterMonitoringUserCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersListClusterMonitoringUserCredentialsOptions) (CredentialResultsResponse, error) {
+func (client *ManagedClustersClient) ListClusterMonitoringUserCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersListClusterMonitoringUserCredentialsOptions) (ManagedClustersListClusterMonitoringUserCredentialsResponse, error) {
 	req, err := client.listClusterMonitoringUserCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return CredentialResultsResponse{}, err
+		return ManagedClustersListClusterMonitoringUserCredentialsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CredentialResultsResponse{}, err
+		return ManagedClustersListClusterMonitoringUserCredentialsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CredentialResultsResponse{}, client.listClusterMonitoringUserCredentialsHandleError(resp)
+		return ManagedClustersListClusterMonitoringUserCredentialsResponse{}, client.listClusterMonitoringUserCredentialsHandleError(resp)
 	}
 	return client.listClusterMonitoringUserCredentialsHandleResponse(resp)
 }
@@ -808,7 +801,7 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsCreateR
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -818,12 +811,12 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsCreateR
 }
 
 // listClusterMonitoringUserCredentialsHandleResponse handles the ListClusterMonitoringUserCredentials response.
-func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleResponse(resp *azcore.Response) (CredentialResultsResponse, error) {
-	var val *CredentialResults
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CredentialResultsResponse{}, err
+func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleResponse(resp *azcore.Response) (ManagedClustersListClusterMonitoringUserCredentialsResponse, error) {
+	result := ManagedClustersListClusterMonitoringUserCredentialsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CredentialResults); err != nil {
+		return ManagedClustersListClusterMonitoringUserCredentialsResponse{}, err
 	}
-	return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
+	return result, nil
 }
 
 // listClusterMonitoringUserCredentialsHandleError handles the ListClusterMonitoringUserCredentials error response.
@@ -839,19 +832,19 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleE
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ListClusterUserCredentials - Gets cluster user credential of the managed cluster with a specified resource group and name.
+// ListClusterUserCredentials - Lists the user credentials of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListClusterUserCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersListClusterUserCredentialsOptions) (CredentialResultsResponse, error) {
+func (client *ManagedClustersClient) ListClusterUserCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersListClusterUserCredentialsOptions) (ManagedClustersListClusterUserCredentialsResponse, error) {
 	req, err := client.listClusterUserCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return CredentialResultsResponse{}, err
+		return ManagedClustersListClusterUserCredentialsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return CredentialResultsResponse{}, err
+		return ManagedClustersListClusterUserCredentialsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return CredentialResultsResponse{}, client.listClusterUserCredentialsHandleError(resp)
+		return ManagedClustersListClusterUserCredentialsResponse{}, client.listClusterUserCredentialsHandleError(resp)
 	}
 	return client.listClusterUserCredentialsHandleResponse(resp)
 }
@@ -877,7 +870,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -887,12 +880,12 @@ func (client *ManagedClustersClient) listClusterUserCredentialsCreateRequest(ctx
 }
 
 // listClusterUserCredentialsHandleResponse handles the ListClusterUserCredentials response.
-func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(resp *azcore.Response) (CredentialResultsResponse, error) {
-	var val *CredentialResults
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CredentialResultsResponse{}, err
+func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(resp *azcore.Response) (ManagedClustersListClusterUserCredentialsResponse, error) {
+	result := ManagedClustersListClusterUserCredentialsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.CredentialResults); err != nil {
+		return ManagedClustersListClusterUserCredentialsResponse{}, err
 	}
-	return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
+	return result, nil
 }
 
 // listClusterUserCredentialsHandleError handles the ListClusterUserCredentials error response.
@@ -911,18 +904,15 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleError(resp 
 // ListOutboundNetworkDependenciesEndpoints - Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
 // cluster. The operation returns properties of each egress endpoint.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, resourceName string, options *ManagedClustersListOutboundNetworkDependenciesEndpointsOptions) OutboundEnvironmentEndpointCollectionPager {
-	return &outboundEnvironmentEndpointCollectionPager{
-		pipeline: client.con.Pipeline(),
+func (client *ManagedClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, resourceName string, options *ManagedClustersListOutboundNetworkDependenciesEndpointsOptions) ManagedClustersListOutboundNetworkDependenciesEndpointsPager {
+	return &managedClustersListOutboundNetworkDependenciesEndpointsPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, resourceName, options)
 		},
-		responder: client.listOutboundNetworkDependenciesEndpointsHandleResponse,
-		errorer:   client.listOutboundNetworkDependenciesEndpointsHandleError,
-		advancer: func(ctx context.Context, resp OutboundEnvironmentEndpointCollectionResponse) (*azcore.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedClustersListOutboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OutboundEnvironmentEndpointCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -947,19 +937,19 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsCre
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (OutboundEnvironmentEndpointCollectionResponse, error) {
-	var val *OutboundEnvironmentEndpointCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OutboundEnvironmentEndpointCollectionResponse{}, err
+func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (ManagedClustersListOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := ManagedClustersListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OutboundEnvironmentEndpointCollection); err != nil {
+		return ManagedClustersListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
-	return OutboundEnvironmentEndpointCollectionResponse{RawResponse: resp.Response, OutboundEnvironmentEndpointCollection: val}, nil
+	return result, nil
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleError handles the ListOutboundNetworkDependenciesEndpoints error response.
@@ -975,55 +965,55 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHan
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginResetAADProfile - Update the AAD Profile for a managed cluster.
+// BeginResetAADProfile - Reset the AAD Profile of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersBeginResetAADProfileOptions) (HTTPPollerResponse, error) {
+func (client *ManagedClustersClient) BeginResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersBeginResetAADProfileOptions) (ManagedClustersResetAADProfilePollerResponse, error) {
 	resp, err := client.resetAADProfile(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetAADProfilePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersResetAADProfilePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.ResetAADProfile", "", resp, client.con.Pipeline(), client.resetAADProfileHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetAADProfilePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersResetAADProfilePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersResetAADProfileResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeResetAADProfile creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeResetAADProfile(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeResetAADProfile creates a new ManagedClustersResetAADProfilePoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersResetAADProfilePoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeResetAADProfile(ctx context.Context, token string) (ManagedClustersResetAADProfilePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.ResetAADProfile", token, client.con.Pipeline(), client.resetAADProfileHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetAADProfilePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersResetAADProfilePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetAADProfilePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersResetAADProfilePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersResetAADProfileResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResetAADProfile - Update the AAD Profile for a managed cluster.
+// ResetAADProfile - Reset the AAD Profile of a managed cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersBeginResetAADProfileOptions) (*azcore.Response, error) {
 	req, err := client.resetAADProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
@@ -1061,7 +1051,7 @@ func (client *ManagedClustersClient) resetAADProfileCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1080,55 +1070,55 @@ func (client *ManagedClustersClient) resetAADProfileHandleError(resp *azcore.Res
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginResetServicePrincipalProfile - Update the service principal Profile for a managed cluster.
+// BeginResetServicePrincipalProfile - This action cannot be performed on a cluster that is not using a service principal
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersBeginResetServicePrincipalProfileOptions) (HTTPPollerResponse, error) {
+func (client *ManagedClustersClient) BeginResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersBeginResetServicePrincipalProfileOptions) (ManagedClustersResetServicePrincipalProfilePollerResponse, error) {
 	resp, err := client.resetServicePrincipalProfile(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetServicePrincipalProfilePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersResetServicePrincipalProfilePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.ResetServicePrincipalProfile", "", resp, client.con.Pipeline(), client.resetServicePrincipalProfileHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetServicePrincipalProfilePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersResetServicePrincipalProfilePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersResetServicePrincipalProfileResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeResetServicePrincipalProfile creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeResetServicePrincipalProfile(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeResetServicePrincipalProfile creates a new ManagedClustersResetServicePrincipalProfilePoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersResetServicePrincipalProfilePoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeResetServicePrincipalProfile(ctx context.Context, token string) (ManagedClustersResetServicePrincipalProfilePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.ResetServicePrincipalProfile", token, client.con.Pipeline(), client.resetServicePrincipalProfileHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetServicePrincipalProfilePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersResetServicePrincipalProfilePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersResetServicePrincipalProfilePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersResetServicePrincipalProfilePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersResetServicePrincipalProfileResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResetServicePrincipalProfile - Update the service principal Profile for a managed cluster.
+// ResetServicePrincipalProfile - This action cannot be performed on a cluster that is not using a service principal
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersBeginResetServicePrincipalProfileOptions) (*azcore.Response, error) {
 	req, err := client.resetServicePrincipalProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
@@ -1166,7 +1156,7 @@ func (client *ManagedClustersClient) resetServicePrincipalProfileCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1185,55 +1175,57 @@ func (client *ManagedClustersClient) resetServicePrincipalProfileHandleError(res
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginRotateClusterCertificates - Rotate certificates of a managed cluster.
+// BeginRotateClusterCertificates - See Certificate rotation [https://docs.microsoft.com/azure/aks/certificate-rotation] for more details about rotating
+// managed cluster certificates.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginRotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginRotateClusterCertificatesOptions) (HTTPPollerResponse, error) {
+func (client *ManagedClustersClient) BeginRotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginRotateClusterCertificatesOptions) (ManagedClustersRotateClusterCertificatesPollerResponse, error) {
 	resp, err := client.rotateClusterCertificates(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersRotateClusterCertificatesPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersRotateClusterCertificatesPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.RotateClusterCertificates", "", resp, client.con.Pipeline(), client.rotateClusterCertificatesHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersRotateClusterCertificatesPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersRotateClusterCertificatesPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersRotateClusterCertificatesResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRotateClusterCertificates creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeRotateClusterCertificates(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeRotateClusterCertificates creates a new ManagedClustersRotateClusterCertificatesPoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersRotateClusterCertificatesPoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeRotateClusterCertificates(ctx context.Context, token string) (ManagedClustersRotateClusterCertificatesPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.RotateClusterCertificates", token, client.con.Pipeline(), client.rotateClusterCertificatesHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersRotateClusterCertificatesPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersRotateClusterCertificatesPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersRotateClusterCertificatesPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersRotateClusterCertificatesPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersRotateClusterCertificatesResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// RotateClusterCertificates - Rotate certificates of a managed cluster.
+// RotateClusterCertificates - See Certificate rotation [https://docs.microsoft.com/azure/aks/certificate-rotation] for more details about rotating managed
+// cluster certificates.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginRotateClusterCertificatesOptions) (*azcore.Response, error) {
 	req, err := client.rotateClusterCertificatesCreateRequest(ctx, resourceGroupName, resourceName, options)
@@ -1271,7 +1263,7 @@ func (client *ManagedClustersClient) rotateClusterCertificatesCreateRequest(ctx 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1290,55 +1282,57 @@ func (client *ManagedClustersClient) rotateClusterCertificatesHandleError(resp *
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginRunCommand - Submit a command to run against managed kubernetes service, it will create a pod to run the command.
+// BeginRunCommand - AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see AKS Run Command
+// [https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview].
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginRunCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersBeginRunCommandOptions) (RunCommandResultPollerResponse, error) {
+func (client *ManagedClustersClient) BeginRunCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersBeginRunCommandOptions) (ManagedClustersRunCommandPollerResponse, error) {
 	resp, err := client.runCommand(ctx, resourceGroupName, resourceName, requestPayload, options)
 	if err != nil {
-		return RunCommandResultPollerResponse{}, err
+		return ManagedClustersRunCommandPollerResponse{}, err
 	}
-	result := RunCommandResultPollerResponse{
+	result := ManagedClustersRunCommandPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.RunCommand", "", resp, client.con.Pipeline(), client.runCommandHandleError)
 	if err != nil {
-		return RunCommandResultPollerResponse{}, err
+		return ManagedClustersRunCommandPollerResponse{}, err
 	}
-	poller := &runCommandResultPoller{
+	poller := &managedClustersRunCommandPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersRunCommandResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeRunCommand creates a new RunCommandResultPoller from the specified resume token.
-// token - The value must come from a previous call to RunCommandResultPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeRunCommand(ctx context.Context, token string) (RunCommandResultPollerResponse, error) {
+// ResumeRunCommand creates a new ManagedClustersRunCommandPoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersRunCommandPoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeRunCommand(ctx context.Context, token string) (ManagedClustersRunCommandPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.RunCommand", token, client.con.Pipeline(), client.runCommandHandleError)
 	if err != nil {
-		return RunCommandResultPollerResponse{}, err
+		return ManagedClustersRunCommandPollerResponse{}, err
 	}
-	poller := &runCommandResultPoller{
+	poller := &managedClustersRunCommandPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return RunCommandResultPollerResponse{}, err
+		return ManagedClustersRunCommandPollerResponse{}, err
 	}
-	result := RunCommandResultPollerResponse{
+	result := ManagedClustersRunCommandPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersRunCommandResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// RunCommand - Submit a command to run against managed kubernetes service, it will create a pod to run the command.
+// RunCommand - AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see AKS Run Command
+// [https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview].
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersBeginRunCommandOptions) (*azcore.Response, error) {
 	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, resourceName, requestPayload, options)
@@ -1376,7 +1370,7 @@ func (client *ManagedClustersClient) runCommandCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(requestPayload)
@@ -1395,55 +1389,55 @@ func (client *ManagedClustersClient) runCommandHandleError(resp *azcore.Response
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginStart - Starts a Stopped Managed Cluster
+// BeginStart - See starting a cluster [https://docs.microsoft.com/azure/aks/start-stop-cluster] for more details about starting a cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginStart(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginStartOptions) (HTTPPollerResponse, error) {
+func (client *ManagedClustersClient) BeginStart(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginStartOptions) (ManagedClustersStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersStartPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.Start", "", resp, client.con.Pipeline(), client.startHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersStartPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersStartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeStart creates a new ManagedClustersStartPoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersStartPoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeStart(ctx context.Context, token string) (ManagedClustersStartPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.Start", token, client.con.Pipeline(), client.startHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStartPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersStartPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersStartPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersStartResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// Start - Starts a Stopped Managed Cluster
+// Start - See starting a cluster [https://docs.microsoft.com/azure/aks/start-stop-cluster] for more details about starting a cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginStartOptions) (*azcore.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, resourceName, options)
@@ -1481,7 +1475,7 @@ func (client *ManagedClustersClient) startCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1500,55 +1494,61 @@ func (client *ManagedClustersClient) startHandleError(resp *azcore.Response) err
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginStop - Stops a Running Managed Cluster
+// BeginStop - This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the control plane and agent nodes
+// entirely, while maintaining all object and cluster state. A
+// cluster does not accrue charges while it is stopped. See stopping a cluster [https://docs.microsoft.com/azure/aks/start-stop-cluster] for more details
+// about stopping a cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginStop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginStopOptions) (HTTPPollerResponse, error) {
+func (client *ManagedClustersClient) BeginStop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginStopOptions) (ManagedClustersStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStopPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersStopPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.Stop", "", resp, client.con.Pipeline(), client.stopHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStopPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersStopPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersStopResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeStop creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeStop(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeStop creates a new ManagedClustersStopPoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersStopPoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeStop(ctx context.Context, token string) (ManagedClustersStopPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.Stop", token, client.con.Pipeline(), client.stopHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStopPollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &managedClustersStopPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ManagedClustersStopPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := ManagedClustersStopPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersStopResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// Stop - Stops a Running Managed Cluster
+// Stop - This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the control plane and agent nodes entirely,
+// while maintaining all object and cluster state. A
+// cluster does not accrue charges while it is stopped. See stopping a cluster [https://docs.microsoft.com/azure/aks/start-stop-cluster] for more details
+// about stopping a cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersBeginStopOptions) (*azcore.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, resourceName, options)
@@ -1586,7 +1586,7 @@ func (client *ManagedClustersClient) stopCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1605,55 +1605,55 @@ func (client *ManagedClustersClient) stopHandleError(resp *azcore.Response) erro
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// BeginUpdateTags - Updates a managed cluster with the specified tags.
+// BeginUpdateTags - Updates tags on a managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersBeginUpdateTagsOptions) (ManagedClusterPollerResponse, error) {
+func (client *ManagedClustersClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersBeginUpdateTagsOptions) (ManagedClustersUpdateTagsPollerResponse, error) {
 	resp, err := client.updateTags(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersUpdateTagsPollerResponse{}, err
 	}
-	result := ManagedClusterPollerResponse{
+	result := ManagedClustersUpdateTagsPollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("ManagedClustersClient.UpdateTags", "", resp, client.con.Pipeline(), client.updateTagsHandleError)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersUpdateTagsPollerResponse{}, err
 	}
-	poller := &managedClusterPoller{
+	poller := &managedClustersUpdateTagsPoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClusterResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersUpdateTagsResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeUpdateTags creates a new ManagedClusterPoller from the specified resume token.
-// token - The value must come from a previous call to ManagedClusterPoller.ResumeToken().
-func (client *ManagedClustersClient) ResumeUpdateTags(ctx context.Context, token string) (ManagedClusterPollerResponse, error) {
+// ResumeUpdateTags creates a new ManagedClustersUpdateTagsPoller from the specified resume token.
+// token - The value must come from a previous call to ManagedClustersUpdateTagsPoller.ResumeToken().
+func (client *ManagedClustersClient) ResumeUpdateTags(ctx context.Context, token string) (ManagedClustersUpdateTagsPollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("ManagedClustersClient.UpdateTags", token, client.con.Pipeline(), client.updateTagsHandleError)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersUpdateTagsPollerResponse{}, err
 	}
-	poller := &managedClusterPoller{
+	poller := &managedClustersUpdateTagsPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return ManagedClusterPollerResponse{}, err
+		return ManagedClustersUpdateTagsPollerResponse{}, err
 	}
-	result := ManagedClusterPollerResponse{
+	result := ManagedClustersUpdateTagsPollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClusterResponse, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedClustersUpdateTagsResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// UpdateTags - Updates a managed cluster with the specified tags.
+// UpdateTags - Updates tags on a managed cluster.
 // If the operation fails it returns the *CloudError error type.
 func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersBeginUpdateTagsOptions) (*azcore.Response, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
@@ -1691,7 +1691,7 @@ func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)

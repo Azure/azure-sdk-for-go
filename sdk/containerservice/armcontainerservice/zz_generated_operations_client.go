@@ -26,19 +26,19 @@ func NewOperationsClient(con *armcore.Connection) *OperationsClient {
 	return &OperationsClient{con: con}
 }
 
-// List - Gets a list of compute operations.
+// List - Gets a list of operations.
 // If the operation fails it returns the *CloudError error type.
-func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (OperationListResultResponse, error) {
+func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (OperationsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return OperationListResultResponse{}, err
+		return OperationsListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return OperationListResultResponse{}, err
+		return OperationsListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return OperationListResultResponse{}, client.listHandleError(resp)
+		return OperationsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -52,19 +52,19 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (OperationListResultResponse, error) {
-	var val *OperationListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return OperationListResultResponse{}, err
+func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (OperationsListResponse, error) {
+	result := OperationsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.OperationListResult); err != nil {
+		return OperationsListResponse{}, err
 	}
-	return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.

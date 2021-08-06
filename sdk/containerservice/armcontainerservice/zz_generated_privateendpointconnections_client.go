@@ -31,55 +31,55 @@ func NewPrivateEndpointConnectionsClient(con *armcore.Connection, subscriptionID
 	return &PrivateEndpointConnectionsClient{con: con, subscriptionID: subscriptionID}
 }
 
-// BeginDelete - Deletes the private endpoint connection in the specified managed cluster.
+// BeginDelete - Deletes a private endpoint connection.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (PrivateEndpointConnectionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return PrivateEndpointConnectionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := PrivateEndpointConnectionsDeletePollerResponse{
 		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewLROPoller("PrivateEndpointConnectionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return PrivateEndpointConnectionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &privateEndpointConnectionsDeletePoller{
 		pt: pt,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
+// ResumeDelete creates a new PrivateEndpointConnectionsDeletePoller from the specified resume token.
+// token - The value must come from a previous call to PrivateEndpointConnectionsDeletePoller.ResumeToken().
+func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (PrivateEndpointConnectionsDeletePollerResponse, error) {
 	pt, err := armcore.NewLROPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return PrivateEndpointConnectionsDeletePollerResponse{}, err
 	}
-	poller := &httpPoller{
+	poller := &privateEndpointConnectionsDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return PrivateEndpointConnectionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := PrivateEndpointConnectionsDeletePollerResponse{
 		RawResponse: resp,
 	}
 	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
 		return poller.pollUntilDone(ctx, frequency)
 	}
 	return result, nil
 }
 
-// Delete - Deletes the private endpoint connection in the specified managed cluster.
+// Delete - Deletes a private endpoint connection.
 // If the operation fails it returns the *CloudError error type.
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
@@ -121,7 +121,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -140,19 +140,19 @@ func (client *PrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.R
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// Get - Gets the details of the private endpoint connection by managed cluster and resource group.
+// Get - To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (PrivateEndpointConnectionResponse, error) {
+func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (PrivateEndpointConnectionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return PrivateEndpointConnectionsGetResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return PrivateEndpointConnectionsGetResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateEndpointConnectionResponse{}, client.getHandleError(resp)
+		return PrivateEndpointConnectionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
@@ -182,19 +182,19 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionResponse, error) {
-	var val *PrivateEndpointConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionsGetResponse, error) {
+	result := PrivateEndpointConnectionsGetResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnection); err != nil {
+		return PrivateEndpointConnectionsGetResponse{}, err
 	}
-	return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
@@ -210,19 +210,19 @@ func (client *PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Resp
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// List - Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of each private endpoint connection.
+// List - To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsListOptions) (PrivateEndpointConnectionListResultResponse, error) {
+func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsListOptions) (PrivateEndpointConnectionsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateEndpointConnectionListResultResponse{}, err
+		return PrivateEndpointConnectionsListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionListResultResponse{}, err
+		return PrivateEndpointConnectionsListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateEndpointConnectionListResultResponse{}, client.listHandleError(resp)
+		return PrivateEndpointConnectionsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
@@ -248,19 +248,19 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionListResultResponse, error) {
-	var val *PrivateEndpointConnectionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionListResultResponse{}, err
+func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionsListResponse, error) {
+	result := PrivateEndpointConnectionsListResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionListResult); err != nil {
+		return PrivateEndpointConnectionsListResponse{}, err
 	}
-	return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
@@ -276,19 +276,19 @@ func (client *PrivateEndpointConnectionsClient) listHandleError(resp *azcore.Res
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// Update - Updates a private endpoint connection in the specified managed cluster.
+// Update - Updates a private endpoint connection.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsUpdateOptions) (PrivateEndpointConnectionResponse, error) {
+func (client *PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsUpdateOptions) (PrivateEndpointConnectionsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return PrivateEndpointConnectionsUpdateResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+		return PrivateEndpointConnectionsUpdateResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateEndpointConnectionResponse{}, client.updateHandleError(resp)
+		return PrivateEndpointConnectionsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
@@ -318,19 +318,19 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PrivateEndpointConnectionsClient) updateHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionResponse, error) {
-	var val *PrivateEndpointConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionResponse{}, err
+func (client *PrivateEndpointConnectionsClient) updateHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionsUpdateResponse, error) {
+	result := PrivateEndpointConnectionsUpdateResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnection); err != nil {
+		return PrivateEndpointConnectionsUpdateResponse{}, err
 	}
-	return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.

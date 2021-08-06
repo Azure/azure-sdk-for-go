@@ -30,19 +30,19 @@ func NewResolvePrivateLinkServiceIDClient(con *armcore.Connection, subscriptionI
 	return &ResolvePrivateLinkServiceIDClient{con: con, subscriptionID: subscriptionID}
 }
 
-// POST - Gets the private link service ID the specified managed cluster.
+// POST - Gets the private link service ID for the specified managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resourceGroupName string, resourceName string, parameters PrivateLinkResource, options *ResolvePrivateLinkServiceIDPOSTOptions) (PrivateLinkResourceResponse, error) {
+func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resourceGroupName string, resourceName string, parameters PrivateLinkResource, options *ResolvePrivateLinkServiceIDPOSTOptions) (ResolvePrivateLinkServiceIDPOSTResponse, error) {
 	req, err := client.postCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return PrivateLinkResourceResponse{}, err
+		return ResolvePrivateLinkServiceIDPOSTResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourceResponse{}, err
+		return ResolvePrivateLinkServiceIDPOSTResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourceResponse{}, client.postHandleError(resp)
+		return ResolvePrivateLinkServiceIDPOSTResponse{}, client.postHandleError(resp)
 	}
 	return client.postHandleResponse(resp)
 }
@@ -68,19 +68,19 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-07-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
 // postHandleResponse handles the POST response.
-func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *azcore.Response) (PrivateLinkResourceResponse, error) {
-	var val *PrivateLinkResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourceResponse{}, err
+func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *azcore.Response) (ResolvePrivateLinkServiceIDPOSTResponse, error) {
+	result := ResolvePrivateLinkServiceIDPOSTResponse{RawResponse: resp.Response}
+	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResource); err != nil {
+		return ResolvePrivateLinkServiceIDPOSTResponse{}, err
 	}
-	return PrivateLinkResourceResponse{RawResponse: resp.Response, PrivateLinkResource: val}, nil
+	return result, nil
 }
 
 // postHandleError handles the POST error response.

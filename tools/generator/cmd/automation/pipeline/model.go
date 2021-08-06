@@ -11,7 +11,7 @@ import (
 
 // GenerateInput ...
 type GenerateInput struct {
-	DryRun                  bool                          `json:"dryRun,omitempty,omitempty"`
+	DryRun                  bool                          `json:"dryRun,omitempty"`
 	SpecFolder              string                        `json:"specFolder,omitempty"`
 	HeadSha                 string                        `json:"headSha,omitempty"`
 	HeadRef                 string                        `json:"headRef,omitempty"`

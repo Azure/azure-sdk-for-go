@@ -1,0 +1,15 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  paths:
+    include:
+    - sdk/web/armweb/
+
+pr:
+  paths:
+    include:
+    - sdk/web/armweb/
+
+stages:
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'web/armweb'

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
@@ -51,7 +52,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 	req.SetOperationValue(opValues)
 
 	// Log the outgoing request as informational
-	if Log().Should(LogRequest) {
+	if logger.Log().Should(logger.LogRequest) {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", opValues.try)
 		writeRequestWithResponse(b, req, nil, nil)
@@ -59,7 +60,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		if p.options.IncludeBody {
 			err = req.writeBody(b)
 		}
-		Log().Write(LogRequest, b.String())
+		logger.Log().Write(logger.LogRequest, b.String())
 		if err != nil {
 			return nil, err
 		}
@@ -72,7 +73,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)
 
-	if Log().Should(LogResponse) {
+	if logger.Log().Should(logger.LogResponse) {
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v, OpTime=%v) -- ", opValues.try, tryDuration, opDuration)
@@ -89,7 +90,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		} else if p.options.IncludeBody {
 			err = response.writeBody(b)
 		}
-		Log().Write(LogResponse, b.String())
+		logger.Log().Write(logger.LogResponse, b.String())
 	}
 	return response, err
 }

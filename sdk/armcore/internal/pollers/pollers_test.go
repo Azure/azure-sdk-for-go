@@ -133,27 +133,27 @@ func TestMakeID(t *testing.T) {
 }
 
 func TestDecodeID(t *testing.T) {
-	id, kind, err := DecodeID("")
+	_, _, err := DecodeID("")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	id, kind, err = DecodeID("invalid_token")
+	_, _, err = DecodeID("invalid_token")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	id, kind, err = DecodeID("invalid_token;")
+	_, _, err = DecodeID("invalid_token;")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	id, kind, err = DecodeID("  ;invalid_token")
+	_, _, err = DecodeID("  ;invalid_token")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	id, kind, err = DecodeID("invalid;token;too")
+	_, _, err = DecodeID("invalid;token;too")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	id, kind, err = DecodeID("pollerID;kind")
+	id, kind, err := DecodeID("pollerID;kind")
 	if err != nil {
 		t.Fatal(err)
 	}

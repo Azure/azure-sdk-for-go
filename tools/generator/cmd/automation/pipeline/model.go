@@ -11,7 +11,7 @@ import (
 
 // GenerateInput ...
 type GenerateInput struct {
-	DryRun                  bool                          `json:"dryRun,omitempty,omitempty"`
+	DryRun                  bool                          `json:"dryRun,omitempty"`
 	SpecFolder              string                        `json:"specFolder,omitempty"`
 	HeadSha                 string                        `json:"headSha,omitempty"`
 	HeadRef                 string                        `json:"headRef,omitempty"`
@@ -76,8 +76,8 @@ func (o GenerateOutput) WriteTo(writer io.Writer) (int64, error) {
 type PackageResult struct {
 	Version             string                          `json:"version,omitempty"`
 	PackageName         string                          `json:"packageName,omitempty"`
-	Path                []string                        `json:"path,omitempty"`
-	ReadmeMd            []string                        `json:"readmeMd,omitempty"`
+	Path                []string                        `json:"path"`
+	ReadmeMd            []string                        `json:"readmeMd"`
 	Changelog           *Changelog                      `json:"changelog,omitempty"`
 	Artifacts           []string                        `json:"artifacts,omitempty"`
 	InstallInstructions *InstallInstructionScriptOutput `json:"installInstructions,omitempty"`

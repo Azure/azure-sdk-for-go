@@ -107,13 +107,12 @@ func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx cont
 	result := PeerRouteListPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", "location", resp, client.listAdvertisedRoutesHandleError)
+	pt, err := armcore.NewLROPoller("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", "location", resp, client.con.Pipeline(), client.listAdvertisedRoutesHandleError)
 	if err != nil {
 		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
@@ -125,13 +124,12 @@ func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx cont
 // ResumeListAdvertisedRoutes creates a new PeerRouteListPoller from the specified resume token.
 // token - The value must come from a previous call to PeerRouteListPoller.ResumeToken().
 func (client *VirtualHubBgpConnectionsClient) ResumeListAdvertisedRoutes(ctx context.Context, token string) (PeerRouteListPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", token, client.listAdvertisedRoutesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", token, client.con.Pipeline(), client.listAdvertisedRoutesHandleError)
 	if err != nil {
 		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -218,13 +216,12 @@ func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context
 	result := PeerRouteListPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubBgpConnectionsClient.ListLearnedRoutes", "location", resp, client.listLearnedRoutesHandleError)
+	pt, err := armcore.NewLROPoller("VirtualHubBgpConnectionsClient.ListLearnedRoutes", "location", resp, client.con.Pipeline(), client.listLearnedRoutesHandleError)
 	if err != nil {
 		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
@@ -236,13 +233,12 @@ func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context
 // ResumeListLearnedRoutes creates a new PeerRouteListPoller from the specified resume token.
 // token - The value must come from a previous call to PeerRouteListPoller.ResumeToken().
 func (client *VirtualHubBgpConnectionsClient) ResumeListLearnedRoutes(ctx context.Context, token string) (PeerRouteListPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubBgpConnectionsClient.ListLearnedRoutes", token, client.listLearnedRoutesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubBgpConnectionsClient.ListLearnedRoutes", token, client.con.Pipeline(), client.listLearnedRoutesHandleError)
 	if err != nil {
 		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

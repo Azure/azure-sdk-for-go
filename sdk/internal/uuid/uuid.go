@@ -14,10 +14,7 @@ import (
 
 // The UUID reserved variants.
 const (
-	reservedNCS       byte = 0x80
-	reservedRFC4122   byte = 0x40
-	reservedMicrosoft byte = 0x20
-	reservedFuture    byte = 0x00
+	reservedRFC4122 byte = 0x40
 )
 
 func init() {
@@ -34,6 +31,20 @@ func New() UUID {
 	// math/rand.Read() is no-fail so we omit any error checking.
 	// NOTE: this takes a process-wide lock
 	rand.Read(u[:])
+	u[8] = (u[8] | reservedRFC4122) & 0x7F // u.setVariant(ReservedRFC4122)
+
+	var version byte = 4
+	u[6] = (u[6] & 0xF) | (version << 4) // u.setVersion(4)
+	return u
+}
+
+// FromSource returns a new uuid based on the supplied rand.Source as a seed.
+func FromSource(src rand.Source) UUID {
+	u := UUID{}
+	// Set all bits to randomly (or pseudo-randomly) chosen values.
+	// math/rand.Read() is no-fail so we omit any error checking.
+	rnd := rand.New(src)
+	rnd.Read(u[:])
 	u[8] = (u[8] | reservedRFC4122) & 0x7F // u.setVariant(ReservedRFC4122)
 
 	var version byte = 4
@@ -82,8 +93,4 @@ func Parse(uuidStr string) UUID {
 		char(uuidStr[34:36]),
 	}
 	return uuidVal
-}
-
-func (u UUID) bytes() []byte {
-	return u[:]
 }

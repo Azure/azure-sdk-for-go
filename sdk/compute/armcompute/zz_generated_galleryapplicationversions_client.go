@@ -41,13 +41,12 @@ func (client *GalleryApplicationVersionsClient) BeginCreateOrUpdate(ctx context.
 	result := GalleryApplicationVersionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("GalleryApplicationVersionsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("GalleryApplicationVersionsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return GalleryApplicationVersionPollerResponse{}, err
 	}
 	poller := &galleryApplicationVersionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
@@ -59,13 +58,12 @@ func (client *GalleryApplicationVersionsClient) BeginCreateOrUpdate(ctx context.
 // ResumeCreateOrUpdate creates a new GalleryApplicationVersionPoller from the specified resume token.
 // token - The value must come from a previous call to GalleryApplicationVersionPoller.ResumeToken().
 func (client *GalleryApplicationVersionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GalleryApplicationVersionPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("GalleryApplicationVersionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("GalleryApplicationVersionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return GalleryApplicationVersionPollerResponse{}, err
 	}
 	poller := &galleryApplicationVersionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -156,13 +154,12 @@ func (client *GalleryApplicationVersionsClient) BeginDelete(ctx context.Context,
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("GalleryApplicationVersionsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("GalleryApplicationVersionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -174,13 +171,12 @@ func (client *GalleryApplicationVersionsClient) BeginDelete(ctx context.Context,
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *GalleryApplicationVersionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("GalleryApplicationVersionsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("GalleryApplicationVersionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -418,13 +414,12 @@ func (client *GalleryApplicationVersionsClient) BeginUpdate(ctx context.Context,
 	result := GalleryApplicationVersionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("GalleryApplicationVersionsClient.Update", "", resp, client.updateHandleError)
+	pt, err := armcore.NewLROPoller("GalleryApplicationVersionsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return GalleryApplicationVersionPollerResponse{}, err
 	}
 	poller := &galleryApplicationVersionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
@@ -436,13 +431,12 @@ func (client *GalleryApplicationVersionsClient) BeginUpdate(ctx context.Context,
 // ResumeUpdate creates a new GalleryApplicationVersionPoller from the specified resume token.
 // token - The value must come from a previous call to GalleryApplicationVersionPoller.ResumeToken().
 func (client *GalleryApplicationVersionsClient) ResumeUpdate(ctx context.Context, token string) (GalleryApplicationVersionPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("GalleryApplicationVersionsClient.Update", token, client.updateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("GalleryApplicationVersionsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return GalleryApplicationVersionPollerResponse{}, err
 	}
 	poller := &galleryApplicationVersionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

@@ -19,7 +19,6 @@ import (
 const (
 	fakePollingURL1 = "https://foo.bar.baz/status"
 	fakePollingURL2 = "https://foo.bar.baz/updated"
-	fakeResourceURL = "https://foo.bar.baz/resource"
 )
 
 func initialResponse(method string) *azcore.Response {

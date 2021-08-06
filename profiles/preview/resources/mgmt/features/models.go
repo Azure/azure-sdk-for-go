@@ -11,195 +11,64 @@ package features
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-07-01/features"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ChangeType = original.ChangeType
+type SubscriptionFeatureRegistrationApprovalType = original.SubscriptionFeatureRegistrationApprovalType
 
 const (
-	Create   ChangeType = original.Create
-	Delete   ChangeType = original.Delete
-	Deploy   ChangeType = original.Deploy
-	Ignore   ChangeType = original.Ignore
-	Modify   ChangeType = original.Modify
-	NoChange ChangeType = original.NoChange
+	SubscriptionFeatureRegistrationApprovalTypeApprovalRequired SubscriptionFeatureRegistrationApprovalType = original.SubscriptionFeatureRegistrationApprovalTypeApprovalRequired
+	SubscriptionFeatureRegistrationApprovalTypeAutoApproval     SubscriptionFeatureRegistrationApprovalType = original.SubscriptionFeatureRegistrationApprovalTypeAutoApproval
+	SubscriptionFeatureRegistrationApprovalTypeNotSpecified     SubscriptionFeatureRegistrationApprovalType = original.SubscriptionFeatureRegistrationApprovalTypeNotSpecified
 )
 
-type DeploymentMode = original.DeploymentMode
+type SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationState
 
 const (
-	Complete    DeploymentMode = original.Complete
-	Incremental DeploymentMode = original.Incremental
+	SubscriptionFeatureRegistrationStateNotRegistered SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStateNotRegistered
+	SubscriptionFeatureRegistrationStateNotSpecified  SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStateNotSpecified
+	SubscriptionFeatureRegistrationStatePending       SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStatePending
+	SubscriptionFeatureRegistrationStateRegistered    SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStateRegistered
+	SubscriptionFeatureRegistrationStateRegistering   SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStateRegistering
+	SubscriptionFeatureRegistrationStateUnregistered  SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStateUnregistered
+	SubscriptionFeatureRegistrationStateUnregistering SubscriptionFeatureRegistrationState = original.SubscriptionFeatureRegistrationStateUnregistering
 )
 
-type OnErrorDeploymentType = original.OnErrorDeploymentType
-
-const (
-	LastSuccessful     OnErrorDeploymentType = original.LastSuccessful
-	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
-)
-
-type PropertyChangeType = original.PropertyChangeType
-
-const (
-	PropertyChangeTypeArray  PropertyChangeType = original.PropertyChangeTypeArray
-	PropertyChangeTypeCreate PropertyChangeType = original.PropertyChangeTypeCreate
-	PropertyChangeTypeDelete PropertyChangeType = original.PropertyChangeTypeDelete
-	PropertyChangeTypeModify PropertyChangeType = original.PropertyChangeTypeModify
-)
-
-type ResourceIdentityType = original.ResourceIdentityType
-
-const (
-	None                       ResourceIdentityType = original.None
-	SystemAssigned             ResourceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ResourceIdentityType = original.UserAssigned
-)
-
-type WhatIfResultFormat = original.WhatIfResultFormat
-
-const (
-	FullResourcePayloads WhatIfResultFormat = original.FullResourcePayloads
-	ResourceIDOnly       WhatIfResultFormat = original.ResourceIDOnly
-)
-
-type AliasPathType = original.AliasPathType
-type AliasType = original.AliasType
+type AuthorizationProfile = original.AuthorizationProfile
 type BaseClient = original.BaseClient
-type BasicDependency = original.BasicDependency
-type CloudError = original.CloudError
-type DebugSetting = original.DebugSetting
-type Dependency = original.Dependency
-type Deployment = original.Deployment
-type DeploymentExportResult = original.DeploymentExportResult
-type DeploymentExtended = original.DeploymentExtended
-type DeploymentExtendedFilter = original.DeploymentExtendedFilter
-type DeploymentListResult = original.DeploymentListResult
-type DeploymentListResultIterator = original.DeploymentListResultIterator
-type DeploymentListResultPage = original.DeploymentListResultPage
-type DeploymentOperation = original.DeploymentOperation
-type DeploymentOperationProperties = original.DeploymentOperationProperties
-type DeploymentOperationsClient = original.DeploymentOperationsClient
-type DeploymentOperationsListResult = original.DeploymentOperationsListResult
-type DeploymentOperationsListResultIterator = original.DeploymentOperationsListResultIterator
-type DeploymentOperationsListResultPage = original.DeploymentOperationsListResultPage
-type DeploymentProperties = original.DeploymentProperties
-type DeploymentPropertiesExtended = original.DeploymentPropertiesExtended
-type DeploymentValidateResult = original.DeploymentValidateResult
-type DeploymentWhatIf = original.DeploymentWhatIf
-type DeploymentWhatIfProperties = original.DeploymentWhatIfProperties
-type DeploymentWhatIfSettings = original.DeploymentWhatIfSettings
-type DeploymentsClient = original.DeploymentsClient
-type DeploymentsCreateOrUpdateAtManagementGroupScopeFuture = original.DeploymentsCreateOrUpdateAtManagementGroupScopeFuture
-type DeploymentsCreateOrUpdateAtScopeFuture = original.DeploymentsCreateOrUpdateAtScopeFuture
-type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture = original.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture
-type DeploymentsCreateOrUpdateAtTenantScopeFuture = original.DeploymentsCreateOrUpdateAtTenantScopeFuture
-type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
-type DeploymentsDeleteAtManagementGroupScopeFuture = original.DeploymentsDeleteAtManagementGroupScopeFuture
-type DeploymentsDeleteAtScopeFuture = original.DeploymentsDeleteAtScopeFuture
-type DeploymentsDeleteAtSubscriptionScopeFuture = original.DeploymentsDeleteAtSubscriptionScopeFuture
-type DeploymentsDeleteAtTenantScopeFuture = original.DeploymentsDeleteAtTenantScopeFuture
-type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
-type DeploymentsWhatIfAtSubscriptionScopeFuture = original.DeploymentsWhatIfAtSubscriptionScopeFuture
-type DeploymentsWhatIfFuture = original.DeploymentsWhatIfFuture
-type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type Client = original.Client
+type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
-type ExportTemplateRequest = original.ExportTemplateRequest
-type GenericResource = original.GenericResource
-type GenericResourceExpanded = original.GenericResourceExpanded
-type GenericResourceFilter = original.GenericResourceFilter
-type HTTPMessage = original.HTTPMessage
-type Identity = original.Identity
-type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
-type OnErrorDeployment = original.OnErrorDeployment
-type OnErrorDeploymentExtended = original.OnErrorDeploymentExtended
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
-type OperationsClient = original.OperationsClient
-type ParametersLink = original.ParametersLink
-type Plan = original.Plan
-type Provider = original.Provider
-type ProviderListResult = original.ProviderListResult
-type ProviderListResultIterator = original.ProviderListResultIterator
-type ProviderListResultPage = original.ProviderListResultPage
-type ProviderResourceType = original.ProviderResourceType
-type ProvidersClient = original.ProvidersClient
-type Resource = original.Resource
-type ResourceGroup = original.ResourceGroup
-type ResourceGroupExportResult = original.ResourceGroupExportResult
-type ResourceGroupFilter = original.ResourceGroupFilter
-type ResourceGroupListResult = original.ResourceGroupListResult
-type ResourceGroupListResultIterator = original.ResourceGroupListResultIterator
-type ResourceGroupListResultPage = original.ResourceGroupListResultPage
-type ResourceGroupPatchable = original.ResourceGroupPatchable
-type ResourceGroupProperties = original.ResourceGroupProperties
-type ResourceGroupsClient = original.ResourceGroupsClient
-type ResourceGroupsDeleteFuture = original.ResourceGroupsDeleteFuture
-type ResourceListResult = original.ResourceListResult
-type ResourceListResultIterator = original.ResourceListResultIterator
-type ResourceListResultPage = original.ResourceListResultPage
-type ResourceProviderOperationDisplayProperties = original.ResourceProviderOperationDisplayProperties
-type ResourcesClient = original.ResourcesClient
-type ResourcesCreateOrUpdateByIDFuture = original.ResourcesCreateOrUpdateByIDFuture
-type ResourcesCreateOrUpdateFuture = original.ResourcesCreateOrUpdateFuture
-type ResourcesDeleteByIDFuture = original.ResourcesDeleteByIDFuture
-type ResourcesDeleteFuture = original.ResourcesDeleteFuture
-type ResourcesMoveInfo = original.ResourcesMoveInfo
-type ResourcesMoveResourcesFuture = original.ResourcesMoveResourcesFuture
-type ResourcesUpdateByIDFuture = original.ResourcesUpdateByIDFuture
-type ResourcesUpdateFuture = original.ResourcesUpdateFuture
-type ResourcesValidateMoveResourcesFuture = original.ResourcesValidateMoveResourcesFuture
-type Sku = original.Sku
-type SubResource = original.SubResource
-type TagCount = original.TagCount
-type TagDetails = original.TagDetails
-type TagValue = original.TagValue
-type TagsClient = original.TagsClient
-type TagsListResult = original.TagsListResult
-type TagsListResultIterator = original.TagsListResultIterator
-type TagsListResultPage = original.TagsListResultPage
-type TargetResource = original.TargetResource
-type TemplateHashResult = original.TemplateHashResult
-type TemplateLink = original.TemplateLink
-type WhatIfChange = original.WhatIfChange
-type WhatIfOperationProperties = original.WhatIfOperationProperties
-type WhatIfOperationResult = original.WhatIfOperationResult
-type WhatIfPropertyChange = original.WhatIfPropertyChange
+type OperationsListResult = original.OperationsListResult
+type OperationsListResultIterator = original.OperationsListResultIterator
+type OperationsListResultPage = original.OperationsListResultPage
+type Properties = original.Properties
+type ProxyResource = original.ProxyResource
+type Result = original.Result
+type SubscriptionFeatureRegistration = original.SubscriptionFeatureRegistration
+type SubscriptionFeatureRegistrationList = original.SubscriptionFeatureRegistrationList
+type SubscriptionFeatureRegistrationListIterator = original.SubscriptionFeatureRegistrationListIterator
+type SubscriptionFeatureRegistrationListPage = original.SubscriptionFeatureRegistrationListPage
+type SubscriptionFeatureRegistrationProperties = original.SubscriptionFeatureRegistrationProperties
+type SubscriptionFeatureRegistrationsClient = original.SubscriptionFeatureRegistrationsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, providerNamespace string) BaseClient {
+	return original.New(subscriptionID, providerNamespace)
 }
-func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
-	return original.NewDeploymentListResultIterator(page)
+func NewClient(subscriptionID string, providerNamespace string) Client {
+	return original.NewClient(subscriptionID, providerNamespace)
 }
-func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
-	return original.NewDeploymentListResultPage(cur, getNextPage)
-}
-func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClient(subscriptionID)
-}
-func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResultPage) DeploymentOperationsListResultIterator {
-	return original.NewDeploymentOperationsListResultIterator(page)
-}
-func NewDeploymentOperationsListResultPage(cur DeploymentOperationsListResult, getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
-	return original.NewDeploymentOperationsListResultPage(cur, getNextPage)
-}
-func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
-	return original.NewDeploymentsClient(subscriptionID)
-}
-func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
-	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
+func NewClientWithBaseURI(baseURI string, subscriptionID string, providerNamespace string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID, providerNamespace)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -207,80 +76,32 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(cur, getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
+	return original.NewOperationsListResultIterator(page)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsListResultPage(cur OperationsListResult, getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
+	return original.NewOperationsListResultPage(cur, getNextPage)
 }
-func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
-	return original.NewProviderListResultIterator(page)
+func NewSubscriptionFeatureRegistrationListIterator(page SubscriptionFeatureRegistrationListPage) SubscriptionFeatureRegistrationListIterator {
+	return original.NewSubscriptionFeatureRegistrationListIterator(page)
 }
-func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
-	return original.NewProviderListResultPage(cur, getNextPage)
+func NewSubscriptionFeatureRegistrationListPage(cur SubscriptionFeatureRegistrationList, getNextPage func(context.Context, SubscriptionFeatureRegistrationList) (SubscriptionFeatureRegistrationList, error)) SubscriptionFeatureRegistrationListPage {
+	return original.NewSubscriptionFeatureRegistrationListPage(cur, getNextPage)
 }
-func NewProvidersClient(subscriptionID string) ProvidersClient {
-	return original.NewProvidersClient(subscriptionID)
+func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, providerNamespace string) SubscriptionFeatureRegistrationsClient {
+	return original.NewSubscriptionFeatureRegistrationsClient(subscriptionID, providerNamespace)
 }
-func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) ProvidersClient {
-	return original.NewProvidersClientWithBaseURI(baseURI, subscriptionID)
+func NewSubscriptionFeatureRegistrationsClientWithBaseURI(baseURI string, subscriptionID string, providerNamespace string) SubscriptionFeatureRegistrationsClient {
+	return original.NewSubscriptionFeatureRegistrationsClientWithBaseURI(baseURI, subscriptionID, providerNamespace)
 }
-func NewResourceGroupListResultIterator(page ResourceGroupListResultPage) ResourceGroupListResultIterator {
-	return original.NewResourceGroupListResultIterator(page)
+func NewWithBaseURI(baseURI string, subscriptionID string, providerNamespace string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, providerNamespace)
 }
-func NewResourceGroupListResultPage(cur ResourceGroupListResult, getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
-	return original.NewResourceGroupListResultPage(cur, getNextPage)
+func PossibleSubscriptionFeatureRegistrationApprovalTypeValues() []SubscriptionFeatureRegistrationApprovalType {
+	return original.PossibleSubscriptionFeatureRegistrationApprovalTypeValues()
 }
-func NewResourceGroupsClient(subscriptionID string) ResourceGroupsClient {
-	return original.NewResourceGroupsClient(subscriptionID)
-}
-func NewResourceGroupsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupsClient {
-	return original.NewResourceGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
-	return original.NewResourceListResultIterator(page)
-}
-func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return original.NewResourceListResultPage(cur, getNextPage)
-}
-func NewResourcesClient(subscriptionID string) ResourcesClient {
-	return original.NewResourcesClient(subscriptionID)
-}
-func NewResourcesClientWithBaseURI(baseURI string, subscriptionID string) ResourcesClient {
-	return original.NewResourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTagsClient(subscriptionID string) TagsClient {
-	return original.NewTagsClient(subscriptionID)
-}
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTagsListResultIterator(page TagsListResultPage) TagsListResultIterator {
-	return original.NewTagsListResultIterator(page)
-}
-func NewTagsListResultPage(cur TagsListResult, getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
-	return original.NewTagsListResultPage(cur, getNextPage)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleChangeTypeValues() []ChangeType {
-	return original.PossibleChangeTypeValues()
-}
-func PossibleDeploymentModeValues() []DeploymentMode {
-	return original.PossibleDeploymentModeValues()
-}
-func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
-	return original.PossibleOnErrorDeploymentTypeValues()
-}
-func PossiblePropertyChangeTypeValues() []PropertyChangeType {
-	return original.PossiblePropertyChangeTypeValues()
-}
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
-}
-func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
-	return original.PossibleWhatIfResultFormatValues()
+func PossibleSubscriptionFeatureRegistrationStateValues() []SubscriptionFeatureRegistrationState {
+	return original.PossibleSubscriptionFeatureRegistrationStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

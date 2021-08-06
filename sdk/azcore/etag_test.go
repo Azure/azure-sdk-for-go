@@ -12,41 +12,41 @@ import (
 )
 
 func createETag(s string) ETag {
-	return ETag(&s)
+	return ETag(s)
 }
 
 func TestETagEquals(t *testing.T) {
 	e1 := createETag("tag")
-	require.Equal(t, *e1, "tag")
+	require.Equal(t, string(e1), "tag")
 
 	e2 := createETag("\"tag\"")
-	require.Equal(t, *e2, "\"tag\"")
+	require.Equal(t, string(e2), "\"tag\"")
 
 	e3 := createETag("W/\"weakETag\"")
-	require.Equal(t, *e3, "W/\"weakETag\"")
-	require.Truef(t, IsWeak(e3), "ETag is ecpected to be weak")
+	require.Equal(t, string(e3), "W/\"weakETag\"")
+	require.Truef(t, e3.IsWeak(), "ETag is expected to be weak")
 
 	strongETag := createETag("\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
-	require.Equal(t, *strongETag, "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
+	require.Equal(t, string(strongETag), "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
 
-	require.Falsef(t, IsWeak(ETagAny()), "ETagAny should not be weak")
+	require.Falsef(t, ETagAny.IsWeak(), "ETagAny should not be weak")
 }
 
 func TestETagWeak(t *testing.T) {
 	et1 := createETag("tag")
-	require.Falsef(t, IsWeak(et1), "expected etag to be strong")
+	require.Falsef(t, et1.IsWeak(), "expected etag to be strong")
 
 	et2 := createETag("\"tag\"")
-	require.Falsef(t, IsWeak(et2), "expected etag to be strong")
+	require.Falsef(t, et2.IsWeak(), "expected etag to be strong")
 
 	et3 := createETag("W/\"weakETag\"")
-	require.Truef(t, IsWeak(et3), "expected etag to be weak")
+	require.Truef(t, et3.IsWeak(), "expected etag to be weak")
 
 	et4 := createETag("W/\"\"")
-	require.Truef(t, IsWeak(et4), "expected etag to be weak")
+	require.Truef(t, et4.IsWeak(), "expected etag to be weak")
 
-	et5 := ETagAny()
-	require.Falsef(t, IsWeak(et5), "expected etag to be strong")
+	et5 := ETagAny
+	require.Falsef(t, et5.IsWeak(), "expected etag to be strong")
 }
 
 func TestETagEquality(t *testing.T) {
@@ -58,42 +58,42 @@ func TestETagEquality(t *testing.T) {
 	strongTagValidChars := createETag("\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
 	weakTagValidChars := createETag("W/\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
 
-	require.Falsef(t, StrongEquals(weakTag, weakTag), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTag1, weakTag1), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTag2, weakTag2), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTagValidChars, weakTagValidChars), "Expected etags to not be equal")
+	require.Falsef(t, weakTag.Equals(weakTag), "Expected etags to not be equal")
+	require.Falsef(t, weakTag1.Equals( weakTag1), "Expected etags to not be equal")
+	require.Falsef(t, weakTag2.Equals(weakTag2), "Expected etags to not be equal")
+	require.Falsef(t, weakTagValidChars.Equals(weakTagValidChars), "Expected etags to not be equal")
 
-	require.Truef(t, StrongEquals(strongTag1, strongTag1), "Expected etags to be equal")
-	require.Truef(t, StrongEquals(strongTag2, strongTag2), "Expected etags to be equal")
-	require.Truef(t, StrongEquals(strongTagValidChars, strongTagValidChars), "Expected etags to be equal")
+	require.Truef(t, strongTag1.Equals(strongTag1), "Expected etags to be equal")
+	require.Truef(t, strongTag2.Equals(strongTag2), "Expected etags to be equal")
+	require.Truef(t, strongTagValidChars.Equals(strongTagValidChars), "Expected etags to be equal")
 
-	require.Falsef(t, StrongEquals(weakTag, weakTag1), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTagValidChars, strongTagValidChars), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTag1, weakTag2), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTag1, strongTag1), "Expected etags to not be equal")
-	require.Falsef(t, StrongEquals(weakTag2, strongTag2), "Expected etags to not be equal")
+	require.Falsef(t, weakTag1.Equals(weakTag), "Expected etags to not be equal")
+	require.Falsef(t, strongTagValidChars.Equals(weakTagValidChars), "Expected etags to not be equal")
+	require.Falsef(t, weakTag2.Equals(weakTag1), "Expected etags to not be equal")
+	require.Falsef(t, strongTag1.Equals(weakTag1), "Expected etags to not be equal")
+	require.Falsef(t, strongTag2.Equals(weakTag2), "Expected etags to not be equal")
 }
 
 func TestEtagAny(t *testing.T) {
-	anyETag := ETagAny()
+	anyETag := ETagAny
 	star := createETag("*")
 	weakStar := createETag("W\"*\"")
-	quotedStart := createETag("\"*\"")
+	quotedStar := createETag("\"*\"")
 
-	require.Truef(t, StrongEquals(anyETag, anyETag), "Expected etags to be equal")
-	require.Truef(t, StrongEquals(anyETag, ETagAny()), "Expected etags to be equal")
+	require.Truef(t, anyETag.Equals(anyETag), "Expected etags to be equal")
+	require.Truef(t, ETagAny.Equals(anyETag), "Expected etags to be equal")
 
-	require.Truef(t, StrongEquals(star, star), "Expected etags to be equal")
-	require.Truef(t, StrongEquals(star, ETagAny()), "Expected etags to be equal")
-	require.Truef(t, StrongEquals(star, anyETag), "Expected etags to be equal")
+	require.Truef(t, star.Equals(star), "Expected etags to be equal")
+	require.Truef(t, ETagAny.Equals(star), "Expected etags to be equal")
+	require.Truef(t, anyETag.Equals(star), "Expected etags to be equal")
 
-	require.Falsef(t, StrongEquals(weakStar, star), "Expected etags to be equal")
-	require.Falsef(t, StrongEquals(weakStar, ETagAny()), "Expected etags to be equal")
-	require.Falsef(t, StrongEquals(quotedStart, weakStar), "Expected etags to be equal")
+	require.Falsef(t, star.Equals(weakStar), "Expected etags to be equal")
+	require.Falsef(t, ETagAny.Equals(weakStar), "Expected etags to be equal")
+	require.Falsef(t, weakStar.Equals(quotedStar), "Expected etags to be equal")
 
-	require.Falsef(t, StrongEquals(star, quotedStart), "Expected etags to be equal")
+	require.Falsef(t, quotedStar.Equals(star), "Expected etags to be equal")
 
-	require.Truef(t, StrongEquals(ETagAny(), star), "Expected etags to be equal")
+	require.Truef(t, star.Equals(ETagAny), "Expected etags to be equal")
 }
 
 func TestETagWeakComparison(t *testing.T) {
@@ -112,23 +112,23 @@ func TestETagWeakComparison(t *testing.T) {
 	// "two"
 	strongTagtwo := createETag("\"two\"")
 
-	require.Truef(t, WeakEquals(weakTag, weakTag), "expected etags to be equal")
-	require.Truef(t, WeakEquals(weakTag1, weakTag1), "expected etags to be equal")
-	require.Truef(t, WeakEquals(weakTagTwo, weakTagTwo), "expected etags to be equal")
-	require.Truef(t, WeakEquals(weakTagtwo, weakTagtwo), "expected etags to be equal")
-	require.Truef(t, WeakEquals(strongTag1, strongTag1), "expected etags to be equal")
-	require.Truef(t, WeakEquals(strongTagTwo, strongTagTwo), "expected etags to be equal")
-	require.Truef(t, WeakEquals(strongTagtwo, strongTagtwo), "expected etags to be equal")
+	require.Truef(t, weakTag.WeakEquals(weakTag), "expected etags to be equal")
+	require.Truef(t, weakTag1.WeakEquals(weakTag1), "expected etags to be equal")
+	require.Truef(t, weakTagTwo.WeakEquals(weakTagTwo), "expected etags to be equal")
+	require.Truef(t, weakTagtwo.WeakEquals(weakTagtwo), "expected etags to be equal")
+	require.Truef(t, strongTag1.WeakEquals(strongTag1), "expected etags to be equal")
+	require.Truef(t, strongTagTwo.WeakEquals(strongTagTwo), "expected etags to be equal")
+	require.Truef(t, strongTagtwo.WeakEquals(strongTagtwo), "expected etags to be equal")
 
-	require.Falsef(t, WeakEquals(weakTag, weakTag1), "Expected etags to not be equal")
-	require.Falsef(t, WeakEquals(weakTag1, weakTagTwo), "Expected etags to not be equal")
+	require.Falsef(t, weakTag1.WeakEquals(weakTag), "Expected etags to not be equal")
+	require.Falsef(t, weakTagTwo.WeakEquals(weakTag1), "Expected etags to not be equal")
 
-	require.Truef(t, WeakEquals(weakTag1, strongTag1), "expected etags to be equal")
-	require.Truef(t, WeakEquals(weakTagTwo, strongTagTwo), "expected etags to be equal")
+	require.Truef(t, strongTag1.WeakEquals(weakTag1), "expected etags to be equal")
+	require.Truef(t, strongTagTwo.WeakEquals(weakTagTwo), "expected etags to be equal")
 
-	require.Falsef(t, WeakEquals(strongTagTwo, weakTag1), "Expected etags to not be equal")
-	require.Falsef(t, WeakEquals(strongTagTwo, weakTagtwo), "Expected etags to not be equal")
+	require.Falsef(t, weakTag1.WeakEquals(strongTagTwo), "Expected etags to not be equal")
+	require.Falsef(t, weakTagtwo.WeakEquals(strongTagTwo), "Expected etags to not be equal")
 
-	require.Falsef(t, WeakEquals(strongTagTwo, strongTagtwo), "Expected etags to not be equal")
-	require.Falsef(t, WeakEquals(weakTagTwo, weakTagtwo), "Expected etags to not be equal")
+	require.Falsef(t, strongTagtwo.WeakEquals(strongTagTwo), "Expected etags to not be equal")
+	require.Falsef(t, weakTagtwo.WeakEquals(weakTagTwo), "Expected etags to not be equal")
 }

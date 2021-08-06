@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [string]$config = "autorest.md", [string]$outputFolder)
+param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
 . $PSScriptRoot/get_module_dirs.ps1
@@ -20,7 +20,7 @@ function Process-Sdk ($path) {
             $removeAutorestFile = $true
         }
 
-        $autorestVersion = "@autorest/go@4.0.0-preview.23"
+        $autorestVersion = "@autorest/go@4.0.0-preview.25"
         if ($outputFolder -eq '') {
             $outputFolder = $path
         }
@@ -32,6 +32,16 @@ function Process-Sdk ($path) {
         if ($removeAutorestFile) {
             Remove-Item $autorestPath
         }
+    }
+
+    if ($format) {
+        Write-Host "##[command]Executing gofmt -s -w . in " $path
+        gofmt -s -w $path
+    }
+
+    if ($tidy) {
+        Write-Host "##[command]Executing go mod tidy in " $path
+        go mod tidy
     }
 
     if (!$skipBuild) {

@@ -48,7 +48,10 @@ If a package you need isn't available please open an issue and let us know.
 Packages that are still in public preview can be found under the `services/preview` directory. Please be aware that since these packages are in preview they are subject to change, including breaking changes, outside of a major semver bump.
 
 ## Samples
-[Samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples
+
+More code samples for using the management library for Go SDK can be found in the following locations
+- [Go SDK Code Samples Repo](https://github.com/azure-samples/azure-sdk-for-go-samples)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/network/armnetwork/example_networkinterfaces_test.go)
 
 ## Reporting security issues and security bugs
 

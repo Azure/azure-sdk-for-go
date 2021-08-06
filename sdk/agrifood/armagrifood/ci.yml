@@ -2,12 +2,12 @@
 trigger:
   paths:
     include:
-    - sdk/agrifood/armagrifood
+    - sdk/agrifood/armagrifood/
 
 pr:
   paths:
     include:
-    - sdk/agrifood/armagrifood
+    - sdk/agrifood/armagrifood/
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml

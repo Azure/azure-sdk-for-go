@@ -11,70 +11,51 @@ import (
 
 // ETag is a property used for optimistic concurrency during updates
 // ETag is a validator based on https://tools.ietf.org/html/rfc7232#section-2.3.2
-type ETag struct {
-	value *string
+type ETag *string
+
+// StrongEquals does a strong comparison of two ETags. StrongEquals returns true when both
+// ETags are not weak and the values of the underlying strings are equal. If both ETags are "nil" they are considered equal
+func StrongEquals(a, b ETag) bool {
+	if !HasValue(a) || !HasValue(b) {
+		return a == b
+	}
+	return !IsWeak(a) && !IsWeak(b) && *a == *b
 }
 
-// NewETag creates a new ETag struct
-func NewETag(value string) *ETag {
-	return &ETag{value: &value}
-}
-
-// ComparisonType specifies what type of comparison to use, Strong or Weak
-type ComparisonType string
-
-const (
-	Strong ComparisonType = "strong"
-	Weak   ComparisonType = "weak"
-)
-
-// Equals determines whether two entity-tags are equal. There are two types of comparison: Strong and Weak.
-// Strong comparison: two ETags are equivalent if both are not weak and their opaque-tags match character-by-character
-// Weak Comparison: two ETags are equivalent if their opaque-tags match character-by-character regardless of either or both being tagged as "weak"
-func (e ETag) Equals(right ETag, comparisonKind ComparisonType) bool {
-	// ETags are != if one value is null
-	if *e.value == "" || *right.value == "" {
-		// If both are null, they are considered equal
-		return *e.value == *right.value
+// WeakEquals does a weak compariosn of two ETags. Two ETags are equivalent if their opaque-tags match
+// character-by-character, regardless of either or both being tagged as "weak". If both ETags are "nil" they are considered equal
+func WeakEquals(a, b ETag) bool {
+	if !HasValue(a) || !HasValue(b) {
+		return a == b
 	}
 
-	if comparisonKind == Strong {
-		return !e.IsWeak() && !right.IsWeak() && *e.value == *right.value
+	getStart := func(e ETag) int {
+		if IsWeak(e) {
+			return 2
+		}
+		return 0
 	}
+	aStart := getStart(a)
+	bStart := getStart(b)
 
-	leftStart := e.getStart()
-	rightStart := right.getStart()
+	aVal := (*a)[aStart:]
+	bVal := (*b)[bStart:]
 
-	leftValue := (*e.value)[leftStart:]
-	rightValue := (*right.value)[rightStart:]
-
-	return leftValue == rightValue
-}
-
-func (e ETag) getStart() int {
-	if e.IsWeak() {
-		return 2
-	}
-	return 0
-}
-
-// String returns a string representation of an ETag
-func (e ETag) String() string {
-	return *e.value
+	return aVal == bVal
 }
 
 // HasValue returns whether an ETag is present
-func (e ETag) HasValue() bool {
-	return e.value != nil
+func HasValue(e ETag) bool {
+	return e != nil
 }
 
 // IsWeak specifies whether the ETag is strong or weak.
-func (e ETag) IsWeak() bool {
-	return e.value != nil && len(*e.value) >= 4 && strings.HasPrefix(*e.value, "W/\"") && strings.HasSuffix(*e.value, "\"")
+func IsWeak(e ETag) bool {
+	return HasValue(e) && len(*e) >= 4 && strings.HasPrefix(*e, "W/\"") && strings.HasSuffix(*e, "\"")
 }
 
 // ETagAny returns a new ETag that represents everything, the value is "*"
-func ETagAny() *ETag {
+func ETagAny() ETag {
 	any := "*"
-	return &ETag{value: &any}
+	return ETag(&any)
 }

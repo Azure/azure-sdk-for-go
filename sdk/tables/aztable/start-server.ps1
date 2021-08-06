@@ -15,7 +15,11 @@ catch {
 }
 
 $CONTAINER_NAME = "ambitious_azsdk_test_proxy"
-$IMAGE_SOURCE = "azsdkengsys.azurecr.io/engsys/ubuntu_testproxy_server:latest"
+$IMAGE_SOURCE = "azsdkengsys.azurecr.io/engsys/testproxy-lin:1035321"
+
+if ($IsWindows -and $env:TF_BUILD){
+    $IMAGE_SOURCE = "azsdkengsys.azurecr.io/engsys/testproxy-win:1035321"
+}
 
 function Get-Proxy-Container(){
     return (docker container ls -a --format "{{ json . }}" --filter "name=$CONTAINER_NAME" `

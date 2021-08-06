@@ -1,17 +1,16 @@
 parameters:
   ServiceDirectory: ''
 
-variables:
-    CertificateUri: 'https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pfx'
-    CertificateLocation: '$(Build.SourcesDirectory)/dotnet-devcert.pfx'
-
 steps:
   - pwsh: |
-        Invoke-WebRequest `
-            -Uri $(CertificateUri) `
-            -OutFile $(CertificateLocation) -UseBasicParsing
+        $certUri = "https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pfx"
+        $certLocation = "$(Build.SourcesDirectory)/dotnet-devcert.pfx"
 
-        dotnet dev-certs https --clean --import $(CertificateLocation) -p "password"
+        Invoke-WebRequest `
+            -Uri $certUri `
+            -OutFile $certLocation -UseBasicParsing
+
+        dotnet dev-certs https --clean --import $certLocation -p "password"
         dotnet dev-certs https --trust
     displayName: 'Download and Trust Certificate'
     
@@ -24,8 +23,6 @@ steps:
       azsdkengsys.azurecr.io/engsys/testproxy-lin:latest
     displayName: 'Run the docker container'
     condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'))
-
-
 
   - pwsh: |
       docker run `

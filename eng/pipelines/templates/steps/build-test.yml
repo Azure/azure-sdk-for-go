@@ -48,6 +48,9 @@ steps:
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
+
+        $(Build.SourcesDirectory)/sdk/tables/aztable/start-server.ps1 start
+
         Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -v -coverprofile coverage.txt . | go-junit-report -set-exit-code > report.xml
         # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
@@ -55,6 +58,8 @@ steps:
           Write-Host "##[command]Deleting empty coverage file"
           rm coverage.txt
         }
+
+        $(Build.SourcesDirectory)/sdk/tables/aztable/start-server.ps1 stop
       }
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'

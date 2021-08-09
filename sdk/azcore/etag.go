@@ -18,13 +18,13 @@ type ETag string
 const ETagAny ETag = "*"
 
 // Equals does a strong comparison of two ETags. Equals returns true when both
-// ETags are not weak and the values of the underlying strings are equal. If both ETags are "nil" they are considered equal
+// ETags are not weak and the values of the underlying strings are equal.
 func (e ETag) Equals(other ETag) bool {
 	return !e.IsWeak() && !other.IsWeak() && e == other
 }
 
-// WeakEquals does a weak compariosn of two ETags. Two ETags are equivalent if their opaque-tags match
-// character-by-character, regardless of either or both being tagged as "weak". If both ETags are "nil" they are considered equal
+// WeakEquals does a weak comparison of two ETags. Two ETags are equivalent if their opaque-tags match
+// character-by-character, regardless of either or both being tagged as "weak".
 func (e ETag) WeakEquals(other ETag) bool {
 	getStart := func(e1 ETag) int {
 		if e1.IsWeak() {

@@ -1,5 +1,15 @@
 # Release History
 
+## v0.19.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## v0.18.0
 ### Features Added
 * Replaces methods from Logger type with two package methods for interacting with the logging functionality.

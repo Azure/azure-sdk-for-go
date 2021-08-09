@@ -48,25 +48,6 @@ type CosmosClientOptionsRateLimitedRetry struct {
 	MaxRetryWaitTime time.Duration
 }
 
-func (o *CosmosClientOptions) getClientConnection() *cosmosClientConnection {
-	if o == nil {
-		o = &CosmosClientOptions{}
-	}
-
-	policies := []azcore.Policy{
-		azcore.NewTelemetryPolicy(o.enrichTelemetryOptions()),
-	}
-	policies = append(policies, o.PerCallPolicies...)
-	policies = append(policies, azcore.NewRetryPolicy(&o.Retry))
-	policies = append(policies, o.PerRetryPolicies...)
-	policies = append(policies, o.getSDKInternalPolicies()...)
-	// Unsure if authentication should be done the same way as other sdks
-	// https://github.com/Azure/azure-sdk-for-go/blob/658d8c542a562cbd028d6dbb6217d71c21e234f8/sdk/synapse/azartifacts/zz_generated_connection.go#L64
-	// policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}))
-	policies = append(policies, azcore.NewLogPolicy(&o.Logging))
-	return &cosmosClientConnection{Pipeline: azcore.NewPipeline(o.HTTPClient, policies...)}
-}
-
 // enrichTelemetryOptions adds the current package version to the telemetry information, if any.
 func (o *CosmosClientOptions) enrichTelemetryOptions() *azcore.TelemetryOptions {
 	to := o.Telemetry

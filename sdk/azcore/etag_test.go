@@ -59,7 +59,7 @@ func TestETagEquality(t *testing.T) {
 	weakTagValidChars := createETag("W/\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
 
 	require.Falsef(t, weakTag.Equals(weakTag), "Expected etags to not be equal")
-	require.Falsef(t, weakTag1.Equals( weakTag1), "Expected etags to not be equal")
+	require.Falsef(t, weakTag1.Equals(weakTag1), "Expected etags to not be equal")
 	require.Falsef(t, weakTag2.Equals(weakTag2), "Expected etags to not be equal")
 	require.Falsef(t, weakTagValidChars.Equals(weakTagValidChars), "Expected etags to not be equal")
 

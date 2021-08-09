@@ -1,5 +1,35 @@
 # Change Log
 
+## `v0.10.15`
+
+- fix issue where deferring a message could result us encoding it incorrectly and sending the sequence 
+  number as a negative number. #241
+
+## `v0.10.14`
+
+- fix issue where (Topic|Subscription|Queue)Manager.List() would only return a single page of entities. #234
+
+## `v0.10.13`
+
+- fix panic when specifying a nil session ID #232
+
+## `v0.10.12`
+
+- add associate-link-name property to RenewLocks function. #225
+
+## `v0.10.11`
+
+- use amqp HandleMessage Func #207
+
+## `v0.10.10`
+
+- consolidate auth auto-refresh #205
+- add recovery mechanism to rpcClient #206
+
+## `v0.10.9`
+
+- tell users they can't go higher than 5 minutes #202
+
 ## `v0.10.8`
 - only retry with retryable amqp errors for sender [#201](https://github.com/Azure/azure-service-bus-go/issues/201)
 

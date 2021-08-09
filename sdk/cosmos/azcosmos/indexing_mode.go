@@ -4,13 +4,13 @@
 package azcosmos
 
 // IndexingMode defines the supported indexing modes in the Azure Cosmos DB service.
-type IndexingMode int
+type IndexingMode string
 
 const (
 	// IndexingModeConsistent Index is updated synchronously with a create, update or delete operation.
-	IndexingModeConsistent IndexingMode = 0
+	IndexingModeConsistent IndexingMode = "Consistent"
 	// No index is provided.
-	IndexingModeNone IndexingMode = 2
+	IndexingModeNone IndexingMode = "None"
 )
 
 // Returns a list of available consistency levels

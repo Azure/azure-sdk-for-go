@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,16 +24,33 @@ func TestCreateSAS(t *testing.T) {
 
 	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
+
+	tableName, err := createRandomName(t, "tableName")
+	require.NoError(t, err)
+
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), "blahblahblah2")
+		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), "blahblahblah2")
+	_, err = serviceClient.CreateTable(context.Background(), tableName)
 	require.NoError(t, err)
 
-	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASResourceTypes{Object: true, Service: true}, AccountSASPermissions{Read: true, Add: true}, time.Date(2021, time.August, 4, 1, 0, 0, 0, time.UTC), time.Date(2022, time.August, 4, 1, 0, 0, 0, time.UTC))
+	resources := AccountSASResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := AccountSASPermissions{
+		Read:  true,
+		Add:   true,
+		Write: true,
+	}
+	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
+	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
+
+	accountSAS, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
 	queryParams := accountSAS.Encode()
@@ -41,8 +59,12 @@ func TestCreateSAS(t *testing.T) {
 	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 	fmt.Println(sasUrl)
 
-	client, err := NewTableClient("blahblahblah2", sasUrl, azcore.AnonymousCredential(), nil)
+	err = recording.StartRecording(t, nil)
 	require.NoError(t, err)
+	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.AnonymousCredential())
+	// client, err := NewTableClient(tableName, sasUrl, azcore.AnonymousCredential(), nil)
+	require.NoError(t, err)
+	defer recording.StopRecording(t, nil)
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",

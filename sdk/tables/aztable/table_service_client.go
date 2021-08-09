@@ -158,11 +158,10 @@ func (s TableServiceClient) CanGetAccountSASToken() bool {
 func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
 	return AccountSASSignatureValues{
 		Version: SASVersion,
-
+		Protocol: SASProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      "t",
 		ResourceTypes: resources.String(),
-
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
 	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))

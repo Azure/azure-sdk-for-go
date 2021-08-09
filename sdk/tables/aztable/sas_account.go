@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var SASVersion = "2019-02-02"
+var SASVersion = "2020-08-04"
 
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas

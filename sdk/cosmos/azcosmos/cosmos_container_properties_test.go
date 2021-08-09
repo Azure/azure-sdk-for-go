@@ -49,6 +49,10 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 				{Paths: []string{"/someUniqueKey"}},
 			},
 		},
+		ConflictResolutionPolicy: &ConflictResolutionPolicy{
+			Mode:           ConflictResolutionModeLastWriteWins,
+			ResolutionPath: "/someResolutionPath",
+		},
 	}
 
 	jsonString, err := json.Marshal(properties)
@@ -140,6 +144,18 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 
 	if otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0] != properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0] {
 		t.Errorf("Expected UniqueKeyPolicy.UniqueKeys[0].Paths[0] to be %s, but got %s", properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0], otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0])
+	}
+
+	if otherProperties.ConflictResolutionPolicy == nil {
+		t.Errorf("Expected ConflictResolutionPolicy to be not nil, but got nil")
+	}
+
+	if otherProperties.ConflictResolutionPolicy.Mode != properties.ConflictResolutionPolicy.Mode {
+		t.Errorf("Expected ConflictResolutionPolicy.Mode to be %v, but got %v", properties.ConflictResolutionPolicy.Mode, otherProperties.ConflictResolutionPolicy.Mode)
+	}
+
+	if otherProperties.ConflictResolutionPolicy.ResolutionPath != properties.ConflictResolutionPolicy.ResolutionPath {
+		t.Errorf("Expected ConflictResolutionPolicy.ResolutionPath to be %s, but got %s", properties.ConflictResolutionPolicy.ResolutionPath, otherProperties.ConflictResolutionPolicy.ResolutionPath)
 	}
 }
 

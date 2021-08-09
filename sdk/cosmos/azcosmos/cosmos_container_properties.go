@@ -27,6 +27,8 @@ type CosmosContainerProperties struct {
 	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
 	// UniqueKeyPolicy contains the unique key policy of the container.
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
+	// ConflictResolutionPolicy contains the conflict resolution policy of the container.
+	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 	// Container represented by these properties
 	Container *CosmosContainer `json:"-"`
 }

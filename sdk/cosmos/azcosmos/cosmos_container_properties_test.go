@@ -44,6 +44,11 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 						Order: CompositeIndexAscending},
 				}},
 		},
+		UniqueKeyPolicy: &UniqueKeyPolicy{
+			UniqueKeys: []UniqueKey{
+				{Paths: []string{"/someUniqueKey"}},
+			},
+		},
 	}
 
 	jsonString, err := json.Marshal(properties)
@@ -127,6 +132,14 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 
 	if otherProperties.IndexingPolicy.CompositeIndexes[0][0].Path != properties.IndexingPolicy.CompositeIndexes[0][0].Path {
 		t.Errorf("Expected IndexingPolicy.CompositeIndexes[0][0].Path to be %s, but got %s", properties.IndexingPolicy.CompositeIndexes[0][0].Path, otherProperties.IndexingPolicy.CompositeIndexes[0][0].Path)
+	}
+
+	if otherProperties.UniqueKeyPolicy == nil {
+		t.Errorf("Expected UniqueKeyPolicy to be not nil, but got nil")
+	}
+
+	if otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0] != properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0] {
+		t.Errorf("Expected UniqueKeyPolicy.UniqueKeys[0].Paths[0] to be %s, but got %s", properties.UniqueKeyPolicy.UniqueKeys[0].Paths[0], otherProperties.UniqueKeyPolicy.UniqueKeys[0].Paths[0])
 	}
 }
 

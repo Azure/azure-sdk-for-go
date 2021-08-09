@@ -25,6 +25,8 @@ type CosmosContainerProperties struct {
 	PartitionKeyDefinition *PartitionKeyDefinition `json:"partitionKey,omitempty"`
 	// IndexingPolicy contains the indexing definition of the container.
 	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
+	// UniqueKeyPolicy contains the unique key policy of the container.
+	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 	// Container represented by these properties
 	Container *CosmosContainer `json:"-"`
 }

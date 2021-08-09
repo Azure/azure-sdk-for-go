@@ -22,8 +22,6 @@ type Package struct {
 	CoverageGoal float64 `json:"CoverageGoal"`
 }
 
-var configFile, _ = filepath.Abs(filepath.Join("eng", "config.json"))
-
 func check(e error) {
 	if e != nil {
 		log.Fatal(e)
@@ -47,7 +45,7 @@ func FindCoverageFiles(p string) {
 	check(err)
 }
 
-func ReadConfigData() *CodeCoverage {
+func ReadConfigData(configFile string) *CodeCoverage {
 	jsonFile, err := os.Open(configFile)
 	check(err)
 	defer jsonFile.Close()
@@ -66,7 +64,7 @@ func ReadConfigData() *CodeCoverage {
 func findCoverageGoal(covFiles []string, configData *CodeCoverage) float64 {
 	for _, covFile := range covFiles {
 		for _, p := range configData.Packages {
-			fmt.Printf("covFile: '%v' p: '%v'\n", covFile, p.Name)
+			fmt.Printf("DEBUG: covFile: '%v' p: '%v'\n", covFile, p.Name)
 			if strings.Contains(covFile, p.Name) {
 				return p.CoverageGoal
 			}
@@ -80,6 +78,12 @@ func main() {
 	serviceDir := flag.String("serviceDirectory", "", "Service Directory")
 	flag.Parse()
 
+	configFile, err := filepath.Abs(filepath.Join("eng", "config.json"))
+	if err != nil {
+		fmt.Println("Issue finding the absolute path of 'eng/config.json'")
+		panic(err)
+	}
+
 	fmt.Println("serviceDir: ", *serviceDir)
 
 	coverageFiles = make([]string, 0)
@@ -88,7 +92,7 @@ func main() {
 
 	FindCoverageFiles(rootPath)
 
-	configData := ReadConfigData()
+	configData := ReadConfigData(configFile)
 	coverageGoal := findCoverageGoal([]string{*serviceDir}, configData)
 
 	fmt.Printf("Failing if the coverage is below %.2f\n", coverageGoal)

@@ -203,7 +203,7 @@ func ExampleBlobURLParts() {
 
 // This example demonstrates how to use the SAS token convenience generators.
 // Though this example focuses on account SAS, these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
-func ExampleSASConvenienceGenerators() {
+func ExampleServiceClient_GetAccountSASToken() {
 	// Initialize a service client
 	accountName, accountKey := accountInfo()
 	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -238,7 +238,7 @@ func ExampleSASConvenienceGenerators() {
 }
 
 // This example shows how to create and use an Azure Storage account Shared Access Signature (SAS).
-func ExampleAccountSASSignatureValues() {
+func ExampleAccountSASSignatureValues_NewSASQueryParameters() {
 	accountName, accountKey := accountInfo()
 
 	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -441,7 +441,7 @@ func ExampleBlobAccessConditions() {
 }
 
 // This examples shows how to create a container with metadata and then how to read & update the metadata.
-func ExampleMetadata_containers() {
+func ExampleContainerClient_SetMetadata() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := accountInfo()
 
@@ -495,7 +495,7 @@ func ExampleMetadata_containers() {
 
 // This examples shows how to create a blob with metadata and then how to read & update
 // the blob's read-only properties and metadata.
-func ExampleMetadata_blobs() {
+func ExampleBlobClient_SetMetadata() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := accountInfo()
 
@@ -977,7 +977,7 @@ func ExampleBlobClient_startCopy() {
 }
 
 // // This example shows how to copy a large stream in blocks (chunks) to a block blob.
-func ExampleUploadFileToBlockBlobAndDownloadItBack() {
+func ExampleUploadFileToBlockBlob() {
 	file, err := os.Open("BigFile.bin") // Open the file we want to upload
 	if err != nil {
 		log.Fatal(err)
@@ -1120,7 +1120,7 @@ func ExampleUploadStreamToBlockBlob() {
 // The same lease operations can be performed on individual blobs as well.
 // A lease on a container prevents it from being deleted by others, while a lease on a blob
 // protects it from both modifications and deletions.
-func ExampleLeaseContainer() {
+func ExampleContainerLeaseClient() {
 	// From the Azure portal, get your Storage account's name and account key.
 	accountName, accountKey := accountInfo()
 

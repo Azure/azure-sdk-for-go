@@ -22,7 +22,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -429,9 +428,9 @@ var startURL = baseProxyURLSecure + "/record/start"
 var stopURL = baseProxyURLSecure + "/record/stop"
 
 var recordingId string
-var recordingIdHeader = "x-recording-id"
-var recordingModeHeader = "x-recording-mode"
-var recordingUpstreamUriHeader = "x-recording-upstream-base-uri"
+var IdHeader = "x-recording-id"
+var ModeHeader = "x-recording-mode"
+var UpstreamUriHeader = "x-recording-upstream-base-uri"
 
 var tr = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -443,16 +442,16 @@ var client = http.Client{
 type RecordingOptions struct {
 	MaxRetries int32
 	UseHTTPS   bool
-	host       string
-	scheme     string
+	Host       string
+	Scheme     string
 }
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
 		MaxRetries: 0,
 		UseHTTPS:   true,
-		host:       "localhost:5001",
-		scheme:     "https",
+		Host:       "localhost:5001",
+		Scheme:     "https",
 	}
 }
 
@@ -483,9 +482,9 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 		t.Log("AZURE_RECORD_MODE: ", recordMode)
 	}
 	testId := getTestId(t)
-	cwd, err := os.Getwd()
-	fmt.Printf("CWD: %v\n", cwd)
-	fmt.Printf("Test recording ID: %v\n", testId)
+	// cwd, err := os.Getwd()
+	// fmt.Printf("CWD: %v\n", cwd)
+	// fmt.Printf("Test recording ID: %v\n", testId)
 
 	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
 
@@ -500,7 +499,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	recordingId = resp.Header.Get(recordingIdHeader)
+	recordingId = resp.Header.Get(IdHeader)
 	return nil
 }
 
@@ -549,44 +548,44 @@ func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error
 	return err
 }
 
-func (o *RecordingOptions) init() {
+func (o *RecordingOptions) Init() {
 	if o.MaxRetries != 0 {
 		o.MaxRetries = 0
 	}
 	if o.UseHTTPS {
-		o.host = baseProxyURLSecure
-		o.scheme = "https"
+		o.Host = baseProxyURLSecure
+		o.Scheme = "https"
 	} else {
-		o.host = baseProxyURL
-		o.scheme = "http"
+		o.Host = baseProxyURL
+		o.Scheme = "http"
 	}
 }
 
-type recordingPolicy struct {
-	options RecordingOptions
-}
+// type recordingPolicy struct {
+// 	options RecordingOptions
+// }
 
-func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
-	if o == nil {
-		o = &RecordingOptions{}
-	}
-	p := &recordingPolicy{options: *o}
-	p.options.init()
-	return p
-}
+// func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
+// 	if o == nil {
+// 		o = &RecordingOptions{}
+// 	}
+// 	p := &recordingPolicy{options: *o}
+// 	p.options.init()
+// 	return p
+// }
 
-func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
-	originalURLHost := req.URL.Host
-	req.URL.Scheme = "https"
-	req.URL.Host = p.options.host
-	req.Host = p.options.host
+// func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+// 	originalURLHost := req.URL.Host
+// 	req.URL.Scheme = "https"
+// 	req.URL.Host = p.options.host
+// 	req.Host = p.options.host
 
-	req.Header.Set(recordingUpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.scheme, originalURLHost))
-	req.Header.Set(recordingModeHeader, recordMode)
-	req.Header.Set(recordingIdHeader, recordingId)
+// 	req.Header.Set(UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.scheme, originalURLHost))
+// 	req.Header.Set(ModeHeader, recordMode)
+// 	req.Header.Set(recordingIdHeader, recordingId)
 
-	return req.Next()
-}
+// 	return req.Next()
+// }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
@@ -612,6 +611,10 @@ func Sleep(duration int) {
 	}
 }
 
+func GetRecordingId() string {
+	return recordingId
+}
+
 func GetRecordMode() string {
 	return recordMode
 }
@@ -624,25 +627,25 @@ func InRecord() bool {
 	return GetRecordMode() == ModeRecording
 }
 
-type FakeCredential struct {
-	accountName string
-	accountKey  string
-}
+// type FakeCredential struct {
+// 	accountName string
+// 	accountKey  string
+// }
 
-func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{
-		accountName: accountName,
-		accountKey:  accountKey,
-	}
-}
+// func NewFakeCredential(accountName, accountKey string) *FakeCredential {
+// 	return &FakeCredential{
+// 		accountName: accountName,
+// 		accountKey:  accountKey,
+// 	}
+// }
 
-func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
-		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
-		return req.Next()
-	})
-}
+// func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
+// 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+// 		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
+// 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+// 		return req.Next()
+// 	})
+// }
 
 func getRootCas() (*x509.CertPool, error) {
 	localFile, ok := os.LookupEnv("PROXY_CERT")

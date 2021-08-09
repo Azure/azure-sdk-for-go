@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -17,8 +18,54 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
+type recordingPolicy struct {
+	options recording.RecordingOptions
+}
+
+func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
+	if o == nil {
+		o = &recording.RecordingOptions{}
+	}
+	p := &recordingPolicy{options: *o}
+	p.options.Init()
+	return p
+}
+
+func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+	originalURLHost := req.URL.Host
+	req.URL.Scheme = "https"
+	req.URL.Host = p.options.Host
+	req.Host = p.options.Host
+
+	req.Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+	req.Header.Set(recording.ModeHeader, recording.GetRecordMode())
+	req.Header.Set(recording.IdHeader, recording.GetRecordingId())
+
+	return req.Next()
+}
+
+type FakeCredential struct {
+	accountName string
+	accountKey  string
+}
+
+func NewFakeCredential(accountName, accountKey string) *FakeCredential {
+	return &FakeCredential{
+		accountName: accountName,
+		accountKey:  accountKey,
+	}
+}
+
+func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
+		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+		return req.Next()
+	})
+}
+
 func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
-	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
 	options := &TableClientOptions{
@@ -30,7 +77,7 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 }
 
 func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {
-	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
 	options := &TableClientOptions{
@@ -90,7 +137,7 @@ func initServiceTest(t *testing.T, service string) (*TableServiceClient, func())
 
 func getAADCredential(t *testing.T) (azcore.Credential, error) {
 	if recording.InPlayback() {
-		return recording.NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}
 
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
@@ -103,7 +150,7 @@ func getAADCredential(t *testing.T) (azcore.Credential, error) {
 
 func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 	if recording.InPlayback() {
-		return recording.NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}
 
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")

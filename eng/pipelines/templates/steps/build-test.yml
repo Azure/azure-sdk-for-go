@@ -28,45 +28,40 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go vet ./... in $md"
-        go vet ./...
-      }
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
-    env:
-      GO111MODULE: 'on'
+  # - pwsh: |
+  #     $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+  #     foreach ($md in $modDirs) {
+  #       pushd $md
+  #       Write-Host "##[command]Executing go vet ./... in $md"
+  #       go vet ./...
+  #     }
+  #   displayName: 'Vet'
+  #   workingDirectory: '${{parameters.GoWorkspace}}'
+  #   env:
+  #     GO111MODULE: 'on'
 
-  - task: UseDotNet@2
-    displayName: "Use .NET Core SDK"
-    inputs:
-      packageType: sdk
-      version: 5.0.205
-
-  - pwsh: |
-      docker run `
-      --detach `
-      -v $(Build.SourcesDirectory):/etc/testproxy `
-      -p 5001:5001 `
-      -p 5000:5000 `
-      azsdkengsys.azurecr.io/engsys/ubuntu_testproxy_server:latest
-    displayName: 'Run the docker container'
+  - template: configure-proxy.yml
+    parameters:
+      ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
   - pwsh: |
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-        Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
-        go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic .
-        # | go-junit-report -set-exit-code > report.xml
+
+        $(Build.SourcesDirectory)/sdk/tables/aztable/start-server.ps1 start
+
+        Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
+        go test -run "^Test" -v -coverprofile coverage.txt . > temp.txt
+        cat temp.txt
+        cat temp.txt | go-junit-report -set-exit-code > report.xml
         # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
         if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
           Write-Host "##[command]Deleting empty coverage file"
           rm coverage.txt
         }
+
+        $(Build.SourcesDirectory)/sdk/tables/aztable/start-server.ps1 stop
       }
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'

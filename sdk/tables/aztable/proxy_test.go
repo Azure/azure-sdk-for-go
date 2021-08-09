@@ -5,11 +5,8 @@ package aztable
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"hash/fnv"
-	"net/http"
-	"os"
 	"strings"
 	"testing"
 
@@ -21,27 +18,72 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
-func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
-	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
-	transport := http.DefaultTransport.(*http.Transport).Clone()
-	transport.TLSClientConfig.InsecureSkipVerify = true
-	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
-	defaultHttpClient := &http.Client{
-		Transport: transport,
+type recordingPolicy struct {
+	options recording.RecordingOptions
+}
+
+func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
+	if o == nil {
+		o = &recording.RecordingOptions{}
 	}
+	p := &recordingPolicy{options: *o}
+	p.options.Init()
+	return p
+}
+
+func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+	originalURLHost := req.URL.Host
+	req.URL.Scheme = "https"
+	req.URL.Host = p.options.Host
+	req.Host = p.options.Host
+
+	req.Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+	req.Header.Set(recording.ModeHeader, recording.GetRecordMode())
+	req.Header.Set(recording.IdHeader, recording.GetRecordingId())
+
+	return req.Next()
+}
+
+type FakeCredential struct {
+	accountName string
+	accountKey  string
+}
+
+func NewFakeCredential(accountName, accountKey string) *FakeCredential {
+	return &FakeCredential{
+		accountName: accountName,
+		accountKey:  accountKey,
+	}
+}
+
+func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
+		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+		return req.Next()
+	})
+}
+
+func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
+	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	client, err := recording.GetHTTPClient()
+	require.NoError(t, err)
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
-		HTTPClient: defaultHttpClient,
+		HTTPClient:     client,
 	}
 	return NewTableClient(tableName, serviceURL, cred, options)
 }
 
 func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {
-	policy := recording.NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	client, err := recording.GetHTTPClient()
+	require.NoError(t, err)
 	options := &TableClientOptions{
 		Scopes:         []string{AADAuthenticationScope},
 		PerCallOptions: []azcore.Policy{policy},
+		HTTPClient:     client,
 	}
 	return NewTableServiceClient(serviceURL, cred, options)
 }
@@ -66,7 +108,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 	}
 
 	return client, func() {
-		_, err = client.Delete(context.Background())
+		_, err = client.Delete(context.Background(), nil)
 		require.NoError(t, err)
 		err = recording.StopRecording(t, nil)
 		require.NoError(t, err)
@@ -93,23 +135,39 @@ func initServiceTest(t *testing.T, service string) (*TableServiceClient, func())
 	}
 }
 
+func getAADCredential(t *testing.T) (azcore.Credential, error) {
+	if recording.InPlayback() {
+		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+	}
+
+	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+
+	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	require.NoError(t, err)
+
+	return azidentity.NewDefaultAzureCredential(nil)
+}
+
+func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
+	if recording.InPlayback() {
+		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+	}
+
+	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakeAccountKey")
+
+	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
+	require.NoError(t, err)
+
+	return NewSharedKeyCredential(accountName, accountKey)
+}
+
 func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
 	accountName := "fakestorageaccount"
-	if recording.InPlayback() {
-		cred = NewFakeCredential(accountName, "fakeAccountKey")
-	} else {
-		accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-		if !ok {
-			accountName = "fakestorageaccount"
-		}
 
-		err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-		require.NoError(t, err)
-
-		cred, err = azidentity.NewDefaultAzureCredential(nil)
-		require.NoError(t, err)
-	}
+	cred, err := getAADCredential(t)
+	require.NoError(t, err)
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 
@@ -122,24 +180,9 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
 	accountName := "fakestorageaccount"
-	if recording.InPlayback() {
-		cred = NewFakeCredential(accountName, "fakeAccountKey")
-	} else {
-		accountName, ok := os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
-		if !ok {
-			accountName = "fakecosmosaccount"
-		}
-		accountKey, ok := os.LookupEnv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
-		if !ok {
-			t.Log("COSMOS KEY")
-			accountKey = "fakekey"
-		}
 
-		err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-		require.NoError(t, err)
-		cred, err = NewSharedKeyCredential(accountName, accountKey)
-		require.NoError(t, err)
-	}
+	cred, err := getSharedKeyCredential(t)
+	require.NoError(t, err)
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 
@@ -152,62 +195,24 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 	var cred azcore.Credential
 	accountName := "fakestorageaccount"
-	if recording.InPlayback() {
-		cred = NewFakeCredential(accountName, "fakeAccountKey")
-	} else {
-		accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-		if !ok {
-			accountName = "fakestorageaccount"
-		}
 
-		err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-		require.NoError(t, err)
-
-		cred, err = azidentity.NewDefaultAzureCredential(nil)
-		require.NoError(t, err)
-	}
-
-	// accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-
-	// err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-	// require.NoError(t, err)
+	cred, err := getAADCredential(t)
+	require.NoError(t, err)
 
 	serviceURL := storageURI(accountName, "core.windows.net")
-	// cred, err := azidentity.NewDefaultAzureCredential(nil)
-	// require.NoError(t, err)
+
 	return createTableServiceClientForRecording(t, serviceURL, cred)
 }
 
 func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
 	var cred azcore.Credential
 	accountName := "fakestorageaccount"
-	if recording.InPlayback() {
-		cred = NewFakeCredential(accountName, "fakeAccountKey")
-	} else {
-		accountName, ok := os.LookupEnv("TABLES_COSMOS_ACCOUNT_NAME")
-		if !ok {
-			accountName = "fakecosmosaccount"
-		}
-		accountKey, ok := os.LookupEnv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
-		if !ok {
-			t.Log("COSMOS KEY")
-			accountKey = "fakekey"
-		}
 
-		err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-		require.NoError(t, err)
-		cred, err = NewSharedKeyCredential(accountName, accountKey)
-		require.NoError(t, err)
-	}
-	// accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
-	// accountKey := recording.GetEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakekey")
-
-	// err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-	// require.NoError(t, err)
+	cred, err := getSharedKeyCredential(t)
+	require.NoError(t, err)
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
-	// cred, err := createSharedKey(accountName, accountKey)
-	// require.NoError(t, err)
+
 	return createTableServiceClientForRecording(t, serviceURL, cred)
 }
 
@@ -222,7 +227,7 @@ func clearAllTables(service *TableServiceClient) error {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 		for _, v := range resp.TableQueryResponse.Value {
-			_, err := service.DeleteTable(ctx, *v.TableName)
+			_, err := service.DeleteTable(ctx, *v.TableName, nil)
 			if err != nil {
 				return err
 			}
@@ -230,73 +235,3 @@ func clearAllTables(service *TableServiceClient) error {
 	}
 	return pager.Err()
 }
-
-func createAADCredential() (azcore.Credential, error) {
-	if recording.GetRecordMode() == recording.ModeRecording {
-		return azidentity.NewDefaultAzureCredential(nil)
-	}
-	return NewFakeCredential("accountName", "accountKey"), nil
-}
-
-func createSharedKey(accountName, accountKey string) (azcore.Credential, error) {
-	if recording.GetRecordMode() == recording.ModeRecording {
-		return NewSharedKeyCredential(accountName, accountKey)
-	}
-
-	return NewFakeCredential(accountName, accountKey), nil
-}
-
-type FakeCredential struct {
-	accountName string
-	accountKey  string
-}
-
-func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{
-		accountName: accountName,
-		accountKey:  accountKey,
-	}
-}
-
-func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
-		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
-		return req.Next()
-	})
-}
-
-/*
-func TestMain(m *testing.M) {
-	// Start the test proxy
-	cmd := exec.Command("test-proxy", "--storage-location", "./recordings/")
-
-	go func() {
-		stdout, err := cmd.StdoutPipe()
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = cmd.Start()
-		if err != nil {
-			fmt.Println("Error running the test proxy")
-			panic(err)
-		}
-		fmt.Println("Running test-proxy in the background")
-
-		readBytes := make([]byte, 512)
-		_, err = stdout.Read(readBytes)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Println("ReadBytes: ", string(readBytes))
-	}()
-
-	exitCode := m.Run()
-	os.Exit(exitCode)
-	err := cmd.Process.Kill()
-	if err != nil {
-		log.Fatal("failed to kill the process: ", err)
-	}
-}
-*/

@@ -33,7 +33,7 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 			errors.As(err, &svcErr)
 			require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
 
-			_, err = service.DeleteTable(context.Background(), "tableName")
+			_, err = service.DeleteTable(context.Background(), "tableName", nil)
 			require.NoError(t, err)
 		})
 	}
@@ -49,7 +49,7 @@ func TestCreateTableFromService(t *testing.T) {
 
 			resp, err := service.CreateTable(ctx, tableName)
 			deleteTable := func() {
-				_, err := service.DeleteTable(ctx, tableName)
+				_, err := service.DeleteTable(ctx, tableName, nil)
 				if err != nil {
 					fmt.Printf("Error cleaning up test. %v\n", err.Error())
 				}
@@ -148,7 +148,7 @@ func TestListTables(t *testing.T) {
 
 			deleteTable := func() {
 				for i := 0; i < 5; i++ {
-					_, err := service.DeleteTable(ctx, fmt.Sprintf("%v%v", tableName, i))
+					_, err := service.DeleteTable(ctx, fmt.Sprintf("%v%v", tableName, i), nil)
 					if err != nil {
 						fmt.Printf("Error cleaning up test. %v\n", err.Error())
 					}
@@ -165,7 +165,7 @@ func TestGetStatistics(t *testing.T) {
 	t.Skip()
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
-	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
 	fmt.Println(serviceURL)
 	service, err := createTableServiceClientForRecording(t, serviceURL, cred)

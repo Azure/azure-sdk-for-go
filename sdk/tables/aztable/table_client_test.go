@@ -80,7 +80,6 @@ func TestAddComplexEntity(t *testing.T) {
 			var svcErr *runtime.ResponseError
 			errors.As(err, &svcErr)
 			require.Nilf(t, err, getStringFromBody(svcErr))
-
 		})
 	}
 }
@@ -135,7 +134,7 @@ func TestMergeEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 			require.NoError(err)
 
-			_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, Merge)
+			_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, MergeEntity)
 			require.Nil(updateErr)
 
 			var qResp TableEntityQueryByteResponseResponse
@@ -169,7 +168,7 @@ func TestUpsertEntity(t *testing.T) {
 			entityToCreate := createSimpleEntity(1, "partition")
 			marshalled := marshalBasicEntity(entityToCreate, require)
 
-			_, err := client.UpsertEntity(ctx, *marshalled, Replace)
+			_, err := client.InsertEntity(ctx, *marshalled, ReplaceEntity)
 			require.NoError(err)
 
 			filter := "RowKey eq '1'"
@@ -190,7 +189,7 @@ func TestUpsertEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.UpsertEntity(ctx, reMarshalled, Replace)
+			_, err = client.InsertEntity(ctx, reMarshalled, (ReplaceEntity))
 			require.Nil(err)
 
 			// 5. Query for new entity

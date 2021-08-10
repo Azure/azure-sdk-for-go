@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 import (
 	"context"
@@ -12,8 +12,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/devigned/tab"
 
-	"github.com/Azure/azure-service-bus-go/atom"
-	"github.com/Azure/azure-service-bus-go/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/atom"
 )
 
 type (
@@ -341,7 +340,7 @@ func (qm *QueueManager) List(ctx context.Context, options ...ListQueuesOption) (
 		}
 	}
 
-	basePath := internal.ConstructAtomPath(`/$Resources/Queues`, listQueuesOptions.skip, listQueuesOptions.top)
+	basePath := ConstructAtomPath(`/$Resources/Queues`, listQueuesOptions.skip, listQueuesOptions.top)
 
 	res, err := qm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)

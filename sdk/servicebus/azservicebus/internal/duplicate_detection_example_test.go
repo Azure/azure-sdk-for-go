@@ -1,4 +1,4 @@
-package servicebus_test
+package internal_test
 
 import (
 	"context"
@@ -7,8 +7,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-
-	"github.com/Azure/azure-service-bus-go"
+	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_duplicateMessageDetection() {

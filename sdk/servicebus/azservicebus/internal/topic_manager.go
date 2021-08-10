@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 import (
 	"context"
@@ -11,8 +11,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/devigned/tab"
 
-	"github.com/Azure/azure-service-bus-go/atom"
-	"github.com/Azure/azure-service-bus-go/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/atom"
 )
 
 type (
@@ -163,7 +162,7 @@ func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) (
 		}
 	}
 
-	basePath := internal.ConstructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
+	basePath := ConstructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
 
 	res, err := tm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)

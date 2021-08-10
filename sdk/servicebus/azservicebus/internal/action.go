@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 type (
 	// SQLAction represents a SQL language-based action expression that is evaluated against a BrokeredMessage. A

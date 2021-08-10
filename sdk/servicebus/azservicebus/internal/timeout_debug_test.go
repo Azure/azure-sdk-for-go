@@ -1,6 +1,6 @@
 // +build debug
 
-package servicebus
+package internal
 
 import "time"
 

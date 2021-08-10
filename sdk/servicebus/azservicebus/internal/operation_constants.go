@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 const vendorPrefix = "com.microsoft:"
 

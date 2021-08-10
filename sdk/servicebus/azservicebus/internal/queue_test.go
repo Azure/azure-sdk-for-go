@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 //	MIT License
 //
@@ -36,8 +36,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Azure/azure-service-bus-go/atom"
-	"github.com/Azure/azure-service-bus-go/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/test"
 )
 
 const (

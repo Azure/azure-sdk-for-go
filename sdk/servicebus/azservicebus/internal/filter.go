@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 type (
 	// TrueFilter represents a always true sql expression which will accept all messages

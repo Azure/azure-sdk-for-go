@@ -1,4 +1,4 @@
-package servicebus
+package internal
 
 import (
 	"time"

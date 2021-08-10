@@ -36,7 +36,7 @@ func Test_buildCanonicalizedAuthHeader(t *testing.T) {
 	assert.Equal(t, emptyAuthHeader, "")
 
 	stringToSign := strings.ToLower(join(method, "\n", resourceType, "\n", resourceId, "\n", xmsDate, "\n", "", "\n"))
-	signature := cred.ComputeHMACSHA256(stringToSign)
+	signature := cred.computeHMACSHA256(stringToSign)
 	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
 
 	authHeader := cred.buildCanonicalizedAuthHeader(method, resourceType, resourceId, xmsDate, tokenType, version)

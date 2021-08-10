@@ -24,6 +24,7 @@ func newConnection(endpoint string, cred azcore.Credential, options *CosmosClien
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
+	policies = append(policies, options.getSDKInternalPolicies()...)
 	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"none"}}}))
 	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
 	return &clientConnection{endpoint: endpoint, pipeline: azcore.NewPipeline(options.HTTPClient, policies...)}

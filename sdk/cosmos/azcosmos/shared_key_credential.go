@@ -18,9 +18,9 @@ import (
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
-// storage account's name and either its primary or secondary key.
+// account's primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
-	c := SharedKeyCredential{accountName: accountName}
+	c := SharedKeyCredential{}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err
 	}
@@ -31,13 +31,7 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // It is immutable making it shareable and goroutine-safe.
 type SharedKeyCredential struct {
 	// Only the NewSharedKeyCredential method should set these; all other methods should treat them as read-only
-	accountName string
-	accountKey  atomic.Value // []byte
-}
-
-// AccountName returns the Storage account's name.
-func (c *SharedKeyCredential) AccountName() string {
-	return c.accountName
+	accountKey atomic.Value // []byte
 }
 
 // SetAccountKey replaces the existing account key with the specified account key.
@@ -51,7 +45,7 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(s string) (base64String string) {
+func (c *SharedKeyCredential) computeHMACSHA256(s string) (base64String string) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	h.Write([]byte(s))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
@@ -71,7 +65,7 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType,
 
 	// https://docs.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources#constructkeytoken
 	stringToSign := strings.ToLower(join(method, "\n", resourceType, "\n", resourceId, "\n", xmsDate, "\n", "", "\n"))
-	signature := c.ComputeHMACSHA256(stringToSign)
+	signature := c.computeHMACSHA256(stringToSign)
 
 	return url.QueryEscape(join("type=" + tokenType + "&ver=" + version + "&sig=" + signature))
 }

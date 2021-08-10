@@ -3,8 +3,7 @@
 
 package azcosmos
 
-// CosmomAccountCredential is a wrapper interface for SharedKeyCredential and UserDelegationCredential
+// CosmomAccountCredential is a wrapper interface for SharedKeyCredential
 type CosmosAccountCredential interface {
-	AccountName() string
-	ComputeHMACSHA256(message string) (base64String string)
+	computeHMACSHA256(message string) (base64String string)
 }

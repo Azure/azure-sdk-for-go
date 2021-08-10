@@ -83,21 +83,16 @@ func JoinPaths(root string, paths ...string) string {
 	}
 
 	root, qps := stripQueryParams(root)
-	fmt.Println("ROOT: ", root)
-	fmt.Println("QPS: ", qps)
 
 	for i := 0; i < len(paths); i++ {
 		root = strings.TrimRight(root, "/")
 		paths[i] = strings.TrimLeft(paths[i], "/")
-
 		root += "/" + paths[i]
 	}
 
 	if qps != "" {
-		fmt.Println("RETURN: ", strings.Join([]string{root, qps}, "?"))
 		return strings.Join([]string{root, qps}, "?")
 	}
-	fmt.Println("RETURN: ", root)
 	return root
 }
 

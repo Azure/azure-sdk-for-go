@@ -66,7 +66,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	defer deleteContainer(_assert, containerClient)
 
 	// set up abClient to test
-	abClient := containerClient.NewAppendBlobURL(generateBlobName(testName))
+	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 	resp, err := abClient.Create(context.Background(), nil)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
@@ -120,8 +120,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
@@ -214,8 +214,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
@@ -1038,7 +1038,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNegOne() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	appendPosition := int64(-1)
@@ -1056,7 +1056,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchZero() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored

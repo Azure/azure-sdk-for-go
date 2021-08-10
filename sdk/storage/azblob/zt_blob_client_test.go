@@ -2045,7 +2045,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////func (s *azblobTestSuite) TestBlobDeleteSnapshotsInclude() {
 ////	svcClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err := bbClient.CreateSnapshot(ctx, nil)
@@ -2069,7 +2069,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////func (s *azblobTestSuite) TestBlobDeleteSnapshotsOnly() {
 ////	svcClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err := bbClient.CreateSnapshot(ctx, nil)
@@ -3272,15 +3272,15 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 	premContainerClient := createNewContainer(_assert, premContainerName, premiumServiceClient)
 	defer deleteContainer(_assert, premContainerClient)
 
-	pageBlobClient := createNewPageBlob(_assert, blockBlobName, premContainerClient)
+	pbClient := createNewPageBlob(_assert, blockBlobName, premContainerClient)
 
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP4)
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP6)
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP10)
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP20)
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP30)
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP40)
-	setAndCheckBlobTier(_assert, pageBlobClient.BlobClient, AccessTierP50)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP4)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP6)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP10)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP20)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP30)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP40)
+	setAndCheckBlobTier(_assert, pbClient.BlobClient, AccessTierP50)
 }
 
 //
@@ -3291,7 +3291,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	}
 ////
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, _ := createNewPageBlob(c, containerClient)
 ////
 ////	resp, err := bbClient.GetProperties(ctx, nil)
@@ -3322,7 +3322,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	}
 ////
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err = bbClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
@@ -3365,7 +3365,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	}
 ////
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err = bbClient.SetTier(ctx, AccessTierType("garbage"), LeaseAccessConditions{})

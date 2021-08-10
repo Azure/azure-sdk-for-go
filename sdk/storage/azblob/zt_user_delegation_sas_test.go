@@ -21,12 +21,12 @@ package azblob
 //	currentTime := time.Now().UTC()
 //	time.Sleep(2 * time.Second)
 //
-//	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
+//	svcClient, err := getGenericServiceClientWithOAuth(c, "")
 //	_assert.Nil(err)
 //
 //	// Ensuring currTime <= time of sending delegating request request
 //	startTime, expiryTime := to.TimePtr(currentTime), to.TimePtr(currentTime.Add(48*time.Hour))
-//	userDelegationCred, err := serviceClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
+//	userDelegationCred, err := svcClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
 //	if err != nil {
 //		c.Fatal(err)
 //	}
@@ -75,7 +75,7 @@ package azblob
 //		c.Fatal(err)
 //	}
 //
-//	c.Assert(data.String(), chk.Equals, "hello world!")
+//	_assert(data.String(), chk.Equals, "hello world!")
 //	_, err = bblob.Delete(ctx, nil)
 //	if err != nil {
 //		c.Fatal(err)
@@ -85,10 +85,10 @@ package azblob
 //// Creates a blob, takes a snapshot, downloads from snapshot, and deletes from the snapshot w/ the token
 //func (s *azblobTestSuite) TestUserDelegationSASBlob() {
 //	// Accumulate prerequisite details to create storage etc.
-//	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
+//	svcClient, err := getGenericServiceClientWithOAuth(c, "")
 //	_assert.Nil(err)
 //
-//	containerClient, containerName := getContainerClient(serviceClient)
+//	containerClient, containerName := getContainerClient(svcClient)
 //	blobClient, blobName := getBlockBlobClient(c, containerClient)
 //	currentTime := time.Now().UTC()
 //	time.Sleep(time.Second)
@@ -102,9 +102,9 @@ package azblob
 //
 //	// Ensuring currTime <= time of sending delegating request request
 //	startTime, expiryTime := to.TimePtr(currentTime), to.TimePtr(currentTime.Add(48*time.Hour))
-//	cudk, err := serviceClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
+//	cudk, err := svcClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
 //	_assert.Nil(err)
-//	c.Assert(cudk, chk.NotNil)
+//	_assert(cudk, chk.NotNil)
 //
 //	// Prepare User Delegation SAS query
 //	bSAS, err := BlobSASSignatureValues{
@@ -121,7 +121,7 @@ package azblob
 //	bSASParts := NewBlobURLParts(blobClient.URL())
 //	bSASParts.SAS = bSAS
 //	blobURLWithSAS := bSASParts.URL()
-//	c.Assert(len(blobURLWithSAS), chk.Not(chk.Equals), 0)
+//	_assert(len(blobURLWithSAS), chk.Not(chk.Equals), 0)
 //
 //	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.AnonymousCredential(), nil)
 //	_assert.Nil(err)
@@ -141,7 +141,7 @@ package azblob
 //
 //	err = reader.Close()
 //	_assert.Nil(err)
-//	c.Assert(data, chk.Equals, downloadedData.String())
+//	_assert(data, chk.Equals, downloadedData.String())
 //
 //	// Delete the item using the User Delegation SAS URL; must succeed
 //	_, err = blobClientWithSAS.Delete(ctx, nil)

@@ -45,7 +45,7 @@ package azblob
 //	if err != nil {
 //		c.Fatal(err)
 //	}
-//	c.Assert(createSnapshot.Snapshot, chk.NotNil)
+//	_assert(createSnapshot.Snapshot, chk.NotNil)
 //
 //	//Format snapshot time
 //	snapTime, err := time.Parse(SnapshotTimeFormat, *createSnapshot.Snapshot)
@@ -91,7 +91,7 @@ package azblob
 //	downloadedData.ReadFrom(reader)
 //	reader.Close()
 //
-//	c.Assert(data, chk.Equals, downloadedData.String())
+//	_assert(data, chk.Equals, downloadedData.String())
 //
 //	//Try to delete snapshot -------------------------------------------------------------------------------------------
 //	_, err = sbUrl.Delete(ctx, nil)

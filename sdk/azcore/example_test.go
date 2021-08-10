@@ -49,13 +49,13 @@ func ExampleRequest_SetBody() {
 }
 
 // false positive by linter
-func ExampleLogger_SetClassifications() { //nolint:govet
+func ExampleSetClassifications() { //nolint:govet
 	// only log HTTP requests and responses
 	azcore.SetClassifications(azcore.LogRequest, azcore.LogResponse)
 }
 
 // false positive by linter
-func ExampleLogger_SetListener() { //nolint:govet
+func ExampleSetListener() { //nolint:govet
 	// a simple logger that writes to stdout
 	azcore.SetListener(func(cls azcore.LogClassification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)

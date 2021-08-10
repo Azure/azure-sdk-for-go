@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
-
 // TableSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type TableSASSignatureValues struct {
@@ -19,15 +17,14 @@ type TableSASSignatureValues struct {
 	Protocol          SASProtocol `param:"spr"` // See the SASProtocol* constants
 	StartTime         time.Time   `param:"st"`  // Not specified if IsZero
 	ExpiryTime        time.Time   `param:"se"`  // Not specified if IsZero
-	SnapshotTime      time.Time
-	Permissions       string  `param:"sp"` // Create by initializing a ContainerSASPermissions or TableSASPermissions and then call String()
-	IPRange           IPRange `param:"sip"`
-	Identifier        string  `param:"si"`
-	TableName         string  `param:"tn"`
-	StartPartitionKey string  `param:"spk"`
-	StartRowKey       string  `param:"srk"`
-	EndPartitionKey   string  `param:"epk"`
-	EndRowKey         string  `param:"erk"`
+	Permissions       string      `param:"sp"`  // Create by initializing a ContainerSASPermissions or TableSASPermissions and then call String()
+	IPRange           IPRange     `param:"sip"`
+	Identifier        string      `param:"si"`
+	TableName         string      `param:"tn"`
+	StartPartitionKey string      `param:"spk"`
+	StartRowKey       string      `param:"srk"`
+	EndPartitionKey   string      `param:"epk"`
+	EndRowKey         string      `param:"erk"`
 }
 
 // NewSASQueryParameters uses an account's StorageAccountCredential to sign this signature values to produce
@@ -35,12 +32,8 @@ type TableSASSignatureValues struct {
 // See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
 func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredential) (SASQueryParameters, error) {
 	resource := ""
-	// if credential == nil {
-	// 	return SASQueryParameters{}, fmt.Errorf("cannot sign SAS query without StorageAccountCredential")
-	// }
 
 	if v.Version != "" {
-		// resource = "bv"
 		//Make sure the permission characters are in the correct order
 		perms := &TableSASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
@@ -55,7 +48,6 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 		}
 		v.Permissions = perms.String()
 	} else {
-		// resource = "t"
 		// Make sure the permission characters are in the correct order
 		perms := &TableSASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
@@ -66,8 +58,7 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 	if v.Version == "" {
 		v.Version = SASVersion
 	}
-	startTime, expiryTime, snapshotTime := FormatTimesForSASSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
-	_ = snapshotTime
+	startTime, expiryTime := FormatTimesForSASSigning(v.StartTime, v.ExpiryTime)
 
 	signedIdentifier := v.Identifier
 
@@ -81,7 +72,7 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 		ipRange:     v.IPRange,
 		tableName:   v.TableName,
 
-		// Container/Blob-specific SAS parameters
+		// Table SAS parameters
 		resource:   resource,
 		identifier: v.Identifier,
 	}

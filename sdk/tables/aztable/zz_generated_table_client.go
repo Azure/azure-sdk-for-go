@@ -429,7 +429,6 @@ func (client *tableClient) insertEntityCreateRequest(ctx context.Context, table 
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.TableEntityProperties != nil {
 		return req, req.MarshalAsJSON(tableInsertEntityOptions.TableEntityProperties)
 	}
-	fmt.Println(req.URL.String())
 	return req, nil
 }
 

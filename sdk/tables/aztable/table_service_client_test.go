@@ -167,7 +167,6 @@ func TestGetStatistics(t *testing.T) {
 	require.NoError(t, err)
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
-	fmt.Println(serviceURL)
 	service, err := createTableServiceClientForRecording(t, serviceURL, cred)
 	require.NoError(t, err)
 

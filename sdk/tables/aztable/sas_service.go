@@ -87,7 +87,6 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 	}
 
 	canonicalName := "/" + "table" + "/" + credential.AccountName() + "/" + v.TableName
-	fmt.Println("CANONICAL NAME ", canonicalName)
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
@@ -106,8 +105,6 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 	},
 		"\n",
 	)
-
-	fmt.Println("String to sign\n", stringToSign, "END")
 
 	signature, err := credential.ComputeHMACSHA256(stringToSign)
 	p.signature = signature

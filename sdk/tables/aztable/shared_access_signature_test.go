@@ -18,7 +18,6 @@ import (
 
 func TestSASServiceClient(t *testing.T) {
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
-	fmt.Println("ACCOUNT NAME: ", accountName)
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -55,10 +54,8 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 
 	queryParams := accountSAS.Encode()
-	fmt.Println(queryParams)
 
 	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
-	fmt.Println(sasUrl)
 
 	err = recording.StartRecording(t, nil)
 	require.NoError(t, err)
@@ -80,7 +77,6 @@ func TestSASServiceClient(t *testing.T) {
 
 func TestSASTableClient(t *testing.T) {
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
-	fmt.Println("ACCOUNT NAME: ", accountName)
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -112,10 +108,8 @@ func TestSASTableClient(t *testing.T) {
 	require.NoError(t, err)
 
 	queryParams := accountSAS.Encode()
-	fmt.Println(queryParams)
 
 	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
-	fmt.Println(sasUrl)
 
 	err = recording.StartRecording(t, nil)
 	require.NoError(t, err)

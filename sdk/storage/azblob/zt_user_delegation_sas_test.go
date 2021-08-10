@@ -28,7 +28,7 @@ package azblob
 //	startTime, expiryTime := to.TimePtr(currentTime), to.TimePtr(currentTime.Add(48*time.Hour))
 //	userDelegationCred, err := svcClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	cSAS, err := BlobSASSignatureValues{
@@ -46,7 +46,7 @@ package azblob
 //	_, err = containerClient.Create(ctx, nil)
 //	defer containerClient.Delete(ctx, nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	// Craft a container URL w/ container UDK SAS
@@ -57,7 +57,7 @@ package azblob
 //	bblob := cSASURL.NewBlockBlobClient("test")
 //	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	resp, err := bblob.Download(ctx, nil)
@@ -68,17 +68,17 @@ package azblob
 //	}
 //	_, err = data.ReadFrom(body)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //	err = body.Close()
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	_assert(data.String(), chk.Equals, "hello world!")
 //	_, err = bblob.Delete(ctx, nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //}
 //
@@ -97,7 +97,7 @@ package azblob
 //	_, err = containerClient.Create(ctx, nil)
 //	defer containerClient.Delete(ctx, nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	// Ensuring currTime <= time of sending delegating request request

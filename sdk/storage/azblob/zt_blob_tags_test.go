@@ -613,7 +613,7 @@ func (s *azblobTestSuite) TestListBlobReturnsTags() {
 //	accountName, accountKey := accountInfo()
 //	credential, err := NewSharedKeyCredential(accountName, accountKey)
 //	if err != nil {
-//		c.Fail()
+//		s.T().Fail()
 //	}
 //
 //	sasQueryParams, err := AccountSASSignatureValues{
@@ -637,13 +637,13 @@ func (s *azblobTestSuite) TestListBlobReturnsTags() {
 //	_, err = containerClient.Create(ctx, Metadata{}, PublicAccessNone)
 //	defer containerClient.Delete(ctx, ContainerAccessConditions{})
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	blobClient := containerClient.NewBlockBlobURL("temp")
 //	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	if err != nil {
-//		c.Fail()
+//		s.T().Fail()
 //	}
 //
 //	blobTagsMap := BlobTagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}

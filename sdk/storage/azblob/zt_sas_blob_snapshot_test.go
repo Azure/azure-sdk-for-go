@@ -22,7 +22,7 @@ package azblob
 //	_, err := containerClient.Create(ctx, nil)
 //	defer containerClient.Delete(ctx, nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	//Create file in container, download from snapshot to test. --------------------------------------------------------
@@ -37,20 +37,20 @@ package azblob
 //	}
 //	_, err = blobClient.Upload(ctx, strings.NewReader(data), &uploadBlockBlobOptions)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	//Create a snapshot & URL
 //	createSnapshot, err := blobClient.CreateSnapshot(ctx, nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //	_assert(createSnapshot.Snapshot, chk.NotNil)
 //
 //	//Format snapshot time
 //	snapTime, err := time.Parse(SnapshotTimeFormat, *createSnapshot.Snapshot)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	//Get credentials & current time
@@ -71,7 +71,7 @@ package azblob
 //		Protocol:      SASProtocolHTTPS,
 //	}.NewSASQueryParameters(credential)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //	time.Sleep(time.Second * 2)
 //
@@ -83,7 +83,7 @@ package azblob
 //	//Test the snapshot
 //	downloadResponse, err := sbUrl.Download(ctx, nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	downloadedData := &bytes.Buffer{}
@@ -96,7 +96,7 @@ package azblob
 //	//Try to delete snapshot -------------------------------------------------------------------------------------------
 //	_, err = sbUrl.Delete(ctx, nil)
 //	if err != nil { //This shouldn't fail.
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	//Create a normal blob and attempt to use the snapshot SAS against it (assuming failure) ---------------------------
@@ -110,7 +110,7 @@ package azblob
 //	fsbUrl := containerClient.NewBlockBlobClient("failsnap")
 //	_, err = fsbUrl.Upload(ctx, strings.NewReader(data), &uploadBlockBlobOptions1)
 //	if err != nil {
-//		c.Fatal(err) //should succeed to create the blob via normal auth means
+//		s.T().Fatal(err) //should succeed to create the blob via normal auth means
 //	}
 //
 //	fsbUrlParts := NewBlobURLParts(fsbUrl.URL())

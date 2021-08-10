@@ -1114,7 +1114,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////	serviceSASValues := BlobSASSignatureValues{Identifier: "0000", ContainerName: containerName}
 ////	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
 ////	if err != nil {
-////		c.Fatal(err)
+////		s.T().Fatal(err)
 ////	}
 ////
 ////	sasURL := svcClient.URL()

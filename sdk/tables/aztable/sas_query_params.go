@@ -78,8 +78,6 @@ func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) 
 // You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
-//
-// This type defines the components used by all Azure Storage resources (Containers, Blobs, Files, & Queues).
 type SASQueryParameters struct {
 	// All members are immutable or values so copies of this struct are goroutine-safe.
 	version       string      `param:"sv"`
@@ -239,7 +237,7 @@ func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 	return p
 }
 
-// AddToValues adds the SAS components to the specified query parameters map.
+// addToValues adds the SAS components to the specified query parameters map.
 func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	if p.version != "" {
 		v.Add("sv", p.version)

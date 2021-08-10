@@ -138,7 +138,7 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 	case ReplaceEntity:
 		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
-	return nil, errors.New("Invalid EntityUpdateMode")
+	return nil, errors.New("invalid EntityUpdateMode")
 }
 
 // InsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity is
@@ -164,7 +164,7 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 	case ReplaceEntity:
 		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
-	return nil, errors.New("Invalid EntityUpdateMode")
+	return nil, errors.New("invalid EntityUpdateMode")
 }
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature

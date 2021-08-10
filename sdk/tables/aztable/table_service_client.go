@@ -167,6 +167,9 @@ func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes
 	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
 }
 
+// GetTableSASToken is a convenience method for generating a SAS token for a specific table.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
 func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
 	return TableSASSignatureValues{
 		TableName:         tableName,
@@ -178,6 +181,13 @@ func (t TableServiceClient) GetTableSASToken(tableName string, permissions Table
 		EndPartitionKey:   permissions.EndPartitionKey,
 		EndRowKey:         permissions.EndRowKey,
 	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
+}
+
+// CanGetSASToken returns true if the TableServiceClient was created with a SharedKeyCredential.
+// This method can be used to determine if a TableServiceClient is capable of creating a Table SAS or Account SAS
+func (t TableServiceClient) CanGetSASToken() bool {
+	_, ok := t.cred.(*SharedKeyCredential)
+	return ok
 }
 
 func isCosmosEndpoint(url string) bool {

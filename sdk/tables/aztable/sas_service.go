@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// TableSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
+// TableSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Table instance.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type TableSASSignatureValues struct {
 	Version           string      `param:"sv"`  // If not specified, this defaults to SASVersion
@@ -27,9 +27,8 @@ type TableSASSignatureValues struct {
 	EndRowKey         string      `param:"erk"`
 }
 
-// NewSASQueryParameters uses an account's StorageAccountCredential to sign this signature values to produce
+// NewSASQueryParameters uses an account's SharedKeyCredential to sign this signature values to produce
 // the proper SAS query parameters.
-// See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
 func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredential) (SASQueryParameters, error) {
 	resource := ""
 
@@ -102,7 +101,7 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 	return p, err
 }
 
-// The TableSASPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
+// The TableSASPermissions type simplifies creating the permissions string for an Azure Table.
 // Initialize an instance of this type and then call its String method to set TableSASSignatureValues's Permissions field.
 type TableSASPermissions struct {
 	Read              bool

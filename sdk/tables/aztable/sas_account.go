@@ -26,7 +26,7 @@ type AccountSASSignatureValues struct {
 	ResourceTypes string      `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
-// NewSASQueryParameters uses an account's shared key credential to sign this signature values to produce
+// NewSASQueryParameters uses an account's SharedKeyCredential to sign this signature values to produce
 // the proper SAS query parameters.
 func (v AccountSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
@@ -84,7 +84,7 @@ func (v AccountSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *Sh
 // The AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountSASPermissions struct {
-	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process bool
+	Read, Write, Delete, List, Add, Create, Update, Process bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
@@ -99,9 +99,6 @@ func (p AccountSASPermissions) String() string {
 	}
 	if p.Delete {
 		buffer.WriteRune('d')
-	}
-	if p.DeletePreviousVersion {
-		buffer.WriteRune('x')
 	}
 	if p.List {
 		buffer.WriteRune('l')
@@ -151,51 +148,6 @@ func (p *AccountSASPermissions) Parse(s string) error {
 	return nil
 }
 
-// The AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Services field.
-type AccountSASServices struct {
-	Blob, Queue, File, Table bool
-}
-
-// String produces the SAS services string for an Azure Storage account.
-// Call this method to set AccountSASSignatureValues's Services field.
-func (s AccountSASServices) String() string {
-	var buffer bytes.Buffer
-	if s.Blob {
-		buffer.WriteRune('b')
-	}
-	if s.Queue {
-		buffer.WriteRune('q')
-	}
-	if s.File {
-		buffer.WriteRune('f')
-	}
-	if s.Table {
-		buffer.WriteRune('t')
-	}
-	return buffer.String()
-}
-
-// Parse initializes the AccountSASServices' fields from a string.
-func (a *AccountSASServices) Parse(s string) error {
-	*a = AccountSASServices{} // Clear out the flags
-	for _, r := range s {
-		switch r {
-		case 'b':
-			a.Blob = true
-		case 'q':
-			a.Queue = true
-		case 'f':
-			a.File = true
-		case 't':
-			a.Table = true
-		default:
-			return fmt.Errorf("Invalid service character: '%v'", r)
-		}
-	}
-	return nil
-}
-
 // The AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type AccountSASResourceTypes struct {
@@ -230,7 +182,7 @@ func (rt *AccountSASResourceTypes) Parse(s string) error {
 		case 'o':
 			rt.Object = true
 		default:
-			return fmt.Errorf("Invalid resource type: '%v'", r)
+			return fmt.Errorf("invalid resource type: '%v'", r)
 		}
 	}
 	return nil

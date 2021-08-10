@@ -35,8 +35,7 @@ steps:
         foreach ($td in $testDirs) {
           pushd $td
           Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td"
-          go test -run "^Test" -v -coverprofile coverage.txt . > outfile.txt
-          cat outfile.txt
+          go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cat outfile.txt | go-junit-report > report.xml
           # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report

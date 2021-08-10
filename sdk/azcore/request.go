@@ -66,24 +66,39 @@ func (ov opValues) get(value interface{}) bool {
 	return ok
 }
 
+func stripQueryParams(path string) (string, string) {
+	if strings.Contains(path, "?") {
+		splitPath := strings.Split(path, "?")
+		return splitPath[0], splitPath[1]
+	}
+	return path, ""
+}
+
 // JoinPaths concatenates multiple URL path segments into one path,
-// inserting path separation characters as required.
-func JoinPaths(paths ...string) string {
+// inserting path separation characters as required. JoinPaths will preserve
+// query parameters in the root path
+func JoinPaths(root string, paths ...string) string {
 	if len(paths) == 0 {
 		return ""
 	}
-	path := paths[0]
-	for i := 1; i < len(paths); i++ {
-		if path[len(path)-1] == '/' && paths[i][0] == '/' {
-			// strip off trailing '/' to avoid doubling up
-			path = path[:len(path)-1]
-		} else if path[len(path)-1] != '/' && paths[i][0] != '/' {
-			// add a trailing '/'
-			path = path + "/"
-		}
-		path += paths[i]
+
+	root, qps := stripQueryParams(root)
+	fmt.Println("ROOT: ", root)
+	fmt.Println("QPS: ", qps)
+
+	for i := 0; i < len(paths); i++ {
+		root = strings.TrimRight(root, "/")
+		paths[i] = strings.TrimLeft(paths[i], "/")
+
+		root += "/" + paths[i]
 	}
-	return path
+
+	if qps != "" {
+		fmt.Println("RETURN: ", strings.Join([]string{root, qps}, "?"))
+		return strings.Join([]string{root, qps}, "?")
+	}
+	fmt.Println("RETURN: ", root)
+	return root
 }
 
 // NewRequest creates a new Request with the specified input.

@@ -18,6 +18,7 @@ import (
 
 func TestCreateSAS(t *testing.T) {
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	fmt.Println("ACCOUNT NAME: ", accountName)
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)

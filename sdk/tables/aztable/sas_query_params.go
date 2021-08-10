@@ -108,6 +108,10 @@ type SASQueryParameters struct {
 	signedService      string      `param:"sks"`
 	signedVersion      string      `param:"skv"`
 	tableName          string      `param:"tn"`
+	startPk            string      `param:"spk"`
+	startRk            string      `param:"srk"`
+	endPk              string      `param:"epk"`
+	endRk              string      `param:"erk"`
 
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
@@ -199,6 +203,22 @@ func (p *SASQueryParameters) ContentLanguage() string {
 
 func (p *SASQueryParameters) ContentType() string {
 	return p.contentType
+}
+
+func (p *SASQueryParameters) StartPartitionKey() string {
+	return p.startPk
+}
+
+func (p *SASQueryParameters) StartRowKey() string {
+	return p.startRk
+}
+
+func (p *SASQueryParameters) EndPartitionKey() string {
+	return p.endPk
+}
+
+func (p *SASQueryParameters) EndRowKey() string {
+	return p.endRk
 }
 
 // IPRange represents a SAS IP range's start IP and (optionally) end IP.
@@ -351,6 +371,18 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	}
 	if p.tableName != "" {
 		v.Add("tn", p.tableName)
+	}
+	if p.startPk != "" {
+		v.Add("spk", p.startPk)
+	}
+	if p.endPk != "" {
+		v.Add("epk", p.endPk)
+	}
+	if p.startRk != "" {
+		v.Add("srk", p.startRk)
+	}
+	if p.endRk != "" {
+		v.Add("erk", p.endRk)
 	}
 	return v
 }

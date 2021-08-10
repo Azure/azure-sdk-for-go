@@ -169,10 +169,14 @@ func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes
 
 func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
 	return TableSASSignatureValues{
-		TableName:   tableName,
-		Permissions: permissions.String(),
-		StartTime:   start,
-		ExpiryTime:  expiry,
+		TableName:         tableName,
+		Permissions:       permissions.String(),
+		StartTime:         start,
+		ExpiryTime:        expiry,
+		StartPartitionKey: permissions.StartPartitionKey,
+		StartRowKey:       permissions.StartRowKey,
+		EndPartitionKey:   permissions.EndPartitionKey,
+		EndRowKey:         permissions.EndRowKey,
 	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
 }
 

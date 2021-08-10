@@ -58,7 +58,7 @@ steps:
           Write-Host "##[command]Deleting empty coverage file"
           rm coverage.txt
         }
-        $(Build.SourcesDirectory)/sdk/tables/aztable/start-server.ps1 stop
+        $(Build.SourcesDirectory)/eng/scripts/start-server.ps1 stop
       }
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'

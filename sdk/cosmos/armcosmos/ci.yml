@@ -2,14 +2,14 @@
 trigger:
   paths:
     include:
-    - sdk/containerservice/armcontainerservice/
+    - sdk/cosmos/armcosmos/
 
 pr:
   paths:
     include:
-    - sdk/containerservice/armcontainerservice/
+    - sdk/cosmos/armcosmos/
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'containerservice/armcontainerservice'
+    ServiceDirectory: 'cosmos/armcosmos'

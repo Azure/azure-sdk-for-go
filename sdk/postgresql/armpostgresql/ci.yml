@@ -2,14 +2,14 @@
 trigger:
   paths:
     include:
-    - sdk/containerservice/armcontainerservice/
+    - sdk/postgresql/armpostgresql/
 
 pr:
   paths:
     include:
-    - sdk/containerservice/armcontainerservice/
+    - sdk/postgresql/armpostgresql/
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'containerservice/armcontainerservice'
+    ServiceDirectory: 'postgresql/armpostgresql'

@@ -16,8 +16,8 @@ import (
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel, returnRecognitionModel *bool, detectionModel face.DetectionModel) (result face.ListDetectedFace, err error)
-	DetectWithURL(ctx context.Context, imageURL face.ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel, returnRecognitionModel *bool, detectionModel face.DetectionModel) (result face.ListDetectedFace, err error)
+	DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel, returnRecognitionModel *bool, detectionModel face.DetectionModel, faceIDTimeToLive *int32) (result face.ListDetectedFace, err error)
+	DetectWithURL(ctx context.Context, imageURL face.ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel, returnRecognitionModel *bool, detectionModel face.DetectionModel, faceIDTimeToLive *int32) (result face.ListDetectedFace, err error)
 	FindSimilar(ctx context.Context, body face.FindSimilarRequest) (result face.ListSimilarFace, err error)
 	Group(ctx context.Context, body face.GroupRequest) (result face.GroupResult, err error)
 	Identify(ctx context.Context, body face.IdentifyRequest) (result face.ListIdentifyResult, err error)
@@ -109,7 +109,7 @@ type LargeFaceListClientAPI interface {
 	Get(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (result face.LargeFaceList, err error)
 	GetFace(ctx context.Context, largeFaceListID string, persistedFaceID uuid.UUID) (result face.PersistedFace, err error)
 	GetTrainingStatus(ctx context.Context, largeFaceListID string) (result face.TrainingStatus, err error)
-	List(ctx context.Context, returnRecognitionModel *bool) (result face.ListLargeFaceList, err error)
+	List(ctx context.Context, returnRecognitionModel *bool, start string, top *int32) (result face.ListLargeFaceList, err error)
 	ListFaces(ctx context.Context, largeFaceListID string, start string, top *int32) (result face.ListPersistedFace, err error)
 	Train(ctx context.Context, largeFaceListID string) (result autorest.Response, err error)
 	Update(ctx context.Context, largeFaceListID string, body face.NameAndUserDataContract) (result autorest.Response, err error)

@@ -17,7 +17,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/
 
 // Accessory accessory item and corresponding confidence level.
 type Accessory struct {
-	// Type - Type of an accessory. Possible values include: 'HeadWear', 'Glasses', 'Mask'
+	// Type - Type of an accessory. Possible values include: 'AccessoryTypeHeadWear', 'AccessoryTypeGlasses', 'AccessoryTypeMask'
 	Type AccessoryType `json:"type,omitempty"`
 	// Confidence - Confidence level of an accessory
 	Confidence *float64 `json:"confidence,omitempty"`
@@ -54,7 +54,7 @@ type Attributes struct {
 	Emotion *Emotion `json:"emotion,omitempty"`
 	// Hair - Properties describing hair attributes.
 	Hair *Hair `json:"hair,omitempty"`
-	// Makeup - Properties describing present makeups on a given face.
+	// Makeup - Properties describing the presence of makeup on a given face.
 	Makeup *Makeup `json:"makeup,omitempty"`
 	// Occlusion - Properties describing occlusions on a given face.
 	Occlusion *Occlusion `json:"occlusion,omitempty"`
@@ -66,6 +66,8 @@ type Attributes struct {
 	Exposure *Exposure `json:"exposure,omitempty"`
 	// Noise - Properties describing noise level of the image.
 	Noise *Noise `json:"noise,omitempty"`
+	// Mask - Properties describing the presence of a mask on a given face.
+	Mask *Mask `json:"mask,omitempty"`
 }
 
 // Blur properties describing any presence of blur within the image.
@@ -87,7 +89,7 @@ type Coordinate struct {
 // DetectedFace detected Face object.
 type DetectedFace struct {
 	FaceID *uuid.UUID `json:"faceId,omitempty"`
-	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03', 'Recognition04'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	FaceRectangle    *Rectangle       `json:"faceRectangle,omitempty"`
 	FaceLandmarks    *Landmarks       `json:"faceLandmarks,omitempty"`
@@ -129,13 +131,13 @@ type FacialHair struct {
 
 // FindSimilarRequest request body for find similar operation.
 type FindSimilarRequest struct {
-	// FaceID - FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+	// FaceID - FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire at the time specified by faceIdTimeToLive after the detection call
 	FaceID *uuid.UUID `json:"faceId,omitempty"`
 	// FaceListID - An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	FaceListID *string `json:"faceListId,omitempty"`
 	// LargeFaceListID - An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	LargeFaceListID *string `json:"largeFaceListId,omitempty"`
-	// FaceIds - An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+	// FaceIds - An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire at the time specified by faceIdTimeToLive after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	FaceIds *[]uuid.UUID `json:"faceIds,omitempty"`
 	// MaxNumOfCandidatesReturned - The number of top similar faces returned. The valid range is [1, 1000].
 	MaxNumOfCandidatesReturned *int32 `json:"maxNumOfCandidatesReturned,omitempty"`
@@ -199,7 +201,7 @@ type IdentifyRequest struct {
 	PersonGroupID *string `json:"personGroupId,omitempty"`
 	// LargePersonGroupID - LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
 	LargePersonGroupID *string `json:"largePersonGroupId,omitempty"`
-	// MaxNumOfCandidatesReturned - The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
+	// MaxNumOfCandidatesReturned - The range of maxNumOfCandidatesReturned is between 1 and 100 (default is 1).
 	MaxNumOfCandidatesReturned *int32 `json:"maxNumOfCandidatesReturned,omitempty"`
 	// ConfidenceThreshold - Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
 	ConfidenceThreshold *float64 `json:"confidenceThreshold,omitempty"`
@@ -256,7 +258,7 @@ type LargeFaceList struct {
 	autorest.Response `json:"-"`
 	// LargeFaceListID - LargeFaceListId of the target large face list.
 	LargeFaceListID *string `json:"largeFaceListId,omitempty"`
-	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03', 'Recognition04'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
@@ -269,7 +271,7 @@ type LargePersonGroup struct {
 	autorest.Response `json:"-"`
 	// LargePersonGroupID - LargePersonGroupId of the target large person groups
 	LargePersonGroupID *string `json:"largePersonGroupId,omitempty"`
-	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03', 'Recognition04'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
@@ -284,7 +286,7 @@ type List struct {
 	FaceListID *string `json:"faceListId,omitempty"`
 	// PersistedFaces - Persisted faces within the face list.
 	PersistedFaces *[]PersistedFace `json:"persistedFaces,omitempty"`
-	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03', 'Recognition04'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
@@ -352,7 +354,7 @@ type ListSnapshot struct {
 	Value             *[]Snapshot `json:"value,omitempty"`
 }
 
-// Makeup properties describing present makeups on a given face.
+// Makeup properties describing the presence of makeup on a given face.
 type Makeup struct {
 	// EyeMakeup - A boolean value describing whether eye makeup is present on a face.
 	EyeMakeup *bool `json:"eyeMakeup,omitempty"`
@@ -360,10 +362,18 @@ type Makeup struct {
 	LipMakeup *bool `json:"lipMakeup,omitempty"`
 }
 
+// Mask properties describing the presence of a mask on a given face.
+type Mask struct {
+	// Type - Mask type if any of the face. Possible values include: 'NoMask', 'FaceMask', 'OtherMaskOrOcclusion', 'Uncertain'
+	Type MaskType `json:"type,omitempty"`
+	// NoseAndMouthCovered - A boolean value indicating whether nose and mouth are covered.
+	NoseAndMouthCovered *bool `json:"noseAndMouthCovered,omitempty"`
+}
+
 // MetaDataContract a combination of user defined name and user specified data and recognition model name
 // for largePersonGroup/personGroup, and largeFaceList/faceList.
 type MetaDataContract struct {
-	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03', 'Recognition04'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
@@ -386,6 +396,15 @@ type Noise struct {
 	NoiseLevel NoiseLevel `json:"noiseLevel,omitempty"`
 	// Value - A number indicating level of noise level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is good exposure. [0.75, 1] is over exposure. [0, 0.3) is low noise level. [0.3, 0.7) is medium noise level. [0.7, 1] is high noise level.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// NonNullableNameAndNullableUserDataContract a combination of user defined name and user specified data
+// for the person, largePersonGroup/personGroup, and largeFaceList/faceList.
+type NonNullableNameAndNullableUserDataContract struct {
+	// Name - User defined name, maximum length is 128.
+	Name *string `json:"name,omitempty"`
+	// UserData - User specified data. Length should not exceed 16KB.
+	UserData *string `json:"userData,omitempty"`
 }
 
 // Occlusion properties describing occlusions on a given face.
@@ -417,7 +436,7 @@ type OperationStatus struct {
 // PersistedFace personFace object.
 type PersistedFace struct {
 	autorest.Response `json:"-"`
-	// PersistedFaceID - The persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in 24 hours after the detection call.
+	// PersistedFaceID - The persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in at the time specified by faceIdTimeToLive after the detection call.
 	PersistedFaceID *uuid.UUID `json:"persistedFaceId,omitempty"`
 	// UserData - User-provided data attached to the face. The size limit is 1KB.
 	UserData *string `json:"userData,omitempty"`
@@ -441,7 +460,7 @@ type PersonGroup struct {
 	autorest.Response `json:"-"`
 	// PersonGroupID - PersonGroupId of the target person group.
 	PersonGroupID *string `json:"personGroupId,omitempty"`
-	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03'
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02', 'Recognition03', 'Recognition04'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
@@ -463,7 +482,7 @@ type Rectangle struct {
 
 // SimilarFace response body for find similar face operation.
 type SimilarFace struct {
-	// FaceID - FaceId of candidate face when find by faceIds. faceId is created by Face - Detect and will expire 24 hours after the detection call
+	// FaceID - FaceId of candidate face when find by faceIds. faceId is created by Face - Detect and will expire at the time specified by faceIdTimeToLive after the detection call
 	FaceID *uuid.UUID `json:"faceId,omitempty"`
 	// PersistedFaceID - PersistedFaceId of candidate face when find by faceListId. persistedFaceId in face list is persisted and will not expire. As showed in below response
 	PersistedFaceID *uuid.UUID `json:"persistedFaceId,omitempty"`

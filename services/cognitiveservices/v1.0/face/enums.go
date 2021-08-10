@@ -10,17 +10,17 @@ package face
 type AccessoryType string
 
 const (
-	// Glasses ...
-	Glasses AccessoryType = "glasses"
-	// HeadWear ...
-	HeadWear AccessoryType = "headWear"
-	// Mask ...
-	Mask AccessoryType = "mask"
+	// AccessoryTypeGlasses ...
+	AccessoryTypeGlasses AccessoryType = "glasses"
+	// AccessoryTypeHeadWear ...
+	AccessoryTypeHeadWear AccessoryType = "headWear"
+	// AccessoryTypeMask ...
+	AccessoryTypeMask AccessoryType = "mask"
 )
 
 // PossibleAccessoryTypeValues returns an array of possible values for the AccessoryType const type.
 func PossibleAccessoryTypeValues() []AccessoryType {
-	return []AccessoryType{Glasses, HeadWear, Mask}
+	return []AccessoryType{AccessoryTypeGlasses, AccessoryTypeHeadWear, AccessoryTypeMask}
 }
 
 // AttributeType enumerates the values for attribute type.
@@ -49,6 +49,8 @@ const (
 	AttributeTypeHeadPose AttributeType = "headPose"
 	// AttributeTypeMakeup ...
 	AttributeTypeMakeup AttributeType = "makeup"
+	// AttributeTypeMask ...
+	AttributeTypeMask AttributeType = "mask"
 	// AttributeTypeNoise ...
 	AttributeTypeNoise AttributeType = "noise"
 	// AttributeTypeOcclusion ...
@@ -59,7 +61,7 @@ const (
 
 // PossibleAttributeTypeValues returns an array of possible values for the AttributeType const type.
 func PossibleAttributeTypeValues() []AttributeType {
-	return []AttributeType{AttributeTypeAccessories, AttributeTypeAge, AttributeTypeBlur, AttributeTypeEmotion, AttributeTypeExposure, AttributeTypeFacialHair, AttributeTypeGender, AttributeTypeGlasses, AttributeTypeHair, AttributeTypeHeadPose, AttributeTypeMakeup, AttributeTypeNoise, AttributeTypeOcclusion, AttributeTypeSmile}
+	return []AttributeType{AttributeTypeAccessories, AttributeTypeAge, AttributeTypeBlur, AttributeTypeEmotion, AttributeTypeExposure, AttributeTypeFacialHair, AttributeTypeGender, AttributeTypeGlasses, AttributeTypeHair, AttributeTypeHeadPose, AttributeTypeMakeup, AttributeTypeMask, AttributeTypeNoise, AttributeTypeOcclusion, AttributeTypeSmile}
 }
 
 // BlurLevel enumerates the values for blur level.
@@ -87,11 +89,13 @@ const (
 	Detection01 DetectionModel = "detection_01"
 	// Detection02 ...
 	Detection02 DetectionModel = "detection_02"
+	// Detection03 ...
+	Detection03 DetectionModel = "detection_03"
 )
 
 // PossibleDetectionModelValues returns an array of possible values for the DetectionModel const type.
 func PossibleDetectionModelValues() []DetectionModel {
-	return []DetectionModel{Detection01, Detection02}
+	return []DetectionModel{Detection01, Detection02, Detection03}
 }
 
 // ExposureLevel enumerates the values for exposure level.
@@ -187,6 +191,25 @@ func PossibleHairColorTypeValues() []HairColorType {
 	return []HairColorType{Black, Blond, Brown, Gray, Other, Red, Unknown, White}
 }
 
+// MaskType enumerates the values for mask type.
+type MaskType string
+
+const (
+	// FaceMask ...
+	FaceMask MaskType = "faceMask"
+	// NoMask ...
+	NoMask MaskType = "noMask"
+	// OtherMaskOrOcclusion ...
+	OtherMaskOrOcclusion MaskType = "otherMaskOrOcclusion"
+	// Uncertain ...
+	Uncertain MaskType = "uncertain"
+)
+
+// PossibleMaskTypeValues returns an array of possible values for the MaskType const type.
+func PossibleMaskTypeValues() []MaskType {
+	return []MaskType{FaceMask, NoMask, OtherMaskOrOcclusion, Uncertain}
+}
+
 // NoiseLevel enumerates the values for noise level.
 type NoiseLevel string
 
@@ -233,11 +256,13 @@ const (
 	Recognition02 RecognitionModel = "recognition_02"
 	// Recognition03 ...
 	Recognition03 RecognitionModel = "recognition_03"
+	// Recognition04 ...
+	Recognition04 RecognitionModel = "recognition_04"
 )
 
 // PossibleRecognitionModelValues returns an array of possible values for the RecognitionModel const type.
 func PossibleRecognitionModelValues() []RecognitionModel {
-	return []RecognitionModel{Recognition01, Recognition02, Recognition03}
+	return []RecognitionModel{Recognition01, Recognition02, Recognition03, Recognition04}
 }
 
 // SnapshotApplyMode enumerates the values for snapshot apply mode.

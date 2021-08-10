@@ -28,18 +28,6 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  # - pwsh: |
-  #     $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-  #     foreach ($md in $modDirs) {
-  #       pushd $md
-  #       Write-Host "##[command]Executing go vet ./... in $md"
-  #       go vet ./...
-  #     }
-  #   displayName: 'Vet'
-  #   workingDirectory: '${{parameters.GoWorkspace}}'
-  #   env:
-  #     GO111MODULE: 'on'
-
   - template: configure-proxy.yml
     parameters:
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
@@ -49,7 +37,7 @@ steps:
       foreach ($td in $testDirs) {
         pushd $td
 
-        $(Build.SourcesDirectory)/sdk/tables/aztable/start-server.ps1 start
+        $(Build.SourcesDirectory)/eng/scripts/start-server.ps1 start
 
         Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
         go test -run "^Test" -v -coverprofile coverage.txt . > temp.txt

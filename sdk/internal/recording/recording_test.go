@@ -59,6 +59,7 @@ func (s *recordingTests) TestStopDoesNotSaveVariablesWhenNoVariablesExist() {
 }
 
 func (s *recordingTests) TestRecordedVariables() {
+	s.T().Skipf("Skipping flaky test")
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
@@ -319,6 +320,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 }
 
 func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() {
+	s.T().Skipf("Skipping flaky test")
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()

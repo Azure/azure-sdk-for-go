@@ -78,41 +78,150 @@ All methods that perform I/O of any kind, sleep, or perform a significant amount
 
 ## Write Tests
 
-Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables.
+Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables. The HTTP traffic is intercepted by a custom [test-proxy](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy) in both the "recording" and "playback" case to either persist or read HTTP interactions from a file. There is one small step that needs to be added to you client creation to route traffic to this test proxy. All three of these modes are specified in the `AZURE_RECORD_MODE` environment variable:
+
+| Mode | Powershell Command |
+| ---- | ------------------ |
+| record | $ENV:AZURE_RECORD_MODE="record" |
+| playback | $ENV:AZURE_RECORD_MODE="playback" |
+| live-no-playback | $ENV:AZURE_RECORD_MODE="live-no-playback" |
+
+### Test Mode Options
+There are three options for test modes: "recording", "playback", and "live-no-playback" each with their own purpose.
+
+Recording mode is for testing against a live service and 'recording' the HTTP interactions in a JSON file for use later. This is helpful for developers because not every request will have to run through the service and makes your tests run much quicker. This also allows us to run our tests in public pipelines without fear of leaking secrets to our developer subscriptions.
+
+In playback mode the JSON file that the HTTP interactions are saved to is used in place of a real HTTP call. This is quicker and is used most often for quickly verifying you did not change the behavior of your library.
+
+In live-no-playback the tests run against the live service and no recordings are generated, this is most commonly done in our live pipelines that run nightly and (at a developers request) to verify PRs against a live service in addition to the normal check against recordings.
+
+### Routing Requests to the Proxy
+
+All clients should contain an options struct as the last parameter on the constructor. In this options struct you need to have a way to provide a custom HTTP transport object. In your tests, you will replace the default HTTP transport object with a custom one in the `internal/recording` library that takes care of all the routing for you. For example, here is that code snippet in the `aztable` package:
+
+```golang
+package aztable
+
+import (
+	...
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+)
+
+type recordingPolicy struct {
+	options recording.RecordingOptions
+}
+
+func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
+	if o == nil {
+		o = &recording.RecordingOptions{}
+	}
+	p := &recordingPolicy{options: *o}
+	p.options.Init()
+	return p
+}
+
+func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+	originalURLHost := req.URL.Host
+	req.URL.Scheme = "https"
+	req.URL.Host = p.options.Host
+	req.Host = p.options.Host
+
+	req.Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+	req.Header.Set(recording.ModeHeader, recording.GetRecordMode())
+	req.Header.Set(recording.IdHeader, recording.GetRecordingId())
+
+	return req.Next()
+}
+
+func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
+	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	client, err := recording.GetHTTPClient()
+	require.NoError(t, err)
+	options := &TableClientOptions{
+		PerCallOptions: []azcore.Policy{policy},
+		HTTPClient: client,
+	}
+	return NewTableClient(tableName, serviceURL, cred, options)
+}
+```
+
+Including this in a file for test helper methods will ensure that before each test the developer simply has to add
+```golang
+recording.StartRecording(t, nil)
+defer recording.StopRecording(t, nil)
+client, err := createTableClientForRecording(t, "myTableName", "myServiceUrl", myCredential)
+require.NoError(t, err)
+...
+<test stuff>
+```
+and nearly all of the test proxy interactions will be handled for them. In a later section ([scrubbing secrets](#scrubbing-secrets)) there is more information about making sure the recording files are free of secrets. The first two methods (`StartRecording` and `StopRecording`) tell the proxy when an individual test is starting and stopping to communicate when to start creating the recording file and when to persist it to disk.
+
+
+### Writing Tests
 
 A simple test for `aztables` is shown below:
 ```golang
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/stretchr/testify/require"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 const (
 	accountName := os.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.GetEnv("TABLES_PRIMARY_ACCOUNT_KEY")
-	mode := recording.Recording
-)
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
-	client := NewTableClient(accountName, accountKey, "tableName")
+	recording.StartRecording(t, nil)
+	defer recording.StopRecording(t, nil)
+
+	serviceUrl := fmt.Sprintf("https://%v.table.core.windows.net", accountName)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := createTableClientForRecording(t, "tableName", serviceUrl, cred)
+	require.NoError(t, err)
+
 	resp, err := client.Create()
 	require.NoError(t, err)
 	require.Equal(t, resp.TableResponse.TableName, "tableName")
+	defer client.Delete()  // Clean up resources
+	..
+	.. More test matters
+	..
 }
 ```
 
-The first part of the test above is for getting the secrets needed for authentication from your environment, the current practice is to store your test secrets in environment variables.
+The first part of the test above is for getting the secrets needed for authentication from your environment, best practice is to store your test secrets in environment variables.
 
-The rest of the snippet shows a test that creates a single table and asserts that the response from the service has the same table name as the supplied parameter. Every test in Go has to have exactly one parameter, the `t *testing.T` object, and it must begin with `Test`. After making a service call or creating an object you can make assertions on that object by using the external `testify/assert` library. In the example above, we assert that the error returned is `nil`, meaning the call was successful and then we assert that the response object has the same table name as supplied.
+The rest of the snippet shows a test that creates a single table and requirements (similar to assertions in other languages) that the response from the service has the same table name as the supplied parameter. Every test in Go has to have exactly one parameter, the `t *testing.T` object, and it must begin with `Test`. After making a service call or creating an object you can make assertions on that object by using the external `testify/require` library. In the example above, we "require" that the error returned is `nil`, meaning the call was successful and then we require that the response object has the same table name as supplied.
 
-You can also use the `testify/require` library instead of `testify/assert` if you want your test to fail as soon as you have an unexpected result.
+Check out the docs for more information about the methods available in the [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) libraries.
 
-Check out the docs for more information about the methods available in the [`assert`](https://pkg.go.dev/github.com/stretchr/testify/assert) and [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) libraries.
+If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go test` with this code and the proper environment variables this test would pass and you would be left with a new directory and file. Test recordings are saved to a `recording` directory in the same directory that your test code lives. Running the above test would also create a file `recording/TestCreateTable.json` with the HTTP interactions persisted on disk. Now you can set `AZURE_RECORD_MODE` to "playback" and run `go test` again, the test will have the same output but without reaching the service.
 
+
+### Scrubbing Secrets
+
+The recording files eventually live in the main repository (`github.com/Azure/azure-sdk-for-go`) and we need to make sure that all of these recordings are free from secrets. To do this we use Sanitizers with regular expressions for replacements. All of the available sanitizers are available as methods from the `recording` package.
+
+| Sanitizer Type | Method | Parameters | Notes |
+| -------------- | ------ | ---------- | ----- |
+| BodyKeySanitizer | `recording.AddBodyKeySanitizer(t, ...)` | ... | ... |
+| BodyRegexSanitizer | `recording.BodyRegexSanitizer(t, ...)` | ... | ... |
+| ContinuationSanitizer | `recording.ContinuationSanitizer(t, ...)` | ... | ... |
+| GeneralRegexSanitizer | `recording.GeneralRegexSanitizer(t, ...)` | ... | ... |
+| HeaderRegexSanitizer | `recording.HeaderRegexSanitizer(t, ...)` | ... | ... |
+| OAuthResponseSanitizer | `recording.OAuthResponseSanitizer(t, ...)` | ... | ... |
+| RemoveHeaderSanitizer | `recording.RemoveHeaderSanitizer(t, ...)` | ... | ... |
+| ReplaceRequestSubscriptionId | `recording.ReplaceRequestSubscriptionId(t, ...)` | ... | ... |
+| UriRegexSanitizer | `recording.UriRegexSanitizer(t, ...)` | ... | ... |
 
 <!-- LINKS -->
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10

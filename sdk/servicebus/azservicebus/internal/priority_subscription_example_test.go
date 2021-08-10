@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"context"
@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 type PrioritySubscription struct {
@@ -26,7 +24,7 @@ type PriorityPrinter struct {
 	SubName string
 }
 
-func (pp PriorityPrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
+func (pp PriorityPrinter) Handle(ctx context.Context, msg *Message) error {
 	i, ok := msg.UserProperties["Priority"].(int64)
 	if !ok {
 		fmt.Println("Priority is not an int64")
@@ -47,7 +45,7 @@ func Example_prioritySubscriptions() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -99,7 +97,7 @@ func Example_prioritySubscriptions() {
 			return
 		}
 
-		_, err = sm.PutRule(ctx, subEntity.Name, s.Name+"Rule", servicebus.SQLFilter{Expression: s.Expression})
+		_, err = sm.PutRule(ctx, subEntity.Name, s.Name+"Rule", SQLFilter{Expression: s.Expression})
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -134,7 +132,7 @@ func Example_prioritySubscriptions() {
 	}()
 
 	for _, pMessage := range priorityMessages {
-		msg := servicebus.NewMessageFromString(pMessage.Body)
+		msg := NewMessageFromString(pMessage.Body)
 		msg.UserProperties = map[string]interface{}{"Priority": pMessage.Priority}
 		if err := topic.Send(ctx, msg); err != nil {
 			fmt.Println(err)
@@ -170,7 +168,7 @@ func Example_prioritySubscriptions() {
 	// PriorityGreaterThan2_buzz_4
 }
 
-func ensureTopic(ctx context.Context, tm *servicebus.TopicManager, name string, opts ...servicebus.TopicManagementOption) (*servicebus.TopicEntity, error) {
+func ensureTopic(ctx context.Context, tm *TopicManager, name string, opts ...TopicManagementOption) (*TopicEntity, error) {
 	te, err := tm.Get(ctx, name)
 	if err == nil {
 		_ = tm.Delete(ctx, name)
@@ -185,7 +183,7 @@ func ensureTopic(ctx context.Context, tm *servicebus.TopicManager, name string, 
 	return te, nil
 }
 
-func ensureSubscription(ctx context.Context, sm *servicebus.SubscriptionManager, name string, opts ...servicebus.SubscriptionManagementOption) (*servicebus.SubscriptionEntity, error) {
+func ensureSubscription(ctx context.Context, sm *SubscriptionManager, name string, opts ...SubscriptionManagementOption) (*SubscriptionEntity, error) {
 	subEntity, err := sm.Get(ctx, name)
 	if err == nil {
 		_ = sm.Delete(ctx, name)

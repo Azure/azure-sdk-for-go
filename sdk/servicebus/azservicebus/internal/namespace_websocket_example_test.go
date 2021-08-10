@@ -1,12 +1,13 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus"
+	// TODO: these tests were intended to show examples and should be reworked with
+	// the modern API once we're done.
+	// servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus"
 )
 
 func ExampleNamespaceWithWebSocket() {
@@ -19,9 +20,9 @@ func ExampleNamespaceWithWebSocket() {
 	}
 
 	// Create a Service Bus Namespace using a connection string over wss:// on port 443
-	ns, err := servicebus.NewNamespace(
-		servicebus.NamespaceWithConnectionString(connStr),
-		servicebus.NamespaceWithWebSocket(),
+	ns, err := NewNamespace(
+		NamespaceWithConnectionString(connStr),
+		NamespaceWithWebSocket(),
 	)
 	if err != nil {
 		fmt.Println(err)
@@ -45,7 +46,7 @@ func ExampleNamespaceWithWebSocket() {
 	}
 
 	// Send a message to the queue
-	if err := client.Send(ctx, servicebus.NewMessageFromString("Hello World!!!")); err != nil {
+	if err := client.Send(ctx, NewMessageFromString("Hello World!!!")); err != nil {
 		fmt.Println(err)
 	}
 

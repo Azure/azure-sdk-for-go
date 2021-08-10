@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"context"
@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 type (
@@ -28,7 +26,7 @@ func Example_messageBrowse() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -68,7 +66,7 @@ func Example_messageBrowse() {
 	// Firstname: Nikolaus, Surname: Kopernikus
 }
 
-func sendMessages(ctx context.Context, q *servicebus.Queue) {
+func sendMessages(ctx context.Context, q *Queue) {
 
 	scientists := []Scientist{
 		{
@@ -121,7 +119,7 @@ func sendMessages(ctx context.Context, q *servicebus.Queue) {
 		}
 
 		ttl := 2 * time.Minute
-		msg := servicebus.NewMessage(bits)
+		msg := NewMessage(bits)
 		msg.ContentType = "application/json"
 		msg.TTL = &ttl
 		if err := q.Send(ctx, msg); err != nil {
@@ -131,8 +129,8 @@ func sendMessages(ctx context.Context, q *servicebus.Queue) {
 	}
 }
 
-func peekMessages(ctx context.Context, q *servicebus.Queue) {
-	var opts []servicebus.PeekOption
+func peekMessages(ctx context.Context, q *Queue) {
+	var opts []PeekOption
 	for {
 		select {
 		case <-ctx.Done():
@@ -141,7 +139,7 @@ func peekMessages(ctx context.Context, q *servicebus.Queue) {
 			msg, err := q.PeekOne(ctx, opts...)
 			if err != nil {
 				switch err.(type) {
-				case servicebus.ErrNoMessages:
+				case ErrNoMessages:
 					// all done
 					return
 				default:
@@ -156,7 +154,7 @@ func peekMessages(ctx context.Context, q *servicebus.Queue) {
 				return
 			}
 
-			opts = []servicebus.PeekOption{servicebus.PeekFromSequenceNumber(*msg.SystemProperties.SequenceNumber)}
+			opts = []PeekOption{PeekFromSequenceNumber(*msg.SystemProperties.SequenceNumber)}
 			fmt.Printf("Firstname: %s, Surname: %s\n", scientist.FirstName, scientist.Surname)
 		}
 	}

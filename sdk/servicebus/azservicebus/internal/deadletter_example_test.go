@@ -1,12 +1,10 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_deadletterQueues() {
@@ -20,7 +18,7 @@ func Example_deadletterQueues() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -42,7 +40,7 @@ func Example_deadletterQueues() {
 		_ = q.Close(ctx)
 	}()
 
-	if err := q.Send(ctx, servicebus.NewMessageFromString("foo")); err != nil {
+	if err := q.Send(ctx, NewMessageFromString("foo")); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -50,7 +48,7 @@ func Example_deadletterQueues() {
 	// Abandon the message 10 times simulating attempting to process the message 10 times. After the 10th time, the
 	// message will be placed in the Deadletter Queue.
 	for count := 0; count < 10; count++ {
-		err = q.ReceiveOne(ctx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+		err = q.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			fmt.Printf("count: %d\n", count+1)
 			return msg.Abandon(ctx)
 		}))

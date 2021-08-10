@@ -95,7 +95,7 @@ func setupDefaultDLMock() *MockedDeadLetterBuilder {
 	receiver.Mock.On(
 		"ReceiveOne",
 		context.Background(),
-		mock.AnythingOfType("servicebus.HandlerFunc"),
+		mock.AnythingOfType("internal.HandlerFunc"),
 	).Return(nil)
 	receiver.Mock.On(
 		"Close",
@@ -108,7 +108,7 @@ func setupDefaultDLMock() *MockedDeadLetterBuilder {
 	builder.Mock.On(
 		"NewDeadLetterReceiver",
 		context.Background(),
-		mock.AnythingOfType("[]servicebus.ReceiverOption"),
+		mock.AnythingOfType("[]internal.ReceiverOption"),
 	).Return(receiver, nil)
 	return builder
 }
@@ -118,7 +118,7 @@ func setupDefaultDTLMock() *MockedTransferDeadLetterBuilder {
 	receiver.Mock.On(
 		"ReceiveOne",
 		context.Background(),
-		mock.AnythingOfType("servicebus.HandlerFunc"),
+		mock.AnythingOfType("internal.HandlerFunc"),
 	).Return(nil)
 	receiver.Mock.On(
 		"Close",
@@ -131,7 +131,7 @@ func setupDefaultDTLMock() *MockedTransferDeadLetterBuilder {
 	builder.Mock.On(
 		"NewTransferDeadLetterReceiver",
 		context.Background(),
-		mock.AnythingOfType("[]servicebus.ReceiverOption"),
+		mock.AnythingOfType("[]internal.ReceiverOption"),
 	).Return(receiver, nil)
 	return builder
 }

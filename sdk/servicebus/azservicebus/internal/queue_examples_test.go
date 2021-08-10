@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/joho/godotenv"
 )
 
@@ -28,7 +27,7 @@ func ExampleQueue_getOrBuildQueue() {
 		return
 	}
 
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -39,7 +38,7 @@ func ExampleQueue_getOrBuildQueue() {
 
 	qm := ns.NewQueueManager()
 	qe, err := qm.Get(ctx, queueName)
-	if err != nil && !servicebus.IsErrNotFound(err) {
+	if err != nil && !IsErrNotFound(err) {
 		fmt.Println(err)
 		return
 	}
@@ -64,7 +63,7 @@ func ExampleQueue_getOrBuildQueue() {
 
 func ExampleQueue_Send() {
 	// Instantiate the clients needed to communicate with a Service Bus Queue.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString("<your connection string here>"))
+	ns, err := NewNamespace(NamespaceWithConnectionString("<your connection string here>"))
 	if err != nil {
 		return
 	}
@@ -78,20 +77,20 @@ func ExampleQueue_Send() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	if err := client.Send(ctx, servicebus.NewMessageFromString("Hello World!!!")); err != nil {
+	if err := client.Send(ctx, NewMessageFromString("Hello World!!!")); err != nil {
 		fmt.Println("FATAL: ", err)
 	}
 }
 
 func ExampleQueue_Receive() {
 	// Define a function that should be executed when a message is received.
-	var printMessage servicebus.HandlerFunc = func(ctx context.Context, msg *servicebus.Message) error {
+	var printMessage HandlerFunc = func(ctx context.Context, msg *Message) error {
 		fmt.Println(string(msg.Data))
 		return msg.Complete(ctx)
 	}
 
 	// Instantiate the clients needed to communicate with a Service Bus Queue.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString("<your connection string here>"))
+	ns, err := NewNamespace(NamespaceWithConnectionString("<your connection string here>"))
 	if err != nil {
 		return
 	}
@@ -114,9 +113,9 @@ func ExampleQueue_Receive_second() {
 	// Set concurrent number
 	const concurrentNum = 5
 	// Define msg chan
-	msgChan := make(chan *servicebus.Message, concurrentNum)
+	msgChan := make(chan *Message, concurrentNum)
 	// Define a function that should be executed when a message is received.
-	var concurrentHandler servicebus.HandlerFunc = func(ctx context.Context, msg *servicebus.Message) error {
+	var concurrentHandler HandlerFunc = func(ctx context.Context, msg *Message) error {
 		msgChan <- msg
 		return nil
 	}
@@ -136,14 +135,14 @@ func ExampleQueue_Receive_second() {
 	}
 
 	// Instantiate the clients needed to communicate with a Service Bus Queue.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString("<your connection string here>"))
+	ns, err := NewNamespace(NamespaceWithConnectionString("<your connection string here>"))
 	if err != nil {
 		close(msgChan)
 		return
 	}
 
 	// Init queue client with prefetch count
-	client, err := ns.NewQueue("myqueue", servicebus.QueueWithPrefetchCount(concurrentNum))
+	client, err := ns.NewQueue("myqueue", QueueWithPrefetchCount(concurrentNum))
 	if err != nil {
 		close(msgChan)
 		return
@@ -171,7 +170,7 @@ func ExampleQueue_scheduleAndCancelMessages() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return
@@ -186,7 +185,7 @@ func ExampleQueue_scheduleAndCancelMessages() {
 	// The delay that we should schedule a message for.
 	const waitTime = 1 * time.Minute
 	expectedTime := time.Now().Add(waitTime)
-	msg := servicebus.NewMessageFromString("to the future!!")
+	msg := NewMessageFromString("to the future!!")
 
 	scheduled, err := client.ScheduleAt(ctx, expectedTime, msg)
 	if err != nil {
@@ -218,7 +217,7 @@ func ExampleQueue_sessionsRoundTrip() {
 		return
 	}
 
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return
@@ -257,7 +256,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	// Publish an adjective for each session
 	for i := 0; i < numSessions; i++ {
 		adj := adjectives[generator.Intn(len(adjectives))]
-		msg := servicebus.NewMessageFromString(adj)
+		msg := NewMessageFromString(adj)
 		msg.SessionID = &sessionIDs[i]
 		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
@@ -268,7 +267,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	// Publish a noun for each session
 	for i := 0; i < numSessions; i++ {
 		noun := nouns[generator.Intn(len(nouns))]
-		msg := servicebus.NewMessageFromString(noun)
+		msg := NewMessageFromString(noun)
 		msg.SessionID = &sessionIDs[i]
 		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
@@ -279,7 +278,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	// Publish a numeric suffix for each session
 	for i := 0; i < numSessions; i++ {
 		suffix := fmt.Sprintf("%02d", generator.Intn(100))
-		msg := servicebus.NewMessageFromString(suffix)
+		msg := NewMessageFromString(suffix)
 		msg.SessionID = &sessionIDs[i]
 		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
@@ -311,11 +310,11 @@ func ExampleQueue_sessionsRoundTrip() {
 
 type SessionPrinter struct {
 	builder          *bytes.Buffer
-	messageSession   *servicebus.MessageSession
+	messageSession   *MessageSession
 	messagesReceived uint
 }
 
-func (sp *SessionPrinter) Start(ms *servicebus.MessageSession) error {
+func (sp *SessionPrinter) Start(ms *MessageSession) error {
 	if sp.builder == nil {
 		sp.builder = &bytes.Buffer{}
 	} else {
@@ -326,7 +325,7 @@ func (sp *SessionPrinter) Start(ms *servicebus.MessageSession) error {
 	return nil
 }
 
-func (sp *SessionPrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
+func (sp *SessionPrinter) Handle(ctx context.Context, msg *Message) error {
 	sp.builder.Write(msg.Data)
 
 	sp.messagesReceived++

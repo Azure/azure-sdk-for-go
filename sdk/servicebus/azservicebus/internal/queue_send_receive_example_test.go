@@ -1,12 +1,10 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_queueSendAndReceive() {
@@ -20,7 +18,7 @@ func Example_queueSendAndReceive() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -33,7 +31,7 @@ func Example_queueSendAndReceive() {
 		return
 	}
 
-	err = q.Send(ctx, servicebus.NewMessageFromString("Hello, World!!!"))
+	err = q.Send(ctx, NewMessageFromString("Hello, World!!!"))
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return
@@ -41,7 +39,7 @@ func Example_queueSendAndReceive() {
 
 	err = q.ReceiveOne(
 		ctx,
-		servicebus.HandlerFunc(func(ctx context.Context, message *servicebus.Message) error {
+		HandlerFunc(func(ctx context.Context, message *Message) error {
 			fmt.Println(string(message.Data))
 			return message.Complete(ctx)
 		}))

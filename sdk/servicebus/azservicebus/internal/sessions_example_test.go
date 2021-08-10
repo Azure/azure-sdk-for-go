@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"context"
@@ -6,23 +6,21 @@ import (
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 type StepSessionHandler struct {
-	messageSession *servicebus.MessageSession
+	messageSession *MessageSession
 }
 
 // Start is called when a new session is started
-func (ssh *StepSessionHandler) Start(ms *servicebus.MessageSession) error {
+func (ssh *StepSessionHandler) Start(ms *MessageSession) error {
 	ssh.messageSession = ms
 	fmt.Println("Begin session: ", *ssh.messageSession.SessionID())
 	return nil
 }
 
 // Handle is called when a new session message is received
-func (ssh *StepSessionHandler) Handle(ctx context.Context, msg *servicebus.Message) error {
+func (ssh *StepSessionHandler) Handle(ctx context.Context, msg *Message) error {
 	var step RecipeStep
 	if err := json.Unmarshal(msg.Data, &step); err != nil {
 		fmt.Println(err)
@@ -55,7 +53,7 @@ func Example_messageSessions() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -64,7 +62,7 @@ func Example_messageSessions() {
 	// Create a Service Bus Queue with required sessions enabled. This will ensure that all messages sent and received
 	// are bound to a session.
 	qm := ns.NewQueueManager()
-	qEntity, err := ensureQueue(ctx, qm, "MessageSessionsExample", servicebus.QueueEntityWithRequiredSessions())
+	qEntity, err := ensureQueue(ctx, qm, "MessageSessionsExample", QueueEntityWithRequiredSessions())
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -133,7 +131,7 @@ func Example_messageSessions() {
 	// End session:  buzz
 }
 
-func sendSessionRecipeSteps(ctx context.Context, sessionID string, q *servicebus.Queue) {
+func sendSessionRecipeSteps(ctx context.Context, sessionID string, q *Queue) {
 	steps := []RecipeStep{
 		{
 			Step:  1,
@@ -164,7 +162,7 @@ func sendSessionRecipeSteps(ctx context.Context, sessionID string, q *servicebus
 			return
 		}
 
-		msg := servicebus.NewMessage(bits)
+		msg := NewMessage(bits)
 		msg.ContentType = "application/json"
 		msg.SessionID = &sessionID
 		if err := q.Send(ctx, msg); err != nil {

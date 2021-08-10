@@ -1,12 +1,10 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_scheduledMessage() {
@@ -20,7 +18,7 @@ func Example_scheduledMessage() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return
@@ -43,7 +41,7 @@ func Example_scheduledMessage() {
 	const buffer = 20 * time.Second
 
 	expectedTime := time.Now().Add(waitTime)
-	msg := servicebus.NewMessageFromString("to the future!!")
+	msg := NewMessageFromString("to the future!!")
 	msg.ScheduleAt(expectedTime)
 
 	err = client.Send(ctx, msg)
@@ -54,7 +52,7 @@ func Example_scheduledMessage() {
 
 	err = client.ReceiveOne(
 		ctx,
-		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+		HandlerFunc(func(ctx context.Context, msg *Message) error {
 			received := time.Now()
 			if received.Before(expectedTime.Add(buffer)) && received.After(expectedTime.Add(-buffer)) {
 				fmt.Println("Received when expected!")
@@ -71,14 +69,14 @@ func Example_scheduledMessage() {
 	// Output: Received when expected!
 }
 
-func purgeMessages(ns *servicebus.Namespace) {
+func purgeMessages(ns *Namespace) {
 	purgeCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	client, _ := ns.NewQueue("scheduledmessages")
 	defer func() {
 		_ = client.Close(purgeCtx)
 	}()
 	defer cancel()
-	_ = client.Receive(purgeCtx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+	_ = client.Receive(purgeCtx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 		return msg.Complete(ctx)
 	}))
 }

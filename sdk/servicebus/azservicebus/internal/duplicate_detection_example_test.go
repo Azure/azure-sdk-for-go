@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_duplicateMessageDetection() {
@@ -21,7 +20,7 @@ func Example_duplicateMessageDetection() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -29,7 +28,7 @@ func Example_duplicateMessageDetection() {
 
 	window := 30 * time.Second
 	qm := ns.NewQueueManager()
-	qe, err := ensureQueue(ctx, qm, "DuplicateDetectionExample", servicebus.QueueEntityWithDuplicateDetection(&window))
+	qe, err := ensureQueue(ctx, qm, "DuplicateDetectionExample", QueueEntityWithDuplicateDetection(&window))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -50,7 +49,7 @@ func Example_duplicateMessageDetection() {
 		return
 	}
 
-	msg := servicebus.NewMessageFromString("foo")
+	msg := NewMessageFromString("foo")
 	msg.ID = guid.String()
 
 	// send the message twice with the same ID

@@ -1,16 +1,14 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func ExampleMessageIterator() {
-	subject := servicebus.AsMessageSliceIterator([]*servicebus.Message{
-		servicebus.NewMessageFromString("hello"),
-		servicebus.NewMessageFromString("world"),
+	subject := AsMessageSliceIterator([]*Message{
+		NewMessageFromString("hello"),
+		NewMessageFromString("world"),
 	})
 
 	for !subject.Done() {

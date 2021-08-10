@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"context"
@@ -7,8 +7,6 @@ import (
 	"math/rand"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 type RecipeStep struct {
@@ -27,7 +25,7 @@ func Example_deferMessages() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -80,7 +78,7 @@ func Example_deferMessages() {
 				return
 			}
 
-			msg := &servicebus.Message{
+			msg := &Message{
 				Data:        j,
 				ContentType: "application/json",
 				Label:       "RecipeStep",
@@ -99,7 +97,7 @@ func Example_deferMessages() {
 	sequenceByStepNumber := map[int]int64{}
 	// collect and defer messages
 	for i := 0; i < len(steps); i++ {
-		err = q.ReceiveOne(ctx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+		err = q.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			var step RecipeStep
 			if err := json.Unmarshal(msg.Data, &step); err != nil {
 				return err
@@ -114,7 +112,7 @@ func Example_deferMessages() {
 	}
 
 	for i := 0; i < len(steps); i++ {
-		err := q.ReceiveDeferred(ctx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+		err := q.ReceiveDeferred(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			var step RecipeStep
 			if err := json.Unmarshal(msg.Data, &step); err != nil {
 				return err

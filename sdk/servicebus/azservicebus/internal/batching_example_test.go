@@ -1,12 +1,10 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_batchingMessages() {
@@ -20,7 +18,7 @@ func Example_batchingMessages() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -42,12 +40,12 @@ func Example_batchingMessages() {
 		_ = q.Close(ctx)
 	}()
 
-	msgs := make([]*servicebus.Message, 10)
+	msgs := make([]*Message, 10)
 	for i := 0; i < 10; i++ {
-		msgs[i] = servicebus.NewMessageFromString(fmt.Sprintf("foo %d", i))
+		msgs[i] = NewMessageFromString(fmt.Sprintf("foo %d", i))
 	}
 
-	batcher := servicebus.NewMessageBatchIterator(servicebus.StandardMaxMessageSizeInBytes, msgs...)
+	batcher := NewMessageBatchIterator(StandardMaxMessageSizeInBytes, msgs...)
 	if err := q.SendBatch(ctx, batcher); err != nil {
 		fmt.Println(err)
 		return

@@ -1,4 +1,4 @@
-package internal_test
+package internal
 
 import (
 	"context"
@@ -6,8 +6,6 @@ import (
 	"math/rand"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 func Example_prefetch() {
@@ -21,7 +19,7 @@ func Example_prefetch() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -41,9 +39,9 @@ func Example_prefetch() {
 	}
 
 	// sendAndReceive will send to the queue and read from the queue
-	sendAndReceive := func(ctx context.Context, name string, opt servicebus.QueueOption) error {
+	sendAndReceive := func(ctx context.Context, name string, opt QueueOption) error {
 		messageCount := 200
-		q, err := ns.NewQueue(name, opt, servicebus.QueueWithReceiveAndDelete())
+		q, err := ns.NewQueue(name, opt, QueueWithReceiveAndDelete())
 		if err != nil {
 			return err
 		}
@@ -54,14 +52,14 @@ func Example_prefetch() {
 		}
 
 		for i := 0; i < messageCount; i++ {
-			if err := q.Send(ctx, servicebus.NewMessage(buffer)); err != nil {
+			if err := q.Send(ctx, NewMessage(buffer)); err != nil {
 				return err
 			}
 		}
 
 		innerCtx, cancel := context.WithCancel(ctx)
 		count := 0
-		err = q.Receive(innerCtx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+		err = q.Receive(innerCtx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			count++
 			if count == messageCount-1 {
 				defer cancel()
@@ -80,7 +78,7 @@ func Example_prefetch() {
 	totalPrefetch1 := make(chan time.Duration)
 	go func() {
 		start := time.Now()
-		if err := sendAndReceive(ctx, prefetch1.Name, servicebus.QueueWithPrefetchCount(1)); err != nil {
+		if err := sendAndReceive(ctx, prefetch1.Name, QueueWithPrefetchCount(1)); err != nil {
 			fmt.Println(err)
 			return
 		}
@@ -90,7 +88,7 @@ func Example_prefetch() {
 	totalPrefetch1000 := make(chan time.Duration)
 	go func() {
 		start := time.Now()
-		if err := sendAndReceive(ctx, prefetch1000.Name, servicebus.QueueWithPrefetchCount(1000)); err != nil {
+		if err := sendAndReceive(ctx, prefetch1000.Name, QueueWithPrefetchCount(1000)); err != nil {
 			fmt.Println(err)
 			return
 		}

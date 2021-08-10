@@ -1,17 +1,15 @@
-package internal_test
+package internal
 
 import (
 	"context"
 	"fmt"
 	"os"
 	"time"
-
-	servicebus "github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
 type MessagePrinter struct{}
 
-func (mp MessagePrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
+func (mp MessagePrinter) Handle(ctx context.Context, msg *Message) error {
 	fmt.Println(string(msg.Data))
 	return msg.Complete(ctx)
 }
@@ -27,7 +25,7 @@ func Example_autoForward() {
 	}
 
 	// Create a client to communicate with a Service Bus Namespace.
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -40,7 +38,7 @@ func Example_autoForward() {
 		return
 	}
 
-	source, err := ensureQueue(ctx, qm, "AutoForwardSourceQueue", servicebus.QueueEntityWithAutoForward(target))
+	source, err := ensureQueue(ctx, qm, "AutoForwardSourceQueue", QueueEntityWithAutoForward(target))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,7 +53,7 @@ func Example_autoForward() {
 		_ = sourceQueue.Close(ctx)
 	}()
 
-	if err := sourceQueue.Send(ctx, servicebus.NewMessageFromString("forward me to target!")); err != nil {
+	if err := sourceQueue.Send(ctx, NewMessageFromString("forward me to target!")); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -78,7 +76,7 @@ func Example_autoForward() {
 	// forward me to target!
 }
 
-func ensureQueue(ctx context.Context, qm *servicebus.QueueManager, name string, opts ...servicebus.QueueManagementOption) (*servicebus.QueueEntity, error) {
+func ensureQueue(ctx context.Context, qm *QueueManager, name string, opts ...QueueManagementOption) (*QueueEntity, error) {
 	qe, err := qm.Get(ctx, name)
 	if err == nil {
 		_ = qm.Delete(ctx, name)

@@ -4,6 +4,7 @@ parameters:
   Scope: 'sdk/...'
   Image: ''
   GoVersion: ''
+  AzureRecordMode: 'playback'
 
 steps:
 
@@ -48,7 +49,7 @@ steps:
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-        $(Build.SourcesDirectory)/eng/scripts/start-server.ps1 start
+        $(Build.SourcesDirectory)/eng/scripts/proxy-server.ps1 start
         Write-Host "##[command]Executing 'go test -run "^Test" -v -coverprofile coverage.txt .' in $td"
         go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
@@ -59,16 +60,16 @@ steps:
           rm coverage.txt
         }
       }
-      $(Build.SourcesDirectory)/eng/scripts/start-server.ps1 stop
+      $(Build.SourcesDirectory)/eng/scripts/proxy-server.ps1 stop
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
-      AZURE_RECORD_MODE: 'playback'
+      AZURE_RECORD_MODE: '${{parameters.AzureRecordMode}}'
 
   - pwsh: |
       $coverageFiles = [Collections.Generic.List[String]]@()
-      Get-Childitem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object {
+      Get-ChildItem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object {
         $covFile = $_.FullName
         Write-Host "Adding $covFile to the list of code coverage files"
         $coverageFiles.Add($covFile)

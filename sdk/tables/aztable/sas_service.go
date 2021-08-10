@@ -12,62 +12,48 @@ import (
 
 const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 
-// BlobSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
+// TableSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
-type BlobSASSignatureValues struct {
-	Version            string      `param:"sv"`  // If not specified, this defaults to SASVersion
-	Protocol           SASProtocol `param:"spr"` // See the SASProtocol* constants
-	StartTime          time.Time   `param:"st"`  // Not specified if IsZero
-	ExpiryTime         time.Time   `param:"se"`  // Not specified if IsZero
-	SnapshotTime       time.Time
-	Permissions        string  `param:"sp"` // Create by initializing a ContainerSASPermissions or BlobSASPermissions and then call String()
-	IPRange            IPRange `param:"sip"`
-	Identifier         string  `param:"si"`
-	ContainerName      string
-	BlobName           string // Use "" to create a Container SAS
-	CacheControl       string // rscc
-	ContentDisposition string // rscd
-	ContentEncoding    string // rsce
-	ContentLanguage    string // rscl
-	ContentType        string // rsct
+type TableSASSignatureValues struct {
+	Version      string      `param:"sv"`  // If not specified, this defaults to SASVersion
+	Protocol     SASProtocol `param:"spr"` // See the SASProtocol* constants
+	StartTime    time.Time   `param:"st"`  // Not specified if IsZero
+	ExpiryTime   time.Time   `param:"se"`  // Not specified if IsZero
+	SnapshotTime time.Time
+	Permissions  string  `param:"sp"` // Create by initializing a ContainerSASPermissions or TableSASPermissions and then call String()
+	IPRange      IPRange `param:"sip"`
+	Identifier   string  `param:"si"`
+	TableName    string
 }
 
 // NewSASQueryParameters uses an account's StorageAccountCredential to sign this signature values to produce
 // the proper SAS query parameters.
 // See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
-func (v BlobSASSignatureValues) NewSASQueryParameters(credential SharedKeyCredential) (SASQueryParameters, error) {
-	resource := "c"
+func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredential) (SASQueryParameters, error) {
+	resource := ""
 	// if credential == nil {
 	// 	return SASQueryParameters{}, fmt.Errorf("cannot sign SAS query without StorageAccountCredential")
 	// }
 
-	if !v.SnapshotTime.IsZero() {
-		resource = "bs"
+	if v.Version != "" {
+		// resource = "bv"
 		//Make sure the permission characters are in the correct order
-		perms := &BlobSASPermissions{}
+		perms := &TableSASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
 			return SASQueryParameters{}, err
 		}
 		v.Permissions = perms.String()
-	} else if v.Version != "" {
-		resource = "bv"
-		//Make sure the permission characters are in the correct order
-		perms := &BlobSASPermissions{}
-		if err := perms.Parse(v.Permissions); err != nil {
-			return SASQueryParameters{}, err
-		}
-		v.Permissions = perms.String()
-	} else if v.BlobName == "" {
+	} else if v.TableName == "" {
 		// Make sure the permission characters are in the correct order
-		perms := &ContainerSASPermissions{}
+		perms := &TableSASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
 			return SASQueryParameters{}, err
 		}
 		v.Permissions = perms.String()
 	} else {
-		resource = "b"
+		// resource = "t"
 		// Make sure the permission characters are in the correct order
-		perms := &BlobSASPermissions{}
+		perms := &TableSASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
 			return SASQueryParameters{}, err
 		}
@@ -77,6 +63,7 @@ func (v BlobSASSignatureValues) NewSASQueryParameters(credential SharedKeyCreden
 		v.Version = SASVersion
 	}
 	startTime, expiryTime, snapshotTime := FormatTimesForSASSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
+	_ = snapshotTime
 
 	signedIdentifier := v.Identifier
 
@@ -88,87 +75,58 @@ func (v BlobSASSignatureValues) NewSASQueryParameters(credential SharedKeyCreden
 		expiryTime:  v.ExpiryTime,
 		permissions: v.Permissions,
 		ipRange:     v.IPRange,
+		tableName:   v.TableName,
 
 		// Container/Blob-specific SAS parameters
-		resource:           resource,
-		identifier:         v.Identifier,
-		cacheControl:       v.CacheControl,
-		contentDisposition: v.ContentDisposition,
-		contentEncoding:    v.ContentEncoding,
-		contentLanguage:    v.ContentLanguage,
-		contentType:        v.ContentType,
-		snapshotTime:       v.SnapshotTime,
+		resource:   resource,
+		identifier: v.Identifier,
 	}
 
-	// if udc, ok := credential.(UserDelegationCredential); ok {
-	// 	udk := udc.GetUDKParams()
+	startPartitionKey := ""
+	startRowKey := ""
+	endPartitionKey := ""
+	endRowKey := ""
 
-	// 	udkStart, udkExpiry, _ := FormatTimesForSASSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
-	// 	// I don't like this answer to combining the functions
-	// 	// But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
-	// 	signedIdentifier = strings.Join([]string{
-	// 		*udk.SignedOid,
-	// 		*udk.SignedTid,
-	// 		udkStart,
-	// 		udkExpiry,
-	// 		*udk.SignedService,
-	// 		*udk.SignedVersion,
-	// 	}, "\n")
-
-	// 	p.signedOid = *udk.SignedOid
-	// 	p.signedTid = *udk.SignedTid
-	// 	p.signedStart = *udk.SignedStart
-	// 	p.signedExpiry = *udk.SignedExpiry
-	// 	p.signedService = *udk.SignedService
-	// 	p.signedVersion = *udk.SignedVersion
-	// }
+	canonicalName := "/" + "table" + "/" + credential.AccountName() + "/" + v.TableName
+	fmt.Println("CANONICAL NAME ", canonicalName)
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(credential.AccountName(), v.ContainerName, v.BlobName),
+		// getCanonicalName(credential.AccountName(), v.TableName),
+		canonicalName,
 		signedIdentifier,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
-		resource,
-		snapshotTime,         // signed timestamp
-		v.CacheControl,       // rscc
-		v.ContentDisposition, // rscd
-		v.ContentEncoding,    // rsce
-		v.ContentLanguage,    // rscl
-		v.ContentType},       // rsct
-		"\n")
+		startPartitionKey,
+		startRowKey,
+		endPartitionKey,
+		endRowKey,
+	},
+		// resource,
+		// snapshotTime}, // signed timestamp
+		"\n",
+	)
+
+	// TODO: Add start/end pk/rk
+	fmt.Println("String to sign\n", stringToSign, "END")
 
 	signature, err := credential.ComputeHMACSHA256(stringToSign)
 	p.signature = signature
 	return p, err
-	// p.signature = credential.ComputeHMACSHA256(stringToSign)
-
-	// return p, nil
-}
-
-// getCanonicalName computes the canonical name for a container or blob resource for SAS signing.
-func getCanonicalName(account string, containerName string, blobName string) string {
-	// Container: "/blob/account/containername"
-	// Blob:      "/blob/account/containername/blobname"
-	elements := []string{"/blob/", account, "/", containerName}
-	if blobName != "" {
-		elements = append(elements, "/", strings.Replace(blobName, "\\", "/", -1))
-	}
-	return strings.Join(elements, "")
 }
 
 // The ContainerSASPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
-// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
+// Initialize an instance of this type and then call its String method to set TableSASSignatureValues's Permissions field.
 type ContainerSASPermissions struct {
 	Read, Add, Create, Write, Delete, List bool
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
-// Call this method to set BlobSASSignatureValues's Permissions field.
+// Call this method to set TableSASSignatureValues's Permissions field.
 func (p ContainerSASPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
@@ -216,13 +174,13 @@ func (p *ContainerSASPermissions) Parse(s string) error {
 	return nil
 }
 
-// The BlobSASPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
-// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
-type BlobSASPermissions struct{ Read, Add, Create, Write, Delete, DeletePreviousVersion bool }
+// The TableSASPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
+// Initialize an instance of this type and then call its String method to set TableSASSignatureValues's Permissions field.
+type TableSASPermissions struct{ Read, Add, Create, Write, Delete, DeletePreviousVersion bool }
 
 // String produces the SAS permissions string for an Azure Storage blob.
-// Call this method to set BlobSASSignatureValues's Permissions field.
-func (p BlobSASPermissions) String() string {
+// Call this method to set TableSASSignatureValues's Permissions field.
+func (p TableSASPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
 		b.WriteRune('r')
@@ -245,9 +203,9 @@ func (p BlobSASPermissions) String() string {
 	return b.String()
 }
 
-// Parse initializes the BlobSASPermissions's fields from a string.
-func (p *BlobSASPermissions) Parse(s string) error {
-	*p = BlobSASPermissions{} // Clear the flags
+// Parse initializes the TableSASPermissions's fields from a string.
+func (p *TableSASPermissions) Parse(s string) error {
+	*p = TableSASPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -263,7 +221,7 @@ func (p *BlobSASPermissions) Parse(s string) error {
 		case 'x':
 			p.DeletePreviousVersion = true
 		default:
-			return fmt.Errorf("Invalid permission: '%v'", r)
+			return fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
 	return nil

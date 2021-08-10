@@ -107,6 +107,7 @@ type SASQueryParameters struct {
 	signedExpiry       time.Time   `param:"ske"`
 	signedService      string      `param:"sks"`
 	signedVersion      string      `param:"skv"`
+	tableName          string      `param:"tn"`
 
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
@@ -347,6 +348,9 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	}
 	if p.contentType != "" {
 		v.Add("rsct", p.contentType)
+	}
+	if p.tableName != "" {
+		v.Add("tn", p.tableName)
 	}
 	return v
 }

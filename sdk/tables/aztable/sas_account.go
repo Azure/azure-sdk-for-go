@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var SASVersion = "2020-08-04"
+var SASVersion = "2019-02-02"
 
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
@@ -145,7 +145,7 @@ func (p *AccountSASPermissions) Parse(s string) error {
 		case 'x':
 			p.Process = true
 		default:
-			return fmt.Errorf("Invalid permission character: '%v'", r)
+			return fmt.Errorf("invalid permission character: '%v'", r)
 		}
 	}
 	return nil

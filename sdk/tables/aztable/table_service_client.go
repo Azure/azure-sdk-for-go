@@ -157,13 +157,22 @@ func (s TableServiceClient) CanGetAccountSASToken() bool {
 // This validity can be checked with CanGetAccountSASToken().
 func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
 	return AccountSASSignatureValues{
-		Version: SASVersion,
-		Protocol: SASProtocolHTTPS,
+		Version:       SASVersion,
+		Protocol:      SASProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      "t",
 		ResourceTypes: resources.String(),
-		StartTime:  start.UTC(),
-		ExpiryTime: expiry.UTC(),
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
+	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
+}
+
+func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
+	return TableSASSignatureValues{
+		TableName:   tableName,
+		Permissions: permissions.String(),
+		StartTime:   start,
+		ExpiryTime:  expiry,
 	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
 }
 

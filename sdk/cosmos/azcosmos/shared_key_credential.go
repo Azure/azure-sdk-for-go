@@ -58,8 +58,8 @@ func (c *SharedKeyCredential) ComputeHMACSHA256(s string) (base64String string) 
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcore.Request) (string, error) {
-	//TODO
-	value := c.buildCanonicalizedAuthHeader("", "", "", req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+	//TODO - Get resourceType and resourceId from request
+	value := c.buildCanonicalizedAuthHeader(req.Method, "", "", req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
 	return value, nil
 }
 

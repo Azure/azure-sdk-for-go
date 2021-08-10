@@ -17,6 +17,7 @@ import (
 )
 
 func TestSASServiceClient(t *testing.T) {
+	recording.LiveOnly(t)
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
@@ -76,6 +77,7 @@ func TestSASServiceClient(t *testing.T) {
 }
 
 func TestSASTableClient(t *testing.T) {
+	recording.LiveOnly(t)
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)

@@ -79,7 +79,7 @@ func stripQueryParams(path string) (string, string) {
 // query parameters in the root path
 func JoinPaths(root string, paths ...string) string {
 	if len(paths) == 0 {
-		return ""
+		return root
 	}
 
 	root, qps := stripQueryParams(root)

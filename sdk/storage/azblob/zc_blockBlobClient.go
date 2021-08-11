@@ -132,7 +132,7 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 	}
 
 	resp, err := bb.client.CommitBlockList(ctx, BlockLookupList{
-		Latest: &blockIds,
+		Latest: blockIds,
 	}, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
 
 	return resp, handleError(err)

@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:37 GMT
+      - Wed, 11 Aug 2021 10:06:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:37 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Etag:
-      - '"0x8D934A62D5A027A"'
+      - '"0x8D95CAFB20C35E1"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:17:37 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f780e95-001e-0006-618f-66c1d9000000
+      - 5a0d76ed-d01e-000f-1598-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -56,9 +56,9 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:33 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease/gotestblobblobrenewlease
     method: PUT
   response:
@@ -69,23 +69,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Mon, 21 Jun 2021 11:17:37 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Etag:
-      - '"0x8D934A62D7EF8CA"'
+      - '"0x8D95CAFB2317BB7"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 1f780f59-001e-0006-108f-66c1d9000000
+      - 5a0d773a-d01e-000f-5898-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-06-21T11:17:38.2147274Z"
+      - "2021-08-11T10:06:32.8265423Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,7 +101,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:33 GMT
       X-Ms-Lease-Action:
       - acquire
       X-Ms-Lease-Duration:
@@ -109,7 +109,7 @@ interactions:
       X-Ms-Proposed-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease/gotestblobblobrenewlease?comp=lease
     method: PUT
   response:
@@ -118,19 +118,19 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:37 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Etag:
-      - '"0x8D934A62D7EF8CA"'
+      - '"0x8D95CAFB2317BB7"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Request-Id:
-      - 1f781000-001e-0006-2c8f-66c1d9000000
+      - 5a0d77d8-d01e-000f-6598-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -146,13 +146,13 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:34 GMT
       X-Ms-Lease-Action:
       - renew
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease/gotestblobblobrenewlease?comp=lease
     method: PUT
   response:
@@ -161,19 +161,19 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:37 GMT
+      - Wed, 11 Aug 2021 10:06:33 GMT
       Etag:
-      - '"0x8D934A62D7EF8CA"'
+      - '"0x8D95CAFB2317BB7"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Request-Id:
-      - 1f7810c1-001e-0006-5f8f-66c1d9000000
+      - 5a0d783f-d01e-000f-3e98-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 200 OK
     code: 200
     duration: ""
@@ -189,13 +189,13 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:34 GMT
       X-Ms-Lease-Action:
       - release
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease/gotestblobblobrenewlease?comp=lease
     method: PUT
   response:
@@ -204,17 +204,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:33 GMT
       Etag:
-      - '"0x8D934A62D7EF8CA"'
+      - '"0x8D95CAFB2317BB7"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f78114a-001e-0006-5e8f-66c1d9000000
+      - 5a0d78b1-d01e-000f-2598-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 200 OK
     code: 200
     duration: ""
@@ -230,9 +230,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:39 GMT
+      - Wed, 11 Aug 2021 10:06:34 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobrenewlease?restype=container
     method: DELETE
   response:
@@ -241,13 +241,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:38 GMT
+      - Wed, 11 Aug 2021 10:06:33 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f7811ca-001e-0006-538f-66c1d9000000
+      - 5a0d7915-d01e-000f-0498-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""

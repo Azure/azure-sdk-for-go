@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: <StorageServiceProperties><DeleteRetentionPolicy><Days>1</Days><Enabled>true</Enabled></DeleteRetentionPolicy></StorageServiceProperties>
+    body: <StorageServiceProperties><DeleteRetentionPolicy><Enabled>true</Enabled><Days>1</Days></DeleteRetentionPolicy></StorageServiceProperties>
     form: {}
     headers:
       Accept:
@@ -17,9 +17,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:51 GMT
+      - Wed, 11 Aug 2021 10:06:49 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
     method: PUT
   response:
@@ -28,13 +28,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:50 GMT
+      - Wed, 11 Aug 2021 10:06:48 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f782a6d-001e-0006-1b8f-66c1d9000000
+      - 5a0d93b9-d01e-000f-1398-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""
@@ -54,9 +54,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:17:52 GMT
+      - Wed, 11 Aug 2021 10:06:49 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
     method: PUT
   response:
@@ -65,13 +65,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:17:51 GMT
+      - Wed, 11 Aug 2021 10:06:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f782af6-001e-0006-0d8f-66c1d9000000
+      - 5a0d9554-d01e-000f-7798-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""

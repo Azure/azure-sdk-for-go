@@ -198,3 +198,14 @@ func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources
 		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(s.cred.(*SharedKeyCredential))
 }
+
+// FindBlobsByTags operation finds all blobs in the storage account whose tags match a given search expression.
+// Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
+// eg. "dog='germanshepherd' and penguin='emperorpenguin'"
+// To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
+func (s ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (FilterBlobSegmentResponse, error) {
+	// TODO: Use pager here? Missing support from zz_generated_pagera.go
+	serviceFilterBlobsOptions := options.pointer()
+	return s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)
+}

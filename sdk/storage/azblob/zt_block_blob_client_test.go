@@ -49,7 +49,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 		_assert.Equal((*putResp.Date).IsZero(), false)
 	}
 
-	blockList, err := bbClient.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.Nil(blockList.LastModified)
@@ -63,7 +63,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.CommittedBlocks)
 	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(*blockList.BlockList.UncommittedBlocks, len(data))
+	_assert.Len(blockList.BlockList.UncommittedBlocks, len(data))
 
 	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
 	_assert.Nil(err)
@@ -76,7 +76,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	_assert.NotNil(listResp.Date)
 	_assert.Equal((*listResp.Date).IsZero(), false)
 
-	blockList, err = bbClient.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.LastModified)
@@ -91,7 +91,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	_assert.NotNil(blockList.BlockList)
 	_assert.NotNil(blockList.BlockList.CommittedBlocks)
 	_assert.Nil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(*blockList.BlockList.CommittedBlocks, len(data))
+	_assert.Len(blockList.BlockList.CommittedBlocks, len(data))
 }
 
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
@@ -163,13 +163,13 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert.Equal(stageResp2.Date.IsZero(), false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.CommittedBlocks)
 	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(*blockList.BlockList.UncommittedBlocks, 2)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
@@ -239,8 +239,8 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	// Invoke copy bbClient from URL.
 	sourceContentMD5 := contentMD5[:]
 	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &CopyBlockBlobFromURLOptions{
-		Metadata:         &map[string]string{"foo": "bar"},
-		SourceContentMD5: &sourceContentMD5,
+		Metadata:         map[string]string{"foo": "bar"},
+		SourceContentMD5: sourceContentMD5,
 	})
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 202)
@@ -250,7 +250,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_assert.NotNil(resp.Date)
 	_assert.Equal((*resp.Date).IsZero(), false)
 	_assert.NotNil(resp.CopyID)
-	_assert.EqualValues(*resp.ContentMD5, sourceContentMD5)
+	_assert.EqualValues(resp.ContentMD5, sourceContentMD5)
 	_assert.Equal(*resp.CopyStatus, "success")
 
 	// Make sure the metadata got copied over
@@ -271,14 +271,14 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	// Edge case 1: Provide bad MD5 and make sure the copy fails
 	_, badMD5 := getRandomDataAndReader(16)
 	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
-		SourceContentMD5: &badMD5,
+		SourceContentMD5: badMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
 	_assert.NotNil(err)
 
 	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
-		SourceContentMD5: &sourceContentMD5,
+		SourceContentMD5: sourceContentMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	_assert.Nil(err)
@@ -379,12 +379,12 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &StageBlockOptions{
 		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-			TransactionalContentMD5: &contentMD5,
+			TransactionalContentMD5: contentMD5,
 		},
 	})
 	_assert.Nil(err)
 	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.EqualValues(*(putResp.ContentMD5), contentMD5)
+	_assert.EqualValues(putResp.ContentMD5, contentMD5)
 	_assert.NotNil(putResp.RequestID)
 	_assert.NotNil(putResp.Version)
 	_assert.NotNil(putResp.Date)
@@ -399,7 +399,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &StageBlockOptions{
 		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-			TransactionalContentMD5: &badContentMD5,
+			TransactionalContentMD5: badContentMD5,
 		},
 	})
 	_assert.NotNil(err)
@@ -455,7 +455,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	_, err = bbClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 	})
 	_assert.Nil(err)
 
@@ -515,7 +515,7 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 	rsc := azcore.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
-		Metadata: &map[string]string{"In valid!": "bar"},
+		Metadata: map[string]string{"In valid!": "bar"},
 	})
 	_assert.NotNil(err)
 	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
@@ -817,9 +817,9 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 }
 
 func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
-	resp, err := bbClient.GetBlockList(ctx, BlockListAll, nil)
+	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	_assert.Nil(err)
-	_assert.Len(*(resp.BlockList.CommittedBlocks), 1)
+	_assert.Len(resp.BlockList.CommittedBlocks, 1)
 }
 
 func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
@@ -1063,10 +1063,10 @@ func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob() {
 	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
 	_assert.Nil(err)
 
-	resp, err := bbClient.GetBlockList(ctx, BlockListAll, nil)
+	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	_assert.Nil(err)
-	_assert.Len(*(resp.BlockList.CommittedBlocks), 2)
-	committed := *(resp.BlockList.CommittedBlocks)
+	_assert.Len(resp.BlockList.CommittedBlocks, 2)
+	committed := resp.BlockList.CommittedBlocks
 	_assert.Equal(*(committed[0].Name), "0001")
 	_assert.Equal(*(committed[1].Name), "0011")
 	_assert.Nil(resp.BlockList.UncommittedBlocks)
@@ -1128,12 +1128,12 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 		})
 		_assert.Nil(err)
 
-		resp, err := bbClient.GetBlockList(ctx, BlockListCommitted, nil)
+		resp, err := bbClient.GetBlockList(ctx, BlockListTypeCommitted, nil)
 		_assert.Nil(err)
 		_assert.NotNil(resp.BlockList)
 		_assert.NotNil(resp.BlockList.CommittedBlocks)
 		_assert.Nil(resp.BlockList.UncommittedBlocks)
-		_assert.Len(*(resp.BlockList.CommittedBlocks), 1)
+		_assert.Len(resp.BlockList.CommittedBlocks, 1)
 	}
 }
 
@@ -1187,7 +1187,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 
 		copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
 			Tier:     &tier,
-			Metadata: &map[string]string{"foo": "bar"},
+			Metadata: map[string]string{"foo": "bar"},
 		}
 		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
 		_assert.Nil(err)
@@ -1270,13 +1270,13 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_assert.Equal(stageResp2.Date.IsZero(), false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.CommittedBlocks)
 	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(*blockList.BlockList.UncommittedBlocks, 2)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &CommitBlockListOptions{

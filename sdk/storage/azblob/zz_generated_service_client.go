@@ -24,6 +24,7 @@ type serviceClient struct {
 // FilterBlobs - The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search expression. Filter blobs
 // searches across all containers within a storage account but can
 // be scoped within the expression to a single container.
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) FilterBlobs(ctx context.Context, options *ServiceFilterBlobsOptions) (FilterBlobSegmentResponse, error) {
 	req, err := client.filterBlobsCreateRequest(ctx, options)
 	if err != nil {
@@ -61,7 +62,7 @@ func (client *serviceClient) filterBlobsCreateRequest(ctx context.Context, optio
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -97,14 +98,19 @@ func (client *serviceClient) filterBlobsHandleResponse(resp *azcore.Response) (F
 
 // filterBlobsHandleError handles the FilterBlobs error response.
 func (client *serviceClient) filterBlobsHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetAccountInfo - Returns the sku name and account kind
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) GetAccountInfo(ctx context.Context, options *ServiceGetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
 	req, err := client.getAccountInfoCreateRequest(ctx, options)
 	if err != nil {
@@ -131,7 +137,7 @@ func (client *serviceClient) getAccountInfoCreateRequest(ctx context.Context, op
 	reqQP.Set("restype", "account")
 	reqQP.Set("comp", "properties")
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -173,15 +179,20 @@ func (client *serviceClient) getAccountInfoHandleResponse(resp *azcore.Response)
 
 // getAccountInfoHandleError handles the GetAccountInfo error response.
 func (client *serviceClient) getAccountInfoHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing)
 // rules.
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (StorageServicePropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
@@ -211,7 +222,7 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -240,15 +251,20 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *azcore.Response) 
 
 // getPropertiesHandleError handles the GetProperties error response.
 func (client *serviceClient) getPropertiesHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetStatistics - Retrieves statistics related to replication for the Blob service. It is only available on the secondary location endpoint when read-access
 // geo-redundant replication is enabled for the storage account.
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (StorageServiceStatsResponse, error) {
 	req, err := client.getStatisticsCreateRequest(ctx, options)
 	if err != nil {
@@ -278,7 +294,7 @@ func (client *serviceClient) getStatisticsCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -314,14 +330,19 @@ func (client *serviceClient) getStatisticsHandleResponse(resp *azcore.Response) 
 
 // getStatisticsHandleError handles the GetStatistics error response.
 func (client *serviceClient) getStatisticsHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetUserDelegationKey - Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) GetUserDelegationKey(ctx context.Context, keyInfo KeyInfo, options *ServiceGetUserDelegationKeyOptions) (UserDelegationKeyResponse, error) {
 	req, err := client.getUserDelegationKeyCreateRequest(ctx, keyInfo, options)
 	if err != nil {
@@ -351,7 +372,7 @@ func (client *serviceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -387,14 +408,19 @@ func (client *serviceClient) getUserDelegationKeyHandleResponse(resp *azcore.Res
 
 // getUserDelegationKeyHandleError handles the GetUserDelegationKey error response.
 func (client *serviceClient) getUserDelegationKeyHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // ListContainersSegment - The List Containers Segment operation returns a list of the containers under the specified account
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) ListContainersSegment(options *ServiceListContainersSegmentOptions) ListContainersSegmentResponsePager {
 	return &listContainersSegmentResponsePager{
 		pipeline: client.con.Pipeline(),
@@ -429,13 +455,13 @@ func (client *serviceClient) listContainersSegmentCreateRequest(ctx context.Cont
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
 	if options != nil && options.Include != nil {
-		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*options.Include), "[]")), ","))
+		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -464,15 +490,20 @@ func (client *serviceClient) listContainersSegmentHandleResponse(resp *azcore.Re
 
 // listContainersSegmentHandleError handles the ListContainersSegment error response.
 func (client *serviceClient) listContainersSegmentHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // SetProperties - Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, storageServiceProperties, options)
 	if err != nil {
@@ -502,7 +533,7 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -527,14 +558,19 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *azcore.Response) 
 
 // setPropertiesHandleError handles the SetProperties error response.
 func (client *serviceClient) setPropertiesHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+// If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) SubmitBatch(ctx context.Context, contentLength int64, multipartContentType string, body azcore.ReadSeekCloser, options *ServiceSubmitBatchOptions) (ServiceSubmitBatchResponse, error) {
 	req, err := client.submitBatchCreateRequest(ctx, contentLength, multipartContentType, body, options)
 	if err != nil {
@@ -566,7 +602,7 @@ func (client *serviceClient) submitBatchCreateRequest(ctx context.Context, conte
 	req.SkipBodyDownload()
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	req.Header.Set("Content-Type", multipartContentType)
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -591,9 +627,13 @@ func (client *serviceClient) submitBatchHandleResponse(resp *azcore.Response) (S
 
 // submitBatchHandleError handles the SubmitBatch error response.
 func (client *serviceClient) submitBatchHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

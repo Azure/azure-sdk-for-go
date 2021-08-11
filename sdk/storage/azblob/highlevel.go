@@ -38,7 +38,7 @@ type HighLevelUploadToBlockBlobOption struct {
 	BlobHTTPHeaders *BlobHTTPHeaders
 
 	// Metadata indicates the metadata to be associated with the blob when PutBlockList is called.
-	Metadata *map[string]string
+	Metadata map[string]string
 
 	// BlobAccessConditions indicates the access conditions for the block blob.
 	BlobAccessConditions *BlobAccessConditions

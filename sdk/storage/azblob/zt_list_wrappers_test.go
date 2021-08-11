@@ -36,7 +36,7 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 			found = append(found, *blob.Name)
 		}
 	}
@@ -75,7 +75,7 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 			found = append(found, *blob.Name)
 		}
 	}

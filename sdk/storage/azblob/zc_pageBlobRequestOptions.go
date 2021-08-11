@@ -35,7 +35,7 @@ type CreatePageBlobOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *map[string]string
+	Metadata map[string]string
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
 
@@ -63,9 +63,9 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHea
 type UploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
 	PageRange                 *HttpRange
-	TransactionalContentCRC64 *[]byte
+	TransactionalContentCRC64 []byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
@@ -93,9 +93,9 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 
 type UploadPagesFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 *[]byte
+	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 *[]byte
+	SourceContentcrc64 []byte
 
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
@@ -111,7 +111,7 @@ func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptio
 
 	options := &PageBlobUploadPagesFromURLOptions{
 		SourceContentMD5:   o.SourceContentMD5,
-		SourceContentCRC64: o.SourceContentCRC64,
+		SourceContentcrc64: o.SourceContentcrc64,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
@@ -165,13 +165,13 @@ func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAcces
 }
 
 type UpdateSequenceNumberPageBlob struct {
-	ActionType         *SequenceNumberAction
+	ActionType         *SequenceNumberActionType
 	BlobSequenceNumber *int64
 
 	BlobAccessConditions *BlobAccessConditions
 }
 
-func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberAction, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberActionType, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -180,7 +180,7 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 		BlobSequenceNumber: o.BlobSequenceNumber,
 	}
 
-	if *o.ActionType == SequenceNumberActionIncrement {
+	if *o.ActionType == SequenceNumberActionTypeIncrement {
 		options.BlobSequenceNumber = nil
 	}
 

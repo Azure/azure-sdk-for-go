@@ -8,13 +8,13 @@ type UploadBlockBlobOptions struct {
 	BlobTagsMap *map[string]string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
-	Metadata *map[string]string
+	Metadata map[string]string
 
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *AccessTier
 
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 
 	BlobHTTPHeaders      *BlobHTTPHeaders
 	CpkInfo              *CpkInfo
@@ -60,9 +60,9 @@ type StageBlockFromURLOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 *[]byte
+	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 *[]byte
+	SourceContentcrc64 []byte
 
 	Offset *int64
 
@@ -82,7 +82,7 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 	options := &BlockBlobStageBlockFromURLOptions{
 		RequestID:          o.RequestID,
 		SourceContentMD5:   o.SourceContentMD5,
-		SourceContentCRC64: o.SourceContentCRC64,
+		SourceContentcrc64: o.SourceContentcrc64,
 		SourceRange:        getSourceRange(o.Offset, o.Count),
 		Timeout:            o.Timeout,
 	}
@@ -92,12 +92,12 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 
 type CommitBlockListOptions struct {
 	BlobTagsMap               *map[string]string
-	Metadata                  *map[string]string
+	Metadata                  map[string]string
 	RequestID                 *string
 	Tier                      *AccessTier
 	Timeout                   *int32
-	TransactionalContentCRC64 *[]byte
-	TransactionalContentMD5   *[]byte
+	TransactionalContentCRC64 []byte
+	TransactionalContentMD5   []byte
 	BlobHTTPHeaders           *BlobHTTPHeaders
 	CpkInfo                   *CpkInfo
 	CpkScopeInfo              *CpkScopeInfo
@@ -138,9 +138,9 @@ func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *Modifi
 
 type CopyBlockBlobFromURLOptions struct {
 	BlobTagsMap                    *map[string]string
-	Metadata                       *map[string]string
+	Metadata                       map[string]string
 	RequestID                      *string
-	SourceContentMD5               *[]byte
+	SourceContentMD5               []byte
 	Tier                           *AccessTier
 	Timeout                        *int32
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions

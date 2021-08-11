@@ -46,12 +46,12 @@ func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	}
 }
 
-// NewAppendBlobURL creates a new AppendBlobURL object by concatenating blobName to the end of
+// NewAppendBlobClient creates a new AppendBlobURL object by concatenating blobName to the end of
 // ContainerClient's URL. The new AppendBlobURL uses the same request policy pipeline as the ContainerClient.
 // To change the pipeline, create the AppendBlobURL and then call its WithPipeline method passing in the
-// desired pipeline object. Or, call this package's NewAppendBlobURL instead of calling this object's
-// NewAppendBlobURL method.
-func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
+// desired pipeline object. Or, call this package's NewAppendBlobClient instead of calling this object's
+// NewAppendBlobClient method.
+func (c ContainerClient) NewAppendBlobClient(blobName string) AppendBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 

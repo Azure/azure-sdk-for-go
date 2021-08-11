@@ -222,7 +222,7 @@ func getBlockBlobClient(blockBlobName string, containerClient ContainerClient) B
 }
 
 func getAppendBlobClient(appendBlobName string, containerClient ContainerClient) AppendBlobClient {
-	return containerClient.NewAppendBlobURL(appendBlobName)
+	return containerClient.NewAppendBlobClient(appendBlobName)
 }
 
 func getPageBlobClient(pageBlobName string, containerClient ContainerClient) PageBlobClient {
@@ -273,14 +273,14 @@ func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient
 }
 
 func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
-	blockBlobClient := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	cResp, err := blockBlobClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	cResp, err := bbClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
 	_assert.Nil(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
-	return blockBlobClient
+	return bbClient
 }
 
 func createNewBlobs(_assert *assert.Assertions, blobNames []string, containerClient ContainerClient) {
@@ -290,26 +290,61 @@ func createNewBlobs(_assert *assert.Assertions, blobNames []string, containerCli
 }
 
 func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
-	appendBlobClient := getAppendBlobClient(appendBlobName, containerClient)
+	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
-	appendBlobCreateResp, err := appendBlobClient.Create(ctx, nil)
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
 	_assert.Nil(err)
 	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	return appendBlobClient
+	return abClient
 }
 
 func createNewPageBlob(_assert *assert.Assertions, pageBlobName string, containerClient ContainerClient) PageBlobClient {
 	return createNewPageBlobWithSize(_assert, pageBlobName, containerClient, PageBlobPageBytes*10)
 }
 
-func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string, containerClient ContainerClient, sizeInBytes int64) PageBlobClient {
-	pageBlobClient := getPageBlobClient(pageBlobName, containerClient)
+func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
+	containerClient ContainerClient, sizeInBytes int64) PageBlobClient {
+	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
-	pageBlobCreateResponse, err := pageBlobClient.Create(ctx, sizeInBytes, nil)
+	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
 	_assert.Nil(err)
 	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
-	return pageBlobClient
+	return pbClient
+}
+
+func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
+	bbClient = getBlockBlobClient(blockBlobName, containerClient)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		CpkInfo:      cpkInfo,
+		CpkScopeInfo: cpkScopeInfo,
+	}
+	cResp, err := bbClient.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*cResp.IsServerEncrypted, true)
+	if cpkInfo != nil {
+		_assert.EqualValues(cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
+	}
+	if cpkScopeInfo != nil {
+		_assert.EqualValues(cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
+	}
+	return
+}
+
+func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, container ContainerClient,
+	sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient PageBlobClient) {
+	pbClient = getPageBlobClient(pageBlobName, container)
+
+	createPageBlobOptions := CreatePageBlobOptions{
+		CpkInfo:      cpkInfo,
+		CpkScopeInfo: cpkScopeInfo,
+	}
+	resp, err := pbClient.Create(ctx, sizeInBytes, &createPageBlobOptions)
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 201)
+	return
 }
 
 // getRequiredEnv gets an environment variable by name and returns an error if it is not found

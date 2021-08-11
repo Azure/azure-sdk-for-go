@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:41 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:15:46 GMT
+      - Wed, 11 Aug 2021 10:04:39 GMT
       Etag:
-      - '"0x8D934A5EB51B890"'
+      - '"0x8D95CAF6F52B618"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f76ca9f-001e-0006-688e-66c1d9000000
+      - 5a0c8e07-d01e-000f-5598-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -56,9 +56,9 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:41 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue/gotestblobblobdeleteifnonematchtrue
     method: PUT
   response:
@@ -69,23 +69,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Mon, 21 Jun 2021 11:15:46 GMT
+      - Wed, 11 Aug 2021 10:04:39 GMT
       Etag:
-      - '"0x8D934A5EB7729AC"'
+      - '"0x8D95CAF6F77B9F0"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 1f76cafb-001e-0006-3c8e-66c1d9000000
+      - 5a0c8e64-d01e-000f-2298-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-06-21T11:15:47.4339244Z"
+      - "2021-08-11T10:04:40.8795400Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,9 +101,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:41 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue/gotestblobblobdeleteifnonematchtrue
     method: HEAD
   response:
@@ -118,11 +118,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Etag:
-      - '"0x8D934A5EB7729AC"'
+      - '"0x8D95CAF6F77B9F0"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -132,7 +132,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -140,13 +140,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 1f76cb92-001e-0006-3d8e-66c1d9000000
+      - 5a0c8ed7-d01e-000f-0398-8edb57000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-06-21T11:15:47.4339244Z"
+      - "2021-08-11T10:04:40.8795400Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -162,9 +162,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:42 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue/gotestblobblobdeleteifnonematchtrue?comp=metadata
     method: PUT
   response:
@@ -173,21 +173,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Etag:
-      - '"0x8D934A5EBC07759"'
+      - '"0x8D95CAF6FC0B95A"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:41 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f76cc00-001e-0006-1f8e-66c1d9000000
+      - 5a0c8f36-d01e-000f-5398-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-06-21T11:15:47.9153257Z"
+      - "2021-08-11T10:04:41.3579370Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -200,14 +200,14 @@ interactions:
       Authorization:
       - sanitized
       If-None-Match:
-      - '"0x8D934A5EB7729AC"'
+      - '"0x8D95CAF6F77B9F0"'
       User-Agent:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:48 GMT
+      - Wed, 11 Aug 2021 10:04:42 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue/gotestblobblobdeleteifnonematchtrue
     method: DELETE
   response:
@@ -216,15 +216,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Delete-Type-Permanent:
       - "false"
       X-Ms-Request-Id:
-      - 1f76cc6d-001e-0006-7f8e-66c1d9000000
+      - 5a0c8fa2-d01e-000f-3298-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""
@@ -240,24 +240,24 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:48 GMT
+      - Wed, 11 Aug 2021 10:04:42 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue/gotestblobblobdeleteifnonematchtrue
     method: HEAD
   response:
     body: ""
     headers:
       Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobNotFound
       X-Ms-Request-Id:
-      - 1f76ccf7-001e-0006-768e-66c1d9000000
+      - 5a0c8ffd-d01e-000f-7b98-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 404 The specified blob does not exist.
     code: 404
     duration: ""
@@ -273,9 +273,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:15:48 GMT
+      - Wed, 11 Aug 2021 10:04:42 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeleteifnonematchtrue?restype=container
     method: DELETE
   response:
@@ -284,13 +284,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:15:47 GMT
+      - Wed, 11 Aug 2021 10:04:41 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f76cd6b-001e-0006-5a8e-66c1d9000000
+      - 5a0c9087-d01e-000f-6b98-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""

@@ -66,7 +66,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	defer deleteContainer(_assert, containerClient)
 
 	// set up abClient to test
-	abClient := containerClient.NewAppendBlobURL(generateBlobName(testName))
+	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 	resp, err := abClient.Create(context.Background(), nil)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
@@ -76,7 +76,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	appendBlockOptions := AppendBlockOptions{
-		TransactionalContentMD5: &contentMD5,
+		TransactionalContentMD5: contentMD5,
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	_assert.Nil(err)
@@ -86,7 +86,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	_assert.NotNil(appendResp.ETag)
 	_assert.NotNil(appendResp.LastModified)
 	_assert.Equal((*appendResp.LastModified).IsZero(), false)
-	_assert.EqualValues(*appendResp.ContentMD5, contentMD5)
+	_assert.EqualValues(appendResp.ContentMD5, contentMD5)
 	_assert.NotNil(appendResp.RequestID)
 	_assert.NotNil(appendResp.Version)
 	_assert.NotNil(appendResp.Date)
@@ -96,7 +96,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	readerToBody, body = getRandomDataAndReader(1024)
 	_, badMD5 := getRandomDataAndReader(16)
 	appendBlockOptions = AppendBlockOptions{
-		TransactionalContentMD5: &badMD5,
+		TransactionalContentMD5: badMD5,
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	_assert.NotNil(err)
@@ -120,8 +120,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
@@ -182,7 +182,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_assert.NotNil(appendFromURLResp.LastModified)
 	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
 	_assert.NotNil(appendFromURLResp.ContentMD5)
-	_assert.EqualValues(*appendFromURLResp.ContentMD5, contentMD5[:])
+	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5[:])
 	_assert.NotNil(appendFromURLResp.RequestID)
 	_assert.NotNil(appendFromURLResp.Version)
 	_assert.NotNil(appendFromURLResp.Date)
@@ -214,8 +214,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
@@ -266,7 +266,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Offset:           &offset,
 		Count:            &count,
-		SourceContentMD5: &contentMD5,
+		SourceContentMD5: contentMD5,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_assert.Nil(err)
@@ -277,7 +277,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_assert.NotNil(appendFromURLResp.LastModified)
 	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
 	_assert.NotNil(appendFromURLResp.ContentMD5)
-	_assert.EqualValues(*appendFromURLResp.ContentMD5, contentMD5)
+	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
 	_assert.NotNil(appendFromURLResp.RequestID)
 	_assert.NotNil(appendFromURLResp.Version)
 	_assert.NotNil(appendFromURLResp.Date)
@@ -295,7 +295,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	appendBlockURLOptions = AppendBlockURLOptions{
 		Offset:           &offset,
 		Count:            &count,
-		SourceContentMD5: &badMD5,
+		SourceContentMD5: badMD5,
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_assert.NotNil(err)
@@ -319,7 +319,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataNonEmpty() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	_, err = abClient.Create(ctx, &CreateAppendBlobOptions{
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 	})
 	_assert.Nil(err)
 
@@ -346,7 +346,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataEmpty() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_assert.Nil(err)
@@ -373,7 +373,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendMetadataInvalid() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		Metadata: &map[string]string{"In valid!": "bar"},
+		Metadata: map[string]string{"In valid!": "bar"},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_assert.NotNil(err)
@@ -442,7 +442,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -481,7 +481,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -520,7 +520,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -559,7 +559,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -592,7 +592,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -623,7 +623,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: to.StringPtr("garbage"),
@@ -655,7 +655,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchTrue() {
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -688,7 +688,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
+		Metadata:        basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -1038,7 +1038,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNegOne() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	appendPosition := int64(-1)
@@ -1056,7 +1056,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchZero() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
-////	defer deleteContainer(containerClient)
+////	defer deleteContainer(_assert, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
 ////	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored

@@ -7,6 +7,8 @@
 
 package azblob
 
+const telemetryInfo = "azsdk-go-generated/<version>"
+
 type AccessTier string
 
 const (
@@ -124,17 +126,17 @@ func (c BlobExpiryOptions) ToPtr() *BlobExpiryOptions {
 type BlobType string
 
 const (
-	BlockBlob  BlobType = "BlockBlob"
-	PageBlob   BlobType = "PageBlob"
-	AppendBlob BlobType = "AppendBlob"
+	BlobTypeBlockBlob  BlobType = "BlockBlob"
+	BlobTypePageBlob   BlobType = "PageBlob"
+	BlobTypeAppendBlob BlobType = "AppendBlob"
 )
 
 // PossibleBlobTypeValues returns the possible values for the BlobType const type.
 func PossibleBlobTypeValues() []BlobType {
 	return []BlobType{
-		BlockBlob,
-		PageBlob,
-		AppendBlob,
+		BlobTypeBlockBlob,
+		BlobTypePageBlob,
+		BlobTypeAppendBlob,
 	}
 }
 
@@ -146,17 +148,17 @@ func (c BlobType) ToPtr() *BlobType {
 type BlockListType string
 
 const (
-	BlockListCommitted   BlockListType = "committed"
-	BlockListUncommitted BlockListType = "uncommitted"
-	BlockListAll         BlockListType = "all"
+	BlockListTypeCommitted   BlockListType = "committed"
+	BlockListTypeUncommitted BlockListType = "uncommitted"
+	BlockListTypeAll         BlockListType = "all"
 )
 
 // PossibleBlockListTypeValues returns the possible values for the BlockListType const type.
 func PossibleBlockListTypeValues() []BlockListType {
 	return []BlockListType{
-		BlockListCommitted,
-		BlockListUncommitted,
-		BlockListAll,
+		BlockListTypeCommitted,
+		BlockListTypeUncommitted,
+		BlockListTypeAll,
 	}
 }
 
@@ -165,136 +167,136 @@ func (c BlockListType) ToPtr() *BlockListType {
 	return &c
 }
 
-type CopyStatus string
+type CopyStatusType string
 
 const (
-	CopyStatusPending CopyStatus = "pending"
-	CopyStatusSuccess CopyStatus = "success"
-	CopyStatusAborted CopyStatus = "aborted"
-	CopyStatusFailed  CopyStatus = "failed"
+	CopyStatusTypePending CopyStatusType = "pending"
+	CopyStatusTypeSuccess CopyStatusType = "success"
+	CopyStatusTypeAborted CopyStatusType = "aborted"
+	CopyStatusTypeFailed  CopyStatusType = "failed"
 )
 
-// PossibleCopyStatusValues returns the possible values for the CopyStatus const type.
-func PossibleCopyStatusValues() []CopyStatus {
-	return []CopyStatus{
-		CopyStatusPending,
-		CopyStatusSuccess,
-		CopyStatusAborted,
-		CopyStatusFailed,
+// PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
+func PossibleCopyStatusTypeValues() []CopyStatusType {
+	return []CopyStatusType{
+		CopyStatusTypePending,
+		CopyStatusTypeSuccess,
+		CopyStatusTypeAborted,
+		CopyStatusTypeFailed,
 	}
 }
 
-// ToPtr returns a *CopyStatus pointing to the current value.
-func (c CopyStatus) ToPtr() *CopyStatus {
+// ToPtr returns a *CopyStatusType pointing to the current value.
+func (c CopyStatusType) ToPtr() *CopyStatusType {
 	return &c
 }
 
-type DeleteSnapshotsOption string
+type DeleteSnapshotsOptionType string
 
 const (
-	DeleteSnapshotsOptionInclude DeleteSnapshotsOption = "include"
-	DeleteSnapshotsOptionOnly    DeleteSnapshotsOption = "only"
+	DeleteSnapshotsOptionTypeInclude DeleteSnapshotsOptionType = "include"
+	DeleteSnapshotsOptionTypeOnly    DeleteSnapshotsOptionType = "only"
 )
 
-// PossibleDeleteSnapshotsOptionValues returns the possible values for the DeleteSnapshotsOption const type.
-func PossibleDeleteSnapshotsOptionValues() []DeleteSnapshotsOption {
-	return []DeleteSnapshotsOption{
-		DeleteSnapshotsOptionInclude,
-		DeleteSnapshotsOptionOnly,
+// PossibleDeleteSnapshotsOptionTypeValues returns the possible values for the DeleteSnapshotsOptionType const type.
+func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
+	return []DeleteSnapshotsOptionType{
+		DeleteSnapshotsOptionTypeInclude,
+		DeleteSnapshotsOptionTypeOnly,
 	}
 }
 
-// ToPtr returns a *DeleteSnapshotsOption pointing to the current value.
-func (c DeleteSnapshotsOption) ToPtr() *DeleteSnapshotsOption {
+// ToPtr returns a *DeleteSnapshotsOptionType pointing to the current value.
+func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
 	return &c
 }
 
-// GeoReplicationStatus - The status of the secondary location
-type GeoReplicationStatus string
+// GeoReplicationStatusType - The status of the secondary location
+type GeoReplicationStatusType string
 
 const (
-	GeoReplicationStatusBootstrap   GeoReplicationStatus = "bootstrap"
-	GeoReplicationStatusLive        GeoReplicationStatus = "live"
-	GeoReplicationStatusUnavailable GeoReplicationStatus = "unavailable"
+	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
+	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
+	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
 )
 
-// PossibleGeoReplicationStatusValues returns the possible values for the GeoReplicationStatus const type.
-func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
-	return []GeoReplicationStatus{
-		GeoReplicationStatusBootstrap,
-		GeoReplicationStatusLive,
-		GeoReplicationStatusUnavailable,
+// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
+func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
+	return []GeoReplicationStatusType{
+		GeoReplicationStatusTypeBootstrap,
+		GeoReplicationStatusTypeLive,
+		GeoReplicationStatusTypeUnavailable,
 	}
 }
 
-// ToPtr returns a *GeoReplicationStatus pointing to the current value.
-func (c GeoReplicationStatus) ToPtr() *GeoReplicationStatus {
+// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
+func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
 	return &c
 }
 
-type LeaseDuration string
+type LeaseDurationType string
 
 const (
-	LeaseDurationInfinite LeaseDuration = "infinite"
-	LeaseDurationFixed    LeaseDuration = "fixed"
+	LeaseDurationTypeInfinite LeaseDurationType = "infinite"
+	LeaseDurationTypeFixed    LeaseDurationType = "fixed"
 )
 
-// PossibleLeaseDurationValues returns the possible values for the LeaseDuration const type.
-func PossibleLeaseDurationValues() []LeaseDuration {
-	return []LeaseDuration{
-		LeaseDurationInfinite,
-		LeaseDurationFixed,
+// PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
+func PossibleLeaseDurationTypeValues() []LeaseDurationType {
+	return []LeaseDurationType{
+		LeaseDurationTypeInfinite,
+		LeaseDurationTypeFixed,
 	}
 }
 
-// ToPtr returns a *LeaseDuration pointing to the current value.
-func (c LeaseDuration) ToPtr() *LeaseDuration {
+// ToPtr returns a *LeaseDurationType pointing to the current value.
+func (c LeaseDurationType) ToPtr() *LeaseDurationType {
 	return &c
 }
 
-type LeaseState string
+type LeaseStateType string
 
 const (
-	LeaseStateAvailable LeaseState = "available"
-	LeaseStateLeased    LeaseState = "leased"
-	LeaseStateExpired   LeaseState = "expired"
-	LeaseStateBreaking  LeaseState = "breaking"
-	LeaseStateBroken    LeaseState = "broken"
+	LeaseStateTypeAvailable LeaseStateType = "available"
+	LeaseStateTypeLeased    LeaseStateType = "leased"
+	LeaseStateTypeExpired   LeaseStateType = "expired"
+	LeaseStateTypeBreaking  LeaseStateType = "breaking"
+	LeaseStateTypeBroken    LeaseStateType = "broken"
 )
 
-// PossibleLeaseStateValues returns the possible values for the LeaseState const type.
-func PossibleLeaseStateValues() []LeaseState {
-	return []LeaseState{
-		LeaseStateAvailable,
-		LeaseStateLeased,
-		LeaseStateExpired,
-		LeaseStateBreaking,
-		LeaseStateBroken,
+// PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
+func PossibleLeaseStateTypeValues() []LeaseStateType {
+	return []LeaseStateType{
+		LeaseStateTypeAvailable,
+		LeaseStateTypeLeased,
+		LeaseStateTypeExpired,
+		LeaseStateTypeBreaking,
+		LeaseStateTypeBroken,
 	}
 }
 
-// ToPtr returns a *LeaseState pointing to the current value.
-func (c LeaseState) ToPtr() *LeaseState {
+// ToPtr returns a *LeaseStateType pointing to the current value.
+func (c LeaseStateType) ToPtr() *LeaseStateType {
 	return &c
 }
 
-type LeaseStatus string
+type LeaseStatusType string
 
 const (
-	LeaseStatusLocked   LeaseStatus = "locked"
-	LeaseStatusUnlocked LeaseStatus = "unlocked"
+	LeaseStatusTypeLocked   LeaseStatusType = "locked"
+	LeaseStatusTypeUnlocked LeaseStatusType = "unlocked"
 )
 
-// PossibleLeaseStatusValues returns the possible values for the LeaseStatus const type.
-func PossibleLeaseStatusValues() []LeaseStatus {
-	return []LeaseStatus{
-		LeaseStatusLocked,
-		LeaseStatusUnlocked,
+// PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
+func PossibleLeaseStatusTypeValues() []LeaseStatusType {
+	return []LeaseStatusType{
+		LeaseStatusTypeLocked,
+		LeaseStatusTypeUnlocked,
 	}
 }
 
-// ToPtr returns a *LeaseStatus pointing to the current value.
-func (c LeaseStatus) ToPtr() *LeaseStatus {
+// ToPtr returns a *LeaseStatusType pointing to the current value.
+func (c LeaseStatusType) ToPtr() *LeaseStatusType {
 	return &c
 }
 
@@ -328,23 +330,23 @@ func (c ListBlobsIncludeItem) ToPtr() *ListBlobsIncludeItem {
 	return &c
 }
 
-type ListContainersInclude string
+type ListContainersIncludeType string
 
 const (
-	ListContainersIncludeMetadata ListContainersInclude = "metadata"
-	ListContainersIncludeDeleted  ListContainersInclude = "deleted"
+	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
+	ListContainersIncludeTypeDeleted  ListContainersIncludeType = "deleted"
 )
 
-// PossibleListContainersIncludeValues returns the possible values for the ListContainersInclude const type.
-func PossibleListContainersIncludeValues() []ListContainersInclude {
-	return []ListContainersInclude{
-		ListContainersIncludeMetadata,
-		ListContainersIncludeDeleted,
+// PossibleListContainersIncludeTypeValues returns the possible values for the ListContainersIncludeType const type.
+func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
+	return []ListContainersIncludeType{
+		ListContainersIncludeTypeMetadata,
+		ListContainersIncludeTypeDeleted,
 	}
 }
 
-// ToPtr returns a *ListContainersInclude pointing to the current value.
-func (c ListContainersInclude) ToPtr() *ListContainersInclude {
+// ToPtr returns a *ListContainersIncludeType pointing to the current value.
+func (c ListContainersIncludeType) ToPtr() *ListContainersIncludeType {
 	return &c
 }
 
@@ -406,23 +408,23 @@ func (c PremiumPageBlobAccessTier) ToPtr() *PremiumPageBlobAccessTier {
 	return &c
 }
 
-type PublicAccess string
+type PublicAccessType string
 
 const (
-	PublicAccessBlob      PublicAccess = "blob"
-	PublicAccessContainer PublicAccess = "container"
+	PublicAccessTypeBlob      PublicAccessType = "blob"
+	PublicAccessTypeContainer PublicAccessType = "container"
 )
 
-// PossiblePublicAccessTypeValues returns the possible values for the PublicAccess const type.
-func PossiblePublicAccessTypeValues() []PublicAccess {
-	return []PublicAccess{
-		PublicAccessBlob,
-		PublicAccessContainer,
+// PossiblePublicAccessTypeValues returns the possible values for the PublicAccessType const type.
+func PossiblePublicAccessTypeValues() []PublicAccessType {
+	return []PublicAccessType{
+		PublicAccessTypeBlob,
+		PublicAccessTypeContainer,
 	}
 }
 
-// ToPtr returns a *PublicAccess pointing to the current value.
-func (c PublicAccess) ToPtr() *PublicAccess {
+// ToPtr returns a *PublicAccessType pointing to the current value.
+func (c PublicAccessType) ToPtr() *PublicAccessType {
 	return &c
 }
 
@@ -432,6 +434,7 @@ type QueryFormatType string
 const (
 	QueryFormatTypeDelimited QueryFormatType = "delimited"
 	QueryFormatTypeJSON      QueryFormatType = "json"
+	QueryFormatTypeArrow     QueryFormatType = "arrow"
 )
 
 // PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
@@ -439,6 +442,7 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 	return []QueryFormatType{
 		QueryFormatTypeDelimited,
 		QueryFormatTypeJSON,
+		QueryFormatTypeArrow,
 	}
 }
 
@@ -494,25 +498,25 @@ func (c SKUName) ToPtr() *SKUName {
 	return &c
 }
 
-type SequenceNumberAction string
+type SequenceNumberActionType string
 
 const (
-	SequenceNumberActionMax       SequenceNumberAction = "max"
-	SequenceNumberActionUpdate    SequenceNumberAction = "update"
-	SequenceNumberActionIncrement SequenceNumberAction = "increment"
+	SequenceNumberActionTypeMax       SequenceNumberActionType = "max"
+	SequenceNumberActionTypeUpdate    SequenceNumberActionType = "update"
+	SequenceNumberActionTypeIncrement SequenceNumberActionType = "increment"
 )
 
-// PossibleSequenceNumberActionValues returns the possible values for the SequenceNumberAction const type.
-func PossibleSequenceNumberActionValues() []SequenceNumberAction {
-	return []SequenceNumberAction{
-		SequenceNumberActionMax,
-		SequenceNumberActionUpdate,
-		SequenceNumberActionIncrement,
+// PossibleSequenceNumberActionTypeValues returns the possible values for the SequenceNumberActionType const type.
+func PossibleSequenceNumberActionTypeValues() []SequenceNumberActionType {
+	return []SequenceNumberActionType{
+		SequenceNumberActionTypeMax,
+		SequenceNumberActionTypeUpdate,
+		SequenceNumberActionTypeIncrement,
 	}
 }
 
-// ToPtr returns a *SequenceNumberAction pointing to the current value.
-func (c SequenceNumberAction) ToPtr() *SequenceNumberAction {
+// ToPtr returns a *SequenceNumberActionType pointing to the current value.
+func (c SequenceNumberActionType) ToPtr() *SequenceNumberActionType {
 	return &c
 }
 
@@ -539,6 +543,7 @@ const (
 	StorageErrorCodeBlobNotFound                                      StorageErrorCode = "BlobNotFound"
 	StorageErrorCodeBlobOverwritten                                   StorageErrorCode = "BlobOverwritten"
 	StorageErrorCodeBlobTierInadequateForContentLength                StorageErrorCode = "BlobTierInadequateForContentLength"
+	StorageErrorCodeBlobUsesCustomerSpecifiedEncryption               StorageErrorCode = "BlobUsesCustomerSpecifiedEncryption"
 	StorageErrorCodeBlockCountExceedsLimit                            StorageErrorCode = "BlockCountExceedsLimit"
 	StorageErrorCodeBlockListTooLong                                  StorageErrorCode = "BlockListTooLong"
 	StorageErrorCodeCannotChangeToLowerTier                           StorageErrorCode = "CannotChangeToLowerTier"
@@ -656,6 +661,7 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeBlobNotFound,
 		StorageErrorCodeBlobOverwritten,
 		StorageErrorCodeBlobTierInadequateForContentLength,
+		StorageErrorCodeBlobUsesCustomerSpecifiedEncryption,
 		StorageErrorCodeBlockCountExceedsLimit,
 		StorageErrorCodeBlockListTooLong,
 		StorageErrorCodeCannotChangeToLowerTier,

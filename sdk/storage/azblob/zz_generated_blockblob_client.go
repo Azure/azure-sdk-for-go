@@ -10,6 +10,7 @@ package azblob
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"strconv"
@@ -27,6 +28,7 @@ type blockBlobClient struct {
 // this by specifying whether to commit a block from the committed block list or from the uncommitted block list, or to commit the most recently uploaded
 // version of the block, whichever list it may
 // belong to.
+// If the operation fails it returns the *StorageError error type.
 func (client *blockBlobClient) CommitBlockList(ctx context.Context, blocks BlockLookupList, blockBlobCommitBlockListOptions *BlockBlobCommitBlockListOptions, blobHTTPHeaders *BlobHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlockBlobCommitBlockListResponse, error) {
 	req, err := client.commitBlockListCreateRequest(ctx, blocks, blockBlobCommitBlockListOptions, blobHTTPHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 	if err != nil {
@@ -68,16 +70,16 @@ func (client *blockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Header.Set("x-ms-blob-content-language", *blobHTTPHeaders.BlobContentLanguage)
 	}
 	if blobHTTPHeaders != nil && blobHTTPHeaders.BlobContentMD5 != nil {
-		req.Header.Set("x-ms-blob-content-md5", base64.StdEncoding.EncodeToString(*blobHTTPHeaders.BlobContentMD5))
+		req.Header.Set("x-ms-blob-content-md5", base64.StdEncoding.EncodeToString(blobHTTPHeaders.BlobContentMD5))
 	}
 	if blockBlobCommitBlockListOptions != nil && blockBlobCommitBlockListOptions.TransactionalContentMD5 != nil {
-		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(*blockBlobCommitBlockListOptions.TransactionalContentMD5))
+		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(blockBlobCommitBlockListOptions.TransactionalContentMD5))
 	}
 	if blockBlobCommitBlockListOptions != nil && blockBlobCommitBlockListOptions.TransactionalContentCRC64 != nil {
-		req.Header.Set("x-ms-content-crc64", base64.StdEncoding.EncodeToString(*blockBlobCommitBlockListOptions.TransactionalContentCRC64))
+		req.Header.Set("x-ms-content-crc64", base64.StdEncoding.EncodeToString(blockBlobCommitBlockListOptions.TransactionalContentCRC64))
 	}
 	if blockBlobCommitBlockListOptions != nil && blockBlobCommitBlockListOptions.Metadata != nil {
-		for k, v := range *blockBlobCommitBlockListOptions.Metadata {
+		for k, v := range blockBlobCommitBlockListOptions.Metadata {
 			req.Header.Set("x-ms-meta-"+k, v)
 		}
 	}
@@ -117,7 +119,7 @@ func (client *blockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if blockBlobCommitBlockListOptions != nil && blockBlobCommitBlockListOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobCommitBlockListOptions.RequestID)
 	}
@@ -146,14 +148,14 @@ func (client *blockBlobClient) commitBlockListHandleResponse(resp *azcore.Respon
 		if err != nil {
 			return BlockBlobCommitBlockListResponse{}, err
 		}
-		result.ContentMD5 = &contentMD5
+		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return BlockBlobCommitBlockListResponse{}, err
 		}
-		result.XMSContentCRC64 = &xMSContentCRC64
+		result.XMSContentCRC64 = xMSContentCRC64
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -192,14 +194,19 @@ func (client *blockBlobClient) commitBlockListHandleResponse(resp *azcore.Respon
 
 // commitBlockListHandleError handles the CommitBlockList error response.
 func (client *blockBlobClient) commitBlockListHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
+// If the operation fails it returns the *StorageError error type.
 func (client *blockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, blockBlobGetBlockListOptions *BlockBlobGetBlockListOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (BlockListResponse, error) {
 	req, err := client.getBlockListCreateRequest(ctx, listType, blockBlobGetBlockListOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
@@ -238,7 +245,7 @@ func (client *blockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if blockBlobGetBlockListOptions != nil && blockBlobGetBlockListOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobGetBlockListOptions.RequestID)
 	}
@@ -294,14 +301,19 @@ func (client *blockBlobClient) getBlockListHandleResponse(resp *azcore.Response)
 
 // getBlockListHandleError handles the GetBlockList error response.
 func (client *blockBlobClient) getBlockListHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
+// If the operation fails it returns the *StorageError error type.
 func (client *blockBlobClient) StageBlock(ctx context.Context, blockID string, contentLength int64, body azcore.ReadSeekCloser, blockBlobStageBlockOptions *BlockBlobStageBlockOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (BlockBlobStageBlockResponse, error) {
 	req, err := client.stageBlockCreateRequest(ctx, blockID, contentLength, body, blockBlobStageBlockOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo)
 	if err != nil {
@@ -333,10 +345,10 @@ func (client *blockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	if blockBlobStageBlockOptions != nil && blockBlobStageBlockOptions.TransactionalContentMD5 != nil {
-		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(*blockBlobStageBlockOptions.TransactionalContentMD5))
+		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(blockBlobStageBlockOptions.TransactionalContentMD5))
 	}
 	if blockBlobStageBlockOptions != nil && blockBlobStageBlockOptions.TransactionalContentCRC64 != nil {
-		req.Header.Set("x-ms-content-crc64", base64.StdEncoding.EncodeToString(*blockBlobStageBlockOptions.TransactionalContentCRC64))
+		req.Header.Set("x-ms-content-crc64", base64.StdEncoding.EncodeToString(blockBlobStageBlockOptions.TransactionalContentCRC64))
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
@@ -353,7 +365,7 @@ func (client *blockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
 	}
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if blockBlobStageBlockOptions != nil && blockBlobStageBlockOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobStageBlockOptions.RequestID)
 	}
@@ -369,7 +381,7 @@ func (client *blockBlobClient) stageBlockHandleResponse(resp *azcore.Response) (
 		if err != nil {
 			return BlockBlobStageBlockResponse{}, err
 		}
-		result.ContentMD5 = &contentMD5
+		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -392,7 +404,7 @@ func (client *blockBlobClient) stageBlockHandleResponse(resp *azcore.Response) (
 		if err != nil {
 			return BlockBlobStageBlockResponse{}, err
 		}
-		result.XMSContentCRC64 = &xMSContentCRC64
+		result.XMSContentCRC64 = xMSContentCRC64
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
@@ -412,14 +424,19 @@ func (client *blockBlobClient) stageBlockHandleResponse(resp *azcore.Response) (
 
 // stageBlockHandleError handles the StageBlock error response.
 func (client *blockBlobClient) stageBlockHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // StageBlockFromURL - The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
+// If the operation fails it returns the *StorageError error type.
 func (client *blockBlobClient) StageBlockFromURL(ctx context.Context, blockID string, contentLength int64, sourceURL string, blockBlobStageBlockFromURLOptions *BlockBlobStageBlockFromURLOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, leaseAccessConditions *LeaseAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (BlockBlobStageBlockFromURLResponse, error) {
 	req, err := client.stageBlockFromURLCreateRequest(ctx, blockID, contentLength, sourceURL, blockBlobStageBlockFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions)
 	if err != nil {
@@ -455,10 +472,10 @@ func (client *blockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 		req.Header.Set("x-ms-source-range", *blockBlobStageBlockFromURLOptions.SourceRange)
 	}
 	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.SourceContentMD5 != nil {
-		req.Header.Set("x-ms-source-content-md5", base64.StdEncoding.EncodeToString(*blockBlobStageBlockFromURLOptions.SourceContentMD5))
+		req.Header.Set("x-ms-source-content-md5", base64.StdEncoding.EncodeToString(blockBlobStageBlockFromURLOptions.SourceContentMD5))
 	}
-	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.SourceContentCRC64 != nil {
-		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*blockBlobStageBlockFromURLOptions.SourceContentCRC64))
+	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.SourceContentcrc64 != nil {
+		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(blockBlobStageBlockFromURLOptions.SourceContentcrc64))
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
 		req.Header.Set("x-ms-encryption-key", *cpkInfo.EncryptionKey)
@@ -487,7 +504,7 @@ func (client *blockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Header.Set("x-ms-source-if-none-match", *sourceModifiedAccessConditions.SourceIfNoneMatch)
 	}
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobStageBlockFromURLOptions.RequestID)
 	}
@@ -503,14 +520,14 @@ func (client *blockBlobClient) stageBlockFromURLHandleResponse(resp *azcore.Resp
 		if err != nil {
 			return BlockBlobStageBlockFromURLResponse{}, err
 		}
-		result.ContentMD5 = &contentMD5
+		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return BlockBlobStageBlockFromURLResponse{}, err
 		}
-		result.XMSContentCRC64 = &xMSContentCRC64
+		result.XMSContentCRC64 = xMSContentCRC64
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -546,17 +563,22 @@ func (client *blockBlobClient) stageBlockFromURLHandleResponse(resp *azcore.Resp
 
 // stageBlockFromURLHandleError handles the StageBlockFromURL error response.
 func (client *blockBlobClient) stageBlockFromURLHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata
 // on the blob. Partial updates are not supported with Put
 // Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use
 // the Put Block List operation.
+// If the operation fails it returns the *StorageError error type.
 func (client *blockBlobClient) Upload(ctx context.Context, contentLength int64, body azcore.ReadSeekCloser, blockBlobUploadOptions *BlockBlobUploadOptions, blobHTTPHeaders *BlobHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlockBlobUploadResponse, error) {
 	req, err := client.uploadCreateRequest(ctx, contentLength, body, blockBlobUploadOptions, blobHTTPHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 	if err != nil {
@@ -586,7 +608,7 @@ func (client *blockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("x-ms-blob-type", "BlockBlob")
 	if blockBlobUploadOptions != nil && blockBlobUploadOptions.TransactionalContentMD5 != nil {
-		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(*blockBlobUploadOptions.TransactionalContentMD5))
+		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(blockBlobUploadOptions.TransactionalContentMD5))
 	}
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	if blobHTTPHeaders != nil && blobHTTPHeaders.BlobContentType != nil {
@@ -599,13 +621,13 @@ func (client *blockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Header.Set("x-ms-blob-content-language", *blobHTTPHeaders.BlobContentLanguage)
 	}
 	if blobHTTPHeaders != nil && blobHTTPHeaders.BlobContentMD5 != nil {
-		req.Header.Set("x-ms-blob-content-md5", base64.StdEncoding.EncodeToString(*blobHTTPHeaders.BlobContentMD5))
+		req.Header.Set("x-ms-blob-content-md5", base64.StdEncoding.EncodeToString(blobHTTPHeaders.BlobContentMD5))
 	}
 	if blobHTTPHeaders != nil && blobHTTPHeaders.BlobCacheControl != nil {
 		req.Header.Set("x-ms-blob-cache-control", *blobHTTPHeaders.BlobCacheControl)
 	}
 	if blockBlobUploadOptions != nil && blockBlobUploadOptions.Metadata != nil {
-		for k, v := range *blockBlobUploadOptions.Metadata {
+		for k, v := range blockBlobUploadOptions.Metadata {
 			req.Header.Set("x-ms-meta-"+k, v)
 		}
 	}
@@ -645,7 +667,7 @@ func (client *blockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2019-12-12")
+	req.Header.Set("x-ms-version", "2020-02-10")
 	if blockBlobUploadOptions != nil && blockBlobUploadOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobUploadOptions.RequestID)
 	}
@@ -674,7 +696,7 @@ func (client *blockBlobClient) uploadHandleResponse(resp *azcore.Response) (Bloc
 		if err != nil {
 			return BlockBlobUploadResponse{}, err
 		}
-		result.ContentMD5 = &contentMD5
+		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -713,9 +735,13 @@ func (client *blockBlobClient) uploadHandleResponse(resp *azcore.Response) (Bloc
 
 // uploadHandleError handles the Upload error response.
 func (client *blockBlobClient) uploadHandleError(resp *azcore.Response) error {
-	var err StorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := StorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

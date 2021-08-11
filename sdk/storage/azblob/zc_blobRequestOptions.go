@@ -11,7 +11,7 @@ import (
 type DeleteBlobOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
-	DeleteSnapshots *DeleteSnapshotsOption
+	DeleteSnapshots *DeleteSnapshotsOptionType
 
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -131,7 +131,7 @@ func (o *SetBlobMetadataOptions) pointers() (leaseAccessConditions *LeaseAccessC
 }
 
 type CreateBlobSnapshotOptions struct {
-	Metadata                 *map[string]string
+	Metadata                 map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions
 	CpkInfo                  *CpkInfo
 	CpkScopeInfo             *CpkScopeInfo
@@ -158,7 +158,7 @@ type StartCopyBlobOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *map[string]string
+	Metadata map[string]string
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 	// Overrides the sealed state of the destination blob. Service version 2019-12-12 and newer.
@@ -220,7 +220,7 @@ func serializeBlobTags(blobTagsMap *map[string]string) *BlobTags {
 		newKey, newVal := key, val
 		blobTagSet = append(blobTagSet, &BlobTag{Key: &newKey, Value: &newVal})
 	}
-	return &BlobTags{BlobTagSet: &blobTagSet}
+	return &BlobTags{BlobTagSet: blobTagSet}
 }
 
 type SetTagsBlobOptions struct {
@@ -232,9 +232,9 @@ type SetTagsBlobOptions struct {
 	// specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
 	VersionID *string
 	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 *[]byte
+	TransactionalContentCRC64 []byte
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 
 	BlobTagsMap *map[string]string
 

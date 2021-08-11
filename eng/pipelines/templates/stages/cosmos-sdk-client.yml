@@ -9,6 +9,8 @@ stages:
     jobs:
     - job: Test
       displayName: Download and run Cosmos Emulator
+      
+      steps:
       - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
         parameters:
           StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'

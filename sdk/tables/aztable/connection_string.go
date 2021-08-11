@@ -13,20 +13,27 @@ import (
 
 var ErrConnectionString = errors.New("connection string is either blank or malformed")
 
+// NewTableClientFromConnectionString creates a new TableClient struct from a connection string. The connection
+// string must contain either an account name and account key or an account name and a shared access signature.
 func NewTableClientFromConnectionString(tableName string, connectionString string, options *TableClientOptions) (*TableClient, error) {
+	if options == nil {
+		options = &TableClientOptions{}
+	}
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
-	return NewTableClient(tableName, endpoint, *credential, options)
+	return NewTableClient(tableName, endpoint, credential, options)
 }
 
+// NewTableServiceClientFromConnectionString creates a new TableServiceClient struct from a connection string. The connection
+// string must contain either an account name and account key or an account name and a shared access signature.
 func NewTableServiceClientFromConnectionString(connectionString string, options *TableClientOptions) (*TableServiceClient, error) {
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
-	return NewTableServiceClient(endpoint, *credential, options)
+	return NewTableServiceClient(endpoint, credential, options)
 }
 
 func convertConnStrToMap(connStr string) (map[string]string, error) {
@@ -47,9 +54,14 @@ func convertConnStrToMap(connStr string) (map[string]string, error) {
 	return ret, nil
 }
 
-func parseConnectionString(connStr string) (string, *azcore.Credential, error) {
+// parseConnectionString parses a connection string into a service URL and a SharedKeyCredential or a service url with the
+// SharedAccessSignature combined.
+func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 	var serviceURL string
 	var cred azcore.Credential
+
+	defaultScheme := "https"
+	defaultSuffix := "core.windows.net"
 
 	connStrMap, err := convertConnStrToMap(connStr)
 	if err != nil {
@@ -67,35 +79,33 @@ func parseConnectionString(connStr string) (string, *azcore.Credential, error) {
 
 	if accountName == "" || accountKey == "" {
 		// Try sharedaccesssignature
-		sharedAccessSignature, ok := connStrMap["sharedaccesssignature"]
+		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]
 		if !ok {
-			return serviceURL, nil, ErrConnectionString
+			return "", nil, ErrConnectionString
 		}
-		return sharedAccessSignature, nil, errors.New("a SharedAccessSignature are not supported")
-		// cred = azcore.SharedAccessSignature(sharedAccessSignature)
-		// TODO: fix this when shared access signatures are added.
+		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), nil, nil
 	}
-	defaultProtocol, ok := connStrMap["DefaultEndpointsProtocol"]
+	protocol, ok := connStrMap["DefaultEndpointsProtocol"]
 	if !ok {
-		defaultProtocol = "https"
+		protocol = defaultScheme
 	}
 
-	endpointSuffix, ok := connStrMap["EndpointSuffix"]
+	suffix, ok := connStrMap["EndpointSuffix"]
 	if !ok {
-		endpointSuffix = "core.windows.net"
+		suffix = defaultSuffix
 	}
 
 	tableEndpoint, ok := connStrMap["TableEndpoint"]
 	if ok {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
-		return tableEndpoint, &cred, err
+		return tableEndpoint, cred, err
 	}
-	serviceURL = fmt.Sprintf("%v://%v.table.%v", defaultProtocol, accountName, endpointSuffix)
+	serviceURL = fmt.Sprintf("%v://%v.table.%v", protocol, accountName, suffix)
 
 	cred, err = NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		return "", nil, err
 	}
 
-	return serviceURL, &cred, nil
+	return serviceURL, cred, nil
 }

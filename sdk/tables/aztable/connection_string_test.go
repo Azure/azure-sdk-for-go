@@ -4,49 +4,99 @@
 package aztable
 
 import (
+	"encoding/base64"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func TestConnectionStringParser(t *testing.T) {
-	require := require.New(t)
+func getAccountKey(cred *SharedKeyCredential) string {
+	return base64.StdEncoding.EncodeToString(cred.accountKey.Load().([]byte))
+}
 
+func TestConnectionStringParser(t *testing.T) {
 	connStr := "DefaultEndpointsProtocol=https;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	require.NoError(err)
-	require.Equal(serviceURL, "https://dummyaccount.table.core.windows.net")
-	require.NotNil(cred)
+	require.NoError(t, err)
+	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net")
+	require.NotNil(t, cred)
+
+	sharedKeyCred, ok := cred.(*SharedKeyCredential)
+	require.True(t, ok)
+	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+
+	client, err := NewTableClientFromConnectionString("tableName", connStr, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(&client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.client.con.u, "https://"))
+	require.True(t, strings.Contains(client.client.con.u, "core.windows.net"))
 }
 
 func TestConnectionStringParserHTTP(t *testing.T) {
-	require := require.New(t)
-
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	require.NoError(err)
-	require.Equal(serviceURL, "http://dummyaccount.table.core.windows.net")
-	require.NotNil(cred)
+	require.NoError(t, err)
+	require.Equal(t, serviceURL, "http://dummyaccount.table.core.windows.net")
+	require.NotNil(t, cred)
+
+	sharedKeyCred, ok := cred.(*SharedKeyCredential)
+	require.True(t, ok)
+	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+
+	client, err := NewTableClientFromConnectionString("tableName", connStr, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(&client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.client.con.u, "http://"))
+	require.True(t, strings.Contains(client.client.con.u, "core.windows.net"))
 }
 
 func TestConnectionStringParserBasic(t *testing.T) {
-	require := require.New(t)
-
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	require.NoError(err)
-	require.Equal(serviceURL, "https://dummyaccount.table.core.windows.net")
-	require.NotNil(cred)
+	require.NoError(t, err)
+	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net")
+	require.NotNil(t, cred)
+
+	sharedKeyCred, ok := cred.(*SharedKeyCredential)
+	require.True(t, ok)
+	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+
+	client, err := NewTableClientFromConnectionString("tableName", connStr, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(&client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.client.con.u, "https://"))
+	require.True(t, strings.Contains(client.client.con.u, "core.windows.net"))
 }
 
 func TestConnectionStringParserCustomDomain(t *testing.T) {
-	require := require.New(t)
-
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey;TableEndpoint=www.mydomain.com;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	require.NoError(err)
-	require.Equal(serviceURL, "www.mydomain.com")
-	require.NotNil(cred)
+	require.NoError(t, err)
+	require.Equal(t, serviceURL, "www.mydomain.com")
+	require.NotNil(t, cred)
+
+	sharedKeyCred, ok := cred.(*SharedKeyCredential)
+	require.True(t, ok)
+	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+
+	client, err := NewTableClientFromConnectionString("tableName", connStr, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(&client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.client.con.u, "www."))
+	require.True(t, strings.Contains(client.client.con.u, "mydomain.com"))
 }
 
 func TestConnectionStringParserInvalid(t *testing.T) {
@@ -58,13 +108,12 @@ func TestConnectionStringParserInvalid(t *testing.T) {
 		"=",
 		";",
 		"=;==",
-		"foobar=baz=foo"
+		"foobar=baz=foo",
 	}
-	require := require.New(t)
 
 	for _, badConnStr := range badConnectionStrings {
 		_, _, err := parseConnectionString(badConnStr)
-		require.Error(err)
-		require.Contains(err.Error(), ErrConnectionString.Error())
+		require.Error(t, err)
+		require.Contains(t, err.Error(), ErrConnectionString.Error())
 	}
 }

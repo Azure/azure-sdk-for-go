@@ -3,18 +3,23 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"net/url"
+	"strings"
 
-// clientConnection maintains a Pipeline for the client.
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
+
+// cosmosClientConnection maintains a Pipeline for the client.
 // The Pipeline is build based on the CosmosClientOptions.
-type clientConnection struct {
+type cosmosClientConnection struct {
 	endpoint string
-	pipeline azcore.Pipeline
+	Pipeline azcore.Pipeline
 }
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *clientConnection {
+func newCosmosClientConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *cosmosClientConnection {
 	if options == nil {
 		options = &CosmosClientOptions{}
 	}
@@ -27,15 +32,19 @@ func newConnection(endpoint string, cred azcore.Credential, options *CosmosClien
 	policies = append(policies, options.getSDKInternalPolicies()...)
 	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"none"}}}))
 	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
-	return &clientConnection{endpoint: endpoint, pipeline: azcore.NewPipeline(options.HTTPClient, policies...)}
+	return &cosmosClientConnection{endpoint: endpoint, Pipeline: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
 
-// Endpoint returns the connection's endpoint.
-func (c *clientConnection) Endpoint() string {
-	return c.endpoint
-}
-
-// Pipeline returns the connection's pipeline.
-func (c *clientConnection) Pipeline() azcore.Pipeline {
-	return c.pipeline
+func (cc *cosmosClientConnection) getPath(parentPath string, pathSegment string, id string) string {
+	var completePath strings.Builder
+	parentPathLength := len(parentPath)
+	completePath.Grow(parentPathLength + 2 + len(pathSegment) + len(id))
+	if parentPathLength > 0 {
+		completePath.WriteString(parentPath)
+		completePath.WriteString("/")
+	}
+	completePath.WriteString(pathSegment)
+	completePath.WriteString("/")
+	completePath.WriteString(url.QueryEscape(id))
+	return completePath.String()
 }

@@ -42,6 +42,7 @@ func NewTableServiceClientFromConnectionString(connectionString string, options 
 	return NewTableServiceClient(endpoint, credential, options)
 }
 
+// convertConnStrToMap converts a connection string (in format key1=value1;key2=value2;key3=value3;) into a map of key-value pairs
 func convertConnStrToMap(connStr string) (map[string]string, error) {
 	ret := make(map[string]string)
 	connStr = strings.TrimRight(connStr, ";")

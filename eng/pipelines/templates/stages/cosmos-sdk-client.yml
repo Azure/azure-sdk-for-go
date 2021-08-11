@@ -4,9 +4,8 @@ parameters:
   default: not-specified
   
 stages:
-  - stage: Cosmos Emulator
+  - stage: Emulator
     displayName: Cosmos Emulator
-    - stage: Build
     jobs:
     - job: Test
       displayName: Download and run Cosmos Emulator

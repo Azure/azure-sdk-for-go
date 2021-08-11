@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-var ErrConnectionString = errors.New("connection string is either blank or malformed")
+var ErrConnectionString = errors.New("connection string is either blank or malformed. The expected connection string should contain key value pairs separated by semicolons. For example 'DefaultEndpointsProtocol=https;AccountName=<accountName>;AccountKey=<accountKey>;EndpointSuffix=core.windows.net'")
 
 // NewTableClientFromConnectionString creates a new TableClient struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.

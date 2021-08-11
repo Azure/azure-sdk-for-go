@@ -159,7 +159,6 @@ func TestConnectionStringCosmos(t *testing.T) {
 	require.Equal(t, getAccountKey(sharedKey), "secretkeykey")
 }
 
-
 func TestConnectionStringChinaCloud(t *testing.T) {
 	connStr := "AccountName=dummyaccountname;AccountKey=secretkeykey;DefaultEndpointsProtocol=http;EndpointSuffix=core.chinacloudapi.cn;"
 	serviceURL, cred, err := parseConnectionString(connStr)
@@ -179,7 +178,7 @@ func TestConnectionStringChinaCloud(t *testing.T) {
 	require.Equal(t, getAccountKey(sharedKey), "secretkeykey")
 }
 
-func TestConnectionStringAzurite(t *testing.T)  {
+func TestConnectionStringAzurite(t *testing.T) {
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccountname;AccountKey=secretkeykey;TableEndpoint=http://local-machine:11002/custom/account/path/faketokensignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
 	require.NoError(t, err)

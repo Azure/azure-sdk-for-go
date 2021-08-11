@@ -7,7 +7,7 @@ steps:
       $targetDir = $env:temp
       Write-Host "Downloading and extracting Cosmos DB Emulator - ${{ parameters.EmulatorMsiUrl }}"
       Write-Host "Target Dir: $targetDir"
-      msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn | wait-process
+      & "$env:windir\system32\msiexec.exe" msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn | wait-process
     displayName: Download and Extract Public Cosmos DB Emulator
   - powershell: |
       Write-Host "Deleting Cosmos DB Emulator data"

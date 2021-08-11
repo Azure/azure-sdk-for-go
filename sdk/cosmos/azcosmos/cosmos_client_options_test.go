@@ -28,8 +28,9 @@ func TestGetSDKInternalPolicies(t *testing.T) {
 	}
 }
 
-func TestGetClientConnection(t *testing.T) {
-	connection := newCosmosClientConnection()
+func Test_newCosmosClientConnection(t *testing.T) {
+	cred, _ := NewSharedKeyCredential("someAccount", "someKey")
+	connection := newCosmosClientConnection("https://test.com", cred, &CosmosClientOptions{})
 	if connection == nil {
 		t.Error("Expected connection to be not nil")
 	}

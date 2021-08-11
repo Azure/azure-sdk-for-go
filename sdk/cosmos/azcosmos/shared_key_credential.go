@@ -52,8 +52,13 @@ func (c *SharedKeyCredential) computeHMACSHA256(s string) (base64String string) 
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcore.Request) (string, error) {
-	//TODO - Get resourceType and resourceId from request
-	value := c.buildCanonicalizedAuthHeader(req.Method, "", "", req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+	var opValues cosmosOperationContext
+	value := ""
+
+	if req.OperationValue(&opValues) {
+		value = c.buildCanonicalizedAuthHeader(req.Method, opValues.resourceType, opValues.resourceId, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+	}
+
 	return value, nil
 }
 

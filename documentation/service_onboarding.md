@@ -144,7 +144,7 @@ When you create the first PR for your library you will want to create this PR ag
 ```
 /azp run prepare-pipelines
 ```
-This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` is tested against versions 1.13 and 1.14 on Windows and Linux. All of your future PRs (regardless of whether they are made to `track2-<package>` or another branch) will be tested against these branches. For more information about individual steps that run in the CI pipelines refer to the [documentation here](./eng_sys.md).
+This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` is tested against versions 1.13 and 1.14 on Windows and Linux. All of your future PRs (regardless of whether they are made to `track2-<package>` or another branch) will be tested against these branches. For more information about individual steps that run in the CI pipelines refer to the documentation.
 
 
 ## Advance

@@ -3,7 +3,7 @@
 * [Installing Go](#installing-go)
 * [Create a Client](#create-a-client)
 	* [Documenting Code](#documenting-code)
-    * [Constructors](#constructors)
+	* [Constructors](#constructors)
 	* [Defining Methods](#defining-methods)
 * [Write Tests](#write-tests)
 
@@ -283,7 +283,7 @@ The `FakeCredential` type in `internal/recording` implements the `azcore.Credent
 [get_docker]: https://docs.docker.com/get-docker/
 [go_azsdk_samples]: https://github.com/azure-samples/azure-sdk-for-go-samples
 [go_download]: https://golang.org/dl/
-[go_interfaces]: (https://gobyexample.com/interfaces)
+[go_interfaces]: https://gobyexample.com/interfaces
 [pipeline_definitions]: https://github.com/Azure/azure-sdk-for-go/blob/main/eng/pipelines/templates/jobs/archetype-sdk-client.yml
 [require_package]: https://pkg.go.dev/github.com/stretchr/testify/require
 [test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy

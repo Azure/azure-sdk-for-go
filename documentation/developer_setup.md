@@ -9,7 +9,7 @@
 
 ## Installing Go
 
-The Azure-sdk-for-go team supports Go versions latest and latest-1, to see the exact versions we support you can check the pipeline defintions [here](https://github.com/Azure/azure-sdk-for-go/blob/main/eng/pipelines/templates/jobs/archetype-sdk-client.yml). The CI pipelines test the latest and latest-1 versions on both Windows and Linux virtual machines. If you do not already have Go installed, refer to this [workspace setup][workspace_setup] article for a more in depth tutorial on setting up your Go environment (there is also an MSI if you are developing on Windows at the [go download page](https://golang.org/dl/)). After installing Go and configuring your workspace, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<GO HOME>/src/github.com/Azure/azure-sdk-for-go`.
+The Azure-sdk-for-go team supports Go versions latest and latest-1, to see the exact versions we support you can check the pipeline defintions [here][pipeline_definitions]. The CI pipelines test the latest and latest-1 versions on both Windows and Linux virtual machines. If you do not already have Go installed, refer to this [workspace setup][workspace_setup] article for a more in depth tutorial on setting up your Go environment (there is also an MSI if you are developing on Windows at the [go download page][go_download]). After installing Go and configuring your workspace, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<GO HOME>/src/github.com/Azure/azure-sdk-for-go`.
 
 
 ## Create a Client
@@ -29,7 +29,7 @@ Code is documented directly in line and can be created directly using the `doc` 
 func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
 ```
 
-Each package needs to include a `doc.go` file and not be a part of a service version. For more details about this file there is a detailed write-up in the [repo wiki](https://github.com/Azure/azure-sdk-for-go/wiki/doc.go-template). In the `doc.go` file you should include a short service overview, basic examples, and (if they exist) a link to samples in the [`azure-sdk-for-go-samples` repository](https://github.com/azure-samples/azure-sdk-for-go-samples)
+Each package needs to include a `doc.go` file and not be a part of a service version. For more details about this file there is a detailed write-up in the [repo wiki][doc_go_template]. In the `doc.go` file you should include a short service overview, basic examples, and (if they exist) a link to samples in the [`azure-sdk-for-go-samples` repository][go_azsdk_samples]
 
 
 ### Constructors
@@ -61,7 +61,7 @@ func NewTableServiceClient(serviceURL string, credential azcore.Credential, opti
 ```
 In `Go`, the method parameters are enclosed with parenthesis immediately following the method name with the parameter name preceding the parameter type. The return arguments follow the parameters. If a method has more than one return parameter the types of the parameter must be enclosed in parenthesis. Note the `*` before a type indicates a pointer to that type. All methods that create a new client or interact with the service should return an `error` type as the last argument.
 
-This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`](https://gobyexample.com/interfaces) which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.Credential` the `AuthenticationPolicy(options AuthenticationPolicyOptions) Policy` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change. The `Options` type should have a name that is intuitive to what the customer is trying to do, in this case `TableClientOptions`.
+This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`][go_interfaces] which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.Credential` the `AuthenticationPolicy(options AuthenticationPolicyOptions) Policy` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change. The `Options` type should have a name that is intuitive to what the customer is trying to do, in this case `TableClientOptions`.
 
 
 ### Defining Methods
@@ -85,7 +85,7 @@ All methods that perform I/O of any kind, sleep, or perform a significant amount
 
 ## Write Tests
 
-Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal/recording` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables. The HTTP traffic is intercepted by a custom [test-proxy](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy) in both the "recording" and "playback" case to either persist or read HTTP interactions from a file. There is one small step that needs to be added to you client creation to route traffic to this test proxy. All three of these modes are specified in the `AZURE_RECORD_MODE` environment variable:
+Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal/recording` directory takes care of generating recordings, establishing the mode a test is being run in (options are "recording", "playback", "live-no-playback"), and reading environment variables. The HTTP traffic is intercepted by a custom [test-proxy][test_proxy_docs] in both the "recording" and "playback" case to either persist or read HTTP interactions from a file. There is one small step that needs to be added to you client creation to route traffic to this test proxy. All three of these modes are specified in the `AZURE_RECORD_MODE` environment variable:
 
 | Mode | Powershell Command |
 | ---- | ------------------ |
@@ -93,9 +93,9 @@ Testing is built into the Go toolchain as well with the `testing` library. The t
 | playback | $ENV:AZURE_RECORD_MODE="playback" |
 | live-no-playback | $ENV:AZURE_RECORD_MODE="live-no-playback" |
 
-To get started first install [`docker`](https://docs.docker.com/get-docker/). Then to start the proxy, from the directory your tests live in, run the command `../path-to-root/eng/scripts proxy-server.ps1 start`. This command will take care of pulling the pinned docker image and running it in the background. Note that wherever this command is run from is where the recordings will be persisted or (if you are running in playback) searched for.
+To get started first install [`docker`][get_docker]. Then to start the proxy, from the directory your tests live in, run the command `../path-to-root/eng/scripts proxy-server.ps1 start`. This command will take care of pulling the pinned docker image and running it in the background. Note that wherever this command is run from is where the recordings will be persisted or (if you are running in playback) searched for.
 
-It is not required to run the test-proxy from within the docker container, but this is how the proxy is run in the Azure DevOps pipelines. If you would like to run the test-proxy in a different way check out the test-proxy [documentation](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy) for more information.
+It is not required to run the test-proxy from within the docker container, but this is how the proxy is run in the Azure DevOps pipelines. If you would like to run the test-proxy in a different way check out the test-proxy [documentation][test_proxy_docs] for more information.
 
 
 ### Test Mode Options
@@ -218,7 +218,7 @@ The first part of the test above is for getting the secrets needed for authentic
 
 The rest of the snippet shows a test that creates a single table and requirements (similar to assertions in other languages) that the response from the service has the same table name as the supplied parameter. Every test in Go has to have exactly one parameter, the `t *testing.T` object, and it must begin with `Test`. After making a service call or creating an object you can make assertions on that object by using the external `testify/require` library. In the example above, we "require" that the error returned is `nil`, meaning the call was successful and then we require that the response object has the same table name as supplied.
 
-Check out the docs for more information about the methods available in the [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) libraries.
+Check out the docs for more information about the methods available in the [`require`][require_package] libraries.
 
 If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go test` with this code and the proper environment variables this test would pass and you would be left with a new directory and file. Test recordings are saved to a `recording` directory in the same directory that your test code lives. Running the above test would also create a file `recording/TestCreateTable.json` with the HTTP interactions persisted on disk. Now you can set `AZURE_RECORD_MODE` to "playback" and run `go test` again, the test will have the same output but without reaching the service.
 
@@ -279,4 +279,12 @@ func TestTableClientWithAAD(t *testing.T) {
 The `FakeCredential` type in `internal/recording` implements the `azcore.Credential` interface and can be used anywhere that the `azcore.Credential` is used.
 
 <!-- LINKS -->
+[doc_go_template]: https://github.com/Azure/azure-sdk-for-go/wiki/doc.go-template
+[get_docker]: https://docs.docker.com/get-docker/
+[go_azsdk_samples]: https://github.com/azure-samples/azure-sdk-for-go-samples
+[go_download]: https://golang.org/dl/
+[go_interfaces]: (https://gobyexample.com/interfaces)
+[pipeline_definitions]: https://github.com/Azure/azure-sdk-for-go/blob/main/eng/pipelines/templates/jobs/archetype-sdk-client.yml
+[require_package]: https://pkg.go.dev/github.com/stretchr/testify/require
+[test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10

@@ -164,7 +164,7 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 
 func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
-	accountName := "fakestorageaccount"
+	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 
 	cred, err := getAADCredential(t)
 	require.NoError(t, err)
@@ -179,7 +179,7 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 
 func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
-	accountName := "fakestorageaccount"
+	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 
 	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)
@@ -194,7 +194,7 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 
 func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 	var cred azcore.Credential
-	accountName := "fakestorageaccount"
+	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 
 	cred, err := getAADCredential(t)
 	require.NoError(t, err)
@@ -206,7 +206,7 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 
 func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
 	var cred azcore.Credential
-	accountName := "fakestorageaccount"
+	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 
 	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)

@@ -61,6 +61,8 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 
 	signedIdentifier := v.Identifier
 
+	lowerCaseTableName := strings.ToLower(v.TableName)
+
 	p := SASQueryParameters{
 		// Common SAS parameters
 		version:     v.Version,
@@ -69,14 +71,14 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 		expiryTime:  v.ExpiryTime,
 		permissions: v.Permissions,
 		ipRange:     v.IPRange,
-		tableName:   v.TableName,
+		tableName:   lowerCaseTableName,
 
 		// Table SAS parameters
 		resource:   resource,
 		identifier: v.Identifier,
 	}
 
-	canonicalName := "/" + "table" + "/" + credential.AccountName() + "/" + v.TableName
+	canonicalName := "/" + "table" + "/" + credential.AccountName() + "/" + lowerCaseTableName
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{

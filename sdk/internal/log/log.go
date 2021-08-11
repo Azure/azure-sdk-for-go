@@ -3,7 +3,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package logger
+package log
 
 import (
 	"fmt"
@@ -11,46 +11,46 @@ import (
 	"time"
 )
 
-// LogClassification is used to group entries.  Each group can be toggled on or off
-type LogClassification string
+// Classification is used to group entries.  Each group can be toggled on or off
+type Classification string
 
 const (
-	// LogRequest entries contain information about HTTP requests.
+	// Request entries contain information about HTTP requests.
 	// This includes information like the URL, query parameters, and headers.
-	LogRequest LogClassification = "Request"
+	Request Classification = "Request"
 
-	// LogResponse entries containe information about HTTP responses.
+	// Response entries containe information about HTTP responses.
 	// This includes information like the HTTP status code, headers, and request URL.
-	LogResponse LogClassification = "Response"
+	Response Classification = "Response"
 
-	// LogRetryPolicy entries contain information specific to the rety policy in use.
-	LogRetryPolicy LogClassification = "RetryPolicy"
+	// RetryPolicy entries contain information specific to the rety policy in use.
+	RetryPolicy Classification = "RetryPolicy"
 
-	// LogLongRunningOperation entries contian information specific to long-running operations.
+	// LongRunningOperation entries contian information specific to long-running operations.
 	// This includes information like polling location, operation state, and sleep intervals.
-	LogLongRunningOperation LogClassification = "LongRunningOperation"
+	LongRunningOperation Classification = "LongRunningOperation"
 )
 
 // Listener is the funciton signature invoked when writing log entries.
 // A Listener is required to perform its own synchronization if it's expected to be called
 // from multiple Go routines
-type Listener func(LogClassification, string)
+type Listener func(Classification, string)
 
-// Logger controls which classifications to log and writing to the underlying log.
-type Logger struct {
-	cls []LogClassification
+// logger controls which classifications to log and writing to the underlying log.
+type logger struct {
+	cls []Classification
 	lst Listener
 }
 
 // SetClassifications is used to control which classifications are written to
 // the log.  By default all log classifications are writen.
-func (l *Logger) SetClassifications(cls ...LogClassification) {
-	l.cls = cls
+func SetClassifications(cls ...Classification) {
+	log.cls = cls
 }
 
 // SetListener will set the Logger to write to the specified Listener.
-func (l *Logger) SetListener(lst Listener) {
-	l.lst = lst
+func SetListener(lst Listener) {
+	log.lst = lst
 }
 
 // Should returns true if the specified log classification should be written to the log.
@@ -59,14 +59,14 @@ func (l *Logger) SetListener(lst Listener) {
 // If no listener has been set this will return false.
 // Calling this method is useful when the message to log is computationally expensive
 // and you want to avoid the overhead if its log classification is not enabled.
-func (l *Logger) Should(cls LogClassification) bool {
-	if l.lst == nil {
+func Should(cls Classification) bool {
+	if log.lst == nil {
 		return false
 	}
-	if l.cls == nil || len(l.cls) == 0 {
+	if log.cls == nil || len(log.cls) == 0 {
 		return true
 	}
-	for _, c := range l.cls {
+	for _, c := range log.cls {
 		if c == cls {
 			return true
 		}
@@ -76,38 +76,34 @@ func (l *Logger) Should(cls LogClassification) bool {
 
 // Write invokes the underlying Listener with the specified classification and message.
 // If the classification shouldn't be logged or there is no listener then Write does nothing.
-func (l *Logger) Write(cls LogClassification, message string) {
-	if !l.Should(cls) {
+func Write(cls Classification, message string) {
+	if !Should(cls) {
 		return
 	}
-	l.lst(cls, message)
+	log.lst(cls, message)
 }
 
 // Writef invokes the underlying Listener with the specified classification and formatted message.
 // If the classification shouldn't be logged or there is no listener then Writef does nothing.
-func (l *Logger) Writef(cls LogClassification, format string, a ...interface{}) {
-	if !l.Should(cls) {
+func Writef(cls Classification, format string, a ...interface{}) {
+	if !Should(cls) {
 		return
 	}
-	l.lst(cls, fmt.Sprintf(format, a...))
+	log.lst(cls, fmt.Sprintf(format, a...))
 }
 
-// for testing purposes
-func (l *Logger) resetClassifications() {
-	l.cls = nil
+// TestResetClassifications is used for testing purposes only.
+func TestResetClassifications() {
+	log.cls = nil
 }
 
-var logger Logger
-
-// Log returns the process-wide logger.
-func Log() *Logger {
-	return &logger
-}
+// the process-wide logger
+var log logger
 
 func init() {
 	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
 		// cls could be enhanced to support a comma-delimited list of log classifications
-		logger.lst = func(cls LogClassification, msg string) {
+		log.lst = func(cls Classification, msg string) {
 			// simple console logger, it writes to stderr in the following format:
 			// [time-stamp] Classification: message
 			fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)

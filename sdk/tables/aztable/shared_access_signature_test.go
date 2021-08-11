@@ -229,7 +229,6 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
-
 	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
 	require.NoError(t, err)
 

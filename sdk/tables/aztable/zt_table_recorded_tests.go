@@ -68,37 +68,6 @@ func insertNEntities(pk string, n int, client *TableClient) error {
 	return nil
 }
 
-// cleans up the specified tables. If tables is nil, all tables will be deleted
-func cleanupTables(context *testContext, tables *[]string) {
-	c := context.client
-	if tables == nil {
-		pager := c.ListTables(nil)
-		for pager.NextPage(ctx) {
-			for _, t := range pager.PageResponse().TableQueryResponse.Value {
-				_, err := c.DeleteTable(ctx, *t.TableName, nil)
-				if err != nil {
-					fmt.Printf("Error cleaning up tables. %v\n", err.Error())
-				}
-			}
-		}
-	} else {
-		for _, t := range *tables {
-			_, err := c.DeleteTable(ctx, t, nil)
-			if err != nil {
-				fmt.Printf("There was an error cleaning up tests. %v\n", err.Error())
-			}
-		}
-	}
-}
-
-func getTableName(context *testContext, prefix ...string) (string, error) {
-	if len(prefix) == 0 {
-		return context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
-	} else {
-		return context.recording.GenerateAlphaNumericID(prefix[0], 20, true)
-	}
-}
-
 type basicTestEntity struct {
 	Entity
 	Integer int32

@@ -23,6 +23,9 @@ func NewTableClientFromConnectionString(tableName string, connectionString strin
 	if err != nil {
 		return nil, err
 	}
+	if credential == nil {
+		return NewTableClient(tableName, endpoint, azcore.AnonymousCredential(), nil)
+	}
 	return NewTableClient(tableName, endpoint, credential, options)
 }
 
@@ -32,6 +35,9 @@ func NewTableServiceClientFromConnectionString(connectionString string, options 
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
+	}
+	if credential == nil {
+		return NewTableServiceClient(endpoint, azcore.AnonymousCredential(), nil)
 	}
 	return NewTableServiceClient(endpoint, credential, options)
 }
@@ -74,17 +80,19 @@ func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 	}
 	accountKey, ok := connStrMap["AccountKey"]
 	if !ok {
-		return "", nil, ErrConnectionString
-	}
 
-	if accountName == "" || accountKey == "" {
+		// if accountName == "" || accountKey == "" {
 		// Try sharedaccesssignature
 		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]
 		if !ok {
 			return "", nil, ErrConnectionString
 		}
 		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), nil, nil
+		// }
+
+		// return "", nil, ErrConnectionString
 	}
+
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]
 	if !ok {
 		protocol = defaultScheme

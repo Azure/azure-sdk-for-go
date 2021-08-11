@@ -15,7 +15,7 @@ import (
 type TableClient struct {
 	client  *tableClient
 	service *TableServiceClient
-	cred    SharedKeyCredential
+	cred    azcore.Credential
 	Name    string
 }
 
@@ -28,6 +28,9 @@ const (
 
 // NewTableClient creates a TableClient struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
 func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
+	if options == nil {
+		options = &TableClientOptions{}
+	}
 	s, err := NewTableServiceClient(serviceURL, cred, options)
 	return s.NewTableClient(tableName), err
 }

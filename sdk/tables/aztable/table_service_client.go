@@ -19,11 +19,14 @@ const (
 type TableServiceClient struct {
 	client  *tableClient
 	service *serviceClient
-	cred    SharedKeyCredential
+	cred    azcore.Credential
 }
 
 // NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
 func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
+	if options == nil {
+		options = &TableClientOptions{}
+	}
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
@@ -31,7 +34,7 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"none"}}}))
 	con := newConnection(serviceURL, conOptions)
 	c, _ := cred.(*SharedKeyCredential)
-	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, nil
+	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: c}, nil
 }
 
 // NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient

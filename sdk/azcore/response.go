@@ -137,7 +137,7 @@ func (r *Response) retryAfter() time.Duration {
 
 // writes to a buffer, used for logging purposes
 func (r *Response) writeBody(b *bytes.Buffer) error {
-	ct := r.Header.Get(HeaderContentType)
+	ct := r.Header.Get(headerContentType)
 	if ct == "" {
 		fmt.Fprint(b, "   Response contained no body\n")
 		return nil
@@ -162,7 +162,7 @@ func RetryAfter(resp *http.Response) time.Duration {
 	if resp == nil {
 		return 0
 	}
-	ra := resp.Header.Get(HeaderRetryAfter)
+	ra := resp.Header.Get(headerRetryAfter)
 	if ra == "" {
 		return 0
 	}

@@ -11,7 +11,7 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2020-11-01-preview/appplatform"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-06-01-preview/appplatform"
 )
 
 const (
@@ -21,10 +21,10 @@ const (
 type AppResourceProvisioningState = original.AppResourceProvisioningState
 
 const (
-	Creating  AppResourceProvisioningState = original.Creating
-	Failed    AppResourceProvisioningState = original.Failed
-	Succeeded AppResourceProvisioningState = original.Succeeded
-	Updating  AppResourceProvisioningState = original.Updating
+	AppResourceProvisioningStateCreating  AppResourceProvisioningState = original.AppResourceProvisioningStateCreating
+	AppResourceProvisioningStateFailed    AppResourceProvisioningState = original.AppResourceProvisioningStateFailed
+	AppResourceProvisioningStateSucceeded AppResourceProvisioningState = original.AppResourceProvisioningStateSucceeded
+	AppResourceProvisioningStateUpdating  AppResourceProvisioningState = original.AppResourceProvisioningStateUpdating
 )
 
 type ConfigServerState = original.ConfigServerState
@@ -61,10 +61,10 @@ const (
 type ManagedIdentityType = original.ManagedIdentityType
 
 const (
-	None                       ManagedIdentityType = original.None
-	SystemAssigned             ManagedIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ManagedIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ManagedIdentityType = original.UserAssigned
+	ManagedIdentityTypeNone                       ManagedIdentityType = original.ManagedIdentityTypeNone
+	ManagedIdentityTypeSystemAssigned             ManagedIdentityType = original.ManagedIdentityTypeSystemAssigned
+	ManagedIdentityTypeSystemAssignedUserAssigned ManagedIdentityType = original.ManagedIdentityTypeSystemAssignedUserAssigned
+	ManagedIdentityTypeUserAssigned               ManagedIdentityType = original.ManagedIdentityTypeUserAssigned
 )
 
 type MonitoringSettingState = original.MonitoringSettingState
@@ -93,23 +93,23 @@ const (
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
-	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+	ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription
+	ResourceSkuRestrictionsReasonCodeQuotaID                     ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCodeQuotaID
 )
 
 type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 
 const (
-	Location ResourceSkuRestrictionsType = original.Location
-	Zone     ResourceSkuRestrictionsType = original.Zone
+	ResourceSkuRestrictionsTypeLocation ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsTypeLocation
+	ResourceSkuRestrictionsTypeZone     ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsTypeZone
 )
 
 type RuntimeVersion = original.RuntimeVersion
 
 const (
-	Java11    RuntimeVersion = original.Java11
-	Java8     RuntimeVersion = original.Java8
-	NetCore31 RuntimeVersion = original.NetCore31
+	RuntimeVersionJava11    RuntimeVersion = original.RuntimeVersionJava11
+	RuntimeVersionJava8     RuntimeVersion = original.RuntimeVersionJava8
+	RuntimeVersionNetCore31 RuntimeVersion = original.RuntimeVersionNetCore31
 )
 
 type SkuScaleType = original.SkuScaleType
@@ -123,8 +123,8 @@ const (
 type SupportedRuntimePlatform = original.SupportedRuntimePlatform
 
 const (
-	Java    SupportedRuntimePlatform = original.Java
-	NETCore SupportedRuntimePlatform = original.NETCore
+	SupportedRuntimePlatformJava    SupportedRuntimePlatform = original.SupportedRuntimePlatformJava
+	SupportedRuntimePlatformNETCore SupportedRuntimePlatform = original.SupportedRuntimePlatformNETCore
 )
 
 type SupportedRuntimeValue = original.SupportedRuntimeValue
@@ -138,23 +138,24 @@ const (
 type TestKeyType = original.TestKeyType
 
 const (
-	Primary   TestKeyType = original.Primary
-	Secondary TestKeyType = original.Secondary
+	TestKeyTypePrimary   TestKeyType = original.TestKeyTypePrimary
+	TestKeyTypeSecondary TestKeyType = original.TestKeyTypeSecondary
 )
 
 type TrafficDirection = original.TrafficDirection
 
 const (
-	Inbound  TrafficDirection = original.Inbound
-	Outbound TrafficDirection = original.Outbound
+	TrafficDirectionInbound  TrafficDirection = original.TrafficDirectionInbound
+	TrafficDirectionOutbound TrafficDirection = original.TrafficDirectionOutbound
 )
 
 type UserSourceType = original.UserSourceType
 
 const (
-	Jar        UserSourceType = original.Jar
-	NetCoreZip UserSourceType = original.NetCoreZip
-	Source     UserSourceType = original.Source
+	UserSourceTypeContainer  UserSourceType = original.UserSourceTypeContainer
+	UserSourceTypeJar        UserSourceType = original.UserSourceTypeJar
+	UserSourceTypeNetCoreZip UserSourceType = original.UserSourceTypeNetCoreZip
+	UserSourceTypeSource     UserSourceType = original.UserSourceTypeSource
 )
 
 type AppResource = original.AppResource
@@ -202,6 +203,7 @@ type ConfigServersClient = original.ConfigServersClient
 type ConfigServersUpdatePatchFuture = original.ConfigServersUpdatePatchFuture
 type ConfigServersUpdatePutFuture = original.ConfigServersUpdatePutFuture
 type ConfigServersValidateFuture = original.ConfigServersValidateFuture
+type CustomContainer = original.CustomContainer
 type CustomDomainProperties = original.CustomDomainProperties
 type CustomDomainResource = original.CustomDomainResource
 type CustomDomainResourceCollection = original.CustomDomainResourceCollection
@@ -229,6 +231,7 @@ type DeploymentsStopFuture = original.DeploymentsStopFuture
 type DeploymentsUpdateFuture = original.DeploymentsUpdateFuture
 type Error = original.Error
 type GitPatternRepository = original.GitPatternRepository
+type ImageRegistryCredential = original.ImageRegistryCredential
 type LogFileURLResponse = original.LogFileURLResponse
 type LogSpecification = original.LogSpecification
 type ManagedIdentityProperties = original.ManagedIdentityProperties
@@ -252,6 +255,7 @@ type ProxyResource = original.ProxyResource
 type RegenerateTestKeyRequestPayload = original.RegenerateTestKeyRequestPayload
 type RequiredTraffic = original.RequiredTraffic
 type Resource = original.Resource
+type ResourceRequests = original.ResourceRequests
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapabilities = original.ResourceSkuCapabilities
 type ResourceSkuCollection = original.ResourceSkuCollection

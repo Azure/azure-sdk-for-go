@@ -3,14 +3,17 @@ trigger:
   paths:
     include:
     - sdk/azcore/
+    - eng/
 
 pr:
   paths:
     include:
     - sdk/azcore/
-    
-    
+    - eng/
+
+
 stages:
 - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'azcore'
+    RunTests: true

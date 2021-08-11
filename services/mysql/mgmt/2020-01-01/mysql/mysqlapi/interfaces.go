@@ -14,6 +14,7 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	CreateRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string) (result mysql.CreateRecommendedActionSessionFuture, err error)
+	ResetQueryPerformanceInsightData(ctx context.Context, resourceGroupName string, serverName string) (result mysql.QueryPerformanceInsightResetDataResult, err error)
 }
 
 var _ BaseClientAPI = (*mysql.BaseClient)(nil)
@@ -81,6 +82,13 @@ type ConfigurationsClientAPI interface {
 
 var _ ConfigurationsClientAPI = (*mysql.ConfigurationsClient)(nil)
 
+// ServerParametersClientAPI contains the set of methods on the ServerParametersClient type.
+type ServerParametersClientAPI interface {
+	ListUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value mysql.ConfigurationListResult) (result mysql.ServerParametersListUpdateConfigurationsFuture, err error)
+}
+
+var _ ServerParametersClientAPI = (*mysql.ServerParametersClient)(nil)
+
 // LogFilesClientAPI contains the set of methods on the LogFilesClient type.
 type LogFilesClientAPI interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.LogFileListResult, err error)
@@ -97,6 +105,20 @@ type ServerAdministratorsClientAPI interface {
 }
 
 var _ ServerAdministratorsClientAPI = (*mysql.ServerAdministratorsClient)(nil)
+
+// RecoverableServersClientAPI contains the set of methods on the RecoverableServersClient type.
+type RecoverableServersClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.RecoverableServerResource, err error)
+}
+
+var _ RecoverableServersClientAPI = (*mysql.RecoverableServersClient)(nil)
+
+// ServerBasedPerformanceTierClientAPI contains the set of methods on the ServerBasedPerformanceTierClient type.
+type ServerBasedPerformanceTierClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, serverName string) (result mysql.PerformanceTierListResult, err error)
+}
+
+var _ ServerBasedPerformanceTierClientAPI = (*mysql.ServerBasedPerformanceTierClient)(nil)
 
 // LocationBasedPerformanceTierClientAPI contains the set of methods on the LocationBasedPerformanceTierClient type.
 type LocationBasedPerformanceTierClientAPI interface {
@@ -123,6 +145,8 @@ var _ OperationsClientAPI = (*mysql.OperationsClient)(nil)
 type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerSecurityAlertPolicy) (result mysql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerSecurityAlertPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerSecurityAlertPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerSecurityAlertPolicyListResultIterator, err error)
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*mysql.ServerSecurityAlertPoliciesClient)(nil)

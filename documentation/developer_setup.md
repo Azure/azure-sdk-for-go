@@ -148,12 +148,14 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 
 Including this in a file for test helper methods will ensure that before each test the developer simply has to add
 ```golang
-recording.StartRecording(t, nil)
-defer recording.StopRecording(t, nil)
-client, err := createTableClientForRecording(t, "myTableName", "myServiceUrl", myCredential)
-require.NoError(t, err)
-...
-<test stuff>
+func TestStartTests(t *testing.T) {
+	recording.StartRecording(t, nil)
+	defer recording.StopRecording(t, nil)
+	client, err := createTableClientForRecording(t, "myTableName", "myServiceUrl", myCredential)
+	require.NoError(t, err)
+	...
+	<test stuff>
+}
 ```
 and nearly all of the test proxy interactions will be handled for them. In a later section ([scrubbing secrets](#scrubbing-secrets)) there is more information about making sure the recording files are free of secrets. The first two methods (`StartRecording` and `StopRecording`) tell the proxy when an individual test is starting and stopping to communicate when to start creating the recording file and when to persist it to disk.
 
@@ -193,7 +195,7 @@ func TestCreateTable(t *testing.T) {
 	require.Equal(t, resp.TableResponse.TableName, "tableName")
 	defer client.Delete()  // Clean up resources
 	..
-	.. More test matters
+	.. More test functionality
 	..
 }
 ```
@@ -209,7 +211,7 @@ If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go 
 
 ### Scrubbing Secrets
 
-The recording files eventually live in the main repository (`github.com/Azure/azure-sdk-for-go`) and we need to make sure that all of these recordings are free from secrets. To do this we use Sanitizers with regular expressions for replacements. All of the available sanitizers are available as methods from the `recording` package.
+The recording files eventually live in the main repository (`github.com/Azure/azure-sdk-for-go`) and we need to make sure that all of these recordings are free from secrets. To do this we use Sanitizers with regular expressions for replacements. All of the available sanitizers are available as methods from the `recording` package. The recording methods generally take three parameters: the test instance (`t *testing.T`), the value to be removed (ie. an account name or key), and the value to use in replacement.
 
 | Sanitizer Type | Method | Parameters | Notes |
 | -------------- | ------ | ---------- | ----- |
@@ -222,6 +224,44 @@ The recording files eventually live in the main repository (`github.com/Azure/az
 | RemoveHeaderSanitizer | `recording.RemoveHeaderSanitizer(t, ...)` | ... | ... |
 | ReplaceRequestSubscriptionId | `recording.ReplaceRequestSubscriptionId(t, ...)` | ... | ... |
 | UriRegexSanitizer | `recording.UriRegexSanitizer(t, ...)` | ... | ... |
+
+Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, if the `aztable` library had a test for creating a client and "requiring" the account name to be the same as provided it could potentially look similar to this:
+
+```golang
+func TestTableClient(t *testing.T) {
+	accountName := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_NAME", "fakeAccountName")
+	// If running in playback, the value is "fakeAccountName". If running in "record" the value is whatever is stored in the environment variable
+	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_KEY", "fakeAccountKey")
+	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	require.NoError(t, err)
+
+	client, err := NewTableClient("someTableName", someServiceURL, cred, nil)
+	require.NoError(t, err)
+	require.Equal(t, accountName, client.AccountName())
+}
+```
+
+### Using `azidentity` Credentials In Tests
+The credentials in `azidentity` are not automatically configured to run in playback mode. To make sure your tests run in playback mode even with `azidentity` credentials the best practice is to use a simple `FakeCredential` type that inserts a fake Authorization header to mock a credential. An example for swapping the `DefaultAzureCredential` using a helper function is shown below in the context of `aztable`
+
+```golang
+func getAADCredential() (azcore.Credential, error) {
+	if recording.InPlayback() {
+		return recording.NewFakeCredential("fakeAccountName", "fakeAccountKey"), nil
+	}
+	return azidentity.NewDefaultCredential(nil)
+}
+
+func TestTableClientWithAAD(t *testing.T) {
+	accountName := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_NAME", "fakeAccountName")
+	cred, err := getAADCredential()
+	require.NoError(t, err)
+	...
+	...run tests...
+}
+```
+
+The `FakeCredential` type in `internal/recording` implements the `azcore.Credential` interface and can be used anywhere that the `azcore.Credential` is used.
 
 <!-- LINKS -->
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10

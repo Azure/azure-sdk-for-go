@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:56 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputpagesemptybody?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:54 GMT
       Etag:
-      - '"0x8D95CAFA4AC2EE7"'
+      - '"0x8D95CF95EA8B2A7"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0d49b6-d01e-000f-3f98-8edb57000000
+      - ce1ce6e2-a01e-0000-42e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:06:11 GMT
+      - Wed, 11 Aug 2021 18:53:56 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputpagesemptybody/gotestblobblobputpagesemptybody
@@ -67,21 +67,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:55 GMT
       Etag:
-      - '"0x8D95CAFA4D17735"'
+      - '"0x8D95CF95ECE0725"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0d4a4e-d01e-000f-3b98-8edb57000000
+      - ce1ce774-a01e-0000-39e2-8e36a1000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-11T10:06:10.3858997Z"
+      - "2021-08-11T18:53:55.6808485Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -99,7 +99,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:06:11 GMT
+      - Wed, 11 Aug 2021 18:53:56 GMT
       X-Ms-Page-Write:
       - update
       X-Ms-Version:
@@ -107,20 +107,20 @@ interactions:
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputpagesemptybody/gotestblobblobputpagesemptybody?comp=page
     method: PUT
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x4D\x69\x73\x73\x69\x6E\x67\x52\x65\x71\x75\x69\x72\x65\x64\x48\x65\x61\x64\x65\x72\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x41\x6E\x20\x48\x54\x54\x50\x20\x68\x65\x61\x64\x65\x72\x20\x74\x68\x61\x74\x27\x73\x20\x6D\x61\x6E\x64\x61\x74\x6F\x72\x79\x20\x66\x6F\x72\x20\x74\x68\x69\x73\x20\x72\x65\x71\x75\x65\x73\x74\x20\x69\x73\x20\x6E\x6F\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x35\x61\x30\x64\x34\x61\x64\x63\x2D\x64\x30\x31\x65\x2D\x30\x30\x30\x66\x2D\x33\x33\x39\x38\x2D\x38\x65\x64\x62\x35\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x38\x2D\x31\x31\x54\x31\x30\x3A\x30\x36\x3A\x31\x30\x2E\x36\x32\x36\x39\x37\x31\x36\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x48\x65\x61\x64\x65\x72\x4E\x61\x6D\x65\x3E\x52\x61\x6E\x67\x65\x3C\x2F\x48\x65\x61\x64\x65\x72\x4E\x61\x6D\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x4D\x69\x73\x73\x69\x6E\x67\x52\x65\x71\x75\x69\x72\x65\x64\x48\x65\x61\x64\x65\x72\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x41\x6E\x20\x48\x54\x54\x50\x20\x68\x65\x61\x64\x65\x72\x20\x74\x68\x61\x74\x27\x73\x20\x6D\x61\x6E\x64\x61\x74\x6F\x72\x79\x20\x66\x6F\x72\x20\x74\x68\x69\x73\x20\x72\x65\x71\x75\x65\x73\x74\x20\x69\x73\x20\x6E\x6F\x74\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x63\x65\x31\x63\x65\x38\x33\x39\x2D\x61\x30\x31\x65\x2D\x30\x30\x30\x30\x2D\x35\x65\x65\x32\x2D\x38\x65\x33\x36\x61\x31\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x38\x2D\x31\x31\x54\x31\x38\x3A\x35\x33\x3A\x35\x35\x2E\x39\x32\x30\x36\x30\x36\x38\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x48\x65\x61\x64\x65\x72\x4E\x61\x6D\x65\x3E\x52\x61\x6E\x67\x65\x3C\x2F\x48\x65\x61\x64\x65\x72\x4E\x61\x6D\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "286"
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - MissingRequiredHeader
       X-Ms-Request-Id:
-      - 5a0d4adc-d01e-000f-3398-8edb57000000
+      - ce1ce839-a01e-0000-5ee2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 400 An HTTP header that's mandatory for this request is not specified.
@@ -138,7 +138,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:06:11 GMT
+      - Wed, 11 Aug 2021 18:53:57 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputpagesemptybody?restype=container
@@ -149,11 +149,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:06:10 GMT
+      - Wed, 11 Aug 2021 18:53:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0d4b58-d01e-000f-2398-8edb57000000
+      - ce1ce8c0-a01e-0000-53e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 202 Accepted

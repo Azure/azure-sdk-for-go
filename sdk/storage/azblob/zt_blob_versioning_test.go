@@ -95,10 +95,9 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
 	_assert.Nil(err)
 	_assert.NotNil(resp.VersionID)
 
-	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+	pager := containerClient.ListBlobsFlatSegment(&ContainerListBlobFlatSegmentOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
-	}
-	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
+	})
 
 	if !pager.NextPage(ctx) {
 		_assert.Nil(pager.Err()) // check for an error first
@@ -476,6 +475,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 

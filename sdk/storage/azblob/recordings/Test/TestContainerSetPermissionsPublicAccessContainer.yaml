@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:06 GMT
+      - Wed, 11 Aug 2021 18:57:15 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionspublicaccesscontainer?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:05 GMT
+      - Wed, 11 Aug 2021 18:57:14 GMT
       Etag:
-      - '"0x8D95CB00D69501C"'
+      - '"0x8D95CF9D594B2BE"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:05 GMT
+      - Wed, 11 Aug 2021 18:57:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0e8d2d-d01e-000f-2998-8edb57000000
+      - ce1f0280-a01e-0000-5fe2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 201 Created
@@ -52,7 +52,7 @@ interactions:
       X-Ms-Blob-Public-Access:
       - container
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:06 GMT
+      - Wed, 11 Aug 2021 18:57:16 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionspublicaccesscontainer?comp=acl&restype=container
@@ -63,15 +63,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:05 GMT
+      - Wed, 11 Aug 2021 18:57:14 GMT
       Etag:
-      - '"0x8D95CB00D8E12EE"'
+      - '"0x8D95CF9D5B9762E"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:06 GMT
+      - Wed, 11 Aug 2021 18:57:15 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0e8d9b-d01e-000f-0298-8edb57000000
+      - ce1f032a-a01e-0000-62e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 200 OK
@@ -89,7 +89,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:07 GMT
+      - Wed, 11 Aug 2021 18:57:16 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionspublicaccesscontainer?comp=acl&restype=container
@@ -100,17 +100,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 10:09:05 GMT
+      - Wed, 11 Aug 2021 18:57:14 GMT
       Etag:
-      - '"0x8D95CB00D8E12EE"'
+      - '"0x8D95CF9D5B9762E"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:06 GMT
+      - Wed, 11 Aug 2021 18:57:15 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Public-Access:
       - container
       X-Ms-Request-Id:
-      - 5a0e8e11-d01e-000f-6098-8edb57000000
+      - ce1f03c1-a01e-0000-5de2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 200 OK
@@ -128,7 +128,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:07 GMT
+      - Wed, 11 Aug 2021 18:57:16 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionspublicaccesscontainer?restype=container
@@ -139,11 +139,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:06 GMT
+      - Wed, 11 Aug 2021 18:57:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0e8e51-d01e-000f-1598-8edb57000000
+      - ce1f042e-a01e-0000-31e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 202 Accepted

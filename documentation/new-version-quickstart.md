@@ -156,12 +156,13 @@ Example: Creating a Resource Group
 
 ***Import the packages***
 ```go
-import {
+import (
+    "contexts"
     "github.com/Azure/azure-sdk-for-go/sdk/armcore"
     "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
     "github.com/Azure/azure-sdk-for-go/sdk/to"
-}
+)
 ```
 
 ***Define some global variables***
@@ -183,7 +184,7 @@ func createResourceGroup(ctx context.Context, connection *armcore.Connection) (a
 		Location: to.StringPtr(location),
 	}
 
-	return rgClient.CreateOrUpdate(context.Backgroud(), resourceGroupName, param, nil)
+	return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
 }
 ```
 
@@ -204,7 +205,7 @@ func main() {
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
-    log.Printf("Resource Group %s created", *resourceGroup.ID)
+    log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 }
 ```
 

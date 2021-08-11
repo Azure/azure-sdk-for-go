@@ -53,20 +53,20 @@ type ListContainersDetail struct {
 }
 
 // string produces the Include query parameter's value.
-func (o *ListContainersDetail) pointers() *[]ListContainersInclude {
+func (o *ListContainersDetail) pointers() []ListContainersIncludeType {
 	if o.Metadata == false && o.Deleted == false {
 		return nil
 	}
 
-	items := make([]ListContainersInclude, 0, 2)
+	items := make([]ListContainersIncludeType, 0, 2)
 	// NOTE: Multiple strings MUST be appended in alphabetic order or signing the string for authentication fails!
 	if o.Deleted {
-		items = append(items, ListContainersIncludeDeleted)
+		items = append(items, ListContainersIncludeTypeDeleted)
 	}
 	if o.Metadata {
-		items = append(items, ListContainersIncludeMetadata)
+		items = append(items, ListContainersIncludeTypeMetadata)
 	}
-	return &items
+	return items
 }
 
 type ServiceFilterBlobsByTagsOptions struct {

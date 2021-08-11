@@ -262,13 +262,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert.Equal(stageResp2.Date.IsZero(), false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.CommittedBlocks)
 	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(*blockList.BlockList.UncommittedBlocks, 2)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	commitBlockListOptions := CommitBlockListOptions{
@@ -286,13 +286,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert.Equal((*listResp.Date).IsZero(), false)
 
 	// Check block list.
-	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.UncommittedBlocks)
 	_assert.NotNil(blockList.BlockList.CommittedBlocks)
-	_assert.Len(*blockList.BlockList.CommittedBlocks, 2)
+	_assert.Len(blockList.BlockList.CommittedBlocks, 2)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
@@ -378,13 +378,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	_assert.Equal(stageResp2.Date.IsZero(), false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.CommittedBlocks)
 	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
-	_assert.Len(*blockList.BlockList.UncommittedBlocks, 2)
+	_assert.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	commitBlockListOptions := CommitBlockListOptions{
@@ -402,13 +402,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	_assert.Equal((*listResp.Date).IsZero(), false)
 
 	// Check block list.
-	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_assert.Nil(err)
 	_assert.Equal(blockList.RawResponse.StatusCode, 200)
 	_assert.NotNil(blockList.BlockList)
 	_assert.Nil(blockList.BlockList.UncommittedBlocks)
 	_assert.NotNil(blockList.BlockList.CommittedBlocks)
-	_assert.Len(*blockList.BlockList.CommittedBlocks, 2)
+	_assert.Len(blockList.BlockList.CommittedBlocks, 2)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
@@ -462,7 +462,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK() {
 	}
 	downloadResp, err = bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
-	_assert.EqualValues(*downloadResp.ContentMD5, md5Val[:])
+	_assert.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, srcData)
@@ -500,7 +500,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	}
 	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
-	_assert.EqualValues(*downloadResp.ContentMD5, md5Val[:])
+	_assert.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	_assert.Nil(err)
 	_assert.EqualValues(destData, srcData)
@@ -697,7 +697,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert.NotNil(appendFromURLResp.LastModified)
 	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
 	_assert.NotNil(appendFromURLResp.ContentMD5)
-	_assert.EqualValues(*appendFromURLResp.ContentMD5, contentMD5)
+	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
 	_assert.NotNil(appendFromURLResp.RequestID)
 	_assert.NotNil(appendFromURLResp.Version)
 	_assert.NotNil(appendFromURLResp.Date)
@@ -806,7 +806,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_assert.NotNil(appendFromURLResp.LastModified)
 	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
 	_assert.NotNil(appendFromURLResp.ContentMD5)
-	_assert.EqualValues(*appendFromURLResp.ContentMD5, contentMD5)
+	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
 	_assert.NotNil(appendFromURLResp.RequestID)
 	_assert.NotNil(appendFromURLResp.Version)
 	_assert.NotNil(appendFromURLResp.Date)
@@ -856,7 +856,7 @@ func (s *azblobTestSuite) TestPageBlockWithCPK() {
 	_assert.Nil(err)
 	pageListResp := resp.PageList.PageRange
 	start, end := int64(0), int64(contentSize-1)
-	rawStart, rawEnd := (*pageListResp)[0].Raw()
+	rawStart, rawEnd := pageListResp[0].Raw()
 	_assert.Equal(rawStart, start)
 	_assert.Equal(rawEnd, end)
 
@@ -914,7 +914,7 @@ func (s *azblobTestSuite) TestPageBlockWithCPKScope() {
 	pageListResp := resp.PageList.PageRange
 	start, end := int64(0), int64(contentSize-1)
 	// _assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
-	rawStart, rawEnd := (*pageListResp)[0].Raw()
+	rawStart, rawEnd := pageListResp[0].Raw()
 	_assert.Equal(rawStart, start)
 	_assert.Equal(rawEnd, end)
 
@@ -975,7 +975,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
-		SourceContentMD5: &contentMD5,
+		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
 	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
@@ -984,7 +984,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	_assert.NotNil(resp.ETag)
 	_assert.NotNil(resp.LastModified)
 	_assert.NotNil(resp.ContentMD5)
-	_assert.EqualValues(*resp.ContentMD5, contentMD5)
+	_assert.EqualValues(resp.ContentMD5, contentMD5)
 	_assert.NotNil(resp.RequestID)
 	_assert.NotNil(resp.Version)
 	_assert.NotNil(resp.Date)
@@ -1059,7 +1059,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
-		SourceContentMD5: &contentMD5,
+		SourceContentMD5: contentMD5,
 		CpkScopeInfo:     &testCPKByScope,
 	}
 	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
@@ -1068,7 +1068,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	_assert.NotNil(resp.ETag)
 	_assert.NotNil(resp.LastModified)
 	_assert.NotNil(resp.ContentMD5)
-	_assert.EqualValues(*resp.ContentMD5, contentMD5)
+	_assert.EqualValues(resp.ContentMD5, contentMD5)
 	_assert.NotNil(resp.RequestID)
 	_assert.NotNil(resp.Version)
 	_assert.NotNil(resp.Date)
@@ -1134,7 +1134,7 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	dstPBName := "dst" + generateBlobName(testName)
 	destPBClient := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
-		SourceContentMD5: &contentMD5,
+		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
 	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
@@ -1143,7 +1143,7 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_assert.NotNil(resp.ETag)
 	_assert.NotNil(resp.LastModified)
 	_assert.NotNil(resp.ContentMD5)
-	_assert.EqualValues(*resp.ContentMD5, contentMD5)
+	_assert.EqualValues(resp.ContentMD5, contentMD5)
 	_assert.NotNil(resp.RequestID)
 	_assert.NotNil(resp.Version)
 	_assert.NotNil(resp.Date)
@@ -1176,7 +1176,7 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_, badMD5 := getRandomDataAndReader(16)
 	badContentMD5 := badMD5[:]
 	uploadPagesFromURLOptions1 := UploadPagesFromURLOptions{
-		SourceContentMD5: &badContentMD5,
+		SourceContentMD5: badContentMD5,
 	}
 	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
 	_assert.NotNil(err)
@@ -1220,8 +1220,8 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 	_assert.Nil(err)
 	pageRangeResp := pageListResp.PageList.PageRange
 	_assert.NotNil(pageRangeResp)
-	_assert.Len(*pageRangeResp, 1)
-	rawStart, rawEnd := (*pageRangeResp)[0].Raw()
+	_assert.Len(pageRangeResp, 1)
+	rawStart, rawEnd := pageRangeResp[0].Raw()
 	_assert.Equal(rawStart, offset1)
 	_assert.Equal(rawEnd, end1)
 

@@ -17,7 +17,7 @@ import (
 type ListBlobsFlatSegmentResponsePager interface {
 	azcore.Pager
 
-	// Page returns the current ListBlobsFlatSegmentResponseResponse.
+	// PageResponse returns the current ListBlobsFlatSegmentResponseResponse.
 	PageResponse() ListBlobsFlatSegmentResponseResponse
 }
 
@@ -93,7 +93,7 @@ func (p *listBlobsFlatSegmentResponsePager) PageResponse() ListBlobsFlatSegmentR
 type ListBlobsHierarchySegmentResponsePager interface {
 	azcore.Pager
 
-	// Page returns the current ListBlobsHierarchySegmentResponseResponse.
+	// PageResponse returns the current ListBlobsHierarchySegmentResponseResponse.
 	PageResponse() ListBlobsHierarchySegmentResponseResponse
 }
 
@@ -169,7 +169,7 @@ func (p *listBlobsHierarchySegmentResponsePager) PageResponse() ListBlobsHierarc
 type ListContainersSegmentResponsePager interface {
 	azcore.Pager
 
-	// Page returns the current ListContainersSegmentResponseResponse.
+	// PageResponse returns the current ListContainersSegmentResponseResponse.
 	PageResponse() ListContainersSegmentResponseResponse
 }
 

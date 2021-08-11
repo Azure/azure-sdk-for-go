@@ -18,7 +18,7 @@ type CreateAppendBlobOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata *map[string]string
+	Metadata map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 
@@ -41,9 +41,9 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHTT
 
 type AppendBlockOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 *[]byte
+	TransactionalContentCRC64 []byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 	CpkInfo                        *CpkInfo
@@ -66,11 +66,11 @@ func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendP
 
 type AppendBlockURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 *[]byte
+	SourceContentMD5 []byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 *[]byte
+	SourceContentCRC64 []byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 	CpkInfo                        *CpkInfo

@@ -87,7 +87,7 @@ func waitForCopy(_assert *assert.Assertions, copyBlobClient BlockBlobClient, blo
 	status := *blobCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
 	start := time.Now()
-	for status != CopyStatusSuccess {
+	for status != CopyStatusTypeSuccess {
 		props, _ := copyBlobClient.GetProperties(ctx, nil)
 		status = *props.CopyStatus
 		currentTime := time.Now()
@@ -158,7 +158,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 	metadata := make(map[string]string)
 	metadata["Bla"] = "foo"
 	options := StartCopyBlobOptions{
-		Metadata: &metadata,
+		Metadata: metadata,
 	}
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_assert.Nil(err)
@@ -227,7 +227,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 
 	metadata := make(map[string]string)
 	options := StartCopyBlobOptions{
-		Metadata: &metadata,
+		Metadata: metadata,
 	}
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_assert.Nil(err)
@@ -261,7 +261,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataInvalidField() {
 	metadata := make(map[string]string)
 	metadata["I nvalid."] = "foo"
 	options := StartCopyBlobOptions{
-		Metadata: &metadata,
+		Metadata: metadata,
 	}
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_assert.NotNil(err)
@@ -1058,7 +1058,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	_, err = bbClient.Upload(ctx, azcore.NopCloser(blobReader), nil)
 	_assert.Nil(err)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
@@ -1083,7 +1083,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
 	_assert.Nil(err)
-	_assert.Equal(*resp.CopyStatus, CopyStatusPending)
+	_assert.Equal(*resp.CopyStatus, CopyStatusTypePending)
 	_assert.NotNil(resp.CopyID)
 
 	_, err = copyBlobClient.AbortCopyFromURL(ctx, *resp.CopyID, nil)
@@ -1095,7 +1095,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	}
 
 	resp2, _ := copyBlobClient.GetProperties(ctx, nil)
-	_assert.Equal(*resp2.CopyStatus, CopyStatusAborted)
+	_assert.Equal(*resp2.CopyStatus, CopyStatusTypeAborted)
 }
 
 func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
@@ -1136,7 +1136,7 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadata() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 	}
 	resp, err := bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
 	_assert.Nil(err)
@@ -1225,7 +1225,7 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadataInvalid() {
 	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
-		Metadata: &map[string]string{"Invalid Field!": "value"},
+		Metadata: map[string]string{"Invalid Field!": "value"},
 	}
 	_, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
 	_assert.NotNil(err)
@@ -1742,7 +1742,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 	mdf := md5.Sum([]byte(blockBlobDefaultData)[10:13])
-	_assert.Equal(*resp.ContentMD5, mdf[:])
+	_assert.Equal(resp.ContentMD5, mdf[:])
 }
 
 func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
@@ -2059,7 +2059,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////
 ////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
-////		Include: &include,
+////		Include: include,
 ////	}
 ////	blobs, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
@@ -2083,7 +2083,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////
 ////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
-////		Include: &include,
+////		Include: include,
 ////	}
 ////	blobs, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)

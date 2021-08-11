@@ -28,7 +28,7 @@ func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 	blobProp, _ := bbClient.GetProperties(ctx, nil)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata:                 &basicMetadata,
+		Metadata:                 basicMetadata,
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 	}
 	uploadResp, err := bbClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
@@ -59,7 +59,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	blobProp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 		},
@@ -74,12 +74,11 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_assert.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-func (s *azblobTestSuite) TestSetBlobMetadataReturnsVID() {
+func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -96,9 +95,8 @@ func (s *azblobTestSuite) TestSetBlobMetadataReturnsVID() {
 	_assert.Nil(err)
 	_assert.NotNil(resp.VersionID)
 
-	include := []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata}
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
-		Include: &include,
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
 	}
 	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
 
@@ -110,12 +108,12 @@ func (s *azblobTestSuite) TestSetBlobMetadataReturnsVID() {
 	pageResp := pager.PageResponse()
 
 	_assert.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
-	blobList := *pageResp.EnumerationResults.Segment.BlobItems
+	blobList := pageResp.EnumerationResults.Segment.BlobItems
 	_assert.Len(blobList, 1)
 	blobResp1 := blobList[0]
 	_assert.Equal(*blobResp1.Name, bbName)
-	_assert.NotNil(*blobResp1.Metadata.AdditionalProperties)
-	_assert.Len(*blobResp1.Metadata.AdditionalProperties, 2)
+	_assert.NotNil(blobResp1.Metadata.AdditionalProperties)
+	_assert.Len(blobResp1.Metadata.AdditionalProperties, 2)
 	// _assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
 
 }
@@ -168,14 +166,14 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
 //	uploadResp, err := blobURL.Upload(ctx, bytes.NewReader([]byte("data")), &UploadBlockBlobOptions{
-//		Metadata: &basicMetadata,
+//		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
 //	_assert.NotNil(uploadResp.VersionID)
 //	versionID1 := uploadResp.VersionID
 //
 //	uploadResp, err = blobURL.Upload(ctx, bytes.NewReader([]byte("updated_data")), &UploadBlockBlobOptions{
-//		Metadata: &basicMetadata,
+//		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
 //	_assert.NotNil(uploadResp.VersionID)
@@ -188,7 +186,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	blobs
 //	for listPager.NextPage(ctx) {
 //		resp := listPager.PageResponse()
-//		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 //			count += 1;
 //			// Process the blobs returned
 //			snapTime := "N/A"

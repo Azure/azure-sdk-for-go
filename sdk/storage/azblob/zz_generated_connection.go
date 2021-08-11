@@ -12,9 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const scope = "https://storage.azure.com/.default"
-const telemetryInfo = "azsdk-go-generated/<version>"
-
 // connectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
 type connectionOptions struct {
@@ -61,7 +58,7 @@ func newConnection(endpoint string, cred azcore.Credential, options *connectionO
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}))
+	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{}}))
 	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
 	return &connection{u: endpoint, p: azcore.NewPipeline(options.HTTPClient, policies...)}
 }

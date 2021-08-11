@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 08:46:51 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocuploadblobwithmd5withcpkscope?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 08:46:51 GMT
+      - Wed, 11 Aug 2021 10:10:10 GMT
       Etag:
-      - '"0x8D95BDB6629A0B7"'
+      - '"0x8D95CB0345473C9"'
       Last-Modified:
-      - Tue, 10 Aug 2021 08:46:51 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ed595459-101e-003b-01c4-8d74ff000000
+      - 5a0ef262-d01e-000f-5c99-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -56,11 +56,11 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 10 Aug 2021 08:46:52 GMT
+      - Wed, 11 Aug 2021 10:10:12 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocuploadblobwithmd5withcpkscope/gotestblobuploadblobwithmd5withcpkscope
     method: PUT
   response:
@@ -71,11 +71,11 @@ interactions:
       Content-Md5:
       - xk80mm7zFd4JWnRHbMEPtQ==
       Date:
-      - Tue, 10 Aug 2021 08:46:51 GMT
+      - Wed, 11 Aug 2021 10:10:10 GMT
       Etag:
-      - '"0x8D95BDB66500C43"'
+      - '"0x8D95CB034792A69"'
       Last-Modified:
-      - Tue, 10 Aug 2021 08:46:52 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
@@ -83,13 +83,13 @@ interactions:
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - ed595488-101e-003b-24c4-8d74ff000000
+      - 5a0ef2f2-d01e-000f-5e99-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-10T08:46:52.2133339Z"
+      - "2021-08-11T10:10:11.3991273Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -105,9 +105,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 08:46:53 GMT
+      - Wed, 11 Aug 2021 10:10:12 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocuploadblobwithmd5withcpkscope/gotestblobuploadblobwithmd5withcpkscope
     method: GET
   response:
@@ -122,17 +122,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 10 Aug 2021 08:46:52 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       Etag:
-      - '"0x8D95BDB66500C43"'
+      - '"0x8D95CB034792A69"'
       Last-Modified:
-      - Tue, 10 Aug 2021 08:46:52 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 10 Aug 2021 08:46:52 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Is-Current-Version:
@@ -142,13 +142,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - ed5954d3-101e-003b-5dc4-8d74ff000000
+      - 5a0ef38f-d01e-000f-7099-8edb57000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-10T08:46:52.2133339Z"
+      - "2021-08-11T10:10:11.3991273Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -164,9 +164,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 08:46:53 GMT
+      - Wed, 11 Aug 2021 10:10:12 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocuploadblobwithmd5withcpkscope?restype=container
     method: DELETE
   response:
@@ -175,13 +175,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 08:46:52 GMT
+      - Wed, 11 Aug 2021 10:10:11 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ed5954fd-101e-003b-7fc4-8d74ff000000
+      - 5a0ef3ff-d01e-000f-5c99-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""

@@ -61,7 +61,7 @@ func (s *azblobTestSuite) TestListContainersBasic() {
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: &md})
+	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
 	defer containerClient.Delete(ctx, nil)
 	_assert.Nil(err)
 
@@ -73,21 +73,21 @@ func (s *azblobTestSuite) TestListContainersBasic() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range *resp.EnumerationResults.ContainerItems {
+		for _, container := range resp.EnumerationResults.ContainerItems {
 			_assert.NotNil(container.Name)
 
 			if *container.Name == containerName {
 				_assert.NotNil(container.Properties)
 				_assert.NotNil(container.Properties.LastModified)
 				_assert.NotNil(container.Properties.Etag)
-				_assert.Equal(*container.Properties.LeaseStatus, LeaseStatusUnlocked)
-				_assert.Equal(*container.Properties.LeaseState, LeaseStateAvailable)
+				_assert.Equal(*container.Properties.LeaseStatus, LeaseStatusTypeUnlocked)
+				_assert.Equal(*container.Properties.LeaseState, LeaseStateTypeAvailable)
 				_assert.Nil(container.Properties.LeaseDuration)
 				_assert.Nil(container.Properties.PublicAccess)
 				_assert.NotNil(container.Metadata)
 
 				unwrappedMeta := map[string]string{}
-				for k, v := range *container.Metadata {
+				for k, v := range container.Metadata {
 					if v != nil {
 						unwrappedMeta[k] = *v
 					}
@@ -190,7 +190,7 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range *resp.EnumerationResults.ContainerItems {
+		for _, container := range resp.EnumerationResults.ContainerItems {
 			count++
 			_assert.NotNil(container.Name)
 		}

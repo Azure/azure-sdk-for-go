@@ -32,7 +32,7 @@ package azblob
 // 		resp := p.pager.PageResponse()
 //
 // 		if resp.RawResponse != nil {
-// 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
+// 			for _, v := range resp.EnumerationResults.Segment.BlobItems {
 // 				if p.timeout != 0 {
 // 					p.timer.Reset(p.timeout)
 // 				} else {
@@ -79,7 +79,7 @@ package azblob
 // 		resp := p.pager.PageResponse()
 //
 // 		if resp.RawResponse != nil {
-// 			for _, v := range *resp.EnumerationResults.Segment.BlobItems {
+// 			for _, v := range resp.EnumerationResults.Segment.BlobItems {
 // 				if p.timeout != 0 {
 // 					p.timer.Reset(p.timeout)
 // 				} else {

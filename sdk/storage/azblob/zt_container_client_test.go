@@ -52,10 +52,10 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	}
 	containerClient := svcClient.NewContainerClient("foo bar")
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.NotNil(err)
@@ -73,10 +73,10 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 
 	containerClient := svcClient.NewContainerClient("")
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.NotNil(err)
@@ -98,10 +98,10 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 
 	defer deleteContainer(_assert, containerClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 
 	containerClient = svcClient.NewContainerClient(containerName)
@@ -122,10 +122,10 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{"1 foo": "bar"},
+		Metadata: map[string]string{"1 foo": "bar"},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 
@@ -144,10 +144,10 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(_assert, containerClient)
@@ -170,10 +170,10 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(_assert, containerClient)
@@ -199,7 +199,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerName := generateContainerName(testName)
 //	containerClient := getContainerClient(containerName, svcClient)
 //
-//	access := PublicAccessBlob
+//	access := PublicAccessTypeBlob
 //	createContainerOptions := CreateContainerOptions{
 //		Access: &access,
 //	}
@@ -209,7 +209,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		Metadata: &basicMetadata,
+//		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
 //	_assert.Nil(err)
@@ -221,7 +221,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	for pager.NextPage(ctx) {
 //		resp := pager.PageResponse()
 //
-//		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 //			_assert.Equal(*blob.Name, blobPrefix)
 //		}
 //	}
@@ -247,7 +247,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerName := generateContainerName(testName)
 //	containerClient := getContainerClient(containerName, svcClient)
 //
-//	access := PublicAccessBlob
+//	access := PublicAccessTypeBlob
 //	createContainerOptions := CreateContainerOptions{
 //		Access: &access,
 //	}
@@ -257,7 +257,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		Metadata: &basicMetadata,
+//		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
 //	_assert.Nil(err)
@@ -296,7 +296,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 	}
 	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
 	_assert.Nil(err)
@@ -487,7 +487,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 ////
 ////	invalidEtag := "invalid"
 ////	deleteContainerOptions := SetMetadataContainerOptions{
-////		Metadata: &basicMetadata,
+////		Metadata: basicMetadata,
 ////		ModifiedAccessConditions: &ModifiedAccessConditions{
 ////			IfMatch: &invalidEtag,
 ////		},
@@ -528,7 +528,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	for pager.NextPage(ctx) {
 //		resp := pager.PageResponse()
 //
-//		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 //			count++
 //			_assert(*blob.Name, chk.Equals, blobName)
 //		}
@@ -556,7 +556,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	for pager.NextPage(ctx) {
 //		resp := pager.PageResponse()
 //
-//		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 //			count++
 //			_assert(*blob.Name, chk.Equals, blobNames[3])
 //		}
@@ -595,7 +595,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 	_assert.Nil(err)
 
 	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
-		Include: &[]ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
 	}
 	pager := containerClient.ListBlobsFlatSegment(&listBlobFlatSegmentOptions)
 
@@ -605,7 +605,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 
 		resp := pager.PageResponse()
 
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 			if *blob.Name == snapBlobName && blob.Snapshot != nil {
 				wasFound = true
 				_assert.Equal(*blob.Snapshot, *snap.Snapshot)
@@ -697,7 +697,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert(*resp.Segment.BlobItems[0].Properties.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 ////	temp := bbClient.URL()
 ////	_assert(*resp.Segment.BlobItems[0].Properties.CopySource, chk.Equals, temp.String())
-////	_assert(resp.Segment.BlobItems[0].Properties.CopyStatus, chk.Equals, CopyStatusSuccess)
+////	_assert(resp.Segment.BlobItems[0].Properties.CopyStatus, chk.Equals, CopyStatusTypeSuccess)
 ////}
 ////
 ////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeUncommitted() {
@@ -850,7 +850,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 			_assert.Equal(nameMap[*blob.Name], true)
 		}
 	}
@@ -888,7 +888,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 			_assert.Equal(nameMap[*blob.Name], true)
 		}
 	}
@@ -954,7 +954,7 @@ func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -977,7 +977,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access: &access,
 	}
@@ -988,7 +988,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 
 	_assert.Nil(err)
-	_assert.Equal(*resp.BlobPublicAccess, PublicAccessBlob)
+	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
 //func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
@@ -999,7 +999,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	defer deleteContainer(_assert, containerClient)
 //	_, blobName := createNewBlockBlob(c, containerClient)
 //
-//	// Container is created with PublicAccessBlob, so setting it to None will actually test that it is changed through this method
+//	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
 //	_, err := containerClient.SetAccessPolicy(ctx, nil)
 //	_assert.Nil(err)
 //
@@ -1025,7 +1025,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 //}
 
-func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessBlob() {
+func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
@@ -1038,7 +1038,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessBlob() {
 
 	defer deleteContainer(_assert, containerClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
@@ -1049,7 +1049,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessBlob() {
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	_assert.Nil(err)
-	_assert.Equal(*resp.BlobPublicAccess, PublicAccessBlob)
+	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
 func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
@@ -1065,7 +1065,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 
 	defer deleteContainer(_assert, containerClient)
 
-	access := PublicAccessContainer
+	access := PublicAccessTypeContainer
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
@@ -1076,7 +1076,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	_assert.Nil(err)
-	_assert.Equal(*resp.BlobPublicAccess, PublicAccessContainer)
+	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeContainer)
 }
 
 ////// TODO: After Pacer is ready
@@ -1105,7 +1105,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////
 ////	setAccessPolicyOptions := SetAccessPolicyOptions{
 ////		ContainerAcquireLeaseOptions: ContainerAcquireLeaseOptions{
-////			ContainerACL: &permissions,
+////			ContainerACL: permissions,
 ////		},
 ////	}
 ////	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1166,11 +1166,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 		}
 	}
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1210,11 +1210,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 		}
 	}
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1230,7 +1230,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	setAccessPolicyOptions1 := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
@@ -1272,11 +1272,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 		}
 	}
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1290,7 +1290,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	setAccessPolicyOptions = SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &[]*SignedIdentifier{},
+			ContainerACL: []*SignedIdentifier{},
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1333,11 +1333,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 		}
 	}
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1394,11 +1394,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 		}
 	}
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerACL: &permissions,
+			ContainerACL: permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1577,9 +1577,9 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 		Access:   &access,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
@@ -1587,7 +1587,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	defer deleteContainer(_assert, containerClient)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 	_assert.Nil(err)
@@ -1607,10 +1607,10 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	}
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 
@@ -1638,7 +1638,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 	defer deleteContainer(_assert, containerClient)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
-		Metadata: &map[string]string{"!nval!d Field!@#%": "value"},
+		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 	_assert.NotNil(err)
@@ -1672,7 +1672,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	defer deleteContainer(_assert, containerClient)
 //
 //	setMetadataContainerOptions := SetMetadataContainerOptions{
-//		Metadata: &basicMetadata,
+//		Metadata: basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},
@@ -1704,7 +1704,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 //	_assert.Nil(err)
 //	setMetadataContainerOptions := SetMetadataContainerOptions{
-//		Metadata: &basicMetadata,
+//		Metadata: basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},

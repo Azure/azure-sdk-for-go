@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:28 GMT
+      - Wed, 11 Aug 2021 10:08:28 GMT
       Etag:
-      - '"0x8D95BFBC19FED85"'
+      - '"0x8D95CAFF7491B5E"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:28 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - edadfa7c-101e-003b-15e4-8d74ff000000
+      - 5a0e53a6-d01e-000f-7198-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -64,7 +64,7 @@ interactions:
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk
     method: PUT
   response:
@@ -73,23 +73,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:28 GMT
+      - Wed, 11 Aug 2021 10:08:28 GMT
       Etag:
-      - '"0x8D95BFBC1C4C811"'
+      - '"0x8D95CAFF76E5270"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:28 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Request-Id:
-      - edadfabc-101e-003b-4de4-8d74ff000000
+      - 5a0e5411-d01e-000f-4f98-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-10T12:38:29.5453713Z"
+      - "2021-08-11T10:08:28.9870448Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -109,7 +109,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -121,7 +121,7 @@ interactions:
       X-Ms-Range:
       - bytes=0-2047
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page
     method: PUT
   response:
@@ -130,11 +130,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:28 GMT
+      - Wed, 11 Aug 2021 10:08:28 GMT
       Etag:
-      - '"0x8D95BFBC1E995FB"'
+      - '"0x8D95CAFF792F93F"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -144,11 +144,11 @@ interactions:
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Request-Id:
-      - edadfaf9-101e-003b-05e4-8d74ff000000
+      - 5a0e547a-d01e-000f-2a98-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -164,7 +164,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -172,7 +172,7 @@ interactions:
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=snapshot
     method: PUT
   response:
@@ -181,23 +181,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Etag:
-      - '"0x8D95BFBC1E995FB"'
+      - '"0x8D95CAFF792F93F"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - edadfb32-101e-003b-31e4-8d74ff000000
+      - 5a0e54d6-d01e-000f-7898-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "false"
       X-Ms-Snapshot:
-      - "2021-08-10T12:38:30.0277690Z"
+      - "2021-08-11T10:08:29.4694463Z"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-10T12:38:30.0287690Z"
+      - "2021-08-11T10:08:29.4704463Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -217,7 +217,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -229,7 +229,7 @@ interactions:
       X-Ms-Range:
       - bytes=2048-4095
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page
     method: PUT
   response:
@@ -238,11 +238,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Etag:
-      - '"0x8D95BFBC2337FE1"'
+      - '"0x8D95CAFF7DC1FC8"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -252,11 +252,11 @@ interactions:
       X-Ms-Encryption-Key-Sha256:
       - 3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=
       X-Ms-Request-Id:
-      - edadfbaf-101e-003b-1ae4-8d74ff000000
+      - 5a0e5539-d01e-000f-3598-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -272,12 +272,12 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:31 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       X-Ms-Range:
       - bytes=0-4095
       X-Ms-Version:
-      - "2019-12-12"
-    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist&prevsnapshot=2021-08-10T12%3A38%3A30.0277690Z
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist&prevsnapshot=2021-08-11T10%3A08%3A29.4694463Z
     method: GET
   response:
     body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x50\x61\x67\x65\x4C\x69\x73\x74\x3E\x3C\x50\x61\x67\x65\x52\x61\x6E\x67\x65\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x34\x38\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x6E\x64\x3E\x34\x30\x39\x35\x3C\x2F\x45\x6E\x64\x3E\x3C\x2F\x50\x61\x67\x65\x52\x61\x6E\x67\x65\x3E\x3C\x2F\x50\x61\x67\x65\x4C\x69\x73\x74\x3E"
@@ -285,19 +285,19 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Etag:
-      - '"0x8D95BFBC2337FE1"'
+      - '"0x8D95CAFF7DC1FC8"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "5120"
       X-Ms-Request-Id:
-      - edadfbfd-101e-003b-5fe4-8d74ff000000
+      - 5a0e557f-d01e-000f-7798-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 200 OK
     code: 200
     duration: ""
@@ -315,7 +315,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:31 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       X-Ms-Encryption-Algorithm:
       - AES256
       X-Ms-Encryption-Key:
@@ -327,7 +327,7 @@ interactions:
       X-Ms-Range:
       - bytes=2048-4095
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page
     method: PUT
   response:
@@ -336,19 +336,19 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:29 GMT
+      - Wed, 11 Aug 2021 10:08:29 GMT
       Etag:
-      - '"0x8D95BFBC27C7F3E"'
+      - '"0x8D95CAFF824D0FD"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
       - "0"
       X-Ms-Request-Id:
-      - edadfc64-101e-003b-34e4-8d74ff000000
+      - 5a0e55e4-d01e-000f-4f98-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -364,12 +364,12 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:31 GMT
+      - Wed, 11 Aug 2021 10:08:31 GMT
       X-Ms-Range:
       - bytes=0-4094
       X-Ms-Version:
-      - "2019-12-12"
-    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist&prevsnapshot=2021-08-10T12%3A38%3A30.0277690Z
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist&prevsnapshot=2021-08-11T10%3A08%3A29.4694463Z
     method: GET
   response:
     body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x50\x61\x67\x65\x4C\x69\x73\x74\x3E\x3C\x43\x6C\x65\x61\x72\x52\x61\x6E\x67\x65\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x34\x38\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x6E\x64\x3E\x34\x30\x39\x35\x3C\x2F\x45\x6E\x64\x3E\x3C\x2F\x43\x6C\x65\x61\x72\x52\x61\x6E\x67\x65\x3E\x3C\x2F\x50\x61\x67\x65\x4C\x69\x73\x74\x3E"
@@ -377,19 +377,19 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       Etag:
-      - '"0x8D95BFBC27C7F3E"'
+      - '"0x8D95CAFF824D0FD"'
       Last-Modified:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "5120"
       X-Ms-Request-Id:
-      - edadfcae-101e-003b-6de4-8d74ff000000
+      - 5a0e5650-d01e-000f-2798-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 200 OK
     code: 200
     duration: ""
@@ -405,9 +405,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 10 Aug 2021 12:38:31 GMT
+      - Wed, 11 Aug 2021 10:08:31 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpageswithcpk01?restype=container
     method: DELETE
   response:
@@ -416,13 +416,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 10 Aug 2021 12:38:30 GMT
+      - Wed, 11 Aug 2021 10:08:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - edadfd14-101e-003b-45e4-8d74ff000000
+      - 5a0e5684-d01e-000f-5398-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""

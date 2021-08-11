@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:35 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobappendblockifnonematchtrue?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:14:40 GMT
+      - Wed, 11 Aug 2021 10:03:33 GMT
       Etag:
-      - '"0x8D934A5C3E91637"'
+      - '"0x8D95CAF47D40CC0"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f76319c-001e-0006-558e-66c1d9000000
+      - 5a0c0b23-d01e-000f-0a98-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -54,9 +54,9 @@ interactions:
       X-Ms-Blob-Type:
       - AppendBlob
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:35 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobappendblockifnonematchtrue/gotestblobblobappendblockifnonematchtrue
     method: PUT
   response:
@@ -65,21 +65,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:14:40 GMT
+      - Wed, 11 Aug 2021 10:03:33 GMT
       Etag:
-      - '"0x8D934A5C40DFE19"'
+      - '"0x8D95CAF47F8F09E"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f76323f-001e-0006-5d8e-66c1d9000000
+      - 5a0c0b94-d01e-000f-6d98-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-06-21T11:14:41.3135385Z"
+      - "2021-08-11T10:03:34.6164894Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,9 +101,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:35 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobappendblockifnonematchtrue/gotestblobblobappendblockifnonematchtrue?comp=appendblock
     method: PUT
   response:
@@ -112,11 +112,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:14:40 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Etag:
-      - '"0x8D934A5C4334152"'
+      - '"0x8D95CAF481F1E60"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Append-Offset:
@@ -126,11 +126,11 @@ interactions:
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 1f7632dd-001e-0006-6e8e-66c1d9000000
+      - 5a0c0bf7-d01e-000f-4b98-8edb57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 201 Created
     code: 201
     duration: ""
@@ -146,9 +146,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:35 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobappendblockifnonematchtrue/gotestblobblobappendblockifnonematchtrue
     method: HEAD
   response:
@@ -161,11 +161,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Etag:
-      - '"0x8D934A5C4334152"'
+      - '"0x8D95CAF481F1E60"'
       Last-Modified:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Committed-Block-Count:
@@ -173,7 +173,7 @@ interactions:
       X-Ms-Blob-Type:
       - AppendBlob
       X-Ms-Creation-Time:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -181,13 +181,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 1f763340-001e-0006-488e-66c1d9000000
+      - 5a0c0c60-d01e-000f-2598-8edb57000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-06-21T11:14:41.3135385Z"
+      - "2021-08-11T10:03:34.6164894Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -203,9 +203,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 21 Jun 2021 11:14:42 GMT
+      - Wed, 11 Aug 2021 10:03:36 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobappendblockifnonematchtrue?restype=container
     method: DELETE
   response:
@@ -214,13 +214,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 21 Jun 2021 11:14:41 GMT
+      - Wed, 11 Aug 2021 10:03:34 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1f7633ec-001e-0006-688e-66c1d9000000
+      - 5a0c0cc8-d01e-000f-0298-8edb57000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-02-10"
     status: 202 Accepted
     code: 202
     duration: ""

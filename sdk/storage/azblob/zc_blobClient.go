@@ -140,7 +140,7 @@ func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTP
 func (b BlobClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetBlobMetadataOptions) (BlobSetMetadataResponse, error) {
 	lease, cpk, cpkScope, access := options.pointers()
 	basics := BlobSetMetadataOptions{
-		Metadata: &metadata,
+		Metadata: metadata,
 	}
 	resp, err := b.client.SetMetadata(ctx, &basics, lease, cpk, cpkScope, access)
 

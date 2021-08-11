@@ -98,7 +98,7 @@ func Example() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, v := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, v := range resp.EnumerationResults.Segment.BlobItems {
 			fmt.Println(*v.Name)
 		}
 	}
@@ -203,7 +203,7 @@ func ExampleBlobURLParts() {
 
 // This example demonstrates how to use the SAS token convenience generators.
 // Though this example focuses on account SAS, these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
-func ExampleSASConvenienceGenerators() {
+func ExampleServiceClient_GetAccountSASToken() {
 	// Initialize a service client
 	accountName, accountKey := accountInfo()
 	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -238,7 +238,7 @@ func ExampleSASConvenienceGenerators() {
 }
 
 // This example shows how to create and use an Azure Storage account Shared Access Signature (SAS).
-func ExampleAccountSASSignatureValues() {
+func ExampleAccountSASSignatureValues_NewSASQueryParameters() {
 	accountName, accountKey := accountInfo()
 
 	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -358,7 +358,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		log.Fatal(err)
 	}
 	if get.StatusCode == http.StatusNotFound {
-		_, err := container.SetAccessPolicy(ctx, &SetAccessPolicyOptions{ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: PublicAccessBlob.ToPtr()}})
+		_, err := container.SetAccessPolicy(ctx, &SetAccessPolicyOptions{ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: PublicAccessTypeBlob.ToPtr()}})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -441,7 +441,7 @@ func ExampleBlobAccessConditions() {
 }
 
 // This examples shows how to create a container with metadata and then how to read & update the metadata.
-func ExampleMetadata_containers() {
+func ExampleContainerClient_SetMetadata() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := accountInfo()
 
@@ -462,7 +462,7 @@ func ExampleMetadata_containers() {
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -485,7 +485,7 @@ func ExampleMetadata_containers() {
 
 	// Update the metadata and write it back to the container
 	metadata["author"] = "Aidan" // NOTE: The keyname is in all lowercase letters
-	_, err = containerClient.SetMetadata(ctx, &SetMetadataContainerOptions{Metadata: &metadata})
+	_, err = containerClient.SetMetadata(ctx, &SetMetadataContainerOptions{Metadata: metadata})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -495,7 +495,7 @@ func ExampleMetadata_containers() {
 
 // This examples shows how to create a blob with metadata and then how to read & update
 // the blob's read-only properties and metadata.
-func ExampleMetadata_blobs() {
+func ExampleBlobClient_SetMetadata() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := accountInfo()
 
@@ -516,7 +516,7 @@ func ExampleMetadata_blobs() {
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = BlobClient.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = BlobClient.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -662,11 +662,11 @@ func ExampleBlockBlobClient() {
 	}
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
-	getBlock, err := BlobClient.GetBlockList(ctx, BlockListAll, nil)
+	getBlock, err := BlobClient.GetBlockList(ctx, BlockListTypeAll, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, block := range *getBlock.BlockList.CommittedBlocks {
+	for _, block := range getBlock.BlockList.CommittedBlocks {
 		fmt.Printf("Block ID=%d, Size=%d\n", blockIDBase64ToInt(*block.Name), block.Size)
 	}
 
@@ -767,7 +767,7 @@ func ExamplePageBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, pr := range *getPages.PageList.PageRange {
+	for _, pr := range getPages.PageList.PageRange {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
@@ -780,7 +780,7 @@ func ExamplePageBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, pr := range *getPages.PageList.PageRange {
+	for _, pr := range getPages.PageList.PageRange {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
@@ -858,7 +858,7 @@ func Example_blobSnapshots() {
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
 			// Process the blobs returned
 			snapTime := "N/A"
 			if blob.Snapshot != nil {
@@ -882,7 +882,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionInclude.ToPtr()})
+	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionTypeInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -965,7 +965,7 @@ func ExampleBlobClient_startCopy() {
 
 	copyID := *startCopy.CopyID
 	copyStatus := *startCopy.CopyStatus
-	for copyStatus == CopyStatusPending {
+	for copyStatus == CopyStatusTypePending {
 		time.Sleep(time.Second * 2)
 		getMetadata, err := blobClient.GetProperties(ctx, nil)
 		if err != nil {
@@ -977,7 +977,7 @@ func ExampleBlobClient_startCopy() {
 }
 
 // // This example shows how to copy a large stream in blocks (chunks) to a block blob.
-func ExampleUploadFileToBlockBlobAndDownloadItBack() {
+func ExampleUploadFileToBlockBlob() {
 	file, err := os.Open("BigFile.bin") // Open the file we want to upload
 	if err != nil {
 		log.Fatal(err)
@@ -1120,7 +1120,7 @@ func ExampleUploadStreamToBlockBlob() {
 // The same lease operations can be performed on individual blobs as well.
 // A lease on a container prevents it from being deleted by others, while a lease on a blob
 // protects it from both modifications and deletions.
-func ExampleLeaseContainer() {
+func ExampleContainerLeaseClient() {
 	// From the Azure portal, get your Storage account's name and account key.
 	accountName, accountKey := accountInfo()
 

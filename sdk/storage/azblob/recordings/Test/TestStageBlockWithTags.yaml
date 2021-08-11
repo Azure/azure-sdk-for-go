@@ -1,0 +1,413 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:05 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:04 GMT
+      Etag:
+      - '"0x8D95CB030C05056"'
+      Last-Modified:
+      - Wed, 11 Aug 2021 10:10:05 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5a0eea2c-d01e-000f-7b99-8edb57000000
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: 'Azure '
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "6"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?blockid=AAAAAA%3D%3D&comp=block
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:04 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - 5xN7r2MKOFc=
+      X-Ms-Request-Id:
+      - 5a0eea6b-d01e-000f-2d99-8edb57000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: 'Storage '
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "8"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?blockid=AQAAAA%3D%3D&comp=block
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:05 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - 0F4fHd+uEbM=
+      X-Ms-Request-Id:
+      - 5a0eeaac-d01e-000f-6b99-8edb57000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: 'Block '
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "6"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?blockid=AgAAAA%3D%3D&comp=block
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:05 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - En96VMB7Rzc=
+      X-Ms-Request-Id:
+      - 5a0eeaf6-d01e-000f-2999-8edb57000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: Blob.
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "5"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?blockid=AwAAAA%3D%3D&comp=block
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:05 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - QMP5wuTzZ/c=
+      X-Ms-Request-Id:
+      - 5a0eeb76-d01e-000f-1499-8edb57000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: <BlockList><Latest>AAAAAA==</Latest><Latest>AQAAAA==</Latest><Latest>AgAAAA==</Latest><Latest>AwAAAA==</Latest></BlockList>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "123"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:07 GMT
+      X-Ms-Tags:
+      - bbClient=sdk&sdk=go&azure=bbClient
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?comp=blocklist
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:05 GMT
+      Etag:
+      - '"0x8D95CB03177C9DD"'
+      Last-Modified:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - ZhIicf4e8Ug=
+      X-Ms-Request-Id:
+      - 5a0eebe0-d01e-000f-6e99-8edb57000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-02-10"
+      X-Ms-Version-Id:
+      - "2021-08-11T10:10:06.3569373Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:07 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags
+    method: GET
+  response:
+    body: Azure Storage Block Blob.
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "25"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      Etag:
+      - '"0x8D95CB03177C9DD"'
+      Last-Modified:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Creation-Time:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 5a0eec32-d01e-000f-2e99-8edb57000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Tag-Count:
+      - "3"
+      X-Ms-Version:
+      - "2020-02-10"
+      X-Ms-Version-Id:
+      - "2021-08-11T10:10:06.3569373Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:07 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?comp=tags&versionid=2021-08-11T10%3A10%3A06.3569373Z
+    method: GET
+  response:
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\n\x3C\x54\x61\x67\x73\x3E\x3C\x54\x61\x67\x53\x65\x74\x3E\x3C\x54\x61\x67\x3E\x3C\x4B\x65\x79\x3E\x61\x7A\x75\x72\x65\x3C\x2F\x4B\x65\x79\x3E\x3C\x56\x61\x6C\x75\x65\x3E\x62\x62\x43\x6C\x69\x65\x6E\x74\x3C\x2F\x56\x61\x6C\x75\x65\x3E\x3C\x2F\x54\x61\x67\x3E\x3C\x54\x61\x67\x3E\x3C\x4B\x65\x79\x3E\x62\x62\x43\x6C\x69\x65\x6E\x74\x3C\x2F\x4B\x65\x79\x3E\x3C\x56\x61\x6C\x75\x65\x3E\x73\x64\x6B\x3C\x2F\x56\x61\x6C\x75\x65\x3E\x3C\x2F\x54\x61\x67\x3E\x3C\x54\x61\x67\x3E\x3C\x4B\x65\x79\x3E\x73\x64\x6B\x3C\x2F\x4B\x65\x79\x3E\x3C\x56\x61\x6C\x75\x65\x3E\x67\x6F\x3C\x2F\x56\x61\x6C\x75\x65\x3E\x3C\x2F\x54\x61\x67\x3E\x3C\x2F\x54\x61\x67\x53\x65\x74\x3E\x3C\x2F\x54\x61\x67\x73\x3E"
+    headers:
+      Content-Length:
+      - "212"
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5a0eec7d-d01e-000f-6c99-8edb57000000
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:07 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags/gotestblobstageblockwithtags?comp=tags
+    method: GET
+  response:
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\n\x3C\x54\x61\x67\x73\x3E\x3C\x54\x61\x67\x53\x65\x74\x3E\x3C\x54\x61\x67\x3E\x3C\x4B\x65\x79\x3E\x61\x7A\x75\x72\x65\x3C\x2F\x4B\x65\x79\x3E\x3C\x56\x61\x6C\x75\x65\x3E\x62\x62\x43\x6C\x69\x65\x6E\x74\x3C\x2F\x56\x61\x6C\x75\x65\x3E\x3C\x2F\x54\x61\x67\x3E\x3C\x54\x61\x67\x3E\x3C\x4B\x65\x79\x3E\x62\x62\x43\x6C\x69\x65\x6E\x74\x3C\x2F\x4B\x65\x79\x3E\x3C\x56\x61\x6C\x75\x65\x3E\x73\x64\x6B\x3C\x2F\x56\x61\x6C\x75\x65\x3E\x3C\x2F\x54\x61\x67\x3E\x3C\x54\x61\x67\x3E\x3C\x4B\x65\x79\x3E\x73\x64\x6B\x3C\x2F\x4B\x65\x79\x3E\x3C\x56\x61\x6C\x75\x65\x3E\x67\x6F\x3C\x2F\x56\x61\x6C\x75\x65\x3E\x3C\x2F\x54\x61\x67\x3E\x3C\x2F\x54\x61\x67\x53\x65\x74\x3E\x3C\x2F\x54\x61\x67\x73\x3E"
+    headers:
+      Content-Length:
+      - "212"
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5a0eecbc-d01e-000f-2799-8edb57000000
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 11 Aug 2021 10:10:08 GMT
+      X-Ms-Version:
+      - "2020-02-10"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocstageblockwithtags?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Wed, 11 Aug 2021 10:10:06 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5a0eed25-d01e-000f-7d99-8edb57000000
+      X-Ms-Version:
+      - "2020-02-10"
+    status: 202 Accepted
+    code: 202
+    duration: ""

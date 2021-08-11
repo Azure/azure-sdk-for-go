@@ -5,10 +5,10 @@ package azblob
 
 type CreateContainerOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
-	Access *PublicAccess
+	Access *PublicAccessType
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
-	Metadata *map[string]string
+	Metadata map[string]string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
 	cpkScope *ContainerCpkScopeInfo
@@ -81,7 +81,7 @@ func (o *SetAccessPolicyOptions) pointers() (ContainerSetAccessPolicyOptions, *L
 }
 
 type SetMetadataContainerOptions struct {
-	Metadata                 *map[string]string
+	Metadata                 map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
 }

@@ -14,7 +14,7 @@ type CosmosClient struct {
 	// Endpoint used to create the client.
 	Endpoint   string
 	connection *cosmosClientConnection
-	cred       CosmosAccountCredential
+	cred       *SharedKeyCredential
 }
 
 // NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.

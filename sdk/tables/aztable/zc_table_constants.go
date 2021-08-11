@@ -5,6 +5,7 @@ package aztable
 
 import "errors"
 
+//nolint
 const (
 	timestamp     = "Timestamp"
 	partitionKey  = "PartitionKey"
@@ -25,3 +26,4 @@ const (
 )
 
 var partitionKeyRowKeyError = errors.New("Entity must have a PartitionKey and RowKey")
+var tooManyAccessPoliciesError = errors.New("You cannot set more than five (5) access policies at a time.")

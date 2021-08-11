@@ -38,7 +38,7 @@ const (
 const (
 	headerContentType             = "Content-Type"
 	headerContentTransferEncoding = "Content-Transfer-Encoding"
-	error_empty_transaction       = "Transaction cannot be empty."
+	error_empty_transaction       = "transaction cannot be empty"
 )
 
 type OdataErrorMessage struct {
@@ -62,7 +62,7 @@ func (e *TableTransactionError) Error() string {
 
 type TableTransactionAction struct {
 	ActionType TableTransactionActionType
-	Entity     map[string]interface{}
+	Entity     []byte
 	ETag       string
 }
 
@@ -96,12 +96,6 @@ type TableSubmitTransactionOptions struct {
 	RequestID *string
 }
 
-var defaultChangesetHeaders = map[string]string{
-	"Accept":       "application/json;odata=minimalmetadata",
-	"Content-Type": "application/json",
-	"Prefer":       "return-no-content",
-}
-
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
 func (t *TableClient) SubmitTransaction(ctx context.Context, transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
 	return t.submitTransactionInternal(ctx, &transactionActions, uuid.New(), uuid.New(), tableSubmitTransactionOptions)
@@ -131,17 +125,26 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
-	writer.SetBoundary(boundary)
+	err = writer.SetBoundary(boundary)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
 	batchWriter, err := writer.CreatePart(h)
 	if err != nil {
 		return TableTransactionResponse{}, err
 	}
-	batchWriter.Write(changeSetBody.Bytes())
+	_, err = batchWriter.Write(changeSetBody.Bytes())
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 	writer.Close()
 
-	req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
+	err = req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 
 	resp, err := t.client.con.Pipeline().Do(req)
 	if err != nil {
@@ -196,10 +199,15 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 		// This is a failure and the body is json
 		return TableTransactionResponse{}, newTableTransactionError(bytesBody)
 	}
+
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
 	outerPart, err := mpReader.NextPart()
-	innerBytes, err := ioutil.ReadAll(outerPart)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+
+	innerBytes, err := ioutil.ReadAll(outerPart) //nolint
 	innerBoundary := getBoundaryName(innerBytes)
 	reader = bytes.NewReader(innerBytes)
 	mpReader = multipart.NewReader(reader, innerBoundary)
@@ -258,7 +266,10 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
-	writer.SetBoundary(changesetBoundary)
+	err := writer.SetBoundary(changesetBoundary)
+	if err != nil {
+		return nil, err
+	}
 
 	for _, be := range *transactionActions {
 		err := t.generateEntitySubset(&be, writer)
@@ -273,7 +284,6 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 
 // generateEntitySubset generates body payload for particular batch entity
 func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAction, writer *multipart.Writer) error {
-
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
@@ -284,7 +294,11 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		return err
 	}
 	var req *azcore.Request
-	var entity map[string]interface{} = transactionAction.Entity
+	var entity map[string]interface{}
+	err = json.Unmarshal(transactionAction.Entity, &entity)
+	if err != nil {
+		return err
+	}
 
 	if _, ok := entity[partitionKey]; !ok {
 		return fmt.Errorf("entity properties must contain a %s property", partitionKey)
@@ -300,47 +314,69 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	switch transactionAction.ActionType {
 	case Delete:
 		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
+		if err != nil {
+			return err
+		}
 	case Add:
-		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
+		if err != nil {
+			return err
+		}
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
-		toOdataAnnotatedDictionary(&entity)
 		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
 		req, err = t.client.mergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
+		if err != nil {
+			return err
+		}
 		if isCosmosEndpoint(t.client.con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
 	case UpdateReplace:
 		fallthrough
 	case UpsertReplace:
-		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		if err != nil {
+			return err
+		}
 	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
-	operationWriter.Write([]byte(urlAndVerb))
-	writeHeaders(req.Header, &operationWriter)
-	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
+	_, err = operationWriter.Write([]byte(urlAndVerb))
+	if err != nil {
+		return err
+	}
+	err = writeHeaders(req.Header, &operationWriter)
+	if err != nil {
+		return err
+	}
+	_, err = operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
+	if err != nil {
+		return err
+	}
 	if req.Body != nil {
-		io.Copy(operationWriter, req.Body)
+		_, err = io.Copy(operationWriter, req.Body)
+
 	}
 
-	return nil
+	return err
 }
 
-func writeHeaders(h http.Header, writer *io.Writer) {
+func writeHeaders(h http.Header, writer *io.Writer) error {
 	// This way it is guaranteed the headers will be written in a sorted order
 	var keys []string
 	for k := range h {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+	var err error
 	for _, k := range keys {
-		(*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
+		_, err = (*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
+
 	}
+	return err
 }

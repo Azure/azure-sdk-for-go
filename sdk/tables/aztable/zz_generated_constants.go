@@ -7,6 +7,8 @@
 
 package aztable
 
+const telemetryInfo = "azsdk-go-aztable/<version>"
+
 // GeoReplicationStatusType - The status of the secondary location.
 type GeoReplicationStatusType string
 

@@ -74,48 +74,48 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_assert.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-
-	bbName := generateName(testName)
-	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
-
-	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
-	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
-	_assert.Nil(err)
-	_assert.NotNil(resp.VersionID)
-
-	pager := containerClient.ListBlobsFlatSegment(&ContainerListBlobFlatSegmentOptions{
-		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
-	})
-
-	if !pager.NextPage(ctx) {
-		_assert.Nil(pager.Err()) // check for an error first
-		s.T().Fail()             // no page was gotten
-	}
-
-	pageResp := pager.PageResponse()
-
-	_assert.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
-	blobList := pageResp.EnumerationResults.Segment.BlobItems
-	_assert.Len(blobList, 1)
-	blobResp1 := blobList[0]
-	_assert.Equal(*blobResp1.Name, bbName)
-	_assert.NotNil(blobResp1.Metadata.AdditionalProperties)
-	_assert.Len(blobResp1.Metadata.AdditionalProperties, 2)
-	// _assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
-
-}
+//func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	bbName := generateName(testName)
+//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+//
+//	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
+//	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
+//	_assert.Nil(err)
+//	_assert.NotNil(resp.VersionID)
+//
+//	pager := containerClient.ListBlobsFlatSegment(&ContainerListBlobFlatSegmentOptions{
+//		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
+//	})
+//
+//	if !pager.NextPage(ctx) {
+//		_assert.Nil(pager.Err()) // check for an error first
+//		s.T().Fail()             // no page was gotten
+//	}
+//
+//	pageResp := pager.PageResponse()
+//
+//	_assert.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
+//	blobList := pageResp.EnumerationResults.Segment.BlobItems
+//	_assert.Len(blobList, 1)
+//	blobResp1 := blobList[0]
+//	_assert.Equal(*blobResp1.Name, bbName)
+//	_assert.NotNil(blobResp1.Metadata.AdditionalProperties)
+//	_assert.Len(blobResp1.Metadata.AdditionalProperties, 2)
+//	// _assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
+//
+//}
 
 func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	_assert := assert.New(s.T())
@@ -513,6 +513,7 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	pbClob := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
 

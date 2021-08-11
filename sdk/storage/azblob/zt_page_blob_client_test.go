@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/testframework"
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"time"

@@ -6,7 +6,7 @@ package azblob
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"net/url"
 	"strings"
 	"time"

@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:21 GMT
+      - Wed, 11 Aug 2021 18:57:29 GMT
       Etag:
-      - '"0x8D95CB0170BA9EF"'
+      - '"0x8D95CF9DEE75655"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0ea88f-d01e-000f-3398-8edb57000000
+      - ce1f237c-a01e-0000-27e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags
@@ -67,21 +67,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:21 GMT
+      - Wed, 11 Aug 2021 18:57:29 GMT
       Etag:
-      - '"0x8D95CB01730B40A"'
+      - '"0x8D95CF9DF0C30C7"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0ea8f4-d01e-000f-0f98-8edb57000000
+      - ce1f23dd-a01e-0000-7ae2-8e36a1000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-11T10:09:22.2713110Z"
+      - "2021-08-11T18:57:30.8366023Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,7 +101,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       X-Ms-Page-Write:
       - update
       X-Ms-Range:
@@ -116,11 +116,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       Etag:
-      - '"0x8D95CB0175581DF"'
+      - '"0x8D95CF9DF30D795"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -128,7 +128,7 @@ interactions:
       X-Ms-Content-Crc64:
       - y9bUpbg4Hvo=
       X-Ms-Request-Id:
-      - 5a0ea938-d01e-000f-4698-8edb57000000
+      - ce1f244a-a01e-0000-50e2-8e36a1000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -137,7 +137,7 @@ interactions:
     code: 201
     duration: ""
 - request:
-    body: <Tags><TagSet><Tag><Key>azure</Key><Value>blob</Value></Tag><Tag><Key>blob</Key><Value>sdk</Value></Tag><Tag><Key>sdk</Key><Value>go</Value></Tag></TagSet></Tags>
+    body: <Tags><TagSet><Tag><Key>sdk</Key><Value>go</Value></Tag><Tag><Key>azure</Key><Value>blob</Value></Tag><Tag><Key>blob</Key><Value>sdk</Value></Tag></TagSet></Tags>
     form: {}
     headers:
       Accept:
@@ -152,7 +152,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:32 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags?comp=tags
@@ -161,11 +161,11 @@ interactions:
     body: ""
     headers:
       Date:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0ea971-d01e-000f-7498-8edb57000000
+      - ce1f24e3-a01e-0000-4ee2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 204 No Content
@@ -183,7 +183,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:32 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags
@@ -198,11 +198,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       Etag:
-      - '"0x8D95CB0175581DF"'
+      - '"0x8D95CF9DF30D795"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -210,7 +210,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -218,7 +218,7 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 5a0ea9ae-d01e-000f-2b98-8edb57000000
+      - ce1f2572-a01e-0000-49e2-8e36a1000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Tag-Count:
@@ -226,7 +226,7 @@ interactions:
       X-Ms-Version:
       - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-11T10:09:22.2713110Z"
+      - "2021-08-11T18:57:30.8366023Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -242,7 +242,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:32 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags?comp=tags
@@ -255,18 +255,18 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0eaa18-d01e-000f-0398-8edb57000000
+      - ce1f25e4-a01e-0000-28e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 200 OK
     code: 200
     duration: ""
 - request:
-    body: <Tags><TagSet><Tag><Key>b0l1o2b3</Key><Value>s0d1k2</Value></Tag><Tag><Key>a0z1u2r3e4</Key><Value>b0l1o2b3</Value></Tag></TagSet></Tags>
+    body: <Tags><TagSet><Tag><Key>a0z1u2r3e4</Key><Value>b0l1o2b3</Value></Tag><Tag><Key>b0l1o2b3</Key><Value>s0d1k2</Value></Tag></TagSet></Tags>
     form: {}
     headers:
       Accept:
@@ -281,7 +281,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:24 GMT
+      - Wed, 11 Aug 2021 18:57:32 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags?comp=tags
@@ -290,11 +290,11 @@ interactions:
     body: ""
     headers:
       Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0eaa79-d01e-000f-5098-8edb57000000
+      - ce1f267a-a01e-0000-26e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 204 No Content
@@ -312,7 +312,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:24 GMT
+      - Wed, 11 Aug 2021 18:57:33 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags
@@ -327,11 +327,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Etag:
-      - '"0x8D95CB0175581DF"'
+      - '"0x8D95CF9DF30D795"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -339,7 +339,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Wed, 11 Aug 2021 10:09:22 GMT
+      - Wed, 11 Aug 2021 18:57:30 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -347,7 +347,7 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 5a0eaad3-d01e-000f-1d98-8edb57000000
+      - ce1f270f-a01e-0000-24e2-8e36a1000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Tag-Count:
@@ -355,7 +355,7 @@ interactions:
       X-Ms-Version:
       - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-11T10:09:22.2713110Z"
+      - "2021-08-11T18:57:30.8366023Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -371,7 +371,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:24 GMT
+      - Wed, 11 Aug 2021 18:57:33 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags/srcgotestblobcreatepageblobwithtags?comp=tags
@@ -384,11 +384,11 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0eab2d-d01e-000f-6d98-8edb57000000
+      - ce1f2787-a01e-0000-80e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 200 OK
@@ -406,7 +406,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:09:24 GMT
+      - Wed, 11 Aug 2021 18:57:33 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreatepageblobwithtags?restype=container
@@ -417,11 +417,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:09:23 GMT
+      - Wed, 11 Aug 2021 18:57:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0eab97-d01e-000f-4498-8edb57000000
+      - ce1f2806-a01e-0000-60e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 202 Accepted

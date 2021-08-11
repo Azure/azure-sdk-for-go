@@ -11,7 +11,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"log"
 	"net/http"

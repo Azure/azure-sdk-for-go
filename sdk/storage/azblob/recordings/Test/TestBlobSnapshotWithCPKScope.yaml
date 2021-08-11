@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:39 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:37 GMT
       Etag:
-      - '"0x8D95CAFE256351D"'
+      - '"0x8D95CF99BE7DA2D"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0e1681-d01e-000f-7898-8edb57000000
+      - ce1decf9-a01e-0000-18e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:39 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
@@ -71,11 +71,11 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:37 GMT
       Etag:
-      - '"0x8D95CAFE27B6FFD"'
+      - '"0x8D95CF99C104EAA"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
@@ -83,13 +83,13 @@ interactions:
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - 5a0e170f-d01e-000f-7d98-8edb57000000
+      - ce1dedc5-a01e-0000-42e2-8e36a1000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-11T10:07:53.8408445Z"
+      - "2021-08-11T18:55:38.4562346Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -105,26 +105,26 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:39 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01/gotestblobblobsnapshotwithcpkscope?comp=snapshot
     method: PUT
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x42\x6C\x6F\x62\x55\x73\x65\x73\x43\x75\x73\x74\x6F\x6D\x65\x72\x53\x70\x65\x63\x69\x66\x69\x65\x64\x45\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x62\x6C\x6F\x62\x20\x69\x73\x20\x65\x6E\x63\x72\x79\x70\x74\x65\x64\x20\x77\x69\x74\x68\x20\x63\x75\x73\x74\x6F\x6D\x65\x72\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x2C\x20\x62\x75\x74\x20\x69\x74\x20\x77\x61\x73\x20\x6E\x6F\x74\x20\x70\x72\x6F\x76\x69\x64\x65\x64\x20\x69\x6E\x20\x74\x68\x65\x20\x72\x65\x71\x75\x65\x73\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x35\x61\x30\x65\x31\x37\x38\x32\x2D\x64\x30\x31\x65\x2D\x30\x30\x30\x66\x2D\x36\x31\x39\x38\x2D\x38\x65\x64\x62\x35\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x38\x2D\x31\x31\x54\x31\x30\x3A\x30\x37\x3A\x35\x34\x2E\x30\x38\x35\x32\x36\x33\x31\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x42\x6C\x6F\x62\x55\x73\x65\x73\x43\x75\x73\x74\x6F\x6D\x65\x72\x53\x70\x65\x63\x69\x66\x69\x65\x64\x45\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x62\x6C\x6F\x62\x20\x69\x73\x20\x65\x6E\x63\x72\x79\x70\x74\x65\x64\x20\x77\x69\x74\x68\x20\x63\x75\x73\x74\x6F\x6D\x65\x72\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x2C\x20\x62\x75\x74\x20\x69\x74\x20\x77\x61\x73\x20\x6E\x6F\x74\x20\x70\x72\x6F\x76\x69\x64\x65\x64\x20\x69\x6E\x20\x74\x68\x65\x20\x72\x65\x71\x75\x65\x73\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x63\x65\x31\x64\x65\x65\x36\x62\x2D\x61\x30\x31\x65\x2D\x30\x30\x30\x30\x2D\x35\x39\x65\x32\x2D\x38\x65\x33\x36\x61\x31\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x38\x2D\x31\x31\x54\x31\x38\x3A\x35\x35\x3A\x33\x38\x2E\x36\x39\x38\x35\x33\x33\x34\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "301"
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobUsesCustomerSpecifiedEncryption
       X-Ms-Request-Id:
-      - 5a0e1782-d01e-000f-6198-8edb57000000
+      - ce1dee6b-a01e-0000-59e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 409 The blob is encrypted with customer specified encryption, but it was
@@ -143,7 +143,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:55 GMT
+      - Wed, 11 Aug 2021 18:55:39 GMT
       X-Ms-Encryption-Scope:
       - mumbojumbo
       X-Ms-Version:
@@ -151,20 +151,20 @@ interactions:
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01/gotestblobblobsnapshotwithcpkscope?comp=snapshot
     method: PUT
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x45\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x53\x63\x6F\x70\x65\x4E\x6F\x74\x41\x76\x61\x69\x6C\x61\x62\x6C\x65\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x67\x69\x76\x65\x6E\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x20\x73\x63\x6F\x70\x65\x20\x69\x73\x20\x6E\x6F\x74\x20\x61\x76\x61\x69\x6C\x61\x62\x6C\x65\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x35\x61\x30\x65\x31\x37\x65\x62\x2D\x64\x30\x31\x65\x2D\x30\x30\x30\x66\x2D\x33\x39\x39\x38\x2D\x38\x65\x64\x62\x35\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x38\x2D\x31\x31\x54\x31\x30\x3A\x30\x37\x3A\x35\x34\x2E\x33\x32\x33\x34\x36\x31\x39\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x45\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x53\x63\x6F\x70\x65\x4E\x6F\x74\x41\x76\x61\x69\x6C\x61\x62\x6C\x65\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x67\x69\x76\x65\x6E\x20\x65\x6E\x63\x72\x79\x70\x74\x69\x6F\x6E\x20\x73\x63\x6F\x70\x65\x20\x69\x73\x20\x6E\x6F\x74\x20\x61\x76\x61\x69\x6C\x61\x62\x6C\x65\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x63\x65\x31\x64\x65\x66\x31\x61\x2D\x61\x30\x31\x65\x2D\x30\x30\x30\x30\x2D\x37\x38\x65\x32\x2D\x38\x65\x33\x36\x61\x31\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x38\x2D\x31\x31\x54\x31\x38\x3A\x35\x35\x3A\x33\x38\x2E\x39\x33\x38\x37\x33\x34\x30\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "240"
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - EncryptionScopeNotAvailable
       X-Ms-Request-Id:
-      - 5a0e17eb-d01e-000f-3998-8edb57000000
+      - ce1def1a-a01e-0000-78e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 409 The given encryption scope is not available.
@@ -182,7 +182,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:55 GMT
+      - Wed, 11 Aug 2021 18:55:40 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Version:
@@ -195,23 +195,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Etag:
-      - '"0x8D95CAFE27B6FFD"'
+      - '"0x8D95CF99C104EAA"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0e184d-d01e-000f-0e98-8edb57000000
+      - ce1defde-a01e-0000-22e2-8e36a1000000
       X-Ms-Request-Server-Encrypted:
       - "false"
       X-Ms-Snapshot:
-      - "2021-08-11T10:07:54.5624426Z"
+      - "2021-08-11T18:55:39.1798341Z"
       X-Ms-Version:
       - "2020-02-10"
       X-Ms-Version-Id:
-      - "2021-08-11T10:07:54.5634426Z"
+      - "2021-08-11T18:55:39.1808341Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -227,10 +227,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:55 GMT
+      - Wed, 11 Aug 2021 18:55:40 GMT
       X-Ms-Version:
       - "2020-02-10"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01/gotestblobblobsnapshotwithcpkscope?snapshot=2021-08-11T10%3A07%3A54.5624426Z
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01/gotestblobblobsnapshotwithcpkscope?snapshot=2021-08-11T18%3A55%3A39.1798341Z
     method: GET
   response:
     body: GoBlockBlobData
@@ -244,21 +244,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Etag:
-      - '"0x8D95CAFE27B6FFD"'
+      - '"0x8D95CF99C104EAA"'
       Last-Modified:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Wed, 11 Aug 2021 10:07:53 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       X-Ms-Encryption-Scope:
       - blobgokeytestscope
       X-Ms-Request-Id:
-      - 5a0e18d8-d01e-000f-1298-8edb57000000
+      - ce1df0b2-a01e-0000-62e2-8e36a1000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -278,10 +278,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:55 GMT
+      - Wed, 11 Aug 2021 18:55:40 GMT
       X-Ms-Version:
       - "2020-02-10"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01/gotestblobblobsnapshotwithcpkscope?snapshot=2021-08-11T10%3A07%3A54.5624426Z
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01/gotestblobblobsnapshotwithcpkscope?snapshot=2021-08-11T18%3A55%3A39.1798341Z
     method: DELETE
   response:
     body: ""
@@ -289,13 +289,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:07:54 GMT
+      - Wed, 11 Aug 2021 18:55:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Delete-Type-Permanent:
       - "true"
       X-Ms-Request-Id:
-      - 5a0e191d-d01e-000f-4f98-8edb57000000
+      - ce1df159-a01e-0000-7be2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 202 Accepted
@@ -313,7 +313,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 10:07:55 GMT
+      - Wed, 11 Aug 2021 18:55:40 GMT
       X-Ms-Version:
       - "2020-02-10"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotwithcpkscope01?restype=container
@@ -324,11 +324,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 10:07:55 GMT
+      - Wed, 11 Aug 2021 18:55:39 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 5a0e19a2-d01e-000f-3d98-8edb57000000
+      - ce1df202-a01e-0000-16e2-8e36a1000000
       X-Ms-Version:
       - "2020-02-10"
     status: 202 Accepted

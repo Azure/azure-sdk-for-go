@@ -436,6 +436,8 @@ var ModePlayback = "playback"
 
 var baseProxyURLSecure = "localhost:5001"
 var baseProxyURL = "localhost:5000"
+var startURL = baseProxyURLSecure + "/record/start"
+var stopURL = baseProxyURLSecure + "/record/stop"
 
 var recordingId string
 var IdHeader = "x-recording-id"
@@ -473,7 +475,11 @@ func (r RecordingOptions) HostScheme() string {
 }
 
 func getTestId(t *testing.T) string {
-	cwd := "./recordings/" + t.Name() + ".json"
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Errorf("Could not find current working directory")
+	}
+	cwd = "./recordings/" + t.Name() + ".json"
 	return cwd
 }
 
@@ -614,22 +620,18 @@ func Sleep(duration int) {
 	}
 }
 
-// Get the current tests recording ID
 func GetRecordingId() string {
 	return recordingId
 }
 
-// Get the current recording mode, either 'playback' or 'record'
 func GetRecordMode() string {
 	return recordMode
 }
 
-// Returns true if the current recording mode is 'playback'
 func InPlayback() bool {
 	return GetRecordMode() == ModePlayback
 }
 
-// Returns true if the current recording mode is 'record'
 func InRecord() bool {
 	return GetRecordMode() == ModeRecording
 }
@@ -667,7 +669,7 @@ func getRootCas() (*x509.CertPool, error) {
 		return rootCAs, nil
 	}
 
-	cert, err := ioutil.ReadFile(localFile)
+	cert, err := ioutil.ReadFile(*&localFile)
 	if err != nil {
 		fmt.Println("error opening cert file")
 		return nil, err

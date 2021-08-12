@@ -4,7 +4,6 @@ parameters:
   Scope: 'sdk/...'
   Image: ''
   GoVersion: ''
-  AzureRecordMode: 'playback'
 
 steps:
 
@@ -29,18 +28,6 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go vet ./... in $md"
-        go vet ./...
-      }
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
-    env:
-      GO111MODULE: 'on'
-
   - template: configure-proxy.yml
     parameters:
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
@@ -49,27 +36,30 @@ steps:
       $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($td in $testDirs) {
         pushd $td
-        $(Build.SourcesDirectory)/eng/scripts/proxy-server.ps1 start
-        Write-Host "##[command]Executing 'go test -run "^Test" -v -coverprofile coverage.txt .' in $td"
-        go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
-        if ($LASTEXITCODE) { exit $LASTEXITCODE }
-        cat outfile.txt | go-junit-report > report.xml
+
+        $(Build.SourcesDirectory)/eng/scripts/start-server.ps1 start
+
+        Write-Host "##[command]Executing go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
+        go test -run "^Test" -v -coverprofile coverage.txt . > temp.txt
+        cat temp.txt
+        cat temp.txt | go-junit-report -set-exit-code > report.xml
         # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
         if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
           Write-Host "##[command]Deleting empty coverage file"
           rm coverage.txt
         }
+
+        $(Build.SourcesDirectory)/eng/scripts/start-server.ps1 stop
       }
-      $(Build.SourcesDirectory)/eng/scripts/proxy-server.ps1 stop
     displayName: 'Run Tests'
     workingDirectory: '${{parameters.GoWorkspace}}'
     env:
       GO111MODULE: 'on'
-      AZURE_RECORD_MODE: '${{parameters.AzureRecordMode}}'
+      AZURE_RECORD_MODE: 'playback'
 
   - pwsh: |
       $coverageFiles = [Collections.Generic.List[String]]@()
-      Get-ChildItem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object {
+      Get-Childitem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object {
         $covFile = $_.FullName
         Write-Host "Adding $covFile to the list of code coverage files"
         $coverageFiles.Add($covFile)
@@ -81,6 +71,7 @@ steps:
       Get-Content ./coverage.json | gocov-html > ./coverage.html
     displayName: 'Generate Coverage XML'
     workingDirectory: '${{parameters.GoWorkspace}}sdk'
+
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

@@ -19,7 +19,7 @@ import (
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // account's primary or secondary key.
-func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+func NewSharedKeyCredential(accountKey string) (*SharedKeyCredential, error) {
 	c := SharedKeyCredential{}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err

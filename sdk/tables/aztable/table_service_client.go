@@ -30,7 +30,7 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	}
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
+		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
 	}
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
 	for _, p := range options.PerCallOptions {
@@ -81,7 +81,7 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResponsePager {
+func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableListResponsePager {
 	return &tableQueryResponsePager{
 		client:            t.client,
 		queryOptions:      listOptions,

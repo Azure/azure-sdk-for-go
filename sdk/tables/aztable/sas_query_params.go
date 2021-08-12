@@ -108,10 +108,6 @@ func (p *SASQueryParameters) SignedVersion() string {
 	return p.signedVersion
 }
 
-func (p *SASQueryParameters) SnapshotTime() time.Time {
-	return p.snapshotTime
-}
-
 func (p *SASQueryParameters) Version() string {
 	return p.version
 }
@@ -203,8 +199,6 @@ func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 			p.resourceTypes = val
 		case "spr":
 			p.protocol = SASProtocol(val)
-		case "snapshot":
-			p.snapshotTime, _ = time.Parse(SnapshotTimeFormat, val)
 		case "st":
 			p.startTime, p.stTimeFormat, _ = parseSASTimeString(val)
 		case "se":

@@ -63,7 +63,7 @@ func (t *TableClient) Delete(ctx context.Context, options *TableDeleteOptions) (
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) List(queryOptions *ListOptions) TableEntityQueryResponsePager {
+func (t *TableClient) List(queryOptions *ListOptions) TableEntityListResponsePager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
 		queryOptions:      queryOptions,

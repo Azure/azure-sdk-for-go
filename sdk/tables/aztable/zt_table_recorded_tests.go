@@ -35,8 +35,8 @@ const (
 type EndpointType string
 
 const (
-	StorageEndpoint EndpointType = "storage"
-	CosmosEndpoint  EndpointType = "cosmos"
+	storageEndpoint EndpointType = "storage"
+	cosmosEndpoint  EndpointType = "cosmos"
 )
 
 var ctx = context.Background()

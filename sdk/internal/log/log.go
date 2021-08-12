@@ -31,15 +31,10 @@ const (
 	LongRunningOperation Classification = "LongRunningOperation"
 )
 
-// Listener is the funciton signature invoked when writing log entries.
-// A Listener is required to perform its own synchronization if it's expected to be called
-// from multiple Go routines
-type Listener func(Classification, string)
-
 // logger controls which classifications to log and writing to the underlying log.
 type logger struct {
 	cls []Classification
-	lst Listener
+	lst func(Classification, string)
 }
 
 // SetClassifications is used to control which classifications are written to
@@ -48,8 +43,8 @@ func SetClassifications(cls ...Classification) {
 	log.cls = cls
 }
 
-// SetListener will set the Logger to write to the specified Listener.
-func SetListener(lst Listener) {
+// SetListener will set the Logger to write to the specified listener.
+func SetListener(lst func(Classification, string)) {
 	log.lst = lst
 }
 
@@ -74,7 +69,7 @@ func Should(cls Classification) bool {
 	return false
 }
 
-// Write invokes the underlying Listener with the specified classification and message.
+// Write invokes the underlying listener with the specified classification and message.
 // If the classification shouldn't be logged or there is no listener then Write does nothing.
 func Write(cls Classification, message string) {
 	if !Should(cls) {
@@ -83,7 +78,7 @@ func Write(cls Classification, message string) {
 	log.lst(cls, message)
 }
 
-// Writef invokes the underlying Listener with the specified classification and formatted message.
+// Writef invokes the underlying listener with the specified classification and formatted message.
 // If the classification shouldn't be logged or there is no listener then Writef does nothing.
 func Writef(cls Classification, format string, a ...interface{}) {
 	if !Should(cls) {

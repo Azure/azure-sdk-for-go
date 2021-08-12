@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v56.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-07-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-07-01/machinelearningservices`
+- `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-02-01/web`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
 ## `v56.1.0`
 
 ### New Packages

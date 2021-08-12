@@ -8,7 +8,7 @@
 
 package webapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-01-15/web/webapi"
+import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-02-01/web/webapi"
 
 type AppServiceCertificateOrdersClientAPI = original.AppServiceCertificateOrdersClientAPI
 type AppServiceEnvironmentsClientAPI = original.AppServiceEnvironmentsClientAPI

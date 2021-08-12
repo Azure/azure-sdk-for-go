@@ -58,6 +58,7 @@ type IntegrationRuntimesClientAPI interface {
 	ListAuthKeys(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeAuthKeys, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.IntegrationRuntimeListResponsePage, err error)
 	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.IntegrationRuntimeListResponseIterator, err error)
+	ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse, err error)
 	RegenerateAuthKey(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, regenerateKeyParameters datafactory.IntegrationRuntimeRegenerateKeyParameters) (result datafactory.IntegrationRuntimeAuthKeys, err error)
 	RemoveLinks(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, linkedIntegrationRuntimeRequest datafactory.LinkedIntegrationRuntimeRequest) (result autorest.Response, err error)
 	Start(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimesStartFuture, err error)

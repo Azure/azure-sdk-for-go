@@ -90,7 +90,7 @@ func (client MonitorClient) ListVMHostsPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -218,7 +218,7 @@ func (client MonitorClient) ListVMHostUpdatePreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -345,7 +345,7 @@ func (client MonitorClient) VMHostPayloadPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

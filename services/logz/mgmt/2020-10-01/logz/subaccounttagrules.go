@@ -15,29 +15,31 @@ import (
 	"net/http"
 )
 
-// TagRulesClient is the client for the TagRules methods of the Logz service.
-type TagRulesClient struct {
+// SubAccountTagRulesClient is the client for the SubAccountTagRules methods of the Logz service.
+type SubAccountTagRulesClient struct {
 	BaseClient
 }
 
-// NewTagRulesClient creates an instance of the TagRulesClient client.
-func NewTagRulesClient(subscriptionID string) TagRulesClient {
-	return NewTagRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSubAccountTagRulesClient creates an instance of the SubAccountTagRulesClient client.
+func NewSubAccountTagRulesClient(subscriptionID string) SubAccountTagRulesClient {
+	return NewSubAccountTagRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTagRulesClientWithBaseURI creates an instance of the TagRulesClient client using a custom endpoint.  Use this
-// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewTagRulesClientWithBaseURI(baseURI string, subscriptionID string) TagRulesClient {
-	return TagRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewSubAccountTagRulesClientWithBaseURI creates an instance of the SubAccountTagRulesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
+func NewSubAccountTagRulesClientWithBaseURI(baseURI string, subscriptionID string) SubAccountTagRulesClient {
+	return SubAccountTagRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate sends the create or update request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // monitorName - monitor resource name
-func (client TagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body *MonitoringTagRules) (result MonitoringTagRules, err error) {
+// subAccountName - sub Account resource name
+func (client SubAccountTagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, body *MonitoringTagRules) (result MonitoringTagRules, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAccountTagRulesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -52,25 +54,25 @@ func (client TagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("logz.TagRulesClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("logz.SubAccountTagRulesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, monitorName, ruleSetName, body)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, monitorName, subAccountName, ruleSetName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
@@ -78,15 +80,16 @@ func (client TagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client TagRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body *MonitoringTagRules) (*http.Request, error) {
+func (client SubAccountTagRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, body *MonitoringTagRules) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"monitorName":       autorest.Encode("path", monitorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"ruleSetName":       autorest.Encode("path", ruleSetName),
+		"subAccountName":    autorest.Encode("path", subAccountName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -99,7 +102,7 @@ func (client TagRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules/{ruleSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules/{ruleSetName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if body != nil {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -110,13 +113,13 @@ func (client TagRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client TagRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client SubAccountTagRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client TagRulesClient) CreateOrUpdateResponder(resp *http.Response) (result MonitoringTagRules, err error) {
+func (client SubAccountTagRulesClient) CreateOrUpdateResponder(resp *http.Response) (result MonitoringTagRules, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -130,9 +133,10 @@ func (client TagRulesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // monitorName - monitor resource name
-func (client TagRulesClient) Delete(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string) (result autorest.Response, err error) {
+// subAccountName - sub Account resource name
+func (client SubAccountTagRulesClient) Delete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAccountTagRulesClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -147,25 +151,25 @@ func (client TagRulesClient) Delete(ctx context.Context, resourceGroupName strin
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("logz.TagRulesClient", "Delete", err.Error())
+		return result, validation.NewError("logz.SubAccountTagRulesClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, monitorName, ruleSetName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, monitorName, subAccountName, ruleSetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -173,15 +177,16 @@ func (client TagRulesClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client TagRulesClient) DeletePreparer(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string) (*http.Request, error) {
+func (client SubAccountTagRulesClient) DeletePreparer(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"monitorName":       autorest.Encode("path", monitorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"ruleSetName":       autorest.Encode("path", ruleSetName),
+		"subAccountName":    autorest.Encode("path", subAccountName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -189,20 +194,20 @@ func (client TagRulesClient) DeletePreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules/{ruleSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules/{ruleSetName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client TagRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client SubAccountTagRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client TagRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SubAccountTagRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -215,9 +220,10 @@ func (client TagRulesClient) DeleteResponder(resp *http.Response) (result autore
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // monitorName - monitor resource name
-func (client TagRulesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string) (result MonitoringTagRules, err error) {
+// subAccountName - sub Account resource name
+func (client SubAccountTagRulesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string) (result MonitoringTagRules, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAccountTagRulesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -232,25 +238,25 @@ func (client TagRulesClient) Get(ctx context.Context, resourceGroupName string, 
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("logz.TagRulesClient", "Get", err.Error())
+		return result, validation.NewError("logz.SubAccountTagRulesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, monitorName, ruleSetName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, monitorName, subAccountName, ruleSetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -258,15 +264,16 @@ func (client TagRulesClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client TagRulesClient) GetPreparer(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string) (*http.Request, error) {
+func (client SubAccountTagRulesClient) GetPreparer(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"monitorName":       autorest.Encode("path", monitorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"ruleSetName":       autorest.Encode("path", ruleSetName),
+		"subAccountName":    autorest.Encode("path", subAccountName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -274,20 +281,20 @@ func (client TagRulesClient) GetPreparer(ctx context.Context, resourceGroupName 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules/{ruleSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules/{ruleSetName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client TagRulesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SubAccountTagRulesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TagRulesClient) GetResponder(resp *http.Response) (result MonitoringTagRules, err error) {
+func (client SubAccountTagRulesClient) GetResponder(resp *http.Response) (result MonitoringTagRules, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -301,9 +308,10 @@ func (client TagRulesClient) GetResponder(resp *http.Response) (result Monitorin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // monitorName - monitor resource name
-func (client TagRulesClient) List(ctx context.Context, resourceGroupName string, monitorName string) (result MonitoringTagRulesListResponsePage, err error) {
+// subAccountName - sub Account resource name
+func (client SubAccountTagRulesClient) List(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string) (result MonitoringTagRulesListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAccountTagRulesClient.List")
 		defer func() {
 			sc := -1
 			if result.mtrlr.Response.Response != nil {
@@ -318,26 +326,26 @@ func (client TagRulesClient) List(ctx context.Context, resourceGroupName string,
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("logz.TagRulesClient", "List", err.Error())
+		return result, validation.NewError("logz.SubAccountTagRulesClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, monitorName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, monitorName, subAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.mtrlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.mtrlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "List", resp, "Failure responding to request")
 		return
 	}
 	if result.mtrlr.hasNextLink() && result.mtrlr.IsEmpty() {
@@ -349,14 +357,15 @@ func (client TagRulesClient) List(ctx context.Context, resourceGroupName string,
 }
 
 // ListPreparer prepares the List request.
-func (client TagRulesClient) ListPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+func (client SubAccountTagRulesClient) ListPreparer(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"monitorName":       autorest.Encode("path", monitorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subAccountName":    autorest.Encode("path", subAccountName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2020-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -364,20 +373,20 @@ func (client TagRulesClient) ListPreparer(ctx context.Context, resourceGroupName
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/tagRules", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client TagRulesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client SubAccountTagRulesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client TagRulesClient) ListResponder(resp *http.Response) (result MonitoringTagRulesListResponse, err error) {
+func (client SubAccountTagRulesClient) ListResponder(resp *http.Response) (result MonitoringTagRulesListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -388,10 +397,10 @@ func (client TagRulesClient) ListResponder(resp *http.Response) (result Monitori
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client TagRulesClient) listNextResults(ctx context.Context, lastResults MonitoringTagRulesListResponse) (result MonitoringTagRulesListResponse, err error) {
+func (client SubAccountTagRulesClient) listNextResults(ctx context.Context, lastResults MonitoringTagRulesListResponse) (result MonitoringTagRulesListResponse, err error) {
 	req, err := lastResults.monitoringTagRulesListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logz.TagRulesClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -399,19 +408,19 @@ func (client TagRulesClient) listNextResults(ctx context.Context, lastResults Mo
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logz.TagRulesClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logz.TagRulesClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "logz.SubAccountTagRulesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client TagRulesClient) ListComplete(ctx context.Context, resourceGroupName string, monitorName string) (result MonitoringTagRulesListResponseIterator, err error) {
+func (client SubAccountTagRulesClient) ListComplete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string) (result MonitoringTagRulesListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAccountTagRulesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -420,6 +429,6 @@ func (client TagRulesClient) ListComplete(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, monitorName)
+	result.page, err = client.List(ctx, resourceGroupName, monitorName, subAccountName)
 	return
 }

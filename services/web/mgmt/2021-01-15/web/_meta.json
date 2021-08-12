@@ -1,5 +1,5 @@
 {
-  "commit": "f9883569df850be792a37df17a1a28a5bdcdfc39",
+  "commit": "4bbe62f4b7d4c73289657705b78040038e8d72d9",
   "readme": "/_/azure-rest-api-specs/specification/web/resource-manager/readme.md",
   "tag": "package-2021-01-15",
   "use": "@microsoft.azure/autorest.go@2.1.183",

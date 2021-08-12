@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package release
 
 import (
@@ -58,7 +61,7 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber  string
+	VersionNumber string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {

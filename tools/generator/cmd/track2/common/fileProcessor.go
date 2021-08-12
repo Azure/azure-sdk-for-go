@@ -1,0 +1,222 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package common
+
+import (
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strconv"
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+)
+
+const (
+	sdk_generated_file_prefix         = "zz_generated_"
+	autorest_md_swagger_url_prefix    = "- https://github.com/Azure/azure-rest-api-specs/blob/"
+	autorest_md_module_version_prefix = "module-version: "
+	swagger_md_module_name_prefix     = "module-name: "
+)
+
+var (
+	track2BeginRegex = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
+	track2EndRegex   = regexp.MustCompile("^\\s*```\\s*$")
+)
+
+// reads from readme.go.md, parses the `track2` section to get module and package name
+func ReadTrack2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
+	result := make(map[string][]string)
+	log.Printf("Reading from readme.go.md '%s'...", path)
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("Parsing module and package name from readme.go.md ...")
+	b, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	lines := strings.Split(string(b), "\n")
+
+	var start []int
+	var end []int
+	for i, line := range lines {
+		if track2BeginRegex.MatchString(line) {
+			start = append(start, i)
+		}
+		if len(start) != len(end) && track2EndRegex.MatchString(line) {
+			end = append(end, i)
+		}
+	}
+
+	if len(start) == 0 {
+		return nil, fmt.Errorf("cannot find any track2 section")
+	}
+	if len(start) != len(end) {
+		return nil, fmt.Errorf("last track2 section does not properly end")
+	}
+
+	for i := range start {
+		// get the content of the track2 section
+		track2Section := lines[start[i]+1 : end[i]]
+		// iterate over the rest lines, get module name
+		for _, line := range track2Section {
+			if strings.HasPrefix(line, swagger_md_module_name_prefix) {
+				modules := strings.Split(strings.TrimSpace(line[len(swagger_md_module_name_prefix):]), "/")
+				if len(modules) != 3 {
+					return nil, fmt.Errorf("cannot parse module name from track2 section")
+				}
+				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[2], "\n"), "\r")
+				log.Printf("RP: %s Package: %s", modules[1], namespaceName)
+				result[modules[1]] = append(result[modules[1]], namespaceName)
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// remove all sdk generated files in given path
+func CleanSDKGeneratedFiles(path string) error {
+	log.Printf("Removing all sdk generated files in '%s'...", path)
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		if strings.HasPrefix(file.Name(), sdk_generated_file_prefix) {
+			err = os.Remove(filepath.Join(path, file.Name()))
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+// replace all commitid in autorest.md files
+func ReplaceCommitid(path string, commitid string) error {
+	log.Printf("Replacing commitid from autorest.md ...")
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.HasPrefix(line, autorest_md_swagger_url_prefix) {
+			lines[i] = lines[i][:len(autorest_md_swagger_url_prefix)] + commitid + lines[i][len(autorest_md_swagger_url_prefix)+len(commitid):]
+		}
+	}
+
+	err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	return err
+}
+
+func GetLatestVersion(packageRootPath string) (string, error) {
+	b, err := ioutil.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
+	if err != nil {
+		return "", err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for _, line := range lines {
+		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
+			return strings.TrimSuffix(strings.TrimSuffix(line[len(autorest_md_module_version_prefix):], "\n"), "\r"), nil
+		}
+	}
+
+	return "", fmt.Errorf("cannot parse version from autorest.md")
+}
+
+func ReplaceVersion(packageRootPath string, newVersion string) error {
+	path := filepath.Join(packageRootPath, "autorest.md")
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
+			lines[i] = lines[i][:len(autorest_md_module_version_prefix)] + newVersion + "\n"
+			break
+		}
+	}
+
+	err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	return err
+}
+
+func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (string, error) {
+	version, err := GetLatestVersion(packageRootPath)
+	if err != nil {
+		return "", err
+	}
+
+	versions := strings.Split(version, ".")
+	major, err := strconv.Atoi(versions[0])
+	if err != nil {
+		return "", fmt.Errorf("wrong latest version")
+	}
+	minor, err := strconv.Atoi(versions[1])
+	if err != nil {
+		return "", fmt.Errorf("wrong latest version")
+	}
+	patch, err := strconv.Atoi(versions[2])
+	if err != nil {
+		return "", fmt.Errorf("wrong latest version")
+	}
+	log.Printf("Lastest version is: %d.%d.%d", major, minor, patch)
+
+	if major == 0 {
+		// preview version calculation
+		if changelog.HasBreakingChanges() {
+			minor += 1
+			patch = 0
+		} else {
+			patch += 1
+		}
+	} else {
+		// release version calculation
+		if changelog.HasBreakingChanges() {
+			major += 1
+			minor = 0
+			patch = 0
+		} else if changelog.Modified.HasAdditiveChanges() {
+			minor += 1
+			patch = 0
+		} else {
+			patch += 1
+		}
+	}
+
+	log.Printf("New version is: %d.%d.%d", major, minor, patch)
+	return fmt.Sprintf("%d.%d.%d", major, minor, patch), nil
+}
+
+func AddChangelogToFile(changelog *model.Changelog, version string, packageRootPath string) (string, error) {
+	path := filepath.Join(packageRootPath, common.ChangelogFilename)
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	oldChangelog := string(b)
+	insertPos := strings.Index(oldChangelog, "##")
+	additionalChangelog := changelog.ToCompactMarkdown()
+	newChangelog := oldChangelog[:insertPos] + "## v" + version + " (released)\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
+	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
+	if err != nil {
+		return "", err
+	}
+	return additionalChangelog, nil
+}

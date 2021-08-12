@@ -1,0 +1,14 @@
+{
+    "dryRun": false,
+    "specFolder": "D:\\Workspace\\openapi-env-test\\azure-rest-api-specs",
+    "headSha": "7cc0a47e7808f3247c71cda25b7c1da8503272ba",
+    "headRef": "refs/heads/main",
+    "repoHttpsUrl": "https://github.com/Azure/azure-rest-api-specs.git",
+    "trigger": "pull_request",
+    "changedFiles": [
+      "specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2020-05-12-preview/agfood.json"
+    ],
+    "relatedReadmeMdFiles": [
+      "specification/agrifood/resource-manager/readme.md"
+    ]
+  }

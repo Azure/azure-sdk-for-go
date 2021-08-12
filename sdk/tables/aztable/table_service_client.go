@@ -31,10 +31,12 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"none"}}}))
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
+	for _, p := range options.PerCallOptions {
+		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, p)
+	}
 	con := newConnection(serviceURL, conOptions)
-	c, _ := cred.(*SharedKeyCredential)
-	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: c}, nil
+	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: cred}, nil
 }
 
 // NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient

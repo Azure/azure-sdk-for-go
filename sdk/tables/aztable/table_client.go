@@ -18,6 +18,8 @@ type TableClient struct {
 	Name    string
 }
 
+// EntityUpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
+// will replace an existing entity, MergeEntity will merge properties of the entities.
 type EntityUpdateMode string
 
 const (
@@ -62,10 +64,11 @@ func (t *TableClient) Delete(ctx context.Context, options *TableDeleteOptions) (
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) List(queryOptions *ListOptions) TableEntityListResponsePager {
+// handle(err)
+func (t *TableClient) List(listOptions *ListOptions) TableEntityListResponsePager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
-		queryOptions:      queryOptions,
+		queryOptions:      listOptions,
 		tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 

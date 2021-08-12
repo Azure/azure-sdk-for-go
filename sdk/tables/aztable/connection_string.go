@@ -4,14 +4,11 @@
 package aztable
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
-
-var ErrConnectionString = errors.New("connection string is either blank or malformed. The expected connection string should contain key value pairs separated by semicolons. For example 'DefaultEndpointsProtocol=https;AccountName=<accountName>;AccountKey=<accountKey>;EndpointSuffix=core.windows.net'")
 
 // NewTableClientFromConnectionString creates a new TableClient struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.
@@ -49,12 +46,12 @@ func convertConnStrToMap(connStr string) (map[string]string, error) {
 
 	splitString := strings.Split(connStr, ";")
 	if len(splitString) == 0 {
-		return ret, ErrConnectionString
+		return ret, errConnectionString
 	}
 	for _, stringPart := range splitString {
 		parts := strings.Split(stringPart, "=")
 		if len(parts) != 2 {
-			return ret, ErrConnectionString
+			return ret, errConnectionString
 		}
 		ret[parts[0]] = parts[1]
 	}
@@ -77,7 +74,7 @@ func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 
 	accountName, ok := connStrMap["AccountName"]
 	if !ok {
-		return "", nil, ErrConnectionString
+		return "", nil, errConnectionString
 	}
 	accountKey, ok := connStrMap["AccountKey"]
 	if !ok {
@@ -86,12 +83,12 @@ func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 		// Try sharedaccesssignature
 		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]
 		if !ok {
-			return "", nil, ErrConnectionString
+			return "", nil, errConnectionString
 		}
 		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), nil, nil
 		// }
 
-		// return "", nil, ErrConnectionString
+		// return "", nil, errConnectionString
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

@@ -1,0 +1,22 @@
+parameters:
+  ServiceDirectory: ''
+
+steps:
+  - pwsh: |
+        $certUriPfx = "https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pfx"
+        $certUriCrt = "https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
+        $certLocationPfx = "$(Build.SourcesDirectory)/dotnet-devcert.pfx"
+        $certLocationCrt = "$(Build.SourcesDirectory)/dotnet-devcert.crt"
+
+        Invoke-WebRequest `
+            -Uri $certUriPfx `
+            -OutFile $certLocationPfx -UseBasicParsing
+
+        Invoke-WebRequest `
+            -Uri $certUriCrt `
+            -OutFile $certLocationCrt -UseBasicParsing
+
+        dotnet dev-certs https --clean --import $certLocationPfx -p "password"
+
+        Write-Host "##vso[task.setvariable variable=PROXY_CERT]$certLocationCrt"
+    displayName: 'Download and Trust Certificate'

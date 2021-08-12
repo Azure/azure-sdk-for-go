@@ -119,7 +119,7 @@ func (client *blockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blockBlobCommitBlockListOptions != nil && blockBlobCommitBlockListOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobCommitBlockListOptions.RequestID)
 	}
@@ -245,7 +245,7 @@ func (client *blockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blockBlobGetBlockListOptions != nil && blockBlobGetBlockListOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobGetBlockListOptions.RequestID)
 	}
@@ -365,7 +365,7 @@ func (client *blockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	if cpkScopeInfo != nil && cpkScopeInfo.EncryptionScope != nil {
 		req.Header.Set("x-ms-encryption-scope", *cpkScopeInfo.EncryptionScope)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blockBlobStageBlockOptions != nil && blockBlobStageBlockOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobStageBlockOptions.RequestID)
 	}
@@ -504,7 +504,7 @@ func (client *blockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Header.Set("x-ms-source-if-none-match", *sourceModifiedAccessConditions.SourceIfNoneMatch)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobStageBlockFromURLOptions.RequestID)
 	}
@@ -667,7 +667,7 @@ func (client *blockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blockBlobUploadOptions != nil && blockBlobUploadOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blockBlobUploadOptions.RequestID)
 	}

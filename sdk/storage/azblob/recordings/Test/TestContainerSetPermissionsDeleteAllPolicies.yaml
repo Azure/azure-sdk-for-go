@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:50 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteallpolicies?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:57:06 GMT
+      - Thu, 12 Aug 2021 17:52:48 GMT
       Etag:
-      - '"0x8D95CF9D0E82C03"'
+      - '"0x8D95DB9FFADF4C5"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:48 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ce1ef17b-a01e-0000-54e2-8e36a1000000
+      - 9fc5ae19-601e-0016-5da2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 201 Created
     code: 201
     duration: ""
@@ -56,9 +56,9 @@ interactions:
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:57:08 GMT
+      - Thu, 12 Aug 2021 17:52:50 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteallpolicies?comp=acl&restype=container
     method: PUT
   response:
@@ -67,17 +67,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:57:06 GMT
+      - Thu, 12 Aug 2021 17:52:48 GMT
       Etag:
-      - '"0x8D95CF9D10D8DBA"'
+      - '"0x8D95DB9FFD4D50C"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ce1ef211-a01e-0000-51e2-8e36a1000000
+      - 9fc5aed7-601e-0016-7ba2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 200 OK
     code: 200
     duration: ""
@@ -93,9 +93,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:57:08 GMT
+      - Thu, 12 Aug 2021 17:52:50 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteallpolicies?comp=acl&restype=container
     method: GET
   response:
@@ -104,19 +104,19 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 18:57:06 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Etag:
-      - '"0x8D95CF9D10D8DBA"'
+      - '"0x8D95DB9FFD4D50C"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Request-Id:
-      - ce1ef28d-a01e-0000-37e2-8e36a1000000
+      - 9fc5af9e-601e-0016-21a2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 200 OK
     code: 200
     duration: ""
@@ -138,9 +138,9 @@ interactions:
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:57:08 GMT
+      - Thu, 12 Aug 2021 17:52:50 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteallpolicies?comp=acl&restype=container
     method: PUT
   response:
@@ -149,17 +149,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:57:06 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Etag:
-      - '"0x8D95CF9D15C5AB6"'
+      - '"0x8D95DBA002DDD76"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ce1ef2fb-a01e-0000-17e2-8e36a1000000
+      - 9fc5b086-601e-0016-6ea2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 200 OK
     code: 200
     duration: ""
@@ -175,9 +175,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:57:08 GMT
+      - Thu, 12 Aug 2021 17:52:51 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteallpolicies?comp=acl&restype=container
     method: GET
   response:
@@ -186,19 +186,19 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Etag:
-      - '"0x8D95CF9D15C5AB6"'
+      - '"0x8D95DBA002DDD76"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Request-Id:
-      - ce1ef38a-a01e-0000-11e2-8e36a1000000
+      - 9fc5b18d-601e-0016-60a2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 200 OK
     code: 200
     duration: ""
@@ -214,9 +214,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:57:09 GMT
+      - Thu, 12 Aug 2021 17:52:51 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteallpolicies?restype=container
     method: DELETE
   response:
@@ -225,13 +225,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:57:07 GMT
+      - Thu, 12 Aug 2021 17:52:50 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ce1ef407-a01e-0000-7de2-8e36a1000000
+      - 9fc5b2c9-601e-0016-7fa2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 202 Accepted
     code: 202
     duration: ""

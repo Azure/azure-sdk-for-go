@@ -13,9 +13,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:47 GMT
+      - Thu, 12 Aug 2021 17:47:53 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifnonematchfalse?restype=container
     method: PUT
   response:
@@ -24,17 +24,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:52:45 GMT
+      - Thu, 12 Aug 2021 17:47:52 GMT
       Etag:
-      - '"0x8D95CF9357A2199"'
+      - '"0x8D95DB94F2B93AD"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ce1c4d7b-a01e-0000-0ce2-8e36a1000000
+      - 9fc2a0ac-601e-0016-09a2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 201 Created
     code: 201
     duration: ""
@@ -56,9 +56,9 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:47 GMT
+      - Thu, 12 Aug 2021 17:47:54 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifnonematchfalse/gotestblobblobdownloaddataifnonematchfalse
     method: PUT
   response:
@@ -69,23 +69,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:52 GMT
       Etag:
-      - '"0x8D95CF9359F5D0F"'
+      - '"0x8D95DB94F52775E"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:53 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - ce1c4de5-a01e-0000-5ee2-8e36a1000000
+      - 9fc2a169-601e-0016-38a2-8ff73f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-11T18:52:46.5884431Z"
+      - "2021-08-12T17:47:53.0773342Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,9 +101,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:47 GMT
+      - Thu, 12 Aug 2021 17:47:54 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifnonematchfalse/gotestblobblobdownloaddataifnonematchfalse
     method: HEAD
   response:
@@ -118,11 +118,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:52 GMT
       Etag:
-      - '"0x8D95CF9359F5D0F"'
+      - '"0x8D95DB94F52775E"'
       Last-Modified:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:53 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -132,7 +132,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:53 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -140,13 +140,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - ce1c4e48-a01e-0000-2fe2-8e36a1000000
+      - 9fc2a21f-601e-0016-5da2-8ff73f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-11T18:52:46.5884431Z"
+      - "2021-08-12T17:47:53.0773342Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -159,14 +159,14 @@ interactions:
       Authorization:
       - sanitized
       If-None-Match:
-      - '"0x8D95CF9359F5D0F"'
+      - '"0x8D95DB94F52775E"'
       User-Agent:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:47 GMT
+      - Thu, 12 Aug 2021 17:47:54 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifnonematchfalse/gotestblobblobdownloaddataifnonematchfalse
     method: GET
   response:
@@ -175,15 +175,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ConditionNotMet
       X-Ms-Request-Id:
-      - ce1c4ed1-a01e-0000-24e2-8e36a1000000
+      - 9fc2a2a4-601e-0016-51a2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 304 The condition specified using HTTP conditional header(s) is not met.
     code: 304
     duration: ""
@@ -199,9 +199,9 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:48 GMT
+      - Thu, 12 Aug 2021 17:47:55 GMT
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifnonematchfalse?restype=container
     method: DELETE
   response:
@@ -210,13 +210,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Wed, 11 Aug 2021 18:52:46 GMT
+      - Thu, 12 Aug 2021 17:47:53 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - ce1c4f4e-a01e-0000-10e2-8e36a1000000
+      - 9fc2a314-601e-0016-2da2-8ff73f000000
       X-Ms-Version:
-      - "2020-02-10"
+      - "2019-12-12"
     status: 202 Accepted
     code: 202
     duration: ""

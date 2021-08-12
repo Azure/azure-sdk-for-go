@@ -124,36 +124,6 @@ type AppendPositionAccessConditions struct {
 	MaxSize *int64
 }
 
-// ArrowConfiguration - Groups the settings used for formatting the response if the response should be Arrow formatted.
-type ArrowConfiguration struct {
-	// REQUIRED
-	Schema []*ArrowField `xml:"Schema>Field"`
-}
-
-// MarshalXML implements the xml.Marshaller interface for type ArrowConfiguration.
-func (a ArrowConfiguration) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias ArrowConfiguration
-	aux := &struct {
-		*alias
-		Schema *[]*ArrowField `xml:"Schema>Field"`
-	}{
-		alias: (*alias)(&a),
-	}
-	if a.Schema != nil {
-		aux.Schema = &a.Schema
-	}
-	return e.EncodeElement(aux, start)
-}
-
-// ArrowField - Groups settings regarding specific field of an arrow schema
-type ArrowField struct {
-	// REQUIRED
-	Type      *string `xml:"Type"`
-	Name      *string `xml:"Name"`
-	Precision *int32  `xml:"Precision"`
-	Scale     *int32  `xml:"Scale"`
-}
-
 // BlobAbortCopyFromURLOptions contains the optional parameters for the Blob.AbortCopyFromURL method.
 type BlobAbortCopyFromURLOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -479,7 +449,6 @@ type BlobPropertiesInternal struct {
 	ExpiresOn       *time.Time         `xml:"Expiry-Time"`
 	IncrementalCopy *bool              `xml:"IncrementalCopy"`
 	IsSealed        *bool              `xml:"Sealed"`
-	LastAccessedOn  *time.Time         `xml:"LastAccessTime"`
 	LeaseDuration   *LeaseDurationType `xml:"LeaseDuration"`
 	LeaseState      *LeaseStateType    `xml:"LeaseState"`
 	LeaseStatus     *LeaseStatusType   `xml:"LeaseStatus"`
@@ -502,7 +471,6 @@ func (b BlobPropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElemen
 		CreationTime         *timeRFC1123 `xml:"Creation-Time"`
 		DeletedTime          *timeRFC1123 `xml:"DeletedTime"`
 		ExpiresOn            *timeRFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn       *timeRFC1123 `xml:"LastAccessTime"`
 		LastModified         *timeRFC1123 `xml:"Last-Modified"`
 	}{
 		alias:                (*alias)(&b),
@@ -511,7 +479,6 @@ func (b BlobPropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElemen
 		CreationTime:         (*timeRFC1123)(b.CreationTime),
 		DeletedTime:          (*timeRFC1123)(b.DeletedTime),
 		ExpiresOn:            (*timeRFC1123)(b.ExpiresOn),
-		LastAccessedOn:       (*timeRFC1123)(b.LastAccessedOn),
 		LastModified:         (*timeRFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
@@ -531,7 +498,6 @@ func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 		CreationTime         *timeRFC1123 `xml:"Creation-Time"`
 		DeletedTime          *timeRFC1123 `xml:"DeletedTime"`
 		ExpiresOn            *timeRFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn       *timeRFC1123 `xml:"LastAccessTime"`
 		LastModified         *timeRFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
@@ -544,7 +510,6 @@ func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 	b.CreationTime = (*time.Time)(aux.CreationTime)
 	b.DeletedTime = (*time.Time)(aux.DeletedTime)
 	b.ExpiresOn = (*time.Time)(aux.ExpiresOn)
-	b.LastAccessedOn = (*time.Time)(aux.LastAccessedOn)
 	b.LastModified = (*time.Time)(aux.LastModified)
 	return nil
 }
@@ -1750,9 +1715,6 @@ type PageRange struct {
 }
 
 type QueryFormat struct {
-	// Groups the settings used for formatting the response if the response should be Arrow formatted.
-	ArrowConfiguration *ArrowConfiguration `xml:"ArrowConfiguration"`
-
 	// Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
 	DelimitedTextConfiguration *DelimitedTextConfiguration `xml:"DelimitedTextConfiguration"`
 

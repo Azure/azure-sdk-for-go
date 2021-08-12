@@ -137,7 +137,7 @@ func TestMergeEntity(t *testing.T) {
 			_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, MergeEntity)
 			require.Nil(updateErr)
 
-			var qResp TableEntityQueryByteResponseResponse
+			var qResp TableEntityListByteResponseResponse
 			pager := client.List(listOptions)
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
@@ -193,7 +193,7 @@ func TestUpsertEntity(t *testing.T) {
 			require.Nil(err)
 
 			// 5. Query for new entity
-			var qResp TableEntityQueryByteResponseResponse
+			var qResp TableEntityListByteResponseResponse
 			pager := client.List(list)
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
@@ -232,7 +232,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 			list := &ListOptions{Filter: &filter}
 			expectedCount := 4
 
-			var resp TableEntityQueryByteResponseResponse
+			var resp TableEntityListByteResponseResponse
 			pager := client.List(list)
 			for pager.NextPage(ctx) {
 				resp = pager.PageResponse()
@@ -285,7 +285,7 @@ func TestQueryComplexEntity(t *testing.T) {
 			expectedCount := 4
 			options := &ListOptions{Filter: &filter}
 
-			var resp TableEntityQueryByteResponseResponse
+			var resp TableEntityListByteResponseResponse
 			pager := client.List(options)
 			for pager.NextPage(ctx) {
 				resp = pager.PageResponse()

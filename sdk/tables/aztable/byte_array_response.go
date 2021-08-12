@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// ByteArrayResponse converts the MapOfInterfaceResponse.Value from a map[string]interface{} to a []byte
+// ByteArrayResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
 type ByteArrayResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
@@ -45,6 +45,7 @@ type ByteArrayResponse struct {
 	XMSContinuationNextRowKey *string
 }
 
+// newByteArrayResponse converts a MapofInterfaceResponse from a map[string]interface{} to a []byte.
 func newByteArrayResponse(m MapOfInterfaceResponse) (ByteArrayResponse, error) {
 	marshalledValue, err := json.Marshal(m.Value)
 	if err != nil {
@@ -65,8 +66,8 @@ func newByteArrayResponse(m MapOfInterfaceResponse) (ByteArrayResponse, error) {
 	}, nil
 }
 
-// TableEntityQueryByteResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
-type TableEntityQueryByteResponseResponse struct {
+// TableEntityListByteResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
+type TableEntityListByteResponseResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -101,12 +102,12 @@ type TableEntityQueryByteResponse struct {
 	Value [][]byte
 }
 
-func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityQueryByteResponseResponse, error) {
+func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityListByteResponseResponse, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return TableEntityQueryByteResponseResponse{}, err
+			return TableEntityListByteResponseResponse{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
@@ -116,7 +117,7 @@ func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityQuer
 		Value:         marshalledValue,
 	}
 
-	return TableEntityQueryByteResponseResponse{
+	return TableEntityListByteResponseResponse{
 		ClientRequestID:                 resp.ClientRequestID,
 		Date:                            resp.Date,
 		RawResponse:                     resp.RawResponse,
@@ -126,4 +127,55 @@ func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityQuer
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 	}, nil
+}
+
+type TableListResponse struct {
+	// The metadata response of the table.
+	OdataMetadata *string `json:"odata.metadata,omitempty"`
+
+	// List of tables.
+	Value []*TableResponseProperties `json:"value,omitempty"`
+}
+
+func tableListResponseFromQueryResponse(q *TableQueryResponse) *TableListResponse {
+	return &TableListResponse{
+		OdataMetadata: q.OdataMetadata,
+		Value:         q.Value,
+	}
+}
+
+// TableListResponseResponse stores the results of a ListTables operation
+type TableListResponseResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// The properties for the table query response.
+	TableListResponse *TableListResponse
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
+	XMSContinuationNextTableName *string
+}
+
+func listResponseFromQueryResponse(q TableQueryResponseResponse) *TableListResponseResponse {
+	return &TableListResponseResponse{
+		ClientRequestID:              q.ClientRequestID,
+		Date:                         q.Date,
+		RawResponse:                  q.RawResponse,
+		RequestID:                    q.RequestID,
+		TableListResponse:            tableListResponseFromQueryResponse(q.TableQueryResponse),
+		Version:                      q.Version,
+		XMSContinuationNextTableName: q.XMSContinuationNextTableName,
+	}
 }

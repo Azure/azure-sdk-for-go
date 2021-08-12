@@ -28,12 +28,12 @@ type TableEntityListResponsePager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableEntityQueryByteResponseResponse
+	PageResponse() TableEntityListByteResponseResponse
 }
 
 type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
-	current           *TableEntityQueryByteResponseResponse
+	current           *TableEntityListByteResponseResponse
 	tableQueryOptions *TableQueryEntitiesOptions
 	queryOptions      *ListOptions
 	err               error
@@ -68,7 +68,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryByteResponseResponse {
+func (p *tableEntityQueryResponsePager) PageResponse() TableEntityListByteResponseResponse {
 	return *p.current
 }
 
@@ -96,12 +96,12 @@ type TableListResponsePager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableQueryResponseResponse
+	PageResponse() TableListResponseResponse
 }
 
 type tableQueryResponsePager struct {
 	client            *tableClient
-	current           *TableQueryResponseResponse
+	current           *TableListResponseResponse
 	tableQueryOptions *TableQueryOptions
 	queryOptions      *ListOptions
 	err               error
@@ -116,7 +116,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	}
 	var resp TableQueryResponseResponse
 	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions.toQueryOptions())
-	p.current = &resp
+	p.current = listResponseFromQueryResponse(resp)
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
 }
@@ -128,7 +128,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
-func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
+func (p *tableQueryResponsePager) PageResponse() TableListResponseResponse {
 	return *p.current
 }
 

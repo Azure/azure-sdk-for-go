@@ -155,7 +155,7 @@ func (s TableServiceClient) CanGetAccountSASToken() bool {
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
+func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	return AccountSASSignatureValues{
 		Version:       SASVersion,
 		Protocol:      SASProtocolHTTPS,
@@ -170,7 +170,7 @@ func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes
 // GetTableSASToken is a convenience method for generating a SAS token for a specific table.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start, expiry time.Time) (SASQueryParameters, error) {
+func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	return TableSASSignatureValues{
 		TableName:         tableName,
 		Permissions:       permissions.String(),

@@ -482,7 +482,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 		t.Log("AZURE_RECORD_MODE: ", recordMode)
 	}
 	testId := getTestId(t)
-	
+
 	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)

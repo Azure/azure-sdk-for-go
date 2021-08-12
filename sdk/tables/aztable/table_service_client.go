@@ -33,9 +33,7 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
 	}
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
-	for _, p := range options.PerCallOptions {
-		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, p)
-	}
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
 	con := newConnection(serviceURL, conOptions)
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: cred}, nil
 }

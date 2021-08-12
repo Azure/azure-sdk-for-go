@@ -3,6 +3,10 @@
 
 package aztable
 
+import "errors"
+
+var invalidUpdateMode = errors.New("invalid EntityUpdateMode")
+
 func checkEntityForPkRk(entity *map[string]interface{}, err error) error {
 	if _, ok := (*entity)[partitionKey]; !ok {
 		return partitionKeyRowKeyError

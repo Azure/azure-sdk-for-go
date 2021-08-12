@@ -151,7 +151,7 @@ func (ctx GenerateContext) generateForSingleRpNamespace(rpName, namespaceName st
 
 		log.Printf("Change the commit hash in `autorest.md` to a new commit that corresponds to the new release...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err = ReplaceCommitid(autorestMdPath, ctx.CommitHash); err != nil {
+		if err = ReplaceCommitID(autorestMdPath, ctx.CommitHash); err != nil {
 			return nil, err
 		}
 
@@ -183,7 +183,7 @@ func (ctx GenerateContext) generateForSingleRpNamespace(rpName, namespaceName st
 		}
 
 		return &GenerateResult{
-			Version:        version,
+			Version:        version.String(),
 			RpName:         rpName,
 			PackageName:    namespaceName,
 			PackageAbsPath: packagePath,

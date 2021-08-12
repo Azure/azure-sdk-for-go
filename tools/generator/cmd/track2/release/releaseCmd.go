@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/track2/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -78,20 +79,20 @@ type commandContext struct {
 	rpName        string
 	namespaceName string
 	sdkPath       string
-	sdkRepo       SDKRepository
+	sdkRepo       repo.SDKRepository
 	specPath      string
-	specRepo      SpecRepository
+	specRepo      repo.SpecRepository
 	flags         Flags
 }
 
 func (c *commandContext) execute() error {
 	var err error
 	// create sdk and spec git repo ref
-	c.sdkRepo, err = OpenSDKRepository(c.sdkPath)
+	c.sdkRepo, err = repo.OpenSDKRepository(c.sdkPath)
 	if err != nil {
 		return fmt.Errorf("failed to get sdk repo: %+v", err)
 	}
-	c.specRepo, err = OpenSpecRepository(c.specPath)
+	c.specRepo, err = repo.OpenSpecRepository(c.specPath)
 	if err != nil {
 		return fmt.Errorf("failed to get spec repo: %+v", err)
 	}

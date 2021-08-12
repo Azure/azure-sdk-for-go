@@ -10,11 +10,11 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+	"github.com/Masterminds/semver"
 )
 
 const (
@@ -103,9 +103,9 @@ func CleanSDKGeneratedFiles(path string) error {
 	return nil
 }
 
-// replace all commitid in autorest.md files
-func ReplaceCommitid(path string, commitid string) error {
-	log.Printf("Replacing commitid from autorest.md ...")
+// replace all commit id in autorest.md files
+func ReplaceCommitID(path string, commitID string) error {
+	log.Printf("Replacing commit id from autorest.md ...")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -114,7 +114,7 @@ func ReplaceCommitid(path string, commitid string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, autorest_md_swagger_url_prefix) {
-			lines[i] = lines[i][:len(autorest_md_swagger_url_prefix)] + commitid + lines[i][len(autorest_md_swagger_url_prefix)+len(commitid):]
+			lines[i] = line[:len(autorest_md_swagger_url_prefix)] + commitID + line[len(autorest_md_swagger_url_prefix)+len(commitID):]
 		}
 	}
 
@@ -122,20 +122,21 @@ func ReplaceCommitid(path string, commitid string) error {
 	return err
 }
 
-func GetLatestVersion(packageRootPath string) (string, error) {
+func GetLatestVersion(packageRootPath string) (*semver.Version, error) {
 	b, err := ioutil.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	lines := strings.Split(string(b), "\n")
 	for _, line := range lines {
 		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			return strings.TrimSuffix(strings.TrimSuffix(line[len(autorest_md_module_version_prefix):], "\n"), "\r"), nil
+			versionString := strings.TrimSuffix(strings.TrimSuffix(line[len(autorest_md_module_version_prefix):], "\n"), "\r")
+			return semver.NewVersion(versionString)
 		}
 	}
 
-	return "", fmt.Errorf("cannot parse version from autorest.md")
+	return nil, fmt.Errorf("cannot parse version from autorest.md")
 }
 
 func ReplaceVersion(packageRootPath string, newVersion string) error {
@@ -148,7 +149,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			lines[i] = lines[i][:len(autorest_md_module_version_prefix)] + newVersion + "\n"
+			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion + "\n"
 			break
 		}
 	}
@@ -157,54 +158,37 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	return err
 }
 
-func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (string, error) {
+func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*semver.Version, error) {
 	version, err := GetLatestVersion(packageRootPath)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	log.Printf("Lastest version is: %s", version.String())
 
-	versions := strings.Split(version, ".")
-	major, err := strconv.Atoi(versions[0])
-	if err != nil {
-		return "", fmt.Errorf("wrong latest version")
-	}
-	minor, err := strconv.Atoi(versions[1])
-	if err != nil {
-		return "", fmt.Errorf("wrong latest version")
-	}
-	patch, err := strconv.Atoi(versions[2])
-	if err != nil {
-		return "", fmt.Errorf("wrong latest version")
-	}
-	log.Printf("Lastest version is: %d.%d.%d", major, minor, patch)
-
-	if major == 0 {
+	var newVersion semver.Version
+	if version.Major() == 0 {
 		// preview version calculation
 		if changelog.HasBreakingChanges() {
-			minor += 1
-			patch = 0
+			newVersion = version.IncMinor()
 		} else {
-			patch += 1
+			newVersion = version.IncPatch()
 		}
 	} else {
 		// release version calculation
 		if changelog.HasBreakingChanges() {
-			major += 1
-			minor = 0
-			patch = 0
+			newVersion = version.IncMajor()
 		} else if changelog.Modified.HasAdditiveChanges() {
-			minor += 1
-			patch = 0
+			newVersion = version.IncMinor()
 		} else {
-			patch += 1
+			newVersion = version.IncPatch()
 		}
 	}
 
-	log.Printf("New version is: %d.%d.%d", major, minor, patch)
-	return fmt.Sprintf("%d.%d.%d", major, minor, patch), nil
+	log.Printf("New version is: %s", newVersion.String())
+	return &newVersion, nil
 }
 
-func AddChangelogToFile(changelog *model.Changelog, version string, packageRootPath string) (string, error) {
+func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath string) (string, error) {
 	path := filepath.Join(packageRootPath, common.ChangelogFilename)
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -213,7 +197,7 @@ func AddChangelogToFile(changelog *model.Changelog, version string, packageRootP
 	oldChangelog := string(b)
 	insertPos := strings.Index(oldChangelog, "##")
 	additionalChangelog := changelog.ToCompactMarkdown()
-	newChangelog := oldChangelog[:insertPos] + "## v" + version + " (released)\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
+	newChangelog := oldChangelog[:insertPos] + "## v" + version.String() + " (released)\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
 	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
 	if err != nil {
 		return "", err

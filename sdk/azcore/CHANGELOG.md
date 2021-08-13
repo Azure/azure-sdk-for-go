@@ -3,10 +3,13 @@
 ## v0.19.0-beta.1 (Unreleased)
 
 ### Features Added
+* Adds an `ETag` type for comparing etags and handling etags on requests
+* Simplifies the `requestBodyProgess` and `responseBodyProgress` into a single `progress` object
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* `JoinPaths` will preserve query parameters encoded in the `root` url.
 
 ### Other Changes
 

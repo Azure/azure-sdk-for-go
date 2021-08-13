@@ -67,23 +67,32 @@ func (ov opValues) get(value interface{}) bool {
 }
 
 // JoinPaths concatenates multiple URL path segments into one path,
-// inserting path separation characters as required.
-func JoinPaths(paths ...string) string {
+// inserting path separation characters as required. JoinPaths will preserve
+// query parameters in the root path
+func JoinPaths(root string, paths ...string) string {
 	if len(paths) == 0 {
-		return ""
+		return root
 	}
-	path := paths[0]
-	for i := 1; i < len(paths); i++ {
-		if path[len(path)-1] == '/' && paths[i][0] == '/' {
-			// strip off trailing '/' to avoid doubling up
-			path = path[:len(path)-1]
-		} else if path[len(path)-1] != '/' && paths[i][0] != '/' {
-			// add a trailing '/'
-			path = path + "/"
+
+	qps := ""
+	if strings.Contains(root, "?") {
+		splitPath := strings.Split(root, "?")
+		root, qps = splitPath[0], splitPath[1]
+	}
+
+	for i := 0; i < len(paths); i++ {
+		root = strings.TrimRight(root, "/")
+		paths[i] = strings.TrimLeft(paths[i], "/")
+		root += "/" + paths[i]
+	}
+
+	if qps != "" {
+		if !strings.HasSuffix(root, "/") {
+			root += "/"
 		}
-		path += paths[i]
+		return root + "?" + qps
 	}
-	return path
+	return root
 }
 
 // NewRequest creates a new Request with the specified input.

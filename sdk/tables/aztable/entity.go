@@ -65,7 +65,7 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 			continue // Skip the @odata.type properties; we look them up explicitly later
 		}
 		switch propName {
-		// Look for EdmEntity's specific fields first
+		// Look for EDMEntity's specific fields first
 		case "odata.metadata":
 			err = json.Unmarshal(propRawValue, &e.Metadata)
 		case "odata.id":

@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	LegacyCosmosTableDomain = ".table.cosmosdb."
+	legacyCosmosTableDomain = ".table.cosmosdb."
 	cosmosTableDomain       = ".table.cosmos."
 )
 
@@ -154,5 +154,5 @@ func (t *TableServiceClient) SetProperties(ctx context.Context, properties gener
 
 func isCosmosEndpoint(url string) bool {
 	isCosmosEmulator := strings.Contains(url, "localhost") && strings.Contains(url, "8902")
-	return isCosmosEmulator || strings.Contains(url, cosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)
+	return isCosmosEmulator || strings.Contains(url, cosmosTableDomain) || strings.Contains(url, legacyCosmosTableDomain)
 }

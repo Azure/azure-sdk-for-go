@@ -283,7 +283,7 @@ func TestBatchComplex(t *testing.T) {
 			received, err := client.GetEntity(ctx, edmEntity.PartitionKey, edmEntity.RowKey, nil)
 			require.NoError(t, err)
 
-			var receivedEdm EdmEntity
+			var receivedEdm EDMEntity
 			err = json.Unmarshal(received.Value, &receivedEdm)
 			require.NoError(t, err)
 			require.Equal(t, edmEntity.Properties["Bool"], receivedEdm.Properties["Bool"])
@@ -291,7 +291,7 @@ func TestBatchComplex(t *testing.T) {
 			received2, err := client.GetEntity(ctx, edmEntity2.PartitionKey, edmEntity2.RowKey, nil)
 			require.NoError(t, err)
 
-			var receivedEdm2 EdmEntity
+			var receivedEdm2 EDMEntity
 			err = json.Unmarshal(received2.Value, &receivedEdm2)
 			require.NoError(t, err)
 			require.Equal(t, edmEntity2.Properties["Int32"], receivedEdm2.Properties["Int32"])

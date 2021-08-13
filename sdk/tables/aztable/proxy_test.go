@@ -91,10 +91,10 @@ func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred 
 func initClientTest(t *testing.T, service string, createTable bool) (*TableClient, func()) {
 	var client *TableClient
 	var err error
-	if service == string(StorageEndpoint) {
+	if service == string(storageEndpoint) {
 		client, err = createStorageTableClient(t)
 		require.NoError(t, err)
-	} else if service == string(CosmosEndpoint) {
+	} else if service == string(cosmosEndpoint) {
 		client, err = createCosmosTableClient(t)
 		require.NoError(t, err)
 	}
@@ -118,10 +118,10 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 func initServiceTest(t *testing.T, service string) (*TableServiceClient, func()) {
 	var client *TableServiceClient
 	var err error
-	if service == string(StorageEndpoint) {
+	if service == string(storageEndpoint) {
 		client, err = createStorageServiceClient(t)
 		require.NoError(t, err)
-	} else if service == string(CosmosEndpoint) {
+	} else if service == string(cosmosEndpoint) {
 		client, err = createCosmosServiceClient(t)
 		require.NoError(t, err)
 	}

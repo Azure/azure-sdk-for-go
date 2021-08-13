@@ -81,7 +81,7 @@ func TestEdmMarshalling(t *testing.T) {
 
 			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), fullMetadata)
 			require.Nil(t, err)
-			var receivedEntity EdmEntity
+			var receivedEntity EDMEntity
 			err = json.Unmarshal(resp.Value, &receivedEntity)
 			require.Nil(t, err)
 

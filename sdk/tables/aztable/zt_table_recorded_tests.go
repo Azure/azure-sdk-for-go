@@ -33,8 +33,8 @@ const (
 type EndpointType string
 
 const (
-	StorageEndpoint EndpointType = "storage"
-	CosmosEndpoint  EndpointType = "cosmos"
+	storageEndpoint EndpointType = "storage"
+	cosmosEndpoint  EndpointType = "cosmos"
 )
 
 var ctx = context.Background()
@@ -174,8 +174,8 @@ func createComplexEntities(count int, pk string) *[]complexTestEntity {
 	return &result
 }
 
-func createEdmEntity(count int, pk string) EdmEntity {
-	return EdmEntity{
+func createEdmEntity(count int, pk string) EDMEntity {
+	return EDMEntity{
 		Entity: Entity{
 			PartitionKey: pk,
 			RowKey:       fmt.Sprint(count),
@@ -183,19 +183,19 @@ func createEdmEntity(count int, pk string) EdmEntity {
 		Properties: map[string]interface{}{
 			"Bool":     false,
 			"Int32":    int32(1234),
-			"Int64":    EdmInt64(123456789012),
+			"Int64":    EDMInt64(123456789012),
 			"Double":   1234.1234,
 			"String":   "test",
-			"Guid":     EdmGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
-			"DateTime": EdmDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
-			"Binary":   EdmBinary("SomeBinary"),
+			"Guid":     EDMGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
+			"DateTime": EDMDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
+			"Binary":   EDMBinary("SomeBinary"),
 		},
 	}
 }
 
 func requireSameDateTime(t *testing.T, time1, time2 interface{}) {
-	t1 := time.Time(time1.(EdmDateTime))
-	t2 := time.Time(time2.(EdmDateTime))
+	t1 := time.Time(time1.(EDMDateTime))
+	t2 := time.Time(time2.(EDMDateTime))
 	require.Equal(t, t1.Year(), t2.Year())
 	require.Equal(t, t1.Month(), t2.Month())
 	require.Equal(t, t1.Day(), t2.Day())

@@ -114,7 +114,7 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 // If there are no more policies, nil and ErrNoMorePolicies are returned.
 // This method is intended to be called from pipeline policies.
 // To send a request through a pipeline call Pipeline.Do().
-func (req *Request) Next() (*Response, error) {
+func (req *Request) Next() (*http.Response, error) {
 	if len(req.policies) == 0 {
 		return nil, errors.New("no more policies")
 	}

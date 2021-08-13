@@ -27,15 +27,15 @@ type Policy interface {
 	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
 	// request before calling req.Next() to move on to the next policy, and respond to the result
 	// before returning to the caller.
-	Do(req *Request) (*Response, error)
+	Do(req *Request) (*http.Response, error)
 }
 
 // policyFunc is a type that implements the Policy interface.
 // Use this type when implementing a stateless policy as a first-class function.
-type policyFunc func(*Request) (*Response, error)
+type policyFunc func(*Request) (*http.Response, error)
 
 // Do implements the Policy interface on PolicyFunc.
-func (pf policyFunc) Do(req *Request) (*Response, error) {
+func (pf policyFunc) Do(req *Request) (*http.Response, error) {
 	return pf(req)
 }
 
@@ -50,7 +50,7 @@ type transportPolicy struct {
 	trans Transporter
 }
 
-func (tp transportPolicy) Do(req *Request) (*Response, error) {
+func (tp transportPolicy) Do(req *Request) (*http.Response, error) {
 	resp, err := tp.trans.Do(req.Request)
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func (tp transportPolicy) Do(req *Request) (*Response, error) {
 		// this ensures the retry policy will retry the request
 		return nil, errors.New("received nil response")
 	}
-	return &Response{Response: resp}, nil
+	return resp, nil
 }
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
@@ -84,7 +84,7 @@ func NewPipeline(transport Transporter, policies ...Policy) Pipeline {
 // Do is called for each and every HTTP request. It passes the request through all
 // the Policy objects (which can transform the Request's URL/query parameters/headers)
 // and ultimately sends the transformed HTTP request over the network.
-func (p Pipeline) Do(req *Request) (*Response, error) {
+func (p Pipeline) Do(req *Request) (*http.Response, error) {
 	if err := req.valid(); err != nil {
 		return nil, err
 	}

@@ -15,7 +15,7 @@ import (
 )
 
 // bodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
-func bodyDownloadPolicy(req *Request) (*Response, error) {
+func bodyDownloadPolicy(req *Request) (*http.Response, error) {
 	resp, err := req.Next()
 	if err != nil {
 		return resp, err

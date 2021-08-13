@@ -124,7 +124,7 @@ type retryPolicy struct {
 	options RetryOptions
 }
 
-func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
+func (p *retryPolicy) Do(req *Request) (resp *http.Response, err error) {
 	options := p.options
 	// check if the retry options have been overridden for this call
 	if override := req.Context().Value(ctxWithRetryOptionsKey{}); override != nil {
@@ -170,7 +170,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 			log.Writef(log.RetryPolicy, "error %v", err)
 		}
 
-		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
+		if err == nil && !HasStatusCode(resp, options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			return
 		} else if ctxErr := req.Context().Err(); ctxErr != nil {
@@ -195,10 +195,10 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		}
 
 		// drain before retrying so nothing is leaked
-		resp.Drain()
+		Drain(resp)
 
 		// use the delay from retry-after if available
-		delay := resp.retryAfter()
+		delay := RetryAfter(resp)
 		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}

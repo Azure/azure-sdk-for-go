@@ -8,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"os"
 	"runtime"
 	"strings"
@@ -64,7 +65,7 @@ func NewTelemetryPolicy(o *TelemetryOptions) Policy {
 	return &tp
 }
 
-func (p telemetryPolicy) Do(req *Request) (*Response, error) {
+func (p telemetryPolicy) Do(req *Request) (*http.Response, error) {
 	if p.telemetryValue == "" {
 		return req.Next()
 	}

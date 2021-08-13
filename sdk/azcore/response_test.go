@@ -28,11 +28,11 @@ func TestResponseUnmarshalXML(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var tx testXML
-	if err := resp.UnmarshalAsXML(&tx); err != nil {
+	if err := UnmarshalAsXML(resp, &tx); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 	if tx.SomeInt != 1 || tx.SomeString != "s" {
@@ -53,7 +53,7 @@ func TestResponseFailureStatusCode(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if resp.HasStatusCode(http.StatusOK) {
+	if HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 }
@@ -71,11 +71,11 @@ func TestResponseUnmarshalJSON(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var tx testJSON
-	if err := resp.UnmarshalAsJSON(&tx); err != nil {
+	if err := UnmarshalAsJSON(resp, &tx); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 	if tx.SomeInt != 1 || tx.SomeString != "s" {
@@ -97,11 +97,11 @@ func TestResponseUnmarshalJSONskipDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var tx testJSON
-	if err := resp.UnmarshalAsJSON(&tx); err != nil {
+	if err := UnmarshalAsJSON(resp, &tx); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 	if tx.SomeInt != 1 || tx.SomeString != "s" {
@@ -122,10 +122,10 @@ func TestResponseUnmarshalJSONNoBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if err := resp.UnmarshalAsJSON(nil); err != nil {
+	if err := UnmarshalAsJSON(resp, nil); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 }
@@ -143,24 +143,23 @@ func TestResponseUnmarshalXMLNoBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if err := resp.UnmarshalAsXML(nil); err != nil {
+	if err := UnmarshalAsXML(resp, nil); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 }
 
 func TestRetryAfter(t *testing.T) {
-	raw := &http.Response{
+	resp := &http.Response{
 		Header: http.Header{},
 	}
-	resp := Response{raw}
-	if d := resp.retryAfter(); d > 0 {
+	if d := RetryAfter(resp); d > 0 {
 		t.Fatalf("unexpected retry-after value %d", d)
 	}
-	raw.Header.Set(headerRetryAfter, "300")
-	d := resp.retryAfter()
+	resp.Header.Set(headerRetryAfter, "300")
+	d := RetryAfter(resp)
 	if d <= 0 {
 		t.Fatal("expected retry-after value from seconds")
 	}
@@ -168,8 +167,8 @@ func TestRetryAfter(t *testing.T) {
 		t.Fatalf("expected 300 seconds, got %d", d/time.Second)
 	}
 	atDate := time.Now().Add(600 * time.Second)
-	raw.Header.Set(headerRetryAfter, atDate.Format(time.RFC1123))
-	d = resp.retryAfter()
+	resp.Header.Set(headerRetryAfter, atDate.Format(time.RFC1123))
+	d = RetryAfter(resp)
 	if d <= 0 {
 		t.Fatal("expected retry-after value from date")
 	}
@@ -192,11 +191,11 @@ func TestResponseUnmarshalAsByteArrayURLFormat(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var ba []byte
-	if err := resp.UnmarshalAsByteArray(&ba, Base64URLFormat); err != nil {
+	if err := UnmarshalAsByteArray(resp, &ba, Base64URLFormat); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 	if string(ba) != "a string that gets encoded with base64url" {
@@ -217,11 +216,11 @@ func TestResponseUnmarshalAsByteArrayStdFormat(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !HasStatusCode(resp, http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
 	var ba []byte
-	if err := resp.UnmarshalAsByteArray(&ba, Base64StdFormat); err != nil {
+	if err := UnmarshalAsByteArray(resp, &ba, Base64StdFormat); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
 	if string(ba) != "a string that gets encoded with base64url" {

@@ -108,7 +108,7 @@ func TestBatchMixed(t *testing.T) {
 			require.NoError(t, err)
 			batch[1] = TableTransactionAction{ActionType: Delete, Entity: marshalledSecondEntity}
 
-			// create an upsert action to replace the third added entity with a new value
+			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
 			var replaceProperties = map[string]interface{}{
 				partitionKey: (*entitiesToCreate)[2].PartitionKey,

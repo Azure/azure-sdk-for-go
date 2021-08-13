@@ -31,8 +31,8 @@ const (
 	UpdateMerge   TableTransactionActionType = "updatemerge"
 	UpdateReplace TableTransactionActionType = "updatereplace"
 	Delete        TableTransactionActionType = "delete"
-	InsertMerge   TableTransactionActionType = "upsertmerge"
-	InsertReplace TableTransactionActionType = "upsertreplace"
+	InsertMerge   TableTransactionActionType = "insertmerge"
+	InsertReplace TableTransactionActionType = "insertreplace"
 )
 
 const (

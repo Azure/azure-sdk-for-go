@@ -17,7 +17,7 @@ type TableClient struct {
 	client  *generated.TableClient
 	service *TableServiceClient
 	cred    azcore.Credential
-	Name    string
+	name    string
 }
 
 type EntityUpdateMode string
@@ -35,12 +35,12 @@ func NewTableClient(tableName string, serviceURL string, cred azcore.Credential,
 
 // Create creates the table with the tableName specified when NewTableClient was called.
 func (t *TableClient) Create(ctx context.Context) (generated.TableCreateResponse, error) {
-	return t.service.CreateTable(ctx, t.Name)
+	return t.service.CreateTable(ctx, t.name)
 }
 
 // Delete deletes the table with the tableName specified when NewTableClient was called.
 func (t *TableClient) Delete(ctx context.Context, options *generated.TableDeleteOptions) (generated.TableDeleteResponse, error) {
-	return t.service.DeleteTable(ctx, t.Name, options)
+	return t.service.DeleteTable(ctx, t.name, options)
 }
 
 // List queries the entities using the specified ListOptions.
@@ -76,7 +76,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	if queryOptions == nil {
 		queryOptions = &generated.QueryOptions{}
 	}
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, queryOptions)
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, queryOptions)
 	if err != nil {
 		return ByteArrayResponse{}, err
 	}
@@ -91,7 +91,7 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (generated.T
 	if err != nil {
 		return generated.TableInsertEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, t.Name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
+	resp, err := t.client.InsertEntity(ctx, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
 		return generated.TableInsertEntityResponse{}, err
@@ -105,7 +105,7 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 		nilEtag := "*"
 		etag = &nilEtag
 	}
-	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, *etag, nil, &generated.QueryOptions{})
+	return t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, *etag, nil, &generated.QueryOptions{})
 }
 
 // UpdateEntity updates the specified table entity if it exists.
@@ -133,9 +133,9 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 
 	switch updateMode {
 	case MergeEntity:
-		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &generated.TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		return t.client.MergeEntity(ctx, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	case ReplaceEntity:
-		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &generated.TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	}
 	return nil, errors.New("Invalid EntityUpdateMode")
 }
@@ -159,23 +159,23 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 
 	switch updateMode {
 	case MergeEntity:
-		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		return t.client.MergeEntity(ctx, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	case ReplaceEntity:
-		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	}
 	return nil, errors.New("Invalid EntityUpdateMode")
 }
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
 func (t *TableClient) GetAccessPolicy(ctx context.Context) (generated.TableGetAccessPolicyResponse, error) {
-	return t.client.GetAccessPolicy(ctx, t.Name, nil)
+	return t.client.GetAccessPolicy(ctx, t.name, nil)
 }
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
 func (t *TableClient) SetAccessPolicy(ctx context.Context, options *generated.TableSetAccessPolicyOptions) (generated.TableSetAccessPolicyResponse, error) {
-	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
+	response, err := t.client.SetAccessPolicy(ctx, t.name, options)
 	if len(*&options.TableACL) > 5 {
-		err = tooManyAccessPoliciesError
+		err = errTooManyAccessPoliciesError
 	}
 	return response, err
 }

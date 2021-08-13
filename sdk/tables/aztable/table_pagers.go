@@ -48,7 +48,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryEntitiesResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions.toQueryOptions())
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 
 	c, err := castToByteResponse(&resp)
 	if err != nil {

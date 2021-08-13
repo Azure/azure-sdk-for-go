@@ -16,20 +16,20 @@ import (
 type Entity struct {
 	PartitionKey string
 	RowKey       string
-	Timestamp    EdmDateTime
+	Timestamp    EDMDateTime
 }
 
-type EdmEntity struct {
+type EDMEntity struct {
 	Metadata string `json:"odata.metadata"`
 	Id       string `json:"odata.id"`
 	EditLink string `json:"odata.editLink"`
 	Type     string `json:"odata.type"`
 	Etag     string `json:"odata.etag"`
 	Entity
-	Properties map[string]interface{} // Type assert the value to 1 of these: bool, int32, float64, string, EdmDateTime, EdmBinary, EdmGuid, EdmInt64
+	Properties map[string]interface{} // Type assert the value to 1 of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGuid, EDMInt64
 }
 
-func (e EdmEntity) MarshalJSON() ([]byte, error) {
+func (e EDMEntity) MarshalJSON() ([]byte, error) {
 	entity := map[string]interface{}{}
 	entity["PartitionKey"], entity["RowKey"] = e.PartitionKey, e.RowKey
 
@@ -37,13 +37,13 @@ func (e EdmEntity) MarshalJSON() ([]byte, error) {
 		entity[propName] = propValue
 		edmType := ""
 		switch propValue.(type) {
-		case EdmDateTime:
+		case EDMDateTime:
 			edmType = "Edm.DateTime"
-		case EdmBinary:
+		case EDMBinary:
 			edmType = "Edm.Binary"
-		case EdmGuid:
+		case EDMGuid:
 			edmType = "Edm.Guid"
-		case EdmInt64:
+		case EDMInt64:
 			edmType = "Edm.Int64"
 		}
 		if edmType != "" {
@@ -53,7 +53,7 @@ func (e EdmEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(entity)
 }
 
-func (e *EdmEntity) UnmarshalJSON(data []byte) (err error) {
+func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 	var entity map[string]json.RawMessage
 	err = json.Unmarshal(data, &entity)
 	if err != nil {
@@ -102,19 +102,19 @@ func (e *EdmEntity) UnmarshalJSON(data []byte) (err error) {
 					err = json.Unmarshal(propRawValue, &propValue)
 				}
 			case "Edm.DateTime":
-				var v EdmDateTime
+				var v EDMDateTime
 				err = json.Unmarshal(propRawValue, &v)
 				propValue = v
 			case "Edm.Binary":
-				var v EdmBinary
+				var v EDMBinary
 				err = json.Unmarshal(propRawValue, &v)
 				propValue = v
 			case "Edm.Guid":
-				var v EdmGuid
+				var v EDMGuid
 				err = json.Unmarshal(propRawValue, &v)
 				propValue = v
 			case "Edm.Int64":
-				var v EdmInt64
+				var v EDMInt64
 				err = json.Unmarshal(propRawValue, &v)
 				propValue = v
 			}
@@ -127,60 +127,60 @@ func (e *EdmEntity) UnmarshalJSON(data []byte) (err error) {
 	return
 }
 
-type EdmBinary []byte
+type EDMBinary []byte
 
-func (e EdmBinary) MarshalText() ([]byte, error) {
+func (e EDMBinary) MarshalText() ([]byte, error) {
 	return ([]byte)(base64.StdEncoding.EncodeToString(([]byte)(e))), nil
 }
 
-func (e *EdmBinary) UnmarshalText(data []byte) error {
+func (e *EDMBinary) UnmarshalText(data []byte) error {
 	decoded, err := base64.StdEncoding.DecodeString(string(data))
 	if err != nil {
 		return err
 	}
-	*e = EdmBinary(decoded)
+	*e = EDMBinary(decoded)
 	return nil
 }
 
-type EdmInt64 int64
+type EDMInt64 int64
 
-func (e EdmInt64) MarshalText() ([]byte, error) {
+func (e EDMInt64) MarshalText() ([]byte, error) {
 	return []byte(strconv.FormatInt(int64(e), 10)), nil
 }
 
-func (e *EdmInt64) UnmarshalText(data []byte) error {
+func (e *EDMInt64) UnmarshalText(data []byte) error {
 	i, err := strconv.ParseInt(string(data), 10, 64)
 	if err != nil {
 		return err
 	}
-	*e = EdmInt64(i)
+	*e = EDMInt64(i)
 	return nil
 }
 
-type EdmGuid string
+type EDMGuid string
 
-func (e EdmGuid) MarshalText() ([]byte, error) {
+func (e EDMGuid) MarshalText() ([]byte, error) {
 	return ([]byte)(e), nil
 }
 
-func (e *EdmGuid) UnmarshalText(data []byte) error {
-	*e = EdmGuid(string(data))
+func (e *EDMGuid) UnmarshalText(data []byte) error {
+	*e = EDMGuid(string(data))
 	return nil
 }
 
-type EdmDateTime time.Time
+type EDMDateTime time.Time
 
 const rfc3339 = "2006-01-02T15:04:05.9999999Z"
 
-func (e EdmDateTime) MarshalText() ([]byte, error) {
+func (e EDMDateTime) MarshalText() ([]byte, error) {
 	return ([]byte)(time.Time(e).Format(rfc3339)), nil
 }
 
-func (e *EdmDateTime) UnmarshalText(data []byte) error {
+func (e *EDMDateTime) UnmarshalText(data []byte) error {
 	t, err := time.Parse(rfc3339, string(data))
 	if err != nil {
 		return err
 	}
-	*e = EdmDateTime(t)
+	*e = EDMDateTime(t)
 	return nil
 }

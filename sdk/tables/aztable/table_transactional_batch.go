@@ -314,12 +314,12 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.DeleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
+		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
 		if err != nil {
 			return err
 		}
 	case Add:
-		req, err = t.client.InsertEntityCreateRequest(ctx, t.Name, &generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, qo)
+		req, err = t.client.InsertEntityCreateRequest(ctx, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, qo)
 		if err != nil {
 			return err
 		}
@@ -330,7 +330,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
-		req, err = t.client.MergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
+		req, err = t.client.MergeEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
 		if err != nil {
 			return err
 		}
@@ -340,7 +340,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateReplace:
 		fallthrough
 	case UpsertReplace:
-		req, err = t.client.UpdateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 		if err != nil {
 			return err
 		}

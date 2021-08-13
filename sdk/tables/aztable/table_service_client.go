@@ -46,7 +46,12 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 
 // NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
 func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
-	return &TableClient{client: t.client, cred: t.cred, Name: tableName, service: t}
+	return &TableClient{
+		client:  t.client,
+		cred:    t.cred,
+		name:    tableName,
+		service: t,
+	}
 }
 
 // Create creates a table with the specified name.

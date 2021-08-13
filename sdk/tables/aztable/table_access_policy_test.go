@@ -125,7 +125,7 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NotNil(t, err, "Set access policy succeeded but should have failed")
-	require.Contains(t, err.Error(), tooManyAccessPoliciesError.Error())
+	require.Contains(t, err.Error(), errTooManyAccessPoliciesError.Error())
 }
 
 func TestSetNullAccessPolicy(t *testing.T) {

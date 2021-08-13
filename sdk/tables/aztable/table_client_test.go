@@ -45,7 +45,7 @@ func TestCreateTable(t *testing.T) {
 			resp, err := client.Create(context.Background())
 
 			require.NoError(t, err)
-			require.Equal(t, *resp.TableResponse.TableName, client.Name)
+			require.Equal(t, *resp.TableResponse.TableName, client.name)
 		})
 	}
 }
@@ -328,7 +328,7 @@ func TestInvalidEntity(t *testing.T) {
 			_, err = client.AddEntity(ctx, badEntityMarshalled)
 
 			require.NotNil(err)
-			require.Contains(err.Error(), partitionKeyRowKeyError.Error())
+			require.Contains(err.Error(), errPartitionKeyRowKeyError.Error())
 		})
 	}
 }

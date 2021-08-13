@@ -66,16 +66,6 @@ func (ov opValues) get(value interface{}) bool {
 	return ok
 }
 
-// stripQueryParams splits a string into the root and the query parameters
-// if there are no query parameters, path and a blank string are returned
-func stripQueryParams(path string) (string, string) {
-	if strings.Contains(path, "?") {
-		splitPath := strings.Split(path, "?")
-		return splitPath[0], splitPath[1]
-	}
-	return path, ""
-}
-
 // JoinPaths concatenates multiple URL path segments into one path,
 // inserting path separation characters as required. JoinPaths will preserve
 // query parameters in the root path

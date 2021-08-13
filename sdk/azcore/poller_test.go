@@ -37,8 +37,8 @@ type widget struct {
 	Size int `json:"size"`
 }
 
-func TestNewLROPollerFail(t *testing.T) {
-	p, err := NewLROPoller("fake.poller", &Response{
+func TestNewPollerFail(t *testing.T) {
+	p, err := NewPoller("fake.poller", &Response{
 		&http.Response{
 			StatusCode: http.StatusBadRequest,
 		},
@@ -51,7 +51,7 @@ func TestNewLROPollerFail(t *testing.T) {
 	}
 }
 
-func TestNewLROPollerFromResumeTokenFail(t *testing.T) {
+func TestNewPollerFromResumeTokenFail(t *testing.T) {
 	tests := []struct {
 		name  string
 		token string
@@ -65,7 +65,7 @@ func TestNewLROPollerFromResumeTokenFail(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			p, err := NewLROPollerFromResumeToken("fake.poller", test.token, NewPipeline(nil), errUnmarshall)
+			p, err := NewPollerFromResumeToken("fake.poller", test.token, NewPipeline(nil), errUnmarshall)
 			if err == nil {
 				t.Fatal("unexpected nil error")
 			}
@@ -101,7 +101,7 @@ func TestOpPollerSimple(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -141,7 +141,7 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -186,7 +186,7 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -229,7 +229,7 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -275,7 +275,7 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -317,7 +317,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -342,7 +342,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewLROPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
+	lro, err = NewPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -372,7 +372,7 @@ func TestLocPollerSimple(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -402,7 +402,7 @@ func TestLocPollerWithWidget(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -436,7 +436,7 @@ func TestLocPollerCancelled(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -473,7 +473,7 @@ func TestLocPollerWithError(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -510,7 +510,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -535,7 +535,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewLROPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
+	lro, err = NewPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -564,7 +564,7 @@ func TestLocPollerWithTimeout(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -586,7 +586,7 @@ func TestNopPoller(t *testing.T) {
 		},
 	}
 	pl := NewPipeline(nil)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -116,7 +116,7 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 // To send a request through a pipeline call Pipeline.Do().
 func (req *Request) Next() (*Response, error) {
 	if len(req.policies) == 0 {
-		return nil, ErrNoMorePolicies
+		return nil, errors.New("no more policies")
 	}
 	nextPolicy := req.policies[0]
 	nextReq := *req

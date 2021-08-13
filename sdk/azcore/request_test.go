@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"io/ioutil"
 	"mime"
@@ -61,8 +60,8 @@ func TestRequestEmptyPipeline(t *testing.T) {
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
-	if !errors.Is(err, ErrNoMorePolicies) {
-		t.Fatalf("expected ErrNoMorePolicies, got %v", err)
+	if err == nil {
+		t.Fatal("unexpected nil error")
 	}
 }
 

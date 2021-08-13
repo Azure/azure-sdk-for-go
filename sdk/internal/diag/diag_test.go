@@ -3,12 +3,35 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package runtime
+package diag
 
 import (
+	"regexp"
 	"strings"
 	"testing"
 )
+
+func TestCallerBasic(t *testing.T) {
+	c := Caller(0)
+	matched, err := regexp.MatchString(`/diag_test.go:\d+$`, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !matched {
+		t.Fatalf("got %s", c)
+	}
+}
+
+func TestCallerSkipFrame(t *testing.T) {
+	c := Caller(1)
+	matched, err := regexp.MatchString(`/testing.go:\d+$`, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !matched {
+		t.Fatalf("got %s", c)
+	}
+}
 
 func TestStackTraceBasic(t *testing.T) {
 	trace := StackTrace(0, 1)
@@ -24,7 +47,7 @@ func TestStackTraceSkipFrame(t *testing.T) {
 	trace := StackTrace(1, 1)
 	trace = strings.TrimSpace(trace)
 	parts := strings.Split(trace, "\n")
-	const topFrame = "runtime.StackTrace()"
+	const topFrame = "diag.StackTrace()"
 	if strings.LastIndex(parts[0], topFrame) == -1 {
 		t.Fatalf("%s didn't end with %s", parts[0], topFrame)
 	}

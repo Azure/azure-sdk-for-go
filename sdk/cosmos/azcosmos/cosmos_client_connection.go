@@ -21,6 +21,9 @@ type cosmosClientConnection struct {
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
 func newCosmosClientConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *cosmosClientConnection {
+	if options == nil {
+		options = &CosmosClientOptions{}
+	}
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.enrichTelemetryOptions()),
 	}
@@ -38,9 +41,8 @@ func (c *cosmosClientConnection) sendPostRequest(
 	ctx context.Context,
 	content interface{},
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +52,7 @@ func (c *cosmosClientConnection) sendPostRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.Pipeline.Do(req)
 }
 
 func (c *cosmosClientConnection) sendPutRequest(
@@ -58,9 +60,8 @@ func (c *cosmosClientConnection) sendPutRequest(
 	ctx context.Context,
 	content interface{},
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions, requestEnricher)
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -70,35 +71,33 @@ func (c *cosmosClientConnection) sendPutRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.Pipeline.Do(req)
 }
 
 func (c *cosmosClientConnection) sendGetRequest(
 	path string,
 	ctx context.Context,
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions, requestEnricher)
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.Pipeline.Do(req)
 }
 
 func (c *cosmosClientConnection) sendDeleteRequest(
 	path string,
 	ctx context.Context,
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions, requestEnricher)
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.Pipeline.Do(req)
 }
 
 func (c *cosmosClientConnection) createRequest(
@@ -106,8 +105,7 @@ func (c *cosmosClientConnection) createRequest(
 	ctx context.Context,
 	method string,
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Request, error) {
+	requestOptions cosmosRequestOptions) (*azcore.Request, error) {
 
 	// todo: endpoint will be set originally by globalendpointmanager
 	finalURL := c.endpoint
@@ -132,24 +130,5 @@ func (c *cosmosClientConnection) createRequest(
 	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
 
 	req.SetOperationValue(operationContext)
-
-	if requestEnricher != nil {
-		requestEnricher(req)
-	}
-
 	return req, nil
-}
-
-func (c *cosmosClientConnection) executeAndEnsureSuccessResponse(request *azcore.Request) (*azcore.Response, error) {
-	response, err := c.Pipeline.Do(request)
-	if err != nil {
-		return nil, err
-	}
-
-	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
-	if successResponse {
-		return response, nil
-	}
-
-	return nil, newCosmosError(response)
 }

@@ -96,7 +96,7 @@ func (client *appendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if appendBlobAppendBlockOptions != nil && appendBlobAppendBlockOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *appendBlobAppendBlockOptions.RequestID)
 	}
@@ -281,7 +281,7 @@ func (client *appendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Header.Set("x-ms-source-if-none-match", *sourceModifiedAccessConditions.SourceIfNoneMatch)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if appendBlobAppendBlockFromURLOptions != nil && appendBlobAppendBlockFromURLOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *appendBlobAppendBlockFromURLOptions.RequestID)
 	}
@@ -453,7 +453,7 @@ func (client *appendBlobClient) createCreateRequest(ctx context.Context, content
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if appendBlobCreateOptions != nil && appendBlobCreateOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *appendBlobCreateOptions.RequestID)
 	}
@@ -562,7 +562,7 @@ func (client *appendBlobClient) sealCreateRequest(ctx context.Context, appendBlo
 		reqQP.Set("timeout", strconv.FormatInt(int64(*appendBlobSealOptions.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if appendBlobSealOptions != nil && appendBlobSealOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *appendBlobSealOptions.RequestID)
 	}

@@ -84,7 +84,11 @@ func JoinPaths(root string, paths ...string) string {
 		return root
 	}
 
-	root, qps := stripQueryParams(root)
+	qps := ""
+	if strings.Contains(root, "?") {
+		splitPath := strings.Split(root, "?")
+		root, qps = splitPath[0], splitPath[1]
+	}
 
 	for i := 0; i < len(paths); i++ {
 		root = strings.TrimRight(root, "/")

@@ -74,14 +74,14 @@ stages:
         version: '$(go.version)'
       displayName: "Select Go Version"
 
-    - template: ../steps/create-go-workspace.yml
+    - template: /eng/pipelines/templates/steps/create-go-workspace.yml
 
-    - template: ../steps/set-scope.yml
+    - template:  /eng/pipelines/templates/steps/set-scope.yml
       parameters: 
         ServiceDirectory: 'cosmos'
         GoWorkspace: $(GO_WORKSPACE_PATH)
 
-    - template: ../steps/build-test.yml
+    - template:  /eng/pipelines/templates/steps/build-test.yml
       parameters: 
         ServiceDirectory: 'cosmos'
         GoWorkspace: $(GO_WORKSPACE_PATH)

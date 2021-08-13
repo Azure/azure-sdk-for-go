@@ -116,7 +116,8 @@ func (c *commandContext) execute() error {
 		SpecPath:   c.specPath,
 		CommitHash: specRef.Hash().String(),
 	}
-	result, err := generateCtx.GenerateForRelease(c.rpName, c.namespaceName)
+
+	result, err := generateCtx.GenerateForSingleRpNamespace(c.rpName, c.namespaceName, c.flags.VersionNumber)
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

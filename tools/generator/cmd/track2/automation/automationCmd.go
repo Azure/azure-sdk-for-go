@@ -118,26 +118,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	return &pipeline.GenerateOutput{
-		Packages: squashResults(results),
+		Packages: results,
 	}, errorBuilder.build()
-}
-
-// squashResults squashes the package results by appending all of the `path`s in the following items to the first item
-// By doing this, the SDK automation pipeline will only create one PR that contains all of the generation results
-// instead of creating one PR for each generation result.
-// This is to reduce the resource cost on GitHub
-func squashResults(packages []pipeline.PackageResult) []pipeline.PackageResult {
-	if len(packages) == 0 {
-		return packages
-	}
-	for i := 1; i < len(packages); i++ {
-		// append the path of the i-th item to the first
-		packages[0].Path = append(packages[0].Path, packages[i].Path...)
-		// erase the path on the i-th item
-		packages[i].Path = make([]string, 0)
-	}
-
-	return packages
 }
 
 type generateErrorBuilder struct {

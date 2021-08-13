@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/template"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Masterminds/semver"
 )
 
 type GenerateContext struct {
@@ -58,7 +59,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string) ([]GenerateResul
 	for rpName, namespaceNames := range rpMap {
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
-			singleResult, err := ctx.generateForSingleRpNamespace(rpName, namespaceName)
+			singleResult, err := ctx.GenerateForSingleRpNamespace(rpName, namespaceName, "")
 			if err != nil {
 				errors = append(errors, err)
 				continue
@@ -69,34 +70,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string) ([]GenerateResul
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForRelease(rpName, namespaceName string) (*GenerateResult, error) {
-	result, err := ctx.generateForSingleRpNamespace(rpName, namespaceName)
-	if err != nil {
-		return nil, err
-	}
-	if result.Version != "0.1.0" {
-		// update process need to do go generate once more to update version in code
-		packagePath := filepath.Join(ctx.SdkPath, "sdk", rpName, namespaceName)
-
-		log.Printf("Remove all the files that start with `zz_generated_`...")
-		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Replace version in autorest.md...")
-		if err = ReplaceVersion(packagePath, result.Version); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Run `go generate` to regenerate the code...")
-		if err = ExecuteGoGenerate(packagePath); err != nil {
-			return nil, err
-		}
-	}
-	return result, nil
-}
-
-func (ctx GenerateContext) generateForSingleRpNamespace(rpName, namespaceName string) (*GenerateResult, error) {
+func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName string, specficVersion string) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SdkPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
@@ -171,14 +145,38 @@ func (ctx GenerateContext) generateForSingleRpNamespace(rpName, namespaceName st
 		}
 
 		log.Printf("Calculate new version...")
-		version, err := CalculateNewVersion(changelog, packagePath)
-		if err != nil {
-			return nil, err
+		var version *semver.Version
+		if len(specficVersion) == 0 {
+			version, err = CalculateNewVersion(changelog, packagePath)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			log.Printf("Use specfic version: %s", specficVersion)
+			version, err = semver.NewVersion(specficVersion)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		log.Printf("Add changelog to file...")
 		changelogMd, err := AddChangelogToFile(changelog, version, packagePath)
 		if err != nil {
+			return nil, err
+		}
+
+		log.Printf("Remove all the files that start with `zz_generated_`...")
+		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
+			return nil, err
+		}
+
+		log.Printf("Replace version in autorest.md...")
+		if err = ReplaceVersion(packagePath, version.String()); err != nil {
+			return nil, err
+		}
+
+		log.Printf("Run `go generate` to regenerate the code for new version...")
+		if err = ExecuteGoGenerate(packagePath); err != nil {
 			return nil, err
 		}
 

@@ -24,7 +24,7 @@ stages:
 - stage: Build
   displayName: 'Build and unit test'
   jobs:
-  - job: Build_and_test
+  - job: BuildAndTest
     steps:
     - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
       parameters:

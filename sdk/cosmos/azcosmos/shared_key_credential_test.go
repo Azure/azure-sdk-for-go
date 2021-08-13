@@ -57,9 +57,10 @@ func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 	req, _ := azcore.NewRequest(context.TODO(), http.MethodPost, endpoint+"dbs")
 	req.SetOperationValue(cosmosOperationContext{resourceType: "dbs", resourceId: ""})
 
+	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
+
 	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
 
-	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
 

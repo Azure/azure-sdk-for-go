@@ -16,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 )
 
 func ExamplePipeline_Do() {
@@ -49,15 +50,15 @@ func ExampleRequest_SetBody() {
 }
 
 // false positive by linter
-func ExampleLogSetClassifications() { //nolint:govet
+func ExampleSetClassifications() { //nolint:govet
 	// only log HTTP requests and responses
-	azcore.LogSetClassifications(azcore.LogRequest, azcore.LogResponse)
+	azlog.SetClassifications(azlog.Request, azlog.Response)
 }
 
 // false positive by linter
-func ExampleLogSetListener() { //nolint:govet
+func ExampleSetListener() { //nolint:govet
 	// a simple logger that writes to stdout
-	azcore.LogSetListener(func(cls azcore.LogClassification, msg string) {
+	azlog.SetListener(func(cls azlog.Classification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
 }

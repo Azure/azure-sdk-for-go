@@ -3,7 +3,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcore
+package log
 
 import (
 	"fmt"
@@ -15,11 +15,11 @@ import (
 
 func TestLoggingDefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
-	LogSetListener(nil)
+	SetListener(nil)
 	log.Write(log.Request, "this should work just fine")
 
-	testlog := map[LogClassification]string{}
-	LogSetListener(func(cls LogClassification, msg string) {
+	testlog := map[Classification]string{}
+	SetListener(func(cls Classification, msg string) {
 		testlog[cls] = msg
 	})
 	const req = "this is a request"
@@ -29,28 +29,28 @@ func TestLoggingDefault(t *testing.T) {
 	if l := len(testlog); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
-	if testlog[LogRequest] != req {
-		t.Fatalf("unexpected log request: %s", testlog[LogRequest])
+	if testlog[Request] != req {
+		t.Fatalf("unexpected log request: %s", testlog[Request])
 	}
-	if testlog[LogResponse] != fmt.Sprintf(resp, http.StatusOK) {
-		t.Fatalf("unexpected log response: %s", testlog[LogResponse])
+	if testlog[Response] != fmt.Sprintf(resp, http.StatusOK) {
+		t.Fatalf("unexpected log response: %s", testlog[Response])
 	}
 }
 
 func TestLoggingClassification(t *testing.T) {
-	testlog := map[LogClassification]string{}
-	LogSetListener(func(cls LogClassification, msg string) {
+	testlog := map[Classification]string{}
+	SetListener(func(cls Classification, msg string) {
 		testlog[cls] = msg
 	})
-	LogSetClassifications(LogRequest)
+	SetClassifications(Request)
 	defer resetClassifications()
 	log.Write(log.Response, "this shouldn't be in the log")
-	if s, ok := testlog[LogResponse]; ok {
+	if s, ok := testlog[Response]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
 	const req = "this is a request"
 	log.Write(log.Request, req)
-	if testlog[LogRequest] != req {
-		t.Fatalf("unexpected log entry: %s", testlog[LogRequest])
+	if testlog[Request] != req {
+		t.Fatalf("unexpected log entry: %s", testlog[Request])
 	}
 }

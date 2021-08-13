@@ -24,6 +24,7 @@ func getTestSharedKeyCredentialInfo() (endpoint string, key string) {
 
 func Test_buildCanonicalizedAuthHeader(t *testing.T) {
 	_, key := getTestSharedKeyCredentialInfo()
+
 	cred, err := NewSharedKeyCredential(key)
 
 	assert.NoError(t, err)

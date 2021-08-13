@@ -102,7 +102,7 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 	}
 }
 
-// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
+// StatusCode returns service-error information. The caller may examine these values but should not modify any of them.
 func (e *StorageError) StatusCode() int {
 	return e.response.StatusCode
 }

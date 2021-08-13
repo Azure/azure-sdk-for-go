@@ -1205,3 +1205,38 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 	_assert.NotNil(err)
 	validateStorageError(_assert, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
 }
+
+func (s *azblobUnrecordedTestSuite) TestSealAppendBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.Nil(err)
+	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+
+	sealResp, err := abClient.SealAppendBlob(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*sealResp.IsSealed, true)
+
+	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+
+	getPropResp, err := abClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getPropResp.IsSealed, true)
+}

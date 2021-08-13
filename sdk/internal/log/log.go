@@ -16,20 +16,20 @@ import (
 type Classification string
 
 const (
-	// Request entries contain information about HTTP requests.
+	// RequestClassification entries contain information about HTTP requests.
 	// This includes information like the URL, query parameters, and headers.
-	Request Classification = "Request"
+	RequestClassification Classification = "Request"
 
-	// Response entries containe information about HTTP responses.
+	// ResponseClassification entries containe information about HTTP responses.
 	// This includes information like the HTTP status code, headers, and request URL.
-	Response Classification = "Response"
+	ResponseClassification Classification = "Response"
 
-	// RetryPolicy entries contain information specific to the rety policy in use.
-	RetryPolicy Classification = "RetryPolicy"
+	// RetryClassification entries contain information specific to the rety policy in use.
+	RetryClassification Classification = "Retry"
 
-	// LongRunningOperation entries contian information specific to long-running operations.
+	// LROClassification entries contian information specific to long-running operations.
 	// This includes information like polling location, operation state, and sleep intervals.
-	LongRunningOperation Classification = "LongRunningOperation"
+	LROClassification Classification = "LongRunningOperation"
 )
 
 // logger controls which classifications to log and writing to the underlying log.

@@ -86,7 +86,6 @@ type SASQueryParameters struct {
 	protocol      SASProtocol `param:"spr"`
 	startTime     time.Time   `param:"st"`
 	expiryTime    time.Time   `param:"se"`
-	snapshotTime  time.Time   `param:"snapshot"`
 	ipRange       IPRange     `param:"sip"`
 	identifier    string      `param:"si"`
 	resource      string      `param:"sr"`
@@ -221,6 +220,14 @@ func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 			p.signature = val
 		case "skv":
 			p.signedVersion = val
+		case "spk":
+			p.startPk = val
+		case "epk":
+			p.endPk = val
+		case "srk":
+			p.startRk = val
+		case "erk":
+			p.endRk = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

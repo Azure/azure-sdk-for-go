@@ -13,18 +13,18 @@ import (
 // TableSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Table instance.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 type TableSASSignatureValues struct {
-	Version           string      `param:"sv"`  // If not specified, this defaults to SASVersion
-	Protocol          SASProtocol `param:"spr"` // See the SASProtocol* constants
-	StartTime         time.Time   `param:"st"`  // Not specified if IsZero
-	ExpiryTime        time.Time   `param:"se"`  // Not specified if IsZero
-	Permissions       string      `param:"sp"`  // Create by initializing a ContainerSASPermissions or TableSASPermissions and then call String()
-	IPRange           IPRange     `param:"sip"`
-	Identifier        string      `param:"si"`
-	TableName         string      `param:"tn"`
-	StartPartitionKey string      `param:"spk"`
-	StartRowKey       string      `param:"srk"`
-	EndPartitionKey   string      `param:"epk"`
-	EndRowKey         string      `param:"erk"`
+	Version           string      // If not specified, this defaults to SASVersion
+	Protocol          SASProtocol // See the SASProtocol* constants
+	StartTime         time.Time   // Not specified if IsZero
+	ExpiryTime        time.Time   // Not specified if IsZero
+	Permissions       string      // Create by initializing a ContainerSASPermissions or TableSASPermissions and then call String()
+	IPRange           IPRange
+	Identifier        string
+	TableName         string
+	StartPartitionKey string
+	StartRowKey       string
+	EndPartitionKey   string
+	EndRowKey         string
 }
 
 // NewSASQueryParameters uses an account's SharedKeyCredential to sign this signature values to produce

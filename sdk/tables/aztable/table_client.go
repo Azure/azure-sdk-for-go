@@ -57,14 +57,15 @@ func (t *TableClient) Delete(ctx context.Context, options *TableDeleteOptions) (
 //
 // List returns a Pager, which allows iteration through each page of results. Example:
 //
-// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
-// pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
-// }
-// err := pager.Err()
-// handle(err)
+//
+// 		options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
+// 		pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
+// 		for pager.NextPage(ctx) {
+//     			resp = pager.PageResponse()
+//     			fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+// 		}
+// 		err := pager.Err()
+// 		handle(err)
 func (t *TableClient) List(listOptions *ListOptions) TableEntityListResponsePager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,

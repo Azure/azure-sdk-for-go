@@ -1,3 +1,4 @@
+// +build !emulator
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -22,7 +23,7 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		SelfLink:     "someSelfLink",
 		ResourceId:   "someResourceId",
 		LastModified: &now,
-		PartitionKeyDefinition: &PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths:   []string{"somePath"},
 			Version: PartitionKeyDefinitionVersion2,
 		},
@@ -92,10 +93,6 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 
 	if otherProperties.DefaultTimeToLive != nil {
 		t.Errorf("Expected DefaultTimeToLive to be nil, but got %d", *otherProperties.DefaultTimeToLive)
-	}
-
-	if otherProperties.PartitionKeyDefinition == nil {
-		t.Errorf("Expected PartitionKeyDefinition to be not nil, but got nil")
 	}
 
 	if properties.PartitionKeyDefinition.Paths[0] != otherProperties.PartitionKeyDefinition.Paths[0] {

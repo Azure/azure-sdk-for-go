@@ -1,3 +1,4 @@
+// +build !emulator
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -28,9 +29,9 @@ func TestGetSDKInternalPolicies(t *testing.T) {
 	}
 }
 
-func TestGetClientConnection(t *testing.T) {
-	cosmosClientOptions := &CosmosClientOptions{}
-	connection := cosmosClientOptions.getClientConnection()
+func Test_newCosmosClientConnection(t *testing.T) {
+	cred, _ := NewSharedKeyCredential("someKey")
+	connection := newCosmosClientConnection("https://test.com", cred, &CosmosClientOptions{})
 	if connection == nil {
 		t.Error("Expected connection to be not nil")
 	}

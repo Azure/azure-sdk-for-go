@@ -9,15 +9,15 @@ type IndexingPolicy struct {
 	// Automatic defines if the indexing policy is automatic or manual.
 	Automatic bool `json:"automatic"`
 	// IndexingMode for the container.
-	IndexingMode IndexingMode `json:"indexingMode"`
+	IndexingMode IndexingMode `json:"indexingMode,omitempty"`
 	// Paths to be indexed.
-	IncludedPaths []IncludedPath `json:"includedPaths"`
+	IncludedPaths []IncludedPath `json:"includedPaths,omitempty"`
 	// Paths to be excluded.
-	ExcludedPaths []ExcludedPath `json:"excludedPaths"`
+	ExcludedPaths []ExcludedPath `json:"excludedPaths,omitempty"`
 	// Spatial indexes.
-	SpatialIndexes []SpatialIndex `json:"spatialIndexes"`
+	SpatialIndexes []SpatialIndex `json:"spatialIndexes,omitempty"`
 	// Spatial indexes.
-	CompositeIndexes [][]CompositeIndex `json:"compositeIndexes"`
+	CompositeIndexes [][]CompositeIndex `json:"compositeIndexes,omitempty"`
 }
 
 // IncludedPath represents a json path to be included in indexing.

@@ -22,7 +22,7 @@ type CosmosContainerProperties struct {
 	// For more information see https://docs.microsoft.com/azure/cosmos-db/analytical-store-introduction#analytical-ttl
 	AnalyticalStoreTimeToLiveInSeconds *int `json:"analyticalStorageTtl,omitempty"`
 	// PartitionKeyDefinition contains the partition key definition of the container.
-	PartitionKeyDefinition *PartitionKeyDefinition `json:"partitionKey,omitempty"`
+	PartitionKeyDefinition PartitionKeyDefinition `json:"partitionKey,omitempty"`
 	// IndexingPolicy contains the indexing definition of the container.
 	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
 	// UniqueKeyPolicy contains the unique key policy of the container.

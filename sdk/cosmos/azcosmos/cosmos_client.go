@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -14,6 +15,7 @@ type CosmosClient struct {
 	// Endpoint used to create the client.
 	Endpoint   string
 	connection *cosmosClientConnection
+	cred       *SharedKeyCredential
 }
 
 // NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
@@ -21,10 +23,11 @@ type CosmosClient struct {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional CosmosClient options.  Pass nil to accept default values.
 func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosClientOptions) (*CosmosClient, error) {
-	connection := options.getClientConnection()
-	return &CosmosClient{
-		Endpoint:   endpoint,
-		connection: connection}, nil
+	connection := newCosmosClientConnection(endpoint, cred, options)
+
+	c, _ := cred.(*SharedKeyCredential)
+
+	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: c}, nil
 }
 
 // GetCosmosDatabase returns a CosmosDatabase object.
@@ -50,4 +53,39 @@ func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string)
 	}
 
 	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
+}
+
+// AddDatabase creates a new database.
+// ctx - The context for the request.
+// databaseProperties - The definition of the database
+// requestOptions - Optional parameters for the request.
+func (c *CosmosClient) AddDatabase(
+	ctx context.Context,
+	databaseProperties CosmosDatabaseProperties,
+	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &CosmosDatabaseRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	database, err := c.GetCosmosDatabase(databaseProperties.Id)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	azResponse, err := c.connection.sendPostRequest(path, ctx, databaseProperties, operationContext, requestOptions)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	return newCosmosDatabaseResponse(azResponse, database)
 }

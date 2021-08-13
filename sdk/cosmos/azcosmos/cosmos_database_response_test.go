@@ -1,3 +1,4 @@
+// +build !emulator
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -29,6 +30,10 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		LastModified: &now,
 	}
 
+	database := &CosmosDatabase{
+		Id: "someId",
+	}
+
 	jsonString, err := json.Marshal(properties)
 	if err != nil {
 		t.Fatal(err)
@@ -49,7 +54,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 
 	pl := azcore.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosDatabaseResponse(resp)
+	parsedResponse, err := newCosmosDatabaseResponse(resp, database)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,5 +97,9 @@ func TestDatabaseResponseParsing(t *testing.T) {
 
 	if parsedResponse.ETag() != "someEtag" {
 		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	}
+
+	if parsedResponse.DatabaseProperties.Database != database {
+		t.Errorf("Expected database to be %v, but got %v", database, parsedResponse.DatabaseProperties.Database)
 	}
 }

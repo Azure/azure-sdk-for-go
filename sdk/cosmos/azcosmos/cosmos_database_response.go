@@ -12,14 +12,15 @@ type CosmosDatabaseResponse struct {
 	cosmosResponse
 }
 
-func newCosmosDatabaseResponse(resp *azcore.Response) (*CosmosDatabaseResponse, error) {
-	response := &CosmosDatabaseResponse{}
+func newCosmosDatabaseResponse(resp *azcore.Response, database *CosmosDatabase) (CosmosDatabaseResponse, error) {
+	response := CosmosDatabaseResponse{}
 	response.RawResponse = resp.Response
 	properties := &CosmosDatabaseProperties{}
 	err := resp.UnmarshalAsJSON(properties)
 	if err != nil {
-		return nil, err
+		return response, err
 	}
 	response.DatabaseProperties = properties
+	response.DatabaseProperties.Database = database
 	return response, nil
 }

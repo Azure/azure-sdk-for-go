@@ -12,14 +12,15 @@ type CosmosContainerResponse struct {
 	cosmosResponse
 }
 
-func newCosmosContainerResponse(resp *azcore.Response) (*CosmosContainerResponse, error) {
-	response := &CosmosContainerResponse{}
+func newCosmosContainerResponse(resp *azcore.Response, container *CosmosContainer) (CosmosContainerResponse, error) {
+	response := CosmosContainerResponse{}
 	response.RawResponse = resp.Response
 	properties := &CosmosContainerProperties{}
 	err := resp.UnmarshalAsJSON(properties)
 	if err != nil {
-		return nil, err
+		return response, err
 	}
 	response.ContainerProperties = properties
+	response.ContainerProperties.Container = container
 	return response, nil
 }

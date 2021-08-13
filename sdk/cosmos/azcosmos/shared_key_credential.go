@@ -64,12 +64,12 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcor
 
 //where date is like time.RFC1123 but hard-codes GMT as the time zone
 func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceId, xmsDate, tokenType, version string) string {
-	if method == "" || resourceType == "" || resourceId == "" {
+	if method == "" || resourceType == "" {
 		return ""
 	}
 
 	// https://docs.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources#constructkeytoken
-	stringToSign := strings.ToLower(join(method, "\n", resourceType, "\n", resourceId, "\n", xmsDate, "\n", "", "\n"))
+	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceId, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
 	signature := c.computeHMACSHA256(stringToSign)
 
 	return url.QueryEscape(join("type=" + tokenType + "&ver=" + version + "&sig=" + signature))

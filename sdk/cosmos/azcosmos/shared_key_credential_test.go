@@ -69,7 +69,10 @@ func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 	assert.NotEqual(t, "", authHeader)
 
 	client := &http.Client{}
-	resp, _ := client.Do(req.Request)
+	resp, err := client.Do(req.Request)
+	if err != nil {
+		fmt.Println(err)
+	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 

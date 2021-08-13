@@ -214,7 +214,7 @@ func TestSetLogging(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.Logging.Read, received.ServiceGetPropertiesResult.Logging.Read)
+	require.Equal(t, *props.Logging.Read, *received.ServiceGetPropertiesResult.Logging.Read)
 	require.Equal(t, *props.Logging.Write, *received.ServiceGetPropertiesResult.Logging.Write)
 	require.Equal(t, *props.Logging.Delete, *received.ServiceGetPropertiesResult.Logging.Delete)
 	require.Equal(t, *props.Logging.RetentionPolicy.Enabled, *received.ServiceGetPropertiesResult.Logging.RetentionPolicy.Enabled)
@@ -245,7 +245,7 @@ func TestSetHoursMetrics(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.HourMetrics.Enabled, *&received.ServiceGetPropertiesResult.HourMetrics.Enabled)
+	require.Equal(t, *props.HourMetrics.Enabled, *received.ServiceGetPropertiesResult.HourMetrics.Enabled)
 	require.Equal(t, *props.HourMetrics.IncludeAPIs, *received.ServiceGetPropertiesResult.HourMetrics.IncludeAPIs)
 	require.Equal(t, *props.HourMetrics.RetentionPolicy.Days, *received.ServiceGetPropertiesResult.HourMetrics.RetentionPolicy.Days)
 	require.Equal(t, *props.HourMetrics.RetentionPolicy.Enabled, *received.ServiceGetPropertiesResult.HourMetrics.RetentionPolicy.Enabled)
@@ -275,7 +275,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.MinuteMetrics.Enabled, received.ServiceGetPropertiesResult.MinuteMetrics.Enabled)
+	require.Equal(t, *props.MinuteMetrics.Enabled, *received.ServiceGetPropertiesResult.MinuteMetrics.Enabled)
 	require.Equal(t, *props.MinuteMetrics.IncludeAPIs, *received.ServiceGetPropertiesResult.MinuteMetrics.IncludeAPIs)
 	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Days, *received.ServiceGetPropertiesResult.MinuteMetrics.RetentionPolicy.Days)
 	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Enabled, *received.ServiceGetPropertiesResult.MinuteMetrics.RetentionPolicy.Enabled)

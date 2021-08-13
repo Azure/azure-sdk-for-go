@@ -112,7 +112,7 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 	if err != nil {
 		return TableTransactionResponse{}, err
 	}
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.con.Endpoint(), "$batch"))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.Con.Endpoint(), "$batch"))
 	if err != nil {
 		return TableTransactionResponse{}, err
 	}
@@ -147,7 +147,7 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 		return TableTransactionResponse{}, err
 	}
 
-	resp, err := t.client.con.Pipeline().Do(req)
+	resp, err := t.client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableTransactionResponse{}, err
 	}
@@ -314,12 +314,12 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
+		req, err = t.client.DeleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
 		if err != nil {
 			return err
 		}
 	case Add:
-		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, qo)
+		req, err = t.client.InsertEntityCreateRequest(ctx, t.Name, &generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, qo)
 		if err != nil {
 			return err
 		}
@@ -330,17 +330,17 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
-		req, err = t.client.mergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
+		req, err = t.client.MergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
 		if err != nil {
 			return err
 		}
-		if isCosmosEndpoint(t.client.con.Endpoint()) {
+		if isCosmosEndpoint(t.client.Con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
 	case UpdateReplace:
 		fallthrough
 	case UpsertReplace:
-		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		req, err = t.client.UpdateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 		if err != nil {
 			return err
 		}

@@ -12,23 +12,24 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	con *connection
+	Con *connection
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
 func NewTableClient(con *connection) *TableClient {
-	return &TableClient{con: con}
+	return &TableClient{Con: con}
 }
 
 // Create - Creates a new table under the given account.
@@ -38,7 +39,7 @@ func (client *TableClient) Create(ctx context.Context, tableProperties TableProp
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
@@ -51,7 +52,7 @@ func (client *TableClient) Create(ctx context.Context, tableProperties TableProp
 // createCreateRequest creates the Create request.
 func (client *TableClient) createCreateRequest(ctx context.Context, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
 	urlPath := "/Tables"
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +108,7 @@ func (client *TableClient) createHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -121,7 +122,7 @@ func (client *TableClient) Delete(ctx context.Context, table string, options *Ta
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
@@ -138,7 +139,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +180,7 @@ func (client *TableClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -189,11 +190,11 @@ func (client *TableClient) deleteHandleError(resp *azcore.Response) error {
 // DeleteEntity - Deletes the specified entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
 func (client *TableClient) DeleteEntity(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (TableDeleteEntityResponse, error) {
-	req, err := client.deleteEntityCreateRequest(ctx, table, partitionKey, rowKey, ifMatch, tableDeleteEntityOptions, queryOptions)
+	req, err := client.DeleteEntityCreateRequest(ctx, table, partitionKey, rowKey, ifMatch, tableDeleteEntityOptions, queryOptions)
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
@@ -203,8 +204,8 @@ func (client *TableClient) DeleteEntity(ctx context.Context, table string, parti
 	return client.deleteEntityHandleResponse(resp)
 }
 
-// deleteEntityCreateRequest creates the DeleteEntity request.
-func (client *TableClient) deleteEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+// DeleteEntityCreateRequest creates the DeleteEntity request.
+func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -218,7 +219,7 @@ func (client *TableClient) deleteEntityCreateRequest(ctx context.Context, table 
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,7 +270,7 @@ func (client *TableClient) deleteEntityHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +284,7 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, op
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
@@ -300,7 +301,7 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,7 +351,7 @@ func (client *TableClient) getAccessPolicyHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -360,11 +361,11 @@ func (client *TableClient) getAccessPolicyHandleError(resp *azcore.Response) err
 // InsertEntity - Insert entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
 func (client *TableClient) InsertEntity(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (TableInsertEntityResponse, error) {
-	req, err := client.insertEntityCreateRequest(ctx, table, tableInsertEntityOptions, queryOptions)
+	req, err := client.InsertEntityCreateRequest(ctx, table, tableInsertEntityOptions, queryOptions)
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
@@ -374,14 +375,14 @@ func (client *TableClient) InsertEntity(ctx context.Context, table string, table
 	return client.insertEntityHandleResponse(resp)
 }
 
-// insertEntityCreateRequest creates the InsertEntity request.
-func (client *TableClient) insertEntityCreateRequest(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+// InsertEntityCreateRequest creates the InsertEntity request.
+func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -449,7 +450,7 @@ func (client *TableClient) insertEntityHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -459,11 +460,11 @@ func (client *TableClient) insertEntityHandleError(resp *azcore.Response) error 
 // MergeEntity - Merge entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
 func (client *TableClient) MergeEntity(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (TableMergeEntityResponse, error) {
-	req, err := client.mergeEntityCreateRequest(ctx, table, partitionKey, rowKey, tableMergeEntityOptions, queryOptions)
+	req, err := client.MergeEntityCreateRequest(ctx, table, partitionKey, rowKey, tableMergeEntityOptions, queryOptions)
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
@@ -473,8 +474,8 @@ func (client *TableClient) MergeEntity(ctx context.Context, table string, partit
 	return client.mergeEntityHandleResponse(resp)
 }
 
-// mergeEntityCreateRequest creates the MergeEntity request.
-func (client *TableClient) mergeEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+// MergeEntityCreateRequest creates the MergeEntity request.
+func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -488,7 +489,7 @@ func (client *TableClient) mergeEntityCreateRequest(ctx context.Context, table s
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -547,7 +548,7 @@ func (client *TableClient) mergeEntityHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -561,7 +562,7 @@ func (client *TableClient) Query(ctx context.Context, tableQueryOptions *TableQu
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
@@ -574,7 +575,7 @@ func (client *TableClient) Query(ctx context.Context, tableQueryOptions *TableQu
 // queryCreateRequest creates the Query request.
 func (client *TableClient) queryCreateRequest(ctx context.Context, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
 	urlPath := "/Tables"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -640,10 +641,10 @@ func (client *TableClient) queryHandleError(resp *azcore.Response) error {
 		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // QueryEntities - Queries entities in a table.
 // If the operation fails it returns the *TableServiceError error type.
@@ -652,7 +653,7 @@ func (client *TableClient) QueryEntities(ctx context.Context, table string, tabl
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
@@ -669,7 +670,7 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -743,7 +744,7 @@ func (client *TableClient) queryEntitiesHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -757,7 +758,7 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
@@ -782,7 +783,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -850,7 +851,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -864,7 +865,7 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, op
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
@@ -881,7 +882,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -898,7 +899,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	}
 	req.Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		TableACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if options != nil && options.TableACL != nil {
@@ -935,7 +936,7 @@ func (client *TableClient) setAccessPolicyHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -945,11 +946,11 @@ func (client *TableClient) setAccessPolicyHandleError(resp *azcore.Response) err
 // UpdateEntity - Update entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
 func (client *TableClient) UpdateEntity(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (TableUpdateEntityResponse, error) {
-	req, err := client.updateEntityCreateRequest(ctx, table, partitionKey, rowKey, tableUpdateEntityOptions, queryOptions)
+	req, err := client.UpdateEntityCreateRequest(ctx, table, partitionKey, rowKey, tableUpdateEntityOptions, queryOptions)
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
@@ -959,8 +960,8 @@ func (client *TableClient) UpdateEntity(ctx context.Context, table string, parti
 	return client.updateEntityHandleResponse(resp)
 }
 
-// updateEntityCreateRequest creates the UpdateEntity request.
-func (client *TableClient) updateEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+// UpdateEntityCreateRequest creates the UpdateEntity request.
+func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -974,7 +975,7 @@ func (client *TableClient) updateEntityCreateRequest(ctx context.Context, table 
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1033,10 +1034,9 @@ func (client *TableClient) updateEntityHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

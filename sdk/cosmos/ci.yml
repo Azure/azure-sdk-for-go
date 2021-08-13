@@ -1,5 +1,10 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
   paths:
     include:
     - sdk/cosmos/
@@ -53,7 +58,28 @@ stages:
         $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
         $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
       displayName: 'Export Cosmos DB Emulator Certificate'
-    - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+
+    - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
       parameters:
+        AgentImage: $(image.name)
+
+    - task: GoTool@0
+      inputs:
+        version: '$(go.version)'
+      displayName: "Select Go Version"
+
+    - template: /eng/pipelines/templates/steps/create-go-workspace.yml
+
+    - template:  /eng/pipelines/templates/steps/set-scope.yml
+      parameters: 
         ServiceDirectory: 'cosmos'
+        GoWorkspace: $(GO_WORKSPACE_PATH)
+
+    - template:  /eng/pipelines/templates/steps/build-test.yml
+      parameters: 
+        ServiceDirectory: 'cosmos'
+        GoWorkspace: $(GO_WORKSPACE_PATH)
+        Scope: $(SCOPE)
+        Image: $(vm.image)
+        GoVersion: $(go.version)
         Tags: 'emulator'

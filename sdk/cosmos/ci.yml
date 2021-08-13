@@ -60,7 +60,3 @@ stages:
         $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
         $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
       displayName: 'Export Cosmos DB Emulator Certificate'
-    - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
-      parameters:
-        ServiceDirectory: 'cosmos'
-        Tags: 'emulator'

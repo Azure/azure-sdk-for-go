@@ -1,6 +1,5 @@
 parameters:
   ServiceDirectory: ''
-  Tags: ''
 
 stages:
   - stage: Build

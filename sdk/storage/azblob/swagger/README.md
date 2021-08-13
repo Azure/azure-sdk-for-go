@@ -7,6 +7,7 @@ gofmt -w generated/*
 ```
 
 ### Settings
+
 ```yaml
 clear-output-folder: true
 go: true
@@ -18,6 +19,6 @@ output-folder: $(pwd)/generated
 file-prefix: "zz_generated_"
 modelerfour.lenient-model-deduplication: true
 openapi-type: "data-plane"
-verbose: true  
+verbose: true
 security: AzureKey
 ```

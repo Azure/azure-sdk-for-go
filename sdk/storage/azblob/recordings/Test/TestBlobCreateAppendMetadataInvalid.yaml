@@ -1,73 +1,73 @@
 ---
 version: 1
 interactions:
-- request:
-    body: ""
-    form: {}
-    headers:
-      Accept:
-      - application/xml
-      Authorization:
-      - sanitized
-      User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
-      X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:06 GMT
-      X-Ms-Version:
-      - "2020-02-10"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobcreateappendmetadatainvalid?restype=container
-    method: PUT
-  response:
-    body: ""
-    headers:
-      Content-Length:
-      - "0"
-      Date:
-      - Wed, 11 Aug 2021 18:52:05 GMT
-      Etag:
-      - '"0x8D95CF91D6A3233"'
-      Last-Modified:
-      - Wed, 11 Aug 2021 18:52:05 GMT
-      Server:
-      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-      X-Ms-Request-Id:
-      - ce1be95c-a01e-0000-26e1-8e36a1000000
-      X-Ms-Version:
-      - "2020-02-10"
-    status: 201 Created
-    code: 201
-    duration: ""
-- request:
-    body: ""
-    form: {}
-    headers:
-      Accept:
-      - application/xml
-      Authorization:
-      - sanitized
-      User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
-      X-Ms-Date:
-      - Wed, 11 Aug 2021 18:52:07 GMT
-      X-Ms-Version:
-      - "2020-02-10"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobcreateappendmetadatainvalid?restype=container
-    method: DELETE
-  response:
-    body: ""
-    headers:
-      Content-Length:
-      - "0"
-      Date:
-      - Wed, 11 Aug 2021 18:52:05 GMT
-      Server:
-      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-      X-Ms-Request-Id:
-      - ce1bea13-a01e-0000-38e1-8e36a1000000
-      X-Ms-Version:
-      - "2020-02-10"
-    status: 202 Accepted
-    code: 202
-    duration: ""
+  - request:
+      body: ""
+      form: { }
+      headers:
+        Accept:
+          - application/xml
+        Authorization:
+          - sanitized
+        User-Agent:
+          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+            Windows_NT)
+        X-Ms-Date:
+          - Wed, 11 Aug 2021 18:52:06 GMT
+        X-Ms-Version:
+          - "2020-02-10"
+      url: https://azureblobstoragecanada.blob.core.windows.net/gocblobcreateappendmetadatainvalid?restype=container
+      method: PUT
+    response:
+      body: ""
+      headers:
+        Content-Length:
+          - "0"
+        Date:
+          - Wed, 11 Aug 2021 18:52:05 GMT
+        Etag:
+          - '"0x8D95CF91D6A3233"'
+        Last-Modified:
+          - Wed, 11 Aug 2021 18:52:05 GMT
+        Server:
+          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+        X-Ms-Request-Id:
+          - ce1be95c-a01e-0000-26e1-8e36a1000000
+        X-Ms-Version:
+          - "2020-02-10"
+      status: 201 Created
+      code: 201
+      duration: ""
+  - request:
+      body: ""
+      form: { }
+      headers:
+        Accept:
+          - application/xml
+        Authorization:
+          - sanitized
+        User-Agent:
+          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+            Windows_NT)
+        X-Ms-Date:
+          - Wed, 11 Aug 2021 18:52:07 GMT
+        X-Ms-Version:
+          - "2020-02-10"
+      url: https://azureblobstoragecanada.blob.core.windows.net/gocblobcreateappendmetadatainvalid?restype=container
+      method: DELETE
+    response:
+      body: ""
+      headers:
+        Content-Length:
+          - "0"
+        Date:
+          - Wed, 11 Aug 2021 18:52:05 GMT
+        Server:
+          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+        X-Ms-Request-Id:
+          - ce1bea13-a01e-0000-38e1-8e36a1000000
+        X-Ms-Version:
+          - "2020-02-10"
+      status: 202 Accepted
+      code: 202
+      duration: ""

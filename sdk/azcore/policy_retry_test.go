@@ -91,7 +91,7 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError), mock.WithBody([]byte(respBody)))
 	// add a per-request policy that reads and restores the request body.
 	// this is to simulate how something like httputil.DumpRequest works.
-	pl := NewPipeline(srv, PolicyFunc(func(r *Request) (*Response, error) {
+	pl := NewPipeline(srv, policyFunc(func(r *Request) (*Response, error) {
 		b, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			t.Fatal(err)
@@ -612,7 +612,7 @@ func (r *rewindTrackingBody) Seek(offset int64, whence int) (int64, error) {
 
 // used to inject a nil response
 type nilRespInjector struct {
-	t Transport
+	t Transporter
 	c int   // the current request number
 	r []int // the list of request numbers to return a nil response (one-based)
 }

@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/diag"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // LogOptions configures the logging policy's behavior.
@@ -52,7 +52,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 	req.SetOperationValue(opValues)
 
 	// Log the outgoing request as informational
-	if logger.Log().Should(logger.LogRequest) {
+	if log.Should(log.Request) {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", opValues.try)
 		writeRequestWithResponse(b, req, nil, nil)
@@ -60,7 +60,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		if p.options.IncludeBody {
 			err = req.writeBody(b)
 		}
-		logger.Log().Write(logger.LogRequest, b.String())
+		log.Write(log.Request, b.String())
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +73,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)
 
-	if logger.Log().Should(logger.LogResponse) {
+	if log.Should(log.Response) {
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v, OpTime=%v) -- ", opValues.try, tryDuration, opDuration)
@@ -86,11 +86,11 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		writeRequestWithResponse(b, req, response, err)
 		if err != nil {
 			// skip frames runtime.Callers() and runtime.StackTrace()
-			b.WriteString(runtime.StackTrace(2, StackFrameCount))
+			b.WriteString(diag.StackTrace(2, StackFrameCount))
 		} else if p.options.IncludeBody {
 			err = response.writeBody(b)
 		}
-		logger.Log().Write(logger.LogResponse, b.String())
+		log.Write(log.Response, b.String())
 	}
 	return response, err
 }

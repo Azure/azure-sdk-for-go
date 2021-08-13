@@ -13,7 +13,7 @@ const (
 	etagOData     = "odata.etag"
 	etag          = "ETag"
 	odataMetadata = "odata.metadata"
-	ODataType     = "@odata.type"
+	oDataType     = "@odata.type"
 	edmBinary     = "Edm.Binary"
 	edmBoolean    = "Emd.Boolean"
 	edmDateTime   = "Edm.DateTime"
@@ -25,5 +25,5 @@ const (
 	ISO8601       = "2006-01-02T15:04:05.9999999Z"
 )
 
-var partitionKeyRowKeyError = errors.New("Entity must have a PartitionKey and RowKey")
-var tooManyAccessPoliciesError = errors.New("You cannot set more than five (5) access policies at a time.")
+var errPartitionKeyRowKeyError = errors.New("Entity must have a PartitionKey and RowKey")
+var errTooManyAccessPoliciesError = errors.New("You cannot set more than five (5) access policies at a time.")

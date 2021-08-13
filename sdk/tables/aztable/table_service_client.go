@@ -13,7 +13,7 @@ import (
 
 const (
 	LegacyCosmosTableDomain = ".table.cosmosdb."
-	CosmosTableDomain       = ".table.cosmos."
+	cosmosTableDomain       = ".table.cosmos."
 )
 
 // A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
@@ -149,5 +149,5 @@ func (t *TableServiceClient) SetProperties(ctx context.Context, properties gener
 
 func isCosmosEndpoint(url string) bool {
 	isCosmosEmulator := strings.Contains(url, "localhost") && strings.Contains(url, "8902")
-	return isCosmosEmulator || strings.Contains(url, CosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)
+	return isCosmosEmulator || strings.Contains(url, cosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)
 }

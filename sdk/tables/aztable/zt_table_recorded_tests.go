@@ -28,8 +28,6 @@ const (
 	storageAccountKeyEnvVar     = "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY"
 	cosmosAccountKeyEnvVar      = "TABLES_PRIMARY_COSMOS_ACCOUNT_KEY"
 	tableNamePrefix             = "gotable"
-	DefaultStorageSuffix        = "core.windows.net"
-	DefaultCosmosSuffix         = "cosmos.azure.com"
 )
 
 type EndpointType string

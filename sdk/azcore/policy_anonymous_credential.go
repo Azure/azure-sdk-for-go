@@ -5,11 +5,13 @@
 
 package azcore
 
+import "net/http"
+
 func anonCredAuthPolicyFunc(AuthenticationOptions) Policy {
 	return policyFunc(anonCredPolicyFunc)
 }
 
-func anonCredPolicyFunc(req *Request) (*Response, error) {
+func anonCredPolicyFunc(req *Request) (*http.Response, error) {
 	return req.Next()
 }
 

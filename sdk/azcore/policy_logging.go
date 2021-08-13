@@ -8,6 +8,7 @@ package azcore
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -42,7 +43,7 @@ type logPolicyOpValues struct {
 	start time.Time
 }
 
-func (p *logPolicy) Do(req *Request) (*Response, error) {
+func (p *logPolicy) Do(req *Request) (*http.Response, error) {
 	// Get the per-operation values. These are saved in the Message's map so that they persist across each retry calling into this policy object.
 	var opValues logPolicyOpValues
 	if req.OperationValue(&opValues); opValues.start.IsZero() {
@@ -88,7 +89,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 			// skip frames runtime.Callers() and runtime.StackTrace()
 			b.WriteString(diag.StackTrace(2, StackFrameCount))
 		} else if p.options.IncludeBody {
-			err = response.writeBody(b)
+			err = writeBody(response, b)
 		}
 		log.Write(log.Response, b.String())
 	}

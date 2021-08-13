@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 // TableEntityQueryResponsePager is a Pager for Table entity query results.
@@ -34,7 +35,7 @@ type TableEntityQueryResponsePager interface {
 type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
 	current           *TableEntityQueryByteResponseResponse
-	tableQueryOptions *TableQueryEntitiesOptions
+	tableQueryOptions *generated.TableQueryEntitiesOptions
 	queryOptions      *ListOptions
 	err               error
 }
@@ -46,7 +47,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextPartitionKey == nil && p.current.XMSContinuationNextRowKey == nil) {
 		return false
 	}
-	var resp TableEntityQueryResponseResponse
+	var resp generated.TableQueryEntitiesResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 
 	c, err := castToByteResponse(&resp)
@@ -57,7 +58,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	p.current = &c
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && resp.TableEntityQueryResponse != nil && len(resp.TableEntityQueryResponse.Value) > 0
+	return p.err == nil && len(resp.TableEntityQueryResponse.Value) > 0
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
@@ -96,13 +97,13 @@ type TableQueryResponsePager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableQueryResponseResponse
+	PageResponse() generated.TableQueryResponseEnvelope
 }
 
 type tableQueryResponsePager struct {
-	client            *tableClient
-	current           *TableQueryResponseResponse
-	tableQueryOptions *TableQueryOptions
+	client            *generated.TableClient
+	current           *generated.TableQueryResponseEnvelope
+	tableQueryOptions *generated.TableQueryOptions
 	queryOptions      *ListOptions
 	err               error
 }
@@ -114,7 +115,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
 		return false
 	}
-	var resp TableQueryResponseResponse
+	var resp generated.TableQueryResponseEnvelope
 	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
@@ -128,7 +129,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
-func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
+func (p *tableQueryResponsePager) PageResponse() generated.TableQueryResponseEnvelope {
 	return *p.current
 }
 

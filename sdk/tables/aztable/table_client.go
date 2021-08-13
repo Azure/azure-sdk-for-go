@@ -9,11 +9,12 @@ import (
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 // A TableClient represents a client to the tables service affinitized to a specific table.
 type TableClient struct {
-	client  *tableClient
+	client  *generated.TableClient
 	service *TableServiceClient
 	cred    azcore.Credential
 	Name    string
@@ -33,19 +34,19 @@ func NewTableClient(tableName string, serviceURL string, cred azcore.Credential,
 }
 
 // Create creates the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Create(ctx context.Context) (TableResponseResponse, error) {
+func (t *TableClient) Create(ctx context.Context) (generated.TableCreateResponse, error) {
 	return t.service.CreateTable(ctx, t.Name)
 }
 
 // Delete deletes the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Delete(ctx context.Context, options *TableDeleteOptions) (TableDeleteResponse, error) {
+func (t *TableClient) Delete(ctx context.Context, options *generated.TableDeleteOptions) (generated.TableDeleteResponse, error) {
 	return t.service.DeleteTable(ctx, t.Name, options)
 }
 
 // List queries the entities using the specified ListOptions.
 // ListOptions can specify the following properties to affect the query results returned:
 //
-// Filter: An Odata filter expression that limits results to those entities that satisfy the filter expression.
+// Filter: An OData filter expression that limits results to those entities that satisfy the filter expression.
 // For example, the following expression would return only entities with a PartitionKey of 'foo': "PartitionKey eq 'foo'"
 //
 // Select: A comma delimited list of entity property names that selects which set of entity properties to return in the result set.
@@ -67,15 +68,15 @@ func (t *TableClient) List(queryOptions *ListOptions) TableEntityQueryResponsePa
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
 		queryOptions:      queryOptions,
-		tableQueryOptions: &TableQueryEntitiesOptions{}}
+		tableQueryOptions: &generated.TableQueryEntitiesOptions{}}
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, queryOptions *QueryOptions) (ByteArrayResponse, error) {
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, queryOptions *generated.QueryOptions) (ByteArrayResponse, error) {
 	if queryOptions == nil {
-		queryOptions = &QueryOptions{}
+		queryOptions = &generated.QueryOptions{}
 	}
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, queryOptions)
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, queryOptions)
 	if err != nil {
 		return ByteArrayResponse{}, err
 	}
@@ -84,29 +85,27 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 
 // AddEntity adds an entity (described by a JSON byte slice) to the table. This method returns an error if an entity with
 // the same PartitionKey and RowKey already exists in the table.
-func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (interface{}, error) {
+func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (generated.TableInsertEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
-		return entity, err
+		return generated.TableInsertEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, nil)
-	if err == nil {
-		insertResp := resp.(TableInsertEntityResponse)
-		return insertResp, nil
-	} else {
+	resp, err := t.client.InsertEntity(ctx, t.Name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
+	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
-		return TableInsertEntityResponse{}, err
+		return generated.TableInsertEntityResponse{}, err
 	}
+	return resp, err
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
-func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag *string) (TableDeleteEntityResponse, error) {
+func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag *string) (generated.TableDeleteEntityResponse, error) {
 	if etag == nil {
 		nilEtag := "*"
 		etag = &nilEtag
 	}
-	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, *etag, nil, &QueryOptions{})
+	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, *etag, nil, &generated.QueryOptions{})
 }
 
 // UpdateEntity updates the specified table entity if it exists.
@@ -134,9 +133,9 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 
 	switch updateMode {
 	case MergeEntity:
-		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &generated.TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	case ReplaceEntity:
-		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &generated.TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	}
 	return nil, errors.New("Invalid EntityUpdateMode")
 }
@@ -160,20 +159,20 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 
 	switch updateMode {
 	case MergeEntity:
-		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &TableMergeEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	case ReplaceEntity:
-		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 	}
 	return nil, errors.New("Invalid EntityUpdateMode")
 }
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
-func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArrayResponse, error) {
+func (t *TableClient) GetAccessPolicy(ctx context.Context) (generated.TableGetAccessPolicyResponse, error) {
 	return t.client.GetAccessPolicy(ctx, t.Name, nil)
 }
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
-func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
+func (t *TableClient) SetAccessPolicy(ctx context.Context, options *generated.TableSetAccessPolicyOptions) (generated.TableSetAccessPolicyResponse, error) {
 	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
 	if len(*&options.TableACL) > 5 {
 		err = tooManyAccessPoliciesError

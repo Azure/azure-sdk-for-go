@@ -185,7 +185,7 @@ func TestBatchError(t *testing.T) {
 			require.NotNil(t, err)
 			transactionError, ok := err.(*TableTransactionError)
 			require.Truef(t, ok, "err should be of type TableTransactionError")
-			require.Equal(t, "EntityAlreadyExists", transactionError.OdataError.Code)
+			require.Equal(t, "EntityAlreadyExists", transactionError.ODataError.Code)
 			require.Equal(t, 2, transactionError.FailedEntityIndex)
 			require.Equal(t, http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 		})

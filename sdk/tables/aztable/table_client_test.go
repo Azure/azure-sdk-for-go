@@ -247,7 +247,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 				_, ok := mapModel[timestamp]
 				require.True(ok)
 
-				_, ok = mapModel[etagOdata]
+				_, ok = mapModel[etagOData]
 				require.True(ok)
 
 				var b basicTestEntity

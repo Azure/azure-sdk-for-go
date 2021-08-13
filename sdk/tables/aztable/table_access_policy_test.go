@@ -9,13 +9,14 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 func TestSetEmptyAccessPolicy(t *testing.T) {
 	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
-	_, err := client.SetAccessPolicy(ctx, &TableSetAccessPolicyOptions{})
+	_, err := client.SetAccessPolicy(ctx, &generated.TableSetAccessPolicyOptions{})
 	require.NoError(t, err)
 }
 
@@ -28,10 +29,10 @@ func TestSetAccessPolicy(t *testing.T) {
 	permission := "r"
 	id := "1"
 
-	signedIdentifiers := make([]*SignedIdentifier, 0)
+	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
 
-	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
-		AccessPolicy: &AccessPolicy{
+	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
+		AccessPolicy: &generated.AccessPolicy{
 			Expiry:     &expiration,
 			Start:      &start,
 			Permission: &permission,
@@ -39,7 +40,7 @@ func TestSetAccessPolicy(t *testing.T) {
 		ID: &id,
 	})
 
-	param := TableSetAccessPolicyOptions{
+	param := generated.TableSetAccessPolicyOptions{
 		TableACL: signedIdentifiers,
 	}
 
@@ -53,17 +54,17 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 
 	id := "empty"
 
-	signedIdentifiers := make([]*SignedIdentifier, 0)
-	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
 		ID: &id,
 	})
 
 	permission2 := "r"
 	id2 := "partial"
 
-	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
 		ID: &id2,
-		AccessPolicy: &AccessPolicy{
+		AccessPolicy: &generated.AccessPolicy{
 			Permission: &permission2,
 		},
 	})
@@ -73,16 +74,16 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 	start := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
 	expiry := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
 
-	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
 		ID: &id3,
-		AccessPolicy: &AccessPolicy{
+		AccessPolicy: &generated.AccessPolicy{
 			Start:      &start,
 			Expiry:     &expiry,
 			Permission: &permission3,
 		},
 	})
 
-	param := TableSetAccessPolicyOptions{
+	param := generated.TableSetAccessPolicyOptions{
 		TableACL: signedIdentifiers,
 	}
 
@@ -103,14 +104,14 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	permission := "r"
 	id := "1"
-	signedIdentifiers := make([]*SignedIdentifier, 0)
+	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
 
 	for i := 0; i < 6; i++ {
 		expiration = time.Date(2024+i, 1, 1, 0, 0, 0, 0, time.UTC)
 		id = strconv.Itoa(i)
 
-		signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
-			AccessPolicy: &AccessPolicy{
+		signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
+			AccessPolicy: &generated.AccessPolicy{
 				Expiry:     &expiration,
 				Start:      &start,
 				Permission: &permission,
@@ -120,7 +121,7 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 
 	}
 
-	param := TableSetAccessPolicyOptions{TableACL: signedIdentifiers}
+	param := generated.TableSetAccessPolicyOptions{TableACL: signedIdentifiers}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NotNil(t, err, "Set access policy succeeded but should have failed")
@@ -133,12 +134,12 @@ func TestSetNullAccessPolicy(t *testing.T) {
 
 	id := "null"
 
-	signedIdentifiers := make([]*SignedIdentifier, 0)
-	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
 		ID: &id,
 	})
 
-	param := TableSetAccessPolicyOptions{
+	param := generated.TableSetAccessPolicyOptions{
 		TableACL: signedIdentifiers,
 	}
 

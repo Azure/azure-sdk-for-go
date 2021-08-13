@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 type TableClientOptions struct {
@@ -20,12 +21,12 @@ type TableClientOptions struct {
 	Scopes []string
 }
 
-func (o *TableClientOptions) getConnectionOptions() *connectionOptions {
+func (o *TableClientOptions) getConnectionOptions() *generated.ConnectionOptions {
 	if o == nil {
 		return nil
 	}
 
-	return &connectionOptions{
+	return &generated.ConnectionOptions{
 		HTTPClient: o.HTTPClient,
 		Retry:      o.Retry,
 		Telemetry:  o.Telemetry,

@@ -22,6 +22,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 type TableTransactionActionType string
@@ -41,23 +42,23 @@ const (
 	error_empty_transaction       = "transaction cannot be empty"
 )
 
-type OdataErrorMessage struct {
+type ODataErrorMessage struct {
 	Lang  string `json:"lang"`
 	Value string `json:"value"`
 }
 
-type OdataError struct {
+type ODataError struct {
 	Code    string            `json:"code"`
-	Message OdataErrorMessage `json:"message"`
+	Message ODataErrorMessage `json:"message"`
 }
 
 type TableTransactionError struct {
-	OdataError        OdataError `json:"odata.error"`
+	ODataError        ODataError `json:"odata.error"`
 	FailedEntityIndex int
 }
 
 func (e *TableTransactionError) Error() string {
-	return fmt.Sprintf("Code: %s, Message: %s", e.OdataError.Code, e.OdataError.Message.Value)
+	return fmt.Sprintf("Code: %s, Message: %s", e.ODataError.Code, e.ODataError.Message.Value)
 }
 
 type TableTransactionAction struct {
@@ -120,7 +121,7 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 		req.Header.Set("x-ms-client-request-id", *tableSubmitTransactionOptions.RequestID)
 	}
 	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("Accept", string(OdataMetadataFormatApplicationJSONOdataMinimalmetadata))
+	req.Header.Set("Accept", string(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata))
 
 	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
 	body := new(bytes.Buffer)
@@ -250,8 +251,8 @@ func getBoundaryName(bytesBody []byte) string {
 func newTableTransactionError(errorBody []byte) error {
 	oe := TableTransactionError{}
 	if err := json.Unmarshal(errorBody, &oe); err == nil {
-		if i := strings.Index(oe.OdataError.Message.Value, ":"); i > 0 {
-			if val, err := strconv.Atoi(oe.OdataError.Message.Value[0:i]); err == nil {
+		if i := strings.Index(oe.ODataError.Message.Value, ":"); i > 0 {
+			if val, err := strconv.Atoi(oe.ODataError.Message.Value[0:i]); err == nil {
 				oe.FailedEntityIndex = val
 			}
 		}
@@ -287,7 +288,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
-	qo := &QueryOptions{Format: OdataMetadataFormatApplicationJSONOdataMinimalmetadata.ToPtr()}
+	qo := &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
 
 	operationWriter, err := writer.CreatePart(h)
 	if err != nil {
@@ -313,19 +314,19 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
+		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
 		if err != nil {
 			return err
 		}
 	case Add:
-		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
+		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, qo)
 		if err != nil {
 			return err
 		}
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
-		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
+		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
@@ -339,7 +340,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateReplace:
 		fallthrough
 	case UpsertReplace:
-		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 		if err != nil {
 			return err
 		}

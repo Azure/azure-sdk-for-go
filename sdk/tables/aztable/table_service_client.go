@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 const (
@@ -17,8 +18,8 @@ const (
 
 // A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
 type TableServiceClient struct {
-	client  *tableClient
-	service *serviceClient
+	client  *generated.TableClient
+	service *generated.ServiceClient
 	cred    azcore.Credential
 }
 
@@ -35,8 +36,12 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	for _, p := range options.PerCallOptions {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, p)
 	}
-	con := newConnection(serviceURL, conOptions)
-	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: cred}, nil
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &TableServiceClient{
+		client:  generated.NewTableClient(con),
+		service: generated.NewServiceClient(con),
+		cred:    cred,
+	}, nil
 }
 
 // NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
@@ -45,19 +50,14 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (TableResponseResponse, error) {
-	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
-	if err == nil {
-		tableResp := resp.(TableResponseResponse)
-		return tableResp, nil
-	}
-	return TableResponseResponse{}, err
+func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (generated.TableCreateResponse, error) {
+	return t.client.Create(ctx, generated.TableProperties{&name}, new(generated.TableCreateOptions), new(generated.QueryOptions))
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *TableDeleteOptions) (TableDeleteResponse, error) {
+func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *generated.TableDeleteOptions) (generated.TableDeleteResponse, error) {
 	if options == nil {
-		options = &TableDeleteOptions{}
+		options = &generated.TableDeleteOptions{}
 	}
 	return t.client.Delete(ctx, name, options)
 }
@@ -65,7 +65,7 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 // List queries the existing tables using the specified ListOptions.
 // ListOptions can specify the following properties to affect the query results returned:
 //
-// Filter: An Odata filter expression that limits results to those tables that satisfy the filter expression.
+// Filter: An OData filter expression that limits results to those tables that satisfy the filter expression.
 // For example, the following expression would return only tables with a TableName of 'foo': "TableName eq 'foo'"
 //
 // Top: The maximum number of tables that will be returned per page of results.
@@ -84,7 +84,7 @@ func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResp
 	return &tableQueryResponsePager{
 		client:            t.client,
 		queryOptions:      listOptions,
-		tableQueryOptions: new(TableQueryOptions),
+		tableQueryOptions: new(generated.TableQueryOptions),
 	}
 }
 
@@ -94,9 +94,9 @@ func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResp
 // handle(err)
 // fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
 // fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
-func (t *TableServiceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (TableServiceStatsResponse, error) {
+func (t *TableServiceClient) GetStatistics(ctx context.Context, options *generated.ServiceGetStatisticsOptions) (generated.ServiceGetStatisticsResponse, error) {
 	if options == nil {
-		options = &ServiceGetStatisticsOptions{}
+		options = &generated.ServiceGetStatisticsOptions{}
 	}
 	return t.service.GetStatistics(ctx, options)
 }
@@ -109,9 +109,9 @@ func (t *TableServiceClient) GetStatistics(ctx context.Context, options *Service
 // fmt.Println(resopnse.StorageServiceStats.HourMetrics)
 // fmt.Println(resopnse.StorageServiceStats.Logging)
 // fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
-func (t *TableServiceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (TableServicePropertiesResponse, error) {
+func (t *TableServiceClient) GetProperties(ctx context.Context, options *generated.ServiceGetPropertiesOptions) (generated.ServiceGetPropertiesResponse, error) {
 	if options == nil {
-		options = &ServiceGetPropertiesOptions{}
+		options = &generated.ServiceGetPropertiesOptions{}
 	}
 	return t.service.GetProperties(ctx, options)
 }
@@ -140,9 +140,9 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *Service
 // props := TableServiceProperties{Logging: &logging}
 // resp, err := context.client.SetProperties(ctx, props, nil)
 // handle(err)
-func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+func (t *TableServiceClient) SetProperties(ctx context.Context, properties generated.TableServiceProperties, options *generated.ServiceSetPropertiesOptions) (generated.ServiceSetPropertiesResponse, error) {
 	if options == nil {
-		options = &ServiceSetPropertiesOptions{}
+		options = &generated.ServiceSetPropertiesOptions{}
 	}
 	return t.service.SetProperties(ctx, properties, options)
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/require"
 )
@@ -192,17 +193,17 @@ func TestSetLogging(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	logging := Logging{
+	logging := generated.Logging{
 		Read:    to.BoolPtr(true),
 		Write:   to.BoolPtr(true),
 		Delete:  to.BoolPtr(true),
 		Version: to.StringPtr("1.0"),
-		RetentionPolicy: &RetentionPolicy{
+		RetentionPolicy: &generated.RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(5),
 		},
 	}
-	props := TableServiceProperties{Logging: &logging}
+	props := generated.TableServiceProperties{Logging: &logging}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -213,27 +214,27 @@ func TestSetLogging(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.Logging.Read, *received.StorageServiceProperties.Logging.Read)
-	require.Equal(t, *props.Logging.Write, *received.StorageServiceProperties.Logging.Write)
-	require.Equal(t, *props.Logging.Delete, *received.StorageServiceProperties.Logging.Delete)
-	require.Equal(t, *props.Logging.RetentionPolicy.Enabled, *received.StorageServiceProperties.Logging.RetentionPolicy.Enabled)
-	require.Equal(t, *props.Logging.RetentionPolicy.Days, *received.StorageServiceProperties.Logging.RetentionPolicy.Days)
+	require.Equal(t, *props.Logging.Read, received.ServiceGetPropertiesResult.Logging.Read)
+	require.Equal(t, *props.Logging.Write, *received.ServiceGetPropertiesResult.Logging.Write)
+	require.Equal(t, *props.Logging.Delete, *received.ServiceGetPropertiesResult.Logging.Delete)
+	require.Equal(t, *props.Logging.RetentionPolicy.Enabled, *received.ServiceGetPropertiesResult.Logging.RetentionPolicy.Enabled)
+	require.Equal(t, *props.Logging.RetentionPolicy.Days, *received.ServiceGetPropertiesResult.Logging.RetentionPolicy.Days)
 }
 
 func TestSetHoursMetrics(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := Metrics{
+	metrics := generated.Metrics{
 		Enabled:     to.BoolPtr(true),
 		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &RetentionPolicy{
+		RetentionPolicy: &generated.RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(5),
 		},
 		Version: to.StringPtr("1.0"),
 	}
-	props := TableServiceProperties{HourMetrics: &metrics}
+	props := generated.TableServiceProperties{HourMetrics: &metrics}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -244,26 +245,26 @@ func TestSetHoursMetrics(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.HourMetrics.Enabled, *received.StorageServiceProperties.HourMetrics.Enabled)
-	require.Equal(t, *props.HourMetrics.IncludeAPIs, *received.StorageServiceProperties.HourMetrics.IncludeAPIs)
-	require.Equal(t, *props.HourMetrics.RetentionPolicy.Days, *received.StorageServiceProperties.HourMetrics.RetentionPolicy.Days)
-	require.Equal(t, *props.HourMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.HourMetrics.RetentionPolicy.Enabled)
+	require.Equal(t, *props.HourMetrics.Enabled, *&received.ServiceGetPropertiesResult.HourMetrics.Enabled)
+	require.Equal(t, *props.HourMetrics.IncludeAPIs, *received.ServiceGetPropertiesResult.HourMetrics.IncludeAPIs)
+	require.Equal(t, *props.HourMetrics.RetentionPolicy.Days, *received.ServiceGetPropertiesResult.HourMetrics.RetentionPolicy.Days)
+	require.Equal(t, *props.HourMetrics.RetentionPolicy.Enabled, *received.ServiceGetPropertiesResult.HourMetrics.RetentionPolicy.Enabled)
 }
 
 func TestSetMinuteMetrics(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := Metrics{
+	metrics := generated.Metrics{
 		Enabled:     to.BoolPtr(true),
 		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &RetentionPolicy{
+		RetentionPolicy: &generated.RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(5),
 		},
 		Version: to.StringPtr("1.0"),
 	}
-	props := TableServiceProperties{MinuteMetrics: &metrics}
+	props := generated.TableServiceProperties{MinuteMetrics: &metrics}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -274,24 +275,24 @@ func TestSetMinuteMetrics(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.MinuteMetrics.Enabled, *received.StorageServiceProperties.MinuteMetrics.Enabled)
-	require.Equal(t, *props.MinuteMetrics.IncludeAPIs, *received.StorageServiceProperties.MinuteMetrics.IncludeAPIs)
-	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Days, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Days)
-	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Enabled, *received.StorageServiceProperties.MinuteMetrics.RetentionPolicy.Enabled)
+	require.Equal(t, *props.MinuteMetrics.Enabled, received.ServiceGetPropertiesResult.MinuteMetrics.Enabled)
+	require.Equal(t, *props.MinuteMetrics.IncludeAPIs, *received.ServiceGetPropertiesResult.MinuteMetrics.IncludeAPIs)
+	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Days, *received.ServiceGetPropertiesResult.MinuteMetrics.RetentionPolicy.Days)
+	require.Equal(t, *props.MinuteMetrics.RetentionPolicy.Enabled, *received.ServiceGetPropertiesResult.MinuteMetrics.RetentionPolicy.Enabled)
 }
 
 func TestSetCors(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	corsRules1 := CorsRule{
+	corsRules1 := generated.CorsRule{
 		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
 		AllowedMethods:  to.StringPtr("PUT"),
 		AllowedOrigins:  to.StringPtr("www.xyz.com"),
 		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
 		MaxAgeInSeconds: to.Int32Ptr(500),
 	}
-	props := TableServiceProperties{Cors: []*CorsRule{&corsRules1}}
+	props := generated.TableServiceProperties{Cors: []*generated.CorsRule{&corsRules1}}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -302,25 +303,25 @@ func TestSetCors(t *testing.T) {
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
 
-	require.Equal(t, *props.Cors[0].AllowedHeaders, *received.StorageServiceProperties.Cors[0].AllowedHeaders)
-	require.Equal(t, *props.Cors[0].AllowedMethods, *received.StorageServiceProperties.Cors[0].AllowedMethods)
-	require.Equal(t, *props.Cors[0].AllowedOrigins, *received.StorageServiceProperties.Cors[0].AllowedOrigins)
-	require.Equal(t, *props.Cors[0].ExposedHeaders, *received.StorageServiceProperties.Cors[0].ExposedHeaders)
-	require.Equal(t, *props.Cors[0].MaxAgeInSeconds, *received.StorageServiceProperties.Cors[0].MaxAgeInSeconds)
+	require.Equal(t, *props.Cors[0].AllowedHeaders, *received.ServiceGetPropertiesResult.Cors[0].AllowedHeaders)
+	require.Equal(t, *props.Cors[0].AllowedMethods, *received.ServiceGetPropertiesResult.Cors[0].AllowedMethods)
+	require.Equal(t, *props.Cors[0].AllowedOrigins, *received.ServiceGetPropertiesResult.Cors[0].AllowedOrigins)
+	require.Equal(t, *props.Cors[0].ExposedHeaders, *received.ServiceGetPropertiesResult.Cors[0].ExposedHeaders)
+	require.Equal(t, *props.Cors[0].MaxAgeInSeconds, *received.ServiceGetPropertiesResult.Cors[0].MaxAgeInSeconds)
 }
 
 func TestSetTooManyCors(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	corsRules1 := CorsRule{
+	corsRules1 := generated.CorsRule{
 		AllowedHeaders:  to.StringPtr("x-ms-meta-data*"),
 		AllowedMethods:  to.StringPtr("PUT"),
 		AllowedOrigins:  to.StringPtr("www.xyz.com"),
 		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
 		MaxAgeInSeconds: to.Int32Ptr(500),
 	}
-	props := TableServiceProperties{Cors: make([]*CorsRule, 0)}
+	props := generated.TableServiceProperties{Cors: make([]*generated.CorsRule, 0)}
 	for i := 0; i < 6; i++ {
 		props.Cors = append(props.Cors, &corsRules1)
 	}
@@ -333,16 +334,16 @@ func TestRetentionTooLong(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := Metrics{
+	metrics := generated.Metrics{
 		Enabled:     to.BoolPtr(true),
 		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &RetentionPolicy{
+		RetentionPolicy: &generated.RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(366),
 		},
 		Version: to.StringPtr("1.0"),
 	}
-	props := TableServiceProperties{MinuteMetrics: &metrics}
+	props := generated.TableServiceProperties{MinuteMetrics: &metrics}
 
 	_, err := service.SetProperties(ctx, props, nil)
 	require.Error(t, err)

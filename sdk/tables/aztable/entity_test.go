@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -74,8 +75,8 @@ func TestEdmMarshalling(t *testing.T) {
 			_, err = client.AddEntity(ctx, marshalled)
 			require.Nil(t, err)
 
-			fullMetadata := &QueryOptions{
-				Format: OdataMetadataFormatApplicationJSONOdataFullmetadata.ToPtr(),
+			fullMetadata := &generated.QueryOptions{
+				Format: generated.ODataMetadataFormatApplicationJSONODataFullmetadata.ToPtr(),
 			}
 
 			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), fullMetadata)

@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
+
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 // ByteArrayResponse converts the MapOfInterfaceResponse.Value from a map[string]interface{} to a []byte
@@ -45,17 +47,15 @@ type ByteArrayResponse struct {
 	XMSContinuationNextRowKey *string
 }
 
-func newByteArrayResponse(m MapOfInterfaceResponse) (ByteArrayResponse, error) {
+func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (ByteArrayResponse, error) {
 	marshalledValue, err := json.Marshal(m.Value)
 	if err != nil {
 		return ByteArrayResponse{}, err
 	}
 	return ByteArrayResponse{
 		ClientRequestID:                 m.ClientRequestID,
-		ContentType:                     m.ContentType,
 		Date:                            m.Date,
 		ETag:                            m.ETag,
-		PreferenceApplied:               m.PreferenceApplied,
 		RawResponse:                     m.RawResponse,
 		RequestID:                       m.RequestID,
 		Value:                           marshalledValue,
@@ -95,13 +95,13 @@ type TableEntityQueryByteResponseResponse struct {
 // TableEntityQueryByteResponse - The properties for the table entity query response.
 type TableEntityQueryByteResponse struct {
 	// The metadata response of the table.
-	OdataMetadata *string
+	ODataMetadata *string
 
 	// List of table entities.
 	Value [][]byte
 }
 
-func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityQueryByteResponseResponse, error) {
+func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (TableEntityQueryByteResponseResponse, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
@@ -112,7 +112,7 @@ func castToByteResponse(resp *TableEntityQueryResponseResponse) (TableEntityQuer
 	}
 
 	t := TableEntityQueryByteResponse{
-		OdataMetadata: resp.TableEntityQueryResponse.OdataMetadata,
+		ODataMetadata: resp.TableEntityQueryResponse.ODataMetadata,
 		Value:         marshalledValue,
 	}
 

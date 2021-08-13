@@ -9,19 +9,15 @@ import (
 	"io"
 )
 
-// ProgressReceiver defines the signature of a callback function invoked as progress is reported.
-// Note that bytesTransferred resets to 0 if the stream is reset when retrying a network operation.
-type ProgressReceiver func(bytesTransferred int64)
-
 type progress struct {
 	rc     io.ReadCloser
 	rsc    ReadSeekCloser
-	pr     ProgressReceiver
+	pr     func(bytesTransferred int64)
 	offset int64
 }
 
 // NewRequestProgress adds progress reporting to an HTTP request's body stream.
-func NewRequestProgress(body ReadSeekCloser, pr ProgressReceiver) ReadSeekCloser {
+func NewRequestProgress(body ReadSeekCloser, pr func(bytesTransferred int64)) ReadSeekCloser {
 	return &progress{
 		rc:     body,
 		rsc:    body,
@@ -31,7 +27,7 @@ func NewRequestProgress(body ReadSeekCloser, pr ProgressReceiver) ReadSeekCloser
 }
 
 // NewResponseProgress adds progress reporting to an HTTP response's body stream.
-func NewResponseProgress(body io.ReadCloser, pr ProgressReceiver) io.ReadCloser {
+func NewResponseProgress(body io.ReadCloser, pr func(bytesTransferred int64)) io.ReadCloser {
 	return &progress{
 		rc:     body,
 		rsc:    nil,

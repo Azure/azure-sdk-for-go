@@ -18,7 +18,7 @@ import (
 
 func TestPolicyLoggingSuccess(t *testing.T) {
 	log := map[LogClassification]string{}
-	SetListener(func(cls LogClassification, s string) {
+	LogSetListener(func(cls LogClassification, s string) {
 		log[cls] = s
 	})
 	srv, close := mock.NewServer()
@@ -68,7 +68,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 
 func TestPolicyLoggingError(t *testing.T) {
 	log := map[LogClassification]string{}
-	SetListener(func(cls LogClassification, s string) {
+	LogSetListener(func(cls LogClassification, s string) {
 		log[cls] = s
 	})
 	srv, close := mock.NewServer()

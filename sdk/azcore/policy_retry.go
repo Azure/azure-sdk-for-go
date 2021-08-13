@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/logger"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -50,18 +50,6 @@ type RetryOptions struct {
 	StatusCodes []int
 }
 
-var (
-	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
-	// Changing its value will affect future created clients that use the default values.
-	StatusCodesForRetry = []int{
-		http.StatusRequestTimeout,      // 408
-		http.StatusInternalServerError, // 500
-		http.StatusBadGateway,          // 502
-		http.StatusServiceUnavailable,  // 503
-		http.StatusGatewayTimeout,      // 504
-	}
-)
-
 // init sets any default values
 func (o *RetryOptions) init() {
 	if o.MaxRetries == 0 {
@@ -81,7 +69,13 @@ func (o *RetryOptions) init() {
 		o.RetryDelay = 0
 	}
 	if o.StatusCodes == nil {
-		o.StatusCodes = StatusCodesForRetry
+		o.StatusCodes = []int{
+			http.StatusRequestTimeout,      // 408
+			http.StatusInternalServerError, // 500
+			http.StatusBadGateway,          // 502
+			http.StatusServiceUnavailable,  // 503
+			http.StatusGatewayTimeout,      // 504
+		}
 	}
 }
 
@@ -151,7 +145,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 	try := int32(1)
 	for {
 		resp = nil // reset
-		logger.Log().Writef(logger.LogRetryPolicy, "\n=====> Try=%d %s %s", try, req.Method, req.URL.String())
+		log.Writef(log.RetryPolicy, "\n=====> Try=%d %s %s", try, req.Method, req.URL.String())
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -171,9 +165,9 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 			tryCancel()
 		}
 		if err == nil {
-			logger.Log().Writef(logger.LogRetryPolicy, "response %d", resp.StatusCode)
+			log.Writef(log.RetryPolicy, "response %d", resp.StatusCode)
 		} else {
-			logger.Log().Writef(logger.LogRetryPolicy, "error %v", err)
+			log.Writef(log.RetryPolicy, "error %v", err)
 		}
 
 		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
@@ -182,7 +176,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		} else if ctxErr := req.Context().Err(); ctxErr != nil {
 			// don't retry if the parent context has been cancelled or its deadline exceeded
 			err = ctxErr
-			logger.Log().Writef(logger.LogRetryPolicy, "abort due to %v", err)
+			log.Writef(log.RetryPolicy, "abort due to %v", err)
 			return
 		}
 
@@ -190,13 +184,13 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		var nre NonRetriableError
 		if errors.As(err, &nre) {
 			// the error says it's not retriable so don't retry
-			logger.Log().Writef(logger.LogRetryPolicy, "non-retriable error %T", nre)
+			log.Writef(log.RetryPolicy, "non-retriable error %T", nre)
 			return
 		}
 
 		if try == options.MaxRetries+1 {
 			// max number of tries has been reached, don't sleep again
-			logger.Log().Writef(logger.LogRetryPolicy, "MaxRetries %d exceeded", options.MaxRetries)
+			log.Writef(log.RetryPolicy, "MaxRetries %d exceeded", options.MaxRetries)
 			return
 		}
 
@@ -208,13 +202,13 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}
-		logger.Log().Writef(logger.LogRetryPolicy, "End Try #%d, Delay=%v", try, delay)
+		log.Writef(log.RetryPolicy, "End Try #%d, Delay=%v", try, delay)
 		select {
 		case <-time.After(delay):
 			try++
 		case <-req.Context().Done():
 			err = req.Context().Err()
-			logger.Log().Writef(logger.LogRetryPolicy, "abort due to %v", err)
+			log.Writef(log.RetryPolicy, "abort due to %v", err)
 			return
 		}
 	}

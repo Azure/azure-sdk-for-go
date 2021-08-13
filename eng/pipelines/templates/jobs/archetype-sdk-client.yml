@@ -54,6 +54,7 @@ stages:
           Scope: $(SCOPE)
           Image: $(vm.image)
           GoVersion: $(go.version)
+          Tags: ${{ parameters.Tags }}
 
     - job: Analyze
       displayName: Analyze

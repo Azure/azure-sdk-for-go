@@ -105,7 +105,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			results = append(results, pipeline.PackageResult{
 				Version:     namespaceResult.Version,
 				PackageName: namespaceResult.PackageName,
-				Path:        []string{fmt.Sprintf("/sdk/%s/%s", namespaceResult.RpName, namespaceResult.PackageName)},
+				Path:        []string{fmt.Sprintf("sdk/%s/%s", namespaceResult.RpName, namespaceResult.PackageName)},
 				ReadmeMd:    []string{readme},
 				Changelog: &pipeline.Changelog{
 					Content:             &content,

@@ -90,13 +90,13 @@ type TableServiceProperties struct {
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
 	// A summary of request statistics grouped by API in hourly aggregates for tables.
-	HourMetrics *generated.Metrics `xml:"HourMetrics"`
+	HourMetrics *Metrics `xml:"HourMetrics"`
 
 	// Azure Analytics Logging settings.
 	Logging *Logging `xml:"Logging"`
 
 	// A summary of request statistics grouped by API in minute aggregates for tables.
-	MinuteMetrics *generated.Metrics `xml:"MinuteMetrics"`
+	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
 func (t *TableServiceProperties) toGenerated() *generated.TableServiceProperties {
@@ -106,9 +106,9 @@ func (t *TableServiceProperties) toGenerated() *generated.TableServiceProperties
 
 	return &generated.TableServiceProperties{
 		Cors:          toGeneratedCorsRules(t.Cors),
-		HourMetrics:   t.HourMetrics,
+		HourMetrics:   toGeneratedMetrics(t.HourMetrics),
 		Logging:       toGeneratedLogging(t.Logging),
-		MinuteMetrics: t.MinuteMetrics,
+		MinuteMetrics: toGeneratedMetrics(t.MinuteMetrics),
 	}
 }
 
@@ -135,6 +135,17 @@ func toGeneratedRetentionPolicy(r *RetentionPolicy) *generated.RetentionPolicy {
 	}
 
 	return &generated.RetentionPolicy{
+		Enabled: r.Enabled,
+		Days:    r.Days,
+	}
+}
+
+func fromGeneratedRetentionPolicy(r *generated.RetentionPolicy) *RetentionPolicy {
+	if r == nil {
+		return &RetentionPolicy{}
+	}
+
+	return &RetentionPolicy{
 		Enabled: r.Enabled,
 		Days:    r.Days,
 	}
@@ -198,4 +209,30 @@ type Metrics struct {
 
 	// The version of Analytics to configure.
 	Version *string `xml:"Version"`
+}
+
+func toGeneratedMetrics(m *Metrics) *generated.Metrics {
+	if m == nil {
+		return nil
+	}
+
+	return &generated.Metrics{
+		Enabled:         m.Enabled,
+		IncludeAPIs:     m.IncludeAPIs,
+		Version:         m.Version,
+		RetentionPolicy: toGeneratedRetentionPolicy(m.RetentionPolicy),
+	}
+}
+
+func fromGeneratedMetrics(m *generated.Metrics) *Metrics {
+	if m == nil {
+		return &Metrics{}
+	}
+
+	return &Metrics{
+		Enabled:         m.Enabled,
+		IncludeAPIs:     m.IncludeAPIs,
+		Version:         m.Version,
+		RetentionPolicy: fromGeneratedRetentionPolicy(m.RetentionPolicy),
+	}
 }

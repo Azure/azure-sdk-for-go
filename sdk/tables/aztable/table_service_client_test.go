@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/require"
 )
@@ -224,10 +223,10 @@ func TestSetHoursMetrics(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := generated.Metrics{
+	metrics := Metrics{
 		Enabled:     to.BoolPtr(true),
 		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &generated.RetentionPolicy{
+		RetentionPolicy: &RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(5),
 		},
@@ -254,10 +253,10 @@ func TestSetMinuteMetrics(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := generated.Metrics{
+	metrics := Metrics{
 		Enabled:     to.BoolPtr(true),
 		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &generated.RetentionPolicy{
+		RetentionPolicy: &RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(5),
 		},
@@ -333,10 +332,10 @@ func TestRetentionTooLong(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	metrics := generated.Metrics{
+	metrics := Metrics{
 		Enabled:     to.BoolPtr(true),
 		IncludeAPIs: to.BoolPtr(true),
-		RetentionPolicy: &generated.RetentionPolicy{
+		RetentionPolicy: &RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(366),
 		},

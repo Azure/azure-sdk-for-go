@@ -4,8 +4,6 @@
 package aztable
 
 import (
-	"fmt"
-
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
@@ -41,7 +39,7 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 	if l == nil {
 		return &generated.QueryOptions{}
 	}
-	fmt.Println(l)
+
 	return &generated.QueryOptions{
 		Filter: l.Filter,
 		Format: toGeneratedODataMetadata(l.Format),

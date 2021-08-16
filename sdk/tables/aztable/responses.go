@@ -166,13 +166,13 @@ type GetPropertiesResponse struct {
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
 	// A summary of request statistics grouped by API in hourly aggregates for tables.
-	HourMetrics *generated.Metrics `xml:"HourMetrics"`
+	HourMetrics *Metrics `xml:"HourMetrics"`
 
 	// Azure Analytics Logging settings.
 	Logging *Logging `xml:"Logging"`
 
 	// A summary of request statistics grouped by API in minute aggregates for tables.
-	MinuteMetrics *generated.Metrics `xml:"MinuteMetrics"`
+	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
 func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) *GetPropertiesResponse {
@@ -183,9 +183,9 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesRespons
 	return &GetPropertiesResponse{
 		RawResponse:   g.RawResponse,
 		Cors:          cors,
-		HourMetrics:   g.HourMetrics,
+		HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
 		Logging:       fromGeneratedLogging(g.Logging),
-		MinuteMetrics: g.MinuteMetrics,
+		MinuteMetrics: fromGeneratedMetrics(g.MinuteMetrics),
 	}
 }
 

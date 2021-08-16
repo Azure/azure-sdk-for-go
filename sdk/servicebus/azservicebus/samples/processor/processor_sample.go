@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
 	"os"
 	"time"
@@ -75,8 +76,7 @@ func main() {
 		// a customer can reasonably expect to see some errors here when the processor recovers
 		// from connection errors, or if some automated operations failed (like autocomplete
 		// settlement failure)
-
-		if err == context.Canceled {
+		if errors.Is(err, context.Canceled) {
 			// filter out errors that we expect or are not concerned about.
 			return
 		}

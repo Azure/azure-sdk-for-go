@@ -153,11 +153,11 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetProp
 // props := TableServiceProperties{Logging: &logging}
 // resp, err := context.client.SetProperties(ctx, props, nil)
 // handle(err)
-func (t *TableServiceClient) SetProperties(ctx context.Context, properties generated.TableServiceProperties, options *SetPropertiesOptions) (*SetPropertiesResponse, error) {
+func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *SetPropertiesOptions) (*SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
-	resp, err := t.service.SetProperties(ctx, properties, options.toGenerated())
+	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 

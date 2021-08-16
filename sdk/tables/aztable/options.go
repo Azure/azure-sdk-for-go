@@ -4,6 +4,8 @@
 package aztable
 
 import (
+	"fmt"
+
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
@@ -28,7 +30,7 @@ type ListEntitiesOptions struct {
 	// OData filter expression.
 	Filter *string
 	// Specifies the media type for the response.
-	Format *generated.ODataMetadataFormat
+	Format *ODataMetadataFormat
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
 	// Maximum number of records to return.
@@ -39,10 +41,10 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 	if l == nil {
 		return &generated.QueryOptions{}
 	}
-
+	fmt.Println(l)
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: l.Format,
+		Format: toGeneratedODataMetadata(l.Format),
 		Select: l.Select,
 		Top:    l.Top,
 	}
@@ -53,7 +55,7 @@ type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
 	// Specifies the media type for the response.
-	Format *generated.ODataMetadataFormat
+	Format *ODataMetadataFormat
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
 	// Maximum number of records to return.
@@ -67,13 +69,30 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: l.Format,
+		Format: toGeneratedODataMetadata(l.Format),
 		Select: l.Select,
 		Top:    l.Top,
 	}
 }
 
 type ODataMetadataFormat string
+
+func toGeneratedODataMetadata(o *ODataMetadataFormat) *generated.ODataMetadataFormat {
+	if o == nil {
+		return nil
+	}
+
+	if *o == FullODataMetadata {
+		return generated.ODataMetadataFormatApplicationJSONODataFullmetadata.ToPtr()
+	}
+	if *o == MinimalODataMetadata {
+		return generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()
+	}
+	if *o == NoOdataMetadata {
+		return generated.ODataMetadataFormatApplicationJSONODataNometadata.ToPtr()
+	}
+	return nil
+}
 
 const (
 	FullODataMetadata    ODataMetadataFormat = "application/json;odata=fullmetadata"
@@ -95,16 +114,35 @@ func (c ODataMetadataFormat) ToPtr() *ODataMetadataFormat {
 	return &c
 }
 
-func (c ODataMetadataFormat) toInternal() generated.ODataMetadataFormat {
-	switch c {
-	case FullODataMetadata:
-		return generated.ODataMetadataFormatApplicationJSONODataFullmetadata
-	case MinimalODataMetadata:
-		return generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata
-	case NoOdataMetadata:
-		return generated.ODataMetadataFormatApplicationJSONODataNometadata
+type ResponseFormat string
+
+const (
+	ResponseFormatReturnContent   ResponseFormat = "return-content"
+	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
+)
+
+// PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
+func PossibleResponseFormatValues() []ResponseFormat {
+	return []ResponseFormat{
+		ResponseFormatReturnContent,
+		ResponseFormatReturnNoContent,
 	}
-	return generated.ODataMetadataFormatApplicationJSONODataFullmetadata
+}
+
+// ToPtr returns a *ResponseFormat pointing to the current value.
+func (c ResponseFormat) ToPtr() *ResponseFormat {
+	return &c
+}
+
+func toGeneratedResponsePreference(r *ResponseFormat) *generated.ResponseFormat {
+	if r == nil {
+		return nil
+	} else if *r == ResponseFormatReturnContent {
+		return generated.ResponseFormatReturnContent.ToPtr()
+	} else if *r == ResponseFormatReturnNoContent {
+		return generated.ResponseFormatReturnNoContent.ToPtr()
+	}
+	return nil
 }
 
 // Options for TableClient.GetEntity method
@@ -136,14 +174,14 @@ func (g *GetEntityOptions) toGenerated() (*generated.TableQueryEntityWithPartiti
 // Options for the TableClient.AddEntity operation
 type AddEntityOptions struct {
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
-	ResponsePreference *generated.ResponseFormat
+	ResponsePreference *ResponseFormat
 	// The properties for the table entity.
 	TableEntityProperties map[string]interface{}
 }
 
 func (a *AddEntityOptions) toGenerated() *generated.TableInsertEntityOptions {
 	return &generated.TableInsertEntityOptions{
-		ResponsePreference:    a.ResponsePreference,
+		ResponsePreference:    toGeneratedResponsePreference(a.ResponsePreference),
 		TableEntityProperties: a.TableEntityProperties,
 	}
 }

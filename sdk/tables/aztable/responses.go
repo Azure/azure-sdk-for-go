@@ -162,7 +162,8 @@ func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsRespons
 
 type GetPropertiesResponse struct {
 	RawResponse *http.Response
-	Cors        []*generated.CorsRule `xml:"Cors>CorsRule"`
+	// The set of CORS rules.
+	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
 	// A summary of request statistics grouped by API in hourly aggregates for tables.
 	HourMetrics *generated.Metrics `xml:"HourMetrics"`
@@ -175,9 +176,13 @@ type GetPropertiesResponse struct {
 }
 
 func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) *GetPropertiesResponse {
+	var cors []*CorsRule
+	for _, c := range g.Cors {
+		cors = append(cors, fromGeneratedCors(c))
+	}
 	return &GetPropertiesResponse{
 		RawResponse:   g.RawResponse,
-		Cors:          g.Cors,
+		Cors:          cors,
 		HourMetrics:   g.HourMetrics,
 		Logging:       g.Logging,
 		MinuteMetrics: g.MinuteMetrics,

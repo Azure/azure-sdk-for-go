@@ -3,7 +3,9 @@
 
 package aztable
 
-import generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
+import (
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
+)
 
 // ListOptions contains a group of parameters for the Table.Query method.
 type ListOptions struct {
@@ -91,7 +93,7 @@ type TableServiceProperties struct {
 	HourMetrics *generated.Metrics `xml:"HourMetrics"`
 
 	// Azure Analytics Logging settings.
-	Logging *generated.Logging `xml:"Logging"`
+	Logging *Logging `xml:"Logging"`
 
 	// A summary of request statistics grouped by API in minute aggregates for tables.
 	MinuteMetrics *generated.Metrics `xml:"MinuteMetrics"`
@@ -105,7 +107,7 @@ func (t *TableServiceProperties) toGenerated() *generated.TableServiceProperties
 	return &generated.TableServiceProperties{
 		Cors:          toGeneratedCorsRules(t.Cors),
 		HourMetrics:   t.HourMetrics,
-		Logging:       t.Logging,
+		Logging:       toGeneratedLogging(t.Logging),
 		MinuteMetrics: t.MinuteMetrics,
 	}
 }
@@ -116,4 +118,84 @@ func toGeneratedCorsRules(corsRules []*CorsRule) []*generated.CorsRule {
 		ret = append(ret, c.toGenerated())
 	}
 	return ret
+}
+
+// RetentionPolicy - The retention policy.
+type RetentionPolicy struct {
+	// REQUIRED; Indicates whether a retention policy is enabled for the service.
+	Enabled *bool `xml:"Enabled"`
+
+	// Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this value will be deleted.
+	Days *int32 `xml:"Days"`
+}
+
+func toGeneratedRetentionPolicy(r *RetentionPolicy) *generated.RetentionPolicy {
+	if r == nil {
+		return &generated.RetentionPolicy{}
+	}
+
+	return &generated.RetentionPolicy{
+		Enabled: r.Enabled,
+		Days:    r.Days,
+	}
+}
+
+// Logging - Azure Analytics Logging settings.
+type Logging struct {
+	// REQUIRED; Indicates whether all delete requests should be logged.
+	Delete *bool `xml:"Delete"`
+
+	// REQUIRED; Indicates whether all read requests should be logged.
+	Read *bool `xml:"Read"`
+
+	// REQUIRED; The retention policy.
+	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`
+
+	// REQUIRED; The version of Analytics to configure.
+	Version *string `xml:"Version"`
+
+	// REQUIRED; Indicates whether all write requests should be logged.
+	Write *bool `xml:"Write"`
+}
+
+func toGeneratedLogging(l *Logging) *generated.Logging {
+	if l == nil {
+		return nil
+	}
+
+	return &generated.Logging{
+		Delete:          l.Delete,
+		Read:            l.Read,
+		RetentionPolicy: toGeneratedRetentionPolicy(l.RetentionPolicy),
+		Version:         l.Version,
+		Write:           l.Write,
+	}
+}
+
+func fromGeneratedLogging(g *generated.Logging) *Logging {
+	if g == nil {
+		return nil
+	}
+
+	return &Logging{
+		Delete:          g.Delete,
+		Read:            g.Read,
+		Write:           g.Write,
+		Version:         g.Version,
+		RetentionPolicy: (*RetentionPolicy)(g.RetentionPolicy),
+	}
+}
+
+type Metrics struct {
+	// REQUIRED; Indicates whether metrics are enabled for the Table service.
+	Enabled *bool `xml:"Enabled"`
+
+	// Indicates whether metrics should generate summary statistics for called API operations.
+	IncludeAPIs *bool `xml:"IncludeAPIs"`
+
+	// The retention policy.
+	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`
+
+	// The version of Analytics to configure.
+	Version *string `xml:"Version"`
 }

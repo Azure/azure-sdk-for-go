@@ -192,12 +192,12 @@ func TestSetLogging(t *testing.T) {
 	service, delete := initServiceTest(t, "storage")
 	defer delete()
 
-	logging := generated.Logging{
+	logging := Logging{
 		Read:    to.BoolPtr(true),
 		Write:   to.BoolPtr(true),
 		Delete:  to.BoolPtr(true),
 		Version: to.StringPtr("1.0"),
-		RetentionPolicy: &generated.RetentionPolicy{
+		RetentionPolicy: &RetentionPolicy{
 			Enabled: to.BoolPtr(true),
 			Days:    to.Int32Ptr(5),
 		},

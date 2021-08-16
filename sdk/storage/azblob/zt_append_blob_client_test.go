@@ -1206,7 +1206,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
 }
 
-func (s *azblobUnrecordedTestSuite) TestSealAppendBlob() {
+func (s *azblobTestSuite) TestSealAppendBlob() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
@@ -1239,4 +1239,125 @@ func (s *azblobUnrecordedTestSuite) TestSealAppendBlob() {
 	getPropResp, err := abClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(*getPropResp.IsSealed, true)
+}
+
+// TODO: Learn about the behaviour of AppendPosition
+//func (s *azblobUnrecordedTestSuite) TestSealAppendBlobWithAppendConditions() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	abName := generateBlobName(testName)
+//	abClient := createNewAppendBlob(_assert, abName, containerClient)
+//
+//	sealResp, err := abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
+//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+//			AppendPosition: to.Int64Ptr(1),
+//		},
+//	})
+//	_assert.NotNil(err)
+//	_ = sealResp
+//
+//	sealResp, err = abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
+//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+//			AppendPosition: to.Int64Ptr(0),
+//		},
+//	})
+//}
+
+func (s *azblobTestSuite) TestCopySealedBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.SealAppendBlob(ctx, nil)
+	_assert.Nil(err)
+
+	copiedBlob1 := getAppendBlobClient("copy1"+abName, containerClient)
+	// copy sealed blob will get a sealed blob
+	_, err = copiedBlob1.StartCopyFromURL(ctx, abClient.URL(), nil)
+	_assert.Nil(err)
+
+	getResp1, err := copiedBlob1.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.IsSealed, true)
+
+	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+
+	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
+	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+		SealBlob: to.BoolPtr(true),
+	})
+	_assert.Nil(err)
+
+	getResp2, err := copiedBlob2.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.IsSealed, true)
+
+	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+
+	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
+	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+		SealBlob: to.BoolPtr(false),
+	})
+	_assert.Nil(err)
+
+	getResp3, err := copiedBlob3.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Nil(getResp3.IsSealed)
+
+	appendResp3, err := copiedBlob3.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.Nil(err)
+	_assert.Equal(appendResp3.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp3.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp3.BlobCommittedBlockCount, int32(1))
+}
+
+func (s *azblobTestSuite) TestCopyUnsealedBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	copiedBlob := getAppendBlobClient("copy"+abName, containerClient)
+	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+		SealBlob: to.BoolPtr(true),
+	})
+	_assert.Nil(err)
+
+	getResp, err := copiedBlob.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp.IsSealed, true)
 }

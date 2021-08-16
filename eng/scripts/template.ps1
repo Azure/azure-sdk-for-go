@@ -14,13 +14,19 @@ param(
     [string]$commitHash
 )
 
-function ApplyTemplate([System.IO.FileSystemInfo]$destination) {
-    Write-Host "##[command]RP name: " $rpName
-    Write-Host "##[command]Package name: " $packageName
-    Write-Host "##[command]Package Title: " $packageTitle
-    Write-Host "##[command]Commit Hash: " $commitHash
-    Write-Host "##[command]Des Directory: " $destination
-    
+function ApplyTemplate([System.IO.FileSystemInfo]$templateFile, [string]$targetDirectory) {
+    Write-Host "##[command]Copying " $templateFile.Name "to " $targetDirectory
+    if ($templateFile.Extension -ne ".tpl") {
+        Write-Host "skip " $templateFile
+        return
+    }
+    $content = Get-Content -Path $templateFile
+    for ($i = 0; $i -lt $content.Count; $i++) {
+        $content[$i] = $content[$i].Replace("{{rpName}}", $rpName).Replace("{{commitID}}", $commitHash).Replace("{{packageName}}", $packageName).Replace("{{PackageTitle}}", $packageTitle)
+    }
+    $targetFile = Join-Path $targetDirectory $templateFile.Name.Replace(".tpl", "")
+    New-Item $targetFile > $null
+    Set-Content $targetFile $content
 }
 
 $startignDirectory = Get-Location
@@ -29,9 +35,9 @@ Set-Location $root
 $targetDirectory = Join-Path $root "sdk" $rpName $packageName
 $templateDirectory = Join-Path $root "eng/template"
 try {
-    New-Item -Path $targetDirectory -ItemType "directory" -Force
+    New-Item -Path $targetDirectory -ItemType "directory" -Force > $null
     Get-ChildItem $templateDirectory | ForEach-Object {
-        ApplyTemplate $_
+        ApplyTemplate $_ $targetDirectory
     }
 }
 finally {

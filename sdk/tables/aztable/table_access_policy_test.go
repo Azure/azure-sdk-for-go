@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -29,10 +28,10 @@ func TestSetAccessPolicy(t *testing.T) {
 	permission := "r"
 	id := "1"
 
-	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
+	signedIdentifiers := make([]*SignedIdentifier, 0)
 
-	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
-		AccessPolicy: &generated.AccessPolicy{
+	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+		AccessPolicy: &AccessPolicy{
 			Expiry:     &expiration,
 			Start:      &start,
 			Permission: &permission,
@@ -54,17 +53,17 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 
 	id := "empty"
 
-	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
-	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
+	signedIdentifiers := make([]*SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
 		ID: &id,
 	})
 
 	permission2 := "r"
 	id2 := "partial"
 
-	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
+	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
 		ID: &id2,
-		AccessPolicy: &generated.AccessPolicy{
+		AccessPolicy: &AccessPolicy{
 			Permission: &permission2,
 		},
 	})
@@ -74,9 +73,9 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 	start := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
 	expiry := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
 
-	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
+	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
 		ID: &id3,
-		AccessPolicy: &generated.AccessPolicy{
+		AccessPolicy: &AccessPolicy{
 			Start:      &start,
 			Expiry:     &expiry,
 			Permission: &permission3,
@@ -104,14 +103,14 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	permission := "r"
 	id := "1"
-	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
+	signedIdentifiers := make([]*SignedIdentifier, 0)
 
 	for i := 0; i < 6; i++ {
 		expiration = time.Date(2024+i, 1, 1, 0, 0, 0, 0, time.UTC)
 		id = strconv.Itoa(i)
 
-		signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
-			AccessPolicy: &generated.AccessPolicy{
+		signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+			AccessPolicy: &AccessPolicy{
 				Expiry:     &expiration,
 				Start:      &start,
 				Permission: &permission,
@@ -134,8 +133,8 @@ func TestSetNullAccessPolicy(t *testing.T) {
 
 	id := "null"
 
-	signedIdentifiers := make([]*generated.SignedIdentifier, 0)
-	signedIdentifiers = append(signedIdentifiers, &generated.SignedIdentifier{
+	signedIdentifiers := make([]*SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
 		ID: &id,
 	})
 

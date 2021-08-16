@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
@@ -97,7 +98,40 @@ type TableListResponsePager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() generated.TableQueryResponseEnvelope
+	PageResponse() TableListResponseEnvelope //generated.TableQueryResponseEnvelope
+}
+
+type TableListResponseEnvelope struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// XMSContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
+	XMSContinuationNextTableName *string
+
+	// The metadata response of the table.
+	ODataMetadata *string `json:"odata.metadata,omitempty"`
+
+	// List of tables.
+	Value []*TableResponseProperties `json:"value,omitempty"`
+}
+
+func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *TableListResponseEnvelope {
+	if g == nil {
+		return nil
+	}
+
+	var value []*TableResponseProperties
+
+	for _, v := range g.Value {
+		value = append(value, fromGeneratedTableResponseProperties(v))
+	}
+
+	return &TableListResponseEnvelope{
+		RawResponse:                  g.RawResponse,
+		XMSContinuationNextTableName: g.XMSContinuationNextTableName,
+		ODataMetadata:                g.ODataMetadata,
+		Value:                        value,
+	}
 }
 
 type tableQueryResponsePager struct {
@@ -129,8 +163,8 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
-func (p *tableQueryResponsePager) PageResponse() generated.TableQueryResponseEnvelope {
-	return *p.current
+func (p *tableQueryResponsePager) PageResponse() TableListResponseEnvelope {
+	return *fromGeneratedTableQueryResponseEnvelope(p.current)
 }
 
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.

@@ -4,6 +4,8 @@
 package aztable
 
 import (
+	"time"
+
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
@@ -234,5 +236,73 @@ func fromGeneratedMetrics(m *generated.Metrics) *Metrics {
 		IncludeAPIs:     m.IncludeAPIs,
 		Version:         m.Version,
 		RetentionPolicy: fromGeneratedRetentionPolicy(m.RetentionPolicy),
+	}
+}
+
+// SignedIdentifier - A signed identifier.
+type SignedIdentifier struct {
+	// REQUIRED; The access policy.
+	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
+
+	// REQUIRED; A unique id.
+	ID *string `xml:"Id"`
+}
+
+func toGeneratedSignedIdentifier(s *SignedIdentifier) *generated.SignedIdentifier {
+	if s == nil {
+		return nil
+	}
+
+	return &generated.SignedIdentifier{
+		ID:           s.ID,
+		AccessPolicy: toGeneratedAccessPolicy(s.AccessPolicy),
+	}
+}
+
+func fromGeneratedSignedIdentifier(s *generated.SignedIdentifier) *SignedIdentifier {
+	if s == nil {
+		return nil
+	}
+
+	return &SignedIdentifier{
+		ID:           s.ID,
+		AccessPolicy: fromGeneratedAccessPolicy(s.AccessPolicy),
+	}
+
+}
+
+// AccessPolicy - An Access policy.
+type AccessPolicy struct {
+	// REQUIRED; The datetime that the policy expires.
+	Expiry *time.Time `xml:"Expiry"`
+
+	// REQUIRED; The permissions for the acl policy.
+	Permission *string `xml:"Permission"`
+
+	// REQUIRED; The start datetime from which the policy is active.
+	Start *time.Time `xml:"Start"`
+}
+
+func toGeneratedAccessPolicy(a *AccessPolicy) *generated.AccessPolicy {
+	if a == nil {
+		return nil
+	}
+
+	return &generated.AccessPolicy{
+		Expiry:     a.Expiry,
+		Permission: a.Permission,
+		Start:      a.Start,
+	}
+}
+
+func fromGeneratedAccessPolicy(g *generated.AccessPolicy) *AccessPolicy {
+	if g == nil {
+		return nil
+	}
+
+	return &AccessPolicy{
+		Expiry:     g.Expiry,
+		Permission: g.Permission,
+		Start:      g.Start,
 	}
 }

@@ -245,12 +245,16 @@ func (g *GetAccessPolicyOptions) toGenerated() *generated.TableGetAccessPolicyOp
 }
 
 type SetAccessPolicyOptions struct {
-	TableACL []*generated.SignedIdentifier
+	TableACL []*SignedIdentifier
 }
 
 func (s *SetAccessPolicyOptions) toGenerated() *generated.TableSetAccessPolicyOptions {
+	var sis []*generated.SignedIdentifier
+	for _, t := range s.TableACL {
+		sis = append(sis, toGeneratedSignedIdentifier(t))
+	}
 	return &generated.TableSetAccessPolicyOptions{
-		TableACL: s.TableACL,
+		TableACL: sis,
 	}
 }
 

@@ -133,13 +133,44 @@ type TableListResponse struct {
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Value []*generated.TableResponseProperties `json:"value,omitempty"`
+	Value []*TableResponseProperties `json:"value,omitempty"`
 }
 
 func tableListResponseFromQueryResponse(q *generated.TableQueryResponse) *TableListResponse {
+	var value []*TableResponseProperties
+	for _, t := range q.Value {
+		value = append(value, fromGeneratedTableResponseProperties(t))
+	}
 	return &TableListResponse{
 		OdataMetadata: q.ODataMetadata,
-		Value:         q.Value,
+		Value:         value,
+	}
+}
+
+type TableResponseProperties struct {
+	// The edit link of the table.
+	ODataEditLink *string `json:"odata.editLink,omitempty"`
+
+	// The id of the table.
+	ODataID *string `json:"odata.id,omitempty"`
+
+	// The odata type of the table.
+	ODataType *string `json:"odata.type,omitempty"`
+
+	// The name of the table.
+	TableName *string `json:"TableName,omitempty"`
+}
+
+func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *TableResponseProperties {
+	if g == nil {
+		return nil
+	}
+
+	return &TableResponseProperties{
+		TableName:     g.TableName,
+		ODataEditLink: g.ODataEditLink,
+		ODataID:       g.ODataID,
+		ODataType:     g.ODataType,
 	}
 }
 

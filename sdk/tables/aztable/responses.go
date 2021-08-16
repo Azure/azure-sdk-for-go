@@ -124,16 +124,21 @@ func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) *In
 
 type GetAccessPolicyResponse struct {
 	RawResponse       *http.Response
-	SignedIdentifiers []*generated.SignedIdentifier
+	SignedIdentifiers []*SignedIdentifier
 }
 
 func getAccessPolicyResponseFromGenerated(g *generated.TableGetAccessPolicyResponse) *GetAccessPolicyResponse {
 	if g == nil {
 		return &GetAccessPolicyResponse{}
 	}
+
+	var sis []*SignedIdentifier
+	for _, s := range g.SignedIdentifiers {
+		sis = append(sis, fromGeneratedSignedIdentifier(s))
+	}
 	return &GetAccessPolicyResponse{
 		RawResponse:       g.RawResponse,
-		SignedIdentifiers: g.SignedIdentifiers,
+		SignedIdentifiers: sis,
 	}
 }
 

@@ -24,11 +24,11 @@ import (
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	Con *connection
+	Con *Connection
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
-func NewTableClient(con *connection) *TableClient {
+func NewTableClient(con *Connection) *TableClient {
 	return &TableClient{Con: con}
 }
 

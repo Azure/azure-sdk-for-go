@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// connectionOptions contains configuration settings for the connection's pipeline.
+// ConnectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
 type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
@@ -42,14 +42,14 @@ func (c *ConnectionOptions) telemetryOptions() *azcore.TelemetryOptions {
 	return &to
 }
 
-type connection struct {
+type Connection struct {
 	u string
 	p azcore.Pipeline
 }
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewConnection(endpoint string, options *ConnectionOptions) *connection {
+func NewConnection(endpoint string, options *ConnectionOptions) *Connection {
 	if options == nil {
 		options = &ConnectionOptions{}
 	}
@@ -60,15 +60,15 @@ func NewConnection(endpoint string, options *ConnectionOptions) *connection {
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
-	return &connection{u: endpoint, p: azcore.NewPipeline(options.HTTPClient, policies...)}
+	return &Connection{u: endpoint, p: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
 
 // Endpoint returns the connection's endpoint.
-func (c *connection) Endpoint() string {
+func (c *Connection) Endpoint() string {
 	return c.u
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() azcore.Pipeline {
+func (c *Connection) Pipeline() azcore.Pipeline {
 	return c.p
 }

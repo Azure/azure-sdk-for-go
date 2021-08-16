@@ -19,12 +19,12 @@ import (
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
-	con *connection
+	Con *Connection
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
-func NewServiceClient(con *connection) *ServiceClient {
-	return &ServiceClient{con: con}
+func NewServiceClient(con *Connection) *ServiceClient {
+	return &ServiceClient{Con: con}
 }
 
 // GetProperties - Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
@@ -34,7 +34,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceGetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceGetPropertiesResponse{}, err
 	}
@@ -46,7 +46,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 
 // getPropertiesCreateRequest creates the GetProperties request.
 func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, options *ServiceGetPropertiesOptions) (*azcore.Request, error) {
-	req, err := azcore.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+	req, err := azcore.NewRequest(ctx, http.MethodGet, client.Con.Endpoint())
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (client *ServiceClient) GetStatistics(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceGetStatisticsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceGetStatisticsResponse{}, err
 	}
@@ -117,7 +117,7 @@ func (client *ServiceClient) GetStatistics(ctx context.Context, options *Service
 
 // getStatisticsCreateRequest creates the GetStatistics request.
 func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, options *ServiceGetStatisticsOptions) (*azcore.Request, error) {
-	req, err := azcore.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
+	req, err := azcore.NewRequest(ctx, http.MethodGet, client.Con.Endpoint())
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, tableServiceProp
 	if err != nil {
 		return ServiceSetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceSetPropertiesResponse{}, err
 	}
@@ -195,7 +195,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, tableServiceProp
 
 // setPropertiesCreateRequest creates the SetProperties request.
 func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, tableServiceProperties TableServiceProperties, options *ServiceSetPropertiesOptions) (*azcore.Request, error) {
-	req, err := azcore.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
+	req, err := azcore.NewRequest(ctx, http.MethodPut, client.Con.Endpoint())
 	if err != nil {
 		return nil, err
 	}

@@ -177,3 +177,43 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 		TableEntityProperties: m,
 	}
 }
+
+type InsertEntityOptions struct {
+	IfMatch *string
+}
+
+func (i *InsertEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableMergeEntityOptions {
+	if i == nil {
+		return &generated.TableMergeEntityOptions{}
+	}
+	return &generated.TableMergeEntityOptions{
+		IfMatch:               i.IfMatch,
+		TableEntityProperties: m,
+	}
+}
+
+func (i *InsertEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) *generated.TableUpdateEntityOptions {
+	if i == nil {
+		return &generated.TableUpdateEntityOptions{}
+	}
+	return &generated.TableUpdateEntityOptions{
+		TableEntityProperties: m,
+	}
+}
+
+type GetAccessPolicyOptions struct {
+}
+
+func (g *GetAccessPolicyOptions) toGenerated() *generated.TableGetAccessPolicyOptions {
+	return &generated.TableGetAccessPolicyOptions{}
+}
+
+type SetAccessPolicyOptions struct {
+	TableACL []*generated.SignedIdentifier
+}
+
+func (s *SetAccessPolicyOptions) toGenerated() *generated.TableSetAccessPolicyOptions {
+	return &generated.TableSetAccessPolicyOptions{
+		TableACL: s.TableACL,
+	}
+}

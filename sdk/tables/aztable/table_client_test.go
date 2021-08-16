@@ -169,7 +169,7 @@ func TestUpsertEntity(t *testing.T) {
 			entityToCreate := createSimpleEntity(1, "partition")
 			marshalled := marshalBasicEntity(entityToCreate, require)
 
-			_, err := client.InsertEntity(ctx, *marshalled, ReplaceEntity)
+			_, err := client.InsertEntity(ctx, *marshalled, ReplaceEntity, nil)
 			require.NoError(err)
 
 			filter := "RowKey eq '1'"
@@ -188,9 +188,10 @@ func TestUpsertEntity(t *testing.T) {
 			mapEntity["MergeProperty"] = "foo"
 
 			reMarshalled, err := json.Marshal(mapEntity)
+			require.NoError(err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.InsertEntity(ctx, reMarshalled, (ReplaceEntity))
+			_, err = client.InsertEntity(ctx, reMarshalled, (ReplaceEntity), nil)
 			require.Nil(err)
 
 			// 5. Query for new entity

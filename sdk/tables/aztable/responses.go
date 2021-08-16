@@ -94,3 +94,58 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableUpdateEntityRespo
 		ETag:        g.ETag,
 	}
 }
+
+type InsertEntityResponse struct {
+	RawResponse *http.Response
+	ETag        *string
+}
+
+func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) *InsertEntityResponse {
+	if g == nil {
+		return &InsertEntityResponse{}
+	}
+
+	return &InsertEntityResponse{
+		RawResponse: g.RawResponse,
+		ETag:        g.ETag,
+	}
+}
+
+func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) *InsertEntityResponse {
+	if g == nil {
+		return &InsertEntityResponse{}
+	}
+
+	return &InsertEntityResponse{
+		RawResponse: g.RawResponse,
+		ETag:        g.ETag,
+	}
+}
+
+type GetAccessPolicyResponse struct {
+	RawResponse       *http.Response
+	SignedIdentifiers []*generated.SignedIdentifier
+}
+
+func getAccessPolicyResponseFromGenerated(g *generated.TableGetAccessPolicyResponse) *GetAccessPolicyResponse {
+	if g == nil {
+		return &GetAccessPolicyResponse{}
+	}
+	return &GetAccessPolicyResponse{
+		RawResponse:       g.RawResponse,
+		SignedIdentifiers: g.SignedIdentifiers,
+	}
+}
+
+type SetAccessPolicyResponse struct {
+	RawResponse *http.Response
+}
+
+func setAccessPolicyResponseFromGenerated(g *generated.TableSetAccessPolicyResponse) *SetAccessPolicyResponse {
+	if g == nil {
+		return &SetAccessPolicyResponse{}
+	}
+	return &SetAccessPolicyResponse{
+		RawResponse: g.RawResponse,
+	}
+}

@@ -149,3 +149,47 @@ func setAccessPolicyResponseFromGenerated(g *generated.TableSetAccessPolicyRespo
 		RawResponse: g.RawResponse,
 	}
 }
+
+type GetStatisticsResponse struct {
+	RawResponse *http.Response
+}
+
+func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsResponse) *GetStatisticsResponse {
+	return &GetStatisticsResponse{
+		RawResponse: g.RawResponse,
+	}
+}
+
+type GetPropertiesResponse struct {
+	RawResponse *http.Response
+	Cors        []*generated.CorsRule `xml:"Cors>CorsRule"`
+
+	// A summary of request statistics grouped by API in hourly aggregates for tables.
+	HourMetrics *generated.Metrics `xml:"HourMetrics"`
+
+	// Azure Analytics Logging settings.
+	Logging *generated.Logging `xml:"Logging"`
+
+	// A summary of request statistics grouped by API in minute aggregates for tables.
+	MinuteMetrics *generated.Metrics `xml:"MinuteMetrics"`
+}
+
+func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) *GetPropertiesResponse {
+	return &GetPropertiesResponse{
+		RawResponse:   g.RawResponse,
+		Cors:          g.Cors,
+		HourMetrics:   g.HourMetrics,
+		Logging:       g.Logging,
+		MinuteMetrics: g.MinuteMetrics,
+	}
+}
+
+type SetPropertiesResponse struct {
+	RawResponse *http.Response
+}
+
+func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesResponse) *SetPropertiesResponse {
+	return &SetPropertiesResponse{
+		RawResponse: g.RawResponse,
+	}
+}

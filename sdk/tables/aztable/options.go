@@ -217,3 +217,23 @@ func (s *SetAccessPolicyOptions) toGenerated() *generated.TableSetAccessPolicyOp
 		TableACL: s.TableACL,
 	}
 }
+
+type GetStatisticsOptions struct {
+}
+
+func (g *GetStatisticsOptions) toGenerated() *generated.ServiceGetStatisticsOptions {
+	return &generated.ServiceGetStatisticsOptions{}
+}
+
+type GetPropertiesOptions struct {
+}
+
+func (g *GetPropertiesOptions) toGenerated() *generated.ServiceGetPropertiesOptions {
+	return &generated.ServiceGetPropertiesOptions{}
+}
+
+type SetPropertiesOptions struct{}
+
+func (s *SetPropertiesOptions) toGenerated() *generated.ServiceSetPropertiesOptions {
+	return &generated.ServiceSetPropertiesOptions{}
+}

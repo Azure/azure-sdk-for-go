@@ -36,14 +36,12 @@ func NewTableClient(tableName string, serviceURL string, cred azcore.Credential,
 
 // Create creates the table with the tableName specified when NewTableClient was called.
 func (t *TableClient) Create(ctx context.Context, options *CreateTableOptions) (*CreateTableResponse, error) {
-	resp, err := t.service.CreateTable(ctx, t.name, options)
-	return createTableResponseFromGen(&resp), err
+	return t.service.CreateTable(ctx, t.name, options)
 }
 
 // Delete deletes the table with the tableName specified when NewTableClient was called.
 func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (*DeleteTableResponse, error) {
-	resp, err := t.service.DeleteTable(ctx, t.name, options.toGenerated())
-	return deleteTableResponseFromGen(&resp), err
+	return t.service.DeleteTable(ctx, t.name, options)
 }
 
 // List queries the entities using the specified ListEntitiesOptions.
@@ -174,6 +172,7 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 	rk, okRk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
+	// TODO: Fix the options on merge/update
 	switch updateMode {
 	case MergeEntity:
 		resp, err := t.client.MergeEntity(ctx, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})

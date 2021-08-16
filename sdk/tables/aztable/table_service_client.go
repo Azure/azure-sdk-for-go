@@ -56,19 +56,21 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (generated.TableCreateResponse, error) {
+func (t *TableServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	return t.client.Create(ctx, generated.TableProperties{&name}, options.toGenerated(), new(generated.QueryOptions))
+	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	return createTableResponseFromGen(&resp), err
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *generated.TableDeleteOptions) (generated.TableDeleteResponse, error) {
+func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (*DeleteTableResponse, error) {
 	if options == nil {
-		options = &generated.TableDeleteOptions{}
+		options = &DeleteTableOptions{}
 	}
-	return t.client.Delete(ctx, name, options)
+	resp, err := t.client.Delete(ctx, name, options.toGenerated())
+	return deleteTableResponseFromGen(&resp), err
 }
 
 // List queries the existing tables using the specified ListTablesOptions.
@@ -103,11 +105,12 @@ func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) TableLis
 // handle(err)
 // fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
 // fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
-func (t *TableServiceClient) GetStatistics(ctx context.Context, options *generated.ServiceGetStatisticsOptions) (generated.ServiceGetStatisticsResponse, error) {
+func (t *TableServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (*GetStatisticsResponse, error) {
 	if options == nil {
-		options = &generated.ServiceGetStatisticsOptions{}
+		options = &GetStatisticsOptions{}
 	}
-	return t.service.GetStatistics(ctx, options)
+	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
+	return getStatisticsResponseFromGenerated(&resp), err
 }
 
 // GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
@@ -118,11 +121,12 @@ func (t *TableServiceClient) GetStatistics(ctx context.Context, options *generat
 // fmt.Println(resopnse.StorageServiceStats.HourMetrics)
 // fmt.Println(resopnse.StorageServiceStats.Logging)
 // fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
-func (t *TableServiceClient) GetProperties(ctx context.Context, options *generated.ServiceGetPropertiesOptions) (generated.ServiceGetPropertiesResponse, error) {
+func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (*GetPropertiesResponse, error) {
 	if options == nil {
-		options = &generated.ServiceGetPropertiesOptions{}
+		options = &GetPropertiesOptions{}
 	}
-	return t.service.GetProperties(ctx, options)
+	resp, err := t.service.GetProperties(ctx, options.toGenerated())
+	return getPropertiesResponseFromGenerated(&resp), err
 }
 
 // SetProperties allows the user to set cors , metrics, and logging rules for the account.
@@ -149,11 +153,12 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *generat
 // props := TableServiceProperties{Logging: &logging}
 // resp, err := context.client.SetProperties(ctx, props, nil)
 // handle(err)
-func (t *TableServiceClient) SetProperties(ctx context.Context, properties generated.TableServiceProperties, options *generated.ServiceSetPropertiesOptions) (generated.ServiceSetPropertiesResponse, error) {
+func (t *TableServiceClient) SetProperties(ctx context.Context, properties generated.TableServiceProperties, options *SetPropertiesOptions) (*SetPropertiesResponse, error) {
 	if options == nil {
-		options = &generated.ServiceSetPropertiesOptions{}
+		options = &SetPropertiesOptions{}
 	}
-	return t.service.SetProperties(ctx, properties, options)
+	resp, err := t.service.SetProperties(ctx, properties, options.toGenerated())
+	return setPropertiesResponseFromGenerated(&resp), err
 }
 
 func (s TableServiceClient) CanGetAccountSASToken() bool {

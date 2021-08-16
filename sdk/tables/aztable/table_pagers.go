@@ -11,7 +11,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// TableEntityListResponsePager is a Pager for Table entity query results.
+// ListEntitiesPager is a Pager for Table entity query results.
 //
 // NextPage should be called first. It fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
@@ -26,7 +26,7 @@ import (
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-type TableEntityListResponsePager interface {
+type ListEntitiesPager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
@@ -79,7 +79,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 	return p.err
 }
 
-// TableListResponsePager is a Pager for Table Queries
+// ListTablesPager is a Pager for Table Queries
 //
 // NextPage should be called first. It fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
@@ -94,7 +94,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-type TableListResponsePager interface {
+type ListTablesPager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.

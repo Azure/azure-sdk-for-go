@@ -21,7 +21,7 @@ import (
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
-func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCredential, error) {
 	c := SharedKeyCredential{accountName: accountName}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err

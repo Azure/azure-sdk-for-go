@@ -36,10 +36,8 @@ func deleteTableResponseFromGen(g *generated.TableDeleteResponse) *DeleteTableRe
 }
 
 type AddEntityResponse struct {
-	RawResponse       *http.Response
-	ETag              *string
-	PreferenceApplied *string
-	Value             map[string]interface{}
+	RawResponse *http.Response
+	ETag        *string
 }
 
 func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) *AddEntityResponse {
@@ -48,10 +46,8 @@ func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) *Add
 	}
 
 	return &AddEntityResponse{
-		RawResponse:       g.RawResponse,
-		ETag:              g.ETag,
-		PreferenceApplied: g.PreferenceApplied,
-		Value:             g.Value,
+		RawResponse: g.RawResponse,
+		ETag:        g.ETag,
 	}
 }
 

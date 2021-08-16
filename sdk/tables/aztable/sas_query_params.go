@@ -22,8 +22,6 @@ const (
 	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
 )
 
-const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
-
 // FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a
 // SASField's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
 func FormatTimesForSASSigning(startTime, expiryTime time.Time) (string, string) {

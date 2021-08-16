@@ -13,38 +13,14 @@ import (
 
 // ByteArrayResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
 type ByteArrayResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
-
-	// PreferenceApplied contains the information returned from the Preference-Applied header response.
-	PreferenceApplied *string
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
 	// The other properties of the table entity.
 	Value []byte
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	XMSContinuationNextPartitionKey *string
-
-	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	XMSContinuationNextRowKey *string
 }
 
 func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (ByteArrayResponse, error) {
@@ -53,15 +29,9 @@ func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 		return ByteArrayResponse{}, err
 	}
 	return ByteArrayResponse{
-		ClientRequestID:                 m.ClientRequestID,
-		Date:                            m.Date,
-		ETag:                            m.ETag,
-		RawResponse:                     m.RawResponse,
-		RequestID:                       m.RequestID,
-		Value:                           marshalledValue,
-		Version:                         m.Version,
-		XMSContinuationNextPartitionKey: m.XMSContinuationNextPartitionKey,
-		XMSContinuationNextRowKey:       m.XMSContinuationNextRowKey,
+		ETag:        m.ETag,
+		RawResponse: m.RawResponse,
+		Value:       marshalledValue,
 	}, nil
 }
 
@@ -173,39 +143,3 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 		ODataType:     g.ODataType,
 	}
 }
-
-// TableListResponseResponse stores the results of a ListTables operation
-type TableListResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The properties for the table query response.
-	TableListResponse *TableListResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
-	XMSContinuationNextTableName *string
-}
-
-// func listResponseFromQueryResponse(q TableQueryResponseResponse) *TableListResponseResponse {
-// 	return &TableListResponseResponse{
-// 		ClientRequestID:              q.ClientRequestID,
-// 		Date:                         q.Date,
-// 		RawResponse:                  q.RawResponse,
-// 		RequestID:                    q.RequestID,
-// 		TableListResponse:            tableListResponseFromQueryResponse(q.TableQueryResponse),
-// 		Version:                      q.Version,
-// 		XMSContinuationNextTableName: q.XMSContinuationNextTableName,
-// 	}
-// }

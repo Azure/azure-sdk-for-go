@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 type TableTransactionActionType string
@@ -64,7 +65,7 @@ func (e *TableTransactionError) Error() string {
 type TableTransactionAction struct {
 	ActionType TableTransactionActionType
 	Entity     []byte
-	ETag       string
+	ETag       *string
 }
 
 type TableTransactionResponse struct {
@@ -308,13 +309,13 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		return fmt.Errorf("entity properties must contain a %s property", rowKey)
 	}
 	// Consider empty ETags as '*'
-	if len(transactionAction.ETag) == 0 {
-		transactionAction.ETag = "*"
+	if transactionAction.ETag == nil {
+		transactionAction.ETag = to.StringPtr("*")
 	}
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
+		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), *transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
 		if err != nil {
 			return err
 		}
@@ -327,8 +328,8 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		fallthrough
 	case InsertMerge:
 		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
-		if len(transactionAction.ETag) > 0 {
-			opts.IfMatch = &transactionAction.ETag
+		if transactionAction.ETag != nil {
+			opts.IfMatch = transactionAction.ETag
 		}
 		req, err = t.client.MergeEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
 		if err != nil {
@@ -340,7 +341,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateReplace:
 		fallthrough
 	case InsertReplace:
-		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: transactionAction.ETag}, qo)
 		if err != nil {
 			return err
 		}

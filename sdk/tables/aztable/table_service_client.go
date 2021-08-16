@@ -5,6 +5,7 @@ package aztable
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
@@ -91,7 +92,7 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) TableListResponsePager {
+func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return &tableQueryResponsePager{
 		client:            t.client,
 		listOptions:       listOptions,
@@ -161,14 +162,13 @@ func (t *TableServiceClient) SetProperties(ctx context.Context, properties Table
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 
-func (s TableServiceClient) CanGetAccountSASToken() bool {
-	return s.cred != nil
-}
-
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetAccountSASToken().
 func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+	cred, ok := t.cred.(*SharedKeyCredential)
+	if !ok {
+		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
 	return AccountSASSignatureValues{
 		Version:       SASVersion,
 		Protocol:      SASProtocolHTTPS,
@@ -177,13 +177,16 @@ func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
+	}.NewSASQueryParameters(cred)
 }
 
 // GetTableSASToken is a convenience method for generating a SAS token for a specific table.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetAccountSASToken().
 func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+	cred, ok := t.cred.(*SharedKeyCredential)
+	if !ok {
+		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
 	return TableSASSignatureValues{
 		TableName:         tableName,
 		Permissions:       permissions.String(),
@@ -193,14 +196,7 @@ func (t TableServiceClient) GetTableSASToken(tableName string, permissions Table
 		StartRowKey:       permissions.StartRowKey,
 		EndPartitionKey:   permissions.EndPartitionKey,
 		EndRowKey:         permissions.EndRowKey,
-	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
-}
-
-// CanGetSASToken returns true if the TableServiceClient was created with a SharedKeyCredential.
-// This method can be used to determine if a TableServiceClient is capable of creating a Table SAS or Account SAS
-func (t TableServiceClient) CanGetSASToken() bool {
-	_, ok := t.cred.(*SharedKeyCredential)
-	return ok
+	}.NewSASQueryParameters(cred)
 }
 
 func isCosmosEndpoint(url string) bool {

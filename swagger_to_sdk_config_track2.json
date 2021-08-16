@@ -23,6 +23,6 @@
     }
   },
   "packageOptions": {
-    "breakingChangeLabel": "CI-BreakingChange-Go"
+    "breakingChangeLabel": "CI-BreakingChange-Go-Track2"
   }
 }

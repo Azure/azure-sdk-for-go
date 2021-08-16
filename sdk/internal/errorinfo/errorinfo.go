@@ -3,7 +3,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package errinfo
+package errorinfo
 
 // NonRetriable represents a non-transient error.  This works in
 // conjunction with the retry policy, indicating that the error condition

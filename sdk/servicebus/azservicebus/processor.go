@@ -10,8 +10,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/utils"
 )
 
-var ErrReceiverClosed = errors.New("receiver has been closed and can no longer be used")
-
 type processorConfig struct {
 	fullEntityPath string
 	retryPolicy    RetryPolicy

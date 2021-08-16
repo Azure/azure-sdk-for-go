@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"testing"
 
-	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -30,7 +29,7 @@ func TestAddBasicEntity(t *testing.T) {
 
 			marshalled, err := json.Marshal(basicEntity)
 			require.Nil(t, err)
-			_, err = client.AddEntity(ctx, marshalled)
+			_, err = client.AddEntity(ctx, marshalled, nil)
 			require.Nil(t, err)
 
 			resp, err := client.GetEntity(ctx, "pk001", "rk001", nil)
@@ -43,7 +42,7 @@ func TestAddBasicEntity(t *testing.T) {
 			require.Equal(t, receivedEntity.RowKey, "rk001")
 
 			queryString := "PartitionKey eq 'pk001'"
-			listOptions := ListOptions{Filter: &queryString}
+			listOptions := ListEntitiesOptions{Filter: &queryString}
 			pager := client.List(&listOptions)
 			count := 0
 			for pager.NextPage(ctx) {
@@ -72,14 +71,11 @@ func TestEdmMarshalling(t *testing.T) {
 
 			marshalled, err := json.Marshal(edmEntity)
 			require.Nil(t, err)
-			_, err = client.AddEntity(ctx, marshalled)
+			_, err = client.AddEntity(ctx, marshalled, nil)
 			require.Nil(t, err)
 
-			fullMetadata := &generated.QueryOptions{
-				Format: generated.ODataMetadataFormatApplicationJSONODataFullmetadata.ToPtr(),
-			}
-
-			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), fullMetadata)
+			options := &GetEntityOptions{Format: FullODataMetadata}
+			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), options)
 			require.Nil(t, err)
 			var receivedEntity EDMEntity
 			err = json.Unmarshal(resp.Value, &receivedEntity)

@@ -23,11 +23,11 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			service, delete := initServiceTest(t, service)
 			defer delete()
-			_, err := service.CreateTable(context.Background(), "tableName")
+			_, err := service.CreateTable(context.Background(), "tableName", nil)
 			require.NoError(t, err)
 
 			// Create a duplicate table to produce an error
-			_, err = service.CreateTable(context.Background(), "tableName")
+			_, err = service.CreateTable(context.Background(), "tableName", nil)
 			require.Error(t, err)
 
 			var svcErr *runtime.ResponseError
@@ -48,7 +48,7 @@ func TestCreateTableFromService(t *testing.T) {
 			tableName, err := createRandomName(t, "tableName")
 			require.NoError(t, err)
 
-			resp, err := service.CreateTable(ctx, tableName)
+			resp, err := service.CreateTable(ctx, tableName, nil)
 			deleteTable := func() {
 				_, err := service.DeleteTable(ctx, tableName, nil)
 				if err != nil {
@@ -84,13 +84,13 @@ func TestQueryTable(t *testing.T) {
 					name := fmt.Sprintf("%v%v", prefix2, i)
 					tableNames[i] = name
 				}
-				_, err := service.CreateTable(ctx, tableNames[i])
+				_, err := service.CreateTable(ctx, tableNames[i], nil)
 				require.NoError(t, err)
 			}
 
 			// Query for tables with no pagination. The filter should exclude one table from the results
 			filter := fmt.Sprintf("TableName ge '%s' and TableName lt '%s'", prefix1, prefix2)
-			pager := service.ListTables(&ListOptions{Filter: &filter})
+			pager := service.ListTables(&ListTablesOptions{Filter: &filter})
 
 			resultCount := 0
 			for pager.NextPage(ctx) {
@@ -103,7 +103,7 @@ func TestQueryTable(t *testing.T) {
 
 			// Query for tables with pagination
 			top := int32(2)
-			pager = service.ListTables(&ListOptions{Filter: &filter, Top: &top})
+			pager = service.ListTables(&ListTablesOptions{Filter: &filter, Top: &top})
 
 			resultCount = 0
 			pageCount := 0
@@ -133,7 +133,7 @@ func TestListTables(t *testing.T) {
 			require.NoError(t, err)
 
 			for i := 0; i < 5; i++ {
-				_, err := service.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i))
+				_, err := service.CreateTable(ctx, fmt.Sprintf("%v%v", tableName, i), nil)
 				require.NoError(t, err)
 			}
 

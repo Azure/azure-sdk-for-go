@@ -103,7 +103,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 	require.NoError(t, err)
 
 	if createTable {
-		_, err = client.Create(context.Background())
+		_, err = client.Create(context.Background(), nil)
 		require.NoError(t, err)
 	}
 

@@ -34,16 +34,18 @@ func NewTableClient(tableName string, serviceURL string, cred azcore.Credential,
 }
 
 // Create creates the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Create(ctx context.Context) (generated.TableCreateResponse, error) {
-	return t.service.CreateTable(ctx, t.name)
+func (t *TableClient) Create(ctx context.Context, options *CreateTableOptions) (*CreateTableResponse, error) {
+	resp, err := t.service.CreateTable(ctx, t.name, options)
+	return createTableResponseFromGen(&resp), err
 }
 
 // Delete deletes the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Delete(ctx context.Context, options *generated.TableDeleteOptions) (generated.TableDeleteResponse, error) {
-	return t.service.DeleteTable(ctx, t.name, options)
+func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (*DeleteTableResponse, error) {
+	resp, err := t.service.DeleteTable(ctx, t.name, options.toGenerated())
+	return deleteTableResponseFromGen(&resp), err
 }
 
-// List queries the entities using the specified ListOptions.
+// List queries the entities using the specified ListEntitiesOptions.
 // ListOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An OData filter expression that limits results to those entities that satisfy the filter expression.
@@ -57,26 +59,29 @@ func (t *TableClient) Delete(ctx context.Context, options *generated.TableDelete
 //
 // List returns a Pager, which allows iteration through each page of results. Example:
 //
-// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
+// options := &ListEntitiesOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
 // pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) List(queryOptions *ListOptions) TableEntityQueryResponsePager {
+func (t *TableClient) List(listOptions *ListEntitiesOptions) TableEntityQueryResponsePager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
-		queryOptions:      queryOptions,
-		tableQueryOptions: &generated.TableQueryEntitiesOptions{}}
+		listOptions:       listOptions,
+		tableQueryOptions: &generated.TableQueryEntitiesOptions{},
+	}
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, queryOptions *generated.QueryOptions) (ByteArrayResponse, error) {
-	if queryOptions == nil {
-		queryOptions = &generated.QueryOptions{}
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (ByteArrayResponse, error) {
+	if options == nil {
+		options = &GetEntityOptions{}
 	}
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, queryOptions)
+
+	genOptions, queryOptions := options.toGenerated()
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, genOptions, queryOptions)
 	if err != nil {
 		return ByteArrayResponse{}, err
 	}
@@ -85,27 +90,28 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 
 // AddEntity adds an entity (described by a JSON byte slice) to the table. This method returns an error if an entity with
 // the same PartitionKey and RowKey already exists in the table.
-func (t *TableClient) AddEntity(ctx context.Context, entity []byte) (generated.TableInsertEntityResponse, error) {
+func (t *TableClient) AddEntity(ctx context.Context, entity []byte, options *AddEntityOptions) (AddEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
-		return generated.TableInsertEntityResponse{}, err
+		return AddEntityResponse{}, err
 	}
 	resp, err := t.client.InsertEntity(ctx, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
-		return generated.TableInsertEntityResponse{}, err
+		return AddEntityResponse{}, err
 	}
-	return resp, err
+	return *addEntityResponseFromGenerated(&resp), err
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
-func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag *string) (generated.TableDeleteEntityResponse, error) {
+func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag *string, options *DeleteEntityOptions) (*DeleteEntityResponse, error) {
 	if etag == nil {
 		nilEtag := "*"
 		etag = &nilEtag
 	}
-	return t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, *etag, nil, &generated.QueryOptions{})
+	resp, err := t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, *etag, options.toGenerated(), &generated.QueryOptions{})
+	return deleteEntityResponseFromGenerated(&resp), err
 }
 
 // UpdateEntity updates the specified table entity if it exists.
@@ -113,11 +119,16 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 // If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity. Properties not specified in the merge will be unaffected.
 // The specified etag value will be used for optimistic concurrency. If the etag does not match the value of the entity in the table, the operation will fail.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *string, updateMode EntityUpdateMode) (interface{}, error) {
+func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *string, updateMode EntityUpdateMode, options *UpdateEntityOptions) (interface{}, error) {
 	var ifMatch string = "*"
 	if etag != nil {
 		ifMatch = *etag
 	}
+
+	if options == nil {
+		options = &UpdateEntityOptions{}
+	}
+	options.IfMatch = &ifMatch
 
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
@@ -133,9 +144,11 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 
 	switch updateMode {
 	case MergeEntity:
-		return t.client.MergeEntity(ctx, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		resp, err := t.client.MergeEntity(ctx, t.name, partKey, rowkey, options.toGeneratedMergeEntity(mapEntity), &generated.QueryOptions{})
+		return updateEntityResponseFromMergeGenerated(&resp), err
 	case ReplaceEntity:
-		return t.client.UpdateEntity(ctx, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		resp, err := t.client.UpdateEntity(ctx, t.name, partKey, rowkey, options.toGeneratedUpdateEntity(mapEntity), &generated.QueryOptions{})
+		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
 	return nil, errors.New("Invalid EntityUpdateMode")
 }

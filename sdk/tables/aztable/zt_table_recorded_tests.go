@@ -58,7 +58,7 @@ func insertNEntities(pk string, n int, client *TableClient) error {
 		if err != nil {
 			return err
 		}
-		_, err = client.AddEntity(ctx, marshalled)
+		_, err = client.AddEntity(ctx, marshalled, nil)
 		if err != nil {
 			return err
 		}

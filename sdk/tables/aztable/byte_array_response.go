@@ -65,8 +65,8 @@ func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 	}, nil
 }
 
-// TableEntityQueryByteResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
-type TableEntityQueryByteResponseResponse struct {
+// ListEntitiesByteResponse is the response envelope for operations that return a TableEntityQueryResponse type.
+type ListEntitiesByteResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -101,12 +101,12 @@ type TableEntityQueryByteResponse struct {
 	Value [][]byte
 }
 
-func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (TableEntityQueryByteResponseResponse, error) {
+func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitiesByteResponse, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return TableEntityQueryByteResponseResponse{}, err
+			return ListEntitiesByteResponse{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
@@ -116,7 +116,7 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (TableEntity
 		Value:         marshalledValue,
 	}
 
-	return TableEntityQueryByteResponseResponse{
+	return ListEntitiesByteResponse{
 		ClientRequestID:                 resp.ClientRequestID,
 		Date:                            resp.Date,
 		RawResponse:                     resp.RawResponse,

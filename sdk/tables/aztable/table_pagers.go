@@ -29,14 +29,14 @@ type TableEntityQueryResponsePager interface {
 	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableEntityQueryByteResponseResponse
+	PageResponse() ListEntitiesByteResponse
 }
 
 type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
-	current           *TableEntityQueryByteResponseResponse
+	current           *ListEntitiesByteResponse
 	tableQueryOptions *generated.TableQueryEntitiesOptions
-	queryOptions      *ListOptions
+	listOptions       *ListEntitiesOptions
 	err               error
 }
 
@@ -48,7 +48,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryEntitiesResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.queryOptions.toQueryOptions())
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.listOptions.toQueryOptions())
 
 	c, err := castToByteResponse(&resp)
 	if err != nil {
@@ -69,7 +69,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryByteResponseResponse {
+func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesByteResponse {
 	return *p.current
 }
 
@@ -104,7 +104,7 @@ type tableQueryResponsePager struct {
 	client            *generated.TableClient
 	current           *generated.TableQueryResponseEnvelope
 	tableQueryOptions *generated.TableQueryOptions
-	queryOptions      *ListOptions
+	listOptions       *ListTablesOptions
 	err               error
 }
 
@@ -116,7 +116,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryResponseEnvelope
-	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions.toQueryOptions())
+	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.listOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0

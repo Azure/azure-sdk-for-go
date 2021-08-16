@@ -76,9 +76,9 @@ func TestBatchMixed(t *testing.T) {
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 
-			var qResp TableEntityQueryByteResponseResponse
+			var qResp ListEntitiesByteResponse
 			filter := "RowKey eq '1'"
-			list := &ListOptions{Filter: &filter}
+			list := &ListEntitiesOptions{Filter: &filter}
 			pager := client.List(list)
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
@@ -172,7 +172,7 @@ func TestBatchError(t *testing.T) {
 			// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
 			marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])
 			require.NoError(t, err)
-			client.AddEntity(ctx, marshalledFinalEntity)
+			client.AddEntity(ctx, marshalledFinalEntity, nil)
 
 			// Add the entities to the batch
 			for i := 0; i < cap(batch); i++ {

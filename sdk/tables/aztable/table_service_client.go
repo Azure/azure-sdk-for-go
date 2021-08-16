@@ -55,8 +55,11 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (generated.TableCreateResponse, error) {
-	return t.client.Create(ctx, generated.TableProperties{&name}, new(generated.TableCreateOptions), new(generated.QueryOptions))
+func (t *TableServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (generated.TableCreateResponse, error) {
+	if options == nil {
+		options = &CreateTableOptions{}
+	}
+	return t.client.Create(ctx, generated.TableProperties{&name}, options.toGenerated(), new(generated.QueryOptions))
 }
 
 // Delete deletes a table by name.
@@ -67,7 +70,7 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 	return t.client.Delete(ctx, name, options)
 }
 
-// List queries the existing tables using the specified ListOptions.
+// List queries the existing tables using the specified ListTablesOptions.
 // ListOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An OData filter expression that limits results to those tables that satisfy the filter expression.
@@ -78,17 +81,17 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 //
 // List returns a Pager, which allows iteration through each page of results. Example:
 //
-// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
+// options := &ListTablesOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
 // pager := client.List(options) // Pass in 'nil' if you want to return all Tables for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResponsePager {
+func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) TableQueryResponsePager {
 	return &tableQueryResponsePager{
 		client:            t.client,
-		queryOptions:      listOptions,
+		listOptions:       listOptions,
 		tableQueryOptions: new(generated.TableQueryOptions),
 	}
 }

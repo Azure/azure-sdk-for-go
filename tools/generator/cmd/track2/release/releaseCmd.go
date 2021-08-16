@@ -63,6 +63,7 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 
 type Flags struct {
 	VersionNumber string
+	RepoURL       string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -117,7 +118,7 @@ func (c *commandContext) execute() error {
 		CommitHash: specRef.Hash().String(),
 	}
 
-	result, err := generateCtx.GenerateForSingleRpNamespace(c.rpName, c.namespaceName, c.flags.VersionNumber)
+	result, err := generateCtx.GenerateForSingleRpNamespace(c.rpName, c.namespaceName, c.flags.VersionNumber, c.flags.RepoURL)
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

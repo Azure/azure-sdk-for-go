@@ -25,8 +25,9 @@ const (
 )
 
 var (
-	track2BeginRegex = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
-	track2EndRegex   = regexp.MustCompile("^\\s*```\\s*$")
+	track2BeginRegex               = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
+	track2EndRegex                 = regexp.MustCompile("^\\s*```\\s*$")
+	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
 )
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -105,7 +106,7 @@ func CleanSDKGeneratedFiles(path string) error {
 
 // replace all commit id in autorest.md files
 func ReplaceCommitID(path string, commitID string) error {
-	log.Printf("Replacing commit id from autorest.md ...")
+	log.Printf("Replacing commit id in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -115,6 +116,24 @@ func ReplaceCommitID(path string, commitID string) error {
 	for i, line := range lines {
 		if strings.HasPrefix(line, autorest_md_swagger_url_prefix) {
 			lines[i] = line[:len(autorest_md_swagger_url_prefix)] + commitID + line[len(autorest_md_swagger_url_prefix)+len(commitID):]
+		}
+	}
+
+	err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	return err
+}
+
+func ReplaceRepoURL(path string, repoUrl string) error {
+	log.Printf("Replacing repo url in autorest.md ...")
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if pos := autorestMdSwaggerURLBeginRegex.FindStringIndex(line); pos != nil {
+			lines[i] = line[:pos[0]] + repoUrl + "/" + line[pos[1]:]
 		}
 	}
 

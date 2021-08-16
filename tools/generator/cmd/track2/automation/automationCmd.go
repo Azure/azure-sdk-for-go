@@ -91,7 +91,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			CommitHash: ctx.commitHash,
 		}
 
-		namespaceResults, errors := generateCtx.GenerateForAutomation(readme)
+		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL)
 		if len(errors) != 0 {
 			errorBuilder.add(errors...)
 			continue

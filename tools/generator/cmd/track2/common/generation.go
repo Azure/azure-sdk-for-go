@@ -41,7 +41,7 @@ func (ctx GenerateContext) SpecRoot() string {
 	return ctx.SpecPath
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme string) ([]GenerateResult, []error) {
+func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
 
@@ -59,7 +59,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string) ([]GenerateResul
 	for rpName, namespaceNames := range rpMap {
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
-			singleResult, err := ctx.GenerateForSingleRpNamespace(rpName, namespaceName, "")
+			singleResult, err := ctx.GenerateForSingleRpNamespace(rpName, namespaceName, "", repo)
 			if err != nil {
 				errors = append(errors, err)
 				continue
@@ -70,7 +70,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string) ([]GenerateResul
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName string, specficVersion string) (*GenerateResult, error) {
+func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName string, specficVersion string, specficRepoURL string) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SdkPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
@@ -84,6 +84,14 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName st
 			Commit:       ctx.CommitHash,
 		}); err != nil {
 			return nil, err
+		}
+
+		if specficRepoURL != "" {
+			log.Printf("Change the repo url in `autorest.md`...")
+			autorestMdPath := filepath.Join(packagePath, "autorest.md")
+			if err = ReplaceRepoURL(autorestMdPath, specficRepoURL); err != nil {
+				return nil, err
+			}
 		}
 
 		log.Printf("Run `go generate` to regenerate the code...")
@@ -129,6 +137,13 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName st
 			return nil, err
 		}
 
+		if specficRepoURL != "" {
+			log.Printf("Change the repo url in `autorest.md`...")
+			if err = ReplaceRepoURL(autorestMdPath, specficRepoURL); err != nil {
+				return nil, err
+			}
+		}
+
 		log.Printf("Run `go generate` to regenerate the code...")
 		if err = ExecuteGoGenerate(packagePath); err != nil {
 			return nil, err
@@ -146,7 +161,7 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName st
 
 		log.Printf("Calculate new version...")
 		var version *semver.Version
-		if len(specficVersion) == 0 {
+		if specficVersion == "" {
 			version, err = CalculateNewVersion(changelog, packagePath)
 			if err != nil {
 				return nil, err

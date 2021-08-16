@@ -6,6 +6,7 @@ package aztable
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -29,12 +30,10 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	}
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
+		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
 	}
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
-	for _, p := range options.PerCallOptions {
-		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, p)
-	}
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
 	con := newConnection(serviceURL, conOptions)
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: cred}, nil
 }
@@ -80,7 +79,7 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableQueryResponsePager {
+func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableListResponsePager {
 	return &tableQueryResponsePager{
 		client:            t.client,
 		queryOptions:      listOptions,
@@ -145,6 +144,48 @@ func (t *TableServiceClient) SetProperties(ctx context.Context, properties Table
 		options = &ServiceSetPropertiesOptions{}
 	}
 	return t.service.SetProperties(ctx, properties, options)
+}
+
+func (s TableServiceClient) CanGetAccountSASToken() bool {
+	return s.cred != nil
+}
+
+// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+	return AccountSASSignatureValues{
+		Version:       SASVersion,
+		Protocol:      SASProtocolHTTPS,
+		Permissions:   permissions.String(),
+		Services:      "t",
+		ResourceTypes: resources.String(),
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
+	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
+}
+
+// GetTableSASToken is a convenience method for generating a SAS token for a specific table.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+	return TableSASSignatureValues{
+		TableName:         tableName,
+		Permissions:       permissions.String(),
+		StartTime:         start,
+		ExpiryTime:        expiry,
+		StartPartitionKey: permissions.StartPartitionKey,
+		StartRowKey:       permissions.StartRowKey,
+		EndPartitionKey:   permissions.EndPartitionKey,
+		EndRowKey:         permissions.EndRowKey,
+	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
+}
+
+// CanGetSASToken returns true if the TableServiceClient was created with a SharedKeyCredential.
+// This method can be used to determine if a TableServiceClient is capable of creating a Table SAS or Account SAS
+func (t TableServiceClient) CanGetSASToken() bool {
+	_, ok := t.cred.(*SharedKeyCredential)
+	return ok
 }
 
 func isCosmosEndpoint(url string) bool {

@@ -6,7 +6,6 @@ package aztable
 import (
 	"context"
 	"encoding/json"
-	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -19,6 +18,8 @@ type TableClient struct {
 	Name    string
 }
 
+// EntityUpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
+// will replace an existing entity, MergeEntity will merge properties of the entities.
 type EntityUpdateMode string
 
 const (
@@ -56,17 +57,19 @@ func (t *TableClient) Delete(ctx context.Context, options *TableDeleteOptions) (
 //
 // List returns a Pager, which allows iteration through each page of results. Example:
 //
-// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
-// pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
-// }
-// err := pager.Err()
-func (t *TableClient) List(queryOptions *ListOptions) TableEntityQueryResponsePager {
+//
+// 		options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
+// 		pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
+// 		for pager.NextPage(ctx) {
+//     			resp = pager.PageResponse()
+//     			fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+// 		}
+// 		err := pager.Err()
+// 		handle(err)
+func (t *TableClient) List(listOptions *ListOptions) TableEntityListResponsePager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
-		queryOptions:      queryOptions,
+		queryOptions:      listOptions,
 		tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
@@ -138,7 +141,7 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 	case ReplaceEntity:
 		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
-	return nil, errors.New("Invalid EntityUpdateMode")
+	return nil, errInvalidUpdateMode
 }
 
 // InsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity is
@@ -164,7 +167,7 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 	case ReplaceEntity:
 		return t.client.UpdateEntity(ctx, t.Name, partKey, rowkey, &TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &QueryOptions{})
 	}
-	return nil, errors.New("Invalid EntityUpdateMode")
+	return nil, errInvalidUpdateMode
 }
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
@@ -175,7 +178,7 @@ func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArra
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
 func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
 	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
-	if len(*&options.TableACL) > 5 {
+	if len(options.TableACL) > 5 {
 		err = tooManyAccessPoliciesError
 	}
 	return response, err

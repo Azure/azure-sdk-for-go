@@ -157,7 +157,7 @@ func TestMergeEntity(t *testing.T) {
 	}
 }
 
-func TestUpsertEntity(t *testing.T) {
+func TestInsertEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)

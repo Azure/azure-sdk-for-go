@@ -32,8 +32,8 @@ const (
 	UpdateMerge   TableTransactionActionType = "updatemerge"
 	UpdateReplace TableTransactionActionType = "updatereplace"
 	Delete        TableTransactionActionType = "delete"
-	UpsertMerge   TableTransactionActionType = "upsertmerge"
-	UpsertReplace TableTransactionActionType = "upsertreplace"
+	InsertMerge   TableTransactionActionType = "insertmerge"
+	InsertReplace TableTransactionActionType = "insertreplace"
 )
 
 const (
@@ -325,7 +325,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		}
 	case UpdateMerge:
 		fallthrough
-	case UpsertMerge:
+	case InsertMerge:
 		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
@@ -339,7 +339,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		}
 	case UpdateReplace:
 		fallthrough
-	case UpsertReplace:
+	case InsertReplace:
 		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 		if err != nil {
 			return err

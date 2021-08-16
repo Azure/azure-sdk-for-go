@@ -13,12 +13,43 @@ import (
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations
 
+// The Entity type is the bare minimum properties for a valid Entity. These should be embedded in a custom struct
+// type MyEntity struct {
+// 		Entity
+// 		Value 		int
+// 		StringValue string
+// 		BoolValue 	bool
+// }
+// myEntity := MyEntity{
+// 		Entity: Entity{
+// 			PartitionKey: "pk001",
+// 			RowKey: 	  "rk001",
+// 		},
+// 		Value: 		 10,
+// 		StringValue: "somestring",
+// 		BoolValue: 	 false,
+// }
 type Entity struct {
 	PartitionKey string
 	RowKey       string
 	Timestamp    EDMDateTime
 }
 
+// EdmEntity is an entity that embeds the azcore.Entity type and has a Properties map for an unlimited
+// number of custom properties. The EdmEntity will serialize EDMGuid/EdmInt64/EDMDateTime/EdmBinary according to Odata annotations
+// myEntity := EdmEntity{
+// 		Entity: Entity{
+// 			PartitionKey: "pk001",
+// 			RowKey:       "rk001",
+// 		}
+// 		Properties: map[string]interface{}{
+// 			"Value":    10,
+// 			"Binary":   EdmBinary([]byte{"bytevalue"}),
+// 			"DateTime": EDMDateTime(time.Now()),
+// 			"Int64":    EdmInt64(123456789012345),
+
+// 		}
+// }
 type EDMEntity struct {
 	Metadata string `json:"odata.metadata"`
 	Id       string `json:"odata.id"`
@@ -127,6 +158,8 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 	return
 }
 
+// EdmBinary represents an Entity Property that is a byte slice. A byte slice wrapped in
+// EdmBinary will also receive the correct odata annotation for round-trip accuracy.
 type EDMBinary []byte
 
 func (e EDMBinary) MarshalText() ([]byte, error) {
@@ -142,6 +175,8 @@ func (e *EDMBinary) UnmarshalText(data []byte) error {
 	return nil
 }
 
+// EdmInt64 represents an entity property that is a 64-bit integer. Using EdmInt64 guarantees
+// proper odata type annotations.
 type EDMInt64 int64
 
 func (e EDMInt64) MarshalText() ([]byte, error) {
@@ -157,6 +192,8 @@ func (e *EDMInt64) UnmarshalText(data []byte) error {
 	return nil
 }
 
+// EDMGuid represents an entity property that is a GUID wrapped in a string. Using EDMGuid guarantees
+// proper odata type annotations.
 type EDMGuid string
 
 func (e EDMGuid) MarshalText() ([]byte, error) {
@@ -168,6 +205,8 @@ func (e *EDMGuid) UnmarshalText(data []byte) error {
 	return nil
 }
 
+// EDMDateTime represents an entity property that is a time.Time object. Using EDMDateTime guarantees
+// proper odata type annotations.
 type EDMDateTime time.Time
 
 const rfc3339 = "2006-01-02T15:04:05.9999999Z"

@@ -11,7 +11,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// ByteArrayResponse converts the MapOfInterfaceResponse.Value from a map[string]interface{} to a []byte
+// ByteArrayResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
 type ByteArrayResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
@@ -127,3 +127,54 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 	}, nil
 }
+
+type TableListResponse struct {
+	// The metadata response of the table.
+	OdataMetadata *string `json:"odata.metadata,omitempty"`
+
+	// List of tables.
+	Value []*generated.TableResponseProperties `json:"value,omitempty"`
+}
+
+func tableListResponseFromQueryResponse(q *generated.TableQueryResponse) *TableListResponse {
+	return &TableListResponse{
+		OdataMetadata: q.ODataMetadata,
+		Value:         q.Value,
+	}
+}
+
+// TableListResponseResponse stores the results of a ListTables operation
+type TableListResponseResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// The properties for the table query response.
+	TableListResponse *TableListResponse
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
+	XMSContinuationNextTableName *string
+}
+
+// func listResponseFromQueryResponse(q TableQueryResponseResponse) *TableListResponseResponse {
+// 	return &TableListResponseResponse{
+// 		ClientRequestID:              q.ClientRequestID,
+// 		Date:                         q.Date,
+// 		RawResponse:                  q.RawResponse,
+// 		RequestID:                    q.RequestID,
+// 		TableListResponse:            tableListResponseFromQueryResponse(q.TableQueryResponse),
+// 		Version:                      q.Version,
+// 		XMSContinuationNextTableName: q.XMSContinuationNextTableName,
+// 	}
+// }

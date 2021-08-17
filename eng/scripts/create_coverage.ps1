@@ -5,6 +5,7 @@ Param(
 )
 
 Write-Host $serviceDirectory
+Push-Location $serviceDirectory
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
@@ -22,4 +23,5 @@ Get-Content ./coverage.json | gocov-xml > ./coverage.xml
 Get-Content ./coverage.json | gocov-html > ./coverage.html
 
 # use internal tool to fail if coverage is too low
+Pop-Location
 go run ../tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory

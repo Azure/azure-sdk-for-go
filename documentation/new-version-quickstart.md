@@ -172,7 +172,7 @@ var (
 	subscriptionId    = os.Getenv("AZURE_SUBSCRIPTION_ID")
 	location          = "westus2"
 	resourceGroupName = "resourceGroupName"
-    interval          = 5 * time.Second
+       interval          = 5 * time.Second
 )
 ```
 

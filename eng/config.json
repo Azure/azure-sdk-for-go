@@ -6,7 +6,7 @@
         },
         {
             "Name": "azcore",
-            "CoverageGoal": 0.68
+            "CoverageGoal": 0.85
         },
         {
             "Name": "internal",

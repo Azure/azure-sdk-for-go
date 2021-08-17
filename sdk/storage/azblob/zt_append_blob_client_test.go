@@ -7,11 +7,12 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
@@ -170,8 +171,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	offset := int64(0)
 	count := int64(CountToEnd)
 	appendBlockURLOptions := AppendBlockURLOptions{
-		Offset: &offset,
-		Count:  &count,
+		Range: &HttpRange{
+			offset,
+			count,
+		},
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_assert.Nil(err)
@@ -264,8 +267,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	count := int64(contentSize)
 	contentMD5 := md5Value[:]
 	appendBlockURLOptions := AppendBlockURLOptions{
-		Offset:           &offset,
-		Count:            &count,
+		Range: &HttpRange{
+			offset,
+			count,
+		},
 		SourceContentMD5: contentMD5,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
@@ -293,8 +298,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	// Test append block from URL with bad MD5 value
 	_, badMD5 := getRandomDataAndReader(16)
 	appendBlockURLOptions = AppendBlockURLOptions{
-		Offset:           &offset,
-		Count:            &count,
+		Range: &HttpRange{
+			offset,
+			count,
+		},
 		SourceContentMD5: badMD5,
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)

@@ -9,13 +9,13 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobTestSuite) TestStageGetBlocks() {
@@ -141,8 +141,10 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	blockIDs := generateBlockIDsList(2)
 
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
-		Offset: to.Int64Ptr(0),
-		Count:  to.Int64Ptr(int64(contentSize / 2)),
+		Range: &HttpRange{
+			offset: 0,
+			count: int64(contentSize / 2),
+		},
 	})
 	_assert.Nil(err)
 	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
@@ -152,8 +154,10 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert.Equal(stageResp1.Date.IsZero(), false)
 
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
-		Offset: to.Int64Ptr(int64(contentSize / 2)),
-		Count:  to.Int64Ptr(int64(CountToEnd)),
+		Range: &HttpRange{
+			offset: int64(contentSize / 2),
+			count: CountToEnd,
+		},
 	})
 	_assert.Nil(err)
 	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
@@ -1228,8 +1232,10 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	offset1, count1 := int64(0), int64(4*1024)
 	options1 := StageBlockFromURLOptions{
-		Offset: &offset1,
-		Count:  &count1,
+		Range: &HttpRange{
+			offset: offset1,
+			count: count1,
+		},
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	_assert.Nil(err)
@@ -1242,8 +1248,10 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
-		Offset: &offset2,
-		Count:  &count2,
+		Range: &HttpRange{
+			offset: offset2,
+			count: count2,
+		},
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	_assert.Nil(err)

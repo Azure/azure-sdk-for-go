@@ -7,10 +7,11 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"time"
+
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobTestSuite) TestPutGetPages() {
@@ -117,7 +118,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Upload page from URL.
-	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), nil)
+	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{0, int64(contentSize)}, 0, nil)
 	_assert.Nil(err)
 	_assert.Equal(pResp1.RawResponse.StatusCode, 201)
 	_assert.NotNil(pResp1.ETag)
@@ -185,7 +186,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 	}
-	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{0, int64(contentSize)}, 0, &uploadPagesFromURLOptions)
 	_assert.Nil(err)
 	_assert.Equal(pResp1.RawResponse.StatusCode, 201)
 	_assert.NotNil(pResp1.ETag)
@@ -211,7 +212,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	uploadPagesFromURLOptions = UploadPagesFromURLOptions{
 		SourceContentMD5: badContentMD5,
 	}
-	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{0, int64(contentSize)}, 0, &uploadPagesFromURLOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)

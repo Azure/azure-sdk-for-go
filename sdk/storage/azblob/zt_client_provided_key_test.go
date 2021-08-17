@@ -10,12 +10,13 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/stretchr/testify/assert"
 )
 
 //import (
@@ -234,8 +235,10 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	offset1, count1 := int64(0), int64(4*1024)
 	options1 := StageBlockFromURLOptions{
-		Offset:  &offset1,
-		Count:   &count1,
+		Range: &HttpRange{
+			offset: offset1,
+			count: count1,
+		},
 		CpkInfo: &testCPKByValue,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
@@ -249,8 +252,10 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
-		Offset:  &offset2,
-		Count:   &count2,
+		Range: &HttpRange{
+			offset: offset2,
+			count: count2,
+		},
 		CpkInfo: &testCPKByValue,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
@@ -350,8 +355,10 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	offset1, count1 := int64(0), int64(4*1024)
 	options1 := StageBlockFromURLOptions{
-		Offset:       &offset1,
-		Count:        &count1,
+		Range: &HttpRange{
+			offset: offset1,
+			count: count1,
+		},
 		CpkScopeInfo: &testCPKByScope,
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
@@ -365,8 +372,10 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	offset2, count2 := int64(4*1024), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
-		Offset:       &offset2,
-		Count:        &count2,
+		Range: &HttpRange{
+			offset: offset2,
+			count: count2,
+		},
 		CpkScopeInfo: &testCPKByScope,
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
@@ -684,8 +693,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	offset := int64(0)
 	count := int64(contentSize)
 	appendBlockURLOptions := AppendBlockURLOptions{
-		Offset:  &offset,
-		Count:   &count,
+		Range: &HttpRange{
+			offset,
+			count,
+		},
 		CpkInfo: &testCPKByValue,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
@@ -793,8 +804,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	offset := int64(0)
 	count := int64(contentSize)
 	appendBlockURLOptions := AppendBlockURLOptions{
-		Offset:       &offset,
-		Count:        &count,
+		Range: &HttpRange{
+			offset,
+			count,
+		},
 		CpkScopeInfo: &testCPKByScope,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
@@ -978,7 +991,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
-	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{ offset: 0, count: int64(contentSize)}, 0, &uploadPagesFromURLOptions)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	_assert.NotNil(resp.ETag)
@@ -1062,7 +1075,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 		SourceContentMD5: contentMD5,
 		CpkScopeInfo:     &testCPKByScope,
 	}
-	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{offset: 0, count: int64(contentSize)}, 0, &uploadPagesFromURLOptions)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	_assert.NotNil(resp.ETag)
@@ -1137,7 +1150,7 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
 	}
-	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{0, int64(contentSize)}, 0, &uploadPagesFromURLOptions)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	_assert.NotNil(resp.ETag)
@@ -1178,7 +1191,7 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	uploadPagesFromURLOptions1 := UploadPagesFromURLOptions{
 		SourceContentMD5: badContentMD5,
 	}
-	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
+	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, HttpRange{0, int64(contentSize)}, 0, &uploadPagesFromURLOptions1)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)

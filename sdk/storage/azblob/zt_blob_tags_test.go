@@ -8,10 +8,11 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
@@ -274,8 +275,10 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 
 	offset1, count1 := int64(0), int64(contentSize/2)
 	options1 := StageBlockFromURLOptions{
-		Offset: &offset1,
-		Count:  &count1,
+		Range: &HttpRange{
+			count: count1,
+			offset: offset1,
+		},
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	_assert.Nil(err)
@@ -287,8 +290,10 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 
 	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
-		Offset: &offset2,
-		Count:  &count2,
+		Range: &HttpRange{
+			count: count2,
+			offset: offset2,
+		},
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	_assert.Nil(err)

@@ -78,8 +78,7 @@ type AppendBlockURLOptions struct {
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	BlobAccessConditions
 	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	Range *HttpRange
 }
 
 func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions, *AppendPositionAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions, *SourceModifiedAccessConditions) {
@@ -88,7 +87,7 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 	}
 
 	options := &AppendBlobAppendBlockFromURLOptions{
-		SourceRange:             getSourceRange(o.Offset, o.Count),
+		SourceRange:             o.Range.pointers(),
 		SourceContentMD5:        o.SourceContentMD5,
 		SourceContentcrc64:      o.SourceContentCRC64,
 		TransactionalContentMD5: o.TransactionalContentMD5,

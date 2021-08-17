@@ -64,9 +64,8 @@ type StageBlockFromURLOptions struct {
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 []byte
 
-	Offset *int64
+	Range *HttpRange
 
-	Count *int64
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 
@@ -83,7 +82,7 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 		RequestID:          o.RequestID,
 		SourceContentMD5:   o.SourceContentMD5,
 		SourceContentcrc64: o.SourceContentcrc64,
-		SourceRange:        getSourceRange(o.Offset, o.Count),
+		SourceRange:        o.Range.pointers(),
 		Timeout:            o.Timeout,
 	}
 

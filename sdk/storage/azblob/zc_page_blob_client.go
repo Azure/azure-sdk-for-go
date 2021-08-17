@@ -5,10 +5,11 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net/url"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const (
@@ -95,10 +96,10 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 // The destOffset specifies the start offset of data in page blob will be written to.
 // The count must be a multiple of 512 bytes.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page-from-url.
-func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
+func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceRange HttpRange, destOffset int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
 	uploadOptions, cpkInfo, cpkScope, snac, smac, lac, mac := options.pointers()
 
-	resp, err := pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
+	resp, err := pb.client.UploadPagesFromURL(ctx, source, *sourceRange.pointers(), 0, rangeToString(destOffset, sourceRange.count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
 
 	return resp, handleError(err)
 }

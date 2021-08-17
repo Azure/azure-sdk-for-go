@@ -18,5 +18,5 @@ func newCosmosContainer(id string, database *CosmosDatabase) *CosmosContainer {
 	return &CosmosContainer{
 		Id:       id,
 		Database: database,
-		link:     database.client.connection.getPath(database.link, pathSegmentCollection, id)}
+		link:     getPath(database.link, pathSegmentCollection, id)}
 }

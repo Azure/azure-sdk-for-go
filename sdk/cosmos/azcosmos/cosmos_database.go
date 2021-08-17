@@ -3,7 +3,10 @@
 
 package azcosmos
 
-import "errors"
+import (
+	"context"
+	"errors"
+)
 
 // A CosmosDatabase lets you perform read, update, change throughput, and delete database operations.
 type CosmosDatabase struct {
@@ -19,7 +22,7 @@ func newCosmosDatabase(id string, client *CosmosClient) *CosmosDatabase {
 	return &CosmosDatabase{
 		Id:     id,
 		client: client,
-		link:   client.connection.getPath("", pathSegmentDatabase, id)}
+		link:   getPath("", pathSegmentDatabase, id)}
 }
 
 // GetContainer returns a CosmosContainer object for the container.
@@ -30,4 +33,22 @@ func (db *CosmosDatabase) GetContainer(id string) (*CosmosContainer, error) {
 	}
 
 	return newCosmosContainer(id, db), nil
+}
+
+func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &CosmosDatabaseRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: db.link,
+	}
+
+	azResponse, err := db.client.connection.sendGetRequest(ctx, operationContext, requestOptions)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	return newCosmosDatabaseResponse(azResponse)
 }

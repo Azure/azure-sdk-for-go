@@ -424,20 +424,33 @@ func ExampleBlobAccessConditions() {
 	// showResult(upload, err)
 
 	// Download blob content if the blob has been modified since we uploaded it (fails):
-	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: upload.LastModified}}))
+	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: upload.LastModified}}}))
 
 	// Download blob content if the blob hasn't been modified in the last 24 hours (fails):
-	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))}}))
+	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))}}}))
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
-	upload, err = blockBlob.Upload(ctx, strings.NewReader("Text-2"), &UploadBlockBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: upload.ETag}})
+	upload, err = blockBlob.Upload(ctx, strings.NewReader("Text-2"),
+		&UploadBlockBlobOptions{
+			BlobAccessConditions: &BlobAccessConditions{
+				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: upload.ETag},
+			},
+		})
 	showResultUpload(upload, err)
 
 	// Download content if it has changed since the version identified by ETag (fails):
-	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: upload.ETag}}))
+	showResult(blockBlob.Download(ctx,
+		&DownloadBlobOptions{
+			BlobAccessConditions: &BlobAccessConditions{
+				ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
+		}))
 
 	// Upload content if the blob doesn't already exist (fails):
-	showResultUpload(blockBlob.Upload(ctx, strings.NewReader("Text-3"), &UploadBlockBlobOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr(ETagAny)}}))
+	showResultUpload(blockBlob.Upload(ctx, strings.NewReader("Text-3"),
+		&UploadBlockBlobOptions{
+			BlobAccessConditions: &BlobAccessConditions{
+				ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr(ETagAny)},
+			}}))
 }
 
 // This examples shows how to create a container with metadata and then how to read & update the metadata.

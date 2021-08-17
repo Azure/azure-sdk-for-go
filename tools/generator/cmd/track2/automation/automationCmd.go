@@ -19,7 +19,7 @@ import (
 // azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "automation-track2 <generate input filepath> <generate output filepath>",
+		Use:  "automation-new-version <generate input filepath> <generate output filepath>",
 		Args: cobra.ExactArgs(2),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0) // remove the time stamp prefix

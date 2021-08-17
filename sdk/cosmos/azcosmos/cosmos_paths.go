@@ -4,7 +4,6 @@
 package azcosmos
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -20,6 +19,6 @@ func getResourcePath(resourceType resourceType) (string, error) {
 	case resourceTypeCollection:
 		return pathSegmentCollection, nil
 	default:
-		return "", errors.New(fmt.Sprintf("%v is not a valid resource type", resourceType))
+		return "", fmt.Errorf("%v is not a valid resource type", resourceType)
 	}
 }

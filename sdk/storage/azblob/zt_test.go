@@ -10,7 +10,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/testframework"
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"io/ioutil"
@@ -64,14 +64,14 @@ func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
 		func(msg string) { t.Log(msg) },
 		func() string { return testName })
 
-	// mode should be testframework.Playback.
+	// mode should be test_framework.Playback.
 	// This will automatically record if no test recording is available and playback if it is.
 	recording, err := testframework.NewRecording(_testContext, mode)
 	_assert.Nil(err)
 
-	_, err = recording.GetRecordedVariable(AccountNameEnvVar, testframework.Default)
-	_, err = recording.GetRecordedVariable(AccountKeyEnvVar, testframework.Secret_Base64String)
-	_ = recording.GetOptionalRecordedVariable(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.Default)
+	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
+	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
+	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
 
 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
 }
@@ -109,8 +109,11 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 func ignoreHeaders(recording *testframework.Recording, headers []string) {
 	ignoredHeaders := recording.Matcher.IgnoredHeaders
 	for _, header := range headers {
-		ignoredHeaders[header] = nil
+		// TODO: Mohit Come Here
+		//ignoredHeaders[header] = nil
+		_ = header
 	}
+	_ = ignoredHeaders
 }
 
 // Vars for
@@ -372,11 +375,11 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 			log.Fatalln(err)
 		}
 	} else {
-		accountName, err = recording.GetRecordedVariable(accountNameEnvVar, testframework.Default)
+		accountName, err = recording.GetEnvVar(accountNameEnvVar, testframework.NoSanitization)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		accountKey, err = recording.GetRecordedVariable(accountKeyEnvVar, testframework.Secret_Base64String)
+		accountKey, err = recording.GetEnvVar(accountKeyEnvVar, testframework.Secret_Base64String)
 		if err != nil {
 			log.Fatalln(err)
 		}

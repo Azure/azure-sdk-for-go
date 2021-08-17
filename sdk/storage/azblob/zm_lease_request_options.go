@@ -4,8 +4,8 @@
 package azblob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	guuid "github.com/google/uuid"
 )
 
 type AcquireLeaseBlobOptions struct {
@@ -56,7 +56,7 @@ type ChangeLeaseBlobOptions struct {
 }
 
 func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseI *string, modifiedAccessConditions *ModifiedAccessConditions) {
-	leaseID := to.StringPtr(guuid.New().String())
+	leaseID := to.StringPtr(uuid.New().String())
 	if o == nil {
 		return leaseID, nil
 	}
@@ -131,7 +131,7 @@ type ChangeLeaseContainerOptions struct {
 }
 
 func (o *ChangeLeaseContainerOptions) pointers() (proposedLeaseID *string, modifiedAccessConditions *ModifiedAccessConditions) {
-	leaseID := to.StringPtr(guuid.New().String())
+	leaseID := to.StringPtr(uuid.New().String())
 	if o == nil {
 		return leaseID, nil
 	}

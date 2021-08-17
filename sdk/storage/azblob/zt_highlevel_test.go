@@ -6,7 +6,7 @@ package azblob
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/testframework"
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"

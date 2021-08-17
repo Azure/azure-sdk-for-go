@@ -440,9 +440,6 @@ type BlobDownloadResponse struct {
 	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
 	IsServerEncrypted *bool
 
-	// LastAccessed contains the information returned from the x-ms-last-access-time header response.
-	LastAccessed *time.Time
-
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
@@ -637,9 +634,6 @@ type BlobGetPropertiesResponse struct {
 
 	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
 	IsServerEncrypted *bool
-
-	// LastAccessed contains the information returned from the x-ms-last-access-time header response.
-	LastAccessed *time.Time
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time

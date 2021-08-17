@@ -57,12 +57,10 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	}
 }
 
-func (s *azblobTestSuite) TestSetBlobTagsWithVID() {
+func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -116,12 +114,12 @@ func (s *azblobTestSuite) TestSetBlobTagsWithVID() {
 	_assert.Nil(blobGetTagsResponse.Tags.BlobTagSet)
 }
 
-func (s *azblobTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
+func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -155,12 +153,12 @@ func (s *azblobTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	}
 }
 
-func (s *azblobTestSuite) TestStageBlockWithTags() {
+func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -416,12 +414,12 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_assert.Equal(resp.RawResponse.StatusCode, 202)
 }
 
-func (s *azblobTestSuite) TestGetPropertiesReturnsTagsCount() {
+func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -450,12 +448,12 @@ func (s *azblobTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_assert.Equal(*downloadResp.TagCount, int64(3))
 }
 
-func (s *azblobTestSuite) TestSetBlobTagForSnapshot() {
+func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	// _context := getTestContext(testName)
+	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -485,12 +483,12 @@ func (s *azblobTestSuite) TestSetBlobTagForSnapshot() {
 }
 
 // TODO: Once new pacer is done.
-func (s *azblobTestSuite) TestListBlobReturnsTags() {
+func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -535,12 +533,12 @@ func (s *azblobTestSuite) TestListBlobReturnsTags() {
 	}
 }
 
-//func (s *azblobTestSuite) TestFindBlobsByTags() {
+//func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
 //	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -607,7 +605,7 @@ func (s *azblobTestSuite) TestListBlobReturnsTags() {
 //	}
 //}
 
-//func (s *azblobTestSuite) TestFilterBlobsUsingAccountSAS() {
+//func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()
 //	credential, err := NewSharedKeyCredential(accountName, accountKey)
 //	if err != nil {
@@ -663,12 +661,10 @@ func (s *azblobTestSuite) TestListBlobReturnsTags() {
 //	_assert.Nil(err)
 //}
 
-func (s *azblobTestSuite) TestCreatePageBlobWithTags() {
+func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -778,12 +774,12 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	}
 }
 
-func (s *azblobTestSuite) TestCreateAppendBlobWithTags() {
+func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	// _context := getTestContext(testName)
+	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}

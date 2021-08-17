@@ -188,7 +188,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataNil() {
 	anotherBlobName := "copy" + blockBlobName
 	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
-	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
+	// Have the destination start with metadata, so we ensure the nil metadata passed later takes effect
 	_, err = copyBlobClient.Upload(ctx, azcore.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_assert.Nil(err)
 
@@ -221,7 +221,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 	anotherBlobName := "copy" + blobName
 	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
-	// Have the destination start with metadata so we ensure the empty metadata passed later takes effect
+	// Have the destination start with metadata, so we ensure the empty metadata passed later takes effect
 	_, err = copyBlobClient.Upload(ctx, azcore.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_assert.Nil(err)
 

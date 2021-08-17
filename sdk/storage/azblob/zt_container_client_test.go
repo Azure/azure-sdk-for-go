@@ -319,6 +319,65 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	//_assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
 }
 
+func (s *azblobTestSuite) TestContainerCreateIfExists() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
+
+	// Public Access Type None
+	_, err = containerClient.Create(ctx, nil)
+	defer deleteContainer(_assert, containerClient)
+
+	access := PublicAccessTypeBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: nil,
+	}
+	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
+	_assert.Nil(err)
+
+	// Ensure that next create call doesn't update the properties of already created container
+	getResp, err := containerClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Nil(getResp.BlobPublicAccess)
+	_assert.Nil(getResp.Metadata)
+}
+
+func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
+
+	access := PublicAccessTypeBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: basicMetadata,
+	}
+	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
+	_assert.Nil(err)
+	defer deleteContainer(_assert, containerClient)
+
+	// Ensure that next create call doesn't update the properties of already created container
+	getResp, err := containerClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
+	_assert.EqualValues(getResp.Metadata, basicMetadata)
+}
+
 func validateContainerDeleted(_assert *assert.Assertions, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	_assert.NotNil(err)
@@ -342,6 +401,44 @@ func (s *azblobTestSuite) TestContainerDelete() {
 	_assert.Nil(err)
 
 	validateContainerDeleted(_assert, containerClient)
+}
+
+func (s *azblobTestSuite) TestContainerDeleteIfExists() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
+
+	// Public Access Type None
+	_, err = containerClient.Create(ctx, nil)
+	defer deleteContainer(_assert, containerClient)
+
+	_, err = containerClient.DeleteIfExists(ctx, nil)
+	_assert.Nil(err)
+
+	validateContainerDeleted(_assert, containerClient)
+}
+
+func (s *azblobTestSuite) TestContainerDeleteIfNotExists() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
+
+	_, err = containerClient.DeleteIfExists(ctx, nil)
+	_assert.Nil(err)
 }
 
 func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
@@ -1035,7 +1132,6 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
 	}
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
-
 	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessTypeBlob

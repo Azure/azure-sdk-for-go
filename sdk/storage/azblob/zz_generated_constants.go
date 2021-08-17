@@ -434,7 +434,6 @@ type QueryFormatType string
 const (
 	QueryFormatTypeDelimited QueryFormatType = "delimited"
 	QueryFormatTypeJSON      QueryFormatType = "json"
-	QueryFormatTypeArrow     QueryFormatType = "arrow"
 )
 
 // PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
@@ -442,7 +441,6 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 	return []QueryFormatType{
 		QueryFormatTypeDelimited,
 		QueryFormatTypeJSON,
-		QueryFormatTypeArrow,
 	}
 }
 
@@ -637,6 +635,7 @@ const (
 	StorageErrorCodeUnsupportedHeader                                 StorageErrorCode = "UnsupportedHeader"
 	StorageErrorCodeUnsupportedQueryParameter                         StorageErrorCode = "UnsupportedQueryParameter"
 	StorageErrorCodeUnsupportedXMLNode                                StorageErrorCode = "UnsupportedXmlNode"
+	StorageErrorCodeBlobIsSealed                                      StorageErrorCode = "BlobIsSealed"
 )
 
 // PossibleStorageErrorCodeValues returns the possible values for the StorageErrorCode const type.

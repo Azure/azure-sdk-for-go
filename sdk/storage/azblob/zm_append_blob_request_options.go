@@ -100,3 +100,17 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions,
 		leaseAccessConditions, o.SourceModifiedAccessConditions
 }
+
+type SealAppendBlobOptions struct {
+	BlobAccessConditions           *BlobAccessConditions
+	AppendPositionAccessConditions *AppendPositionAccessConditions
+}
+
+func (o *SealAppendBlobOptions) pointers() (leaseAccessConditions *LeaseAccessConditions,
+	modifiedAccessConditions *ModifiedAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions) {
+	if o == nil {
+		return nil, nil, nil
+	}
+
+	return
+}

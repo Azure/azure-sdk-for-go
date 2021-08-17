@@ -59,7 +59,7 @@ func (client *blobClient) abortCopyFromURLCreateRequest(ctx context.Context, cop
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobAbortCopyFromURLOptions != nil && blobAbortCopyFromURLOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobAbortCopyFromURLOptions.RequestID)
 	}
@@ -154,7 +154,7 @@ func (client *blobClient) acquireLeaseCreateRequest(ctx context.Context, blobAcq
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobAcquireLeaseOptions != nil && blobAcquireLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobAcquireLeaseOptions.RequestID)
 	}
@@ -259,7 +259,7 @@ func (client *blobClient) breakLeaseCreateRequest(ctx context.Context, blobBreak
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobBreakLeaseOptions != nil && blobBreakLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobBreakLeaseOptions.RequestID)
 	}
@@ -368,7 +368,7 @@ func (client *blobClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobChangeLeaseOptions != nil && blobChangeLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobChangeLeaseOptions.RequestID)
 	}
@@ -493,7 +493,7 @@ func (client *blobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobCopyFromURLOptions != nil && blobCopyFromURLOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobCopyFromURLOptions.RequestID)
 	}
@@ -640,7 +640,7 @@ func (client *blobClient) createSnapshotCreateRequest(ctx context.Context, blobC
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobCreateSnapshotOptions != nil && blobCreateSnapshotOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobCreateSnapshotOptions.RequestID)
 	}
@@ -772,7 +772,7 @@ func (client *blobClient) deleteCreateRequest(ctx context.Context, blobDeleteOpt
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobDeleteOptions != nil && blobDeleteOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobDeleteOptions.RequestID)
 	}
@@ -888,7 +888,7 @@ func (client *blobClient) downloadCreateRequest(ctx context.Context, blobDownloa
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobDownloadOptions != nil && blobDownloadOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobDownloadOptions.RequestID)
 	}
@@ -1072,13 +1072,6 @@ func (client *blobClient) downloadHandleResponse(resp *azcore.Response) (BlobDow
 		}
 		result.IsSealed = &isSealed
 	}
-	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
-		lastAccessed, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobDownloadResponse{}, err
-		}
-		result.LastAccessed = &lastAccessed
-	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
 		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -1153,7 +1146,7 @@ func (client *blobClient) getAccessControlCreateRequest(ctx context.Context, blo
 	if blobGetAccessControlOptions != nil && blobGetAccessControlOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobGetAccessControlOptions.RequestID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -1240,7 +1233,7 @@ func (client *blobClient) getAccountInfoCreateRequest(ctx context.Context, optio
 	reqQP.Set("restype", "account")
 	reqQP.Set("comp", "properties")
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -1349,7 +1342,7 @@ func (client *blobClient) getPropertiesCreateRequest(ctx context.Context, blobGe
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobGetPropertiesOptions != nil && blobGetPropertiesOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobGetPropertiesOptions.RequestID)
 	}
@@ -1570,13 +1563,6 @@ func (client *blobClient) getPropertiesHandleResponse(resp *azcore.Response) (Bl
 	if val := resp.Header.Get("x-ms-rehydrate-priority"); val != "" {
 		result.RehydratePriority = &val
 	}
-	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
-		lastAccessed, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobGetPropertiesResponse{}, err
-		}
-		result.LastAccessed = &lastAccessed
-	}
 	return result, nil
 }
 
@@ -1629,7 +1615,7 @@ func (client *blobClient) getTagsCreateRequest(ctx context.Context, blobGetTagsO
 		reqQP.Set("versionid", *blobGetTagsOptions.VersionID)
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobGetTagsOptions != nil && blobGetTagsOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobGetTagsOptions.RequestID)
 	}
@@ -1740,7 +1726,7 @@ func (client *blobClient) queryCreateRequest(ctx context.Context, blobQueryOptio
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobQueryOptions != nil && blobQueryOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobQueryOptions.RequestID)
 	}
@@ -1962,7 +1948,7 @@ func (client *blobClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobReleaseLeaseOptions != nil && blobReleaseLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobReleaseLeaseOptions.RequestID)
 	}
@@ -2106,7 +2092,7 @@ func (client *blobClient) renameCreateRequest(ctx context.Context, renameSource 
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Header.Set("x-ms-source-if-none-match", *sourceModifiedAccessConditions.SourceIfNoneMatch)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobRenameOptions != nil && blobRenameOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobRenameOptions.RequestID)
 	}
@@ -2213,7 +2199,7 @@ func (client *blobClient) renewLeaseCreateRequest(ctx context.Context, leaseID s
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobRenewLeaseOptions != nil && blobRenewLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobRenewLeaseOptions.RequestID)
 	}
@@ -2329,7 +2315,7 @@ func (client *blobClient) setAccessControlCreateRequest(ctx context.Context, blo
 	if blobSetAccessControlOptions != nil && blobSetAccessControlOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobSetAccessControlOptions.RequestID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -2406,7 +2392,7 @@ func (client *blobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -2529,7 +2515,7 @@ func (client *blobClient) setHTTPHeadersCreateRequest(ctx context.Context, blobS
 	if blobHTTPHeaders != nil && blobHTTPHeaders.BlobContentDisposition != nil {
 		req.Header.Set("x-ms-blob-content-disposition", *blobHTTPHeaders.BlobContentDisposition)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobSetHTTPHeadersOptions != nil && blobSetHTTPHeadersOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobSetHTTPHeadersOptions.RequestID)
 	}
@@ -2654,7 +2640,7 @@ func (client *blobClient) setMetadataCreateRequest(ctx context.Context, blobSetM
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Header.Set("x-ms-if-tags", *modifiedAccessConditions.IfTags)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobSetMetadataOptions != nil && blobSetMetadataOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobSetMetadataOptions.RequestID)
 	}
@@ -2756,7 +2742,7 @@ func (client *blobClient) setTagsCreateRequest(ctx context.Context, blobSetTagsO
 		reqQP.Set("versionid", *blobSetTagsOptions.VersionID)
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobSetTagsOptions != nil && blobSetTagsOptions.TransactionalContentMD5 != nil {
 		req.Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(blobSetTagsOptions.TransactionalContentMD5))
 	}
@@ -2854,7 +2840,7 @@ func (client *blobClient) setTierCreateRequest(ctx context.Context, tier AccessT
 	if blobSetTierOptions != nil && blobSetTierOptions.RehydratePriority != nil {
 		req.Header.Set("x-ms-rehydrate-priority", string(*blobSetTierOptions.RehydratePriority))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobSetTierOptions != nil && blobSetTierOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobSetTierOptions.RequestID)
 	}
@@ -2970,7 +2956,7 @@ func (client *blobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if blobStartCopyFromURLOptions != nil && blobStartCopyFromURLOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *blobStartCopyFromURLOptions.RequestID)
 	}
@@ -3068,7 +3054,7 @@ func (client *blobClient) undeleteCreateRequest(ctx context.Context, options *Bl
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}

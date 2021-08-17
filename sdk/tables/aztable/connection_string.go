@@ -49,7 +49,7 @@ func convertConnStrToMap(connStr string) (map[string]string, error) {
 		return ret, errConnectionString
 	}
 	for _, stringPart := range splitString {
-		parts := strings.Split(stringPart, "=")
+		parts := strings.SplitN(stringPart, "=", 2)
 		if len(parts) != 2 {
 			return ret, errConnectionString
 		}

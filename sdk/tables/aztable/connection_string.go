@@ -80,7 +80,7 @@ func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 	if !ok {
 
 		// if accountName == "" || accountKey == "" {
-		// Try sharedaccesssignature
+		// Try SharedAccessSignature
 		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]
 		if !ok {
 			return "", nil, errConnectionString

@@ -4,8 +4,8 @@
 package azcosmos
 
 import (
-	"net/url"
-	"strings"
+	"context"
+	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -35,16 +35,29 @@ func newCosmosClientConnection(endpoint string, cred azcore.Credential, options 
 	return &cosmosClientConnection{endpoint: endpoint, Pipeline: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
 
-func (cc *cosmosClientConnection) getPath(parentPath string, pathSegment string, id string) string {
-	var completePath strings.Builder
-	parentPathLength := len(parentPath)
-	completePath.Grow(parentPathLength + 2 + len(pathSegment) + len(id))
-	if parentPathLength > 0 {
-		completePath.WriteString(parentPath)
-		completePath.WriteString("/")
+func (c *cosmosClientConnection) sendGetRequest(ctx context.Context, operationContext cosmosOperationContext, requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(ctx, http.MethodGet, operationContext, requestOptions)
+	if err != nil {
+		return nil, err
 	}
-	completePath.WriteString(pathSegment)
-	completePath.WriteString("/")
-	completePath.WriteString(url.QueryEscape(id))
-	return completePath.String()
+
+	return c.Pipeline.Do(req)
+}
+
+func (c *cosmosClientConnection) createRequest(ctx context.Context, method string, operationContext cosmosOperationContext, requestOptions cosmosRequestOptions) (*azcore.Request, error) {
+	// todo: endpoint will be set originally by globalendpointmanager
+	finalURL := c.endpoint + operationContext.resourceAddress
+	req, err := azcore.NewRequest(ctx, method, finalURL)
+	if err != nil {
+		return nil, err
+	}
+
+	headers := requestOptions.toHeaders()
+	if headers != nil {
+		for k, v := range *headers {
+			req.Header.Set(k, v)
+		}
+	}
+
+	return req, nil
 }

@@ -74,7 +74,7 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName st
 	packagePath := filepath.Join(ctx.SdkPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
-		log.Printf("Package '%s' not onboard, do onboard process", packagePath)
+		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(rpName, namespaceName, template.Flags{
@@ -106,6 +106,11 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName st
 		}
 		changelog, err := autorest.GetChangelogForPackage(nil, &newExports)
 		if err != nil {
+			return nil, err
+		}
+
+		log.Printf("Replace {{NewClientMethod}} placeholder in the README.md ")
+		if err = ReplaceNewClientMethodPlaceholder(packagePath, newExports); err != nil {
 			return nil, err
 		}
 

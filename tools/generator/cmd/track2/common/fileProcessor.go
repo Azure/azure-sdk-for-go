@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Masterminds/semver"
 )
 
@@ -28,6 +29,7 @@ var (
 	track2BeginRegex               = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
 	track2EndRegex                 = regexp.MustCompile("^\\s*```\\s*$")
 	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
+	newClientMethodNameRegex       = regexp.MustCompile("^New.+Client$")
 )
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -119,10 +121,10 @@ func ReplaceCommitID(path string, commitID string) error {
 		}
 	}
 
-	err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
-	return err
+	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
+// replace repo url according to `https://github.com/.+/azure-rest-api-specs/` pattern in autorest.md files
 func ReplaceRepoURL(path string, repoUrl string) error {
 	log.Printf("Replacing repo url in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
@@ -137,10 +139,10 @@ func ReplaceRepoURL(path string, repoUrl string) error {
 		}
 	}
 
-	err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
-	return err
+	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
+// get latest version according to `module-version: ` prefix in autorest.md file
 func GetLatestVersion(packageRootPath string) (*semver.Version, error) {
 	b, err := ioutil.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
 	if err != nil {
@@ -158,6 +160,7 @@ func GetLatestVersion(packageRootPath string) (*semver.Version, error) {
 	return nil, fmt.Errorf("cannot parse version from autorest.md")
 }
 
+// replace version according to `module-version: ` prefix in autorest.md file
 func ReplaceVersion(packageRootPath string, newVersion string) error {
 	path := filepath.Join(packageRootPath, "autorest.md")
 	b, err := ioutil.ReadFile(path)
@@ -173,10 +176,10 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 		}
 	}
 
-	err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
-	return err
+	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
+// calculate new version by changelog using semver package
 func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*semver.Version, error) {
 	version, err := GetLatestVersion(packageRootPath)
 	if err != nil {
@@ -207,6 +210,7 @@ func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*s
 	return &newVersion, nil
 }
 
+// add new changelog md to changelog file
 func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath string) (string, error) {
 	path := filepath.Join(packageRootPath, common.ChangelogFilename)
 	b, err := ioutil.ReadFile(path)
@@ -222,4 +226,27 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 		return "", err
 	}
 	return additionalChangelog, nil
+}
+
+// replace `{{NewClientMethod}}`` placeholder in README.md by first func name according to `^New.+Method$` pattern
+func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.Content) error {
+	path := filepath.Join(packageRootPath, "README.md")
+	var clientName string
+	for k, v := range exports.Funcs {
+		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*armcore.Connection, string" {
+			clientName = k
+			break
+		}
+	}
+	if clientName == "" {
+		return fmt.Errorf("cannot find any NewClientMethod in package")
+	}
+
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("cannot read from file '%s': %+v", path, err)
+	}
+
+	content := strings.ReplaceAll(string(b), "{{NewClientMethod}}", clientName)
+	return ioutil.WriteFile(path, []byte(content), 0644)
 }

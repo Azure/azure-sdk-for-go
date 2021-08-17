@@ -56,11 +56,13 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcor
 	value := ""
 
 	if req.OperationValue(&opValues) {
-		resourceAddress, err := getResourcePath(opValues.resourceType)
+		resourceTypePath, err := getResourcePath(opValues.resourceType)
+
 		if err != nil {
 			return "", err
 		}
-		value = c.buildCanonicalizedAuthHeader(req.Method, resourceAddress, opValues.resourceAddress, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+
+		value = c.buildCanonicalizedAuthHeader(req.Method, resourceTypePath, opValues.resourceAddress, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
 	}
 
 	return value, nil
@@ -82,6 +84,7 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType,
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
 func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+
 		// Add a x-ms-date header if it doesn't already exist
 		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
 			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))

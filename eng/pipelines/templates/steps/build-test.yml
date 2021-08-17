@@ -57,7 +57,7 @@ steps:
       condition: succeededOrFailed()
       inputs:
         testRunner: JUnit
-        testResultsFiles: '${{parameters.GoWorkspace}}sdk/**/report.xml'
+        testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/report.xml'
         testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
         failTaskOnFailedTests: true
 
@@ -65,6 +65,6 @@ steps:
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '${{parameters.GoWorkspace}}sdk/coverage.xml'
-        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/coverage.html'
+        summaryFileLocation: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.xml'
+        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.html'
         failIfCoverageEmpty: true

@@ -4,6 +4,6 @@
 package azcosmos
 
 type cosmosOperationContext struct {
-	resourceType string
-	resourceId   string
+	resourceType    resourceType
+	resourceAddress string
 }

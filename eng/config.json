@@ -7,6 +7,10 @@
         {
             "Name": "azcore",
             "CoverageGoal": 0.68
+        },
+        {
+            "Name": "internal",
+            "CoverageGoal": 0.90
         }
     ]
 }

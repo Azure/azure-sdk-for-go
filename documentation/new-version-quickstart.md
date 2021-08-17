@@ -168,11 +168,11 @@ import (
 ***Define some global variables***
 ```go
 var (
-	ctx               = context.Background()
-	subscriptionId    = os.Getenv("AZURE_SUBSCRIPTION_ID")
-	location          = "westus2"
-	resourceGroupName = "resourceGroupName"
-       interval          = 5 * time.Second
+    ctx                 = context.Background()
+    subscriptionId      = os.Getenv("AZURE_SUBSCRIPTION_ID")
+    location            = "westus2"
+    resourceGroupName   = "resourceGroupName"
+    interval            = 5 * time.Second
 )
 ```
 

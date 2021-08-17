@@ -55,3 +55,8 @@ steps:
       CheckLinkGuidance: $true
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+    parameters:
+      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+      ForRelease: false

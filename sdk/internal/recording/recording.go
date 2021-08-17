@@ -211,11 +211,6 @@ func (r *Recording) Now() time.Time {
 
 func (r *Recording) UUID() uuid.UUID {
 	r.initRandomSource()
-
-	if r.Mode == Live {
-		return uuid.New()
-	}
-
 	u := uuid.UUID{}
 	// Set all bits to randomly (or pseudo-randomly) chosen values.
 	// math/rand.Read() is no-fail so we omit any error checking.

@@ -51,6 +51,14 @@ func (s *requestMatcherTests) TestCompareBodies() {
 	assert.False(isMatch)
 }
 
+func newUUID(t *testing.T) string {
+	u, err := uuid.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return u.String()
+}
+
 func (s *requestMatcherTests) TestCompareHeadersIgnoresIgnoredHeaders() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
@@ -60,8 +68,8 @@ func (s *requestMatcherTests) TestCompareHeadersIgnoresIgnoredHeaders() {
 	reqHeaders := make(http.Header)
 	recordedHeaders := make(http.Header)
 	for headerName := range ignoredHeaders {
-		reqHeaders[headerName] = []string{uuid.New().String()}
-		recordedHeaders[headerName] = []string{uuid.New().String()}
+		reqHeaders[headerName] = []string{newUUID(s.T())}
+		recordedHeaders[headerName] = []string{newUUID(s.T())}
 	}
 
 	req := http.Request{Header: reqHeaders}

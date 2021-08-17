@@ -335,12 +335,12 @@ func (s *azblobTestSuite) TestContainerCreateIfExists() {
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &map[string]string{},
+		Metadata: nil,
 	}
-	_, err = containerClient.CreateIsNotExists(ctx, &createContainerOptions)
+	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
 	_assert.Nil(err)
 
 	// Ensure that next create call doesn't update the properties of already created container
@@ -362,19 +362,19 @@ func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, serviceClient)
 
-	access := PublicAccessBlob
+	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
-		Metadata: &basicMetadata,
+		Metadata: basicMetadata,
 	}
-	_, err = containerClient.CreateIsNotExists(ctx, &createContainerOptions)
+	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
 	_assert.Nil(err)
 	defer deleteContainer(_assert, containerClient)
 
 	// Ensure that next create call doesn't update the properties of already created container
 	getResp, err := containerClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
-	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessBlob)
+	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
 	_assert.EqualValues(getResp.Metadata, basicMetadata)
 }
 

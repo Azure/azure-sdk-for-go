@@ -113,10 +113,10 @@ func (c ContainerClient) Create(ctx context.Context, options *CreateContainerOpt
 	return resp, handleError(err)
 }
 
-// CreateIsNotExists operation creates a new container under the specified account.
+// CreateIfNotExists operation creates a new container under the specified account.
 // If the container with the same name already exists, it is not changed.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
-func (c ContainerClient) CreateIsNotExists(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
+func (c ContainerClient) CreateIfNotExists(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
 	basics, cpkInfo := options.pointers()
 
 	resp, err := c.client.Create(ctx, basics, cpkInfo)

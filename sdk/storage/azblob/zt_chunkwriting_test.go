@@ -8,7 +8,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"math/rand"
 	"os"

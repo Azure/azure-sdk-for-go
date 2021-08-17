@@ -14,7 +14,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	guuid "github.com/google/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // blockWriter provides methods to upload blocks that represent a file to a server and commit them.
@@ -29,7 +29,7 @@ type blockWriter interface {
 // useless other than needing to be above some number, as the network stack is going to hack up the buffer over some size. The
 // max buffers is providing a cap on how much memory we use (by multiplying it times the buffer size) and how many go routines can upload
 // at a time.  I think having a single max memory dial would be more efficient.  We can choose an internal buffer size that works
-// well, 4 MiB or 8 MiB, and autoscale to as many goroutines within the memory limit. This gives a single dial to tweak and we can
+// well, 4 MiB or 8 MiB, and auto-scale to as many goroutines within the memory limit. This gives a single dial to tweak and we can
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
 func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
@@ -74,7 +74,7 @@ func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o Uploa
 // Do not use directly, instead use copyFromReader().
 type copier struct {
 	// ctx holds the context of a copier. This is normally a faux pas to store a Context in a struct. In this case,
-	// the copier has the lifetime of a function call, so its fine.
+	// the copier has the lifetime of a function call, so it's fine.
 	ctx    context.Context
 	cancel context.CancelFunc
 
@@ -108,7 +108,7 @@ type copierChunk struct {
 }
 
 // getErr returns an error by priority. First, if a function set an error, it returns that error. Next, if the Context has an error
-// it returns that error. Otherwise it is nil. getErr supports only returning an error once per copier.
+// it returns that error. Otherwise, it is nil. getErr supports only returning an error once per copier.
 func (c *copier) getErr() error {
 	select {
 	case err := <-c.errCh:
@@ -204,7 +204,7 @@ type id struct {
 
 // newID constructs a new id.
 func newID() *id {
-	uu := guuid.New()
+	uu := uuid.New()
 	u := [64]byte{}
 	copy(u[:], uu[:])
 	return &id{u: u}
@@ -214,14 +214,14 @@ func newID() *id {
 func (id *id) next() string {
 	defer atomic.AddUint32(&id.num, 1)
 
-	binary.BigEndian.PutUint32((id.u[len(guuid.UUID{}):]), atomic.LoadUint32(&id.num))
+	binary.BigEndian.PutUint32(id.u[len(uuid.UUID{}):], atomic.LoadUint32(&id.num))
 	str := base64.StdEncoding.EncodeToString(id.u[:])
 	id.all = append(id.all, str)
 
 	return str
 }
 
-// issued returns all ids that have been issued. This returned value shares the internal slice so it is not safe to modify the return.
+// issued returns all ids that have been issued. This returned value shares the internal slice, so it is not safe to modify the return.
 // The value is only valid until the next time next() is called.
 func (id *id) issued() []string {
 	return id.all

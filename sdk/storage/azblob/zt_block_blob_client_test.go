@@ -1288,3 +1288,128 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_assert.Nil(err)
 	_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
 }
+
+func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	standardTier, rehydrateTier, rehydratePriority := AccessTierArchive, AccessTierCool, RehydratePriorityStandard
+	bbName := generateBlobName(testName)
+	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+
+	_, err = bbClient.SetTier(ctx, standardTier, &SetTierOptions{
+		RehydratePriority: &rehydratePriority,
+	})
+	_assert.Nil(err)
+
+	getResp1, err := bbClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.AccessTier, string(standardTier))
+
+	_, err = bbClient.SetTier(ctx, rehydrateTier, nil)
+	_assert.Nil(err)
+
+	getResp2, err := bbClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
+}
+
+func (s *azblobTestSuite) TestRehydrateStatus() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blobName1 := "rehydration_test_blob_1"
+	blobName2 := "rehydration_test_blob_2"
+
+	bbClient1 := getBlockBlobClient(blobName1, containerClient)
+	reader1, _ := generateData(1024)
+	bbClient1.Upload(ctx, reader1, nil)
+	bbClient1.SetTier(ctx, AccessTierArchive, nil)
+	bbClient1.SetTier(ctx, AccessTierCool, nil)
+
+	getResp1, err := bbClient1.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.AccessTier, string(AccessTierArchive))
+	_assert.Equal(*getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
+
+	pager := containerClient.ListBlobsFlatSegment(nil)
+	var blobs []*BlobItemInternal
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+			blobs = append(blobs, blob)
+		}
+	}
+	_assert.Nil(pager.Err())
+	_assert.GreaterOrEqual(len(blobs), 1)
+	_assert.Equal(*blobs[0].Properties.AccessTier, AccessTierArchive)
+	_assert.Equal(*blobs[0].Properties.ArchiveStatus, ArchiveStatusRehydratePendingToCool)
+
+	// ------------------------------------------
+
+	bbClient2 := getBlockBlobClient(blobName2, containerClient)
+	reader2, _ := generateData(1024)
+	bbClient2.Upload(ctx, reader2, nil)
+	bbClient2.SetTier(ctx, AccessTierArchive, nil)
+	bbClient2.SetTier(ctx, AccessTierHot, nil)
+
+	getResp2, err := bbClient2.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.AccessTier, string(AccessTierArchive))
+	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
+}
+
+func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	sourceBlobName := generateBlobName(testName)
+	sourceBBClient := createNewBlockBlob(_assert, sourceBlobName, containerClient)
+
+	blobTier, rehydratePriority := AccessTierArchive, RehydratePriorityHigh
+
+	copyBlobName := "copy" + sourceBlobName
+	destBBClient := getBlockBlobClient(copyBlobName, containerClient)
+	_, err = destBBClient.StartCopyFromURL(ctx, sourceBBClient.URL(), &StartCopyBlobOptions{
+		RehydratePriority: &rehydratePriority,
+		Tier:              &blobTier,
+	})
+	_assert.Nil(err)
+
+	getResp1, err := destBBClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.AccessTier, string(blobTier))
+
+	destBBClient.SetTier(ctx, AccessTierHot, nil)
+
+	getResp2, err := destBBClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToHot))
+}

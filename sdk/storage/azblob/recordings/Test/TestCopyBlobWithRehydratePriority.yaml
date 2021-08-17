@@ -1,0 +1,354 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:46 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 16 Aug 2021 07:20:47 GMT
+      Etag:
+      - '"0x8D960865E5F4703"'
+      Last-Modified:
+      - Mon, 16 Aug 2021 07:20:47 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 08f7fcfe-601e-0016-2a6f-92f73f000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: GoBlockBlobData
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "15"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:47 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/gotestblobcopyblobwithrehydratepriority
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Date:
+      - Mon, 16 Aug 2021 07:20:47 GMT
+      Etag:
+      - '"0x8D960865E914FD2"'
+      Last-Modified:
+      - Mon, 16 Aug 2021 07:20:47 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - +JGsS7CR5kg=
+      X-Ms-Request-Id:
+      - 08f7fda4-601e-0016-386f-92f73f000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-08-16T07:20:47.8101458Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Access-Tier:
+      - Archive
+      X-Ms-Copy-Source:
+      - https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/gotestblobcopyblobwithrehydratepriority
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Rehydrate-Priority:
+      - High
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/copygotestblobcopyblobwithrehydratepriority
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      Etag:
+      - '"0x8D960865ECE65E6"'
+      Last-Modified:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Copy-Id:
+      - 92477398-44b7-4224-89a3-de8b51d495ab
+      X-Ms-Copy-Status:
+      - success
+      X-Ms-Request-Id:
+      - 08f7fe7a-601e-0016-6b6f-92f73f000000
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-08-16T07:20:48.2104806Z"
+    status: 202 Accepted
+    code: 202
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/copygotestblobcopyblobwithrehydratepriority
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "15"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      Etag:
+      - '"0x8D960865ECE65E6"'
+      Last-Modified:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - Archive
+      X-Ms-Access-Tier-Change-Time:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Copy-Completion-Time:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Copy-Id:
+      - 92477398-44b7-4224-89a3-de8b51d495ab
+      X-Ms-Copy-Progress:
+      - 15/15
+      X-Ms-Copy-Source:
+      - https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/gotestblobcopyblobwithrehydratepriority
+      X-Ms-Copy-Status:
+      - success
+      X-Ms-Creation-Time:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 08f7ff2e-601e-0016-0f6f-92f73f000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-08-16T07:20:48.2104806Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Access-Tier:
+      - Hot
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:49 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/copygotestblobcopyblobwithrehydratepriority?comp=tier
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 08f7ffda-601e-0016-2c6f-92f73f000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:49 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/copygotestblobcopyblobwithrehydratepriority
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "15"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Mon, 16 Aug 2021 07:20:49 GMT
+      Etag:
+      - '"0x8D960865ECE65E6"'
+      Last-Modified:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - Archive
+      X-Ms-Access-Tier-Change-Time:
+      - Mon, 16 Aug 2021 07:20:49 GMT
+      X-Ms-Archive-Status:
+      - rehydrate-pending-to-hot
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Copy-Completion-Time:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Copy-Id:
+      - 92477398-44b7-4224-89a3-de8b51d495ab
+      X-Ms-Copy-Progress:
+      - 15/15
+      X-Ms-Copy-Source:
+      - https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority/gotestblobcopyblobwithrehydratepriority
+      X-Ms-Copy-Status:
+      - success
+      X-Ms-Creation-Time:
+      - Mon, 16 Aug 2021 07:20:48 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Rehydrate-Priority:
+      - Standard
+      X-Ms-Request-Id:
+      - 08f8006e-601e-0016-316f-92f73f000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-08-16T07:20:48.2104806Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.16.7;
+        Windows_NT)
+      X-Ms-Date:
+      - Mon, 16 Aug 2021 07:20:49 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccopyblobwithrehydratepriority?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 16 Aug 2021 07:20:49 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 08f800d2-601e-0016-066f-92f73f000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

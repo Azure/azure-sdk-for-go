@@ -1132,7 +1132,6 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
 	}
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
-
 	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessTypeBlob

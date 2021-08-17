@@ -66,7 +66,7 @@ func (client *containerClient) acquireLeaseCreateRequest(ctx context.Context, co
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerAcquireLeaseOptions != nil && containerAcquireLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerAcquireLeaseOptions.RequestID)
 	}
@@ -163,7 +163,7 @@ func (client *containerClient) breakLeaseCreateRequest(ctx context.Context, cont
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerBreakLeaseOptions != nil && containerBreakLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerBreakLeaseOptions.RequestID)
 	}
@@ -264,7 +264,7 @@ func (client *containerClient) changeLeaseCreateRequest(ctx context.Context, lea
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerChangeLeaseOptions != nil && containerChangeLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerChangeLeaseOptions.RequestID)
 	}
@@ -358,7 +358,7 @@ func (client *containerClient) createCreateRequest(ctx context.Context, containe
 	if containerCreateOptions != nil && containerCreateOptions.Access != nil {
 		req.Header.Set("x-ms-blob-public-access", string(*containerCreateOptions.Access))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerCreateOptions != nil && containerCreateOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerCreateOptions.RequestID)
 	}
@@ -456,7 +456,7 @@ func (client *containerClient) deleteCreateRequest(ctx context.Context, containe
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerDeleteOptions != nil && containerDeleteOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerDeleteOptions.RequestID)
 	}
@@ -533,7 +533,7 @@ func (client *containerClient) getAccessPolicyCreateRequest(ctx context.Context,
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerGetAccessPolicyOptions != nil && containerGetAccessPolicyOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerGetAccessPolicyOptions.RequestID)
 	}
@@ -620,7 +620,7 @@ func (client *containerClient) getAccountInfoCreateRequest(ctx context.Context, 
 	reqQP.Set("restype", "account")
 	reqQP.Set("comp", "properties")
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -700,7 +700,7 @@ func (client *containerClient) getPropertiesCreateRequest(ctx context.Context, c
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerGetPropertiesOptions != nil && containerGetPropertiesOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerGetPropertiesOptions.RequestID)
 	}
@@ -840,7 +840,7 @@ func (client *containerClient) listBlobFlatSegmentCreateRequest(ctx context.Cont
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -934,7 +934,7 @@ func (client *containerClient) listBlobHierarchySegmentCreateRequest(ctx context
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1023,7 +1023,7 @@ func (client *containerClient) releaseLeaseCreateRequest(ctx context.Context, le
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerReleaseLeaseOptions != nil && containerReleaseLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerReleaseLeaseOptions.RequestID)
 	}
@@ -1115,7 +1115,7 @@ func (client *containerClient) renewLeaseCreateRequest(ctx context.Context, leas
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerRenewLeaseOptions != nil && containerRenewLeaseOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerRenewLeaseOptions.RequestID)
 	}
@@ -1202,7 +1202,7 @@ func (client *containerClient) restoreCreateRequest(ctx context.Context, options
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1294,7 +1294,7 @@ func (client *containerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Header.Set("If-Unmodified-Since", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerSetAccessPolicyOptions != nil && containerSetAccessPolicyOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerSetAccessPolicyOptions.RequestID)
 	}
@@ -1396,7 +1396,7 @@ func (client *containerClient) setMetadataCreateRequest(ctx context.Context, con
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Header.Set("If-Modified-Since", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123))
 	}
-	req.Header.Set("x-ms-version", "2020-02-10")
+	req.Header.Set("x-ms-version", "2019-12-12")
 	if containerSetMetadataOptions != nil && containerSetMetadataOptions.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *containerSetMetadataOptions.RequestID)
 	}

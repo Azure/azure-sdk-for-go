@@ -8,7 +8,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"net/http"
 	"sync"
@@ -19,7 +19,7 @@ import (
 	//"github.com/Azure/azure-pipeline-go/pipeline"
 )
 
-//// CommonResponse returns the headers common to all blob REST API responses.
+// CommonResponse returns the headers common to all blob REST API responses.
 type CommonResponse interface {
 	//// ETag returns the value for header ETag.
 	//ETag() *string
@@ -181,7 +181,7 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 
 			// Block IDs are unique values to avoid issue if 2+ clients are uploading blocks
 			// at the same time causing PutBlockList to get a mix of blocks from all the clients.
-			blockIDList[blockNum] = base64.StdEncoding.EncodeToString(uuid.New().Bytes())
+			blockIDList[blockNum] = base64.StdEncoding.EncodeToString([]byte(uuid.New().String()))
 			stageBlockOptions := o.getStageBlockOptions()
 			_, err := blockBlobClient.StageBlock(ctx, blockIDList[blockNum], body, stageBlockOptions)
 			return err

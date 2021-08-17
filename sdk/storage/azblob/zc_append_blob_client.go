@@ -96,6 +96,14 @@ func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string
 	return resp, handleError(err)
 }
 
+// SealAppendBlob - The purpose of Append Blob Seal is to allow users and applications to seal append blobs, marking them as read only.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/append-blob-seal
+func (ab AppendBlobClient) SealAppendBlob(ctx context.Context, options *SealAppendBlobOptions) (AppendBlobSealResponse, error) {
+	leaseAccessConditions, modifiedAccessConditions, positionAccessConditions := options.pointers()
+	resp, err := ab.client.Seal(ctx, nil, leaseAccessConditions, modifiedAccessConditions, positionAccessConditions)
+	return resp, handleError(err)
+}
+
 // GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetBlobSASToken().

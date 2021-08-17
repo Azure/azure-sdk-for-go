@@ -635,6 +635,7 @@ const (
 	StorageErrorCodeUnsupportedHeader                                 StorageErrorCode = "UnsupportedHeader"
 	StorageErrorCodeUnsupportedQueryParameter                         StorageErrorCode = "UnsupportedQueryParameter"
 	StorageErrorCodeUnsupportedXMLNode                                StorageErrorCode = "UnsupportedXmlNode"
+	StorageErrorCodeBlobIsSealed                                      StorageErrorCode = "BlobIsSealed"
 )
 
 // PossibleStorageErrorCodeValues returns the possible values for the StorageErrorCode const type.

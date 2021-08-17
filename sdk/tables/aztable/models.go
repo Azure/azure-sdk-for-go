@@ -3,7 +3,7 @@
 
 package aztable
 
-// QueryOptions contains a group of parameters for the Table.Query method.
+// ListOptions contains a group of parameters for the Table.Query method.
 type ListOptions struct {
 	// OData filter expression.
 	Filter *string

@@ -94,7 +94,7 @@ func TestQueryTable(t *testing.T) {
 			resultCount := 0
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				resultCount += len(resp.TableQueryResponse.Value)
+				resultCount += len(resp.TableListResponse.Value)
 			}
 
 			require.NoError(t, pager.Err())
@@ -108,7 +108,7 @@ func TestQueryTable(t *testing.T) {
 			pageCount := 0
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				resultCount += len(resp.TableQueryResponse.Value)
+				resultCount += len(resp.TableListResponse.Value)
 				pageCount++
 			}
 
@@ -140,7 +140,7 @@ func TestListTables(t *testing.T) {
 			pager := service.ListTables(nil)
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				count += len(resp.TableQueryResponse.Value)
+				count += len(resp.TableListResponse.Value)
 			}
 
 			require.NoError(t, pager.Err())
@@ -167,7 +167,6 @@ func TestGetStatistics(t *testing.T) {
 	require.NoError(t, err)
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
-	fmt.Println(serviceURL)
 	service, err := createTableServiceClientForRecording(t, serviceURL, cred)
 	require.NoError(t, err)
 

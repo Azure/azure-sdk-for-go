@@ -73,7 +73,7 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 		PerCallOptions: []azcore.Policy{policy},
 		HTTPClient:     client,
 	}
-	return NewTableClient(tableName, serviceURL, cred, options)
+	return NewTableClient(serviceURL, tableName, cred, options)
 }
 
 func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {

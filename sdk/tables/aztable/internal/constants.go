@@ -7,7 +7,7 @@
 
 package internal
 
-const telemetryInfo = "azsdk-go-internal/v0.1.0"
+const telemetryInfo = "azsdk-go-aztables/v0.1.0"
 
 // GeoReplicationStatusType - The status of the secondary location.
 type GeoReplicationStatusType string

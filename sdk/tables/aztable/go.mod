@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/tables/aztable
 
-go 1.13
+go 1.16
 
 replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../internal
 

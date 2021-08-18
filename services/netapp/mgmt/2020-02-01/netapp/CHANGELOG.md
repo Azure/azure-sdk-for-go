@@ -1,7 +1,9 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. SnapshotProperties.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. VolumeProperties.UsedBytes

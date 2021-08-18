@@ -702,6 +702,8 @@ type Backup struct {
 	Type *string `json:"type,omitempty"`
 	// BackupProperties - Backup Properties
 	*BackupProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Backup.
@@ -769,6 +771,15 @@ func (b *Backup) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				b.BackupProperties = &backupProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				b.SystemData = &systemData
 			}
 		}
 	}
@@ -972,6 +983,8 @@ type BackupPolicy struct {
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// BackupPolicyProperties - Backup policy Properties
 	*BackupPolicyProperties `json:"properties,omitempty"`
 }
@@ -1044,6 +1057,15 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				bp.Tags = tags
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				bp.SystemData = &systemData
 			}
 		case "properties":
 			if v != nil {

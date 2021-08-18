@@ -27,6 +27,21 @@ func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	return []ActiveDirectoryStatus{Created, Deleted, Error, InUse, Updating}
 }
 
+// BackupType enumerates the values for backup type.
+type BackupType string
+
+const (
+	// Manual Manual backup
+	Manual BackupType = "Manual"
+	// Scheduled Scheduled backup
+	Scheduled BackupType = "Scheduled"
+)
+
+// PossibleBackupTypeValues returns an array of possible values for the BackupType const type.
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{Manual, Scheduled}
+}
+
 // CheckNameResourceTypes enumerates the values for check name resource types.
 type CheckNameResourceTypes string
 
@@ -148,15 +163,15 @@ func PossibleMirrorStateValues() []MirrorState {
 type QosType string
 
 const (
-	// Auto qos type Auto
-	Auto QosType = "Auto"
-	// Manual qos type Manual
-	Manual QosType = "Manual"
+	// QosTypeAuto qos type Auto
+	QosTypeAuto QosType = "Auto"
+	// QosTypeManual qos type Manual
+	QosTypeManual QosType = "Manual"
 )
 
 // PossibleQosTypeValues returns an array of possible values for the QosType const type.
 func PossibleQosTypeValues() []QosType {
-	return []QosType{Auto, Manual}
+	return []QosType{QosTypeAuto, QosTypeManual}
 }
 
 // RelationshipStatus enumerates the values for relationship status.

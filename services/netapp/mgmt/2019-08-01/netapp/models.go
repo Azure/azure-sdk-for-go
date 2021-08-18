@@ -1472,6 +1472,8 @@ type VolumeProperties struct {
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
+	// UsedBytes - READ-ONLY; Resource size in bytes, current storage usage for the volume in bytes
+	UsedBytes *int64 `json:"usedBytes,omitempty"`
 	// ExportPolicy - Set of export policy rules
 	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
 	// ProtocolTypes - Set of protocol types

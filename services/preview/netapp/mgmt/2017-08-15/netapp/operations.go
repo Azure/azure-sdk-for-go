@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the microsoft NetApp Azure Resource Provider specification
+// OperationsClient is the microsoft NetApp Files Azure Resource Provider specification
 type OperationsClient struct {
 	BaseClient
 }

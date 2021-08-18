@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// VolumesClient is the microsoft NetApp Azure Resource Provider specification
+// VolumesClient is the microsoft NetApp Files Azure Resource Provider specification
 type VolumesClient struct {
 	BaseClient
 }
@@ -843,7 +843,7 @@ func (client VolumesClient) ReplicationStatusMethodResponder(resp *http.Response
 }
 
 // ResyncReplication resync the connection on the destination volume. If the operation is ran on the source volume it
-// will reverse-resync the connection and sync from source to destination.
+// will reverse-resync the connection and sync from from destination to source.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account

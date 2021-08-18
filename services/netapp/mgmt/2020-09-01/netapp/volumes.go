@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// VolumesClient is the microsoft NetApp Azure Resource Provider specification
+// VolumesClient is the microsoft NetApp Files Azure Resource Provider specification
 type VolumesClient struct {
 	BaseClient
 }
@@ -287,7 +287,7 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 							}},
 						{Target: "body.VolumeProperties.ThroughputMibps", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "body.VolumeProperties.ThroughputMibps", Name: validation.InclusiveMaximum, Rule: float64(4500), Chain: nil},
-								{Target: "body.VolumeProperties.ThroughputMibps", Name: validation.InclusiveMinimum, Rule: float64(1), Chain: nil},
+								{Target: "body.VolumeProperties.ThroughputMibps", Name: validation.InclusiveMinimum, Rule: float64(0), Chain: nil},
 								{Target: "body.VolumeProperties.ThroughputMibps", Name: validation.MultipleOf, Rule: 0.001, Chain: nil},
 							}},
 					}}}},

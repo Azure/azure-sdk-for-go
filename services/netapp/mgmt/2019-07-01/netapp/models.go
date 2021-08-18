@@ -1442,7 +1442,7 @@ type VolumeProperties struct {
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Set of export policy rules
 	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
-	// ProtocolTypes - Set of protocol types
+	// ProtocolTypes - Set of protocol types, default NFSv3, CIFS fro SMB protocol
 	ProtocolTypes *[]string `json:"protocolTypes,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -1452,7 +1452,7 @@ type VolumeProperties struct {
 	BaremetalTenantID *string `json:"baremetalTenantId,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
-	// MountTargets - List of mount targets
+	// MountTargets - READ-ONLY; List of mount targets
 	MountTargets *[]MountTargetProperties `json:"mountTargets,omitempty"`
 }
 
@@ -1479,9 +1479,6 @@ func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vp.SubnetID != nil {
 		objectMap["subnetId"] = vp.SubnetID
-	}
-	if vp.MountTargets != nil {
-		objectMap["mountTargets"] = vp.MountTargets
 	}
 	return json.Marshal(objectMap)
 }

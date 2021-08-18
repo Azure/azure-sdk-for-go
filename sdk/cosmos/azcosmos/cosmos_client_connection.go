@@ -4,8 +4,9 @@
 package azcosmos
 
 import (
-	"net/url"
-	"strings"
+	"context"
+	"net/http"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -35,16 +36,99 @@ func newCosmosClientConnection(endpoint string, cred azcore.Credential, options 
 	return &cosmosClientConnection{endpoint: endpoint, Pipeline: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
 
-func (cc *cosmosClientConnection) getPath(parentPath string, pathSegment string, id string) string {
-	var completePath strings.Builder
-	parentPathLength := len(parentPath)
-	completePath.Grow(parentPathLength + 2 + len(pathSegment) + len(id))
-	if parentPathLength > 0 {
-		completePath.WriteString(parentPath)
-		completePath.WriteString("/")
+func (c *cosmosClientConnection) sendPostRequest(
+	path string,
+	ctx context.Context,
+	content interface{},
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions)
+	if err != nil {
+		return nil, err
 	}
-	completePath.WriteString(pathSegment)
-	completePath.WriteString("/")
-	completePath.WriteString(url.QueryEscape(id))
-	return completePath.String()
+
+	err = req.MarshalAsJSON(content)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Pipeline.Do(req)
+}
+
+func (c *cosmosClientConnection) sendPutRequest(
+	path string,
+	ctx context.Context,
+	content interface{},
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	err = req.MarshalAsJSON(content)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Pipeline.Do(req)
+}
+
+func (c *cosmosClientConnection) sendGetRequest(
+	path string,
+	ctx context.Context,
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Pipeline.Do(req)
+}
+
+func (c *cosmosClientConnection) sendDeleteRequest(
+	path string,
+	ctx context.Context,
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Pipeline.Do(req)
+}
+
+func (c *cosmosClientConnection) createRequest(
+	path string,
+	ctx context.Context,
+	method string,
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions) (*azcore.Request, error) {
+
+	// todo: endpoint will be set originally by globalendpointmanager
+	finalURL := c.endpoint
+
+	if path != "" {
+		finalURL = azcore.JoinPaths(c.endpoint, path)
+	}
+
+	req, err := azcore.NewRequest(ctx, method, finalURL)
+	if err != nil {
+		return nil, err
+	}
+
+	headers := requestOptions.toHeaders()
+	if headers != nil {
+		for k, v := range *headers {
+			req.Header.Set(k, v)
+		}
+	}
+
+	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
+
+	req.SetOperationValue(operationContext)
+	return req, nil
 }

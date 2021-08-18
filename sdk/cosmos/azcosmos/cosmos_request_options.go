@@ -3,7 +3,6 @@
 
 package azcosmos
 
-type cosmosOperationContext struct {
-	resourceType    resourceType
-	resourceAddress string
+type cosmosRequestOptions interface {
+	toHeaders() *map[string]string
 }

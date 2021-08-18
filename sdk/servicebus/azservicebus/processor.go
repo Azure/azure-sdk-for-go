@@ -5,17 +5,18 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
+	amqpCommon "github.com/Azure/azure-amqp-common-go/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/utils"
 )
 
 type processorConfig struct {
-	fullEntityPath string
-	retryPolicy    RetryPolicy
-	receiveMode    ReceiveMode
+	FullEntityPath string
+	ReceiveMode    ReceiveMode
 
-	entity struct {
+	Entity struct {
 		Subqueue     SubQueue
 		Queue        string
 		Topic        string
@@ -24,10 +25,19 @@ type processorConfig struct {
 
 	// determines if auto completion or abandonment of messages
 	// happens based on the return value of user's processMessage handler.
-	shouldAutoComplete bool
+	ShouldAutoComplete bool
+	MaxConcurrentCalls int
+
+	RetryOptions struct {
+		Times int
+		Delay time.Duration
+	}
 }
 
 type Processor struct {
+	// configuration data that is read-only after the ServiceBusProcessor has been created
+	config processorConfig
+
 	mu *sync.Mutex
 
 	receiversCtx    context.Context
@@ -36,11 +46,16 @@ type Processor struct {
 	processorCtx    context.Context
 	cancelProcessor func()
 
-	// configuration data that is read-only after the ServiceBusProcessor has been created
-	config processorConfig
-
 	activeReceiversWg *sync.WaitGroup
-	createReceiver    func(ctx context.Context, maxConcurrency uint32) (internal.LegacyReceiver, error)
+
+	// replaceable for unit tests
+	ns        legacyNamespace
+	subscribe func(
+		ctx context.Context,
+		receiver internal.LegacyReceiver,
+		shouldAutoComplete bool,
+		handleMessage func(message *ReceivedMessage) error,
+		notifyError func(err error)) bool
 }
 
 type ProcessorOption func(processor *Processor) error
@@ -52,8 +67,8 @@ func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
 		switch subQueue {
 		case SubQueueDeadLetter:
 		case SubQueueTransfer:
-		case SubQueueNone:
-			receiver.config.entity.Subqueue = subQueue
+		case "":
+			receiver.config.Entity.Subqueue = subQueue
 		default:
 			return fmt.Errorf("unknown SubQueue %s", subQueue)
 		}
@@ -66,25 +81,25 @@ func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
 func ProcessorWithReceiveMode(receiveMode ReceiveMode) ProcessorOption {
 	return func(processor *Processor) error {
 		if receiveMode != ReceiveModePeekLock && receiveMode != ReceiveModeReceiveAndDelete {
-			return fmt.Errorf("invalid receive mode specified %s", receiveMode)
+			return fmt.Errorf("invalid receive mode specified %d", receiveMode)
 		}
 
-		processor.config.receiveMode = receiveMode
+		processor.config.ReceiveMode = receiveMode
 		return nil
 	}
 }
 
 func ProcessorWithQueue(queue string) ProcessorOption {
 	return func(processor *Processor) error {
-		processor.config.entity.Queue = queue
+		processor.config.Entity.Queue = queue
 		return nil
 	}
 }
 
 func ProcessorWithSubscription(topic string, subscription string) ProcessorOption {
 	return func(processor *Processor) error {
-		processor.config.entity.Topic = topic
-		processor.config.entity.Subscription = subscription
+		processor.config.Entity.Topic = topic
+		processor.config.Entity.Subscription = subscription
 		return nil
 	}
 }
@@ -95,20 +110,46 @@ func ProcessorWithSubscription(topic string, subscription string) ProcessorOptio
 // This option is enabled, by default.
 func ProcessorWithAutoComplete(enableAutoCompleteMessages bool) ProcessorOption {
 	return func(processor *Processor) error {
-		processor.config.shouldAutoComplete = enableAutoCompleteMessages
+		processor.config.ShouldAutoComplete = enableAutoCompleteMessages
 		return nil
 	}
 }
 
-func newProcessor(ns *internal.Namespace, options ...ProcessorOption) (*Processor, error) {
+// ProcessorWithMaxConcurrentCalls controls the maximum number of message processing
+// goroutines that are active at any time.
+// Default is 1.
+func ProcessorWithMaxConcurrentCalls(maxConcurrentCalls int) ProcessorOption {
+	return func(processor *Processor) error {
+		processor.config.MaxConcurrentCalls = maxConcurrentCalls
+		return nil
+	}
+}
+
+type legacyNamespace interface {
+	NewReceiver(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (*internal.Receiver, error)
+}
+
+func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, error) {
 	processor := &Processor{
 		config: processorConfig{
-			receiveMode:        ReceiveModePeekLock,
-			shouldAutoComplete: true,
+			ReceiveMode:        ReceiveModePeekLock,
+			ShouldAutoComplete: true,
+			MaxConcurrentCalls: 1,
+			RetryOptions: struct {
+				Times int
+				Delay time.Duration
+			}{
+				// TODO: allow these to be configured.
+				Times: 10,
+				Delay: time.Second * 5,
+			},
 		},
 
 		mu:                &sync.Mutex{},
 		activeReceiversWg: &sync.WaitGroup{},
+
+		ns:        ns,
+		subscribe: subscribe,
 	}
 
 	for _, opt := range options {
@@ -117,55 +158,18 @@ func newProcessor(ns *internal.Namespace, options ...ProcessorOption) (*Processo
 		}
 	}
 
-	entityPath, err := formatEntity(processor.config.entity)
+	entityPath, err := formatEntity(processor.config.Entity)
 
 	if err != nil {
 		return nil, err
 	}
 
-	processor.config.fullEntityPath = entityPath
+	processor.config.FullEntityPath = entityPath
 
-	receiveModeOption := internal.ReceiverWithReceiveMode(internal.PeekLockMode)
-
-	if processor.config.receiveMode == "receiveAndDelete" {
-		receiveModeOption = internal.ReceiverWithReceiveMode(internal.ReceiveAndDeleteMode)
-	}
-
-	processor.createReceiver = func(ctx context.Context, maxConcurrency uint32) (internal.LegacyReceiver, error) {
-		// TODO: prefetch isn't _quite_ the right fit here (ie, we don't have a way to shut off the
-		// spigot that I'm aware of).
-		// But it's a pretty close approximation.
-		return ns.NewReceiver(ctx, entityPath, receiveModeOption, internal.ReceiverWithPrefetchCount(maxConcurrency))
-	}
+	processor.processorCtx, processor.cancelProcessor = context.WithCancel(context.Background())
+	processor.receiversCtx, processor.cancelReceivers = context.WithCancel(context.Background())
 
 	return processor, nil
-}
-
-type StartProcessorOptions struct {
-	maxConcurrency uint32
-}
-
-type StartProcessorOption func(options *StartProcessorOptions) error
-
-func StartWithConcurrency(maxConcurrency uint32) StartProcessorOption {
-	return func(options *StartProcessorOptions) error {
-		options.maxConcurrency = maxConcurrency
-		return nil
-	}
-}
-
-func newStartProcessorOptions(options ...StartProcessorOption) (*StartProcessorOptions, error) {
-	subscribeOptions := &StartProcessorOptions{
-		maxConcurrency: 1,
-	}
-
-	for _, opt := range options {
-		if err := opt(subscribeOptions); err != nil {
-			return nil, err
-		}
-	}
-
-	return subscribeOptions, nil
 }
 
 // Start will start receiving messages from the queue or subscription.
@@ -179,37 +183,41 @@ func newStartProcessorOptions(options ...StartProcessorOption) (*StartProcessorO
 // Any errors that occur (such as network disconnects, failures in handleMessage) will be
 // sent to your handleError function. The processor will retry and restart as needed -
 // no user invention is required.
-func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error), options ...StartProcessorOption) error {
+func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-
-	startProcessorOptions, err := newStartProcessorOptions(options...)
-
-	if err != nil {
-		return err
-	}
-
-	p.processorCtx, p.cancelProcessor = context.WithCancel(context.Background())
-	p.receiversCtx, p.cancelReceivers = context.WithCancel(context.Background())
 
 	p.activeReceiversWg.Add(1)
 	go func(ctx context.Context) {
 		defer p.activeReceiversWg.Done()
 
 		for {
-			receiver, err := p.createReceiver(ctx, startProcessorOptions.maxConcurrency)
+			retry, _ := amqpCommon.Retry(p.config.RetryOptions.Times, p.config.RetryOptions.Delay, func() (interface{}, error) {
+				receiver, err := p.ns.NewReceiver(ctx, p.config.FullEntityPath,
+					// TODO: prefetch isn't _quite_ the right fit here (ie, we don't have a way to shut off the
+					// spigot that I'm aware of). But it's a pretty close approximation.
+					internal.ReceiverWithPrefetchCount(uint32(p.config.MaxConcurrentCalls)),
+					internal.ReceiverWithReceiveMode(internal.ReceiveMode(p.config.ReceiveMode)))
 
-			if err != nil {
-				// notify the user and then fall into doing a retry
-				handleError(err)
-			} else {
-				if retry := subscribe(ctx, receiver, p.config.shouldAutoComplete, handleMessage, handleError); !retry {
-					break
+				if err != nil {
+					// notify the user and then fall into doing a retry
+					handleError(err)
+					return true, amqpCommon.Retryable("")
 				}
-			}
 
-			if err := p.config.retryPolicy.Wait(ctx, 0); err != nil {
-				handleError(err)
+				defer receiver.Close(ctx)
+
+				// we retry infinitely, but do it in the pattern they specify via their retryOptions for each "round" of retries.
+				retry := p.subscribe(ctx, receiver, p.config.ShouldAutoComplete, handleMessage, handleError)
+
+				if retry {
+					return true, amqpCommon.Retryable("")
+				} else {
+					return false, nil
+				}
+			})
+
+			if !retry.(bool) {
 				break
 			}
 		}
@@ -226,13 +234,15 @@ func (p *Processor) Done() <-chan struct{} {
 
 // Stop will wait for any pending callbacks to complete.
 func (p *Processor) Close(ctx context.Context) error {
+
+	select {
+	case <-p.Done():
+		return nil
+	default:
+	}
+
 	p.mu.Lock()
 	defer p.mu.Unlock()
-
-	// processor is already stopped.
-	if p.processorCtx == nil {
-		return nil
-	}
 
 	p.cancelReceivers()
 
@@ -240,11 +250,6 @@ func (p *Processor) Close(ctx context.Context) error {
 
 	// now unlock anyone _external_ to the processor that's waiting for us to exit or close.
 	p.cancelProcessor()
-
-	p.processorCtx = nil
-	p.cancelProcessor = nil
-	p.receiversCtx = nil
-	p.cancelReceivers = nil
 
 	return err
 }
@@ -256,8 +261,6 @@ func subscribe(
 	handleMessage func(message *ReceivedMessage) error,
 	notifyError func(err error)) bool {
 
-	defer receiver.Close(ctx)
-
 	activeCallbacksWg := &sync.WaitGroup{}
 	notifyErrorAsync := wrapNotifyError(notifyError, activeCallbacksWg)
 
@@ -266,33 +269,13 @@ func subscribe(
 	// TODO: `listen` doesn't give you additional messages unless you've settled previous ones.
 	// In track 2 SDKs you should get a new message, regardless of settlement (ie: it's simply gated on the # of outstanding callbacks)
 	listenHandle := receiver.Listen(ctx, internal.HandlerFunc(func(ctx context.Context, legacyMessage *internal.Message) error {
+		// this shouldn't happen since we do a `select` above that prevents it.
+		// errors from their handler are sent to their error handler but do not terminate the
+		// subscription.
 		activeCallbacksWg.Add(1)
 		defer activeCallbacksWg.Done()
 
-		// this shouldn't happen since we do a `select` above that prevents it.
-		err := handleMessage(convertToReceivedMessage(legacyMessage))
-
-		if err != nil {
-			notifyErrorAsync(err)
-		}
-
-		var settleErr error
-
-		if shouldAutoComplete {
-			if err != nil {
-				settleErr = receiver.AbandonMessage(ctx, legacyMessage)
-			} else {
-				settleErr = receiver.CompleteMessage(ctx, legacyMessage)
-			}
-
-			if settleErr != nil {
-				notifyErrorAsync(settleErr)
-			}
-		}
-
-		// errors from their handler are sent to their error handler but do not terminate the
-		// subscription.
-		return nil
+		return handleSingleMessage(handleMessage, notifyErrorAsync, shouldAutoComplete, receiver, legacyMessage)
 	}))
 
 	select {
@@ -307,6 +290,32 @@ func subscribe(
 		// we should retry since the listen handle can be closed if we did a .Recover() on the receiver.
 		return shouldRetry
 	}
+}
+
+func handleSingleMessage(handleMessage func(message *ReceivedMessage) error, notifyErrorAsync func(err error), shouldAutoComplete bool, receiver internal.LegacyReceiver, legacyMessage *internal.Message) error {
+	err := handleMessage(convertToReceivedMessage(legacyMessage))
+
+	if err != nil {
+		notifyErrorAsync(err)
+	}
+
+	var settleErr error
+
+	if shouldAutoComplete {
+		// NOTE: we ignore the passed in context. Since we're settling behind the scenes
+		// it's nice to wrap it up so users don't have to track it.
+		if err != nil {
+			settleErr = receiver.AbandonMessage(context.Background(), legacyMessage)
+		} else {
+			settleErr = receiver.CompleteMessage(context.Background(), legacyMessage)
+		}
+
+		if settleErr != nil {
+			notifyErrorAsync(settleErr)
+		}
+	}
+
+	return nil
 }
 
 //

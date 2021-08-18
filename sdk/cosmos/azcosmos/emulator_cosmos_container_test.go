@@ -59,6 +59,28 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 
+	updatedProperties := CosmosContainerProperties{
+		Id: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/id"},
+		},
+		IndexingPolicy: &IndexingPolicy{
+			IncludedPaths: []IncludedPath{},
+			ExcludedPaths: []ExcludedPath{},
+			Automatic:     false,
+			IndexingMode:  IndexingModeNone,
+		},
+	}
+
+	resp, err = container.Update(context.TODO(), updatedProperties, nil)
+	if err != nil {
+		t.Fatalf("Failed to update container: %v", err)
+	}
+
+	if resp.RawResponse.StatusCode != 200 {
+		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
+	}
+
 	resp, err = container.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete container: %v", err)

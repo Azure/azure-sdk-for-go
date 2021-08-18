@@ -55,6 +55,25 @@ func (c *cosmosClientConnection) sendPostRequest(
 	return c.Pipeline.Do(req)
 }
 
+func (c *cosmosClientConnection) sendPutRequest(
+	path string,
+	ctx context.Context,
+	content interface{},
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	err = req.MarshalAsJSON(content)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Pipeline.Do(req)
+}
+
 func (c *cosmosClientConnection) sendGetRequest(
 	path string,
 	ctx context.Context,

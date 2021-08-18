@@ -73,7 +73,9 @@ func (db *CosmosDatabase) AddContainer(
 // Get reads a Cosmos database.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+func (db *CosmosDatabase) Get(
+	ctx context.Context,
+	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosDatabaseRequestOptions{}
 	}
@@ -99,7 +101,9 @@ func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabas
 // Delete a Cosmos database.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (db *CosmosDatabase) Delete(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+func (db *CosmosDatabase) Delete(
+	ctx context.Context,
+	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosDatabaseRequestOptions{}
 	}

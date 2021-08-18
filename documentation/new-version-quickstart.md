@@ -168,10 +168,11 @@ import (
 ***Define some global variables***
 ```go
 var (
-	ctx               = context.Background()
-	subscriptionId    = os.Getenv("AZURE_SUBSCRIPTION_ID")
-	location          = "westus2"
-	resourceGroupName = "resourceGroupName"
+    ctx                 = context.Background()
+    subscriptionId      = os.Getenv("AZURE_SUBSCRIPTION_ID")
+    location            = "westus2"
+    resourceGroupName   = "resourceGroupName"
+    interval            = 5 * time.Second
 )
 ```
 
@@ -283,13 +284,13 @@ func main() {
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
-    log.Printf("Resource Group %s created", *resourceGroup.ID)
+    log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
 	updatedRG, err := updateResourceGroup(ctx, conn)
 	if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
 	}
-	log.Printf("Resource Group %s updated", *updatedRG.ID)
+	log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
 	rgList, err := listResourceGroups(ctx, conn)
 	if err != nil {
@@ -312,20 +313,21 @@ Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk
 
 Long Running Operations
 -----------------------
-In the samples above, you might notice that some operations has a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (In short, LRO). For resource managment libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
+In the samples above, you might notice that some operations have a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (LRO). For resource management libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
 
 ```go
 poller, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
 if err != nil {
 	// handle error...
 }
-resp, err = poller.PollUntilDone(context.Background(), 5*time.Second)
+resp, err = poller.PollUntilDone(context.Background(), 5 * time.Second)
 if err != nil {
 	// handle error...
 }
 fmt.Printf("LRO done")
 // dealing with `resp`
 ```
+
 Note that you will need to pass a polling interval to ```PollUntilDone``` and tell the poller how often it should try to get the status. This number is usually small but it's best to consult the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on best practices and recommdend intervals for your specific use cases.
 
 For more advanced usage of LRO and design guidelines of LRO, please visit [this documentation here](https://azure.github.io/azure-sdk/golang_introduction.html#methods-invoking-long-running-operations)
@@ -364,4 +366,4 @@ our CLA.
 
 This project has adopted the Microsoft Open Source Code of Conduct. For
 more information see the Code of Conduct FAQ or contact
-<opencode@microsoft.com> with any additional questions or comments.
+[opencode@microsoft.com](mailto:opencode@microsoft.com) with any questions or comments.

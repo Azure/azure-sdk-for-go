@@ -8,7 +8,7 @@ replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../azidentity
 
 replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azcore
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azidentity
+replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../azidentity
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.17.0

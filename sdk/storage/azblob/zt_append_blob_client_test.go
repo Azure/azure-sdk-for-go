@@ -168,12 +168,12 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	//ctx context.Context, source url.URL, contentLength int64, options *AppendBlockURLOptions)
-	offset := int64(0)
-	count := int64(CountToEnd)
+	start := int64(0)
+	end := int64(CountToEnd)
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Range: &HttpRange{
-			offset,
-			count,
+			start,
+			end,
 		},
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
@@ -263,13 +263,13 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_assert.Nil(err)
 	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
 
-	offset := int64(0)
-	count := int64(contentSize)
+	start := int64(0)
+	end := int64(contentSize)
 	contentMD5 := md5Value[:]
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Range: &HttpRange{
-			offset,
-			count,
+			start,
+			end,
 		},
 		SourceContentMD5: contentMD5,
 	}
@@ -299,8 +299,8 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_, badMD5 := getRandomDataAndReader(16)
 	appendBlockURLOptions = AppendBlockURLOptions{
 		Range: &HttpRange{
-			offset,
-			count,
+			start,
+			end,
 		},
 		SourceContentMD5: badMD5,
 	}

@@ -273,11 +273,11 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 
-	offset1, count1 := int64(0), int64(contentSize/2)
+	start1, end1 := int64(0), int64(contentSize/2)
 	options1 := StageBlockFromURLOptions{
 		Range: &HttpRange{
-			count: count1,
-			offset: offset1,
+			End:   end1,
+			Start: start1,
 		},
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
@@ -288,11 +288,11 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_assert.NotNil(stageResp1.Date)
 	_assert.Equal((*stageResp1.Date).IsZero(), false)
 
-	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
+	start2, end2 := int64(contentSize/2), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
 		Range: &HttpRange{
-			count: count2,
-			offset: offset2,
+			End:   end2,
+			Start: start2,
 		},
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
@@ -680,9 +680,9 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	pbClient := createNewPageBlob(_assert, "src"+generateBlobName(testName), containerClient)
 
 	contentSize := 1 * 1024
-	offset, count := int64(0), int64(contentSize)
+	start, end := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		PageRange: &HttpRange{start, end},
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
 	_assert.Nil(err)

@@ -61,7 +61,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	// Attempt to write past the end of the buffer. In this case the buffer
 	// rejects the write completely since it falls completely out of bounds.
 	count, err = section.Write([]byte{11, 12, 13})
-	_assert.Contains(err.Error(), "offset value is out of range")
+	_assert.Contains(err.Error(), "Start value is out of range")
 	_assert.Equal(count, 0)
 	_assert.Equal(section.position, int64(5))
 	_assert.Equal(b, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})

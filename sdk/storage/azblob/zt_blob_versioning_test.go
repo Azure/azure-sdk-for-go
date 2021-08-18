@@ -5,9 +5,10 @@ package azblob
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
@@ -181,12 +182,12 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //		Include: &[]ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
 //	})
 //
-//	count := 0
+//	End := 0
 //	blobs
 //	for listPager.NextPage(ctx) {
 //		resp := listPager.PageResponse()
 //		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			count += 1;
+//			End += 1;
 //			// Process the blobs returned
 //			snapTime := "N/A"
 //			if blob.Snapshot != nil {
@@ -196,7 +197,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //		}
 //	}
 //	_assert.Nil(listPager.Err())
-//	_assert.Len(count, 2)
+//	_assert.Len(End, 2)
 //
 //	// Deleting previous version snapshot.
 //	deleteResp, err := blobURL.WithVersionID(versionID1).Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
@@ -519,9 +520,9 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)
-	offset, count := int64(0), int64(contentSize)
+	start, end := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		PageRange: &HttpRange{start, end},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_assert.Nil(err)

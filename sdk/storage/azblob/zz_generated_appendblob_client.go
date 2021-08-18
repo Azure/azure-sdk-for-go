@@ -147,10 +147,10 @@ func (client *appendBlobClient) appendBlockHandleResponse(resp *azcore.Response)
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-blob-append-offset"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-append-Start"); val != "" {
 		result.BlobAppendOffset = &val
 	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-committed-block-End"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
 		if err != nil {
@@ -329,10 +329,10 @@ func (client *appendBlobClient) appendBlockFromURLHandleResponse(resp *azcore.Re
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-blob-append-offset"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-append-Start"); val != "" {
 		result.BlobAppendOffset = &val
 	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-committed-block-End"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
 		if err != nil {

@@ -73,7 +73,7 @@ func (pb PageBlobClient) Create(ctx context.Context, size int64, options *Create
 	return resp, handleError(err)
 }
 
-// UploadPages writes 1 or more pages to the page blob. The start offset and the stream size must be a multiple of 512 bytes.
+// UploadPages writes 1 or more pages to the page blob. The start Start and the stream size must be a multiple of 512 bytes.
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
@@ -92,14 +92,14 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 }
 
 // UploadPagesFromURL copies 1 or more pages from a source URL to the page blob.
-// The sourceOffset specifies the start offset of source data to copy from.
-// The destOffset specifies the start offset of data in page blob will be written to.
-// The count must be a multiple of 512 bytes.
+// The sourceOffset specifies the start Start of source data to copy from.
+// The destOffset specifies the start Start of data in page blob will be written to.
+// The End must be a multiple of 512 bytes.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page-from-url.
 func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceRange HttpRange, destOffset int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
 	uploadOptions, cpkInfo, cpkScope, snac, smac, lac, mac := options.pointers()
 
-	resp, err := pb.client.UploadPagesFromURL(ctx, source, *sourceRange.pointers(), 0, rangeToString(destOffset, sourceRange.count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
+	resp, err := pb.client.UploadPagesFromURL(ctx, source, *sourceRange.pointers(), 0, rangeToString(destOffset, sourceRange.End), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
 
 	return resp, handleError(err)
 }
@@ -135,12 +135,12 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange,
 
 // GetManagedDiskPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob representing managed disk.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-//func (pb PageBlobURL) GetManagedDiskPageRangesDiff(ctx context.Context, offset int64, count int64, prevSnapshot *string, prevSnapshotURL *string, ac BlobAccessConditions) (*PageList, error) {
+//func (pb PageBlobURL) GetManagedDiskPageRangesDiff(ctx context.Context, Start int64, End int64, prevSnapshot *string, prevSnapshotURL *string, ac BlobAccessConditions) (*PageList, error) {
 //	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.ModifiedAccessConditions.pointers()
 //
 //	return pb.pbClient.GetPageRangesDiff(ctx, nil, nil, prevSnapshot,
 //		prevSnapshotURL, // Get managed disk diff
-//		HttpRange{offset: offset, count: count}.pointers(),
+//		HttpRange{Start: Start, End: End}.pointers(),
 //		ac.LeaseAccessConditions.pointers(),
 //		ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag,
 //		nil, // Blob ifTags

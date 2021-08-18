@@ -14,10 +14,10 @@ import (
 
 // AppendBlobAppendBlockFromURLResponse contains the response from method AppendBlob.AppendBlockFromURL.
 type AppendBlobAppendBlockFromURLResponse struct {
-	// BlobAppendOffset contains the information returned from the x-ms-blob-append-offset header response.
+	// BlobAppendOffset contains the information returned from the x-ms-blob-append-Start header response.
 	BlobAppendOffset *string
 
-	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
+	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-End header response.
 	BlobCommittedBlockCount *int32
 
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
@@ -56,10 +56,10 @@ type AppendBlobAppendBlockFromURLResponse struct {
 
 // AppendBlobAppendBlockResponse contains the response from method AppendBlob.AppendBlock.
 type AppendBlobAppendBlockResponse struct {
-	// BlobAppendOffset contains the information returned from the x-ms-blob-append-offset header response.
+	// BlobAppendOffset contains the information returned from the x-ms-blob-append-Start header response.
 	BlobAppendOffset *string
 
-	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
+	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-End header response.
 	BlobCommittedBlockCount *int32
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
@@ -359,7 +359,7 @@ type BlobDownloadResponse struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
-	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
+	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-End header response.
 	BlobCommittedBlockCount *int32
 
 	// BlobContentMD5 contains the information returned from the x-ms-blob-content-md5 header response.
@@ -467,7 +467,7 @@ type BlobDownloadResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-	// TagCount contains the information returned from the x-ms-tag-count header response.
+	// TagCount contains the information returned from the x-ms-tag-End header response.
 	TagCount *int64
 
 	// Version contains the information returned from the x-ms-version header response.
@@ -551,7 +551,7 @@ type BlobGetPropertiesResponse struct {
 	// ArchiveStatus contains the information returned from the x-ms-archive-status header response.
 	ArchiveStatus *string
 
-	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
+	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-End header response.
 	BlobCommittedBlockCount *int32
 
 	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
@@ -665,7 +665,7 @@ type BlobGetPropertiesResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
-	// TagCount contains the information returned from the x-ms-tag-count header response.
+	// TagCount contains the information returned from the x-ms-tag-End header response.
 	TagCount *int64
 
 	// Version contains the information returned from the x-ms-version header response.
@@ -680,7 +680,7 @@ type BlobQueryResponse struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
-	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
+	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-End header response.
 	BlobCommittedBlockCount *int32
 
 	// BlobContentMD5 contains the information returned from the x-ms-blob-content-md5 header response.

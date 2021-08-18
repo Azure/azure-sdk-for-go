@@ -142,8 +142,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
 		Range: &HttpRange{
-			offset: 0,
-			count: int64(contentSize / 2),
+			Start: 0,
+			End:   int64(contentSize / 2),
 		},
 	})
 	_assert.Nil(err)
@@ -155,8 +155,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
 		Range: &HttpRange{
-			offset: int64(contentSize / 2),
-			count: CountToEnd,
+			Start: int64(contentSize / 2),
+			End:   CountToEnd,
 		},
 	})
 	_assert.Nil(err)
@@ -1230,11 +1230,11 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 
 	// Stage blocks from URL.
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-	offset1, count1 := int64(0), int64(4*1024)
+	start1, end1 := int64(0), int64(4*1024)
 	options1 := StageBlockFromURLOptions{
 		Range: &HttpRange{
-			offset: offset1,
-			count: count1,
+			Start: start1,
+			End:   end1,
 		},
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
@@ -1246,11 +1246,11 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_assert.Equal(stageResp1.Date.IsZero(), false)
 
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
-	offset2, count2 := int64(4*1024), int64(CountToEnd)
+	start2, end2 := int64(4*1024), int64(CountToEnd)
 	options2 := StageBlockFromURLOptions{
 		Range: &HttpRange{
-			offset: offset2,
-			count: count2,
+			Start: start2,
+			End:   end2,
 		},
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)

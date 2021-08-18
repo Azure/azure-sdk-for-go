@@ -1030,7 +1030,7 @@ func (client *blobClient) downloadHandleResponse(resp *azcore.Response) (BlobDow
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-committed-block-End"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
 		if err != nil {
@@ -1058,7 +1058,7 @@ func (client *blobClient) downloadHandleResponse(resp *azcore.Response) (BlobDow
 		}
 		result.BlobContentMD5 = blobContentMD5
 	}
-	if val := resp.Header.Get("x-ms-tag-count"); val != "" {
+	if val := resp.Header.Get("x-ms-tag-End"); val != "" {
 		tagCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return BlobDownloadResponse{}, err
@@ -1488,7 +1488,7 @@ func (client *blobClient) getPropertiesHandleResponse(resp *azcore.Response) (Bl
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-committed-block-End"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
 		if err != nil {
@@ -1539,7 +1539,7 @@ func (client *blobClient) getPropertiesHandleResponse(resp *azcore.Response) (Bl
 		}
 		result.IsCurrentVersion = &isCurrentVersion
 	}
-	if val := resp.Header.Get("x-ms-tag-count"); val != "" {
+	if val := resp.Header.Get("x-ms-tag-End"); val != "" {
 		tagCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return BlobGetPropertiesResponse{}, err
@@ -1850,7 +1850,7 @@ func (client *blobClient) queryHandleResponse(resp *azcore.Response) (BlobQueryR
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+	if val := resp.Header.Get("x-ms-blob-committed-block-End"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
 		if err != nil {

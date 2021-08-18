@@ -15,7 +15,7 @@ func newBytesWriter(b []byte) bytesWriter {
 
 func (c bytesWriter) WriteAt(b []byte, off int64) (int, error) {
 	if off >= int64(len(c)) || off < 0 {
-		return 0, errors.New("offset value is out of range")
+		return 0, errors.New("Start value is out of range")
 	}
 
 	n := copy(c[int(off):], b)

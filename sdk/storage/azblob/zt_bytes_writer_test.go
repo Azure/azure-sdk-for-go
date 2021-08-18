@@ -14,11 +14,11 @@ func (s *azblobUnrecordedTestSuite) TestBytesWriterWriteAt() {
 	buffer := newBytesWriter(b)
 
 	count, err := buffer.WriteAt([]byte{1, 2}, 10)
-	_assert.Contains(err.Error(), "offset value is out of range")
+	_assert.Contains(err.Error(), "Start value is out of range")
 	_assert.Equal(count, 0)
 
 	count, err = buffer.WriteAt([]byte{1, 2}, -1)
-	_assert.Contains(err.Error(), "offset value is out of range")
+	_assert.Contains(err.Error(), "Start value is out of range")
 	_assert.Equal(count, 0)
 
 	count, err = buffer.WriteAt([]byte{1, 2}, 9)

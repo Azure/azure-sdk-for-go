@@ -23,42 +23,42 @@ func (pr *PageRange) Raw() (start, end int64) {
 	return
 }
 
-// HttpRange defines a range of bytes within an HTTP resource, starting at offset and
-// ending at offset+count. A zero-value HttpRange indicates the entire resource. An HttpRange
-// which has an offset but na zero value count indicates from the offset to the resource's end.
+// HttpRange defines a range of bytes within an HTTP resource, starting at Start and
+// ending at End. A zero-value HttpRange indicates the entire resource. An HttpRange
+// which has an Start but na zero value End indicates from the Start to the resource's end.
 type HttpRange struct {
-	offset int64
-	count  int64
+	Start int64
+	End   int64
 }
 
 func (r HttpRange) pointers() *string {
-	if r.offset == 0 && r.count == 0 { // Do common case first for performance
+	if r.Start == 0 && r.End == 0 { // Do common case first for performance
 		return nil // No specified range
 	}
-	endOffset := "" // if count == CountToEnd (0)
-	if r.count > 0 {
-		endOffset = strconv.FormatInt((r.offset+r.count)-1, 10)
+	end := "" // if End == CountToEnd (0)
+	if r.End > 0 {
+		end = strconv.FormatInt(r.End, 10)
 	}
-	dataRange := fmt.Sprintf("bytes=%v-%s", r.offset, endOffset)
+	dataRange := fmt.Sprintf("bytes=%v-%s", r.Start, end)
 	return &dataRange
 }
 
-func getSourceRange(offset, count *int64) *string {
-	if offset == nil && count == nil {
+func getSourceRange(start, end *int64) *string {
+	if start == nil && end == nil {
 		return nil
 	}
-	newOffset := int64(0)
-	newCount := int64(CountToEnd)
+	newStart := int64(0)
+	newEnd := int64(CountToEnd)
 
-	if offset != nil {
-		newOffset = *offset
+	if start != nil {
+		newStart = *start
 	}
 
-	if count != nil {
-		newCount = *count
+	if end != nil {
+		newEnd = *end
 	}
 
-	return HttpRange{offset: newOffset, count: newCount}.pointers()
+	return HttpRange{Start: newStart, End: newEnd}.pointers()
 }
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {

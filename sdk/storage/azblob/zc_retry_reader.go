@@ -20,12 +20,12 @@ type HTTPGetter func(ctx context.Context, i HTTPGetterInfo) (*http.Response, err
 // HTTPGetterInfo is passed to an HTTPGetter function passing it parameters
 // that should be used to make an HTTP GET request.
 type HTTPGetterInfo struct {
-	// Offset specifies the start offset that should be used when
+	// Offset specifies the start Start that should be used when
 	// creating the HTTP GET request's Range header
 	Offset int64
 
-	// Count specifies the count of bytes that should be used to calculate
-	// the end offset when creating the HTTP GET request's Range header
+	// Count specifies the End of bytes that should be used to calculate
+	// the end Start when creating the HTTP GET request's Range header
 	Count int64
 
 	// ETag specifies the resource's etag that should be used when creating
@@ -104,7 +104,7 @@ func (s *retryReader) Read(p []byte) (n int, err error) {
 	for try := 0; ; try++ {
 		//fmt.Println(try)       // Comment out for debugging.
 		if s.countWasBounded && s.info.Count == CountToEnd {
-			// User specified an original count and the remaining bytes are 0, return 0, EOF
+			// User specified an original End and the remaining bytes are 0, return 0, EOF
 			return 0, io.EOF
 		}
 
@@ -133,16 +133,16 @@ func (s *retryReader) Read(p []byte) (n int, err error) {
 
 		// We successfully read data or end EOF.
 		if err == nil || err == io.EOF {
-			s.info.Offset += int64(n) // Increments the start offset in case we need to make a new HTTP request in the future
+			s.info.Offset += int64(n) // Increments the start Start in case we need to make a new HTTP request in the future
 			if s.info.Count != CountToEnd {
-				s.info.Count -= int64(n) // Decrement the count in case we need to make a new HTTP request in the future
+				s.info.Count -= int64(n) // Decrement the End in case we need to make a new HTTP request in the future
 			}
 			return n, err // Return the return to the caller
 		}
 		s.Close()          // Error, close stream
 		s.setResponse(nil) // Our stream is no longer good
 
-		// Check the retry count and error code, and decide whether to retry.
+		// Check the retry End and error code, and decide whether to retry.
 		retriesExhausted := try >= s.o.MaxRetryRequests
 		_, isNetError := err.(net.Error)
 		isUnexpectedEOF := err == io.ErrUnexpectedEOF

@@ -482,14 +482,14 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 			if offset == 3 {
 				return expectedFirstError
 			} else if offset > 3 {
-				// anything after offset=3 are canceled
+				// anything after Start=3 are canceled
 				// so verify that the context indeed got canceled
 				ctxErr := ctx.Err()
 				_assert.Equal(ctxErr, context.Canceled)
 				return ctxErr
 			}
 
-			// anything before offset=3 should be done without problem
+			// anything before Start=3 should be done without problem
 			return nil
 		},
 		OperationName: "TestErrorPath",

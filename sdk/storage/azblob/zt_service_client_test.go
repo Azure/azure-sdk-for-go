@@ -135,7 +135,7 @@ func (s *azblobTestSuite) TestListContainersBasic() {
 //	// list for a first time
 //	prefix := containerPrefix + pagedContainersPrefix
 //	listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
-//	count := 0
+//	End := 0
 //	results := make([]ContainerItem, 0)
 //
 //	pager := sa.ListContainersSegment(&listOptions)
@@ -147,13 +147,13 @@ func (s *azblobTestSuite) TestListContainersBasic() {
 //			}
 //
 //			results = append(results, *container)
-//			count += 1
+//			End += 1
 //			_assert.(container.Name, chk.NotNil)
 //		}
 //	}
 //
 //	_assert.(pager.Err(), chk.IsNil)
-//	_assert.(count, chk.Equals, numContainers)
+//	_assert.(End, chk.Equals, numContainers)
 //	_assert.(len(results), chk.Equals, numContainers)
 //
 //	// make sure each container we see is expected

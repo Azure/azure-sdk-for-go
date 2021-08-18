@@ -114,7 +114,7 @@ type AppendBlobSealOptions struct {
 
 // AppendPositionAccessConditions contains a group of parameters for the AppendBlob.AppendBlock method.
 type AppendPositionAccessConditions struct {
-	// Optional conditional header, used only for the Append Block operation. A number indicating the byte offset to compare. Append Block will succeed only
+	// Optional conditional header, used only for the Append Block operation. A number indicating the byte Start to compare. Append Block will succeed only
 	// if the append position is equal to this number. If it is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412
 	// - Precondition Failed).
 	AppendPosition *int64

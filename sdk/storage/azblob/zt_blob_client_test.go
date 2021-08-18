@@ -1629,7 +1629,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 
-	// Specifying a count of 0 results in the value being ignored
+	// Specifying a End of 0 results in the value being ignored
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	_assert.Nil(err)
 	_assert.Equal(string(data), blockBlobDefaultData)

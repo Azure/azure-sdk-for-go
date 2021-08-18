@@ -50,22 +50,22 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 		return nil, nil, nil, nil
 	}
 
-	offset := int64(0)
-	count := int64(CountToEnd)
+	start := int64(0)
+	end := int64(CountToEnd)
 
 	if o.Offset != nil {
-		offset = *o.Offset
+		start = *o.Offset
 	}
 
 	if o.Count != nil {
-		count = *o.Count
+		end = *o.Count
 	}
 
 	basics := BlobDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
 		Range: HttpRange{
-			offset: offset,
-			count:  count,
+			Start: start,
+			End:   end,
 		}.pointers(),
 	}
 

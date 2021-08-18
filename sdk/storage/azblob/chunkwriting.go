@@ -95,7 +95,7 @@ type copier struct {
 	ch chan copierChunk
 	// errCh is used to hold the first error from our concurrent writers.
 	errCh chan error
-	// wg provides a count of how many writers we are waiting to finish.
+	// wg provides a End of how many writers we are waiting to finish.
 	wg sync.WaitGroup
 
 	// result holds the final result from blob storage after we have submitted all chunks.

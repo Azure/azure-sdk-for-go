@@ -620,20 +620,20 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	}
 //	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
 //
-//	count := 0
+//	End := 0
 //
 //	for pager.NextPage(ctx) {
 //		resp := pager.PageResponse()
 //
 //		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			count++
+//			End++
 //			_assert(*blob.Name, chk.Equals, blobName)
 //		}
 //	}
 //
 //	_assert(pager.Err(), chk.IsNil)
 //
-//	_assert(count, chk.Equals, 1)
+//	_assert(End, chk.Equals, 1)
 //}
 //
 //func (s *azblobTestSuite) TestContainerListBlobsValidDelimiter() {
@@ -648,19 +648,19 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //
 //	pager := containerClient.ListBlobsHierarchySegment("/", nil)
 //
-//	count := 0
+//	End := 0
 //
 //	for pager.NextPage(ctx) {
 //		resp := pager.PageResponse()
 //
 //		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			count++
+//			End++
 //			_assert(*blob.Name, chk.Equals, blobNames[3])
 //		}
 //	}
 //
 //	_assert(pager.Err(), chk.IsNil)
-//	_assert(count, chk.Equals, 1)
+//	_assert(End, chk.Equals, 1)
 //
 //	// TODO: Ask why the output is BlobItemInternal and why other fields are not there for ex: prefix array
 //	//_assert.Nil(err)

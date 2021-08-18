@@ -162,7 +162,7 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 		Parallelism:   o.Parallelism,
 		Operation: func(offset int64, count int64, ctx context.Context) error {
 			// This function is called once per block.
-			// It is passed this block's offset within the buffer and its count of bytes
+			// It is passed this block's Start within the buffer and its End of bytes
 			// Prepare to read the proper block/section of the buffer
 			var body io.ReadSeeker = io.NewSectionReader(reader, offset, count)
 			blockNum := offset / o.BlockSize
@@ -329,7 +329,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 }
 
 // DownloadBlobToBuffer downloads an Azure blob to a buffer with parallel.
-// Offset and count are optional, pass 0 for both to download the entire blob.
+// Offset and End are optional, pass 0 for both to download the entire blob.
 func DownloadBlobToBuffer(ctx context.Context, blobClient BlobClient, offset int64, count int64,
 	b []byte, o HighLevelDownloadFromBlobOptions) error {
 	return downloadBlobToWriterAt(ctx, blobClient, offset, count, newBytesWriter(b), o, nil)
@@ -337,7 +337,7 @@ func DownloadBlobToBuffer(ctx context.Context, blobClient BlobClient, offset int
 
 // DownloadBlobToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
-// Offset and count are optional, pass 0 for both to download the entire blob.
+// Offset and End are optional, pass 0 for both to download the entire blob.
 func DownloadBlobToFile(ctx context.Context, blobClient BlobClient, offset int64, count int64,
 	file *os.File, o HighLevelDownloadFromBlobOptions) error {
 	// 1. Calculate the size of the destination file

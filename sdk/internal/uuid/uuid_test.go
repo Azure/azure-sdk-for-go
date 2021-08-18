@@ -54,3 +54,18 @@ func TestParse(t *testing.T) {
 		})
 	}
 }
+
+func TestParseFail(t *testing.T) {
+	testCases := []string{
+		"72d0f24f-82be-4016-729d-31fd13bd681",
+		"{72d0f24f-82be+4016-729d-31fd13bd681e}",
+	}
+	for _, input := range testCases {
+		t.Run(input, func(t *testing.T) {
+			_, err := Parse(input)
+			if err == nil {
+				t.Fatalf("unexpected nil error for: %s", input)
+			}
+		})
+	}
+}

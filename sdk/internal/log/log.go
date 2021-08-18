@@ -97,6 +97,11 @@ func TestResetClassifications() {
 var log logger
 
 func init() {
+	initLogging()
+}
+
+// split out for testing purposes
+func initLogging() {
 	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
 		// cls could be enhanced to support a comma-delimited list of log classifications
 		log.lst = func(cls Classification, msg string) {

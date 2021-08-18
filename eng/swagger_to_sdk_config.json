@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/documentation/sdkautomation/SwaggerToSdkConfigSchema.json",
   "generateOptions": {
     "generateScript": {
-      "path": "generator automation-new-version",
+      "path": "generator automation-v2",
       "stderr": {
         "showInComment": "^\\[AUTOREST\\]",
         "scriptError": "^\\[ERROR\\]",
@@ -23,6 +23,6 @@
     }
   },
   "packageOptions": {
-    "breakingChangeLabel": "CI-BreakingChange-Go-NewVersion"
+    "breakingChangeLabel": "CI-BreakingChange-Go-V2"
   }
 }

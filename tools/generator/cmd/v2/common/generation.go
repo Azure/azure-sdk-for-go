@@ -49,7 +49,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]
 	var errors []error
 
 	log.Printf("Get all namespaces from readme file")
-	rpMap, err := ReadTrack2ModuleNameToGetNamespace(absReadmeGo)
+	rpMap, err := ReadV2ModuleNameToGetNamespace(absReadmeGo)
 	if err != nil {
 		return nil, []error{
 			fmt.Errorf("cannot get rp and namespaces from readme '%s': %+v", readme, err),

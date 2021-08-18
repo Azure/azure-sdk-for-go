@@ -26,14 +26,14 @@ const (
 )
 
 var (
-	track2BeginRegex               = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
-	track2EndRegex                 = regexp.MustCompile("^\\s*```\\s*$")
+	v2BeginRegex                   = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
+	v2EndRegex                     = regexp.MustCompile("^\\s*```\\s*$")
 	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
 	newClientMethodNameRegex       = regexp.MustCompile("^New.+Client$")
 )
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
-func ReadTrack2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
+func ReadV2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
 	result := make(map[string][]string)
 	log.Printf("Reading from readme.go.md '%s'...", path)
 	file, err := os.Open(path)
@@ -52,30 +52,30 @@ func ReadTrack2ModuleNameToGetNamespace(path string) (map[string][]string, error
 	var start []int
 	var end []int
 	for i, line := range lines {
-		if track2BeginRegex.MatchString(line) {
+		if v2BeginRegex.MatchString(line) {
 			start = append(start, i)
 		}
-		if len(start) != len(end) && track2EndRegex.MatchString(line) {
+		if len(start) != len(end) && v2EndRegex.MatchString(line) {
 			end = append(end, i)
 		}
 	}
 
 	if len(start) == 0 {
-		return nil, fmt.Errorf("cannot find any track2 section")
+		return nil, fmt.Errorf("cannot find any `track2` section")
 	}
 	if len(start) != len(end) {
-		return nil, fmt.Errorf("last track2 section does not properly end")
+		return nil, fmt.Errorf("last `track2` section does not properly end")
 	}
 
 	for i := range start {
-		// get the content of the track2 section
-		track2Section := lines[start[i]+1 : end[i]]
+		// get the content of the `track2` section
+		section := lines[start[i]+1 : end[i]]
 		// iterate over the rest lines, get module name
-		for _, line := range track2Section {
+		for _, line := range section {
 			if strings.HasPrefix(line, swagger_md_module_name_prefix) {
 				modules := strings.Split(strings.TrimSpace(line[len(swagger_md_module_name_prefix):]), "/")
 				if len(modules) != 3 {
-					return nil, fmt.Errorf("cannot parse module name from track2 section")
+					return nil, fmt.Errorf("cannot parse module name from `track2` section")
 				}
 				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[2], "\n"), "\r")
 				log.Printf("RP: %s Package: %s", modules[1], namespaceName)

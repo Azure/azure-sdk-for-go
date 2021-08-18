@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/track2/common"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/spf13/cobra"
@@ -19,9 +19,9 @@ import (
 // Release command
 func Command() *cobra.Command {
 	releaseCmd := &cobra.Command{
-		Use:   "release-track2 <azure-sdk-for-go directory> <azure-rest-api-specs directory> <rp-name> <namespaceName>",
-		Short: "Generate a track2 release of azure-sdk-for-go",
-		Long: `This command will generate a new track2 release for azure-sdk-for-go with given rp name and namespace name.
+		Use:   "release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs directory> <rp-name> <namespaceName>",
+		Short: "Generate a v2 release of azure-sdk-for-go",
+		Long: `This command will generate a new v2 release for azure-sdk-for-go with given rp name and namespace name.
 
 azure-sdk-for-go directory: the directory path of the azure-sdk-for-go with git control
 azure-rest-api-specs directory: the directory path of the azure-rest-api-specs with git control

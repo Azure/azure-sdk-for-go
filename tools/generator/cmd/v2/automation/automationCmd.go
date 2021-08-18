@@ -10,16 +10,16 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/pipeline"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/track2/common"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/spf13/cobra"
 )
 
-// Command returns the automation for track2 command. Note that this command is designed to run in the root directory of
+// Command returns the automation v2 command. Note that this command is designed to run in the root directory of
 // azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "automation-new-version <generate input filepath> <generate output filepath>",
+		Use:  "automation-v2 <generate input filepath> <generate output filepath>",
 		Args: cobra.ExactArgs(2),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0) // remove the time stamp prefix

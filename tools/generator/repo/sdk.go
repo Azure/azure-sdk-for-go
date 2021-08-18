@@ -37,7 +37,7 @@ func (s *sdkRepository) AddReleaseCommit(rpName, namespaceName, specHash, versio
 		return fmt.Errorf("failed to add 'profiles': %+v", err)
 	}
 
-	message := fmt.Sprintf("Release: %s:%s from spec commit hash: %s", rpName, version, specHash)
+	message := fmt.Sprintf("[Track2 Release] sdk/%s/%s/%s generation from spec commit: %s", rpName, namespaceName, version, specHash)
 	if err := s.Commit(message); err != nil {
 		if IsNothingToCommit(err) {
 			log.Printf("There is nothing to commit. Message: %s", message)

@@ -3,8 +3,8 @@ parameters:
 
 steps:
   - pwsh: |
-        $certUriPfx = "https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.pfx"
-        $certUriCrt = "https://github.com/Azure/azure-sdk-tools/raw/main/tools/test-proxy/docker/dev_certificate/dotnet-devcert.crt"
+        $certUriPfx = "https://github.com/Azure/azure-sdk-tools/blob/c0d142ae047f0d561a31f9989c63896cc5ffc70e/eng/common/testproxy/dotnet-devcert.pfx"
+        $certUriCrt = "https://github.com/Azure/azure-sdk-tools/blob/c0d142ae047f0d561a31f9989c63896cc5ffc70e/eng/common/testproxy/dotnet-devcert.crt"
         $certLocationPfx = "$(Build.SourcesDirectory)/dotnet-devcert.pfx"
         $certLocationCrt = "$(Build.SourcesDirectory)/dotnet-devcert.crt"
 

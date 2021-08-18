@@ -102,8 +102,8 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
-func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
+func (c *InteractiveBrowserCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 
@@ -140,7 +140,7 @@ func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *In
 	cv := ""
 	// the code verifier is a random 32-byte sequence that's been base-64 encoded without padding.
 	// it's used to prevent MitM attacks during auth code flow, see https://tools.ietf.org/html/rfc7636
-	b := make([]byte, 32, 32)
+	b := make([]byte, 32, 32) // nolint:gosimple
 	if _, err := rand.Read(b); err != nil {
 		return nil, err
 	}

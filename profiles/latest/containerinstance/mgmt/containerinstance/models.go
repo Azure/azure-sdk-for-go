@@ -11,7 +11,7 @@ package containerinstance
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2020-11-01/containerinstance"
+	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-03-01/containerinstance"
 )
 
 const (
@@ -21,30 +21,30 @@ const (
 type ContainerGroupIPAddressType = original.ContainerGroupIPAddressType
 
 const (
-	Private ContainerGroupIPAddressType = original.Private
-	Public  ContainerGroupIPAddressType = original.Public
+	ContainerGroupIPAddressTypePrivate ContainerGroupIPAddressType = original.ContainerGroupIPAddressTypePrivate
+	ContainerGroupIPAddressTypePublic  ContainerGroupIPAddressType = original.ContainerGroupIPAddressTypePublic
 )
 
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
 
 const (
-	TCP ContainerGroupNetworkProtocol = original.TCP
-	UDP ContainerGroupNetworkProtocol = original.UDP
+	ContainerGroupNetworkProtocolTCP ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocolTCP
+	ContainerGroupNetworkProtocolUDP ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocolUDP
 )
 
 type ContainerGroupRestartPolicy = original.ContainerGroupRestartPolicy
 
 const (
-	Always    ContainerGroupRestartPolicy = original.Always
-	Never     ContainerGroupRestartPolicy = original.Never
-	OnFailure ContainerGroupRestartPolicy = original.OnFailure
+	ContainerGroupRestartPolicyAlways    ContainerGroupRestartPolicy = original.ContainerGroupRestartPolicyAlways
+	ContainerGroupRestartPolicyNever     ContainerGroupRestartPolicy = original.ContainerGroupRestartPolicyNever
+	ContainerGroupRestartPolicyOnFailure ContainerGroupRestartPolicy = original.ContainerGroupRestartPolicyOnFailure
 )
 
 type ContainerGroupSku = original.ContainerGroupSku
 
 const (
-	Dedicated ContainerGroupSku = original.Dedicated
-	Standard  ContainerGroupSku = original.Standard
+	ContainerGroupSkuDedicated ContainerGroupSku = original.ContainerGroupSkuDedicated
+	ContainerGroupSkuStandard  ContainerGroupSku = original.ContainerGroupSkuStandard
 )
 
 type ContainerNetworkProtocol = original.ContainerNetworkProtocol
@@ -57,46 +57,46 @@ const (
 type GpuSku = original.GpuSku
 
 const (
-	K80  GpuSku = original.K80
-	P100 GpuSku = original.P100
-	V100 GpuSku = original.V100
+	GpuSkuK80  GpuSku = original.GpuSkuK80
+	GpuSkuP100 GpuSku = original.GpuSkuP100
+	GpuSkuV100 GpuSku = original.GpuSkuV100
 )
 
 type LogAnalyticsLogType = original.LogAnalyticsLogType
 
 const (
-	ContainerInsights     LogAnalyticsLogType = original.ContainerInsights
-	ContainerInstanceLogs LogAnalyticsLogType = original.ContainerInstanceLogs
+	LogAnalyticsLogTypeContainerInsights     LogAnalyticsLogType = original.LogAnalyticsLogTypeContainerInsights
+	LogAnalyticsLogTypeContainerInstanceLogs LogAnalyticsLogType = original.LogAnalyticsLogTypeContainerInstanceLogs
 )
 
 type OperatingSystemTypes = original.OperatingSystemTypes
 
 const (
-	Linux   OperatingSystemTypes = original.Linux
-	Windows OperatingSystemTypes = original.Windows
+	OperatingSystemTypesLinux   OperatingSystemTypes = original.OperatingSystemTypesLinux
+	OperatingSystemTypesWindows OperatingSystemTypes = original.OperatingSystemTypesWindows
 )
 
 type OperationsOrigin = original.OperationsOrigin
 
 const (
-	System OperationsOrigin = original.System
-	User   OperationsOrigin = original.User
+	OperationsOriginSystem OperationsOrigin = original.OperationsOriginSystem
+	OperationsOriginUser   OperationsOrigin = original.OperationsOriginUser
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None                       ResourceIdentityType = original.None
-	SystemAssigned             ResourceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type Scheme = original.Scheme
 
 const (
-	HTTP  Scheme = original.HTTP
-	HTTPS Scheme = original.HTTPS
+	SchemeHTTP  Scheme = original.SchemeHTTP
+	SchemeHTTPS Scheme = original.SchemeHTTPS
 )
 
 type AzureFileVolume = original.AzureFileVolume

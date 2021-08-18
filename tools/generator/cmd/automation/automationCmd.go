@@ -91,13 +91,6 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	return nil
 }
 
-func tempDir() string {
-	if dir := os.Getenv("TMP_DIR"); dir != "" {
-		return dir
-	}
-	return os.TempDir()
-}
-
 type automationContext struct {
 	sdkRoot    string
 	specRoot   string

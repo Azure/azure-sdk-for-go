@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -15,7 +16,7 @@ import (
 )
 
 // bodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
-func bodyDownloadPolicy(req *Request) (*Response, error) {
+func bodyDownloadPolicy(req *Request) (*http.Response, error) {
 	resp, err := req.Next()
 	if err != nil {
 		return resp, err

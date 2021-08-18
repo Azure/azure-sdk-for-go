@@ -11,21 +11,88 @@ package avs
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2020-03-20/avs"
+	original "github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-06-01/avs"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AddonProvisioningState = original.AddonProvisioningState
+
+const (
+	AddonProvisioningStateBuilding  AddonProvisioningState = original.AddonProvisioningStateBuilding
+	AddonProvisioningStateCancelled AddonProvisioningState = original.AddonProvisioningStateCancelled
+	AddonProvisioningStateDeleting  AddonProvisioningState = original.AddonProvisioningStateDeleting
+	AddonProvisioningStateFailed    AddonProvisioningState = original.AddonProvisioningStateFailed
+	AddonProvisioningStateSucceeded AddonProvisioningState = original.AddonProvisioningStateSucceeded
+	AddonProvisioningStateUpdating  AddonProvisioningState = original.AddonProvisioningStateUpdating
+)
+
+type AddonType = original.AddonType
+
+const (
+	AddonTypeAddonProperties AddonType = original.AddonTypeAddonProperties
+	AddonTypeHCX             AddonType = original.AddonTypeHCX
+	AddonTypeSRM             AddonType = original.AddonTypeSRM
+	AddonTypeVR              AddonType = original.AddonTypeVR
+)
+
+type CloudLinkStatus = original.CloudLinkStatus
+
+const (
+	CloudLinkStatusActive       CloudLinkStatus = original.CloudLinkStatusActive
+	CloudLinkStatusBuilding     CloudLinkStatus = original.CloudLinkStatusBuilding
+	CloudLinkStatusDeleting     CloudLinkStatus = original.CloudLinkStatusDeleting
+	CloudLinkStatusDisconnected CloudLinkStatus = original.CloudLinkStatusDisconnected
+	CloudLinkStatusFailed       CloudLinkStatus = original.CloudLinkStatusFailed
+)
+
 type ClusterProvisioningState = original.ClusterProvisioningState
 
 const (
-	Cancelled ClusterProvisioningState = original.Cancelled
-	Deleting  ClusterProvisioningState = original.Deleting
-	Failed    ClusterProvisioningState = original.Failed
-	Succeeded ClusterProvisioningState = original.Succeeded
-	Updating  ClusterProvisioningState = original.Updating
+	ClusterProvisioningStateCancelled ClusterProvisioningState = original.ClusterProvisioningStateCancelled
+	ClusterProvisioningStateDeleting  ClusterProvisioningState = original.ClusterProvisioningStateDeleting
+	ClusterProvisioningStateFailed    ClusterProvisioningState = original.ClusterProvisioningStateFailed
+	ClusterProvisioningStateSucceeded ClusterProvisioningState = original.ClusterProvisioningStateSucceeded
+	ClusterProvisioningStateUpdating  ClusterProvisioningState = original.ClusterProvisioningStateUpdating
+)
+
+type DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnum
+
+const (
+	DNSServiceLogLevelEnumDEBUG   DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnumDEBUG
+	DNSServiceLogLevelEnumERROR   DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnumERROR
+	DNSServiceLogLevelEnumFATAL   DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnumFATAL
+	DNSServiceLogLevelEnumINFO    DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnumINFO
+	DNSServiceLogLevelEnumWARNING DNSServiceLogLevelEnum = original.DNSServiceLogLevelEnumWARNING
+)
+
+type DNSServiceStatusEnum = original.DNSServiceStatusEnum
+
+const (
+	DNSServiceStatusEnumFAILURE DNSServiceStatusEnum = original.DNSServiceStatusEnumFAILURE
+	DNSServiceStatusEnumSUCCESS DNSServiceStatusEnum = original.DNSServiceStatusEnumSUCCESS
+)
+
+type DatastoreProvisioningState = original.DatastoreProvisioningState
+
+const (
+	DatastoreProvisioningStateCancelled DatastoreProvisioningState = original.DatastoreProvisioningStateCancelled
+	DatastoreProvisioningStateCreating  DatastoreProvisioningState = original.DatastoreProvisioningStateCreating
+	DatastoreProvisioningStateDeleting  DatastoreProvisioningState = original.DatastoreProvisioningStateDeleting
+	DatastoreProvisioningStateFailed    DatastoreProvisioningState = original.DatastoreProvisioningStateFailed
+	DatastoreProvisioningStatePending   DatastoreProvisioningState = original.DatastoreProvisioningStatePending
+	DatastoreProvisioningStateSucceeded DatastoreProvisioningState = original.DatastoreProvisioningStateSucceeded
+	DatastoreProvisioningStateUpdating  DatastoreProvisioningState = original.DatastoreProvisioningStateUpdating
+)
+
+type DhcpType = original.DhcpType
+
+const (
+	DhcpTypeRELAY                     DhcpType = original.DhcpTypeRELAY
+	DhcpTypeSERVER                    DhcpType = original.DhcpTypeSERVER
+	DhcpTypeWorkloadNetworkDhcpEntity DhcpType = original.DhcpTypeWorkloadNetworkDhcpEntity
 )
 
 type ExpressRouteAuthorizationProvisioningState = original.ExpressRouteAuthorizationProvisioningState
@@ -36,20 +103,62 @@ const (
 	ExpressRouteAuthorizationProvisioningStateUpdating  ExpressRouteAuthorizationProvisioningState = original.ExpressRouteAuthorizationProvisioningStateUpdating
 )
 
+type GlobalReachConnectionProvisioningState = original.GlobalReachConnectionProvisioningState
+
+const (
+	GlobalReachConnectionProvisioningStateFailed    GlobalReachConnectionProvisioningState = original.GlobalReachConnectionProvisioningStateFailed
+	GlobalReachConnectionProvisioningStateSucceeded GlobalReachConnectionProvisioningState = original.GlobalReachConnectionProvisioningStateSucceeded
+	GlobalReachConnectionProvisioningStateUpdating  GlobalReachConnectionProvisioningState = original.GlobalReachConnectionProvisioningStateUpdating
+)
+
+type GlobalReachConnectionStatus = original.GlobalReachConnectionStatus
+
+const (
+	GlobalReachConnectionStatusConnected    GlobalReachConnectionStatus = original.GlobalReachConnectionStatusConnected
+	GlobalReachConnectionStatusConnecting   GlobalReachConnectionStatus = original.GlobalReachConnectionStatusConnecting
+	GlobalReachConnectionStatusDisconnected GlobalReachConnectionStatus = original.GlobalReachConnectionStatusDisconnected
+)
+
 type HcxEnterpriseSiteStatus = original.HcxEnterpriseSiteStatus
 
 const (
-	Available   HcxEnterpriseSiteStatus = original.Available
-	Consumed    HcxEnterpriseSiteStatus = original.Consumed
-	Deactivated HcxEnterpriseSiteStatus = original.Deactivated
-	Deleted     HcxEnterpriseSiteStatus = original.Deleted
+	HcxEnterpriseSiteStatusAvailable   HcxEnterpriseSiteStatus = original.HcxEnterpriseSiteStatusAvailable
+	HcxEnterpriseSiteStatusConsumed    HcxEnterpriseSiteStatus = original.HcxEnterpriseSiteStatusConsumed
+	HcxEnterpriseSiteStatusDeactivated HcxEnterpriseSiteStatus = original.HcxEnterpriseSiteStatusDeactivated
+	HcxEnterpriseSiteStatusDeleted     HcxEnterpriseSiteStatus = original.HcxEnterpriseSiteStatusDeleted
 )
 
 type InternetEnum = original.InternetEnum
 
 const (
-	Disabled InternetEnum = original.Disabled
-	Enabled  InternetEnum = original.Enabled
+	InternetEnumDisabled InternetEnum = original.InternetEnumDisabled
+	InternetEnumEnabled  InternetEnum = original.InternetEnumEnabled
+)
+
+type MountOptionEnum = original.MountOptionEnum
+
+const (
+	MountOptionEnumATTACH MountOptionEnum = original.MountOptionEnumATTACH
+	MountOptionEnumMOUNT  MountOptionEnum = original.MountOptionEnumMOUNT
+)
+
+type OptionalParamEnum = original.OptionalParamEnum
+
+const (
+	OptionalParamEnumOptional OptionalParamEnum = original.OptionalParamEnumOptional
+	OptionalParamEnumRequired OptionalParamEnum = original.OptionalParamEnumRequired
+)
+
+type PortMirroringDirectionEnum = original.PortMirroringDirectionEnum
+
+const (
+	PortMirroringDirectionEnumINGRESSEGRESSBIDIRECTIONAL PortMirroringDirectionEnum = original.PortMirroringDirectionEnumINGRESSEGRESSBIDIRECTIONAL
+)
+
+type PortMirroringStatusEnum = original.PortMirroringStatusEnum
+
+const (
+	PortMirroringStatusEnumSUCCESSFAILURE PortMirroringStatusEnum = original.PortMirroringStatusEnumSUCCESSFAILURE
 )
 
 type PrivateCloudProvisioningState = original.PrivateCloudProvisioningState
@@ -71,6 +180,44 @@ const (
 	QuotaEnabledEnabled  QuotaEnabled = original.QuotaEnabledEnabled
 )
 
+type ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningState
+
+const (
+	ScriptExecutionProvisioningStateCancelled  ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStateCancelled
+	ScriptExecutionProvisioningStateCancelling ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStateCancelling
+	ScriptExecutionProvisioningStateDeleting   ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStateDeleting
+	ScriptExecutionProvisioningStateFailed     ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStateFailed
+	ScriptExecutionProvisioningStatePending    ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStatePending
+	ScriptExecutionProvisioningStateRunning    ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStateRunning
+	ScriptExecutionProvisioningStateSucceeded  ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningStateSucceeded
+)
+
+type ScriptOutputStreamType = original.ScriptOutputStreamType
+
+const (
+	ScriptOutputStreamTypeError       ScriptOutputStreamType = original.ScriptOutputStreamTypeError
+	ScriptOutputStreamTypeInformation ScriptOutputStreamType = original.ScriptOutputStreamTypeInformation
+	ScriptOutputStreamTypeOutput      ScriptOutputStreamType = original.ScriptOutputStreamTypeOutput
+	ScriptOutputStreamTypeWarning     ScriptOutputStreamType = original.ScriptOutputStreamTypeWarning
+)
+
+type ScriptParameterTypes = original.ScriptParameterTypes
+
+const (
+	ScriptParameterTypesBool         ScriptParameterTypes = original.ScriptParameterTypesBool
+	ScriptParameterTypesCredential   ScriptParameterTypes = original.ScriptParameterTypesCredential
+	ScriptParameterTypesFloat        ScriptParameterTypes = original.ScriptParameterTypesFloat
+	ScriptParameterTypesInt          ScriptParameterTypes = original.ScriptParameterTypesInt
+	ScriptParameterTypesSecureString ScriptParameterTypes = original.ScriptParameterTypesSecureString
+	ScriptParameterTypesString       ScriptParameterTypes = original.ScriptParameterTypesString
+)
+
+type SegmentStatusEnum = original.SegmentStatusEnum
+
+const (
+	SegmentStatusEnumSUCCESSFAILURE SegmentStatusEnum = original.SegmentStatusEnumSUCCESSFAILURE
+)
+
 type SslEnum = original.SslEnum
 
 const (
@@ -81,18 +228,138 @@ const (
 type TrialStatus = original.TrialStatus
 
 const (
-	TrialAvailable TrialStatus = original.TrialAvailable
-	TrialDisabled  TrialStatus = original.TrialDisabled
-	TrialUsed      TrialStatus = original.TrialUsed
+	TrialStatusTrialAvailable TrialStatus = original.TrialStatusTrialAvailable
+	TrialStatusTrialDisabled  TrialStatus = original.TrialStatusTrialDisabled
+	TrialStatusTrialUsed      TrialStatus = original.TrialStatusTrialUsed
 )
 
+type Type = original.Type
+
+const (
+	TypeCredential               Type = original.TypeCredential
+	TypeScriptExecutionParameter Type = original.TypeScriptExecutionParameter
+	TypeSecureValue              Type = original.TypeSecureValue
+	TypeValue                    Type = original.TypeValue
+)
+
+type VMGroupStatusEnum = original.VMGroupStatusEnum
+
+const (
+	VMGroupStatusEnumSUCCESSFAILURE VMGroupStatusEnum = original.VMGroupStatusEnumSUCCESSFAILURE
+)
+
+type VMTypeEnum = original.VMTypeEnum
+
+const (
+	VMTypeEnumREGULAREDGESERVICE VMTypeEnum = original.VMTypeEnumREGULAREDGESERVICE
+)
+
+type VisibilityParameterEnum = original.VisibilityParameterEnum
+
+const (
+	VisibilityParameterEnumHidden  VisibilityParameterEnum = original.VisibilityParameterEnumHidden
+	VisibilityParameterEnumVisible VisibilityParameterEnum = original.VisibilityParameterEnumVisible
+)
+
+type WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningState
+
+const (
+	WorkloadNetworkDNSServiceProvisioningStateBuilding  WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateBuilding
+	WorkloadNetworkDNSServiceProvisioningStateDeleting  WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateDeleting
+	WorkloadNetworkDNSServiceProvisioningStateFailed    WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateFailed
+	WorkloadNetworkDNSServiceProvisioningStateSucceeded WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateSucceeded
+	WorkloadNetworkDNSServiceProvisioningStateUpdating  WorkloadNetworkDNSServiceProvisioningState = original.WorkloadNetworkDNSServiceProvisioningStateUpdating
+)
+
+type WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningState
+
+const (
+	WorkloadNetworkDNSZoneProvisioningStateBuilding  WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateBuilding
+	WorkloadNetworkDNSZoneProvisioningStateDeleting  WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateDeleting
+	WorkloadNetworkDNSZoneProvisioningStateFailed    WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateFailed
+	WorkloadNetworkDNSZoneProvisioningStateSucceeded WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateSucceeded
+	WorkloadNetworkDNSZoneProvisioningStateUpdating  WorkloadNetworkDNSZoneProvisioningState = original.WorkloadNetworkDNSZoneProvisioningStateUpdating
+)
+
+type WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningState
+
+const (
+	WorkloadNetworkDhcpProvisioningStateBuilding  WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningStateBuilding
+	WorkloadNetworkDhcpProvisioningStateDeleting  WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningStateDeleting
+	WorkloadNetworkDhcpProvisioningStateFailed    WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningStateFailed
+	WorkloadNetworkDhcpProvisioningStateSucceeded WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningStateSucceeded
+	WorkloadNetworkDhcpProvisioningStateUpdating  WorkloadNetworkDhcpProvisioningState = original.WorkloadNetworkDhcpProvisioningStateUpdating
+)
+
+type WorkloadNetworkPortMirroringProvisioningState = original.WorkloadNetworkPortMirroringProvisioningState
+
+const (
+	WorkloadNetworkPortMirroringProvisioningStateBuilding  WorkloadNetworkPortMirroringProvisioningState = original.WorkloadNetworkPortMirroringProvisioningStateBuilding
+	WorkloadNetworkPortMirroringProvisioningStateDeleting  WorkloadNetworkPortMirroringProvisioningState = original.WorkloadNetworkPortMirroringProvisioningStateDeleting
+	WorkloadNetworkPortMirroringProvisioningStateFailed    WorkloadNetworkPortMirroringProvisioningState = original.WorkloadNetworkPortMirroringProvisioningStateFailed
+	WorkloadNetworkPortMirroringProvisioningStateSucceeded WorkloadNetworkPortMirroringProvisioningState = original.WorkloadNetworkPortMirroringProvisioningStateSucceeded
+	WorkloadNetworkPortMirroringProvisioningStateUpdating  WorkloadNetworkPortMirroringProvisioningState = original.WorkloadNetworkPortMirroringProvisioningStateUpdating
+)
+
+type WorkloadNetworkPublicIPProvisioningState = original.WorkloadNetworkPublicIPProvisioningState
+
+const (
+	WorkloadNetworkPublicIPProvisioningStateBuilding  WorkloadNetworkPublicIPProvisioningState = original.WorkloadNetworkPublicIPProvisioningStateBuilding
+	WorkloadNetworkPublicIPProvisioningStateDeleting  WorkloadNetworkPublicIPProvisioningState = original.WorkloadNetworkPublicIPProvisioningStateDeleting
+	WorkloadNetworkPublicIPProvisioningStateFailed    WorkloadNetworkPublicIPProvisioningState = original.WorkloadNetworkPublicIPProvisioningStateFailed
+	WorkloadNetworkPublicIPProvisioningStateSucceeded WorkloadNetworkPublicIPProvisioningState = original.WorkloadNetworkPublicIPProvisioningStateSucceeded
+	WorkloadNetworkPublicIPProvisioningStateUpdating  WorkloadNetworkPublicIPProvisioningState = original.WorkloadNetworkPublicIPProvisioningStateUpdating
+)
+
+type WorkloadNetworkSegmentProvisioningState = original.WorkloadNetworkSegmentProvisioningState
+
+const (
+	WorkloadNetworkSegmentProvisioningStateBuilding  WorkloadNetworkSegmentProvisioningState = original.WorkloadNetworkSegmentProvisioningStateBuilding
+	WorkloadNetworkSegmentProvisioningStateDeleting  WorkloadNetworkSegmentProvisioningState = original.WorkloadNetworkSegmentProvisioningStateDeleting
+	WorkloadNetworkSegmentProvisioningStateFailed    WorkloadNetworkSegmentProvisioningState = original.WorkloadNetworkSegmentProvisioningStateFailed
+	WorkloadNetworkSegmentProvisioningStateSucceeded WorkloadNetworkSegmentProvisioningState = original.WorkloadNetworkSegmentProvisioningStateSucceeded
+	WorkloadNetworkSegmentProvisioningStateUpdating  WorkloadNetworkSegmentProvisioningState = original.WorkloadNetworkSegmentProvisioningStateUpdating
+)
+
+type WorkloadNetworkVMGroupProvisioningState = original.WorkloadNetworkVMGroupProvisioningState
+
+const (
+	WorkloadNetworkVMGroupProvisioningStateBuilding  WorkloadNetworkVMGroupProvisioningState = original.WorkloadNetworkVMGroupProvisioningStateBuilding
+	WorkloadNetworkVMGroupProvisioningStateDeleting  WorkloadNetworkVMGroupProvisioningState = original.WorkloadNetworkVMGroupProvisioningStateDeleting
+	WorkloadNetworkVMGroupProvisioningStateFailed    WorkloadNetworkVMGroupProvisioningState = original.WorkloadNetworkVMGroupProvisioningStateFailed
+	WorkloadNetworkVMGroupProvisioningStateSucceeded WorkloadNetworkVMGroupProvisioningState = original.WorkloadNetworkVMGroupProvisioningStateSucceeded
+	WorkloadNetworkVMGroupProvisioningStateUpdating  WorkloadNetworkVMGroupProvisioningState = original.WorkloadNetworkVMGroupProvisioningStateUpdating
+)
+
+type Addon = original.Addon
+type AddonHcxProperties = original.AddonHcxProperties
+type AddonList = original.AddonList
+type AddonListIterator = original.AddonListIterator
+type AddonListPage = original.AddonListPage
+type AddonProperties = original.AddonProperties
+type AddonSrmProperties = original.AddonSrmProperties
+type AddonVrProperties = original.AddonVrProperties
+type AddonsClient = original.AddonsClient
+type AddonsCreateOrUpdateFuture = original.AddonsCreateOrUpdateFuture
+type AddonsDeleteFuture = original.AddonsDeleteFuture
 type AdminCredentials = original.AdminCredentials
 type AuthorizationsClient = original.AuthorizationsClient
 type AuthorizationsCreateOrUpdateFuture = original.AuthorizationsCreateOrUpdateFuture
 type AuthorizationsDeleteFuture = original.AuthorizationsDeleteFuture
 type BaseClient = original.BaseClient
+type BasicAddonProperties = original.BasicAddonProperties
+type BasicScriptExecutionParameter = original.BasicScriptExecutionParameter
+type BasicWorkloadNetworkDhcpEntity = original.BasicWorkloadNetworkDhcpEntity
 type Circuit = original.Circuit
 type CloudError = original.CloudError
+type CloudLink = original.CloudLink
+type CloudLinkList = original.CloudLinkList
+type CloudLinkListIterator = original.CloudLinkListIterator
+type CloudLinkListPage = original.CloudLinkListPage
+type CloudLinkProperties = original.CloudLinkProperties
+type CloudLinksClient = original.CloudLinksClient
+type CloudLinksCreateOrUpdateFuture = original.CloudLinksCreateOrUpdateFuture
+type CloudLinksDeleteFuture = original.CloudLinksDeleteFuture
 type Cluster = original.Cluster
 type ClusterList = original.ClusterList
 type ClusterListIterator = original.ClusterListIterator
@@ -104,6 +371,16 @@ type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
+type CommonClusterProperties = original.CommonClusterProperties
+type Datastore = original.Datastore
+type DatastoreList = original.DatastoreList
+type DatastoreListIterator = original.DatastoreListIterator
+type DatastoreListPage = original.DatastoreListPage
+type DatastoreProperties = original.DatastoreProperties
+type DatastoresClient = original.DatastoresClient
+type DatastoresCreateOrUpdateFuture = original.DatastoresCreateOrUpdateFuture
+type DatastoresDeleteFuture = original.DatastoresDeleteFuture
+type DiskPoolVolume = original.DiskPoolVolume
 type Endpoints = original.Endpoints
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
@@ -112,6 +389,14 @@ type ExpressRouteAuthorizationList = original.ExpressRouteAuthorizationList
 type ExpressRouteAuthorizationListIterator = original.ExpressRouteAuthorizationListIterator
 type ExpressRouteAuthorizationListPage = original.ExpressRouteAuthorizationListPage
 type ExpressRouteAuthorizationProperties = original.ExpressRouteAuthorizationProperties
+type GlobalReachConnection = original.GlobalReachConnection
+type GlobalReachConnectionList = original.GlobalReachConnectionList
+type GlobalReachConnectionListIterator = original.GlobalReachConnectionListIterator
+type GlobalReachConnectionListPage = original.GlobalReachConnectionListPage
+type GlobalReachConnectionProperties = original.GlobalReachConnectionProperties
+type GlobalReachConnectionsClient = original.GlobalReachConnectionsClient
+type GlobalReachConnectionsCreateOrUpdateFuture = original.GlobalReachConnectionsCreateOrUpdateFuture
+type GlobalReachConnectionsDeleteFuture = original.GlobalReachConnectionsDeleteFuture
 type HcxEnterpriseSite = original.HcxEnterpriseSite
 type HcxEnterpriseSiteList = original.HcxEnterpriseSiteList
 type HcxEnterpriseSiteListIterator = original.HcxEnterpriseSiteListIterator
@@ -124,6 +409,7 @@ type LogSpecification = original.LogSpecification
 type ManagementCluster = original.ManagementCluster
 type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
+type NetAppVolume = original.NetAppVolume
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -131,6 +417,7 @@ type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PSCredentialExecutionParameter = original.PSCredentialExecutionParameter
 type PrivateCloud = original.PrivateCloud
 type PrivateCloudList = original.PrivateCloudList
 type PrivateCloudListIterator = original.PrivateCloudListIterator
@@ -141,22 +428,143 @@ type PrivateCloudUpdateProperties = original.PrivateCloudUpdateProperties
 type PrivateCloudsClient = original.PrivateCloudsClient
 type PrivateCloudsCreateOrUpdateFuture = original.PrivateCloudsCreateOrUpdateFuture
 type PrivateCloudsDeleteFuture = original.PrivateCloudsDeleteFuture
+type PrivateCloudsRotateNsxtPasswordFuture = original.PrivateCloudsRotateNsxtPasswordFuture
+type PrivateCloudsRotateVcenterPasswordFuture = original.PrivateCloudsRotateVcenterPasswordFuture
 type PrivateCloudsUpdateFuture = original.PrivateCloudsUpdateFuture
+type ProxyResource = original.ProxyResource
 type Quota = original.Quota
 type Resource = original.Resource
+type ScriptCmdlet = original.ScriptCmdlet
+type ScriptCmdletProperties = original.ScriptCmdletProperties
+type ScriptCmdletsClient = original.ScriptCmdletsClient
+type ScriptCmdletsList = original.ScriptCmdletsList
+type ScriptCmdletsListIterator = original.ScriptCmdletsListIterator
+type ScriptCmdletsListPage = original.ScriptCmdletsListPage
+type ScriptExecution = original.ScriptExecution
+type ScriptExecutionParameter = original.ScriptExecutionParameter
+type ScriptExecutionProperties = original.ScriptExecutionProperties
+type ScriptExecutionsClient = original.ScriptExecutionsClient
+type ScriptExecutionsCreateOrUpdateFuture = original.ScriptExecutionsCreateOrUpdateFuture
+type ScriptExecutionsDeleteFuture = original.ScriptExecutionsDeleteFuture
+type ScriptExecutionsList = original.ScriptExecutionsList
+type ScriptExecutionsListIterator = original.ScriptExecutionsListIterator
+type ScriptExecutionsListPage = original.ScriptExecutionsListPage
+type ScriptPackage = original.ScriptPackage
+type ScriptPackageProperties = original.ScriptPackageProperties
+type ScriptPackagesClient = original.ScriptPackagesClient
+type ScriptPackagesList = original.ScriptPackagesList
+type ScriptPackagesListIterator = original.ScriptPackagesListIterator
+type ScriptPackagesListPage = original.ScriptPackagesListPage
+type ScriptParameter = original.ScriptParameter
+type ScriptSecureStringExecutionParameter = original.ScriptSecureStringExecutionParameter
+type ScriptStringExecutionParameter = original.ScriptStringExecutionParameter
 type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type Trial = original.Trial
+type WorkloadNetworkDNSService = original.WorkloadNetworkDNSService
+type WorkloadNetworkDNSServiceProperties = original.WorkloadNetworkDNSServiceProperties
+type WorkloadNetworkDNSServicesList = original.WorkloadNetworkDNSServicesList
+type WorkloadNetworkDNSServicesListIterator = original.WorkloadNetworkDNSServicesListIterator
+type WorkloadNetworkDNSServicesListPage = original.WorkloadNetworkDNSServicesListPage
+type WorkloadNetworkDNSZone = original.WorkloadNetworkDNSZone
+type WorkloadNetworkDNSZoneProperties = original.WorkloadNetworkDNSZoneProperties
+type WorkloadNetworkDNSZonesList = original.WorkloadNetworkDNSZonesList
+type WorkloadNetworkDNSZonesListIterator = original.WorkloadNetworkDNSZonesListIterator
+type WorkloadNetworkDNSZonesListPage = original.WorkloadNetworkDNSZonesListPage
+type WorkloadNetworkDhcp = original.WorkloadNetworkDhcp
+type WorkloadNetworkDhcpEntity = original.WorkloadNetworkDhcpEntity
+type WorkloadNetworkDhcpList = original.WorkloadNetworkDhcpList
+type WorkloadNetworkDhcpListIterator = original.WorkloadNetworkDhcpListIterator
+type WorkloadNetworkDhcpListPage = original.WorkloadNetworkDhcpListPage
+type WorkloadNetworkDhcpRelay = original.WorkloadNetworkDhcpRelay
+type WorkloadNetworkDhcpServer = original.WorkloadNetworkDhcpServer
+type WorkloadNetworkGateway = original.WorkloadNetworkGateway
+type WorkloadNetworkGatewayList = original.WorkloadNetworkGatewayList
+type WorkloadNetworkGatewayListIterator = original.WorkloadNetworkGatewayListIterator
+type WorkloadNetworkGatewayListPage = original.WorkloadNetworkGatewayListPage
+type WorkloadNetworkGatewayProperties = original.WorkloadNetworkGatewayProperties
+type WorkloadNetworkPortMirroring = original.WorkloadNetworkPortMirroring
+type WorkloadNetworkPortMirroringList = original.WorkloadNetworkPortMirroringList
+type WorkloadNetworkPortMirroringListIterator = original.WorkloadNetworkPortMirroringListIterator
+type WorkloadNetworkPortMirroringListPage = original.WorkloadNetworkPortMirroringListPage
+type WorkloadNetworkPortMirroringProperties = original.WorkloadNetworkPortMirroringProperties
+type WorkloadNetworkPublicIP = original.WorkloadNetworkPublicIP
+type WorkloadNetworkPublicIPProperties = original.WorkloadNetworkPublicIPProperties
+type WorkloadNetworkPublicIPsList = original.WorkloadNetworkPublicIPsList
+type WorkloadNetworkPublicIPsListIterator = original.WorkloadNetworkPublicIPsListIterator
+type WorkloadNetworkPublicIPsListPage = original.WorkloadNetworkPublicIPsListPage
+type WorkloadNetworkSegment = original.WorkloadNetworkSegment
+type WorkloadNetworkSegmentPortVif = original.WorkloadNetworkSegmentPortVif
+type WorkloadNetworkSegmentProperties = original.WorkloadNetworkSegmentProperties
+type WorkloadNetworkSegmentSubnet = original.WorkloadNetworkSegmentSubnet
+type WorkloadNetworkSegmentsList = original.WorkloadNetworkSegmentsList
+type WorkloadNetworkSegmentsListIterator = original.WorkloadNetworkSegmentsListIterator
+type WorkloadNetworkSegmentsListPage = original.WorkloadNetworkSegmentsListPage
+type WorkloadNetworkVMGroup = original.WorkloadNetworkVMGroup
+type WorkloadNetworkVMGroupProperties = original.WorkloadNetworkVMGroupProperties
+type WorkloadNetworkVMGroupsList = original.WorkloadNetworkVMGroupsList
+type WorkloadNetworkVMGroupsListIterator = original.WorkloadNetworkVMGroupsListIterator
+type WorkloadNetworkVMGroupsListPage = original.WorkloadNetworkVMGroupsListPage
+type WorkloadNetworkVirtualMachine = original.WorkloadNetworkVirtualMachine
+type WorkloadNetworkVirtualMachineProperties = original.WorkloadNetworkVirtualMachineProperties
+type WorkloadNetworkVirtualMachinesList = original.WorkloadNetworkVirtualMachinesList
+type WorkloadNetworkVirtualMachinesListIterator = original.WorkloadNetworkVirtualMachinesListIterator
+type WorkloadNetworkVirtualMachinesListPage = original.WorkloadNetworkVirtualMachinesListPage
+type WorkloadNetworksClient = original.WorkloadNetworksClient
+type WorkloadNetworksCreateDNSServiceFuture = original.WorkloadNetworksCreateDNSServiceFuture
+type WorkloadNetworksCreateDNSZoneFuture = original.WorkloadNetworksCreateDNSZoneFuture
+type WorkloadNetworksCreateDhcpFuture = original.WorkloadNetworksCreateDhcpFuture
+type WorkloadNetworksCreatePortMirroringFuture = original.WorkloadNetworksCreatePortMirroringFuture
+type WorkloadNetworksCreatePublicIPFuture = original.WorkloadNetworksCreatePublicIPFuture
+type WorkloadNetworksCreateSegmentsFuture = original.WorkloadNetworksCreateSegmentsFuture
+type WorkloadNetworksCreateVMGroupFuture = original.WorkloadNetworksCreateVMGroupFuture
+type WorkloadNetworksDeleteDNSServiceFuture = original.WorkloadNetworksDeleteDNSServiceFuture
+type WorkloadNetworksDeleteDNSZoneFuture = original.WorkloadNetworksDeleteDNSZoneFuture
+type WorkloadNetworksDeleteDhcpFuture = original.WorkloadNetworksDeleteDhcpFuture
+type WorkloadNetworksDeletePortMirroringFuture = original.WorkloadNetworksDeletePortMirroringFuture
+type WorkloadNetworksDeletePublicIPFuture = original.WorkloadNetworksDeletePublicIPFuture
+type WorkloadNetworksDeleteSegmentFuture = original.WorkloadNetworksDeleteSegmentFuture
+type WorkloadNetworksDeleteVMGroupFuture = original.WorkloadNetworksDeleteVMGroupFuture
+type WorkloadNetworksUpdateDNSServiceFuture = original.WorkloadNetworksUpdateDNSServiceFuture
+type WorkloadNetworksUpdateDNSZoneFuture = original.WorkloadNetworksUpdateDNSZoneFuture
+type WorkloadNetworksUpdateDhcpFuture = original.WorkloadNetworksUpdateDhcpFuture
+type WorkloadNetworksUpdatePortMirroringFuture = original.WorkloadNetworksUpdatePortMirroringFuture
+type WorkloadNetworksUpdateSegmentsFuture = original.WorkloadNetworksUpdateSegmentsFuture
+type WorkloadNetworksUpdateVMGroupFuture = original.WorkloadNetworksUpdateVMGroupFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAddonListIterator(page AddonListPage) AddonListIterator {
+	return original.NewAddonListIterator(page)
+}
+func NewAddonListPage(cur AddonList, getNextPage func(context.Context, AddonList) (AddonList, error)) AddonListPage {
+	return original.NewAddonListPage(cur, getNextPage)
+}
+func NewAddonsClient(subscriptionID string) AddonsClient {
+	return original.NewAddonsClient(subscriptionID)
+}
+func NewAddonsClientWithBaseURI(baseURI string, subscriptionID string) AddonsClient {
+	return original.NewAddonsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAuthorizationsClient(subscriptionID string) AuthorizationsClient {
 	return original.NewAuthorizationsClient(subscriptionID)
 }
 func NewAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationsClient {
 	return original.NewAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudLinkListIterator(page CloudLinkListPage) CloudLinkListIterator {
+	return original.NewCloudLinkListIterator(page)
+}
+func NewCloudLinkListPage(cur CloudLinkList, getNextPage func(context.Context, CloudLinkList) (CloudLinkList, error)) CloudLinkListPage {
+	return original.NewCloudLinkListPage(cur, getNextPage)
+}
+func NewCloudLinksClient(subscriptionID string) CloudLinksClient {
+	return original.NewCloudLinksClient(subscriptionID)
+}
+func NewCloudLinksClientWithBaseURI(baseURI string, subscriptionID string) CloudLinksClient {
+	return original.NewCloudLinksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewClusterListIterator(page ClusterListPage) ClusterListIterator {
 	return original.NewClusterListIterator(page)
@@ -170,11 +578,35 @@ func NewClustersClient(subscriptionID string) ClustersClient {
 func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDatastoreListIterator(page DatastoreListPage) DatastoreListIterator {
+	return original.NewDatastoreListIterator(page)
+}
+func NewDatastoreListPage(cur DatastoreList, getNextPage func(context.Context, DatastoreList) (DatastoreList, error)) DatastoreListPage {
+	return original.NewDatastoreListPage(cur, getNextPage)
+}
+func NewDatastoresClient(subscriptionID string) DatastoresClient {
+	return original.NewDatastoresClient(subscriptionID)
+}
+func NewDatastoresClientWithBaseURI(baseURI string, subscriptionID string) DatastoresClient {
+	return original.NewDatastoresClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewExpressRouteAuthorizationListIterator(page ExpressRouteAuthorizationListPage) ExpressRouteAuthorizationListIterator {
 	return original.NewExpressRouteAuthorizationListIterator(page)
 }
 func NewExpressRouteAuthorizationListPage(cur ExpressRouteAuthorizationList, getNextPage func(context.Context, ExpressRouteAuthorizationList) (ExpressRouteAuthorizationList, error)) ExpressRouteAuthorizationListPage {
 	return original.NewExpressRouteAuthorizationListPage(cur, getNextPage)
+}
+func NewGlobalReachConnectionListIterator(page GlobalReachConnectionListPage) GlobalReachConnectionListIterator {
+	return original.NewGlobalReachConnectionListIterator(page)
+}
+func NewGlobalReachConnectionListPage(cur GlobalReachConnectionList, getNextPage func(context.Context, GlobalReachConnectionList) (GlobalReachConnectionList, error)) GlobalReachConnectionListPage {
+	return original.NewGlobalReachConnectionListPage(cur, getNextPage)
+}
+func NewGlobalReachConnectionsClient(subscriptionID string) GlobalReachConnectionsClient {
+	return original.NewGlobalReachConnectionsClient(subscriptionID)
+}
+func NewGlobalReachConnectionsClientWithBaseURI(baseURI string, subscriptionID string) GlobalReachConnectionsClient {
+	return original.NewGlobalReachConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewHcxEnterpriseSiteListIterator(page HcxEnterpriseSiteListPage) HcxEnterpriseSiteListIterator {
 	return original.NewHcxEnterpriseSiteListIterator(page)
@@ -218,14 +650,137 @@ func NewPrivateCloudsClient(subscriptionID string) PrivateCloudsClient {
 func NewPrivateCloudsClientWithBaseURI(baseURI string, subscriptionID string) PrivateCloudsClient {
 	return original.NewPrivateCloudsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewScriptCmdletsClient(subscriptionID string) ScriptCmdletsClient {
+	return original.NewScriptCmdletsClient(subscriptionID)
+}
+func NewScriptCmdletsClientWithBaseURI(baseURI string, subscriptionID string) ScriptCmdletsClient {
+	return original.NewScriptCmdletsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScriptCmdletsListIterator(page ScriptCmdletsListPage) ScriptCmdletsListIterator {
+	return original.NewScriptCmdletsListIterator(page)
+}
+func NewScriptCmdletsListPage(cur ScriptCmdletsList, getNextPage func(context.Context, ScriptCmdletsList) (ScriptCmdletsList, error)) ScriptCmdletsListPage {
+	return original.NewScriptCmdletsListPage(cur, getNextPage)
+}
+func NewScriptExecutionsClient(subscriptionID string) ScriptExecutionsClient {
+	return original.NewScriptExecutionsClient(subscriptionID)
+}
+func NewScriptExecutionsClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionsClient {
+	return original.NewScriptExecutionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScriptExecutionsListIterator(page ScriptExecutionsListPage) ScriptExecutionsListIterator {
+	return original.NewScriptExecutionsListIterator(page)
+}
+func NewScriptExecutionsListPage(cur ScriptExecutionsList, getNextPage func(context.Context, ScriptExecutionsList) (ScriptExecutionsList, error)) ScriptExecutionsListPage {
+	return original.NewScriptExecutionsListPage(cur, getNextPage)
+}
+func NewScriptPackagesClient(subscriptionID string) ScriptPackagesClient {
+	return original.NewScriptPackagesClient(subscriptionID)
+}
+func NewScriptPackagesClientWithBaseURI(baseURI string, subscriptionID string) ScriptPackagesClient {
+	return original.NewScriptPackagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScriptPackagesListIterator(page ScriptPackagesListPage) ScriptPackagesListIterator {
+	return original.NewScriptPackagesListIterator(page)
+}
+func NewScriptPackagesListPage(cur ScriptPackagesList, getNextPage func(context.Context, ScriptPackagesList) (ScriptPackagesList, error)) ScriptPackagesListPage {
+	return original.NewScriptPackagesListPage(cur, getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkloadNetworkDNSServicesListIterator(page WorkloadNetworkDNSServicesListPage) WorkloadNetworkDNSServicesListIterator {
+	return original.NewWorkloadNetworkDNSServicesListIterator(page)
+}
+func NewWorkloadNetworkDNSServicesListPage(cur WorkloadNetworkDNSServicesList, getNextPage func(context.Context, WorkloadNetworkDNSServicesList) (WorkloadNetworkDNSServicesList, error)) WorkloadNetworkDNSServicesListPage {
+	return original.NewWorkloadNetworkDNSServicesListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkDNSZonesListIterator(page WorkloadNetworkDNSZonesListPage) WorkloadNetworkDNSZonesListIterator {
+	return original.NewWorkloadNetworkDNSZonesListIterator(page)
+}
+func NewWorkloadNetworkDNSZonesListPage(cur WorkloadNetworkDNSZonesList, getNextPage func(context.Context, WorkloadNetworkDNSZonesList) (WorkloadNetworkDNSZonesList, error)) WorkloadNetworkDNSZonesListPage {
+	return original.NewWorkloadNetworkDNSZonesListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkDhcpListIterator(page WorkloadNetworkDhcpListPage) WorkloadNetworkDhcpListIterator {
+	return original.NewWorkloadNetworkDhcpListIterator(page)
+}
+func NewWorkloadNetworkDhcpListPage(cur WorkloadNetworkDhcpList, getNextPage func(context.Context, WorkloadNetworkDhcpList) (WorkloadNetworkDhcpList, error)) WorkloadNetworkDhcpListPage {
+	return original.NewWorkloadNetworkDhcpListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkGatewayListIterator(page WorkloadNetworkGatewayListPage) WorkloadNetworkGatewayListIterator {
+	return original.NewWorkloadNetworkGatewayListIterator(page)
+}
+func NewWorkloadNetworkGatewayListPage(cur WorkloadNetworkGatewayList, getNextPage func(context.Context, WorkloadNetworkGatewayList) (WorkloadNetworkGatewayList, error)) WorkloadNetworkGatewayListPage {
+	return original.NewWorkloadNetworkGatewayListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkPortMirroringListIterator(page WorkloadNetworkPortMirroringListPage) WorkloadNetworkPortMirroringListIterator {
+	return original.NewWorkloadNetworkPortMirroringListIterator(page)
+}
+func NewWorkloadNetworkPortMirroringListPage(cur WorkloadNetworkPortMirroringList, getNextPage func(context.Context, WorkloadNetworkPortMirroringList) (WorkloadNetworkPortMirroringList, error)) WorkloadNetworkPortMirroringListPage {
+	return original.NewWorkloadNetworkPortMirroringListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkPublicIPsListIterator(page WorkloadNetworkPublicIPsListPage) WorkloadNetworkPublicIPsListIterator {
+	return original.NewWorkloadNetworkPublicIPsListIterator(page)
+}
+func NewWorkloadNetworkPublicIPsListPage(cur WorkloadNetworkPublicIPsList, getNextPage func(context.Context, WorkloadNetworkPublicIPsList) (WorkloadNetworkPublicIPsList, error)) WorkloadNetworkPublicIPsListPage {
+	return original.NewWorkloadNetworkPublicIPsListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkSegmentsListIterator(page WorkloadNetworkSegmentsListPage) WorkloadNetworkSegmentsListIterator {
+	return original.NewWorkloadNetworkSegmentsListIterator(page)
+}
+func NewWorkloadNetworkSegmentsListPage(cur WorkloadNetworkSegmentsList, getNextPage func(context.Context, WorkloadNetworkSegmentsList) (WorkloadNetworkSegmentsList, error)) WorkloadNetworkSegmentsListPage {
+	return original.NewWorkloadNetworkSegmentsListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkVMGroupsListIterator(page WorkloadNetworkVMGroupsListPage) WorkloadNetworkVMGroupsListIterator {
+	return original.NewWorkloadNetworkVMGroupsListIterator(page)
+}
+func NewWorkloadNetworkVMGroupsListPage(cur WorkloadNetworkVMGroupsList, getNextPage func(context.Context, WorkloadNetworkVMGroupsList) (WorkloadNetworkVMGroupsList, error)) WorkloadNetworkVMGroupsListPage {
+	return original.NewWorkloadNetworkVMGroupsListPage(cur, getNextPage)
+}
+func NewWorkloadNetworkVirtualMachinesListIterator(page WorkloadNetworkVirtualMachinesListPage) WorkloadNetworkVirtualMachinesListIterator {
+	return original.NewWorkloadNetworkVirtualMachinesListIterator(page)
+}
+func NewWorkloadNetworkVirtualMachinesListPage(cur WorkloadNetworkVirtualMachinesList, getNextPage func(context.Context, WorkloadNetworkVirtualMachinesList) (WorkloadNetworkVirtualMachinesList, error)) WorkloadNetworkVirtualMachinesListPage {
+	return original.NewWorkloadNetworkVirtualMachinesListPage(cur, getNextPage)
+}
+func NewWorkloadNetworksClient(subscriptionID string) WorkloadNetworksClient {
+	return original.NewWorkloadNetworksClient(subscriptionID)
+}
+func NewWorkloadNetworksClientWithBaseURI(baseURI string, subscriptionID string) WorkloadNetworksClient {
+	return original.NewWorkloadNetworksClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
+	return original.PossibleAddonProvisioningStateValues()
+}
+func PossibleAddonTypeValues() []AddonType {
+	return original.PossibleAddonTypeValues()
+}
+func PossibleCloudLinkStatusValues() []CloudLinkStatus {
+	return original.PossibleCloudLinkStatusValues()
 }
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return original.PossibleClusterProvisioningStateValues()
 }
+func PossibleDNSServiceLogLevelEnumValues() []DNSServiceLogLevelEnum {
+	return original.PossibleDNSServiceLogLevelEnumValues()
+}
+func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
+	return original.PossibleDNSServiceStatusEnumValues()
+}
+func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
+	return original.PossibleDatastoreProvisioningStateValues()
+}
+func PossibleDhcpTypeValues() []DhcpType {
+	return original.PossibleDhcpTypeValues()
+}
 func PossibleExpressRouteAuthorizationProvisioningStateValues() []ExpressRouteAuthorizationProvisioningState {
 	return original.PossibleExpressRouteAuthorizationProvisioningStateValues()
+}
+func PossibleGlobalReachConnectionProvisioningStateValues() []GlobalReachConnectionProvisioningState {
+	return original.PossibleGlobalReachConnectionProvisioningStateValues()
+}
+func PossibleGlobalReachConnectionStatusValues() []GlobalReachConnectionStatus {
+	return original.PossibleGlobalReachConnectionStatusValues()
 }
 func PossibleHcxEnterpriseSiteStatusValues() []HcxEnterpriseSiteStatus {
 	return original.PossibleHcxEnterpriseSiteStatusValues()
@@ -233,17 +788,74 @@ func PossibleHcxEnterpriseSiteStatusValues() []HcxEnterpriseSiteStatus {
 func PossibleInternetEnumValues() []InternetEnum {
 	return original.PossibleInternetEnumValues()
 }
+func PossibleMountOptionEnumValues() []MountOptionEnum {
+	return original.PossibleMountOptionEnumValues()
+}
+func PossibleOptionalParamEnumValues() []OptionalParamEnum {
+	return original.PossibleOptionalParamEnumValues()
+}
+func PossiblePortMirroringDirectionEnumValues() []PortMirroringDirectionEnum {
+	return original.PossiblePortMirroringDirectionEnumValues()
+}
+func PossiblePortMirroringStatusEnumValues() []PortMirroringStatusEnum {
+	return original.PossiblePortMirroringStatusEnumValues()
+}
 func PossiblePrivateCloudProvisioningStateValues() []PrivateCloudProvisioningState {
 	return original.PossiblePrivateCloudProvisioningStateValues()
 }
 func PossibleQuotaEnabledValues() []QuotaEnabled {
 	return original.PossibleQuotaEnabledValues()
 }
+func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvisioningState {
+	return original.PossibleScriptExecutionProvisioningStateValues()
+}
+func PossibleScriptOutputStreamTypeValues() []ScriptOutputStreamType {
+	return original.PossibleScriptOutputStreamTypeValues()
+}
+func PossibleScriptParameterTypesValues() []ScriptParameterTypes {
+	return original.PossibleScriptParameterTypesValues()
+}
+func PossibleSegmentStatusEnumValues() []SegmentStatusEnum {
+	return original.PossibleSegmentStatusEnumValues()
+}
 func PossibleSslEnumValues() []SslEnum {
 	return original.PossibleSslEnumValues()
 }
 func PossibleTrialStatusValues() []TrialStatus {
 	return original.PossibleTrialStatusValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
+	return original.PossibleVMGroupStatusEnumValues()
+}
+func PossibleVMTypeEnumValues() []VMTypeEnum {
+	return original.PossibleVMTypeEnumValues()
+}
+func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
+	return original.PossibleVisibilityParameterEnumValues()
+}
+func PossibleWorkloadNetworkDNSServiceProvisioningStateValues() []WorkloadNetworkDNSServiceProvisioningState {
+	return original.PossibleWorkloadNetworkDNSServiceProvisioningStateValues()
+}
+func PossibleWorkloadNetworkDNSZoneProvisioningStateValues() []WorkloadNetworkDNSZoneProvisioningState {
+	return original.PossibleWorkloadNetworkDNSZoneProvisioningStateValues()
+}
+func PossibleWorkloadNetworkDhcpProvisioningStateValues() []WorkloadNetworkDhcpProvisioningState {
+	return original.PossibleWorkloadNetworkDhcpProvisioningStateValues()
+}
+func PossibleWorkloadNetworkPortMirroringProvisioningStateValues() []WorkloadNetworkPortMirroringProvisioningState {
+	return original.PossibleWorkloadNetworkPortMirroringProvisioningStateValues()
+}
+func PossibleWorkloadNetworkPublicIPProvisioningStateValues() []WorkloadNetworkPublicIPProvisioningState {
+	return original.PossibleWorkloadNetworkPublicIPProvisioningStateValues()
+}
+func PossibleWorkloadNetworkSegmentProvisioningStateValues() []WorkloadNetworkSegmentProvisioningState {
+	return original.PossibleWorkloadNetworkSegmentProvisioningStateValues()
+}
+func PossibleWorkloadNetworkVMGroupProvisioningStateValues() []WorkloadNetworkVMGroupProvisioningState {
+	return original.PossibleWorkloadNetworkVMGroupProvisioningStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

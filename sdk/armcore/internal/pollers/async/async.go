@@ -16,7 +16,7 @@ import (
 
 const (
 	finalStateAsync = "azure-async-operation"
-	finalStateLoc   = "location"
+	finalStateLoc   = "location" //nolint
 	finalStateOrig  = "original-uri"
 )
 

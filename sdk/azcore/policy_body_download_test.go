@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -29,7 +30,7 @@ func TestDownloadBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -57,7 +58,7 @@ func TestSkipBodyDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -80,7 +81,7 @@ func TestDownloadBodyFail(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err == nil {
 		t.Fatalf("expected an error")
 	}
@@ -106,7 +107,7 @@ func TestDownloadBodyWithRetryGet(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -138,7 +139,7 @@ func TestDownloadBodyWithRetryDelete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -170,7 +171,7 @@ func TestDownloadBodyWithRetryPut(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -205,7 +206,7 @@ func TestDownloadBodyWithRetryPatch(t *testing.T) {
 	if _, ok := err.(*bodyDownloadError); !ok {
 		t.Fatal("expected *bodyDownloadError type")
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err == nil {
 		t.Fatalf("expected an error")
 	}
@@ -235,7 +236,7 @@ func TestDownloadBodyWithRetryPost(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err == nil {
 		t.Fatalf("expected an error")
 	}
@@ -264,7 +265,7 @@ func TestSkipBodyDownloadWith400(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -292,7 +293,7 @@ func TestReadBodyAfterSeek(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	payload, err := resp.Payload()
+	payload, err := Payload(resp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

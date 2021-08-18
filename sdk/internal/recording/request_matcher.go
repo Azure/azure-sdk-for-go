@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -19,15 +20,79 @@ type RequestMatcher struct {
 	ignoredHeaders map[string]*string
 }
 
-var ignoredHeaders = map[string]*string{
-	"Date":                   nil,
-	"X-Ms-Date":              nil,
-	"x-ms-date":              nil,
-	"x-ms-client-request-id": nil,
-	"User-Agent":             nil,
-	"Request-Id":             nil,
-	"traceparent":            nil,
-	"Authorization":          nil,
+type StringMatcher func(reqVal string, recVal string) bool
+
+var ignoredHeaders = map[string]struct{}{
+	"Date":                   {},
+	"X-Ms-Date":              {},
+	"x-ms-date":              {},
+	"x-ms-client-request-id": {},
+	"User-Agent":             {},
+	"Request-Id":             {},
+	"traceparent":            {},
+	"Authorization":          {},
+}
+
+const (
+	recordingHeaderMissing = "Test recording headers do not match. Header '%s' is present in request but not in recording."
+	requestHeaderMissing   = "Test recording headers do not match. Header '%s' is present in recording but not in request."
+	headerValuesMismatch   = "Test recording header '%s' does not match. request: %s, recording: %s"
+	methodMismatch         = "Test recording methods do not match. request: %s, recording: %s"
+	urlMismatch            = "Test recording URLs do not match. request: %s, recording: %s"
+	bodiesMismatch         = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
+)
+
+// defaultMatcher returns a new RequestMatcher configured with the default matching behavior.
+func defaultMatcher(testContext TestContext) *RequestMatcher {
+	// The default sanitizer sanitizes the Authorization header
+	matcher := &RequestMatcher{
+		context:        testContext,
+		IgnoredHeaders: ignoredHeaders,
+	}
+	matcher.SetBodyMatcher(func(req string, rec string) bool {
+		return defaultStringMatcher(req, rec)
+	})
+	matcher.SetURLMatcher(func(req string, rec string) bool {
+		return defaultStringMatcher(req, rec)
+	})
+	matcher.SetMethodMatcher(func(req string, rec string) bool {
+		return defaultStringMatcher(req, rec)
+	})
+
+	return matcher
+}
+
+// SetBodyMatcher replaces the default matching behavior with a custom StringMatcher that compares the string value of the request body payload with the string value of the recorded body payload.
+func (m *RequestMatcher) SetBodyMatcher(matcher StringMatcher) {
+	m.bodyMatcher = func(reqVal string, recVal string) bool {
+		isMatch := matcher(reqVal, recVal)
+		if !isMatch {
+			m.context.Log(fmt.Sprintf(bodiesMismatch, recVal, recVal))
+		}
+		return isMatch
+	}
+}
+
+// SetURLMatcher replaces the default matching behavior with a custom StringMatcher that compares the string value of the request URL with the string value of the recorded URL
+func (m *RequestMatcher) SetURLMatcher(matcher StringMatcher) {
+	m.urlMatcher = func(reqVal string, recVal string) bool {
+		isMatch := matcher(reqVal, recVal)
+		if !isMatch {
+			m.context.Log(fmt.Sprintf(urlMismatch, recVal, recVal))
+		}
+		return isMatch
+	}
+}
+
+// SetMethodMatcher replaces the default matching behavior with a custom StringMatcher that compares the string value of the request method with the string value of the recorded method
+func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
+	m.methodMatcher = func(reqVal string, recVal string) bool {
+		isMatch := matcher(reqVal, recVal)
+		if !isMatch {
+			m.context.Log(fmt.Sprintf(methodMismatch, recVal, recVal))
+		}
+		return isMatch
+	}
 }
 
 var recordingHeaderMissing = "Test recording headers do not match. Header '%s' is present in request but not in recording."

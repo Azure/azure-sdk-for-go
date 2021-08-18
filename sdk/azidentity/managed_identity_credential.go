@@ -72,7 +72,11 @@ func NewManagedIdentityCredential(id string, options *ManagedIdentityCredentialO
 	client.msiType = msiType
 	// check if no clientID is specified then check if it exists in an environment variable
 	if len(id) == 0 {
-		id = os.Getenv("AZURE_CLIENT_ID")
+		if options.ID == ResourceID {
+			id = os.Getenv("AZURE_RESOURCE_ID")
+		} else {
+			id = os.Getenv("AZURE_CLIENT_ID")
+		}
 	}
 	return &ManagedIdentityCredential{id: id, client: client}, nil
 }
@@ -103,8 +107,10 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 	return tk, err
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
-// NOTE: The TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes.
-func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
+// NOTE: The TokenRequestOptions included in AuthenticationOptions must be a slice of resources in this case and not scopes.
+func (c *ManagedIdentityCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*ManagedIdentityCredential)(nil)

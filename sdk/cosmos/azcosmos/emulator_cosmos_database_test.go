@@ -9,13 +9,9 @@ import (
 	"testing"
 )
 
-func TestCosmosClientCreateDatabase(t *testing.T) {
+func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests()
-	cred, _ := NewSharedKeyCredential(emulatorTests.key)
-	client, err := NewCosmosClient(emulatorTests.host, cred, nil)
-	if err != nil {
-		t.Errorf("Failed to create client: %v", err)
-	}
+	client := emulatorTests.getClient(t)
 
 	database := CosmosDatabaseProperties{Id: "baseDbTest"}
 	resp, err := client.AddDatabase(context.TODO(), database, nil)
@@ -24,7 +20,7 @@ func TestCosmosClientCreateDatabase(t *testing.T) {
 	}
 
 	if resp.RawResponse.StatusCode != 201 {
-		t.Fatalf("Failed to create database: %v", resp.RawResponse)
+		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 
 	if resp.DatabaseProperties.Id != database.Id {
@@ -37,7 +33,7 @@ func TestCosmosClientCreateDatabase(t *testing.T) {
 	}
 
 	if resp.RawResponse.StatusCode != 200 {
-		t.Fatalf("Failed to read database: %v", resp.RawResponse)
+		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 
 	if resp.DatabaseProperties.Id != database.Id {
@@ -50,6 +46,6 @@ func TestCosmosClientCreateDatabase(t *testing.T) {
 	}
 
 	if resp.RawResponse.StatusCode != 204 {
-		t.Fatalf("Failed to delete database: %v", resp.RawResponse)
+		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 }

@@ -28,7 +28,7 @@ func TestContainerResponseParsing(t *testing.T) {
 		SelfLink:     "someSelfLink",
 		ResourceId:   "someResourceId",
 		LastModified: &now,
-		PartitionKeyDefinition: &PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths:   []string{"somePath"},
 			Version: PartitionKeyDefinitionVersion2,
 		},
@@ -89,10 +89,6 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	if properties.LastModified.Time != parsedResponse.ContainerProperties.LastModified.Time {
 		t.Errorf("Expected LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), parsedResponse.ContainerProperties.LastModified.Time.UTC())
-	}
-
-	if parsedResponse.ContainerProperties.PartitionKeyDefinition == nil {
-		t.Errorf("Expected PartitionKeyDefinition to be not nil, but got nil")
 	}
 
 	if properties.PartitionKeyDefinition.Paths[0] != parsedResponse.ContainerProperties.PartitionKeyDefinition.Paths[0] {

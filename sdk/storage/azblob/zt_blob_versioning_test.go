@@ -29,8 +29,10 @@ func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 	blobProp, _ := bbClient.GetProperties(ctx, nil)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata:                 basicMetadata,
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
+		Metadata: basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
+		},
 	}
 	uploadResp, err := bbClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
 	_assert.Nil(err)
@@ -61,7 +63,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 		},
 	}

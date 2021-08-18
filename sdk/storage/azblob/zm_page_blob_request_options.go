@@ -39,10 +39,10 @@ type CreatePageBlobOptions struct {
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
 
-	BlobHTTPHeaders *BlobHTTPHeaders
-	CpkInfo         *CpkInfo
-	CpkScopeInfo    *CpkScopeInfo
-	BlobAccessConditions
+	BlobHTTPHeaders      *BlobHTTPHeaders
+	CpkInfo              *CpkInfo
+	CpkScopeInfo         *CpkScopeInfo
+	BlobAccessConditions *BlobAccessConditions
 }
 
 func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHeaders, *CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -56,8 +56,8 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHea
 		Metadata:           o.Metadata,
 		Tier:               o.Tier,
 	}
-
-	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
 }
 
 type UploadPagesOptions struct {
@@ -70,7 +70,7 @@ type UploadPagesOptions struct {
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
-	BlobAccessConditions
+	BlobAccessConditions           *BlobAccessConditions
 }
 
 func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -87,7 +87,8 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 		options.Range = o.PageRange.pointers()
 	}
 
-	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, leaseAccessConditions, modifiedAccessConditions
 }
 
 type UploadPagesFromURLOptions struct {
@@ -100,7 +101,7 @@ type UploadPagesFromURLOptions struct {
 	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlobAccessConditions
+	BlobAccessConditions           *BlobAccessConditions
 }
 
 func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptions, *CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *SourceModifiedAccessConditions, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -113,14 +114,15 @@ func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptio
 		SourceContentcrc64: o.SourceContentcrc64,
 	}
 
-	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.SourceModifiedAccessConditions, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.SourceModifiedAccessConditions, leaseAccessConditions, modifiedAccessConditions
 }
 
 type ClearPagesOptions struct {
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
-	BlobAccessConditions
+	BlobAccessConditions           *BlobAccessConditions
 }
 
 func (o *ClearPagesOptions) pointers() (*CpkInfo, *CpkScopeInfo, *SequenceNumberAccessConditions, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -128,13 +130,14 @@ func (o *ClearPagesOptions) pointers() (*CpkInfo, *CpkScopeInfo, *SequenceNumber
 		return nil, nil, nil, nil, nil
 	}
 
-	return o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, leaseAccessConditions, modifiedAccessConditions
 }
 
 type GetPageRangesOptions struct {
 	Snapshot *string
 
-	BlobAccessConditions
+	BlobAccessConditions *BlobAccessConditions
 }
 
 func (o *GetPageRangesOptions) pointers() (*string, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -142,13 +145,14 @@ func (o *GetPageRangesOptions) pointers() (*string, *LeaseAccessConditions, *Mod
 		return nil, nil, nil
 	}
 
-	return o.Snapshot, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return o.Snapshot, leaseAccessConditions, modifiedAccessConditions
 }
 
 type ResizePageBlobOptions struct {
-	CpkInfo      *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
-	BlobAccessConditions
+	CpkInfo              *CpkInfo
+	CpkScopeInfo         *CpkScopeInfo
+	BlobAccessConditions *BlobAccessConditions
 }
 
 func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -156,14 +160,15 @@ func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAcces
 		return nil, nil, nil, nil
 	}
 
-	return o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
 }
 
 type UpdateSequenceNumberPageBlob struct {
 	ActionType         *SequenceNumberActionType
 	BlobSequenceNumber *int64
 
-	BlobAccessConditions
+	BlobAccessConditions *BlobAccessConditions
 }
 
 func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberActionType, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -179,7 +184,8 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 		options.BlobSequenceNumber = nil
 	}
 
-	return options, o.ActionType, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.ActionType, leaseAccessConditions, modifiedAccessConditions
 }
 
 type CopyIncrementalPageBlobOptions struct {

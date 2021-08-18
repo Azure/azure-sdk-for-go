@@ -38,10 +38,9 @@ type DownloadBlobOptions struct {
 	Offset *int64
 	Count  *int64
 
-	LeaseAccessConditions    *LeaseAccessConditions
-	CpkInfo                  *CpkInfo
-	CpkScopeInfo             *CpkScopeInfo
-	ModifiedAccessConditions *ModifiedAccessConditions
+	BlobAccessConditions *BlobAccessConditions
+	CpkInfo              *CpkInfo
+	CpkScopeInfo         *CpkScopeInfo
 }
 
 func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptions,
@@ -68,8 +67,8 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 			End:   end,
 		}.pointers(),
 	}
-
-	return &basics, o.LeaseAccessConditions, o.CpkInfo, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions = o.BlobAccessConditions.pointers()
+	return &basics, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
 }
 
 type SetTierOptions struct {
@@ -91,9 +90,8 @@ func (o *SetTierOptions) pointers() (blobSetTierOptions *BlobSetTierOptions,
 }
 
 type GetBlobPropertiesOptions struct {
-	LeaseAccessConditions    *LeaseAccessConditions
-	CpkInfo                  *CpkInfo
-	ModifiedAccessConditions *ModifiedAccessConditions
+	BlobAccessConditions *BlobAccessConditions
+	CpkInfo              *CpkInfo
 }
 
 func (o *GetBlobPropertiesOptions) pointers() (blobGetPropertiesOptions *BlobGetPropertiesOptions,
@@ -102,7 +100,8 @@ func (o *GetBlobPropertiesOptions) pointers() (blobGetPropertiesOptions *BlobGet
 		return nil, nil, nil, nil
 	}
 
-	return nil, o.LeaseAccessConditions, o.CpkInfo, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions = o.BlobAccessConditions.pointers()
+	return nil, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
 }
 
 type SetBlobHTTPHeadersOptions struct {

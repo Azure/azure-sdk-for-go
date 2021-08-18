@@ -665,7 +665,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -703,7 +703,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -741,7 +741,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -779,7 +779,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -815,7 +815,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -849,7 +849,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -883,7 +883,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -918,7 +918,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
 		BlobHTTPHeaders:    &basicHeaders,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -1049,7 +1049,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 	start, end := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -1087,7 +1087,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	start, end := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -1125,7 +1125,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 	start, end := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -1163,7 +1163,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	start, end := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -1201,7 +1201,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 	start, end := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -1238,7 +1238,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	eTag := "garbage"
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -1275,7 +1275,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	eTag := "garbage"
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -1313,7 +1313,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	start, end := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{start, end},
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -1690,7 +1690,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -1714,7 +1714,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -1738,7 +1738,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -1762,7 +1762,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -1784,7 +1784,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 	_assert.Nil(err)
 
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: getPropertiesResp.ETag,
 			},
@@ -1804,7 +1804,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 
 	eTag := "garbage"
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -1824,7 +1824,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -1845,7 +1845,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	clearPageOptions := ClearPagesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -2200,7 +2200,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -2223,7 +2223,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -2248,7 +2248,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -2271,7 +2271,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -2293,7 +2293,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 	_assert.Nil(err)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -2312,7 +2312,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -2332,7 +2332,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -2352,7 +2352,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -2447,7 +2447,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeGMT(-10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -2467,7 +2467,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 	currentTime := getRelativeTimeGMT(10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -2489,7 +2489,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 	currentTime := getRelativeTimeGMT(10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -2509,7 +2509,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 	currentTime := getRelativeTimeGMT(-10)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -2530,7 +2530,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -2549,7 +2549,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -2569,7 +2569,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -2589,7 +2589,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	getPageRangesOptions := GetPageRangesOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -2693,7 +2693,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -2729,7 +2729,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -2765,7 +2765,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -2801,7 +2801,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -2832,7 +2832,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -2862,7 +2862,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 
 	eTag := "garbage"
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -2892,7 +2892,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -2923,7 +2923,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -3028,7 +3028,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -3066,7 +3066,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -3104,7 +3104,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -3142,7 +3142,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -3175,7 +3175,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -3207,7 +3207,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
 			},
@@ -3239,7 +3239,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -3272,7 +3272,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	actionType := SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},

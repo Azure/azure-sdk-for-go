@@ -551,8 +551,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	_, err = bbClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	})
 	_assert.Nil(err)
@@ -587,8 +589,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	rsc := azcore.NopCloser(body)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfModifiedSince: &currentTime,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
 		},
 	}
 
@@ -626,8 +630,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 	rsc := azcore.NopCloser(body)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
@@ -660,8 +666,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
 		},
 	}
 	_, err = bbClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
@@ -694,8 +702,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	rsc := azcore.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfMatch: resp.ETag,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: resp.ETag,
+			},
 		},
 	})
 	_assert.Nil(err)
@@ -727,8 +737,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 
 	ifMatch := "garbage"
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfMatch: &ifMatch,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: &ifMatch,
+			},
 		},
 	}
 	_, err = bbClient.Upload(ctx, body, &uploadBlockBlobOptions)
@@ -761,8 +773,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
 
 	ifNoneMatch := "garbage"
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfNoneMatch: &ifNoneMatch,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: &ifNoneMatch,
+			},
 		},
 	}
 
@@ -796,8 +810,10 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 	rsc := azcore.NopCloser(body)
 
 	_, err = bbClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfNoneMatch: resp.ETag,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
 		},
 	})
 
@@ -864,7 +880,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
 	_assert.Nil(err)
@@ -886,7 +902,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(getPropertyResp.Date, 10)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
 	_ = err
@@ -908,7 +924,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
 
 	commitBlockListOptions := CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 	_assert.Nil(err)
@@ -930,7 +946,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
 	commitBlockListOptions := CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
@@ -949,7 +965,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
 	_assert.Nil(err)
 
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
 	})
 	_assert.Nil(err)
@@ -969,7 +985,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
 
 	eTag := "garbage"
 	commitBlockListOptions := CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
@@ -988,7 +1004,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	commitBlockListOptions := CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 	_assert.Nil(err)
@@ -1007,7 +1023,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 	_assert.Nil(err)
 
 	commitBlockListOptions := CommitBlockListOptions{
-		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 

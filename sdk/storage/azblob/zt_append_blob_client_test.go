@@ -450,7 +450,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -489,7 +489,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -528,7 +528,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -567,7 +567,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -600,7 +600,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -631,7 +631,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: to.StringPtr("garbage"),
 			},
@@ -663,7 +663,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchTrue() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
@@ -696,7 +696,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
@@ -805,7 +805,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -842,7 +842,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
@@ -879,7 +879,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -916,7 +916,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
@@ -947,7 +947,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchTrue() {
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
@@ -975,7 +975,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: to.StringPtr("garbage"),
 			},
@@ -1002,7 +1002,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: to.StringPtr("garbage"),
 			},
@@ -1031,7 +1031,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},

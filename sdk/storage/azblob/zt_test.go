@@ -10,9 +10,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -22,6 +19,10 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 
@@ -495,7 +496,7 @@ func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
 func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	data, _ := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Len(data, 0)
 }
 

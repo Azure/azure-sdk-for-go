@@ -192,7 +192,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_assert.Nil(err)
 
-	destData, err := ioutil.ReadAll(downloadResp.RawResponse.Body)
+	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Nil(err)
 	_assert.Equal(destData, sourceData)
 	_ = downloadResp.Body(RetryReaderOptions{}).Close()

@@ -7,15 +7,16 @@ import (
 	"bytes"
 	"crypto/md5"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/stretchr/testify/assert"
 )
 
 func (s *azblobTestSuite) TestCreateBlobClient() {
@@ -127,7 +128,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_assert.Nil(err)
 
 	// Read the blob data to verify the copy
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
 	_ = resp.Body(RetryReaderOptions{}).Close()
@@ -396,7 +397,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 
-	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp2.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
 	_ = resp2.Body(RetryReaderOptions{}).Close()
@@ -496,7 +497,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 //	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 //	_assert.Nil(err)
 //
-//	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+//	data, err := ioutil.ReadAll(resp2.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 //	_, err = resp2.Body(RetryReaderOptions{}).Read(data)
 //	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 //	_assert.Equal(string(data), blockBlobDefaultData)
@@ -1629,8 +1630,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 
-	// Specifying a count of 0 results in the value being ignored
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	// Specifying a End of 0 results in the value being ignored
+	data, err := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Nil(err)
 	_assert.Equal(string(data), blockBlobDefaultData)
 }
@@ -1658,7 +1659,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Nil(err)
 	_assert.Equal(string(data), blockBlobDefaultData)
 }
@@ -1685,7 +1686,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Nil(err)
 	_assert.Equal(string(data), blockBlobDefaultData)
 }
@@ -1713,7 +1714,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Nil(err)
 	_assert.Equal(string(data), blockBlobDefaultData)
 }

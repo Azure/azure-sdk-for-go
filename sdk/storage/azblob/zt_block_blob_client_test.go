@@ -1037,7 +1037,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 
 	resp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
-	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	data, _ := ioutil.ReadAll(resp.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Equal(string(data), blockBlobDefaultData)
 }
 

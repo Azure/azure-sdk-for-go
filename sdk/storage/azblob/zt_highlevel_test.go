@@ -6,12 +6,13 @@ package azblob
 import (
 	"context"
 	"errors"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"sync/atomic"
 	"time"
+
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
 )
 
 // create a test file
@@ -59,7 +60,7 @@ func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName str
 	_assert.Nil(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.Body(RetryReaderOptions{ MaxRetryRequests: 5 }))
 	_assert.Nil(err)
 	_assert.Equal(len(actualBlobData), blobSize)
 	_assert.EqualValues(actualBlobData, blobData)

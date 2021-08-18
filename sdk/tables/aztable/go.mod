@@ -8,6 +8,8 @@ replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../azidentity
 
 replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azcore
 
+replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azidentity
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.17.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.2 // indirect

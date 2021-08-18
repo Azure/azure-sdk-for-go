@@ -162,7 +162,7 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 	return transactionResponse, nil
 }
 
-func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCount int) (TableTransactionResponse, error) {
+func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCount int) (TableTransactionResponse, error) {
 	innerResponses := make([]azcore.Response, itemCount)
 	result := TableTransactionResponse{RawResponse: resp.Response, TransactionResponses: &innerResponses}
 

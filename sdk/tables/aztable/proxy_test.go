@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
+	"net/http"
 	"strings"
 	"testing"
 
@@ -31,7 +32,7 @@ func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
 	return p
 }
 
-func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+func (p *recordingPolicy) Do(req *azcore.Request) (resp *http.Response, err error) {
 	originalURLHost := req.URL.Host
 	req.URL.Scheme = "https"
 	req.URL.Host = p.options.Host
@@ -56,8 +57,8 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 	}
 }
 
-func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+func (f *FakeCredential) NewAuthenticationPolicy(azcore.AuthenticationOptions) azcore.Policy {
+	return azcore.PolicyFunc(func(req *azcore.Request) (*http.Response, error) {
 		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
 		return req.Next()

@@ -28,7 +28,7 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - template: configure-proxy.yml
+  - template: ./eng/common/testproxy/test-proxy-docker.yml #configure-proxy.yml
     parameters:
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
 

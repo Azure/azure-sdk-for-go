@@ -18,7 +18,7 @@ steps:
 
         Write-Host "Successfully downloaded crt and pfx files."
 
-        dotnet dev-certs https --clean --import $certLocationPfx # -p "password"
+        # dotnet dev-certs https --clean --import $certLocationPfx -p "password"
 
         Write-Host "##vso[task.setvariable variable=PROXY_CERT]$certLocationCrt"
     displayName: 'Download and Trust Certificate'

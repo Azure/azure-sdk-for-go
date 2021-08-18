@@ -219,7 +219,7 @@ func (l *LROPoller) FinalResponse(ctx context.Context, respType interface{}) (*h
 func (l *LROPoller) PollUntilDone(ctx context.Context, freq time.Duration, respType interface{}) (*http.Response, error) {
 	start := time.Now()
 	logPollUntilDoneExit := func(v interface{}) {
-		azcore.Log().Writef(azcore.LogLongRunningOperation, "END PollUntilDone() for %T: %v, total time: %s", l.lro, v, time.Now().Sub(start))
+		azcore.Log().Writef(azcore.LogLongRunningOperation, "END PollUntilDone() for %T: %v, total time: %s", l.lro, v, time.Since(start))
 	}
 	azcore.Log().Writef(azcore.LogLongRunningOperation, "BEGIN PollUntilDone() for %T", l.lro)
 	if l.resp != nil {

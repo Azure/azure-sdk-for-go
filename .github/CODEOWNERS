@@ -1,0 +1,44 @@
+# Instructions for CODEOWNERS file format and automatic build failure notifications:
+# https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
+
+#############
+# SDK (track2)
+############# 
+
+# Catch all for non-code project files and unowned files | folders
+*                        @rickwinter @jhendrixMSFT
+/sdk/                    @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+
+# Samples
+/samples/                @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+
+# PRLabel: %Azure.Core
+/sdk/azcore/             @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+
+# PRLabel: %Azure.Identity
+/sdk/azidentity/         @rickwinter @jhendrixMSFT
+
+# PRLabel: %KeyVault
+/sdk/keyvault/           @rickwinter @jhendrixMSFT
+
+# PRLabel: %Storage
+/sdk/storage/            @rickwinter @jhendrixMSFT
+
+# PRLabel: %EngSys
+/sdk/template/           @benbp @Azure/azure-sdk-eng
+
+###########
+# Eng Sys
+###########
+/eng/                    @benbp @azure/azure-sdk-eng
+/**/ci.yml               @benbp @azure/azure-sdk-eng
+/**/tests.yml            @benbp @azure/azure-sdk-eng
+
+#############
+# SDK (track1 and track1.5)
+#############
+
+/profiles/ @ArcturusZhang @lirenhe
+/services/ @ArcturusZhang @lirenhe
+/storage/ @jhendrixMSFT
+/version/ @ArcturusZhang @lirenhe

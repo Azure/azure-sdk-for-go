@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -14,21 +15,27 @@ import (
 
 type Sanitizer struct {
 	recorder          *recorder.Recorder
-	headersToSanitize map[string]*string
+	headersToSanitize []string
 	urlSanitizer      StringSanitizer
 	bodySanitizer     StringSanitizer
 }
 
+// StringSanitizer is a func that will modify the string pointed to by the parameter into a sanitized value.
 type StringSanitizer func(*string)
 
+// SanitizedValue is the default placeholder value to be used for sanitized strings.
 const SanitizedValue string = "sanitized"
+
+// SanitizedBase64Value is the default placeholder value to be used for sanitized base-64 encoded strings.
 const SanitizedBase64Value string = "Kg=="
 
 var sanitizedValueSlice = []string{SanitizedValue}
 
-func DefaultSanitizer(recorder *recorder.Recorder) *Sanitizer {
+// defaultSanitizer returns a new RecordingSanitizer with the default sanitizing behavior.
+// To customize sanitization, call AddSanitizedHeaders, AddBodySanitizer, or AddUrlSanitizer.
+func defaultSanitizer(recorder *recorder.Recorder) *Sanitizer {
 	// The default sanitizer sanitizes the Authorization header
-	s := &Sanitizer{headersToSanitize: map[string]*string{"Authorization": nil}, recorder: recorder, urlSanitizer: DefaultStringSanitizer, bodySanitizer: DefaultStringSanitizer}
+	s := &Sanitizer{headersToSanitize: []string{"Authorization"}, recorder: recorder, urlSanitizer: DefaultStringSanitizer, bodySanitizer: DefaultStringSanitizer}
 	recorder.AddSaveFilter(s.applySaveFilter)
 
 	return s
@@ -36,9 +43,7 @@ func DefaultSanitizer(recorder *recorder.Recorder) *Sanitizer {
 
 // AddSanitizedHeaders adds the supplied header names to the list of headers to be sanitized on request and response recordings.
 func (s *Sanitizer) AddSanitizedHeaders(headers ...string) {
-	for _, headerName := range headers {
-		s.headersToSanitize[headerName] = nil
-	}
+	s.headersToSanitize = append(s.headersToSanitize, headers...)
 }
 
 // AddBodysanitizer configures the supplied StringSanitizer to sanitize recording request and response bodies
@@ -52,7 +57,7 @@ func (s *Sanitizer) AddUrlSanitizer(sanitizer StringSanitizer) {
 }
 
 func (s *Sanitizer) sanitizeHeaders(header http.Header) {
-	for headerName := range s.headersToSanitize {
+	for _, headerName := range s.headersToSanitize {
 		if _, ok := header[headerName]; ok {
 			header[headerName] = sanitizedValueSlice
 		}

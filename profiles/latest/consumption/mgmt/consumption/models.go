@@ -21,16 +21,16 @@ const (
 type BillingFrequency = original.BillingFrequency
 
 const (
-	Month   BillingFrequency = original.Month
-	Quarter BillingFrequency = original.Quarter
-	Year    BillingFrequency = original.Year
+	BillingFrequencyMonth   BillingFrequency = original.BillingFrequencyMonth
+	BillingFrequencyQuarter BillingFrequency = original.BillingFrequencyQuarter
+	BillingFrequencyYear    BillingFrequency = original.BillingFrequencyYear
 )
 
 type Bound = original.Bound
 
 const (
-	Lower Bound = original.Lower
-	Upper Bound = original.Upper
+	BoundLower Bound = original.BoundLower
+	BoundUpper Bound = original.BoundUpper
 )
 
 type ChargeType = original.ChargeType
@@ -40,31 +40,57 @@ const (
 	ChargeTypeForecast ChargeType = original.ChargeTypeForecast
 )
 
+type CultureCode = original.CultureCode
+
+const (
+	CultureCodeCsCz CultureCode = original.CultureCodeCsCz
+	CultureCodeDaDk CultureCode = original.CultureCodeDaDk
+	CultureCodeDeDe CultureCode = original.CultureCodeDeDe
+	CultureCodeEnGb CultureCode = original.CultureCodeEnGb
+	CultureCodeEnUs CultureCode = original.CultureCodeEnUs
+	CultureCodeEsEs CultureCode = original.CultureCodeEsEs
+	CultureCodeFrFr CultureCode = original.CultureCodeFrFr
+	CultureCodeHuHu CultureCode = original.CultureCodeHuHu
+	CultureCodeItIt CultureCode = original.CultureCodeItIt
+	CultureCodeJaJp CultureCode = original.CultureCodeJaJp
+	CultureCodeKoKr CultureCode = original.CultureCodeKoKr
+	CultureCodeNbNo CultureCode = original.CultureCodeNbNo
+	CultureCodeNlNl CultureCode = original.CultureCodeNlNl
+	CultureCodePlPl CultureCode = original.CultureCodePlPl
+	CultureCodePtBr CultureCode = original.CultureCodePtBr
+	CultureCodePtPt CultureCode = original.CultureCodePtPt
+	CultureCodeRuRu CultureCode = original.CultureCodeRuRu
+	CultureCodeSvSe CultureCode = original.CultureCodeSvSe
+	CultureCodeTrTr CultureCode = original.CultureCodeTrTr
+	CultureCodeZhCn CultureCode = original.CultureCodeZhCn
+	CultureCodeZhTw CultureCode = original.CultureCodeZhTw
+)
+
 type Datagrain = original.Datagrain
 
 const (
-	DailyGrain   Datagrain = original.DailyGrain
-	MonthlyGrain Datagrain = original.MonthlyGrain
+	DatagrainDailyGrain   Datagrain = original.DatagrainDailyGrain
+	DatagrainMonthlyGrain Datagrain = original.DatagrainMonthlyGrain
 )
 
 type EventType = original.EventType
 
 const (
-	NewCredit            EventType = original.NewCredit
-	PendingAdjustments   EventType = original.PendingAdjustments
-	PendingCharges       EventType = original.PendingCharges
-	PendingExpiredCredit EventType = original.PendingExpiredCredit
-	PendingNewCredit     EventType = original.PendingNewCredit
-	SettledCharges       EventType = original.SettledCharges
-	UnKnown              EventType = original.UnKnown
+	EventTypeNewCredit            EventType = original.EventTypeNewCredit
+	EventTypePendingAdjustments   EventType = original.EventTypePendingAdjustments
+	EventTypePendingCharges       EventType = original.EventTypePendingCharges
+	EventTypePendingExpiredCredit EventType = original.EventTypePendingExpiredCredit
+	EventTypePendingNewCredit     EventType = original.EventTypePendingNewCredit
+	EventTypeSettledCharges       EventType = original.EventTypeSettledCharges
+	EventTypeUnKnown              EventType = original.EventTypeUnKnown
 )
 
 type Grain = original.Grain
 
 const (
-	Daily   Grain = original.Daily
-	Monthly Grain = original.Monthly
-	Yearly  Grain = original.Yearly
+	GrainDaily   Grain = original.GrainDaily
+	GrainMonthly Grain = original.GrainMonthly
+	GrainYearly  Grain = original.GrainYearly
 )
 
 type Kind = original.Kind
@@ -94,59 +120,59 @@ const (
 type LookBackPeriod = original.LookBackPeriod
 
 const (
-	Last07Days LookBackPeriod = original.Last07Days
-	Last30Days LookBackPeriod = original.Last30Days
-	Last60Days LookBackPeriod = original.Last60Days
+	LookBackPeriodLast07Days LookBackPeriod = original.LookBackPeriodLast07Days
+	LookBackPeriodLast30Days LookBackPeriod = original.LookBackPeriodLast30Days
+	LookBackPeriodLast60Days LookBackPeriod = original.LookBackPeriodLast60Days
 )
 
 type LotSource = original.LotSource
 
 const (
-	PromotionalCredit LotSource = original.PromotionalCredit
-	PurchasedCredit   LotSource = original.PurchasedCredit
+	LotSourcePromotionalCredit LotSource = original.LotSourcePromotionalCredit
+	LotSourcePurchasedCredit   LotSource = original.LotSourcePurchasedCredit
 )
 
 type Metrictype = original.Metrictype
 
 const (
-	ActualCostMetricType    Metrictype = original.ActualCostMetricType
-	AmortizedCostMetricType Metrictype = original.AmortizedCostMetricType
-	UsageMetricType         Metrictype = original.UsageMetricType
+	MetrictypeActualCostMetricType    Metrictype = original.MetrictypeActualCostMetricType
+	MetrictypeAmortizedCostMetricType Metrictype = original.MetrictypeAmortizedCostMetricType
+	MetrictypeUsageMetricType         Metrictype = original.MetrictypeUsageMetricType
 )
 
 type OperatorType = original.OperatorType
 
 const (
-	EqualTo              OperatorType = original.EqualTo
-	GreaterThan          OperatorType = original.GreaterThan
-	GreaterThanOrEqualTo OperatorType = original.GreaterThanOrEqualTo
+	OperatorTypeEqualTo              OperatorType = original.OperatorTypeEqualTo
+	OperatorTypeGreaterThan          OperatorType = original.OperatorTypeGreaterThan
+	OperatorTypeGreaterThanOrEqualTo OperatorType = original.OperatorTypeGreaterThanOrEqualTo
 )
 
-type Scope11 = original.Scope11
+type Scope12 = original.Scope12
 
 const (
-	Shared Scope11 = original.Shared
-	Single Scope11 = original.Single
+	Scope12Shared Scope12 = original.Scope12Shared
+	Scope12Single Scope12 = original.Scope12Single
 )
 
-type Scope9 = original.Scope9
+type Scope14 = original.Scope14
 
 const (
-	Scope9Shared Scope9 = original.Scope9Shared
-	Scope9Single Scope9 = original.Scope9Single
+	Scope14Shared Scope14 = original.Scope14Shared
+	Scope14Single Scope14 = original.Scope14Single
 )
 
 type Term = original.Term
 
 const (
-	P1Y Term = original.P1Y
-	P3Y Term = original.P3Y
+	TermP1Y Term = original.TermP1Y
+	TermP3Y Term = original.TermP3Y
 )
 
 type ThresholdType = original.ThresholdType
 
 const (
-	Actual ThresholdType = original.Actual
+	ThresholdTypeActual ThresholdType = original.ThresholdTypeActual
 )
 
 type TimeGrainType = original.TimeGrainType
@@ -162,6 +188,7 @@ const (
 
 type AggregatedCostClient = original.AggregatedCostClient
 type Amount = original.Amount
+type AmountWithExchangeRate = original.AmountWithExchangeRate
 type Balance = original.Balance
 type BalanceProperties = original.BalanceProperties
 type BalancePropertiesAdjustmentDetailsItem = original.BalancePropertiesAdjustmentDetailsItem
@@ -189,6 +216,7 @@ type CreditSummary = original.CreditSummary
 type CreditSummaryProperties = original.CreditSummaryProperties
 type CreditsClient = original.CreditsClient
 type CurrentSpend = original.CurrentSpend
+type DownloadProperties = original.DownloadProperties
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type EventProperties = original.EventProperties
@@ -200,8 +228,11 @@ type EventsPage = original.EventsPage
 type Forecast = original.Forecast
 type ForecastProperties = original.ForecastProperties
 type ForecastPropertiesConfidenceLevelsItem = original.ForecastPropertiesConfidenceLevelsItem
+type ForecastSpend = original.ForecastSpend
 type ForecastsClient = original.ForecastsClient
 type ForecastsListResult = original.ForecastsListResult
+type HighCasedErrorDetails = original.HighCasedErrorDetails
+type HighCasedErrorResponse = original.HighCasedErrorResponse
 type LegacyChargeSummary = original.LegacyChargeSummary
 type LegacyChargeSummaryProperties = original.LegacyChargeSummaryProperties
 type LegacyReservationRecommendation = original.LegacyReservationRecommendation
@@ -249,6 +280,7 @@ type PriceSheetModel = original.PriceSheetModel
 type PriceSheetProperties = original.PriceSheetProperties
 type PriceSheetResult = original.PriceSheetResult
 type ProxyResource = original.ProxyResource
+type Reseller = original.Reseller
 type ReservationDetail = original.ReservationDetail
 type ReservationDetailProperties = original.ReservationDetailProperties
 type ReservationDetailsListResult = original.ReservationDetailsListResult
@@ -481,6 +513,9 @@ func PossibleBoundValues() []Bound {
 func PossibleChargeTypeValues() []ChargeType {
 	return original.PossibleChargeTypeValues()
 }
+func PossibleCultureCodeValues() []CultureCode {
+	return original.PossibleCultureCodeValues()
+}
 func PossibleDatagrainValues() []Datagrain {
 	return original.PossibleDatagrainValues()
 }
@@ -511,11 +546,11 @@ func PossibleMetrictypeValues() []Metrictype {
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
 }
-func PossibleScope11Values() []Scope11 {
-	return original.PossibleScope11Values()
+func PossibleScope12Values() []Scope12 {
+	return original.PossibleScope12Values()
 }
-func PossibleScope9Values() []Scope9 {
-	return original.PossibleScope9Values()
+func PossibleScope14Values() []Scope14 {
+	return original.PossibleScope14Values()
 }
 func PossibleTermValues() []Term {
 	return original.PossibleTermValues()

@@ -11,7 +11,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2020-02-02/insights"
 )
 
 const (
@@ -21,8 +21,8 @@ const (
 type ApplicationType = original.ApplicationType
 
 const (
-	Other ApplicationType = original.Other
-	Web   ApplicationType = original.Web
+	ApplicationTypeOther ApplicationType = original.ApplicationTypeOther
+	ApplicationTypeWeb   ApplicationType = original.ApplicationTypeWeb
 )
 
 type CategoryType = original.CategoryType
@@ -37,35 +37,35 @@ const (
 type FavoriteSourceType = original.FavoriteSourceType
 
 const (
-	Events       FavoriteSourceType = original.Events
-	Funnel       FavoriteSourceType = original.Funnel
-	Impact       FavoriteSourceType = original.Impact
-	Notebook     FavoriteSourceType = original.Notebook
-	Retention    FavoriteSourceType = original.Retention
-	Segmentation FavoriteSourceType = original.Segmentation
-	Sessions     FavoriteSourceType = original.Sessions
-	Userflows    FavoriteSourceType = original.Userflows
+	FavoriteSourceTypeEvents       FavoriteSourceType = original.FavoriteSourceTypeEvents
+	FavoriteSourceTypeFunnel       FavoriteSourceType = original.FavoriteSourceTypeFunnel
+	FavoriteSourceTypeImpact       FavoriteSourceType = original.FavoriteSourceTypeImpact
+	FavoriteSourceTypeNotebook     FavoriteSourceType = original.FavoriteSourceTypeNotebook
+	FavoriteSourceTypeRetention    FavoriteSourceType = original.FavoriteSourceTypeRetention
+	FavoriteSourceTypeSegmentation FavoriteSourceType = original.FavoriteSourceTypeSegmentation
+	FavoriteSourceTypeSessions     FavoriteSourceType = original.FavoriteSourceTypeSessions
+	FavoriteSourceTypeUserflows    FavoriteSourceType = original.FavoriteSourceTypeUserflows
 )
 
 type FavoriteType = original.FavoriteType
 
 const (
-	Shared FavoriteType = original.Shared
-	User   FavoriteType = original.User
+	FavoriteTypeShared FavoriteType = original.FavoriteTypeShared
+	FavoriteTypeUser   FavoriteType = original.FavoriteTypeUser
 )
 
 type FlowType = original.FlowType
 
 const (
-	Bluefield FlowType = original.Bluefield
+	FlowTypeBluefield FlowType = original.FlowTypeBluefield
 )
 
 type IngestionMode = original.IngestionMode
 
 const (
-	ApplicationInsights                       IngestionMode = original.ApplicationInsights
-	ApplicationInsightsWithDiagnosticSettings IngestionMode = original.ApplicationInsightsWithDiagnosticSettings
-	LogAnalytics                              IngestionMode = original.LogAnalytics
+	IngestionModeApplicationInsights                       IngestionMode = original.IngestionModeApplicationInsights
+	IngestionModeApplicationInsightsWithDiagnosticSettings IngestionMode = original.IngestionModeApplicationInsightsWithDiagnosticSettings
+	IngestionModeLogAnalytics                              IngestionMode = original.IngestionModeLogAnalytics
 )
 
 type ItemScope = original.ItemScope
@@ -78,17 +78,17 @@ const (
 type ItemScopePath = original.ItemScopePath
 
 const (
-	AnalyticsItems   ItemScopePath = original.AnalyticsItems
-	MyanalyticsItems ItemScopePath = original.MyanalyticsItems
+	ItemScopePathAnalyticsItems   ItemScopePath = original.ItemScopePathAnalyticsItems
+	ItemScopePathMyanalyticsItems ItemScopePath = original.ItemScopePathMyanalyticsItems
 )
 
 type ItemType = original.ItemType
 
 const (
-	Folder   ItemType = original.Folder
-	Function ItemType = original.Function
-	Query    ItemType = original.Query
-	Recent   ItemType = original.Recent
+	ItemTypeFolder   ItemType = original.ItemTypeFolder
+	ItemTypeFunction ItemType = original.ItemTypeFunction
+	ItemTypeQuery    ItemType = original.ItemTypeQuery
+	ItemTypeRecent   ItemType = original.ItemTypeRecent
 )
 
 type ItemTypeParameter = original.ItemTypeParameter
@@ -101,17 +101,24 @@ const (
 	ItemTypeParameterRecent   ItemTypeParameter = original.ItemTypeParameterRecent
 )
 
+type PublicNetworkAccessType = original.PublicNetworkAccessType
+
+const (
+	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = original.PublicNetworkAccessTypeDisabled
+	PublicNetworkAccessTypeEnabled  PublicNetworkAccessType = original.PublicNetworkAccessTypeEnabled
+)
+
 type PurgeState = original.PurgeState
 
 const (
-	Completed PurgeState = original.Completed
-	Pending   PurgeState = original.Pending
+	PurgeStateCompleted PurgeState = original.PurgeStateCompleted
+	PurgeStatePending   PurgeState = original.PurgeStatePending
 )
 
 type RequestSource = original.RequestSource
 
 const (
-	Rest RequestSource = original.Rest
+	RequestSourceRest RequestSource = original.RequestSourceRest
 )
 
 type SharedTypeKind = original.SharedTypeKind
@@ -124,8 +131,8 @@ const (
 type WebTestKind = original.WebTestKind
 
 const (
-	Multistep WebTestKind = original.Multistep
-	Ping      WebTestKind = original.Ping
+	WebTestKindMultistep WebTestKind = original.WebTestKindMultistep
+	WebTestKindPing      WebTestKind = original.WebTestKindPing
 )
 
 type APIKeyRequest = original.APIKeyRequest
@@ -171,6 +178,8 @@ type ComponentsClient = original.ComponentsClient
 type ComponentsResource = original.ComponentsResource
 type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseComponents = original.ErrorResponseComponents
+type ErrorResponseComponentsError = original.ErrorResponseComponentsError
 type ExportConfigurationsClient = original.ExportConfigurationsClient
 type FavoritesClient = original.FavoritesClient
 type InnerError = original.InnerError
@@ -372,6 +381,9 @@ func PossibleItemTypeParameterValues() []ItemTypeParameter {
 }
 func PossibleItemTypeValues() []ItemType {
 	return original.PossibleItemTypeValues()
+}
+func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
+	return original.PossiblePublicNetworkAccessTypeValues()
 }
 func PossiblePurgeStateValues() []PurgeState {
 	return original.PossiblePurgeStateValues()

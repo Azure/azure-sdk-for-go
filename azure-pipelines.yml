@@ -1,3 +1,5 @@
+# This builds only track 1 SDKs. See eng\pipelines\templates\steps\build.yml for track 2.
+
 trigger:
   paths:
     exclude:

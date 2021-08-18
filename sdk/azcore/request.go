@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -87,6 +88,9 @@ func JoinPaths(root string, paths ...string) string {
 	}
 
 	if qps != "" {
+		if !strings.HasSuffix(root, "/") {
+			root += "/"
+		}
 		return root + "?" + qps
 	}
 	return root
@@ -111,9 +115,9 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 // If there are no more policies, nil and ErrNoMorePolicies are returned.
 // This method is intended to be called from pipeline policies.
 // To send a request through a pipeline call Pipeline.Do().
-func (req *Request) Next() (*Response, error) {
+func (req *Request) Next() (*http.Response, error) {
 	if len(req.policies) == 0 {
-		return nil, ErrNoMorePolicies
+		return nil, errors.New("no more policies")
 	}
 	nextPolicy := req.policies[0]
 	nextReq := *req
@@ -184,8 +188,8 @@ func (req *Request) SetBody(body ReadSeekCloser, contentType string) error {
 	req.body = body
 	req.Request.Body = body
 	req.Request.ContentLength = size
-	req.Header.Set(HeaderContentType, contentType)
-	req.Header.Set(HeaderContentLength, strconv.FormatInt(size, 10))
+	req.Header.Set(headerContentType, contentType)
+	req.Header.Set(headerContentLength, strconv.FormatInt(size, 10))
 	return nil
 }
 
@@ -223,8 +227,8 @@ func (req *Request) SetMultipartFormData(formData map[string]interface{}) error 
 	req.body = NopCloser(bytes.NewReader(body.Bytes()))
 	req.Body = req.body
 	req.ContentLength = int64(body.Len())
-	req.Header.Set(HeaderContentType, writer.FormDataContentType())
-	req.Header.Set(HeaderContentLength, strconv.FormatInt(req.ContentLength, 10))
+	req.Header.Set(headerContentType, writer.FormDataContentType())
+	req.Header.Set(headerContentLength, strconv.FormatInt(req.ContentLength, 10))
 	return nil
 }
 
@@ -290,7 +294,7 @@ func (req *Request) writeBody(b *bytes.Buffer) error {
 		fmt.Fprint(b, "   Request contained no body\n")
 		return nil
 	}
-	if ct := req.Header.Get(HeaderContentType); !shouldLogBody(b, ct) {
+	if ct := req.Header.Get(headerContentType); !shouldLogBody(b, ct) {
 		return nil
 	}
 	body, err := ioutil.ReadAll(req.Body)

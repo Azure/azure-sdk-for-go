@@ -8,15 +8,16 @@
 
 package mysqlflexibleserversapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2020-07-01-preview/mysqlflexibleservers/mysqlflexibleserversapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2021-05-01-preview/mysqlflexibleservers/mysqlflexibleserversapi"
 
+type BackupsClientAPI = original.BackupsClientAPI
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
 type CheckVirtualNetworkSubnetUsageClientAPI = original.CheckVirtualNetworkSubnetUsageClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI
+type GetPrivateDNSZoneSuffixClientAPI = original.GetPrivateDNSZoneSuffixClientAPI
 type LocationBasedCapabilitiesClientAPI = original.LocationBasedCapabilitiesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ReplicasClientAPI = original.ReplicasClientAPI
-type ServerKeysClientAPI = original.ServerKeysClientAPI
 type ServersClientAPI = original.ServersClientAPI

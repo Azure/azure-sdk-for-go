@@ -34,6 +34,10 @@ func TestContainerResponseParsing(t *testing.T) {
 		},
 	}
 
+	container := &CosmosContainer{
+		Id: "someId",
+	}
+
 	jsonString, err := json.Marshal(properties)
 	if err != nil {
 		t.Fatal(err)
@@ -54,7 +58,7 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	pl := azcore.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosContainerResponse(resp)
+	parsedResponse, err := newCosmosContainerResponse(resp, container)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,5 +113,9 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	if parsedResponse.ETag() != "someEtag" {
 		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	}
+
+	if parsedResponse.ContainerProperties.Container != container {
+		t.Errorf("Expected Container to be %v, but got %v", container, parsedResponse.ContainerProperties.Container)
 	}
 }

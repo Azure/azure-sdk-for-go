@@ -22,7 +22,7 @@ func newCosmosDatabase(id string, client *CosmosClient) *CosmosDatabase {
 	return &CosmosDatabase{
 		Id:     id,
 		client: client,
-		link:   getPath("", pathSegmentDatabase, id)}
+		link:   createLink("", pathSegmentDatabase, id)}
 }
 
 // GetContainer returns a CosmosContainer object for the container.
@@ -45,10 +45,28 @@ func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabas
 		resourceAddress: db.link,
 	}
 
-	azResponse, err := db.client.connection.sendGetRequest(ctx, operationContext, requestOptions)
+	azResponse, err := db.client.connection.sendGetRequest(db.link, ctx, operationContext, requestOptions)
 	if err != nil {
 		return CosmosDatabaseResponse{}, err
 	}
 
-	return newCosmosDatabaseResponse(azResponse)
+	return newCosmosDatabaseResponse(azResponse, db)
+}
+
+func (db *CosmosDatabase) Delete(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &CosmosDatabaseRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: db.link,
+	}
+
+	azResponse, err := db.client.connection.sendDeleteRequest(db.link, ctx, operationContext, requestOptions)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	return newCosmosDatabaseResponse(azResponse, db)
 }

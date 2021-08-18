@@ -12,7 +12,7 @@ type CosmosDatabaseResponse struct {
 	cosmosResponse
 }
 
-func newCosmosDatabaseResponse(resp *azcore.Response) (CosmosDatabaseResponse, error) {
+func newCosmosDatabaseResponse(resp *azcore.Response, database *CosmosDatabase) (CosmosDatabaseResponse, error) {
 	response := CosmosDatabaseResponse{}
 	response.RawResponse = resp.Response
 	properties := &CosmosDatabaseProperties{}
@@ -21,5 +21,6 @@ func newCosmosDatabaseResponse(resp *azcore.Response) (CosmosDatabaseResponse, e
 		return response, err
 	}
 	response.DatabaseProperties = properties
+	response.DatabaseProperties.Database = database
 	return response, nil
 }

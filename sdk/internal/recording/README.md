@@ -22,15 +22,15 @@ or indicate that the test IsFailed.
 
 ```go
 type testState struct {
-    recording *testframework.Recording
+    recording *recording.Recording
     client    *TableServiceClient
-    context   *testframework.TestContext
+    context   *recording.TestContext
 }
 // a map to store our created test contexts
 var clientsMap map[string]*testState = make(map[string]*testState)
 
 // recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-func recordedTestSetup(t *testing.T, testName string, mode testframework.RecordMode) {
+func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
     var accountName string
     var suffix string
     var cred *SharedKeyCredential
@@ -39,9 +39,9 @@ func recordedTestSetup(t *testing.T, testName string, mode testframework.RecordM
     assert := assert.New(t)
 
     // init the test framework
-    context := testframework.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
-    //mode should be testframework.Playback. This will automatically record if no test recording is available and playback if it is.
-    recording, err := testframework.NewRecording(context, mode) 
+    context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
+    //mode should be recording.Playback. This will automatically record if no test recording is available and playback if it is.
+    recording, err := recording.NewRecording(context, mode) 
     assert.Nil(err)
 ```
 
@@ -49,9 +49,9 @@ After creating the TestContext, it must be passed to a new instance of `Recordin
 `Recording` is the main component of the testframework package.
 
 ```go
-//func recordedTestSetup(t *testing.T, testName string, mode testframework.RecordMode) {
+//func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
 //  <...>
-    recording, err := testframework.NewRecording(context, mode)
+    record, err := recording.NewRecording(context, mode)
     assert.Nil(err)
 ```
 
@@ -64,11 +64,11 @@ In the snippet below we are calling `GetRecordedVariable` to acquire details suc
 client secret to configure the client.
 
 ```go
-//func recordedTestSetup(t *testing.T, testName string, mode testframework.RecordMode) {
+//func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
 //  <...>
-    accountName, err := recording.GetRecordedVariable(storageAccountNameEnvVar, testframework.Default)
-    suffix := recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, testframework.Default)
-    secret, err := recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String)
+    accountName, err := record.GetEnvVar(storageAccountNameEnvVar, recording.NoSanitization)
+    suffix := record.GetOptionalEnvVar(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.NoSanitization)
+    secret, err := record.GetEnvVar(storageAccountKeyEnvVar, recording.Secret_Base64String)
     cred, _ := NewSharedKeyCredential(accountName, secret)
     uri := storageURI(accountName, suffix)
 ```
@@ -77,7 +77,7 @@ The last step is to instrument your client by replacing its transport with your 
 `Recording` satisfies the `azcore.Transport` interface.
 
 ```go
-//func recordedTestSetup(t *testing.T, testName string, mode testframework.RecordMode) {
+//func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
 //  <...>
     // Set our client's HTTPClient to our recording instance.
     // Optionally, we can also configure MaxRetries to -1 to avoid the default retry behavior.
@@ -132,18 +132,18 @@ import (
 
 type tableServiceClientLiveTests struct {
     suite.Suite
-    mode         testframework.RecordMode
+    mode         recording.RecordMode
 }
 
 // Hookup to the testing framework
 func TestServiceClient_Storage(t *testing.T) {
-    storage := tableServiceClientLiveTests{mode: testframework.Playback /* change to Record to re-record tests */}
+    storage := tableServiceClientLiveTests{mode: recording.Playback /* change to Record to re-record tests */}
     suite.Run(t, &storage)
 }
 
 func (s *tableServiceClientLiveTests) TestCreateTable() {
     assert := assert.New(s.T())
-    context := getTestContext(s.T().Name())
+    context := getTestState(s.T().Name())
     // generate a random recorded value for our table name.
     tableName, err := context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
 

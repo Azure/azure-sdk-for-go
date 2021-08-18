@@ -198,7 +198,7 @@ func (c *aadIdentityClient) createRefreshTokenRequest(ctx context.Context, tenan
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -216,7 +216,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, t
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 
@@ -242,7 +242,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -288,7 +288,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -339,7 +339,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, ten
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -373,7 +373,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -436,7 +436,7 @@ func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := req.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil

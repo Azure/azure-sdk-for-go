@@ -18,6 +18,15 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type ProvisioningStatus = original.ProvisioningStatus
 
 const (
@@ -57,6 +66,8 @@ const (
 
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
+type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
+type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
@@ -81,10 +92,12 @@ type ProxyResource = original.ProxyResource
 type QuotaDimension = original.QuotaDimension
 type Resource = original.Resource
 type SkuDescription = original.SkuDescription
+type SystemData = original.SystemData
 type TagsObject = original.TagsObject
 type TargetDescription = original.TargetDescription
 type TrackedResource = original.TrackedResource
 type Workspace = original.Workspace
+type WorkspaceClient = original.WorkspaceClient
 type WorkspaceIdentity = original.WorkspaceIdentity
 type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListResultIterator = original.WorkspaceListResultIterator
@@ -124,6 +137,12 @@ func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context,
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func NewWorkspaceClient(subscriptionID string) WorkspaceClient {
+	return original.NewWorkspaceClient(subscriptionID)
+}
+func NewWorkspaceClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceClient {
+	return original.NewWorkspaceClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
 	return original.NewWorkspaceListResultIterator(page)
 }
@@ -135,6 +154,9 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleProvisioningStatusValues() []ProvisioningStatus {
 	return original.PossibleProvisioningStatusValues()

@@ -216,7 +216,9 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
-func (c *ClientCertificateCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
+func (c *ClientCertificateCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)

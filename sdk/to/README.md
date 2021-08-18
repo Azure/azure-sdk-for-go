@@ -1,8 +1,8 @@
 # Azure Type Conversion Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/to)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/to)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20to%20-%20ci?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1845&branchName=master)
-[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1845/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1845/main)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20to%20-%20ci?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1845&branchName=main)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1845/main)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1845/main)
 
 The `to` module contains various helper type-conversion functions.
 These modules follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).

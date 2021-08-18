@@ -181,7 +181,7 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id st
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set(azcore.HeaderMetadata, "true")
+	request.Header.Set(headerMetadata, "true")
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
@@ -248,7 +248,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	if err != nil {
 		return "", err
 	}
-	request.Header.Set(azcore.HeaderMetadata, "true")
+	request.Header.Set(headerMetadata, "true")
 	q := request.URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
@@ -284,8 +284,8 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set(azcore.HeaderMetadata, "true")
-	request.Header.Set(azcore.HeaderAuthorization, fmt.Sprintf("Basic %s", key))
+	request.Header.Set(headerMetadata, "true")
+	request.Header.Set(headerAuthorization, fmt.Sprintf("Basic %s", key))
 	q := request.URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
@@ -298,7 +298,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set(azcore.HeaderMetadata, "true")
+	request.Header.Set(headerMetadata, "true")
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
 	if clientID != "" {
@@ -306,7 +306,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	}
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	if err := request.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+	if err := request.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
 	return request, nil

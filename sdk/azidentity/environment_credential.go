@@ -99,8 +99,8 @@ func (c *EnvironmentCredential) GetToken(ctx context.Context, opts azcore.TokenR
 	return c.cred.GetToken(ctx, opts)
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential.
-func (c *EnvironmentCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential.
+func (c *EnvironmentCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c.cred, options)
 }
 

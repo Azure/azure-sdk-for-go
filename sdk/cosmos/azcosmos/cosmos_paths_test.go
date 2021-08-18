@@ -8,43 +8,48 @@ import (
 	"testing"
 )
 
-func TestPathGeneration(t *testing.T) {
+func TestPathCreateLink(t *testing.T) {
 
 	expected := "dbs/testdb/colls/testcoll"
-	actual := getPath("dbs/testdb", pathSegmentCollection, "testcoll")
+	actual := createLink("dbs/testdb", pathSegmentCollection, "testcoll")
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 
 	expected = "dbs/testdb"
-	actual = getPath("", pathSegmentDatabase, "testdb")
+	actual = createLink("", pathSegmentDatabase, "testdb")
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 
 	expected = "dbs/esc%40ped"
-	actual = getPath("", pathSegmentDatabase, "esc@ped")
+	actual = createLink("", pathSegmentDatabase, "esc@ped")
 	if actual != expected {
 		t.Errorf("Expected %s, got %s", expected, actual)
 	}
 }
 
 func TestPathToResourceTypeMapping(t *testing.T) {
+	verifyPathResultAndExpectation(t, resourceTypeDatabase, pathSegmentDatabase)
+	verifyPathResultAndExpectation(t, resourceTypeCollection, pathSegmentCollection)
+	verifyPathResultAndExpectation(t, resourceTypeDocument, pathSegmentDocument)
+	verifyPathResultAndExpectation(t, resourceTypeDatabaseAccount, pathSegmentDatabaseAccount)
+	verifyPathResultAndExpectation(t, resourceTypeOffer, pathSegmentOffer)
+	verifyPathResultAndExpectation(t, resourceTypeUser, pathSegmentUser)
+	verifyPathResultAndExpectation(t, resourceTypeStoredProcedure, pathSegmentStoredProcedure)
+	verifyPathResultAndExpectation(t, resourceTypeUserDefinedFunction, pathSegmentUserDefinedFunction)
+	verifyPathResultAndExpectation(t, resourceTypeTrigger, pathSegmentTrigger)
+	verifyPathResultAndExpectation(t, resourceTypePermission, pathSegmentPermission)
+	verifyPathResultAndExpectation(t, resourceTypePartitionKeyRange, pathSegmentPartitionKeyRange)
+	verifyPathResultAndExpectation(t, resourceTypeClientEncryptionKey, pathSegmentClientEncryptionKey)
+	verifyPathResultAndExpectation(t, resourceTypeUser, pathSegmentUser)
+	verifyPathResultAndExpectation(t, resourceTypeConflict, pathSegmentConflict)
+}
 
-	expected := pathSegmentDatabase
-	actual, err := getResourcePath(resourceTypeDatabase)
+func verifyPathResultAndExpectation(t *testing.T, resourceType resourceType, expected string) {
+	actual, err := getResourcePath(resourceType)
 	if err != nil {
-		t.Error(err)
-	}
-
-	if actual != expected {
-		t.Errorf("Expected %s, got %s", expected, actual)
-	}
-
-	expected = pathSegmentCollection
-	actual, err = getResourcePath(resourceTypeCollection)
-	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	if actual != expected {

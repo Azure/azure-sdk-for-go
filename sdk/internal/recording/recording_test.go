@@ -75,14 +75,12 @@ func (s *recordingTests) TestRecordedVariables() {
 
 	// non existent variables return an error
 	_, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
-
 	// mark test as succeeded
 	require.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
-
 	val, err := target.GetEnvVar(nonExistingEnvVar, NoSanitization)
 	require.NoError(err)
 	require.Equal(expectedVariableValue, val)
@@ -112,7 +110,6 @@ func (s *recordingTests) TestRecordedVariablesSanitized() {
 	require.NoError(err)
 
 	// call GetOptionalRecordedVariable with the Secret_String VariableType arg
-
 	require.Equal(secret, target.GetOptionalEnvVar(SanitizedStringVar, secret, Secret_String))
 
 	// call GetOptionalRecordedVariable with the Secret_Base64String VariableType arg
@@ -151,7 +148,7 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	target, err := NewRecording(context, Playback)
 	require.NoError(err)
 
-	target.GetOptionalRecordedVariable(expectedVariableName, expectedVariableValue, Default)
+	target.GetOptionalEnvVar(expectedVariableName, expectedVariableValue, NoSanitization)
 
 	err = target.Stop()
 	require.NoError(err)
@@ -168,7 +165,7 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	require.NoError(err)
 
 	// add a new variable to the existing batch
-	target2.GetOptionalRecordedVariable(addedVariableName, addedVariableValue, Default)
+	target2.GetOptionalEnvVar(addedVariableName, addedVariableValue, NoSanitization)
 
 	err = target2.Stop()
 	require.NoError(err)

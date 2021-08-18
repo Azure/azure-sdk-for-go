@@ -17,7 +17,13 @@ import (
 )
 
 type RequestMatcher struct {
-	ignoredHeaders map[string]*string
+	context TestContext
+	// IgnoredHeaders is a map acting as a hash set of the header names that will be ignored for matching.
+	// Modifying the keys in the map will affect how headers are matched for recordings.
+	IgnoredHeaders map[string]struct{}
+	bodyMatcher    StringMatcher
+	urlMatcher     StringMatcher
+	methodMatcher  StringMatcher
 }
 
 type StringMatcher func(reqVal string, recVal string) bool
@@ -95,46 +101,46 @@ func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
 	}
 }
 
-var recordingHeaderMissing = "Test recording headers do not match. Header '%s' is present in request but not in recording."
-var requestHeaderMissing = "Test recording headers do not match. Header '%s' is present in recording but not in request."
-var headerValuesMismatch = "Test recording header '%s' does not match. request: %s, recording: %s"
-var methodMismatch = "Test recording methods do not match. request: %s, recording: %s"
-var urlMismatch = "Test recording URLs do not match. request: %s, recording: %s"
-var bodiesMismatch = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
+func defaultStringMatcher(s1 string, s2 string) bool {
+	return s1 == s2
+}
 
-func compareBodies(r *http.Request, i cassette.Request, c TestContext) bool {
+func getBody(r *http.Request) string {
 	body := bytes.Buffer{}
 	if r.Body != nil {
 		_, err := body.ReadFrom(r.Body)
 		if err != nil {
-			return false
+			return "could not parse body: " + err.Error()
 		}
 		r.Body = ioutil.NopCloser(&body)
 	}
-	bodiesMatch := body.String() == i.Body
-	if !bodiesMatch {
-		c.Log(fmt.Sprintf(bodiesMismatch, body.String(), i.Body))
-	}
-	return bodiesMatch
+	return body.String()
 }
 
-func compareURLs(r *http.Request, i cassette.Request, c TestContext) bool {
-	if r.URL.String() != i.URL {
-		c.Log(fmt.Sprintf(urlMismatch, r.URL.String(), i.URL))
-		return false
-	}
-	return true
+func getUrl(r *http.Request) string {
+	return r.URL.String()
 }
 
-func compareMethods(r *http.Request, i cassette.Request, c TestContext) bool {
-	if r.Method != i.Method {
-		c.Log(fmt.Sprintf(methodMismatch, r.Method, i.Method))
-		return false
-	}
-	return true
+func getMethod(r *http.Request) string {
+	return r.Method
 }
 
-func compareHeaders(r *http.Request, i cassette.Request, c TestContext) bool {
+func (m *RequestMatcher) compareBodies(r *http.Request, recordedBody string) bool {
+	body := getBody(r)
+	return m.bodyMatcher(body, recordedBody)
+}
+
+func (m *RequestMatcher) compareURLs(r *http.Request, recordedUrl string) bool {
+	url := getUrl(r)
+	return m.urlMatcher(url, recordedUrl)
+}
+
+func (m *RequestMatcher) compareMethods(r *http.Request, recordedMethod string) bool {
+	method := getMethod(r)
+	return m.methodMatcher(method, recordedMethod)
+}
+
+func (m *RequestMatcher) compareHeaders(r *http.Request, i cassette.Request) bool {
 	unVisitedCassetteKeys := make(map[string]*string, len(i.Headers))
 	// clone the cassette keys to track which we have seen
 	for k := range i.Headers {
@@ -155,20 +161,20 @@ func compareHeaders(r *http.Request, i cassette.Request, c TestContext) bool {
 			headersMatch := reflect.DeepEqual(requestHeader, recordedHeader)
 			if !headersMatch {
 				// headers don't match
-				c.Log(fmt.Sprintf(headerValuesMismatch, key, requestHeader, recordedHeader))
+				m.context.Log(fmt.Sprintf(headerValuesMismatch, key, requestHeader, recordedHeader))
 				return false
 			}
 
 		} else {
 			// header not found
-			c.Log(fmt.Sprintf(recordingHeaderMissing, key))
+			m.context.Log(fmt.Sprintf(recordingHeaderMissing, key))
 			return false
 		}
 	}
 	if len(unVisitedCassetteKeys) > 0 {
 		// headers exist in the recording that do not exist in the request
 		for headerName := range unVisitedCassetteKeys {
-			c.Log(fmt.Sprintf(requestHeaderMissing, headerName))
+			m.context.Log(fmt.Sprintf(requestHeaderMissing, headerName))
 		}
 		return false
 	}

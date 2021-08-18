@@ -33,7 +33,12 @@ func (c *CosmosContainer) Get(ctx context.Context, requestOptions *CosmosContain
 		resourceAddress: c.link,
 	}
 
-	azResponse, err := c.Database.client.connection.sendGetRequest(c.link, ctx, operationContext, requestOptions)
+	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
+	if err != nil {
+		return CosmosContainerResponse{}, err
+	}
+
+	azResponse, err := c.Database.client.connection.sendGetRequest(path, ctx, operationContext, requestOptions)
 	if err != nil {
 		return CosmosContainerResponse{}, err
 	}
@@ -51,7 +56,12 @@ func (c *CosmosContainer) Delete(ctx context.Context, requestOptions *CosmosCont
 		resourceAddress: c.link,
 	}
 
-	azResponse, err := c.Database.client.connection.sendDeleteRequest(c.link, ctx, operationContext, requestOptions)
+	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
+	if err != nil {
+		return CosmosContainerResponse{}, err
+	}
+
+	azResponse, err := c.Database.client.connection.sendDeleteRequest(path, ctx, operationContext, requestOptions)
 	if err != nil {
 		return CosmosContainerResponse{}, err
 	}

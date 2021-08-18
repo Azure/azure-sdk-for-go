@@ -35,17 +35,50 @@ func (db *CosmosDatabase) GetContainer(id string) (*CosmosContainer, error) {
 	return newCosmosContainer(id, db), nil
 }
 
+func (db *CosmosDatabase) AddContainer(ctx context.Context, containerProperties CosmosContainerProperties, requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &CosmosContainerRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeCollection,
+		resourceAddress: db.link,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeCollection, db.link, true)
+	if err != nil {
+		return CosmosContainerResponse{}, err
+	}
+
+	container, err := db.GetContainer(containerProperties.Id)
+	if err != nil {
+		return CosmosContainerResponse{}, err
+	}
+
+	azResponse, err := db.client.connection.sendPostRequest(path, ctx, containerProperties, operationContext, requestOptions)
+	if err != nil {
+		return CosmosContainerResponse{}, err
+	}
+
+	return newCosmosContainerResponse(azResponse, container)
+}
+
 func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosDatabaseRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDatabase,
+		resourceType:    resourceTypeCollection,
 		resourceAddress: db.link,
 	}
 
-	azResponse, err := db.client.connection.sendGetRequest(db.link, ctx, operationContext, requestOptions)
+	path, err := generatePathForNameBased(resourceTypeDatabase, db.link, false)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	azResponse, err := db.client.connection.sendGetRequest(path, ctx, operationContext, requestOptions)
 	if err != nil {
 		return CosmosDatabaseResponse{}, err
 	}
@@ -59,11 +92,16 @@ func (db *CosmosDatabase) Delete(ctx context.Context, requestOptions *CosmosData
 	}
 
 	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeDatabase,
+		resourceType:    resourceTypeCollection,
 		resourceAddress: db.link,
 	}
 
-	azResponse, err := db.client.connection.sendDeleteRequest(db.link, ctx, operationContext, requestOptions)
+	path, err := generatePathForNameBased(resourceTypeDatabase, db.link, false)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	azResponse, err := db.client.connection.sendDeleteRequest(path, ctx, operationContext, requestOptions)
 	if err != nil {
 		return CosmosDatabaseResponse{}, err
 	}

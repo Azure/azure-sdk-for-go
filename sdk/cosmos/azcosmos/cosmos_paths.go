@@ -39,7 +39,7 @@ func generatePathForNameBased(resourceType resourceType, ownerOrResourceId strin
 		if isFeed {
 			return pathSegmentDatabase, nil
 		}
-		return pathSegmentDatabase + "/" + ownerOrResourceId, nil
+		return ownerOrResourceId, nil
 	}
 
 	if resourceType == resourceTypeCollection {

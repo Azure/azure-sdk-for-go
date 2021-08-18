@@ -35,7 +35,14 @@ func (db *CosmosDatabase) GetContainer(id string) (*CosmosContainer, error) {
 	return newCosmosContainer(id, db), nil
 }
 
-func (db *CosmosDatabase) AddContainer(ctx context.Context, containerProperties CosmosContainerProperties, requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
+// AddContainer creates a container in the Cosmos database.
+// ctx - The context for the request.
+// containerProperties - The properties for the container.
+// requestOptions - Optional parameters for the request.
+func (db *CosmosDatabase) AddContainer(
+	ctx context.Context,
+	containerProperties CosmosContainerProperties,
+	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosContainerRequestOptions{}
 	}
@@ -63,13 +70,16 @@ func (db *CosmosDatabase) AddContainer(ctx context.Context, containerProperties 
 	return newCosmosContainerResponse(azResponse, container)
 }
 
+// Get reads a Cosmos database.
+// ctx - The context for the request.
+// requestOptions - Optional parameters for the request.
 func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosDatabaseRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeCollection,
+		resourceType:    resourceTypeDatabase,
 		resourceAddress: db.link,
 	}
 
@@ -86,13 +96,16 @@ func (db *CosmosDatabase) Get(ctx context.Context, requestOptions *CosmosDatabas
 	return newCosmosDatabaseResponse(azResponse, db)
 }
 
+// Delete a Cosmos database.
+// ctx - The context for the request.
+// requestOptions - Optional parameters for the request.
 func (db *CosmosDatabase) Delete(ctx context.Context, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosDatabaseRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
-		resourceType:    resourceTypeCollection,
+		resourceType:    resourceTypeDatabase,
 		resourceAddress: db.link,
 	}
 

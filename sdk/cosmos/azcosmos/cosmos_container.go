@@ -23,6 +23,7 @@ func newCosmosContainer(id string, database *CosmosDatabase) *CosmosContainer {
 		link:     createLink(database.link, pathSegmentCollection, id)}
 }
 
+// Get reads a Cosmos container.
 func (c *CosmosContainer) Get(ctx context.Context, requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosContainerRequestOptions{}
@@ -46,6 +47,7 @@ func (c *CosmosContainer) Get(ctx context.Context, requestOptions *CosmosContain
 	return newCosmosContainerResponse(azResponse, c)
 }
 
+// Delete a Cosmos container.
 func (c *CosmosContainer) Delete(ctx context.Context, requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosContainerRequestOptions{}

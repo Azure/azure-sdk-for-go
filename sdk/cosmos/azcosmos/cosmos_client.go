@@ -55,7 +55,14 @@ func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string)
 	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
 }
 
-func (c *CosmosClient) AddDatabase(ctx context.Context, databaseProperties CosmosDatabaseProperties, requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+// AddDatabase creates a new database.
+// ctx - The context for the request.
+// databaseProperties - The definition of the database
+// requestOptions - Optional parameters for the request.
+func (c *CosmosClient) AddDatabase(
+	ctx context.Context,
+	databaseProperties CosmosDatabaseProperties,
+	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosDatabaseRequestOptions{}
 	}

@@ -6,6 +6,7 @@ package log
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"testing"
 )
 
@@ -48,5 +49,14 @@ func TestLoggingClassification(t *testing.T) {
 	Write(Request, req)
 	if log[Request] != req {
 		t.Fatalf("unexpected log entry: %s", log[Request])
+	}
+}
+
+func TestEnvironment(t *testing.T) {
+	os.Setenv("AZURE_SDK_GO_LOGGING", "all")
+	defer os.Unsetenv("AZURE_SDK_GO_LOGGING")
+	initLogging()
+	if log.lst == nil {
+		t.Fatal("unexpected nil listener")
 	}
 }

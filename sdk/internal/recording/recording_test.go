@@ -74,14 +74,14 @@ func (s *recordingTests) TestRecordedVariables() {
 	require.Equal(expectedVariableValue, target.GetOptionalEnvVar(nonExistingEnvVar, expectedVariableValue, NoSanitization))
 
 	// non existent variables return an error
-	val, err := target.GetEnvVar(nonExistingEnvVar, NoSanitization)
+	_, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
 	// mark test as succeeded
 	require.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
-	_, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
+	val, err := target.GetEnvVar(nonExistingEnvVar, NoSanitization)
 	require.NoError(err)
 	require.Equal(expectedVariableValue, val)
 
@@ -361,7 +361,6 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 
 	// playback the request
 	_, err = target.Do(req)
-	require.NoError(err)
 	require.Equal(missingRequestError(req), err.Error())
 	// mark succeeded
 	err = target.Stop()

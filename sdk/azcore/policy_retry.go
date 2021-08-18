@@ -136,7 +136,7 @@ func (p *retryPolicy) Do(req *Request) (resp *http.Response, err error) {
 	if req.body != nil {
 		// wrap the body so we control when it's actually closed
 		rwbody := &retryableRequestBody{body: req.body}
-		req.Body = rwbody
+		req.body = rwbody
 		req.Request.GetBody = func() (io.ReadCloser, error) {
 			_, err := rwbody.Seek(0, io.SeekStart) // Seek back to the beginning of the stream
 			return rwbody, err

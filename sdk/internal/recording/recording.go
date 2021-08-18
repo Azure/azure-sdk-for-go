@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -156,7 +157,10 @@ func (r *Recording) Do(req *http.Request) (*http.Response, error) {
 // Stop stops the recording and saves them, including any captured variables, to disk
 func (r *Recording) Stop() error {
 
-	r.recorder.Stop()
+	err := r.recorder.Stop()
+	if err != nil {
+		return err
+	}
 	if r.Mode == Live {
 		return nil
 	}
@@ -206,8 +210,16 @@ func (r *Recording) Now() time.Time {
 
 func (r *Recording) UUID() uuid.UUID {
 	r.initRandomSource()
+	u := uuid.UUID{}
+	// Set all bits to randomly (or pseudo-randomly) chosen values.
+	// math/rand.Read() is no-fail so we omit any error checking.
+	rnd := rand.New(r.src)
+	rnd.Read(u[:])
+	u[8] = (u[8] | 0x40) & 0x7F // u.setVariant(ReservedRFC4122)
 
-	return uuid.FromSource(r.src)
+	var version byte = 4
+	u[6] = (u[6] & 0xF) | (version << 4) // u.setVersion(4)
+	return u
 }
 
 // GenerateAlphaNumericID will generate a recorded random alpha numeric id
@@ -404,6 +416,9 @@ func (r *Recording) unmarshalVariablesFile(out interface{}) error {
 		}
 	} else {
 		err = yaml.Unmarshal(data, out)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

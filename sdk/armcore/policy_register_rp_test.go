@@ -108,7 +108,7 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	defer close()
 	// response indicates no RP registration is required, policy does nothing
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.NewAnonymousCredential(), testRPRegistrationOptions(srv)))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -147,7 +147,7 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	defer close()
 	// test getting a 409 but not due to registration required
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(failedResp)))
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.NewAnonymousCredential(), testRPRegistrationOptions(srv)))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -178,7 +178,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	// polling responses to Register() and Get(), in progress but slow
 	// tests registration takes too long, times out
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(400*time.Millisecond))
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.NewAnonymousCredential(), testRPRegistrationOptions(srv)))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -222,7 +222,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 		// polling response, successful registration
 		srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	}
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.NewAnonymousCredential(), testRPRegistrationOptions(srv)))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -270,7 +270,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
 	opts := RegistrationOptions{}
 	opts.HTTPClient = srv
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), &opts))
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.NewAnonymousCredential(), &opts))
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -323,7 +323,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), ops))
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.NewAnonymousCredential(), ops))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)

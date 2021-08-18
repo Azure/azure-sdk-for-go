@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -20,34 +21,29 @@ import (
 	"time"
 )
 
-// Response represents the response from an HTTP request.
-type Response struct {
-	*http.Response
-}
-
 // Payload reads and returns the response body or an error.
 // On a successful read, the response body is cached.
-func (r *Response) Payload() ([]byte, error) {
+func Payload(resp *http.Response) ([]byte, error) {
 	// r.Body won't be a nopClosingBytesReader if downloading was skipped
-	if buf, ok := r.Body.(*nopClosingBytesReader); ok {
+	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
 		return buf.Bytes(), nil
 	}
-	bytesBody, err := ioutil.ReadAll(r.Body)
-	r.Body.Close()
+	bytesBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
-	r.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
+	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
 	return bytesBody, nil
 }
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
-func (r *Response) HasStatusCode(statusCodes ...int) bool {
-	if r == nil {
+func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
+	if resp == nil {
 		return false
 	}
 	for _, sc := range statusCodes {
-		if r.StatusCode == sc {
+		if resp.StatusCode == sc {
 			return true
 		}
 	}
@@ -55,8 +51,8 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 }
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
-func (r *Response) UnmarshalAsByteArray(v *[]byte, format Base64Encoding) error {
-	p, err := r.Payload()
+func UnmarshalAsByteArray(resp *http.Response, v *[]byte, format Base64Encoding) error {
+	p, err := Payload(resp)
 	if err != nil {
 		return err
 	}
@@ -64,8 +60,8 @@ func (r *Response) UnmarshalAsByteArray(v *[]byte, format Base64Encoding) error 
 }
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
-func (r *Response) UnmarshalAsJSON(v interface{}) error {
-	payload, err := r.Payload()
+func UnmarshalAsJSON(resp *http.Response, v interface{}) error {
+	payload, err := Payload(resp)
 	if err != nil {
 		return err
 	}
@@ -73,7 +69,7 @@ func (r *Response) UnmarshalAsJSON(v interface{}) error {
 	if len(payload) == 0 {
 		return nil
 	}
-	err = r.removeBOM()
+	err = removeBOM(resp)
 	if err != nil {
 		return err
 	}
@@ -85,8 +81,8 @@ func (r *Response) UnmarshalAsJSON(v interface{}) error {
 }
 
 // UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
-func (r *Response) UnmarshalAsXML(v interface{}) error {
-	payload, err := r.Payload()
+func UnmarshalAsXML(resp *http.Response, v interface{}) error {
+	payload, err := Payload(resp)
 	if err != nil {
 		return err
 	}
@@ -94,7 +90,7 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 	if len(payload) == 0 {
 		return nil
 	}
-	err = r.removeBOM()
+	err = removeBOM(resp)
 	if err != nil {
 		return err
 	}
@@ -106,45 +102,37 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 }
 
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
-func (r *Response) Drain() {
-	if r != nil && r.Body != nil {
-		_, _ = io.Copy(ioutil.Discard, r.Body)
-		r.Body.Close()
+func Drain(resp *http.Response) {
+	if resp != nil && resp.Body != nil {
+		_, _ = io.Copy(ioutil.Discard, resp.Body)
+		resp.Body.Close()
 	}
 }
 
 // removeBOM removes any byte-order mark prefix from the payload if present.
-func (r *Response) removeBOM() error {
-	payload, err := r.Payload()
+func removeBOM(resp *http.Response) error {
+	payload, err := Payload(resp)
 	if err != nil {
 		return err
 	}
 	// UTF8
 	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
 	if len(trimmed) < len(payload) {
-		r.Body.(*nopClosingBytesReader).Set(trimmed)
+		resp.Body.(*nopClosingBytesReader).Set(trimmed)
 	}
 	return nil
 }
 
-// helper to reduce nil Response checks
-func (r *Response) retryAfter() time.Duration {
-	if r == nil {
-		return 0
-	}
-	return RetryAfter(r.Response)
-}
-
 // writes to a buffer, used for logging purposes
-func (r *Response) writeBody(b *bytes.Buffer) error {
-	ct := r.Header.Get(HeaderContentType)
+func writeBody(resp *http.Response, b *bytes.Buffer) error {
+	ct := resp.Header.Get(headerContentType)
 	if ct == "" {
 		fmt.Fprint(b, "   Response contained no body\n")
 		return nil
 	} else if !shouldLogBody(b, ct) {
 		return nil
 	}
-	body, err := r.Payload()
+	body, err := Payload(resp)
 	if err != nil {
 		fmt.Fprintf(b, "   Failed to read response body: %s\n", err.Error())
 		return err
@@ -162,7 +150,7 @@ func RetryAfter(resp *http.Response) time.Duration {
 	if resp == nil {
 		return 0
 	}
-	ra := resp.Header.Get(HeaderRetryAfter)
+	ra := resp.Header.Get(headerRetryAfter)
 	if ra == "" {
 		return 0
 	}
@@ -209,14 +197,14 @@ func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
 
 // writeRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are
 // not nil, then these are also written into the Buffer.
-func writeRequestWithResponse(b *bytes.Buffer, request *Request, response *Response, err error) {
+func writeRequestWithResponse(b *bytes.Buffer, request *Request, resp *http.Response, err error) {
 	// Write the request into the buffer.
 	fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
 	writeHeader(b, request.Header)
-	if response != nil {
+	if resp != nil {
 		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
-		writeHeader(b, response.Header)
+		fmt.Fprint(b, "   RESPONSE Status: "+resp.Status+"\n")
+		writeHeader(b, resp.Header)
 	}
 	if err != nil {
 		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")

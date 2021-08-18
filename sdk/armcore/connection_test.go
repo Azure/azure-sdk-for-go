@@ -18,7 +18,7 @@ import (
 
 type mockTokenCred struct{}
 
-func (mockTokenCred) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
+func (mockTokenCred) NewAuthenticationPolicy(azcore.AuthenticationOptions) azcore.Policy {
 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
 		return req.Next()
 	})
@@ -68,7 +68,7 @@ func TestNewConnectionWithOptions(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, UserAgent) {
+	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, UserAgent) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
@@ -99,7 +99,7 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, myTelemetry+" "+UserAgent) {
+	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, myTelemetry+" "+UserAgent) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }

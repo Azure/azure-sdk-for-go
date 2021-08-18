@@ -28,6 +28,16 @@ const (
 	defaultSuffix = "/.default"
 )
 
+const (
+	headerXmsDate                = "x-ms-date"
+	headerUserAgent              = "User-Agent"
+	headerURLEncoded             = "application/x-www-form-urlencoded"
+	headerAuthorization          = "Authorization"
+	headerAuxiliaryAuthorization = "x-ms-authorization-auxiliary"
+	headerMetadata               = "Metadata"
+	headerContentType            = "Content-Type"
+)
+
 const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
 
 var (

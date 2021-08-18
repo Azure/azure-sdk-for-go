@@ -80,7 +80,7 @@ type DeviceCodeCredential struct {
 	tenantID     string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID     string                  // Gets the client (application) ID of the service principal
 	userPrompt   func(DeviceCodeMessage) // Sends the user a message with a verification URL and device code to sign in to the login server
-	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
+	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the NewAuthenticationPolicy since only one goroutine will be updating at a time
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
@@ -167,8 +167,8 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 	}
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
-func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
+func (c *DeviceCodeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

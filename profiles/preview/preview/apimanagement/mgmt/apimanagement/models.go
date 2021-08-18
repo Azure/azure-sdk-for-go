@@ -11,7 +11,7 @@ package apimanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2019-12-01-preview/apimanagement"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement"
 )
 
 const (
@@ -21,51 +21,60 @@ const (
 type APIType = original.APIType
 
 const (
-	HTTP APIType = original.HTTP
-	Soap APIType = original.Soap
+	APITypeHTTP      APIType = original.APITypeHTTP
+	APITypeSoap      APIType = original.APITypeSoap
+	APITypeWebsocket APIType = original.APITypeWebsocket
+)
+
+type AccessIDName = original.AccessIDName
+
+const (
+	AccessIDNameAccess    AccessIDName = original.AccessIDNameAccess
+	AccessIDNameGitAccess AccessIDName = original.AccessIDNameGitAccess
 )
 
 type AlwaysLog = original.AlwaysLog
 
 const (
-	AllErrors AlwaysLog = original.AllErrors
+	AlwaysLogAllErrors AlwaysLog = original.AlwaysLogAllErrors
 )
 
 type ApimIdentityType = original.ApimIdentityType
 
 const (
-	None                       ApimIdentityType = original.None
-	SystemAssigned             ApimIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ApimIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ApimIdentityType = original.UserAssigned
+	ApimIdentityTypeNone                       ApimIdentityType = original.ApimIdentityTypeNone
+	ApimIdentityTypeSystemAssigned             ApimIdentityType = original.ApimIdentityTypeSystemAssigned
+	ApimIdentityTypeSystemAssignedUserAssigned ApimIdentityType = original.ApimIdentityTypeSystemAssignedUserAssigned
+	ApimIdentityTypeUserAssigned               ApimIdentityType = original.ApimIdentityTypeUserAssigned
 )
 
 type AppType = original.AppType
 
 const (
-	DeveloperPortal AppType = original.DeveloperPortal
+	AppTypeDeveloperPortal AppType = original.AppTypeDeveloperPortal
+	AppTypePortal          AppType = original.AppTypePortal
 )
 
 type AsyncOperationStatus = original.AsyncOperationStatus
 
 const (
-	Failed     AsyncOperationStatus = original.Failed
-	InProgress AsyncOperationStatus = original.InProgress
-	Started    AsyncOperationStatus = original.Started
-	Succeeded  AsyncOperationStatus = original.Succeeded
+	AsyncOperationStatusFailed     AsyncOperationStatus = original.AsyncOperationStatusFailed
+	AsyncOperationStatusInProgress AsyncOperationStatus = original.AsyncOperationStatusInProgress
+	AsyncOperationStatusStarted    AsyncOperationStatus = original.AsyncOperationStatusStarted
+	AsyncOperationStatusSucceeded  AsyncOperationStatus = original.AsyncOperationStatusSucceeded
 )
 
 type AuthorizationMethod = original.AuthorizationMethod
 
 const (
-	DELETE  AuthorizationMethod = original.DELETE
-	GET     AuthorizationMethod = original.GET
-	HEAD    AuthorizationMethod = original.HEAD
-	OPTIONS AuthorizationMethod = original.OPTIONS
-	PATCH   AuthorizationMethod = original.PATCH
-	POST    AuthorizationMethod = original.POST
-	PUT     AuthorizationMethod = original.PUT
-	TRACE   AuthorizationMethod = original.TRACE
+	AuthorizationMethodDELETE  AuthorizationMethod = original.AuthorizationMethodDELETE
+	AuthorizationMethodGET     AuthorizationMethod = original.AuthorizationMethodGET
+	AuthorizationMethodHEAD    AuthorizationMethod = original.AuthorizationMethodHEAD
+	AuthorizationMethodOPTIONS AuthorizationMethod = original.AuthorizationMethodOPTIONS
+	AuthorizationMethodPATCH   AuthorizationMethod = original.AuthorizationMethodPATCH
+	AuthorizationMethodPOST    AuthorizationMethod = original.AuthorizationMethodPOST
+	AuthorizationMethodPUT     AuthorizationMethod = original.AuthorizationMethodPUT
+	AuthorizationMethodTRACE   AuthorizationMethod = original.AuthorizationMethodTRACE
 )
 
 type BackendProtocol = original.BackendProtocol
@@ -78,8 +87,8 @@ const (
 type BearerTokenSendingMethod = original.BearerTokenSendingMethod
 
 const (
-	AuthorizationHeader BearerTokenSendingMethod = original.AuthorizationHeader
-	Query               BearerTokenSendingMethod = original.Query
+	BearerTokenSendingMethodAuthorizationHeader BearerTokenSendingMethod = original.BearerTokenSendingMethodAuthorizationHeader
+	BearerTokenSendingMethodQuery               BearerTokenSendingMethod = original.BearerTokenSendingMethodQuery
 )
 
 type BearerTokenSendingMethods = original.BearerTokenSendingMethods
@@ -89,41 +98,65 @@ const (
 	BearerTokenSendingMethodsQuery               BearerTokenSendingMethods = original.BearerTokenSendingMethodsQuery
 )
 
+type CertificateSource = original.CertificateSource
+
+const (
+	CertificateSourceBuiltIn  CertificateSource = original.CertificateSourceBuiltIn
+	CertificateSourceCustom   CertificateSource = original.CertificateSourceCustom
+	CertificateSourceKeyVault CertificateSource = original.CertificateSourceKeyVault
+	CertificateSourceManaged  CertificateSource = original.CertificateSourceManaged
+)
+
+type CertificateStatus = original.CertificateStatus
+
+const (
+	CertificateStatusCompleted  CertificateStatus = original.CertificateStatusCompleted
+	CertificateStatusFailed     CertificateStatus = original.CertificateStatusFailed
+	CertificateStatusInProgress CertificateStatus = original.CertificateStatusInProgress
+)
+
 type ClientAuthenticationMethod = original.ClientAuthenticationMethod
 
 const (
-	Basic ClientAuthenticationMethod = original.Basic
-	Body  ClientAuthenticationMethod = original.Body
+	ClientAuthenticationMethodBasic ClientAuthenticationMethod = original.ClientAuthenticationMethodBasic
+	ClientAuthenticationMethodBody  ClientAuthenticationMethod = original.ClientAuthenticationMethodBody
 )
 
 type Confirmation = original.Confirmation
 
 const (
-	Invite Confirmation = original.Invite
-	Signup Confirmation = original.Signup
+	ConfirmationInvite Confirmation = original.ConfirmationInvite
+	ConfirmationSignup Confirmation = original.ConfirmationSignup
 )
 
 type ConnectivityStatusType = original.ConnectivityStatusType
 
 const (
-	Failure      ConnectivityStatusType = original.Failure
-	Initializing ConnectivityStatusType = original.Initializing
-	Success      ConnectivityStatusType = original.Success
+	ConnectivityStatusTypeFailure      ConnectivityStatusType = original.ConnectivityStatusTypeFailure
+	ConnectivityStatusTypeInitializing ConnectivityStatusType = original.ConnectivityStatusTypeInitializing
+	ConnectivityStatusTypeSuccess      ConnectivityStatusType = original.ConnectivityStatusTypeSuccess
 )
 
 type ContentFormat = original.ContentFormat
 
 const (
-	Openapi         ContentFormat = original.Openapi
-	Openapijson     ContentFormat = original.Openapijson
-	OpenapijsonLink ContentFormat = original.OpenapijsonLink
-	OpenapiLink     ContentFormat = original.OpenapiLink
-	SwaggerJSON     ContentFormat = original.SwaggerJSON
-	SwaggerLinkJSON ContentFormat = original.SwaggerLinkJSON
-	WadlLinkJSON    ContentFormat = original.WadlLinkJSON
-	WadlXML         ContentFormat = original.WadlXML
-	Wsdl            ContentFormat = original.Wsdl
-	WsdlLink        ContentFormat = original.WsdlLink
+	ContentFormatOpenapi         ContentFormat = original.ContentFormatOpenapi
+	ContentFormatOpenapijson     ContentFormat = original.ContentFormatOpenapijson
+	ContentFormatOpenapijsonLink ContentFormat = original.ContentFormatOpenapijsonLink
+	ContentFormatOpenapiLink     ContentFormat = original.ContentFormatOpenapiLink
+	ContentFormatSwaggerJSON     ContentFormat = original.ContentFormatSwaggerJSON
+	ContentFormatSwaggerLinkJSON ContentFormat = original.ContentFormatSwaggerLinkJSON
+	ContentFormatWadlLinkJSON    ContentFormat = original.ContentFormatWadlLinkJSON
+	ContentFormatWadlXML         ContentFormat = original.ContentFormatWadlXML
+	ContentFormatWsdl            ContentFormat = original.ContentFormatWsdl
+	ContentFormatWsdlLink        ContentFormat = original.ContentFormatWsdlLink
+)
+
+type DataMaskingMode = original.DataMaskingMode
+
+const (
+	DataMaskingModeHide DataMaskingMode = original.DataMaskingModeHide
+	DataMaskingModeMask DataMaskingMode = original.DataMaskingModeMask
 )
 
 type ExportFormat = original.ExportFormat
@@ -148,18 +181,18 @@ const (
 type GrantType = original.GrantType
 
 const (
-	AuthorizationCode     GrantType = original.AuthorizationCode
-	ClientCredentials     GrantType = original.ClientCredentials
-	Implicit              GrantType = original.Implicit
-	ResourceOwnerPassword GrantType = original.ResourceOwnerPassword
+	GrantTypeAuthorizationCode     GrantType = original.GrantTypeAuthorizationCode
+	GrantTypeClientCredentials     GrantType = original.GrantTypeClientCredentials
+	GrantTypeImplicit              GrantType = original.GrantTypeImplicit
+	GrantTypeResourceOwnerPassword GrantType = original.GrantTypeResourceOwnerPassword
 )
 
 type GroupType = original.GroupType
 
 const (
-	Custom   GroupType = original.Custom
-	External GroupType = original.External
-	System   GroupType = original.System
+	GroupTypeCustom   GroupType = original.GroupTypeCustom
+	GroupTypeExternal GroupType = original.GroupTypeExternal
+	GroupTypeSystem   GroupType = original.GroupTypeSystem
 )
 
 type HTTPCorrelationProtocol = original.HTTPCorrelationProtocol
@@ -183,55 +216,63 @@ const (
 type IdentityProviderType = original.IdentityProviderType
 
 const (
-	Aad       IdentityProviderType = original.Aad
-	AadB2C    IdentityProviderType = original.AadB2C
-	Facebook  IdentityProviderType = original.Facebook
-	Google    IdentityProviderType = original.Google
-	Microsoft IdentityProviderType = original.Microsoft
-	Twitter   IdentityProviderType = original.Twitter
+	IdentityProviderTypeAad       IdentityProviderType = original.IdentityProviderTypeAad
+	IdentityProviderTypeAadB2C    IdentityProviderType = original.IdentityProviderTypeAadB2C
+	IdentityProviderTypeFacebook  IdentityProviderType = original.IdentityProviderTypeFacebook
+	IdentityProviderTypeGoogle    IdentityProviderType = original.IdentityProviderTypeGoogle
+	IdentityProviderTypeMicrosoft IdentityProviderType = original.IdentityProviderTypeMicrosoft
+	IdentityProviderTypeTwitter   IdentityProviderType = original.IdentityProviderTypeTwitter
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary   KeyType = original.Primary
-	Secondary KeyType = original.Secondary
+	KeyTypePrimary   KeyType = original.KeyTypePrimary
+	KeyTypeSecondary KeyType = original.KeyTypeSecondary
 )
 
 type LoggerType = original.LoggerType
 
 const (
-	ApplicationInsights LoggerType = original.ApplicationInsights
-	AzureEventHub       LoggerType = original.AzureEventHub
+	LoggerTypeApplicationInsights LoggerType = original.LoggerTypeApplicationInsights
+	LoggerTypeAzureEventHub       LoggerType = original.LoggerTypeAzureEventHub
+	LoggerTypeAzureMonitor        LoggerType = original.LoggerTypeAzureMonitor
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
-	AlreadyExists NameAvailabilityReason = original.AlreadyExists
-	Invalid       NameAvailabilityReason = original.Invalid
-	Valid         NameAvailabilityReason = original.Valid
+	NameAvailabilityReasonAlreadyExists NameAvailabilityReason = original.NameAvailabilityReasonAlreadyExists
+	NameAvailabilityReasonInvalid       NameAvailabilityReason = original.NameAvailabilityReasonInvalid
+	NameAvailabilityReasonValid         NameAvailabilityReason = original.NameAvailabilityReasonValid
 )
 
 type NotificationName = original.NotificationName
 
 const (
-	AccountClosedPublisher                            NotificationName = original.AccountClosedPublisher
-	BCC                                               NotificationName = original.BCC
-	NewApplicationNotificationMessage                 NotificationName = original.NewApplicationNotificationMessage
-	NewIssuePublisherNotificationMessage              NotificationName = original.NewIssuePublisherNotificationMessage
-	PurchasePublisherNotificationMessage              NotificationName = original.PurchasePublisherNotificationMessage
-	QuotaLimitApproachingPublisherNotificationMessage NotificationName = original.QuotaLimitApproachingPublisherNotificationMessage
-	RequestPublisherNotificationMessage               NotificationName = original.RequestPublisherNotificationMessage
+	NotificationNameAccountClosedPublisher                            NotificationName = original.NotificationNameAccountClosedPublisher
+	NotificationNameBCC                                               NotificationName = original.NotificationNameBCC
+	NotificationNameNewApplicationNotificationMessage                 NotificationName = original.NotificationNameNewApplicationNotificationMessage
+	NotificationNameNewIssuePublisherNotificationMessage              NotificationName = original.NotificationNameNewIssuePublisherNotificationMessage
+	NotificationNamePurchasePublisherNotificationMessage              NotificationName = original.NotificationNamePurchasePublisherNotificationMessage
+	NotificationNameQuotaLimitApproachingPublisherNotificationMessage NotificationName = original.NotificationNameQuotaLimitApproachingPublisherNotificationMessage
+	NotificationNameRequestPublisherNotificationMessage               NotificationName = original.NotificationNameRequestPublisherNotificationMessage
+)
+
+type OperationNameFormat = original.OperationNameFormat
+
+const (
+	OperationNameFormatName OperationNameFormat = original.OperationNameFormatName
+	OperationNameFormatURL  OperationNameFormat = original.OperationNameFormatURL
 )
 
 type PolicyContentFormat = original.PolicyContentFormat
 
 const (
-	Rawxml     PolicyContentFormat = original.Rawxml
-	RawxmlLink PolicyContentFormat = original.RawxmlLink
-	XML        PolicyContentFormat = original.XML
-	XMLLink    PolicyContentFormat = original.XMLLink
+	PolicyContentFormatRawxml     PolicyContentFormat = original.PolicyContentFormatRawxml
+	PolicyContentFormatRawxmlLink PolicyContentFormat = original.PolicyContentFormatRawxmlLink
+	PolicyContentFormatXML        PolicyContentFormat = original.PolicyContentFormatXML
+	PolicyContentFormatXMLLink    PolicyContentFormat = original.PolicyContentFormatXMLLink
 )
 
 type PolicyExportFormat = original.PolicyExportFormat
@@ -251,11 +292,20 @@ const (
 	PolicyScopeContractTenant    PolicyScopeContract = original.PolicyScopeContractTenant
 )
 
+type PortalRevisionStatus = original.PortalRevisionStatus
+
+const (
+	PortalRevisionStatusCompleted  PortalRevisionStatus = original.PortalRevisionStatusCompleted
+	PortalRevisionStatusFailed     PortalRevisionStatus = original.PortalRevisionStatusFailed
+	PortalRevisionStatusPending    PortalRevisionStatus = original.PortalRevisionStatusPending
+	PortalRevisionStatusPublishing PortalRevisionStatus = original.PortalRevisionStatusPublishing
+)
+
 type ProductState = original.ProductState
 
 const (
-	NotPublished ProductState = original.NotPublished
-	Published    ProductState = original.Published
+	ProductStateNotPublished ProductState = original.ProductStateNotPublished
+	ProductStatePublished    ProductState = original.ProductStatePublished
 )
 
 type Protocol = original.Protocol
@@ -263,12 +313,14 @@ type Protocol = original.Protocol
 const (
 	ProtocolHTTP  Protocol = original.ProtocolHTTP
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
+	ProtocolWs    Protocol = original.ProtocolWs
+	ProtocolWss   Protocol = original.ProtocolWss
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Created ProvisioningState = original.Created
+	ProvisioningStateCreated ProvisioningState = original.ProvisioningStateCreated
 )
 
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
@@ -282,7 +334,29 @@ const (
 type SamplingType = original.SamplingType
 
 const (
-	Fixed SamplingType = original.Fixed
+	SamplingTypeFixed SamplingType = original.SamplingTypeFixed
+)
+
+type SkuCapacityScaleType = original.SkuCapacityScaleType
+
+const (
+	SkuCapacityScaleTypeAutomatic SkuCapacityScaleType = original.SkuCapacityScaleTypeAutomatic
+	SkuCapacityScaleTypeManual    SkuCapacityScaleType = original.SkuCapacityScaleTypeManual
+	SkuCapacityScaleTypeNone      SkuCapacityScaleType = original.SkuCapacityScaleTypeNone
+)
+
+type SkuRestrictionsReasonCode = original.SkuRestrictionsReasonCode
+
+const (
+	SkuRestrictionsReasonCodeNotAvailableForSubscription SkuRestrictionsReasonCode = original.SkuRestrictionsReasonCodeNotAvailableForSubscription
+	SkuRestrictionsReasonCodeQuotaID                     SkuRestrictionsReasonCode = original.SkuRestrictionsReasonCodeQuotaID
+)
+
+type SkuRestrictionsType = original.SkuRestrictionsType
+
+const (
+	SkuRestrictionsTypeLocation SkuRestrictionsType = original.SkuRestrictionsTypeLocation
+	SkuRestrictionsTypeZone     SkuRestrictionsType = original.SkuRestrictionsTypeZone
 )
 
 type SkuType = original.SkuType
@@ -291,6 +365,7 @@ const (
 	SkuTypeBasic       SkuType = original.SkuTypeBasic
 	SkuTypeConsumption SkuType = original.SkuTypeConsumption
 	SkuTypeDeveloper   SkuType = original.SkuTypeDeveloper
+	SkuTypeIsolated    SkuType = original.SkuTypeIsolated
 	SkuTypePremium     SkuType = original.SkuTypePremium
 	SkuTypeStandard    SkuType = original.SkuTypeStandard
 )
@@ -298,55 +373,56 @@ const (
 type SoapAPIType = original.SoapAPIType
 
 const (
-	SoapPassThrough SoapAPIType = original.SoapPassThrough
-	SoapToRest      SoapAPIType = original.SoapToRest
+	SoapAPITypeSoapPassThrough SoapAPIType = original.SoapAPITypeSoapPassThrough
+	SoapAPITypeSoapToRest      SoapAPIType = original.SoapAPITypeSoapToRest
+	SoapAPITypeWebSocket       SoapAPIType = original.SoapAPITypeWebSocket
 )
 
 type State = original.State
 
 const (
-	Closed   State = original.Closed
-	Open     State = original.Open
-	Proposed State = original.Proposed
-	Removed  State = original.Removed
-	Resolved State = original.Resolved
+	StateClosed   State = original.StateClosed
+	StateOpen     State = original.StateOpen
+	StateProposed State = original.StateProposed
+	StateRemoved  State = original.StateRemoved
+	StateResolved State = original.StateResolved
 )
 
 type StoreName = original.StoreName
 
 const (
-	CertificateAuthority StoreName = original.CertificateAuthority
-	Root                 StoreName = original.Root
+	StoreNameCertificateAuthority StoreName = original.StoreNameCertificateAuthority
+	StoreNameRoot                 StoreName = original.StoreNameRoot
 )
 
 type SubscriptionState = original.SubscriptionState
 
 const (
-	Active    SubscriptionState = original.Active
-	Cancelled SubscriptionState = original.Cancelled
-	Expired   SubscriptionState = original.Expired
-	Rejected  SubscriptionState = original.Rejected
-	Submitted SubscriptionState = original.Submitted
-	Suspended SubscriptionState = original.Suspended
+	SubscriptionStateActive    SubscriptionState = original.SubscriptionStateActive
+	SubscriptionStateCancelled SubscriptionState = original.SubscriptionStateCancelled
+	SubscriptionStateExpired   SubscriptionState = original.SubscriptionStateExpired
+	SubscriptionStateRejected  SubscriptionState = original.SubscriptionStateRejected
+	SubscriptionStateSubmitted SubscriptionState = original.SubscriptionStateSubmitted
+	SubscriptionStateSuspended SubscriptionState = original.SubscriptionStateSuspended
 )
 
 type TemplateName = original.TemplateName
 
 const (
-	AccountClosedDeveloper                            TemplateName = original.AccountClosedDeveloper
-	ApplicationApprovedNotificationMessage            TemplateName = original.ApplicationApprovedNotificationMessage
-	ConfirmSignUpIdentityDefault                      TemplateName = original.ConfirmSignUpIdentityDefault
-	EmailChangeIdentityDefault                        TemplateName = original.EmailChangeIdentityDefault
-	InviteUserNotificationMessage                     TemplateName = original.InviteUserNotificationMessage
-	NewCommentNotificationMessage                     TemplateName = original.NewCommentNotificationMessage
-	NewDeveloperNotificationMessage                   TemplateName = original.NewDeveloperNotificationMessage
-	NewIssueNotificationMessage                       TemplateName = original.NewIssueNotificationMessage
-	PasswordResetByAdminNotificationMessage           TemplateName = original.PasswordResetByAdminNotificationMessage
-	PasswordResetIdentityDefault                      TemplateName = original.PasswordResetIdentityDefault
-	PurchaseDeveloperNotificationMessage              TemplateName = original.PurchaseDeveloperNotificationMessage
-	QuotaLimitApproachingDeveloperNotificationMessage TemplateName = original.QuotaLimitApproachingDeveloperNotificationMessage
-	RejectDeveloperNotificationMessage                TemplateName = original.RejectDeveloperNotificationMessage
-	RequestDeveloperNotificationMessage               TemplateName = original.RequestDeveloperNotificationMessage
+	TemplateNameAccountClosedDeveloper                            TemplateName = original.TemplateNameAccountClosedDeveloper
+	TemplateNameApplicationApprovedNotificationMessage            TemplateName = original.TemplateNameApplicationApprovedNotificationMessage
+	TemplateNameConfirmSignUpIdentityDefault                      TemplateName = original.TemplateNameConfirmSignUpIdentityDefault
+	TemplateNameEmailChangeIdentityDefault                        TemplateName = original.TemplateNameEmailChangeIdentityDefault
+	TemplateNameInviteUserNotificationMessage                     TemplateName = original.TemplateNameInviteUserNotificationMessage
+	TemplateNameNewCommentNotificationMessage                     TemplateName = original.TemplateNameNewCommentNotificationMessage
+	TemplateNameNewDeveloperNotificationMessage                   TemplateName = original.TemplateNameNewDeveloperNotificationMessage
+	TemplateNameNewIssueNotificationMessage                       TemplateName = original.TemplateNameNewIssueNotificationMessage
+	TemplateNamePasswordResetByAdminNotificationMessage           TemplateName = original.TemplateNamePasswordResetByAdminNotificationMessage
+	TemplateNamePasswordResetIdentityDefault                      TemplateName = original.TemplateNamePasswordResetIdentityDefault
+	TemplateNamePurchaseDeveloperNotificationMessage              TemplateName = original.TemplateNamePurchaseDeveloperNotificationMessage
+	TemplateNameQuotaLimitApproachingDeveloperNotificationMessage TemplateName = original.TemplateNameQuotaLimitApproachingDeveloperNotificationMessage
+	TemplateNameRejectDeveloperNotificationMessage                TemplateName = original.TemplateNameRejectDeveloperNotificationMessage
+	TemplateNameRequestDeveloperNotificationMessage               TemplateName = original.TemplateNameRequestDeveloperNotificationMessage
 )
 
 type UserState = original.UserState
@@ -361,9 +437,9 @@ const (
 type Verbosity = original.Verbosity
 
 const (
-	Error       Verbosity = original.Error
-	Information Verbosity = original.Information
-	Verbose     Verbosity = original.Verbose
+	VerbosityError       Verbosity = original.VerbosityError
+	VerbosityInformation Verbosity = original.VerbosityInformation
+	VerbosityVerbose     Verbosity = original.VerbosityVerbose
 )
 
 type VersioningScheme = original.VersioningScheme
@@ -394,6 +470,7 @@ type APIClient = original.APIClient
 type APICollection = original.APICollection
 type APICollectionIterator = original.APICollectionIterator
 type APICollectionPage = original.APICollectionPage
+type APIContactInformation = original.APIContactInformation
 type APIContract = original.APIContract
 type APIContractProperties = original.APIContractProperties
 type APIContractUpdateProperties = original.APIContractUpdateProperties
@@ -409,6 +486,7 @@ type APIExportResultValue = original.APIExportResultValue
 type APIIssueAttachmentClient = original.APIIssueAttachmentClient
 type APIIssueClient = original.APIIssueClient
 type APIIssueCommentClient = original.APIIssueCommentClient
+type APILicenseInformation = original.APILicenseInformation
 type APIOperationClient = original.APIOperationClient
 type APIOperationPolicyClient = original.APIOperationPolicyClient
 type APIPolicyClient = original.APIPolicyClient
@@ -441,7 +519,14 @@ type APIVersionSetContractProperties = original.APIVersionSetContractProperties
 type APIVersionSetEntityBase = original.APIVersionSetEntityBase
 type APIVersionSetUpdateParameters = original.APIVersionSetUpdateParameters
 type APIVersionSetUpdateParametersProperties = original.APIVersionSetUpdateParametersProperties
+type AccessInformationCollection = original.AccessInformationCollection
+type AccessInformationCollectionIterator = original.AccessInformationCollectionIterator
+type AccessInformationCollectionPage = original.AccessInformationCollectionPage
 type AccessInformationContract = original.AccessInformationContract
+type AccessInformationContractProperties = original.AccessInformationContractProperties
+type AccessInformationCreateParameterProperties = original.AccessInformationCreateParameterProperties
+type AccessInformationCreateParameters = original.AccessInformationCreateParameters
+type AccessInformationSecretsContract = original.AccessInformationSecretsContract
 type AccessInformationUpdateParameterProperties = original.AccessInformationUpdateParameterProperties
 type AccessInformationUpdateParameters = original.AccessInformationUpdateParameters
 type AdditionalLocation = original.AdditionalLocation
@@ -456,6 +541,7 @@ type AuthorizationServerCollectionPage = original.AuthorizationServerCollectionP
 type AuthorizationServerContract = original.AuthorizationServerContract
 type AuthorizationServerContractBaseProperties = original.AuthorizationServerContractBaseProperties
 type AuthorizationServerContractProperties = original.AuthorizationServerContractProperties
+type AuthorizationServerSecretsContract = original.AuthorizationServerSecretsContract
 type AuthorizationServerUpdateContract = original.AuthorizationServerUpdateContract
 type AuthorizationServerUpdateContractProperties = original.AuthorizationServerUpdateContractProperties
 type BackendAuthorizationHeaderCredentials = original.BackendAuthorizationHeaderCredentials
@@ -497,7 +583,27 @@ type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdatePro
 type CertificateInformation = original.CertificateInformation
 type ClientSecretContract = original.ClientSecretContract
 type ConnectivityStatusContract = original.ConnectivityStatusContract
+type ContentItemClient = original.ContentItemClient
+type ContentItemCollection = original.ContentItemCollection
+type ContentItemCollectionIterator = original.ContentItemCollectionIterator
+type ContentItemCollectionPage = original.ContentItemCollectionPage
+type ContentItemContract = original.ContentItemContract
+type ContentTypeClient = original.ContentTypeClient
+type ContentTypeCollection = original.ContentTypeCollection
+type ContentTypeCollectionIterator = original.ContentTypeCollectionIterator
+type ContentTypeCollectionPage = original.ContentTypeCollectionPage
+type ContentTypeContract = original.ContentTypeContract
+type ContentTypeContractProperties = original.ContentTypeContractProperties
+type DataMasking = original.DataMasking
+type DataMaskingEntity = original.DataMaskingEntity
 type DelegationSettingsClient = original.DelegationSettingsClient
+type DeletedServiceContract = original.DeletedServiceContract
+type DeletedServiceContractProperties = original.DeletedServiceContractProperties
+type DeletedServicesClient = original.DeletedServicesClient
+type DeletedServicesCollection = original.DeletedServicesCollection
+type DeletedServicesCollectionIterator = original.DeletedServicesCollectionIterator
+type DeletedServicesCollectionPage = original.DeletedServicesCollectionPage
+type DeletedServicesPurgeFuture = original.DeletedServicesPurgeFuture
 type DeployConfigurationParameterProperties = original.DeployConfigurationParameterProperties
 type DeployConfigurationParameters = original.DeployConfigurationParameters
 type DiagnosticClient = original.DiagnosticClient
@@ -519,6 +625,12 @@ type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
 type GatewayAPIClient = original.GatewayAPIClient
+type GatewayCertificateAuthorityClient = original.GatewayCertificateAuthorityClient
+type GatewayCertificateAuthorityCollection = original.GatewayCertificateAuthorityCollection
+type GatewayCertificateAuthorityCollectionIterator = original.GatewayCertificateAuthorityCollectionIterator
+type GatewayCertificateAuthorityCollectionPage = original.GatewayCertificateAuthorityCollectionPage
+type GatewayCertificateAuthorityContract = original.GatewayCertificateAuthorityContract
+type GatewayCertificateAuthorityContractProperties = original.GatewayCertificateAuthorityContractProperties
 type GatewayClient = original.GatewayClient
 type GatewayCollection = original.GatewayCollection
 type GatewayCollectionIterator = original.GatewayCollectionIterator
@@ -579,6 +691,9 @@ type IssueContractBaseProperties = original.IssueContractBaseProperties
 type IssueContractProperties = original.IssueContractProperties
 type IssueUpdateContract = original.IssueUpdateContract
 type IssueUpdateContractProperties = original.IssueUpdateContractProperties
+type KeyVaultContractCreateProperties = original.KeyVaultContractCreateProperties
+type KeyVaultContractProperties = original.KeyVaultContractProperties
+type KeyVaultLastAccessStatusContractProperties = original.KeyVaultLastAccessStatusContractProperties
 type ListNetworkStatusContractByLocation = original.ListNetworkStatusContractByLocation
 type LoggerClient = original.LoggerClient
 type LoggerCollection = original.LoggerCollection
@@ -598,6 +713,8 @@ type NamedValueCreateContract = original.NamedValueCreateContract
 type NamedValueCreateContractProperties = original.NamedValueCreateContractProperties
 type NamedValueCreateOrUpdateFuture = original.NamedValueCreateOrUpdateFuture
 type NamedValueEntityBaseParameters = original.NamedValueEntityBaseParameters
+type NamedValueRefreshSecretFuture = original.NamedValueRefreshSecretFuture
+type NamedValueSecretContract = original.NamedValueSecretContract
 type NamedValueUpdateFuture = original.NamedValueUpdateFuture
 type NamedValueUpdateParameterProperties = original.NamedValueUpdateParameterProperties
 type NamedValueUpdateParameters = original.NamedValueUpdateParameters
@@ -635,6 +752,7 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResultContract = original.OperationResultContract
+type OperationResultContractProperties = original.OperationResultContractProperties
 type OperationResultLogItemContract = original.OperationResultLogItemContract
 type OperationTagResourceContractProperties = original.OperationTagResourceContractProperties
 type OperationUpdateContract = original.OperationUpdateContract
@@ -652,7 +770,19 @@ type PolicyDescriptionContract = original.PolicyDescriptionContract
 type PolicyDescriptionContractProperties = original.PolicyDescriptionContractProperties
 type PortalDelegationSettings = original.PortalDelegationSettings
 type PortalDelegationSettingsProperties = original.PortalDelegationSettingsProperties
+type PortalRevisionClient = original.PortalRevisionClient
+type PortalRevisionCollection = original.PortalRevisionCollection
+type PortalRevisionCollectionIterator = original.PortalRevisionCollectionIterator
+type PortalRevisionCollectionPage = original.PortalRevisionCollectionPage
+type PortalRevisionContract = original.PortalRevisionContract
+type PortalRevisionContractProperties = original.PortalRevisionContractProperties
+type PortalRevisionCreateOrUpdateFuture = original.PortalRevisionCreateOrUpdateFuture
+type PortalRevisionUpdateFuture = original.PortalRevisionUpdateFuture
 type PortalSettingValidationKeyContract = original.PortalSettingValidationKeyContract
+type PortalSettingsClient = original.PortalSettingsClient
+type PortalSettingsCollection = original.PortalSettingsCollection
+type PortalSettingsContract = original.PortalSettingsContract
+type PortalSettingsContractProperties = original.PortalSettingsContractProperties
 type PortalSigninSettingProperties = original.PortalSigninSettingProperties
 type PortalSigninSettings = original.PortalSigninSettings
 type PortalSignupSettings = original.PortalSignupSettings
@@ -671,13 +801,13 @@ type ProductSubscriptionsClient = original.ProductSubscriptionsClient
 type ProductTagResourceContractProperties = original.ProductTagResourceContractProperties
 type ProductUpdateParameters = original.ProductUpdateParameters
 type ProductUpdateProperties = original.ProductUpdateProperties
-type PropertyValueContract = original.PropertyValueContract
 type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
 type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
 type QuotaCounterCollection = original.QuotaCounterCollection
 type QuotaCounterContract = original.QuotaCounterContract
 type QuotaCounterValueContract = original.QuotaCounterValueContract
 type QuotaCounterValueContractProperties = original.QuotaCounterValueContractProperties
+type QuotaCounterValueUpdateContract = original.QuotaCounterValueUpdateContract
 type RecipientEmailCollection = original.RecipientEmailCollection
 type RecipientEmailContract = original.RecipientEmailContract
 type RecipientEmailContractProperties = original.RecipientEmailContractProperties
@@ -717,7 +847,6 @@ type SchemaCollectionIterator = original.SchemaCollectionIterator
 type SchemaCollectionPage = original.SchemaCollectionPage
 type SchemaContract = original.SchemaContract
 type SchemaContractProperties = original.SchemaContractProperties
-type SchemaDocumentProperties = original.SchemaDocumentProperties
 type ServiceApplyNetworkConfigurationParameters = original.ServiceApplyNetworkConfigurationParameters
 type ServiceApplyNetworkConfigurationUpdatesFuture = original.ServiceApplyNetworkConfigurationUpdatesFuture
 type ServiceBackupFuture = original.ServiceBackupFuture
@@ -727,6 +856,7 @@ type ServiceCheckNameAvailabilityParameters = original.ServiceCheckNameAvailabil
 type ServiceClient = original.ServiceClient
 type ServiceCreateOrUpdateFuture = original.ServiceCreateOrUpdateFuture
 type ServiceDeleteFuture = original.ServiceDeleteFuture
+type ServiceGetDomainOwnershipIdentifierResult = original.ServiceGetDomainOwnershipIdentifierResult
 type ServiceGetSsoTokenResult = original.ServiceGetSsoTokenResult
 type ServiceIdentity = original.ServiceIdentity
 type ServiceListResult = original.ServiceListResult
@@ -743,6 +873,18 @@ type ServiceUpdateParameters = original.ServiceUpdateParameters
 type ServiceUpdateProperties = original.ServiceUpdateProperties
 type SignInSettingsClient = original.SignInSettingsClient
 type SignUpSettingsClient = original.SignUpSettingsClient
+type Sku = original.Sku
+type SkuCapabilities = original.SkuCapabilities
+type SkuCapacity = original.SkuCapacity
+type SkuCosts = original.SkuCosts
+type SkuLocationInfo = original.SkuLocationInfo
+type SkuRestrictionInfo = original.SkuRestrictionInfo
+type SkuRestrictions = original.SkuRestrictions
+type SkuZoneDetails = original.SkuZoneDetails
+type SkusClient = original.SkusClient
+type SkusResult = original.SkusResult
+type SkusResultIterator = original.SkusResultIterator
+type SkusResultPage = original.SkusResultPage
 type SubscriptionClient = original.SubscriptionClient
 type SubscriptionCollection = original.SubscriptionCollection
 type SubscriptionCollectionIterator = original.SubscriptionCollectionIterator
@@ -782,7 +924,14 @@ type TenantConfigurationClient = original.TenantConfigurationClient
 type TenantConfigurationDeployFuture = original.TenantConfigurationDeployFuture
 type TenantConfigurationSaveFuture = original.TenantConfigurationSaveFuture
 type TenantConfigurationSyncStateContract = original.TenantConfigurationSyncStateContract
+type TenantConfigurationSyncStateContractProperties = original.TenantConfigurationSyncStateContractProperties
 type TenantConfigurationValidateFuture = original.TenantConfigurationValidateFuture
+type TenantSettingsClient = original.TenantSettingsClient
+type TenantSettingsCollection = original.TenantSettingsCollection
+type TenantSettingsCollectionIterator = original.TenantSettingsCollectionIterator
+type TenantSettingsCollectionPage = original.TenantSettingsCollectionPage
+type TenantSettingsContract = original.TenantSettingsContract
+type TenantSettingsContractProperties = original.TenantSettingsContractProperties
 type TermsOfServiceProperties = original.TermsOfServiceProperties
 type TokenBodyParameterContract = original.TokenBodyParameterContract
 type UserClient = original.UserClient
@@ -928,6 +1077,12 @@ func NewAPIVersionSetCollectionIterator(page APIVersionSetCollectionPage) APIVer
 func NewAPIVersionSetCollectionPage(cur APIVersionSetCollection, getNextPage func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)) APIVersionSetCollectionPage {
 	return original.NewAPIVersionSetCollectionPage(cur, getNextPage)
 }
+func NewAccessInformationCollectionIterator(page AccessInformationCollectionPage) AccessInformationCollectionIterator {
+	return original.NewAccessInformationCollectionIterator(page)
+}
+func NewAccessInformationCollectionPage(cur AccessInformationCollection, getNextPage func(context.Context, AccessInformationCollection) (AccessInformationCollection, error)) AccessInformationCollectionPage {
+	return original.NewAccessInformationCollectionPage(cur, getNextPage)
+}
 func NewAuthorizationServerClient(subscriptionID string) AuthorizationServerClient {
 	return original.NewAuthorizationServerClient(subscriptionID)
 }
@@ -976,11 +1131,47 @@ func NewCertificateCollectionIterator(page CertificateCollectionPage) Certificat
 func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
 	return original.NewCertificateCollectionPage(cur, getNextPage)
 }
+func NewContentItemClient(subscriptionID string) ContentItemClient {
+	return original.NewContentItemClient(subscriptionID)
+}
+func NewContentItemClientWithBaseURI(baseURI string, subscriptionID string) ContentItemClient {
+	return original.NewContentItemClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContentItemCollectionIterator(page ContentItemCollectionPage) ContentItemCollectionIterator {
+	return original.NewContentItemCollectionIterator(page)
+}
+func NewContentItemCollectionPage(cur ContentItemCollection, getNextPage func(context.Context, ContentItemCollection) (ContentItemCollection, error)) ContentItemCollectionPage {
+	return original.NewContentItemCollectionPage(cur, getNextPage)
+}
+func NewContentTypeClient(subscriptionID string) ContentTypeClient {
+	return original.NewContentTypeClient(subscriptionID)
+}
+func NewContentTypeClientWithBaseURI(baseURI string, subscriptionID string) ContentTypeClient {
+	return original.NewContentTypeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContentTypeCollectionIterator(page ContentTypeCollectionPage) ContentTypeCollectionIterator {
+	return original.NewContentTypeCollectionIterator(page)
+}
+func NewContentTypeCollectionPage(cur ContentTypeCollection, getNextPage func(context.Context, ContentTypeCollection) (ContentTypeCollection, error)) ContentTypeCollectionPage {
+	return original.NewContentTypeCollectionPage(cur, getNextPage)
+}
 func NewDelegationSettingsClient(subscriptionID string) DelegationSettingsClient {
 	return original.NewDelegationSettingsClient(subscriptionID)
 }
 func NewDelegationSettingsClientWithBaseURI(baseURI string, subscriptionID string) DelegationSettingsClient {
 	return original.NewDelegationSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeletedServicesClient(subscriptionID string) DeletedServicesClient {
+	return original.NewDeletedServicesClient(subscriptionID)
+}
+func NewDeletedServicesClientWithBaseURI(baseURI string, subscriptionID string) DeletedServicesClient {
+	return original.NewDeletedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeletedServicesCollectionIterator(page DeletedServicesCollectionPage) DeletedServicesCollectionIterator {
+	return original.NewDeletedServicesCollectionIterator(page)
+}
+func NewDeletedServicesCollectionPage(cur DeletedServicesCollection, getNextPage func(context.Context, DeletedServicesCollection) (DeletedServicesCollection, error)) DeletedServicesCollectionPage {
+	return original.NewDeletedServicesCollectionPage(cur, getNextPage)
 }
 func NewDiagnosticClient(subscriptionID string) DiagnosticClient {
 	return original.NewDiagnosticClient(subscriptionID)
@@ -1011,6 +1202,18 @@ func NewGatewayAPIClient(subscriptionID string) GatewayAPIClient {
 }
 func NewGatewayAPIClientWithBaseURI(baseURI string, subscriptionID string) GatewayAPIClient {
 	return original.NewGatewayAPIClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayCertificateAuthorityClient(subscriptionID string) GatewayCertificateAuthorityClient {
+	return original.NewGatewayCertificateAuthorityClient(subscriptionID)
+}
+func NewGatewayCertificateAuthorityClientWithBaseURI(baseURI string, subscriptionID string) GatewayCertificateAuthorityClient {
+	return original.NewGatewayCertificateAuthorityClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayCertificateAuthorityCollectionIterator(page GatewayCertificateAuthorityCollectionPage) GatewayCertificateAuthorityCollectionIterator {
+	return original.NewGatewayCertificateAuthorityCollectionIterator(page)
+}
+func NewGatewayCertificateAuthorityCollectionPage(cur GatewayCertificateAuthorityCollection, getNextPage func(context.Context, GatewayCertificateAuthorityCollection) (GatewayCertificateAuthorityCollection, error)) GatewayCertificateAuthorityCollectionPage {
+	return original.NewGatewayCertificateAuthorityCollectionPage(cur, getNextPage)
 }
 func NewGatewayClient(subscriptionID string) GatewayClient {
 	return original.NewGatewayClient(subscriptionID)
@@ -1192,6 +1395,24 @@ func NewPolicyDescriptionClient(subscriptionID string) PolicyDescriptionClient {
 func NewPolicyDescriptionClientWithBaseURI(baseURI string, subscriptionID string) PolicyDescriptionClient {
 	return original.NewPolicyDescriptionClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPortalRevisionClient(subscriptionID string) PortalRevisionClient {
+	return original.NewPortalRevisionClient(subscriptionID)
+}
+func NewPortalRevisionClientWithBaseURI(baseURI string, subscriptionID string) PortalRevisionClient {
+	return original.NewPortalRevisionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPortalRevisionCollectionIterator(page PortalRevisionCollectionPage) PortalRevisionCollectionIterator {
+	return original.NewPortalRevisionCollectionIterator(page)
+}
+func NewPortalRevisionCollectionPage(cur PortalRevisionCollection, getNextPage func(context.Context, PortalRevisionCollection) (PortalRevisionCollection, error)) PortalRevisionCollectionPage {
+	return original.NewPortalRevisionCollectionPage(cur, getNextPage)
+}
+func NewPortalSettingsClient(subscriptionID string) PortalSettingsClient {
+	return original.NewPortalSettingsClient(subscriptionID)
+}
+func NewPortalSettingsClientWithBaseURI(baseURI string, subscriptionID string) PortalSettingsClient {
+	return original.NewPortalSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProductAPIClient(subscriptionID string) ProductAPIClient {
 	return original.NewProductAPIClient(subscriptionID)
 }
@@ -1306,6 +1527,18 @@ func NewSignUpSettingsClient(subscriptionID string) SignUpSettingsClient {
 func NewSignUpSettingsClientWithBaseURI(baseURI string, subscriptionID string) SignUpSettingsClient {
 	return original.NewSignUpSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
+}
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkusResultIterator(page SkusResultPage) SkusResultIterator {
+	return original.NewSkusResultIterator(page)
+}
+func NewSkusResultPage(cur SkusResult, getNextPage func(context.Context, SkusResult) (SkusResult, error)) SkusResultPage {
+	return original.NewSkusResultPage(cur, getNextPage)
+}
 func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
 	return original.NewSubscriptionClient(subscriptionID)
 }
@@ -1366,6 +1599,18 @@ func NewTenantConfigurationClient(subscriptionID string) TenantConfigurationClie
 func NewTenantConfigurationClientWithBaseURI(baseURI string, subscriptionID string) TenantConfigurationClient {
 	return original.NewTenantConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewTenantSettingsClient(subscriptionID string) TenantSettingsClient {
+	return original.NewTenantSettingsClient(subscriptionID)
+}
+func NewTenantSettingsClientWithBaseURI(baseURI string, subscriptionID string) TenantSettingsClient {
+	return original.NewTenantSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTenantSettingsCollectionIterator(page TenantSettingsCollectionPage) TenantSettingsCollectionIterator {
+	return original.NewTenantSettingsCollectionIterator(page)
+}
+func NewTenantSettingsCollectionPage(cur TenantSettingsCollection, getNextPage func(context.Context, TenantSettingsCollection) (TenantSettingsCollection, error)) TenantSettingsCollectionPage {
+	return original.NewTenantSettingsCollectionPage(cur, getNextPage)
+}
 func NewUserClient(subscriptionID string) UserClient {
 	return original.NewUserClient(subscriptionID)
 }
@@ -1414,6 +1659,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAPITypeValues() []APIType {
 	return original.PossibleAPITypeValues()
 }
+func PossibleAccessIDNameValues() []AccessIDName {
+	return original.PossibleAccessIDNameValues()
+}
 func PossibleAlwaysLogValues() []AlwaysLog {
 	return original.PossibleAlwaysLogValues()
 }
@@ -1438,6 +1686,12 @@ func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
 	return original.PossibleBearerTokenSendingMethodsValues()
 }
+func PossibleCertificateSourceValues() []CertificateSource {
+	return original.PossibleCertificateSourceValues()
+}
+func PossibleCertificateStatusValues() []CertificateStatus {
+	return original.PossibleCertificateStatusValues()
+}
 func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
 	return original.PossibleClientAuthenticationMethodValues()
 }
@@ -1449,6 +1703,9 @@ func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 }
 func PossibleContentFormatValues() []ContentFormat {
 	return original.PossibleContentFormatValues()
+}
+func PossibleDataMaskingModeValues() []DataMaskingMode {
+	return original.PossibleDataMaskingModeValues()
 }
 func PossibleExportFormatValues() []ExportFormat {
 	return original.PossibleExportFormatValues()
@@ -1483,6 +1740,9 @@ func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 func PossibleNotificationNameValues() []NotificationName {
 	return original.PossibleNotificationNameValues()
 }
+func PossibleOperationNameFormatValues() []OperationNameFormat {
+	return original.PossibleOperationNameFormatValues()
+}
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {
 	return original.PossiblePolicyContentFormatValues()
 }
@@ -1491,6 +1751,9 @@ func PossiblePolicyExportFormatValues() []PolicyExportFormat {
 }
 func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 	return original.PossiblePolicyScopeContractValues()
+}
+func PossiblePortalRevisionStatusValues() []PortalRevisionStatus {
+	return original.PossiblePortalRevisionStatusValues()
 }
 func PossibleProductStateValues() []ProductState {
 	return original.PossibleProductStateValues()
@@ -1506,6 +1769,15 @@ func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType
 }
 func PossibleSamplingTypeValues() []SamplingType {
 	return original.PossibleSamplingTypeValues()
+}
+func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
+	return original.PossibleSkuCapacityScaleTypeValues()
+}
+func PossibleSkuRestrictionsReasonCodeValues() []SkuRestrictionsReasonCode {
+	return original.PossibleSkuRestrictionsReasonCodeValues()
+}
+func PossibleSkuRestrictionsTypeValues() []SkuRestrictionsType {
+	return original.PossibleSkuRestrictionsTypeValues()
 }
 func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()

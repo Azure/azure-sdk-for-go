@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$clearOutput, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
+param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
 . $PSScriptRoot/get_module_dirs.ps1
@@ -12,9 +12,9 @@ function Process-Sdk () {
         go clean -v ./...
     }
 
-    if ($clearOutput) {
+    if ($cleanGenerated) {
         Write-Host "##[command]Cleaning auto-generated files in" $currentDirectory
-        rm "zz_generated_*"
+        Remove-Item "zz_generated_*"
     }
 
     if ($generate) {

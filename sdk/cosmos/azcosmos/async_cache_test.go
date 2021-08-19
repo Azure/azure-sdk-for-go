@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -39,6 +40,72 @@ func Test_setAsync(t *testing.T) {
 	value, _ := cache.get(key)
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
+}
+
+func Test_getAsync_while_another_func_running(t *testing.T) {
+	key := "testAsyncKey"
+	expectedValue0 := CosmosContainerProperties{Id: "0"}
+	expectedValue1 := CosmosContainerProperties{Id: "1"}
+	expectedValue2 := CosmosContainerProperties{Id: "2"}
+
+	ctx := context.Background()
+
+	cache := newAsyncCache()
+
+	f0 := func() interface{} {
+		return expectedValue0
+	}
+
+	cache.setAsync(key, f0, ctx)
+
+	f1 := func() interface{} {
+		time.Sleep(3 * time.Second)
+		return expectedValue1
+	}
+
+	value, _ := cache.getAsync(key, expectedValue0, f1, ctx)
+
+	f2 := func() interface{} {
+		return expectedValue2
+	}
+
+	cache.getAsync(key, expectedValue0, f2, ctx)
+
+	containerProps, _ := value.(CosmosContainerProperties)
+	assert.Equal(t, expectedValue1.Id, containerProps.Id)
+}
+
+func Test_getAsync_obsolete_key(t *testing.T) {
+	key := "testAsyncKey"
+	expectedValue0 := CosmosContainerProperties{Id: "0"}
+	expectedValue1 := CosmosContainerProperties{Id: "1"}
+	expectedValue2 := CosmosContainerProperties{Id: "2"}
+
+	ctx := context.Background()
+
+	cache := newAsyncCache()
+
+	f0 := func() interface{} {
+		return expectedValue0
+	}
+
+	cache.setAsync(key, f0, ctx)
+
+	f1 := func() interface{} {
+		return expectedValue1
+	}
+
+	cache.getAsync(key, expectedValue0, f1, ctx)
+
+	f2 := func() interface{} {
+		time.Sleep(3 * time.Second)
+		return expectedValue2
+	}
+
+	value, _ := cache.getAsync(key, expectedValue1, f2, ctx)
+
+	containerProps, _ := value.(CosmosContainerProperties)
+	assert.Equal(t, expectedValue2.Id, containerProps.Id)
 }
 
 func Test_remove(t *testing.T) {

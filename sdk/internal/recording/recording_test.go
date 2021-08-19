@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -392,7 +393,6 @@ func (s *recordingTests) TestRecordingOptions() {
 var packagePath = "sdk/internal/recording"
 
 func (s *recordingTests) TestStartStop() {
-	fmt.Println(packagePath)
 	require := require.New(s.T())
 
 	os.Setenv("AZURE_RECORD_MODE", "record")
@@ -410,16 +410,71 @@ func (s *recordingTests) TestStartStop() {
 	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId())
-	fmt.Println(GetRecordMode(), GetRecordingId(), getTestId(packagePath, s.T()))
-	fmt.Println(req.URL.String())
 
 	resp, err := client.Do(req)
 	require.NoError(err)
 	require.NotNil(resp)
-	fmt.Println(resp)
 
 	require.NotNil(GetRecordingId())
 
 	err = StopRecording(s.T(), nil)
 	require.NoError(err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open("./testrecordings/TestRecording/TestStartStop.json")
+	require.NoError(err)
+	defer jsonFile.Close()
+}
+
+func (s *recordingTests) TestUriSanitizer() {
+	require := require.New(s.T())
+
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := StartRecording(s.T(), packagePath, nil)
+	require.NoError(err)
+
+	err = AddUriSanitizer("replacement", "bing", nil)
+	require.NoError(err)
+
+	client, err := GetHTTPClient()
+	require.NoError(err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(err)
+
+	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId())
+
+	resp, err := client.Do(req)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	require.NotNil(GetRecordingId())
+
+	err = StopRecording(s.T(), nil)
+	require.NoError(err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open("./testrecordings/TestRecording/TestUriSanitizer.json")
+	require.NoError(err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(err)
+
+	require.Equal(data.Entries[0].RequestUri, "https://www.replacement.com/")
+}
+
+type RecordingFileStruct struct {
+	Entries []Entry `json:"Entries"`
+}
+
+type Entry struct {
+	RequestUri string `json:"RequestUri"`
 }

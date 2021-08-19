@@ -496,7 +496,6 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 		t.Log("AZURE_RECORD_MODE: ", recordMode)
 	}
 	testId := getTestId(pathToRecordings, t)
-	fmt.Println(testId)
 
 	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
 

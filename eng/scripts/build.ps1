@@ -63,7 +63,7 @@ $root = Resolve-Path ($PSScriptRoot + "/../..")
 Set-Location $root
 $sdks = @{};
 
-foreach ($sdk in (Get-ModuleDirs 'sdk/...')) {
+foreach ($sdk in (Get-ModuleDirs 'sdk/')) {
     $name = $sdk | split-path -leaf
     $sdks[$name] = @{
         'path' = $sdk;

@@ -482,7 +482,7 @@ func (r RecordingOptions) HostScheme() string {
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {
-	return "./" + pathToRecordings + "/recordings/" + t.Name() + ".json"
+	return pathToRecordings + "/testrecordings/" + t.Name() + ".json"
 }
 
 func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
@@ -512,7 +512,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 		return err
 	}
 	recordingId = resp.Header.Get(IdHeader)
-	fmt.Println(recordingId)
+	fmt.Println("RECORDINGID: ", recordingId)
 	return nil
 }
 
@@ -696,6 +696,7 @@ func GetHTTPClient() (*http.Client, error) {
 
 	transport.TLSClientConfig.RootCAs = rootCAs
 	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	transport.TLSClientConfig.InsecureSkipVerify = true
 
 	defaultHttpClient := &http.Client{
 		Transport: transport,

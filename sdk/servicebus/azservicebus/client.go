@@ -12,6 +12,8 @@ import (
 	"github.com/devigned/tab"
 )
 
+// ServiceBusClient provides methods to create Sender, Receiver and Processor
+// instances to send and receive messages from Service Bus.
 type ServiceBusClient struct {
 	namespace *internal.Namespace
 	linksMu   *sync.Mutex
@@ -54,6 +56,7 @@ func NewServiceBusClient(options ...ServiceBusClientOption) (*ServiceBusClient, 
 	return client, nil
 }
 
+// NewProcessor creates a Processor, which allows you to receive messages from ServiceBus.
 func (client *ServiceBusClient) NewProcessor(options ...ProcessorOption) (*Processor, error) {
 	processor, err := newProcessor(client.namespace, options...)
 
@@ -69,6 +72,7 @@ func (client *ServiceBusClient) NewProcessor(options ...ProcessorOption) (*Proce
 	return processor, nil
 }
 
+// NewSender creates a Sender, which allows you to send messages or schedule messages.
 func (client *ServiceBusClient) NewSender(queueOrTopic string, options ...SenderOption) (*Sender, error) {
 	sender, err := newSender(client.namespace, queueOrTopic, options...)
 
@@ -84,6 +88,8 @@ func (client *ServiceBusClient) NewSender(queueOrTopic string, options ...Sender
 	return sender, nil
 }
 
+// Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
+// using this client.
 func (client *ServiceBusClient) Close(ctx context.Context) error {
 	var lastError error
 

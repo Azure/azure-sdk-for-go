@@ -19,7 +19,7 @@ import (
 // Release command
 func Command() *cobra.Command {
 	releaseCmd := &cobra.Command{
-		Use:   "release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs directory> <rp-name> <namespaceName>",
+		Use:   "release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs directory> <rp-name> [namespaceName]",
 		Short: "Generate a v2 release of azure-sdk-for-go",
 		Long: `This command will generate a new v2 release for azure-sdk-for-go with given rp name and namespace name.
 

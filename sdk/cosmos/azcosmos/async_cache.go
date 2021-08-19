@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"context"
-	"reflect"
 	"sync"
 )
 
@@ -20,8 +19,9 @@ type asyncCache struct {
 type cacheValueTask func() interface{}
 
 type cacheValue struct {
-	value interface{}
-	ch    <-chan interface{}
+	value    interface{}
+	complete bool
+	ch       <-chan interface{}
 }
 
 func newAsyncCache() *asyncCache {
@@ -33,28 +33,14 @@ func (ac *asyncCache) set(key interface{}, value interface{}) {
 }
 
 func (ac *asyncCache) setAsync(key interface{}, singleValueInit cacheValueTask, ctx context.Context) error {
-	value, ok := ac.values.Load(key)
+	ch := ac.execCacheValueTask(singleValueInit)
+	cachedValue := cacheValue{value: nil, complete: false, ch: ch}
+	ac.values.Store(key, cachedValue)
+	_, err := ac.awaitCacheValue(key, ch, ctx)
 
-	if !ok {
-		ch := ac.execCacheValueTask(singleValueInit)
-		cachedValue, err := ac.awaitCacheValue(ch, ctx)
-
-		if err != nil {
-			return err
-		}
-
-		ac.values.Store(key, cacheValue{value: cachedValue, ch: ch})
-
-		return nil
+	if err != nil {
+		return err
 	}
-
-	cachedValue, converted := value.(cacheValue)
-
-	if !converted {
-		return invalidCacheValue{}
-	}
-
-	ac.awaitCacheValue(cachedValue.ch, ctx)
 
 	return nil
 }
@@ -76,15 +62,11 @@ func (ac *asyncCache) get(key interface{}) (interface{}, bool) {
 	return nil, false
 }
 
-// If another initialization function is already running, new initialization function will not be started.
-// The result will be result of currently running initialization function.
-// If previous initialization function is successfully completed - value returned by it will be returned unles
-// it is equal to <paramref name="obsoleteValue"/>, in which case new initialization function will be started.
-func (ac *asyncCache) getAsync(key interface{}, obsoleteValue interface{}, singleValueInit cacheValueTask, ctx context.Context) (interface{}, error) {
+func (ac *asyncCache) getAsync(key interface{}, singleValueInit cacheValueTask) (*cacheValue, error) {
 	var cachedValue cacheValue
-	value, ok := ac.values.Load(key)
+	value, valueExists := ac.values.Load(key)
 
-	if !ok {
+	if !valueExists {
 		return nil, nil
 	}
 
@@ -94,25 +76,14 @@ func (ac *asyncCache) getAsync(key interface{}, obsoleteValue interface{}, singl
 		return nil, invalidCacheValue{}
 	}
 
-	awaitedValue, err := ac.awaitCacheValue(cachedValue.ch, ctx)
-
-	if err != nil {
-		return nil, err
+	if cachedValue.complete {
+		ch := ac.execCacheValueTask(singleValueInit)
+		cachedValue.complete = false
+		cachedValue.ch = ch
+		ac.values.Store(key, cachedValue)
 	}
 
-	if awaitedValue != nil && !reflect.DeepEqual(awaitedValue, obsoleteValue) {
-		return awaitedValue, nil
-	}
-
-	ch := ac.execCacheValueTask(singleValueInit)
-	ac.values.Store(key, cacheValue{ch: ch})
-	awaitedValue, err = ac.awaitCacheValue(ch, ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return awaitedValue, nil
+	return &cachedValue, nil
 }
 
 func (ac *asyncCache) remove(key interface{}) {
@@ -137,11 +108,29 @@ func (ac *asyncCache) execCacheValueTask(t cacheValueTask) <-chan interface{} {
 	return ch
 }
 
-func (ac *asyncCache) awaitCacheValue(ch <-chan interface{}, ctx context.Context) (interface{}, error) {
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case result := <-ch:
-		return result, nil
+func (ac *asyncCache) awaitCacheValue(key interface{}, ch <-chan interface{}, ctx context.Context) (interface{}, error) {
+	value, exists := ac.values.Load(key)
+	if exists {
+		cachedValue, converted := value.(cacheValue)
+
+		if !converted {
+			return nil, invalidCacheValue{}
+		}
+
+		if !cachedValue.complete {
+			select {
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			case result := <-ch:
+				cachedValue.complete = true
+				cachedValue.value = result
+				cachedValue.ch = ch
+				ac.values.Store(key, cachedValue)
+			}
+		}
+
+		return cachedValue.value, nil
 	}
+
+	return nil, nil
 }

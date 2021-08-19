@@ -34,6 +34,7 @@ func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) B
 // Parameters:
 // vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
+// backupPolicyName - name of the policy
 // parameters - request body for operation
 func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string, parameters BaseBackupPolicyResource) (result BaseBackupPolicyResource, err error) {
 	if tracing.IsEnabled() {

@@ -1,2 +1,27 @@
-# Change History
+# Unreleased
 
+## Additive Changes
+
+### Struct Changes
+
+#### New Structs
+
+1. IdentityInfo
+
+#### New Struct Fields
+
+1. AzureFileshareProtectedItem.ResourceGuardOperationRequests
+1. AzureIaaSClassicComputeVMProtectedItem.ResourceGuardOperationRequests
+1. AzureIaaSComputeVMProtectedItem.ResourceGuardOperationRequests
+1. AzureIaaSVMProtectedItem.ResourceGuardOperationRequests
+1. AzureSQLProtectedItem.ResourceGuardOperationRequests
+1. AzureVMWorkloadProtectedItem.ResourceGuardOperationRequests
+1. AzureVMWorkloadSAPAseDatabaseProtectedItem.ResourceGuardOperationRequests
+1. AzureVMWorkloadSAPHanaDatabaseProtectedItem.ResourceGuardOperationRequests
+1. AzureVMWorkloadSQLDatabaseProtectedItem.ResourceGuardOperationRequests
+1. DPMProtectedItem.ResourceGuardOperationRequests
+1. GenericProtectedItem.ResourceGuardOperationRequests
+1. IaasVMRestoreRequest.IdentityInfo
+1. IaasVMRestoreWithRehydrationRequest.IdentityInfo
+1. MabFileFolderProtectedItem.ResourceGuardOperationRequests
+1. ProtectedItem.ResourceGuardOperationRequests

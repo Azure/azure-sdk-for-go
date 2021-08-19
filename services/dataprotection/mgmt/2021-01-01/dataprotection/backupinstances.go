@@ -781,15 +781,15 @@ func (client BackupInstancesClient) ValidateForBackupResponder(resp *http.Respon
 	return
 }
 
-// ValidateRestore validates if Restore can be triggered for a DataSource
+// ValidateForRestore validates if Restore can be triggered for a DataSource
 // Parameters:
 // vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
 // backupInstanceName - the name of the backup instance
 // parameters - request body for operation
-func (client BackupInstancesClient) ValidateRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject) (result BackupInstancesValidateRestoreFuture, err error) {
+func (client BackupInstancesClient) ValidateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject) (result BackupInstancesValidateForRestoreFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.ValidateRestore")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BackupInstancesClient.ValidateForRestore")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -798,23 +798,23 @@ func (client BackupInstancesClient) ValidateRestore(ctx context.Context, vaultNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ValidateRestorePreparer(ctx, vaultName, resourceGroupName, backupInstanceName, parameters)
+	req, err := client.ValidateForRestorePreparer(ctx, vaultName, resourceGroupName, backupInstanceName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateRestore", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateForRestore", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.ValidateRestoreSender(req)
+	result, err = client.ValidateForRestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateRestore", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateForRestore", nil, "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// ValidateRestorePreparer prepares the ValidateRestore request.
-func (client BackupInstancesClient) ValidateRestorePreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject) (*http.Request, error) {
+// ValidateForRestorePreparer prepares the ValidateForRestore request.
+func (client BackupInstancesClient) ValidateForRestorePreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"backupInstanceName": autorest.Encode("path", backupInstanceName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -837,9 +837,9 @@ func (client BackupInstancesClient) ValidateRestorePreparer(ctx context.Context,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ValidateRestoreSender sends the ValidateRestore request. The method will close the
+// ValidateForRestoreSender sends the ValidateForRestore request. The method will close the
 // http.Response Body if it receives an error.
-func (client BackupInstancesClient) ValidateRestoreSender(req *http.Request) (future BackupInstancesValidateRestoreFuture, err error) {
+func (client BackupInstancesClient) ValidateForRestoreSender(req *http.Request) (future BackupInstancesValidateForRestoreFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -852,9 +852,9 @@ func (client BackupInstancesClient) ValidateRestoreSender(req *http.Request) (fu
 	return
 }
 
-// ValidateRestoreResponder handles the response to the ValidateRestore request. The method always
+// ValidateForRestoreResponder handles the response to the ValidateForRestore request. The method always
 // closes the http.Response Body.
-func (client BackupInstancesClient) ValidateRestoreResponder(resp *http.Response) (result OperationJobExtendedInfo, err error) {
+func (client BackupInstancesClient) ValidateForRestoreResponder(resp *http.Response) (result OperationJobExtendedInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),

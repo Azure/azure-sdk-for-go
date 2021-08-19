@@ -185,9 +185,9 @@ func (abdrp AzureBackupDiscreteRecoveryPoint) AsBasicAzureBackupRecoveryPoint() 
 type AzureBackupFindRestorableTimeRangesRequest struct {
 	// SourceDataStoreType - Gets or sets the type of the source data store. Possible values include: 'RestoreSourceDataStoreTypeOperationalStore', 'RestoreSourceDataStoreTypeVaultStore', 'RestoreSourceDataStoreTypeArchiveStore'
 	SourceDataStoreType RestoreSourceDataStoreType `json:"sourceDataStoreType,omitempty"`
-	// StartTime - Start time for the List Restore Ranges request
+	// StartTime - Start time for the List Restore Ranges request. ISO 8601 format.
 	StartTime *string `json:"startTime,omitempty"`
-	// EndTime - End time for the List Restore Ranges request
+	// EndTime - End time for the List Restore Ranges request. ISO 8601 format.
 	EndTime *string `json:"endTime,omitempty"`
 }
 
@@ -2237,9 +2237,9 @@ func (future *BackupInstancesValidateForBackupFuture) result(client BackupInstan
 	return
 }
 
-// BackupInstancesValidateRestoreFuture an abstraction for monitoring and retrieving the results of a
+// BackupInstancesValidateForRestoreFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type BackupInstancesValidateRestoreFuture struct {
+type BackupInstancesValidateForRestoreFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -2247,7 +2247,7 @@ type BackupInstancesValidateRestoreFuture struct {
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *BackupInstancesValidateRestoreFuture) UnmarshalJSON(body []byte) error {
+func (future *BackupInstancesValidateForRestoreFuture) UnmarshalJSON(body []byte) error {
 	var azFuture azure.Future
 	if err := json.Unmarshal(body, &azFuture); err != nil {
 		return err
@@ -2257,24 +2257,24 @@ func (future *BackupInstancesValidateRestoreFuture) UnmarshalJSON(body []byte) e
 	return nil
 }
 
-// result is the default implementation for BackupInstancesValidateRestoreFuture.Result.
-func (future *BackupInstancesValidateRestoreFuture) result(client BackupInstancesClient) (ojei OperationJobExtendedInfo, err error) {
+// result is the default implementation for BackupInstancesValidateForRestoreFuture.Result.
+func (future *BackupInstancesValidateForRestoreFuture) result(client BackupInstancesClient) (ojei OperationJobExtendedInfo, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesValidateRestoreFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesValidateForRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
 		ojei.Response.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesValidateRestoreFuture")
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesValidateForRestoreFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if ojei.Response.Response, err = future.GetResult(sender); err == nil && ojei.Response.Response.StatusCode != http.StatusNoContent {
-		ojei, err = client.ValidateRestoreResponder(ojei.Response.Response)
+		ojei, err = client.ValidateForRestoreResponder(ojei.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesValidateRestoreFuture", "Result", ojei.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesValidateForRestoreFuture", "Result", ojei.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2707,9 +2707,9 @@ func (future *BackupVaultsCreateOrUpdateFuture) result(client BackupVaultsClient
 	return
 }
 
-// BackupVaultsPatchFuture an abstraction for monitoring and retrieving the results of a long-running
+// BackupVaultsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type BackupVaultsPatchFuture struct {
+type BackupVaultsUpdateFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -2717,7 +2717,7 @@ type BackupVaultsPatchFuture struct {
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *BackupVaultsPatchFuture) UnmarshalJSON(body []byte) error {
+func (future *BackupVaultsUpdateFuture) UnmarshalJSON(body []byte) error {
 	var azFuture azure.Future
 	if err := json.Unmarshal(body, &azFuture); err != nil {
 		return err
@@ -2727,24 +2727,24 @@ func (future *BackupVaultsPatchFuture) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// result is the default implementation for BackupVaultsPatchFuture.Result.
-func (future *BackupVaultsPatchFuture) result(client BackupVaultsClient) (bvr BackupVaultResource, err error) {
+// result is the default implementation for BackupVaultsUpdateFuture.Result.
+func (future *BackupVaultsUpdateFuture) result(client BackupVaultsClient) (bvr BackupVaultResource, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsPatchFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
 		bvr.Response.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupVaultsPatchFuture")
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupVaultsUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if bvr.Response.Response, err = future.GetResult(sender); err == nil && bvr.Response.Response.StatusCode != http.StatusNoContent {
-		bvr, err = client.PatchResponder(bvr.Response.Response)
+		bvr, err = client.UpdateResponder(bvr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsPatchFuture", "Result", bvr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsUpdateFuture", "Result", bvr.Response.Response, "Failure responding to request")
 		}
 	}
 	return

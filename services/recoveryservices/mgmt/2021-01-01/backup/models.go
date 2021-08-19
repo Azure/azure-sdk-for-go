@@ -575,6 +575,8 @@ type AzureFileshareProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -645,6 +647,9 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if afpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = afpi.IsRehydrate
+	}
+	if afpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = afpi.ResourceGuardOperationRequests
 	}
 	if afpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = afpi.ProtectedItemType
@@ -1503,6 +1508,8 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -1585,6 +1592,9 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if aisccvpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aisccvpi.IsRehydrate
+	}
+	if aisccvpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = aisccvpi.ResourceGuardOperationRequests
 	}
 	if aisccvpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aisccvpi.ProtectedItemType
@@ -1978,6 +1988,8 @@ type AzureIaaSComputeVMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -2060,6 +2072,9 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aiscvpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aiscvpi.IsRehydrate
+	}
+	if aiscvpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = aiscvpi.ResourceGuardOperationRequests
 	}
 	if aiscvpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aiscvpi.ProtectedItemType
@@ -2418,6 +2433,8 @@ type AzureIaaSVMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -2541,6 +2558,9 @@ func (aispi AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aispi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aispi.IsRehydrate
+	}
+	if aispi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = aispi.ResourceGuardOperationRequests
 	}
 	if aispi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aispi.ProtectedItemType
@@ -3312,6 +3332,8 @@ type AzureSQLProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -3367,6 +3389,9 @@ func (aspi AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aspi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aspi.IsRehydrate
+	}
+	if aspi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = aspi.ResourceGuardOperationRequests
 	}
 	if aspi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aspi.ProtectedItemType
@@ -4646,6 +4671,8 @@ type AzureVMWorkloadProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -4776,6 +4803,9 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwpi.IsRehydrate
+	}
+	if avwpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = avwpi.ResourceGuardOperationRequests
 	}
 	if avwpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwpi.ProtectedItemType
@@ -5010,6 +5040,8 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -5095,6 +5127,9 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte
 	}
 	if avwsadpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwsadpi.IsRehydrate
+	}
+	if avwsadpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = avwsadpi.ResourceGuardOperationRequests
 	}
 	if avwsadpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwsadpi.ProtectedItemType
@@ -5767,6 +5802,8 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -5852,6 +5889,9 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 	}
 	if avwshdpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwshdpi.IsRehydrate
+	}
+	if avwshdpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = avwshdpi.ResourceGuardOperationRequests
 	}
 	if avwshdpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwshdpi.ProtectedItemType
@@ -6677,6 +6717,8 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -6762,6 +6804,9 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if avwsdpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwsdpi.IsRehydrate
+	}
+	if avwsdpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = avwsdpi.ResourceGuardOperationRequests
 	}
 	if avwsdpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwsdpi.ProtectedItemType
@@ -12054,6 +12099,8 @@ type DPMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -12112,6 +12159,9 @@ func (dpi DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if dpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = dpi.IsRehydrate
+	}
+	if dpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = dpi.ResourceGuardOperationRequests
 	}
 	if dpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = dpi.ProtectedItemType
@@ -13101,6 +13151,8 @@ type GenericProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -13165,6 +13217,9 @@ func (gpi GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if gpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = gpi.IsRehydrate
+	}
+	if gpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = gpi.ResourceGuardOperationRequests
 	}
 	if gpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = gpi.ProtectedItemType
@@ -14087,6 +14142,8 @@ type IaasVMRestoreRequest struct {
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 	// Zones - Target zone where the VM and its disks should be restored.
 	Zones *[]string `json:"zones,omitempty"`
+	// IdentityInfo - Managed Identity information required to access customer storage account.
+	IdentityInfo *IdentityInfo `json:"identityInfo,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -14185,6 +14242,9 @@ func (ivrr IaasVMRestoreRequest) MarshalJSON() ([]byte, error) {
 	}
 	if ivrr.Zones != nil {
 		objectMap["zones"] = ivrr.Zones
+	}
+	if ivrr.IdentityInfo != nil {
+		objectMap["identityInfo"] = ivrr.IdentityInfo
 	}
 	if ivrr.ObjectType != "" {
 		objectMap["objectType"] = ivrr.ObjectType
@@ -14345,6 +14405,8 @@ type IaasVMRestoreWithRehydrationRequest struct {
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 	// Zones - Target zone where the VM and its disks should be restored.
 	Zones *[]string `json:"zones,omitempty"`
+	// IdentityInfo - Managed Identity information required to access customer storage account.
+	IdentityInfo *IdentityInfo `json:"identityInfo,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeBasicRestoreRequestObjectTypeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSAPHanaRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeAzureWorkloadSQLRestoreWithRehydrateRequest', 'ObjectTypeBasicRestoreRequestObjectTypeIaasVMRestoreWithRehydrationRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -14409,6 +14471,9 @@ func (ivrwrr IaasVMRestoreWithRehydrationRequest) MarshalJSON() ([]byte, error) 
 	}
 	if ivrwrr.Zones != nil {
 		objectMap["zones"] = ivrwrr.Zones
+	}
+	if ivrwrr.IdentityInfo != nil {
+		objectMap["identityInfo"] = ivrwrr.IdentityInfo
 	}
 	if ivrwrr.ObjectType != "" {
 		objectMap["objectType"] = ivrwrr.ObjectType
@@ -14519,6 +14584,15 @@ func (ivrwrr IaasVMRestoreWithRehydrationRequest) AsRestoreRequest() (*RestoreRe
 // AsBasicRestoreRequest is the BasicRestoreRequest implementation for IaasVMRestoreWithRehydrationRequest.
 func (ivrwrr IaasVMRestoreWithRehydrationRequest) AsBasicRestoreRequest() (BasicRestoreRequest, bool) {
 	return &ivrwrr, true
+}
+
+// IdentityInfo encapsulates Managed Identity related information
+type IdentityInfo struct {
+	// IsSystemAssignedIdentity - To differentiate if the managed identity is system assigned or user assigned
+	IsSystemAssignedIdentity *bool `json:"isSystemAssignedIdentity,omitempty"`
+	// ManagedIdentityResourceID - Managed Identity Resource Id
+	// Optional: Might not be required in the case of system assigned managed identity
+	ManagedIdentityResourceID *string `json:"managedIdentityResourceId,omitempty"`
 }
 
 // BasicILRRequest parameters to Provision ILR API.
@@ -15631,6 +15705,8 @@ type MabFileFolderProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -15698,6 +15774,9 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if mffpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = mffpi.IsRehydrate
+	}
+	if mffpi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = mffpi.ResourceGuardOperationRequests
 	}
 	if mffpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = mffpi.ProtectedItemType
@@ -17539,6 +17618,8 @@ type ProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	// ResourceGuardOperationRequests - ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests *[]string `json:"resourceGuardOperationRequests,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -17666,6 +17747,9 @@ func (pi ProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if pi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = pi.IsRehydrate
+	}
+	if pi.ResourceGuardOperationRequests != nil {
+		objectMap["resourceGuardOperationRequests"] = pi.ResourceGuardOperationRequests
 	}
 	if pi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = pi.ProtectedItemType

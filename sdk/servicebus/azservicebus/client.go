@@ -1,3 +1,5 @@
+// Package azservicebus provides clients for sending and receiving messages with Azure ServiceBus
+// as well as modifying resources like Queues, Topics and Subscriptions.
 package azservicebus
 
 import (

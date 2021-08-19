@@ -28,10 +28,14 @@ func TestContainerResponseParsing(t *testing.T) {
 		SelfLink:     "someSelfLink",
 		ResourceId:   "someResourceId",
 		LastModified: &now,
-		PartitionKeyDefinition: &PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths:   []string{"somePath"},
 			Version: PartitionKeyDefinitionVersion2,
 		},
+	}
+
+	container := &CosmosContainer{
+		Id: "someId",
 	}
 
 	jsonString, err := json.Marshal(properties)
@@ -54,7 +58,7 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	pl := azcore.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosContainerResponse(resp)
+	parsedResponse, err := newCosmosContainerResponse(resp, container)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,10 +91,6 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Errorf("Expected LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), parsedResponse.ContainerProperties.LastModified.Time.UTC())
 	}
 
-	if parsedResponse.ContainerProperties.PartitionKeyDefinition == nil {
-		t.Errorf("Expected PartitionKeyDefinition to be not nil, but got nil")
-	}
-
 	if properties.PartitionKeyDefinition.Paths[0] != parsedResponse.ContainerProperties.PartitionKeyDefinition.Paths[0] {
 		t.Errorf("Expected PartitionKeyDefinition.Paths[0] to be %s, but got %s", properties.PartitionKeyDefinition.Paths[0], parsedResponse.ContainerProperties.PartitionKeyDefinition.Paths[0])
 	}
@@ -109,5 +109,9 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	if parsedResponse.ETag() != "someEtag" {
 		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	}
+
+	if parsedResponse.ContainerProperties.Container != container {
+		t.Errorf("Expected Container to be %v, but got %v", container, parsedResponse.ContainerProperties.Container)
 	}
 }

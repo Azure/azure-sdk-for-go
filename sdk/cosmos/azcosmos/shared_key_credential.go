@@ -56,20 +56,26 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcor
 	value := ""
 
 	if req.OperationValue(&opValues) {
-		value = c.buildCanonicalizedAuthHeader(req.Method, opValues.resourceType, opValues.resourceId, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+		resourceTypePath, err := getResourcePath(opValues.resourceType)
+
+		if err != nil {
+			return "", err
+		}
+
+		value = c.buildCanonicalizedAuthHeader(req.Method, resourceTypePath, opValues.resourceAddress, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
 	}
 
 	return value, nil
 }
 
 //where date is like time.RFC1123 but hard-codes GMT as the time zone
-func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceId, xmsDate, tokenType, version string) string {
+func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceAddress, xmsDate, tokenType, version string) string {
 	if method == "" || resourceType == "" {
 		return ""
 	}
 
 	// https://docs.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources#constructkeytoken
-	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceId, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
+	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceAddress, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
 	signature := c.computeHMACSHA256(stringToSign)
 
 	return url.QueryEscape(join("type=" + tokenType + "&ver=" + version + "&sig=" + signature))
@@ -78,6 +84,7 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType,
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
 func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+
 		// Add a x-ms-date header if it doesn't already exist
 		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
 			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))

@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -52,4 +53,39 @@ func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string)
 	}
 
 	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
+}
+
+// AddDatabase creates a new database.
+// ctx - The context for the request.
+// databaseProperties - The definition of the database
+// requestOptions - Optional parameters for the request.
+func (c *CosmosClient) AddDatabase(
+	ctx context.Context,
+	databaseProperties CosmosDatabaseProperties,
+	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &CosmosDatabaseRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	database, err := c.GetCosmosDatabase(databaseProperties.Id)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	azResponse, err := c.connection.sendPostRequest(path, ctx, databaseProperties, operationContext, requestOptions)
+	if err != nil {
+		return CosmosDatabaseResponse{}, err
+	}
+
+	return newCosmosDatabaseResponse(azResponse, database)
 }

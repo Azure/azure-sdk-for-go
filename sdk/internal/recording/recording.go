@@ -481,11 +481,11 @@ func (r RecordingOptions) HostScheme() string {
 	return "http://localhost:5000"
 }
 
-func getTestId(t *testing.T) string {
-	return "./recordings/" + t.Name() + ".json"
+func getTestId(pathToRecordings string, t *testing.T) string {
+	return "./" + pathToRecordings + "/recordings/" + t.Name() + ".json"
 }
 
-func StartRecording(t *testing.T, options *RecordingOptions) error {
+func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -495,7 +495,8 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 	} else {
 		t.Log("AZURE_RECORD_MODE: ", recordMode)
 	}
-	testId := getTestId(t)
+	testId := getTestId(pathToRecordings, t)
+	fmt.Println(testId)
 
 	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
 
@@ -511,6 +512,7 @@ func StartRecording(t *testing.T, options *RecordingOptions) error {
 		return err
 	}
 	recordingId = resp.Header.Get(IdHeader)
+	fmt.Println(recordingId)
 	return nil
 }
 

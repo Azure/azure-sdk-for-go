@@ -385,19 +385,20 @@ func (s *recordingTests) TestRecordingOptions() {
 	r.UseHTTPS = false
 	require.Equal(r.HostScheme(), "http://localhost:5000")
 
-	require.Equal(getTestId(s.T()), "./recordings/TestRecording/TestRecordingOptions.json")
-
 	require.Equal(GetEnvVariable(s.T(), "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	require.Equal(InPlayback(), !InRecord())
 }
 
+var packagePath = "sdk/internal/recording"
+
 func (s *recordingTests) TestStartStop() {
+	fmt.Println(packagePath)
 	require := require.New(s.T())
 
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(s.T(), nil)
+	err := StartRecording(s.T(), packagePath, nil)
 	require.NoError(err)
 
 	client, err := GetHTTPClient()
@@ -409,11 +410,13 @@ func (s *recordingTests) TestStartStop() {
 	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId())
-	fmt.Println(GetRecordMode(), GetRecordingId(), getTestId(s.T()))
+	fmt.Println(GetRecordMode(), GetRecordingId(), getTestId(packagePath, s.T()))
+	fmt.Println(req.URL.String())
 
 	resp, err := client.Do(req)
 	require.NoError(err)
 	require.NotNil(resp)
+	fmt.Println(resp)
 
 	require.NotNil(GetRecordingId())
 

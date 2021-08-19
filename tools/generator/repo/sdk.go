@@ -116,7 +116,7 @@ func AddCommit(repo SDKRepository, newVersion string) error {
 	return nil
 }
 
-func (s *sdkRepository) ReportForCommit(commit string) (repoContent RepoContent,e error) {
+func (s *sdkRepository) ReportForCommit(commit string) (repoContent RepoContent, e error) {
 	if commit != "" {
 		// store the head ref before checkout
 		ref, err := s.Head()

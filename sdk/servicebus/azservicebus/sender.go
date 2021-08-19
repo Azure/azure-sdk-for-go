@@ -7,14 +7,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
+// SenderOption specifies an option that can configure a Sender.
 type SenderOption func(sender *Sender) error
 
-type senderConfig struct {
-	queueOrTopic string
-}
-
+// Sender is used to send messages as well as schedule them to be delivered at a later date.
 type Sender struct {
-	config senderConfig
+	config struct {
+		queueOrTopic string
+	}
 
 	createSender func(ctx context.Context) (legacySender, error)
 
@@ -23,6 +23,37 @@ type Sender struct {
 	closed       bool
 }
 
+// SendMessage sends a message to a queue or topic.
+func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
+	legacySender, err := s.createSender(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return legacySender.Send(ctx, &internal.Message{
+		ID:   message.ID,
+		Data: message.Body,
+		// TODO: more fields
+	})
+}
+
+func (s *Sender) Close(ctx context.Context) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	s.closed = true
+
+	if s.legacySender == nil {
+		return nil
+	}
+
+	legacySender := s.legacySender
+	s.legacySender = nil
+	return legacySender.Close(ctx)
+}
+
+// ie: `*internal.Namespace`
 type legacySenderNamespace interface {
 	NewSender(ctx context.Context, entityPath string, opts ...internal.SenderOption) (*internal.Sender, error)
 }
@@ -35,7 +66,9 @@ type legacySender interface {
 
 func newSender(ns legacySenderNamespace, queueOrTopic string, options ...SenderOption) (*Sender, error) {
 	sender := &Sender{
-		config: senderConfig{
+		config: struct {
+			queueOrTopic string
+		}{
 			queueOrTopic: queueOrTopic,
 		},
 		mu: &sync.Mutex{},
@@ -71,34 +104,4 @@ func newSender(ns legacySenderNamespace, queueOrTopic string, options ...SenderO
 	}
 
 	return sender, nil
-}
-
-// TODO: add in send options
-func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
-	legacySender, err := s.createSender(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	return legacySender.Send(ctx, &internal.Message{
-		ID:   message.ID,
-		Data: message.Body,
-		// TODO: more fields
-	})
-}
-
-func (s *Sender) Close(ctx context.Context) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	s.closed = true
-
-	if s.legacySender == nil {
-		return nil
-	}
-
-	legacySender := s.legacySender
-	s.legacySender = nil
-	return legacySender.Close(ctx)
 }

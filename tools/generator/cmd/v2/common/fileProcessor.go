@@ -26,7 +26,7 @@ const (
 )
 
 var (
-	v2BeginRegex                   = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\(track2\\)")
+	v2BeginRegex                   = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex                     = regexp.MustCompile("^\\s*```\\s*$")
 	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
 	newClientMethodNameRegex       = regexp.MustCompile("^New.+Client$")

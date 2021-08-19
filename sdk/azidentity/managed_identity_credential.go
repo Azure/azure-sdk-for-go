@@ -95,9 +95,9 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
-	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
-	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
-	tk, err := c.client.authenticate(ctx, c.id, opts.Scopes)
+	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
+	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
+	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err

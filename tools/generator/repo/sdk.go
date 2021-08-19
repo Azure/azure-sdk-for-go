@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package repo
 
 import (
@@ -113,7 +116,7 @@ func AddCommit(repo SDKRepository, newVersion string) error {
 	return nil
 }
 
-func (s *sdkRepository) ReportForCommit(commit string) (RepoContent, error) {
+func (s *sdkRepository) ReportForCommit(commit string) (repoContent RepoContent,e error) {
 	if commit != "" {
 		// store the head ref before checkout
 		ref, err := s.Head()
@@ -127,7 +130,10 @@ func (s *sdkRepository) ReportForCommit(commit string) (RepoContent, error) {
 			return nil, fmt.Errorf("failed to checkout to commit '%s': %+v", commit, err)
 		}
 		// defer check out back to initial commit or branch
-		defer s.checkoutBack(ref)
+		//defer s.checkoutBack(ref)
+		defer func() {
+			e = s.checkoutBack(ref)
+		}()
 	}
 
 	return GetRepoContent(s.Root())

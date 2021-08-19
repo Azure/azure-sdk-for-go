@@ -232,7 +232,7 @@ func (p *Processor) Done() <-chan struct{} {
 	return p.processorCtx.Done()
 }
 
-// Stop will wait for any pending callbacks to complete.
+// Close will wait for any pending callbacks to complete.
 func (p *Processor) Close(ctx context.Context) error {
 
 	select {

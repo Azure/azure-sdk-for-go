@@ -3,7 +3,11 @@
 
 package autorest
 
-import "github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+import (
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"strings"
+)
 
 // MetadataValidateFunc is a function that validates a metadata is legal or not
 type MetadataValidateFunc func(tag string, metadata model.Metadata) error
@@ -25,4 +29,8 @@ func ValidateMetadata(validators []MetadataValidateFunc, tag string, metadata mo
 	}
 
 	return errors
+}
+
+func IsPreviewPackage(pkgName string) bool {
+	return strings.HasPrefix(utils.NormalizePath(pkgName), "services/preview/")
 }

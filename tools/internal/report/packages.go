@@ -5,6 +5,7 @@ package report
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -221,4 +222,56 @@ func (r *PkgsReport) writeRemovedPackages(md *markdown.Writer) {
 		md.WriteLine("- " + p)
 	}
 	md.EmptyLine()
+}
+
+// GetPkgsReport generates a PkgsReport based on the delta between lhs and rhs
+func GetPkgsReport(lhs, rhs repo.RepoContent, option *GenerationOption) PkgsReport {
+	rpt := PkgsReport{}
+
+	if option == nil {
+		option = &GenerationOption{}
+	}
+
+	if !option.OnlyBreakingChanges {
+		rpt.AddedPackages = getDiffPkgs(lhs, rhs)
+	}
+	if !option.OnlyAdditiveChanges {
+		rpt.RemovedPackages = getDiffPkgs(rhs, lhs)
+	}
+
+	// diff packages
+	for rhsPkg, rhsCnt := range rhs {
+		if _, ok := lhs[rhsPkg]; !ok {
+			continue
+		}
+		if r := Generate(lhs[rhsPkg], rhsCnt, option); !r.IsEmpty() {
+			// only add an entry if the report contains data
+			if rpt.ModifiedPackages == nil {
+				rpt.ModifiedPackages = ModifiedPackages{}
+			}
+			rpt.ModifiedPackages[rhsPkg] = r
+		}
+	}
+
+	return rpt
+}
+
+// returns a list of packages in rhs that aren't in lhs
+func getDiffPkgs(lhs, rhs repo.RepoContent) PkgsList {
+	list := PkgsList{}
+	for rhsPkg := range rhs {
+		if _, ok := lhs[rhsPkg]; !ok {
+			list = append(list, rhsPkg)
+		}
+	}
+	return list
+}
+
+func GetPackagesReportFromContent(lhs repo.RepoContent, targetRoot string) (*PkgsReport, error) {
+	rhs, err := repo.GetRepoContent(targetRoot)
+	if err != nil {
+		return nil, err
+	}
+	r := GetPkgsReport(lhs, rhs, nil)
+	return &r, nil
 }

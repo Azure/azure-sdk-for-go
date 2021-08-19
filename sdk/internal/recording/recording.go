@@ -593,7 +593,7 @@ func (o *RecordingOptions) Init() {
 
 // 	req.Header.Set(UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.scheme, originalURLHost))
 // 	req.Header.Set(ModeHeader, recordMode)
-// 	req.Header.Set(recordingIdHeader, recordingId)
+// 	req.Header.Set(IdHeader, recordingId)
 
 // 	return req.Next()
 // }

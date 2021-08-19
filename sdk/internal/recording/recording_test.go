@@ -374,3 +374,49 @@ func (s *recordingTests) TearDownSuite() {
 	err := os.RemoveAll("recordings")
 	require.Nil(s.T(), err)
 }
+
+func (s *recordingTests) TestRecordingOptions() {
+	require := require.New(s.T())
+	r := RecordingOptions{
+		UseHTTPS: true,
+	}
+	require.Equal(r.HostScheme(), "https://localhost:5001")
+
+	r.UseHTTPS = false
+	require.Equal(r.HostScheme(), "http://localhost:5000")
+
+	require.Equal(getTestId(s.T()), "./recordings/TestRecording/TestRecordingOptions.json")
+
+	require.Equal(GetEnvVariable(s.T(), "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	require.Equal(InPlayback(), !InRecord())
+}
+
+func (s *recordingTests) TestStartStop() {
+	require := require.New(s.T())
+
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := StartRecording(s.T(), nil)
+	require.NoError(err)
+
+	client, err := GetHTTPClient()
+	require.NoError(err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(err)
+
+	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId())
+	fmt.Println(GetRecordMode(), GetRecordingId(), getTestId(s.T()))
+
+	resp, err := client.Do(req)
+	require.NoError(err)
+	require.NotNil(resp)
+
+	require.NotNil(GetRecordingId())
+
+	err = StopRecording(s.T(), nil)
+	require.NoError(err)
+}

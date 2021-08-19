@@ -96,7 +96,7 @@ func (ac *asyncCache) getAsync(key interface{}, obsoleteValue interface{}, singl
 		return nil, err
 	}
 
-	if awaitedValue != nil && reflect.DeepEqual(awaitedValue, obsoleteValue) {
+	if awaitedValue != nil && !reflect.DeepEqual(awaitedValue, obsoleteValue) {
 		return awaitedValue, nil
 	}
 

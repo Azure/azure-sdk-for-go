@@ -76,6 +76,10 @@ func (ac *asyncCache) get(key interface{}) (interface{}, bool) {
 	return nil, false
 }
 
+// If another initialization function is already running, new initialization function will not be started.
+// The result will be result of currently running initialization function.
+// If previous initialization function is successfully completed - value returned by it will be returned unles
+// it is equal to <paramref name="obsoleteValue"/>, in which case new initialization function will be started.
 func (ac *asyncCache) getAsync(key interface{}, obsoleteValue interface{}, singleValueInit cacheValueTask, ctx context.Context) (interface{}, error) {
 	var cachedValue cacheValue
 	value, ok := ac.values.Load(key)

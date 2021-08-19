@@ -10,7 +10,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
 
 ## `v56.2.0`
 

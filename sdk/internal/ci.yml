@@ -15,3 +15,4 @@ stages:
 - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'internal'
+    RunTests: true

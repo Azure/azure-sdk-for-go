@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -25,9 +26,9 @@ func (p pollerError) Error() string {
 	return p.Err
 }
 
-func errUnmarshall(resp *Response) error {
+func errUnmarshall(resp *http.Response) error {
 	var pe pollerError
-	if err := resp.UnmarshalAsJSON(&pe); err != nil {
+	if err := UnmarshalAsJSON(resp, &pe); err != nil {
 		panic(err)
 	}
 	return pe
@@ -37,11 +38,9 @@ type widget struct {
 	Size int `json:"size"`
 }
 
-func TestNewLROPollerFail(t *testing.T) {
-	p, err := NewLROPoller("fake.poller", &Response{
-		&http.Response{
-			StatusCode: http.StatusBadRequest,
-		},
+func TestNewPollerFail(t *testing.T) {
+	p, err := NewPoller("fake.poller", &http.Response{
+		StatusCode: http.StatusBadRequest,
 	}, NewPipeline(nil), errUnmarshall)
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -51,7 +50,7 @@ func TestNewLROPollerFail(t *testing.T) {
 	}
 }
 
-func TestNewLROPollerFromResumeTokenFail(t *testing.T) {
+func TestNewPollerFromResumeTokenFail(t *testing.T) {
 	tests := []struct {
 		name  string
 		token string
@@ -65,7 +64,7 @@ func TestNewLROPollerFromResumeTokenFail(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			p, err := NewLROPollerFromResumeToken("fake.poller", test.token, NewPipeline(nil), errUnmarshall)
+			p, err := NewPollerFromResumeToken("fake.poller", test.token, NewPipeline(nil), errUnmarshall)
 			if err == nil {
 				t.Fatal("unexpected nil error")
 			}
@@ -87,21 +86,19 @@ func TestOpPollerSimple(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Operation-Location": []string{srv.URL()},
-				"Retry-After":        []string{"1"},
-			},
-			Request: &http.Request{
-				Method: http.MethodPut,
-				URL:    reqURL,
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPut,
+			URL:    reqURL,
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -116,7 +113,7 @@ func TestOpPollerSimple(t *testing.T) {
 
 func TestOpPollerWithWidgetPUT(t *testing.T) {
 	srv, close := mock.NewServer()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)), mock.WithHeader("Retry-After", "1"))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded"}`)))
 	// PUT and PATCH state that a final GET will happen
@@ -127,21 +124,19 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Operation-Location": []string{srv.URL()},
-				"Retry-After":        []string{"1"},
-			},
-			Request: &http.Request{
-				Method: http.MethodPut,
-				URL:    reqURL,
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPut,
+			URL:    reqURL,
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -171,22 +166,20 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Operation-Location": []string{srv.URL()},
-				"Location":           []string{srv.URL()},
-				"Retry-After":        []string{"1"},
-			},
-			Request: &http.Request{
-				Method: http.MethodPost,
-				URL:    reqURL,
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Location":           []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPost,
+			URL:    reqURL,
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -215,21 +208,19 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Operation-Location": []string{srv.URL()},
-				"Retry-After":        []string{"1"},
-			},
-			Request: &http.Request{
-				Method: http.MethodPost,
-				URL:    reqURL,
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPost,
+			URL:    reqURL,
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -260,22 +251,20 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Operation-Location": []string{srv.URL()},
-				"Location":           []string{srv.URL()},
-				"Retry-After":        []string{"1"},
-			},
-			Request: &http.Request{
-				Method: http.MethodPatch,
-				URL:    reqURL,
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Location":           []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPatch,
+			URL:    reqURL,
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -303,21 +292,19 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Operation-Location": []string{srv.URL()},
-				"Retry-After":        []string{"1"},
-			},
-			Request: &http.Request{
-				Method: http.MethodPut,
-				URL:    reqURL,
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+			"Retry-After":        []string{"1"},
+		},
+		Request: &http.Request{
+			Method: http.MethodPut,
+			URL:    reqURL,
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -342,7 +329,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewLROPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
+	lro, err = NewPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -362,17 +349,15 @@ func TestLocPollerSimple(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Location":    []string{srv.URL()},
-				"Retry-After": []string{"1"},
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Location":    []string{srv.URL()},
+			"Retry-After": []string{"1"},
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -392,17 +377,15 @@ func TestLocPollerWithWidget(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 3}`)))
 
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Location":    []string{srv.URL()},
-				"Retry-After": []string{"1"},
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Location":    []string{srv.URL()},
+			"Retry-After": []string{"1"},
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -426,17 +409,15 @@ func TestLocPollerCancelled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(`{"error": "cancelled"}`)))
 
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Location":    []string{srv.URL()},
-				"Retry-After": []string{"1"},
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Location":    []string{srv.URL()},
+			"Retry-After": []string{"1"},
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -463,17 +444,15 @@ func TestLocPollerWithError(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendError(errors.New("oops"))
 
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Location":    []string{srv.URL()},
-				"Retry-After": []string{"1"},
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Location":    []string{srv.URL()},
+			"Retry-After": []string{"1"},
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -500,17 +479,15 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	defer close()
 
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Location":    []string{srv.URL()},
-				"Retry-After": []string{"1"},
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Location":    []string{srv.URL()},
+			"Retry-After": []string{"1"},
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -535,7 +512,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lro, err = NewLROPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
+	lro, err = NewPollerFromResumeToken("fake.poller", tk, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -555,16 +532,14 @@ func TestLocPollerWithTimeout(t *testing.T) {
 	srv.AppendResponse(mock.WithSlowResponse(2 * time.Second))
 	defer close()
 
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusAccepted,
-			Header: http.Header{
-				"Location": []string{srv.URL()},
-			},
+	firstResp := &http.Response{
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Location": []string{srv.URL()},
 		},
 	}
 	pl := NewPipeline(srv)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -580,13 +555,11 @@ func TestLocPollerWithTimeout(t *testing.T) {
 }
 
 func TestNopPoller(t *testing.T) {
-	firstResp := &Response{
-		&http.Response{
-			StatusCode: http.StatusOK,
-		},
+	firstResp := &http.Response{
+		StatusCode: http.StatusOK,
 	}
 	pl := NewPipeline(nil)
-	lro, err := NewLROPoller("fake.poller", firstResp, pl, errUnmarshall)
+	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -600,21 +573,21 @@ func TestNopPoller(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp != firstResp.Response {
+	if resp != firstResp {
 		t.Fatal("unexpected response")
 	}
 	resp, err = lro.Poll(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp != firstResp.Response {
+	if resp != firstResp {
 		t.Fatal("unexpected response")
 	}
 	resp, err = lro.PollUntilDone(context.Background(), 5*time.Millisecond, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp != firstResp.Response {
+	if resp != firstResp {
 		t.Fatal("unexpected response")
 	}
 	tk, err := lro.ResumeToken()

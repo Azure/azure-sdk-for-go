@@ -3,9 +3,9 @@ package repo
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"io"
 	"io/ioutil"
@@ -29,7 +29,7 @@ func (r *RepoContent) Print(o io.Writer) error {
 
 func GetRepoContent(sdkRoot string) (RepoContent, error) {
 	// we must list over the services directory, otherwise it would walk into the .git directory and panic out
-	pkgs, err := track1.List(sdk.ServicesPath(sdkRoot))
+	pkgs, err := track1.List(common.ServicesPath(sdkRoot))
 	if err != nil {
 		return nil, err
 	}
@@ -88,16 +88,16 @@ type sdkRepository struct {
 }
 
 func GetLatestVersion(wt SDKRepository) (*semver.Version, error) {
-	b, err := ioutil.ReadFile(sdk.VersionGoPath(wt.Root()))
+	b, err := ioutil.ReadFile(common.VersionGoPath(wt.Root()))
 	if err != nil {
 		return nil, err
 	}
-	return sdk.GetVersion(string(b))
+	return GetVersion(string(b))
 }
 
 func AddCommit(repo SDKRepository, newVersion string) error {
-	changelogFile := sdk.ChangelogPath(repo.Root())
-	versionFile := sdk.VersionGoPath(repo.Root())
+	changelogFile := common.ChangelogPath(repo.Root())
+	versionFile := common.VersionGoPath(repo.Root())
 	// add changelog and version
 	if err := repo.Add(changelogFile); err != nil {
 		return fmt.Errorf("failed to add `%s`: %+v", changelogFile, err)

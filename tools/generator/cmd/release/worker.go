@@ -2,7 +2,7 @@ package release
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,15 +10,14 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 
 type generateContext struct {
-	sdkRepo  repo.SDKRepository
-	specRepo repo.SpecRepository
-	readme   string
+	sdkRepo            repo.SDKRepository
+	specRepo           repo.SpecRepository
+	readme             string
 	specLastCommitHash string
 
 	defaultOptions    model.Options
@@ -47,7 +46,7 @@ func (ctx *generateContext) generate(tag string, infoList []config.ReleaseReques
 
 	var options model.Options
 	// determine whether this is a new package or not
-	if m, ok := common.ContainsPackage(ctx.SDKRoot(), ctx.readme, tag); ok {
+	if m, ok := repo.ContainsPackage(ctx.SDKRoot(), ctx.readme, tag); ok {
 		log.Printf("Task (readme %s / tag %s) is an existing package, using the options in the metadata...", ctx.readme, tag)
 		options = ctx.defaultOptions.(model.Options).MergeOptions(autorest.GetAdditionalOptions(m).Arguments()...)
 	} else {
@@ -59,8 +58,8 @@ func (ctx *generateContext) generate(tag string, infoList []config.ReleaseReques
 	// iterate over the tags in one request
 	// Generate code
 	input := autorest.GenerateInput{
-		Readme:     ctx.readme,
-		Tag:        tag,
+		Readme: ctx.readme,
+		Tag:    tag,
 		//SDKRoot:    ctx.SDKRoot(),
 		CommitHash: ctx.specLastCommitHash,
 		Options:    options,

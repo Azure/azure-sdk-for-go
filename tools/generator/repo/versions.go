@@ -1,7 +1,8 @@
-package sdk
+package repo
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"io/ioutil"
 	"os"
 	"regexp"
@@ -11,7 +12,7 @@ import (
 )
 
 func ModifyVersionFile(absSDK, lastVersion, newVersion string) error {
-	versionFile := VersionGoPath(absSDK)
+	versionFile := common.VersionGoPath(absSDK)
 	info, err := os.Stat(versionFile)
 	if err != nil {
 		return fmt.Errorf("failed to get stat of version file: %+v", err)

@@ -2,7 +2,7 @@ package release
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/refresh"

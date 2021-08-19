@@ -40,8 +40,8 @@ func (ctx *generateContext) generate(info GenerationInfo) (*GenerateResult, erro
 
 	// Generate code
 	input := autorest.GenerateInput{
-		Readme:     info.RelativeReadme(),
-		Tag:        info.Tag,
+		Readme: info.RelativeReadme(),
+		Tag:    info.Tag,
 		//SDKRoot:    ctx.SDKRoot(),
 		CommitHash: ctx.specCommitHash,
 		Options:    ctx.options,

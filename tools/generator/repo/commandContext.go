@@ -1,8 +1,7 @@
-package common
+package repo
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"log"
 	"os"
 	"path/filepath"
@@ -12,15 +11,15 @@ import (
 )
 
 type CommandContext interface {
-	SDK() repo.SDKRepository
-	Spec() repo.SpecRepository
+	SDK() SDKRepository
+	Spec() SpecRepository
 	CreateReleaseBranch(version string) (string, error)
 	CheckExternalChanges()
 }
 
 type commandContext struct {
-	sdk  repo.SDKRepository
-	spec repo.SpecRepository
+	sdk  SDKRepository
+	spec SpecRepository
 
 	checkExternalChanges func(ref, newRef *plumbing.Reference, err error)
 }
@@ -56,7 +55,7 @@ func (c *commandContext) CreateReleaseBranch(version string) (string, error) {
 	releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, version, time.Now().Unix())
 
 	log.Printf("Checking out to %s", plumbing.NewBranchReferenceName(releaseBranchName))
-	if err := c.SDK().Checkout(&repo.CheckoutOptions{
+	if err := c.SDK().Checkout(&CheckoutOptions{
 		Branch: plumbing.NewBranchReferenceName(releaseBranchName),
 		Create: true,
 	}); err != nil {
@@ -67,20 +66,20 @@ func (c *commandContext) CreateReleaseBranch(version string) (string, error) {
 
 }
 
-func (c *commandContext) SDK() repo.SDKRepository {
+func (c *commandContext) SDK() SDKRepository {
 	return c.sdk
 }
 
-func (c *commandContext) Spec() repo.SpecRepository {
+func (c *commandContext) Spec() SpecRepository {
 	return c.spec
 }
 
 func NewCommandContext(sdkPath, specPath string, panicWhenDetectExternalChanges bool) (CommandContext, error) {
-	sdkRepo, err := repo.OpenSDKRepository(sdkPath)
+	sdkRepo, err := OpenSDKRepository(sdkPath)
 	if err != nil {
 		return nil, err
 	}
-	specRepo, err := repo.OpenSpecRepository(specPath)
+	specRepo, err := OpenSpecRepository(specPath)
 	if err != nil {
 		return nil, err
 	}

@@ -5,9 +5,9 @@ package autorest
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 	"io/ioutil"
@@ -37,6 +37,7 @@ func NewWriterFromFile(file string) *Writer {
 		file: file,
 	}
 }
+
 //
 // Write writes the new version changelog to the changelog file, also modify the links in the previous version
 func (w *Writer) Write(r *report.PkgsReport) error {
@@ -254,7 +255,7 @@ func getAbsoluteChangelogLink(name string) string {
 // getChangelogLink gets the relative path of the package changelog file
 func getChangelogLink(name string) string {
 	rel := strings.TrimPrefix(name, sdkRoot+"/")
-	return utils.NormalizePath(sdk.ChangelogPath(rel))
+	return utils.NormalizePath(common.ChangelogPath(rel))
 }
 
 func getPackageImportPath(p string) string {

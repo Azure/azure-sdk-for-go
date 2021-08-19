@@ -3,9 +3,7 @@ package release
 import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/sdk"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,7 +18,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
-
 
 func Command() *cobra.Command {
 	releaseCmd := &cobra.Command{
@@ -43,7 +40,7 @@ azure-rest-api-specs directory: the directory path of the azure-rest-api-specs w
 			if err != nil {
 				return fmt.Errorf("failed to get the directory of azure-rest-api-specs: %v", err)
 			}
-			baseContext, err := common.NewCommandContext(sdkPath, specPath, true)
+			baseContext, err := repo.NewCommandContext(sdkPath, specPath, true)
 			if err != nil {
 				return err
 			}
@@ -103,14 +100,14 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 }
 
 type commandContext struct {
-	common.CommandContext
+	repo.CommandContext
 
-	configPath string
-	flags      Flags
-	options    model.Options
+	configPath        string
+	flags             Flags
+	options           model.Options
 	additionalOptions []model.Option
-	sdkRef     *plumbing.Reference
-	specRef    *plumbing.Reference
+	sdkRef            *plumbing.Reference
+	specRef           *plumbing.Reference
 
 	repoContent repo.RepoContent
 }
@@ -238,17 +235,17 @@ func (c *commandContext) execute() error {
 
 	// generate the changelog
 	log.Printf("Generating CHANGELOG...")
-	r, err := report.GetPackagesReportFromContent(c.repoContent, c.SDK().Root())
+	r, err := repo.GetPackagesReportFromContent(c.repoContent, c.SDK().Root())
 	if err != nil {
 		return err
 	}
 
 	// write changelog
-	if err := autorest.NewWriterFromFile(sdk.ChangelogPath(c.SDK().Root())).WithVersion(version.NewVersion).Write(r); err != nil {
+	if err := autorest.NewWriterFromFile(common.ChangelogPath(c.SDK().Root())).WithVersion(version.NewVersion).Write(r); err != nil {
 		return err
 	}
 	// write version
-	if err := sdk.ModifyVersionFile(c.SDK().Root(), version.LatestVersion, version.NewVersion); err != nil {
+	if err := repo.ModifyVersionFile(c.SDK().Root(), version.LatestVersion, version.NewVersion); err != nil {
 		return err
 	}
 	// add commit

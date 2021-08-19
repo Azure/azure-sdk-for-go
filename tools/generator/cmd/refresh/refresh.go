@@ -3,9 +3,8 @@ package refresh
 import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/sdk"
 	"log"
 	"path/filepath"
 	"strings"
@@ -47,7 +46,7 @@ azure-rest-api-specs directory: the directory path of the azure-rest-api-specs w
 			}
 			// this command by design will be checking out from commit to commit in azure-rest-api-specs,
 			// therefore we explicitly turn out the panic
-			baseContext, err := common.NewCommandContext(sdkPath, specPath, false)
+			baseContext, err := repo.NewCommandContext(sdkPath, specPath, false)
 			if err != nil {
 				return err
 			}
@@ -89,7 +88,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 }
 
 type CommandContext struct {
-	common.CommandContext
+	repo.CommandContext
 	Flags Flags
 
 	RepoContent map[string]exports.Content
@@ -193,7 +192,7 @@ func (c *CommandContext) Refresh(refreshConfig *config.RefreshInfo) (*plumbing.R
 }
 
 func (c *CommandContext) getPackagesToRefresh(packages []string) (GenerationMap, error) {
-	m, err := autorest.CollectGenerationMetadata(sdk.ServicesPath(c.SDK().Root()))
+	m, err := autorest.CollectGenerationMetadata(common.ServicesPath(c.SDK().Root()))
 	if err != nil {
 		return nil, fmt.Errorf("cannot read the metadata map: %+v", err)
 	}

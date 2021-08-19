@@ -1,9 +1,9 @@
-package common
+package repo
 
 import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/sdk"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 )
 
 var (
@@ -23,7 +23,7 @@ func ContainsPackage(root, readme, tag string) (autorest.GenerationMetadata, boo
 
 func initCache(root string) error {
 	cache = make(map[string]autorest.GenerationMetadata)
-	m, err := autorest.CollectGenerationMetadata(sdk.ServicesPath(root))
+	m, err := autorest.CollectGenerationMetadata(common.ServicesPath(root))
 	if err != nil {
 		return err
 	}

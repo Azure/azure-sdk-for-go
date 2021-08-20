@@ -50,7 +50,7 @@ func NewPoller(pollerID string, finalState string, resp *http.Response, pl runti
 	if err != nil {
 		return nil, err
 	}
-	return pollers.NewPoller(lro, resp, pl, eu)
+	return pollers.NewPoller(lro, resp, pl, eu), nil
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
@@ -79,5 +79,5 @@ func NewPollerFromResumeToken(pollerID string, token string, pl runtime.Pipeline
 	if err = json.Unmarshal([]byte(token), lro); err != nil {
 		return nil, err
 	}
-	return pollers.NewPoller(lro, nil, pl, eu)
+	return pollers.NewPoller(lro, nil, pl, eu), nil
 }

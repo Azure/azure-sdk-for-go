@@ -21,11 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// NewPoller creates a Poller from the specified input.
-func NewPoller(lro Operation, resp *http.Response, pl runtime.Pipeline, eu func(*http.Response) error) (*Poller, error) {
-	return &Poller{lro: lro, pl: pl, eu: eu, resp: resp}, nil
-}
-
 // KindFromToken extracts the poller kind from the provided token.
 // If the pollerID doesn't match what's in the token an error is returned.
 func KindFromToken(pollerID, token string) (string, error) {
@@ -57,6 +52,11 @@ func KindFromToken(pollerID, token string) (string, error) {
 // PollerType returns the concrete type of the poller (FOR TESTING PURPOSES).
 func PollerType(p *Poller) reflect.Type {
 	return reflect.TypeOf(p.lro)
+}
+
+// NewPoller creates a Poller from the specified input.
+func NewPoller(lro Operation, resp *http.Response, pl runtime.Pipeline, eu func(*http.Response) error) *Poller {
+	return &Poller{lro: lro, pl: pl, eu: eu, resp: resp}
 }
 
 // Poller encapsulates state and logic for polling on long-running operations.
@@ -132,13 +132,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 	if !l.Done() {
 		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
 	}
-	// if there's nothing to unmarshall into or no response body just return the final response
-	if respType == nil {
-		return l.resp, nil
-	} else if l.resp.StatusCode == http.StatusNoContent || l.resp.ContentLength == 0 {
-		log.Write(log.LongRunningOperation, "final response specifies a response type but no payload was received")
-		return l.resp, nil
-	}
+	// update l.resp with the content from final GET if applicable
 	if u := l.lro.FinalGetURL(); u != "" {
 		log.Write(log.LongRunningOperation, "Performing final GET.")
 		req, err := runtime.NewRequest(ctx, http.MethodGet, u)
@@ -153,6 +147,13 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 			return nil, l.eu(resp)
 		}
 		l.resp = resp
+	}
+	// if there's nothing to unmarshall into or no response body just return the final response
+	if respType == nil {
+		return l.resp, nil
+	} else if l.resp.StatusCode == http.StatusNoContent || l.resp.ContentLength == 0 {
+		log.Write(log.LongRunningOperation, "final response specifies a response type but no payload was received")
+		return l.resp, nil
 	}
 	body, err := ioutil.ReadAll(l.resp.Body)
 	l.resp.Body.Close()

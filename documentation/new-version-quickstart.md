@@ -157,7 +157,11 @@ Example: Creating a Resource Group
 ***Import the packages***
 ```go
 import (
-    "contexts"
+    "context"
+    "log"
+    "os"
+    "time"
+
     "github.com/Azure/azure-sdk-for-go/sdk/armcore"
     "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -179,13 +183,13 @@ var (
 ***Write a function to create a resource group***
 ```go
 func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
-	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
-	param := armresources.ResourceGroup{
-		Location: to.StringPtr(location),
-	}
+    param := armresources.ResourceGroup{
+        Location: to.StringPtr(location),
+    }
 
-	return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
+    return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
 }
 ```
 
@@ -269,15 +273,15 @@ func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) er
 ***Invoking the update, list and delete of resource group in the main function***
 ```go
 func main() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("authentication failure: %+v", err)
-	}
-	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
-		Logging: azcore.LogOptions{
-			IncludeBody: true,
-		},
-	})
+    cred, err := azidentity.NewDefaultAzureCredential(nil)
+    if err != nil {
+        log.Fatalf("authentication failure: %+v", err)
+    }
+    conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+        Logging: azcore.LogOptions{
+            IncludeBody: true,
+        },
+    })
 
 
     resourceGroup, err := createResourceGroup(ctx, conn)
@@ -286,22 +290,22 @@ func main() {
     }
     log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
-	updatedRG, err := updateResourceGroup(ctx, conn)
-	if err != nil {
+    updatedRG, err := updateResourceGroup(ctx, conn)
+    if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
-	}
-	log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
+    }
+    log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
-	rgList, err := listResourceGroups(ctx, conn)
-	if err != nil {
+    rgList, err := listResourceGroups(ctx, conn)
+    if err != nil {
         log.Fatalf("cannot list resource group: %+v", err)
-	}
-	log.Printf("We totally have %d resource groups", len(rgList))
+    }
+    log.Printf("We totally have %d resource groups", len(rgList))
 
-	if err := deleteResourceGroup(ctx, conn); err != nil {
+    if err := deleteResourceGroup(ctx, conn); err != nil {
         log.Fatalf("cannot delete resource group: %+v", err)
-	}
-	log.Printf("Resource Group deleted")
+    }
+    log.Printf("Resource Group deleted")
 })
 ```
 
@@ -318,13 +322,13 @@ In the samples above, you might notice that some operations have a ``Begin`` pre
 ```go
 poller, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
 if err != nil {
-	// handle error...
+    // handle error...
 }
 resp, err = poller.PollUntilDone(context.Background(), 5 * time.Second)
 if err != nil {
-	// handle error...
+    // handle error...
 }
-fmt.Printf("LRO done")
+log.Printf("LRO done")
 // dealing with `resp`
 ```
 

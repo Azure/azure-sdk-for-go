@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
@@ -69,7 +70,7 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	}
 
 	stringToSign := strings.Join([]string{
-		headers.Get(azcore.HeaderXmsDate),
+		headers.Get(headerXmsDate),
 		canonicalizedResource,
 	}, "\n")
 	return stringToSign, nil
@@ -133,29 +134,42 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	return cr.String(), nil
 }
 
-// AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*http.Response, error) {
-		// Add a x-ms-date header if it doesn't already exist
-		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
-			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-		}
-		stringToSign, err := c.buildStringToSign(req.Request)
-		if err != nil {
-			return nil, err
-		}
-		signature, err := c.ComputeHMACSHA256(stringToSign)
-		if err != nil {
-			return nil, err
-		}
-		authHeader := strings.Join([]string{"SharedKeyLite ", c.AccountName(), ":", signature}, "")
-		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+type sharedKeyCredPolicy struct {
+	cred *SharedKeyCredential
+}
 
-		response, err := req.Next()
-		if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
-			// Service failed to authenticate request, log it
-			azcore.Log().Write(azcore.LogResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
-		}
-		return response, err
-	})
+func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts azcore.AuthenticationOptions) *sharedKeyCredPolicy {
+	s := &sharedKeyCredPolicy{
+		cred: cred,
+	}
+
+	return s
+}
+
+func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
+	if d := req.Request.Header.Get(headerXmsDate); d == "" {
+		req.Request.Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	}
+	stringToSign, err := s.cred.buildStringToSign(req.Request)
+	if err != nil {
+		return nil, err
+	}
+	signature, err := s.cred.ComputeHMACSHA256(stringToSign)
+	if err != nil {
+		return nil, err
+	}
+	authHeader := strings.Join([]string{"SharedKeyLite ", s.cred.AccountName(), ":", signature}, "")
+	req.Request.Header.Set(headerAuthorization, authHeader)
+
+	response, err := req.Next()
+	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
+		// Service failed to authenticate request, log it
+		log.Write(log.Response, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
+	}
+	return response, err
+}
+
+// NewAuthenticationPolicy implements the Credential interface on SharedKeyCredential.
+func (c *SharedKeyCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+	return newSharedKeyCredPolicy(c, options)
 }

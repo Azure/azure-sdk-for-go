@@ -19,6 +19,8 @@ import (
 
 var AADAuthenticationScope = "https://storage.azure.com/.default"
 
+var pathToPackage = "sdk/tables/aztable"
+
 type recordingPolicy struct {
 	options recording.RecordingOptions
 }
@@ -57,12 +59,22 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 	}
 }
 
-func (f *FakeCredential) NewAuthenticationPolicy(azcore.AuthenticationOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*http.Response, error) {
-		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
-		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
-		return req.Next()
-	})
+type fakeCredPolicy struct {
+	cred *FakeCredential
+}
+
+func newFakeCredPolicy(cred *FakeCredential, opts azcore.AuthenticationOptions) *fakeCredPolicy {
+	return &fakeCredPolicy{cred: cred}
+}
+
+func (f *fakeCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
+	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
+	req.Request.Header.Set(headerAuthorization, authHeader)
+	return req.Next()
+}
+
+func (f *FakeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+	return newFakeCredPolicy(f, options)
 }
 
 func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
@@ -100,7 +112,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 		require.NoError(t, err)
 	}
 
-	err = recording.StartRecording(t, nil)
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
 
 	if createTable {
@@ -127,7 +139,7 @@ func initServiceTest(t *testing.T, service string) (*TableServiceClient, func())
 		require.NoError(t, err)
 	}
 
-	err = recording.StartRecording(t, nil)
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
 
 	return client, func() {
@@ -166,6 +178,9 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	if recording.InPlayback() {
+		accountName = "fakestorageaccount"
+	}
 
 	cred, err := getAADCredential(t)
 	require.NoError(t, err)
@@ -181,6 +196,9 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	if recording.InPlayback() {
+		accountName = "fakestorageaccount"
+	}
 
 	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)
@@ -196,6 +214,9 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	if recording.InPlayback() {
+		accountName = "fakestorageaccount"
+	}
 
 	cred, err := getAADCredential(t)
 	require.NoError(t, err)
@@ -208,6 +229,9 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	if recording.InPlayback() {
+		accountName = "fakestorageaccount"
+	}
 
 	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)

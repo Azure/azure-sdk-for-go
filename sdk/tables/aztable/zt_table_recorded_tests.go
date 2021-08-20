@@ -10,26 +10,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
-type testContext struct {
-	recording *recording.Recording
-	client    *TableServiceClient
-	context   *recording.TestContext
-}
-
 const (
-	storageAccountNameEnvVar    = "TABLES_STORAGE_ACCOUNT_NAME"
-	cosmosAccountNameEnnVar     = "TABLES_COSMOS_ACCOUNT_NAME"
-	storageEndpointSuffixEnvVar = "STORAGE_ENDPOINT_SUFFIX"
-	cosmosEndpointSuffixEnvVar  = "COSMOS_TABLES_ENDPOINT_SUFFIX"
-	storageAccountKeyEnvVar     = "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY"
-	cosmosAccountKeyEnvVar      = "TABLES_PRIMARY_COSMOS_ACCOUNT_KEY"
-	tableNamePrefix             = "gotable"
-	DefaultStorageSuffix        = "core.windows.net"
-	DefaultCosmosSuffix         = "cosmos.azure.com"
+	DefaultStorageSuffix = "core.windows.net"
+	DefaultCosmosSuffix  = "cosmos.azure.com"
 )
 
 type EndpointType string
@@ -66,37 +52,6 @@ func insertNEntities(pk string, n int, client *TableClient) error {
 		}
 	}
 	return nil
-}
-
-// cleans up the specified tables. If tables is nil, all tables will be deleted
-func cleanupTables(context *testContext, tables *[]string) {
-	c := context.client
-	if tables == nil {
-		pager := c.ListTables(nil)
-		for pager.NextPage(ctx) {
-			for _, t := range pager.PageResponse().TableListResponse.Value {
-				_, err := c.DeleteTable(ctx, *t.TableName, nil)
-				if err != nil {
-					fmt.Printf("Error cleaning up tables. %v\n", err.Error())
-				}
-			}
-		}
-	} else {
-		for _, t := range *tables {
-			_, err := c.DeleteTable(ctx, t, nil)
-			if err != nil {
-				fmt.Printf("There was an error cleaning up tests. %v\n", err.Error())
-			}
-		}
-	}
-}
-
-func getTableName(context *testContext, prefix ...string) (string, error) {
-	if len(prefix) == 0 {
-		return context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
-	} else {
-		return context.recording.GenerateAlphaNumericID(prefix[0], 20, true)
-	}
 }
 
 type basicTestEntity struct {

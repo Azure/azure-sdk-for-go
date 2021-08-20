@@ -5,8 +5,6 @@ package aztable
 
 import (
 	"context"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // TableEntityListResponsePager is a Pager for Table entity query results.
@@ -25,10 +23,14 @@ import (
 // }
 // err := pager.Err()
 type TableEntityListResponsePager interface {
-	azcore.Pager
+	// azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() TableEntityListByteResponseResponse
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+	// Err returns an error if there was an error on the last request
+	Err() error
 }
 
 type tableEntityQueryResponsePager struct {
@@ -93,10 +95,14 @@ func (p *tableEntityQueryResponsePager) Err() error {
 // }
 // err := pager.Err()
 type TableListResponsePager interface {
-	azcore.Pager
+	// azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() TableListResponseResponse
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+	// Err returns an error if there was an error on the last request
+	Err() error
 }
 
 type tableQueryResponsePager struct {

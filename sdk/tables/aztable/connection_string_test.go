@@ -131,7 +131,7 @@ func TestConnectionStringSAS(t *testing.T) {
 	serviceURL, cred, err := parseConnectionString(connStr)
 	require.NoError(t, err)
 	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net/?fakesharedaccesssignature")
-	require.Nil(t, cred)
+	require.NotNil(t, cred)
 
 	client, err := NewTableClientFromConnectionString("tableName", connStr, nil)
 	require.NoError(t, err)

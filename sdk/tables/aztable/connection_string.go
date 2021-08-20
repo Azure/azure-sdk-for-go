@@ -76,7 +76,7 @@ func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 		if !ok {
 			return "", nil, errConnectionString
 		}
-		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), azcore.AnonymousCredential(), nil
+		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), azcore.NewAnonymousCredential(), nil
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

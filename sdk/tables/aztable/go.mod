@@ -4,8 +4,6 @@ go 1.13
 
 replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../internal
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../azidentity
-
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.18.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.3

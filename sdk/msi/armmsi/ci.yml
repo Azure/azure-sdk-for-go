@@ -1,0 +1,15 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  paths:
+    include:
+    - sdk/msi/armmsi/
+
+pr:
+  paths:
+    include:
+    - sdk/msi/armmsi/
+
+stages:
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'msi/armmsi'

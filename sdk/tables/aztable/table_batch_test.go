@@ -176,7 +176,6 @@ func TestBatchError(t *testing.T) {
 			// Create the batch.
 			batch := make([]TableTransactionAction, 0, 3)
 
-
 			u1, err := uuid.New()
 			require.NoError(t, err)
 			u2, err := uuid.New()

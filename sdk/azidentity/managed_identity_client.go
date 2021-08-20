@@ -85,15 +85,6 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 	}
 }
 
-func hasStatusCode(resp *http.Response, statuscodes ...int) bool {
-	for _, code := range statuscodes {
-		if resp.StatusCode == code {
-			return true
-		}
-	}
-	return false
-}
-
 // authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token if successful.
 // ctx: The current context for controlling the request lifetime.
 // clientID: The client (application) ID of the service principal.
@@ -109,7 +100,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -124,7 +115,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		ExpiresIn    wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
-	if err := unmarshalHttpResponse(res, &value); err != nil {
+	if err := azcore.UnmarshalAsJSON(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	if value.ExpiresIn != "" {
@@ -355,13 +346,6 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 	return c.msiType, nil
 }
 
-func drain(resp *http.Response) {
-	if resp != nil && resp.Body != nil {
-		_, _ = io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
-	}
-}
-
 // performs an I/O request that has a timeout of 500 milliseconds
 func (c *managedIdentityClient) imdsAvailable() bool {
 	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeoutMS*time.Millisecond)
@@ -373,7 +357,7 @@ func (c *managedIdentityClient) imdsAvailable() bool {
 	request.URL.RawQuery = q.Encode()
 	resp, err := c.pipeline.Do(request)
 	if err == nil {
-		drain(resp)
+		azcore.Drain(resp)
 	}
 	return err == nil
 }

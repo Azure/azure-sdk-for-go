@@ -51,12 +51,6 @@ type aadIdentityClient struct {
 	pipeline      azcore.Pipeline
 }
 
-func unmarshalHttpResponse(resp *http.Response, target interface{}) error {
-	defer resp.Body.Close()
-
-	return json.NewDecoder(resp.Body).Decode(target)
-}
-
 // newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
 // that are passed into it along with a default pipeline.
 // options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
@@ -89,7 +83,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createRefreshAccessToken(resp)
 	}
 
@@ -114,7 +108,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -139,7 +133,7 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -152,7 +146,7 @@ func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.Acces
 		ExpiresIn json.Number `json:"expires_in"`
 		ExpiresOn string      `json:"expires_on"`
 	}{}
-	if err := unmarshalHttpResponse(res, &value); err != nil {
+	if err := azcore.UnmarshalAsJSON(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
@@ -174,7 +168,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *http.Response) (*token
 		ExpiresIn    json.Number `json:"expires_in"`
 		ExpiresOn    string      `json:"expires_on"`
 	}{}
-	if err := unmarshalHttpResponse(res, &value); err != nil {
+	if err := azcore.UnmarshalAsJSON(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
@@ -273,7 +267,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -302,7 +296,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 
 func createDeviceCodeResult(res *http.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
-	if err := unmarshalHttpResponse(res, &value); err != nil {
+	if err := azcore.UnmarshalAsJSON(res, &value); err != nil {
 		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
 	}
 	return value, nil
@@ -326,7 +320,7 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createRefreshAccessToken(resp)
 	}
 
@@ -362,7 +356,7 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return createDeviceCodeResult(resp)
 	}
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
@@ -414,7 +408,7 @@ func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID, 
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

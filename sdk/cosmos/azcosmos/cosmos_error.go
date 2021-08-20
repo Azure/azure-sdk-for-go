@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -19,14 +18,17 @@ type cosmosError struct {
 }
 
 func newCosmosError(response *azcore.Response) error {
-	defer response.Body.Close()
-
 	var cError cosmosError
-	err := json.NewDecoder(response.Body).Decode(&cError)
-	switch {
-	case err == io.EOF:
-		return errors.New("request failed")
-	case err != nil:
+	bytesRead, err := response.Payload()
+	if err != nil {
+		return err
+	}
+	if !json.Valid(bytesRead) {
+		return errors.New(string(bytesRead))
+	}
+
+	err = json.Unmarshal(bytesRead, &cError)
+	if err != nil {
 		return err
 	}
 
@@ -34,5 +36,8 @@ func newCosmosError(response *azcore.Response) error {
 }
 
 func (e *cosmosError) Error() string {
+	if e.Code == "" && e.Message == "" {
+		return ""
+	}
 	return fmt.Sprintf("Code: %v, Message %v", e.Code, e.Message)
 }

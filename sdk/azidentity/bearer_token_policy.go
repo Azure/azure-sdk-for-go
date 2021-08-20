@@ -141,7 +141,7 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.Authenticati
 	return p
 }
 
-func (b *bearerTokenPolicy) Do(req *azcore.Request) (*http.Response, error) {
+func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	as := acquiringResourceState{
 		p:   *b,
 		req: req,

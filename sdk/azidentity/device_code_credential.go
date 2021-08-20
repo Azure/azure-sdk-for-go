@@ -34,7 +34,7 @@ type DeviceCodeCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transporter
+	HTTPClient azcore.Transport
 	// Retry configures the built-in retry policy behavior
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior

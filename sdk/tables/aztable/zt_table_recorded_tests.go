@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	DefaultStorageSuffix        = "core.windows.net"
-	DefaultCosmosSuffix         = "cosmos.azure.com"
+	DefaultStorageSuffix = "core.windows.net"
+	DefaultCosmosSuffix  = "cosmos.azure.com"
 )
 
 type EndpointType string

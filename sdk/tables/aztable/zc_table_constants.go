@@ -6,13 +6,13 @@ package aztable
 import "errors"
 
 const (
-	timestamp     = "Timestamp"
-	partitionKey  = "PartitionKey"
-	rowKey        = "RowKey"
-	etagOdata     = "odata.etag"
-	etag          = "ETag"
-	OdataType     = "@odata.type"
-	ISO8601       = "2006-01-02T15:04:05.9999999Z"
+	timestamp    = "Timestamp"
+	partitionKey = "PartitionKey"
+	rowKey       = "RowKey"
+	etagOdata    = "odata.etag"
+	etag         = "ETag"
+	OdataType    = "@odata.type"
+	ISO8601      = "2006-01-02T15:04:05.9999999Z"
 )
 
 var errPartitionKeyRowKeyError = errors.New("entity must have a PartitionKey and RowKey")

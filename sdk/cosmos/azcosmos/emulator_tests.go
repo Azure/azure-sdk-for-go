@@ -45,10 +45,6 @@ func (e *emulatorTests) createDatabase(
 		t.Fatalf("Failed to create database: %v", err)
 	}
 
-	if resp.RawResponse.StatusCode != 201 {
-		t.Fatal(e.parseErrorResponse(resp.RawResponse))
-	}
-
 	if resp.DatabaseProperties.Id != database.Id {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
@@ -64,18 +60,4 @@ func (e *emulatorTests) deleteDatabase(
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)
 	}
-
-	if resp.RawResponse.StatusCode != 204 {
-		t.Fatal(e.parseErrorResponse(resp.RawResponse))
-	}
-}
-
-func (e *emulatorTests) parseErrorResponse(response *http.Response) error {
-	defer response.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-	bodyString := string(bodyBytes)
-	return fmt.Errorf("Failed request with %v. \n Body %v", response, bodyString)
 }

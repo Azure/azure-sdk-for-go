@@ -64,15 +64,20 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 type Flags struct {
 	VersionNumber string
 	RepoURL       string
+	PackageTitle  string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("version-number", "", "Specify the version number of this release")
+	flagSet.String("repo-url", "", "Specifies the swagger repo url for generation")
+	flagSet.String("package-title", "", "Specifies the title of this package")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
 		VersionNumber: flags.GetString(flagSet, "version-number"),
+		RepoURL:       flags.GetString(flagSet, "repo-url"),
+		PackageTitle:  flags.GetString(flagSet, "package-title"),
 	}
 }
 
@@ -118,7 +123,7 @@ func (c *commandContext) execute() error {
 		CommitHash: specRef.Hash().String(),
 	}
 
-	result, err := generateCtx.GenerateForSingleRpNamespace(c.rpName, c.namespaceName, c.flags.VersionNumber, c.flags.RepoURL)
+	result, err := generateCtx.GenerateForSingleRpNamespace(c.rpName, c.namespaceName, c.flags.PackageTitle, c.flags.VersionNumber, c.flags.RepoURL)
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

@@ -59,7 +59,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]
 	for rpName, namespaceNames := range rpMap {
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
-			singleResult, err := ctx.GenerateForSingleRpNamespace(rpName, namespaceName, "", repo)
+			singleResult, err := ctx.GenerateForSingleRpNamespace(rpName, namespaceName, "", "", repo)
 			if err != nil {
 				errors = append(errors, err)
 				continue
@@ -70,17 +70,21 @@ func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName string, specficVersion string, specficRepoURL string) (*GenerateResult, error) {
+func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL string) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SdkPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
+		
+		if specficPackageTitle == "" {
+			specficPackageTitle = strings.Title(rpName)
+		}
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(rpName, namespaceName, template.Flags{
 			SDKRoot:      ctx.SdkPath,
 			TemplatePath: "tools/generator/template/rpName/packageName",
-			PackageTitle: strings.Title(rpName),
+			PackageTitle: specficPackageTitle,
 			Commit:       ctx.CommitHash,
 		}); err != nil {
 			return nil, err

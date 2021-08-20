@@ -1,4 +1,3 @@
-//go:build modhack
 // +build modhack
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

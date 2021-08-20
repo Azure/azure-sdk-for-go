@@ -32,7 +32,7 @@ type ManagedIdentityCredentialOptions struct {
 
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions

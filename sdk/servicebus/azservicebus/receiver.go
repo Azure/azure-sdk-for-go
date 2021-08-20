@@ -3,8 +3,8 @@ package azservicebus
 type ReceiveMode int
 
 const (
-	ReceiveModePeekLock         ReceiveMode = 0
-	ReceiveModeReceiveAndDelete ReceiveMode = 1
+	PeekLock         ReceiveMode = 0
+	ReceiveAndDelete ReceiveMode = 1
 )
 
 type SubQueue string

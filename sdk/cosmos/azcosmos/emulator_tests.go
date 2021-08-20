@@ -6,9 +6,6 @@ package azcosmos
 
 import (
 	"context"
-	"fmt"
-	"io/ioutil"
-	"net/http"
 	"testing"
 )
 
@@ -56,7 +53,7 @@ func (e *emulatorTests) deleteDatabase(
 	t *testing.T,
 	ctx context.Context,
 	database *CosmosDatabase) {
-	resp, err := database.Delete(ctx, nil)
+	_, err := database.Delete(ctx, nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)
 	}

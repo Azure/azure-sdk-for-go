@@ -42,12 +42,16 @@ func (p Pipeline) Do(req *policy.Request) (*http.Response, error) {
 	// check copied from Transport.roundTrip()
 	for k, vv := range req.Raw().Header {
 		if !httpguts.ValidHeaderFieldName(k) {
-			req.Raw().Body.Close()
+			if req.Raw().Body != nil {
+				req.Raw().Body.Close()
+			}
 			return nil, fmt.Errorf("invalid header field name %q", k)
 		}
 		for _, v := range vv {
 			if !httpguts.ValidHeaderFieldValue(v) {
-				req.Raw().Body.Close()
+				if req.Raw().Body != nil {
+					req.Raw().Body.Close()
+				}
 				return nil, fmt.Errorf("invalid header field value %q for key %v", v, k)
 			}
 		}

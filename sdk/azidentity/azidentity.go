@@ -100,7 +100,7 @@ var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)
 
 func newAADAuthenticationFailedError(resp *http.Response) error {
 	authFailed := &AADAuthenticationFailedError{Response: resp}
-	err := resp.UnmarshalAsJSON(authFailed)
+	err := unmarshalHttpResponse(resp, authFailed) //resp.UnmarshalAsJSON(authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()

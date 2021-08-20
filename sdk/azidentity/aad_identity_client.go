@@ -7,7 +7,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -53,6 +55,59 @@ type aadIdentityClient struct {
 	pipeline      azcore.Pipeline
 }
 
+// nopClosingBytesReader is an io.ReadSeekCloser around a byte slice.
+// It also provides direct access to the byte slice.
+type nopClosingBytesReader struct {
+	s []byte
+	i int64
+}
+
+// Bytes returns the underlying byte slice.
+func (r *nopClosingBytesReader) Bytes() []byte {
+	return r.s
+}
+
+// Close implements the io.Closer interface.
+func (*nopClosingBytesReader) Close() error {
+	return nil
+}
+
+// Read implements the io.Reader interface.
+func (r *nopClosingBytesReader) Read(b []byte) (n int, err error) {
+	if r.i >= int64(len(r.s)) {
+		return 0, io.EOF
+	}
+	n = copy(b, r.s[r.i:])
+	r.i += int64(n)
+	return
+}
+
+// Set replaces the existing byte slice with the specified byte slice and resets the reader.
+func (r *nopClosingBytesReader) Set(b []byte) {
+	r.s = b
+	r.i = 0
+}
+
+// Seek implements the io.Seeker interface.
+func (r *nopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
+	var i int64
+	switch whence {
+	case io.SeekStart:
+		i = offset
+	case io.SeekCurrent:
+		i = r.i + offset
+	case io.SeekEnd:
+		i = int64(len(r.s)) + offset
+	default:
+		return 0, errors.New("nopClosingBytesReader: invalid whence")
+	}
+	if i < 0 {
+		return 0, errors.New("nopClosingBytesReader: negative position")
+	}
+	r.i = i
+	return i, nil
+}
+
 // removeBOM removes any byte-order mark prefix from the payload if present.
 func removeBOM(resp *http.Response) error {
 	payload, err := Payload(resp)
@@ -81,6 +136,12 @@ func Payload(resp *http.Response) ([]byte, error) {
 	}
 	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
 	return bytesBody, nil
+}
+
+func unmarshalHttpResponse(resp *http.Response, target interface{}) error {
+	defer resp.Body.Close()
+
+	return json.NewDecoder(resp.Body).Decode(target)
 }
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
@@ -199,7 +260,7 @@ func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.Acces
 		ExpiresIn json.Number `json:"expires_in"`
 		ExpiresOn string      `json:"expires_on"`
 	}{}
-	if err := res.UnmarshalAsJSON(&value); err != nil {
+	if err := unmarshalHttpResponse(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
@@ -221,7 +282,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *http.Response) (*token
 		ExpiresIn    json.Number `json:"expires_in"`
 		ExpiresOn    string      `json:"expires_on"`
 	}{}
-	if err := res.UnmarshalAsJSON(&value); err != nil {
+	if err := unmarshalHttpResponse(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	t, err := value.ExpiresIn.Int64()
@@ -349,7 +410,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 
 func createDeviceCodeResult(res *http.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
-	if err := res.UnmarshalAsJSON(&value); err != nil {
+	if err := unmarshalHttpResponse(res, &value); err != nil {
 		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
 	}
 	return value, nil

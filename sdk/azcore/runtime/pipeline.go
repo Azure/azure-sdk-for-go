@@ -8,10 +8,12 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"golang.org/x/net/http/httpguts"
 )
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
@@ -37,6 +39,19 @@ func NewPipeline(transport policy.Transporter, policies ...policy.Policy) Pipeli
 // the Policy objects (which can transform the Request's URL/query parameters/headers)
 // and ultimately sends the transformed HTTP request over the network.
 func (p Pipeline) Do(req *policy.Request) (*http.Response, error) {
+	// check copied from Transport.roundTrip()
+	for k, vv := range req.Raw().Header {
+		if !httpguts.ValidHeaderFieldName(k) {
+			req.Raw().Body.Close()
+			return nil, fmt.Errorf("invalid header field name %q", k)
+		}
+		for _, v := range vv {
+			if !httpguts.ValidHeaderFieldValue(v) {
+				req.Raw().Body.Close()
+				return nil, fmt.Errorf("invalid header field value %q for key %v", v, k)
+			}
+		}
+	}
 	shared.SetPolicies(req, p.policies)
 	return req.Next()
 }

@@ -14,8 +14,6 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
-
-	"golang.org/x/net/http/httpguts"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -63,19 +61,6 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 	}
 	if !(req.URL.Scheme == "http" || req.URL.Scheme == "https") {
 		return nil, fmt.Errorf("unsupported protocol scheme %s", req.URL.Scheme)
-	}
-	// check copied from Transport.roundTrip()
-	for k, vv := range req.Header {
-		if !httpguts.ValidHeaderFieldName(k) {
-			req.Body.Close()
-			return nil, fmt.Errorf("invalid header field name %q", k)
-		}
-		for _, v := range vv {
-			if !httpguts.ValidHeaderFieldValue(v) {
-				req.Body.Close()
-				return nil, fmt.Errorf("invalid header field value %q for key %v", v, k)
-			}
-		}
 	}
 	return &Request{req: req}, nil
 }

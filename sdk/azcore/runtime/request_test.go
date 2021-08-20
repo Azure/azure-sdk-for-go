@@ -487,30 +487,6 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 	}
 }
 
-func TestNewRequestFail(t *testing.T) {
-	req, err := NewRequest(context.Background(), http.MethodOptions, "://test.contoso.com/")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if req != nil {
-		t.Fatal("unexpected request")
-	}
-	req, err = NewRequest(context.Background(), http.MethodPatch, "/missing/the/host")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if req != nil {
-		t.Fatal("unexpected request")
-	}
-	req, err = NewRequest(context.Background(), http.MethodPatch, "mailto://nobody.contoso.com")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if req != nil {
-		t.Fatal("unexpected request")
-	}
-}
-
 func TestJoinPaths(t *testing.T) {
 	if path := JoinPaths(""); path != "" {
 		t.Fatalf("unexpected path %s", path)

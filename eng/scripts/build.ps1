@@ -1,19 +1,25 @@
 #Requires -Version 7.0
-param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
+param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
 . $PSScriptRoot/meta_generation.ps1
 . $PSScriptRoot/get_module_dirs.ps1
 
 
-function Process-Sdk ($path) {
+function Process-Sdk () {
+    $currentDirectory = Get-Location
     if ($clean) {
-        Write-Host "##[command]Executing go clean -v ./... in " $path
+        Write-Host "##[command]Executing go clean -v ./... in " $currentDirectory
         go clean -v ./...
     }
 
+    if ($cleanGenerated) {
+        Write-Host "##[command]Cleaning auto-generated files in" $currentDirectory
+        Remove-Item "zz_generated_*"
+    }
+
     if ($generate) {
-        Write-Host "##[command]Executing autorest.go in " $path
-        $autorestPath = $path + "/" + $config
+        Write-Host "##[command]Executing autorest.go in " $currentDirectory
+        $autorestPath = "./" + $config
 
         if (ShouldGenerate-AutorestConfig $autorestPath) {
             Generate-AutorestConfig $autorestPath
@@ -22,7 +28,7 @@ function Process-Sdk ($path) {
 
         $autorestVersion = "@autorest/go@4.0.0-preview.25"
         if ($outputFolder -eq '') {
-            $outputFolder = $path
+            $outputFolder = $currentDirectory
         }
         autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
         if ($LASTEXITCODE) {
@@ -35,24 +41,24 @@ function Process-Sdk ($path) {
     }
 
     if ($format) {
-        Write-Host "##[command]Executing gofmt -s -w . in " $path
-        gofmt -s -w $path
+        Write-Host "##[command]Executing gofmt -s -w . in " $currentDirectory
+        gofmt -s -w .
     }
 
     if ($tidy) {
-        Write-Host "##[command]Executing go mod tidy in " $path
+        Write-Host "##[command]Executing go mod tidy in " $currentDirectory
         go mod tidy
     }
 
     if (!$skipBuild) {
-        Write-Host "##[command]Executing go build -x -v ./... in " $path
+        Write-Host "##[command]Executing go build -x -v ./... in " $currentDirectory
         go build -x -v ./...
         Write-Host "##[command]Build Complete!"
 
     }
 
     if ($vet) {
-        Write-Host "##[command]Executing go vet ./... in " $path
+        Write-Host "##[command]Executing go vet ./... in " $currentDirectory
         go vet ./...
     }
 
@@ -79,7 +85,7 @@ if (![string]::IsNullOrWhiteSpace($filter)) {
 try {
     $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
         Push-Location $_.path
-        Process-Sdk $_.path
+        Process-Sdk
         Pop-Location
     }
 }

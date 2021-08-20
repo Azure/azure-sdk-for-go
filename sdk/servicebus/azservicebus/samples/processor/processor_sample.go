@@ -57,7 +57,7 @@ func main() {
 		azservicebus.ProcessorWithQueue(queue),
 		// or for a subscription
 		// azservicebus.ProcessorWithSubscription("topic", "subscription"),
-		azservicebus.ProcessorWithReceiveMode(azservicebus.ReceiveModePeekLock),
+		azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
 	)
 
 	if err != nil {

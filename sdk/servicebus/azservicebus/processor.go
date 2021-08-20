@@ -80,7 +80,7 @@ func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
 // ProcessorWithReceiveMode controls the receive mode for the processor.
 func ProcessorWithReceiveMode(receiveMode ReceiveMode) ProcessorOption {
 	return func(processor *Processor) error {
-		if receiveMode != ReceiveModePeekLock && receiveMode != ReceiveModeReceiveAndDelete {
+		if receiveMode != PeekLock && receiveMode != ReceiveAndDelete {
 			return fmt.Errorf("invalid receive mode specified %d", receiveMode)
 		}
 
@@ -132,7 +132,7 @@ type legacyNamespace interface {
 func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, error) {
 	processor := &Processor{
 		config: processorConfig{
-			ReceiveMode:        ReceiveModePeekLock,
+			ReceiveMode:        PeekLock,
 			ShouldAutoComplete: true,
 			MaxConcurrentCalls: 1,
 			RetryOptions: struct {

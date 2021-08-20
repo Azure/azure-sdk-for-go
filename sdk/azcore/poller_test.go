@@ -309,7 +309,7 @@ func TestOpPollerSimple(t *testing.T) {
 			"Retry-After":        []string{"1"},
 		},
 		Request: &http.Request{
-			Method: http.MethodPut,
+			Method: http.MethodDelete,
 			URL:    reqURL,
 		},
 	}
@@ -520,7 +520,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 			"Retry-After":        []string{"1"},
 		},
 		Request: &http.Request{
-			Method: http.MethodPut,
+			Method: http.MethodDelete,
 			URL:    reqURL,
 		},
 	}

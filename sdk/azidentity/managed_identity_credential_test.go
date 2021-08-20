@@ -512,6 +512,31 @@ func TestManagedIdentityCredential_GetTokenNilResource(t *testing.T) {
 	}
 }
 
+func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
+	_ = os.Setenv(msiEndpoint, srv.URL())
+	defer clearEnvVars(msiEndpoint)
+	options := ManagedIdentityCredentialOptions{
+		HTTPClient: srv,
+	}
+	cred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	scope := "https://localhost/.default"
+	scopes := []string{scope}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: scopes})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if scopes[0] != scope {
+		t.Fatalf("GetToken shouldn't mutate arguments")
+	}
+}
+
 func TestManagedIdentityCredential_GetTokenMultipleResources(t *testing.T) {
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()

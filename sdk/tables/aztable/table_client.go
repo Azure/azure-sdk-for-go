@@ -129,10 +129,10 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 		return entity, err
 	}
 
-	pk, _ := mapEntity[partitionKey]
+	pk := mapEntity[partitionKey]
 	partKey := pk.(string)
 
-	rk, _ := mapEntity[rowKey]
+	rk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
 	switch updateMode {
@@ -155,10 +155,10 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 		return entity, err
 	}
 
-	pk, _ := mapEntity[partitionKey]
+	pk := mapEntity[partitionKey]
 	partKey := pk.(string)
 
-	rk, _ := mapEntity[rowKey]
+	rk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
 	switch updateMode {

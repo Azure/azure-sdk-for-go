@@ -188,7 +188,8 @@ func TestBatchError(t *testing.T) {
 			// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
 			marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])
 			require.NoError(t, err)
-			client.AddEntity(ctx, marshalledFinalEntity)
+			_, err = client.AddEntity(ctx, marshalledFinalEntity)
+			require.NoError(t, err)
 
 			// Add the entities to the batch
 			for i := 0; i < cap(batch); i++ {

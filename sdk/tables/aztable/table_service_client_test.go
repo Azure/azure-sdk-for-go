@@ -66,7 +66,7 @@ func TestQueryTable(t *testing.T) {
 			prefix1 := "zzza"
 			prefix2 := "zzzb"
 
-			defer clearAllTables(service)
+			defer clearAllTables(service) //nolint
 			//create 10 tables with our exected prefix and 1 with a different prefix
 			for i := 0; i < tableCount; i++ {
 				if i < (tableCount - 1) {

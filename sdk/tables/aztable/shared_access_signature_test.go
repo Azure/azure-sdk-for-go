@@ -62,7 +62,7 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil)  //nolint
+	defer recording.StopRecording(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -117,7 +117,7 @@ func TestSASTableClient(t *testing.T) {
 	require.NoError(t, err)
 	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil)  //nolint
+	defer recording.StopRecording(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -174,7 +174,7 @@ func TestSASTableClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil)  //nolint
+	defer recording.StopRecording(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -240,7 +240,7 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil)  //nolint
+	defer recording.StopRecording(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",

@@ -176,6 +176,7 @@ func TestInsertEntity(t *testing.T) {
 			mapEntity["MergeProperty"] = "foo"
 
 			reMarshalled, err := json.Marshal(mapEntity)
+			require.NoError(err)
 
 			// 4. Replace Entity with "bool"-less entity
 			_, err = client.InsertEntity(ctx, reMarshalled, (ReplaceEntity))
@@ -190,6 +191,7 @@ func TestInsertEntity(t *testing.T) {
 			postMerge := qResp.TableEntityQueryResponse.Value[0]
 			var unmarshalledPostMerge map[string]interface{}
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
+			require.NoError(err)
 
 			// 6. Make assertions
 			require.Less(len(unmarshalledPostMerge), len(unMarshalledPreMerge))
@@ -317,7 +319,7 @@ func TestInvalidEntity(t *testing.T) {
 			_, err = client.AddEntity(ctx, badEntityMarshalled)
 
 			require.NotNil(err)
-			require.Contains(err.Error(), partitionKeyRowKeyError.Error())
+			require.Contains(err.Error(), errPartitionKeyRowKeyError.Error())
 		})
 	}
 }

@@ -14,13 +14,6 @@ import (
 )
 
 const (
-	storageAccountNameEnvVar    = "TABLES_STORAGE_ACCOUNT_NAME"
-	cosmosAccountNameEnnVar     = "TABLES_COSMOS_ACCOUNT_NAME"
-	storageEndpointSuffixEnvVar = "STORAGE_ENDPOINT_SUFFIX"
-	cosmosEndpointSuffixEnvVar  = "COSMOS_TABLES_ENDPOINT_SUFFIX"
-	storageAccountKeyEnvVar     = "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY"
-	cosmosAccountKeyEnvVar      = "TABLES_PRIMARY_COSMOS_ACCOUNT_KEY"
-	tableNamePrefix             = "gotable"
 	DefaultStorageSuffix        = "core.windows.net"
 	DefaultCosmosSuffix         = "cosmos.azure.com"
 )

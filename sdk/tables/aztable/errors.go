@@ -9,11 +9,11 @@ var errInvalidUpdateMode = errors.New("invalid EntityUpdateMode")
 
 func checkEntityForPkRk(entity *map[string]interface{}, err error) error {
 	if _, ok := (*entity)[partitionKey]; !ok {
-		return partitionKeyRowKeyError
+		return errPartitionKeyRowKeyError
 	}
 
 	if _, ok := (*entity)[rowKey]; !ok {
-		return partitionKeyRowKeyError
+		return errPartitionKeyRowKeyError
 	}
 
 	return err

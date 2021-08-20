@@ -124,7 +124,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		ExpiresIn    wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
-	if err := unmarshalHttpResponse(res, &value); err != nil {  //res.UnmarshalAsJSON(&value); err != nil {
+	if err := unmarshalHttpResponse(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	if value.ExpiresIn != "" {

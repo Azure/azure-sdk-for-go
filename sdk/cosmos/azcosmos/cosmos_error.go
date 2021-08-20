@@ -23,13 +23,10 @@ func newCosmosError(response *azcore.Response) error {
 	if err != nil {
 		return err
 	}
-	if !json.Valid(bytesRead) {
-		return errors.New(string(bytesRead))
-	}
 
 	err = json.Unmarshal(bytesRead, &cError)
 	if err != nil {
-		return err
+		return errors.New(string(bytesRead))
 	}
 
 	return &cError

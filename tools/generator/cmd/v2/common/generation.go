@@ -75,7 +75,7 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, s
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
-		
+
 		if specficPackageTitle == "" {
 			specficPackageTitle = strings.Title(rpName)
 		}

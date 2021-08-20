@@ -1,6 +1,6 @@
 # Release History
 
-## v0.18.1
+## v0.19.0-beta.1 (Unreleased)
 
 ### Features Added
 * Adds an `ETag` type for comparing etags and handling etags on requests
@@ -12,7 +12,6 @@
 * `JoinPaths` will preserve query parameters encoded in the `root` url.
 
 ### Other Changes
-* Bumps dependency on `internal` module to the latest version (v0.7.0)
 
 ## v0.18.0 (2021-07-29)
 ### Features Added

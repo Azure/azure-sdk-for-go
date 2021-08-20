@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -84,6 +85,15 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 	}
 }
 
+func hasStatusCode(resp *http.Response, statuscodes ...int) bool {
+	for _, code := range statuscodes {
+		if resp.StatusCode == code {
+			return true
+		}
+	}
+	return false
+}
+
 // authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token if successful.
 // ctx: The current context for controlling the request lifetime.
 // clientID: The client (application) ID of the service principal.
@@ -99,14 +109,14 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
 	value := struct {
 		// these are the only fields that we use
 		Token        string        `json:"access_token,omitempty"`
@@ -345,6 +355,13 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 	return c.msiType, nil
 }
 
+func drain(resp *http.Response) {
+	if resp != nil && resp.Body != nil {
+		_, _ = io.Copy(ioutil.Discard, resp.Body)
+		resp.Body.Close()
+	}
+}
+
 // performs an I/O request that has a timeout of 500 milliseconds
 func (c *managedIdentityClient) imdsAvailable() bool {
 	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeoutMS*time.Millisecond)
@@ -356,7 +373,7 @@ func (c *managedIdentityClient) imdsAvailable() bool {
 	request.URL.RawQuery = q.Encode()
 	resp, err := c.pipeline.Do(request)
 	if err == nil {
-		resp.Drain()
+		drain(resp)
 	}
 	return err == nil
 }

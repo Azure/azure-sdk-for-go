@@ -239,12 +239,12 @@ To obtain more detailed logging, including request/response bodies and header va
 
 ```go
 // Set log to output to the console
-azcore.Log().SetListener(func(cls LogClassification, s string) {
+log().SetListener(func(cls LogClassification, s string) {
 		fmt.Println(s) // printing log out to the console
   })
 
 // Include only azidentity credential logs
-azcore.Log().SetClassifications(azidentity.LogCredential)
+log().SetClassifications(azidentity.LogCredential)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

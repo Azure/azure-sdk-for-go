@@ -21,7 +21,7 @@ const (
 	accessTokenRespShortLived = `{"access_token": "` + tokenValue + `", "expires_in": 0}`
 )
 
-func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope string) azcore.Pipeline {
+func defaultTestPipeline(srv azcore.Transporter, cred azcore.Credential, scope string) azcore.Pipeline {
 	retryOpts := azcore.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    50 * time.Millisecond,

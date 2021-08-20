@@ -4,9 +4,11 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"path"
@@ -51,6 +53,57 @@ type aadIdentityClient struct {
 	pipeline      azcore.Pipeline
 }
 
+// removeBOM removes any byte-order mark prefix from the payload if present.
+func removeBOM(resp *http.Response) error {
+	payload, err := Payload(resp)
+	if err != nil {
+		return err
+	}
+	// UTF8
+	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
+	if len(trimmed) < len(payload) {
+		resp.Body.(*nopClosingBytesReader).Set(trimmed)
+	}
+	return nil
+}
+
+// Payload reads and returns the response body or an error.
+// On a successful read, the response body is cached.
+func Payload(resp *http.Response) ([]byte, error) {
+	// r.Body won't be a nopClosingBytesReader if downloading was skipped
+	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
+		return buf.Bytes(), nil
+	}
+	bytesBody, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
+	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
+	return bytesBody, nil
+}
+
+// UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
+func unmarshalAsJSON(resp *http.Response, v interface{}) error {
+	payload, err := Payload(resp)
+	if err != nil {
+		return err
+	}
+	// TODO: verify early exit is correct
+	if len(payload) == 0 {
+		return nil
+	}
+	err = removeBOM(resp)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(payload, v)
+	if err != nil {
+		err = fmt.Errorf("unmarshalling type %T: %s", v, err)
+	}
+	return err
+}
+
 // newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
 // that are passed into it along with a default pipeline.
 // options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
@@ -83,7 +136,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createRefreshAccessToken(resp)
 	}
 
@@ -108,7 +161,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -133,14 +186,14 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
 	value := struct {
 		Token     string      `json:"access_token"`
 		ExpiresIn json.Number `json:"expires_in"`
@@ -159,7 +212,7 @@ func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.Acc
 	}, nil
 }
 
-func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tokenResponse, error) {
+func (c *aadIdentityClient) createRefreshAccessToken(res *http.Response) (*tokenResponse, error) {
 	// To know more about refreshing access tokens please see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code#refreshing-the-access-tokens
 	// DeviceCodeCredential uses refresh token, please see the authentication flow here: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code
 	value := struct {
@@ -267,7 +320,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -294,7 +347,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 	return req, nil
 }
 
-func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
+func createDeviceCodeResult(res *http.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
 	if err := res.UnmarshalAsJSON(&value); err != nil {
 		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
@@ -320,7 +373,7 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createRefreshAccessToken(resp)
 	}
 
@@ -356,7 +409,7 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return createDeviceCodeResult(resp)
 	}
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
@@ -408,7 +461,7 @@ func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID, 
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

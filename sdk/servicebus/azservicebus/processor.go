@@ -182,7 +182,7 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 //
 // Any errors that occur (such as network disconnects, failures in handleMessage) will be
 // sent to your handleError function. The processor will retry and restart as needed -
-// no user invention is required.
+// no user intervention is required.
 func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()

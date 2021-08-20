@@ -43,7 +43,7 @@ func Test_setAsync(t *testing.T) {
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
 }
 
-func Test_getAsync_while_another_func_running(t *testing.T) {
+func Test_getAsync_not_obsolete(t *testing.T) {
 	key := "testAsyncKey"
 	expectedValue0 := CosmosContainerProperties{Id: "0"}
 	expectedValue1 := CosmosContainerProperties{Id: "1"}
@@ -88,7 +88,6 @@ func Test_getAsync_while_another_func_running(t *testing.T) {
 	assert.Equal(t, expectedValue1.Id, containerProps2.Id)
 }
 
-/*
 func Test_getAsync_obsolete(t *testing.T) {
 	key := "testAsyncObsoleteKey"
 	expectedValue0 := CosmosContainerProperties{Id: "0"}
@@ -113,28 +112,26 @@ func Test_getAsync_obsolete(t *testing.T) {
 		return expectedValue1
 	}
 
-	cacheValue, _ := cache.getAsync(key, expectedValue0, f1)
+	cache.getAsync(key, expectedValue0, f1)
 
 	f2 := func() interface{} {
 		f2Called = true
 		return expectedValue2
 	}
 
-	cacheValue2, _ := cache.getAsync(key, expectedValue1, f2)
+	cache.getAsync(key, expectedValue1, f2)
 
-	value, _ := cache.awaitCacheValue(key, cacheValue.ch, ctx)
-	value2, _ := cache.awaitCacheValue(key, cacheValue2.ch, ctx)
+	value, _ := cache.awaitCacheValue(key, ctx)
+	containerProps, _ := value.(CosmosContainerProperties)
+
+	value2, _ := cache.awaitCacheValue(key, ctx)
+	containerProps2, _ := value2.(CosmosContainerProperties)
 
 	assert.True(t, f1Called)
 	assert.True(t, f2Called)
-
-	containerProps, _ := value.(CosmosContainerProperties)
-	assert.Equal(t, expectedValue1.Id, containerProps.Id)
-
-	containerProps2, _ := value2.(CosmosContainerProperties)
+	assert.Equal(t, expectedValue2.Id, containerProps.Id)
 	assert.Equal(t, expectedValue2.Id, containerProps2.Id)
 }
-*/
 
 func Test_remove(t *testing.T) {
 	key := "someKeyToRemove"

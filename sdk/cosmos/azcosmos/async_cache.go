@@ -17,14 +17,15 @@ type asyncCache struct {
 	values sync.Map
 }
 
-type cacheValueTask func() interface{}
-
 type cacheValue struct {
-	value    interface{}
-	complete bool
-	fn       cacheValueTask
-	ch       <-chan interface{}
+	value         interface{}
+	obsoleteValue interface{}
+	complete      bool
+	fn            cacheValueTask
+	ch            <-chan interface{}
 }
+
+type cacheValueTask func() interface{}
 
 func newAsyncCache() *asyncCache {
 	return &asyncCache{}
@@ -36,7 +37,7 @@ func (ac *asyncCache) set(key interface{}, value interface{}) {
 
 func (ac *asyncCache) setAsync(key interface{}, singleValueInit cacheValueTask, ctx context.Context) error {
 	ch := ac.execCacheValueTask(singleValueInit)
-	cachedValue := cacheValue{value: nil, complete: false, fn: singleValueInit, ch: ch}
+	cachedValue := cacheValue{complete: false, fn: singleValueInit, ch: ch}
 	ac.values.Store(key, cachedValue)
 	_, err := ac.awaitCacheValue(key, ctx)
 
@@ -79,14 +80,15 @@ func (ac *asyncCache) getAsync(key interface{}, obsoleteValue interface{}, singl
 	}
 
 	if cachedValue.complete {
-		if !reflect.DeepEqual(obsoleteValue, cachedValue.value) {
-			return nil
-		}
-
 		ch := ac.execCacheValueTask(singleValueInit)
+		cachedValue.obsoleteValue = obsoleteValue
 		cachedValue.complete = false
 		cachedValue.fn = singleValueInit
 		cachedValue.ch = ch
+		ac.values.Store(key, cachedValue)
+	} else {
+		cachedValue.fn = singleValueInit
+		cachedValue.obsoleteValue = obsoleteValue
 		ac.values.Store(key, cachedValue)
 	}
 
@@ -117,6 +119,7 @@ func (ac *asyncCache) execCacheValueTask(t cacheValueTask) <-chan interface{} {
 
 func (ac *asyncCache) awaitCacheValue(key interface{}, ctx context.Context) (interface{}, error) {
 	value, exists := ac.values.Load(key)
+
 	if exists {
 		cachedValue, converted := value.(cacheValue)
 
@@ -124,14 +127,24 @@ func (ac *asyncCache) awaitCacheValue(key interface{}, ctx context.Context) (int
 			return nil, invalidCacheValue{}
 		}
 
-		if !cachedValue.complete {
-			select {
-			case <-ctx.Done():
-				return nil, ctx.Err()
-			case result := <-cachedValue.ch:
-				cachedValue.complete = true
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case result := <-cachedValue.ch:
+			if result == nil {
+				return cachedValue.value, nil
+			}
+
+			if !reflect.DeepEqual(cachedValue.obsoleteValue, result) {
 				cachedValue.value = result
+				cachedValue.complete = true
 				ac.values.Store(key, cachedValue)
+			} else {
+				newch := ac.execCacheValueTask(cachedValue.fn)
+				cachedValue.ch = newch
+				ac.values.Store(key, cachedValue)
+
+				return ac.awaitCacheValue(key, ctx)
 			}
 		}
 

@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `ManagedIdentityCredential.GetToken` no longer mutates its `opts.Scopes`
 
 ### Other Changes
 

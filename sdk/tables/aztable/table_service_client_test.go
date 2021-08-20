@@ -5,14 +5,11 @@ package aztable
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/require"
 )
@@ -28,10 +25,6 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 			// Create a duplicate table to produce an error
 			_, err = service.CreateTable(context.Background(), "tableName")
 			require.Error(t, err)
-
-			var svcErr *runtime.ResponseError
-			errors.As(err, &svcErr)
-			require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
 
 			_, err = service.DeleteTable(context.Background(), "tableName", nil)
 			require.NoError(t, err)
@@ -73,7 +66,7 @@ func TestQueryTable(t *testing.T) {
 			prefix1 := "zzza"
 			prefix2 := "zzzb"
 
-			defer clearAllTables(service)
+			defer clearAllTables(service) //nolint
 			//create 10 tables with our exected prefix and 1 with a different prefix
 			for i := 0; i < tableCount; i++ {
 				if i < (tableCount - 1) {

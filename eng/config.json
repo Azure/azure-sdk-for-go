@@ -13,7 +13,7 @@
             "CoverageGoal": 0.70
         },
         {
-            "Name": "aztable",
+            "Name": "tables",
             "CoverageGoal": 0.01
         }
     ]

@@ -18,14 +18,16 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 func ExamplePipeline_Do() {
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, "https://github.com/robots.txt")
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://github.com/robots.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	pipeline := azcore.NewPipeline(nil)
+	pipeline := runtime.NewPipeline(nil)
 	resp, err := pipeline.Do(req)
 	if err != nil {
 		log.Fatal(err)
@@ -39,12 +41,12 @@ func ExamplePipeline_Do() {
 }
 
 func ExampleRequest_SetBody() {
-	req, err := azcore.NewRequest(context.Background(), http.MethodPut, "https://contoso.com/some/endpoint")
+	req, err := runtime.NewRequest(context.Background(), http.MethodPut, "https://contoso.com/some/endpoint")
 	if err != nil {
 		log.Fatal(err)
 	}
 	body := strings.NewReader("this is seekable content to be uploaded")
-	err = req.SetBody(azcore.NopCloser(body), "text/plain")
+	err = req.SetBody(streaming.NopCloser(body), "text/plain")
 	if err != nil {
 		log.Fatal(err)
 	}

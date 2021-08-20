@@ -1,12 +1,35 @@
 # Release History
 
+## v0.19.0
+
+### Breaking Changes
+* Split content out of `azcore` into various packages.  The intent is to separate content based on its usage (common, uncommon, SDK authors).
+  * `azcore` has all core functionality.
+  * `log` contains facilities for configuring in-box logging.
+  * `policy` is used for configuring pipeline options and creating custom pipeline policies.
+  * `runtime` contains various helpers used by SDK authors and generated content.
+  * `streaming` has helpers for streaming IO operations.
+* `NewTelemetryPolicy()` now requires module and version parameters and the `Value` option has been removed.
+  * As a result, the `Request.Telemetry()` method has been removed.
+* The telemetry policy now includes the SDK prefix `azsdk-go-` so callers no longer need to provide it.
+* The `*http.Request` in `runtime.Request` is no longer anonymously embedded.  Use the `Raw()` method to access it.
+* The `UserAgent` and `Version` constants have been made internal, `Module` and `Version` respectively.
+
+### Bug Fixes
+* Fixed an issue in the retry policy where the request body could be overwritten after a rewind.
+
+### Other Changes
+* Moved modules `armcore` and `to` content into `arm` and `to` packages respectively.
+  * The `Pipeline()` method on `armcore.Connection` has been replaced by `NewPipeline()` in `arm.Connection`.  It takes module and version parameters used by the telemetry policy.
+* Poller logic has been consolidated across ARM and core implementations.
+  * This required some changes to the internal interfaces for core pollers.
+* The core poller types have been improved, including more logging and test coverage.
+
 ## v0.18.1
 
 ### Features Added
 * Adds an `ETag` type for comparing etags and handling etags on requests
 * Simplifies the `requestBodyProgess` and `responseBodyProgress` into a single `progress` object
-
-### Breaking Changes
 
 ### Bugs Fixed
 * `JoinPaths` will preserve query parameters encoded in the `root` url.

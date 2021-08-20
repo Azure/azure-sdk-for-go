@@ -5,6 +5,7 @@ parameters:
   Image: ''
   GoVersion: ''
   RunTests: false
+  rootFolder: '$(Build.SourcesDirectory)'
 
 steps:
 

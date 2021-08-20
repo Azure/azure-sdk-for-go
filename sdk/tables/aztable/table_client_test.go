@@ -4,16 +4,11 @@
 package aztable
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/stretchr/testify/require"
 )
 
@@ -28,10 +23,6 @@ func TestServiceErrors(t *testing.T) {
 			// Create a duplicate table to produce an error
 			_, err := client.Create(ctx)
 			require.Error(t, err)
-
-			var svcErr *runtime.ResponseError
-			errors.As(err, &svcErr)
-			require.Equal(t, svcErr.RawResponse().StatusCode, http.StatusConflict)
 		})
 	}
 }
@@ -77,9 +68,7 @@ func TestAddComplexEntity(t *testing.T) {
 			marshalledEntity, err := json.Marshal(entity)
 			require.NoError(t, err)
 			_, err = client.AddEntity(ctx, marshalledEntity)
-			var svcErr *runtime.ResponseError
-			errors.As(err, &svcErr)
-			require.Nilf(t, err, getStringFromBody(svcErr))
+			require.NoError(t, err)
 		})
 	}
 }
@@ -331,22 +320,4 @@ func TestInvalidEntity(t *testing.T) {
 			require.Contains(err.Error(), partitionKeyRowKeyError.Error())
 		})
 	}
-}
-
-func getStringFromBody(e *runtime.ResponseError) string {
-	if e == nil {
-		return "Error is nil"
-	}
-	r := e.RawResponse()
-	body := bytes.Buffer{}
-	b := r.Body
-	b.Close()
-	if b != nil {
-		_, err := body.ReadFrom(b)
-		if err != nil {
-			return "<emtpy body>"
-		}
-		_ = ioutil.NopCloser(&body)
-	}
-	return body.String()
 }

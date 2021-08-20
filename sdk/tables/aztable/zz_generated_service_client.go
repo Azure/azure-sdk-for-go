@@ -10,10 +10,11 @@ package aztable
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type serviceClient struct {
@@ -31,7 +32,7 @@ func (client *serviceClient) GetProperties(ctx context.Context, options *Service
 	if err != nil {
 		return TableServicePropertiesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !azcore.HasStatusCode(resp, http.StatusOK) {
 		return TableServicePropertiesResponse{}, client.getPropertiesHandleError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
@@ -60,12 +61,12 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *serviceClient) getPropertiesHandleResponse(resp *azcore.Response) (TableServicePropertiesResponse, error) {
+func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (TableServicePropertiesResponse, error) {
 	var val *TableServiceProperties
-	if err := resp.UnmarshalAsXML(&val); err != nil {
+	if err := azcore.UnmarshalAsXML(resp, &val); err != nil {
 		return TableServicePropertiesResponse{}, err
 	}
-	result := TableServicePropertiesResponse{RawResponse: resp.Response, StorageServiceProperties: val}
+	result := TableServicePropertiesResponse{RawResponse: resp, StorageServiceProperties: val}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -79,16 +80,16 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *azcore.Response) 
 }
 
 // getPropertiesHandleError handles the GetProperties error response.
-func (client *serviceClient) getPropertiesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *serviceClient) getPropertiesHandleError(resp *http.Response) error {
+	body, err := azcore.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return azcore.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return azcore.NewResponseError(&errType, resp)
 }
 
 // GetStatistics - Retrieves statistics related to replication for the Table service. It is only available on the secondary location endpoint when read-access
@@ -103,7 +104,7 @@ func (client *serviceClient) GetStatistics(ctx context.Context, options *Service
 	if err != nil {
 		return TableServiceStatsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !azcore.HasStatusCode(resp, http.StatusOK) {
 		return TableServiceStatsResponse{}, client.getStatisticsHandleError(resp)
 	}
 	return client.getStatisticsHandleResponse(resp)
@@ -132,12 +133,12 @@ func (client *serviceClient) getStatisticsCreateRequest(ctx context.Context, opt
 }
 
 // getStatisticsHandleResponse handles the GetStatistics response.
-func (client *serviceClient) getStatisticsHandleResponse(resp *azcore.Response) (TableServiceStatsResponse, error) {
+func (client *serviceClient) getStatisticsHandleResponse(resp *http.Response) (TableServiceStatsResponse, error) {
 	var val *TableServiceStats
-	if err := resp.UnmarshalAsXML(&val); err != nil {
+	if err := azcore.UnmarshalAsXML(resp, &val); err != nil {
 		return TableServiceStatsResponse{}, err
 	}
-	result := TableServiceStatsResponse{RawResponse: resp.Response, StorageServiceStats: val}
+	result := TableServiceStatsResponse{RawResponse: resp, StorageServiceStats: val}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -158,16 +159,16 @@ func (client *serviceClient) getStatisticsHandleResponse(resp *azcore.Response) 
 }
 
 // getStatisticsHandleError handles the GetStatistics error response.
-func (client *serviceClient) getStatisticsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *serviceClient) getStatisticsHandleError(resp *http.Response) error {
+	body, err := azcore.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return azcore.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return azcore.NewResponseError(&errType, resp)
 }
 
 // SetProperties - Sets properties for an account's Table service endpoint, including properties for Analytics and CORS (Cross-Origin Resource Sharing)
@@ -182,7 +183,7 @@ func (client *serviceClient) SetProperties(ctx context.Context, tableServiceProp
 	if err != nil {
 		return ServiceSetPropertiesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted) {
+	if !azcore.HasStatusCode(resp, http.StatusAccepted) {
 		return ServiceSetPropertiesResponse{}, client.setPropertiesHandleError(resp)
 	}
 	return client.setPropertiesHandleResponse(resp)
@@ -211,8 +212,8 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, tab
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *serviceClient) setPropertiesHandleResponse(resp *azcore.Response) (ServiceSetPropertiesResponse, error) {
-	result := ServiceSetPropertiesResponse{RawResponse: resp.Response}
+func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (ServiceSetPropertiesResponse, error) {
+	result := ServiceSetPropertiesResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -226,14 +227,14 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *azcore.Response) 
 }
 
 // setPropertiesHandleError handles the SetProperties error response.
-func (client *serviceClient) setPropertiesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *serviceClient) setPropertiesHandleError(resp *http.Response) error {
+	body, err := azcore.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return azcore.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return azcore.NewResponseError(&errType, resp)
 }

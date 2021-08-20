@@ -58,9 +58,9 @@ func TestSASServiceClient(t *testing.T) {
 
 	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
-	err = recording.StartRecording(t, nil)
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.AnonymousCredential())
+	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil)
 
@@ -113,9 +113,9 @@ func TestSASTableClient(t *testing.T) {
 
 	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
-	err = recording.StartRecording(t, nil)
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.AnonymousCredential())
+	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil)
 
@@ -170,9 +170,9 @@ func TestSASTableClientReadOnly(t *testing.T) {
 
 	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
-	err = recording.StartRecording(t, nil)
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.AnonymousCredential())
+	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil)
 
@@ -236,9 +236,9 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 
 	sasUrl := fmt.Sprintf("https://%s.table.cosmos.azure.com/?%s", accountName, queryParams)
 
-	err = recording.StartRecording(t, nil)
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.AnonymousCredential())
+	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil)
 

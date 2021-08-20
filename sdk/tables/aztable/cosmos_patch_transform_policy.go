@@ -14,7 +14,7 @@ import (
 // cosmosPatchTransformPolicy transforms PATCH requests into POST requests with the "X-HTTP-Method":"MERGE" header set.
 type cosmosPatchTransformPolicy struct{}
 
-func (p cosmosPatchTransformPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
+func (p cosmosPatchTransformPolicy) Do(req *azcore.Request) (*http.Response, error) {
 	transformPatchToCosmosPost(req)
 	return req.Next()
 }

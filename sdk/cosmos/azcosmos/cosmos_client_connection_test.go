@@ -50,6 +50,10 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	if asError.Message != someError.Message {
 		t.Errorf("Expected %v, but got %v", someError.Message, asError.Message)
 	}
+
+	if err.Error() != asError.Error() {
+		t.Errorf("Expected %v, but got %v", err.Error(), asError.Error())
+	}
 }
 
 func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {

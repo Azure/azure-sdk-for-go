@@ -6,18 +6,17 @@ package azidentity
 import (
 	"fmt"
 	"os"
-	"runtime"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/diag"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // LogCredential entries contain information about authentication.
 // This includes information like the names of environment variables
 // used when obtaining credentials and the type of credential used.
-const LogCredential azlog.Classification = "Credential"
+const LogCredential log.Classification = "Credential"
 
 // log environment variables that can be used for credential types
 func logEnvVars() {
@@ -77,28 +76,6 @@ func logMSIEnv(msi msiType) {
 	log.Write(LogCredential, msg)
 }
 
-// stackTrace returns a formatted stack trace string.
-// skipFrames - the number of stack frames to skip before composing the trace string.
-// totalFrames - the maximum number of stack frames to include in the trace string.
-func stackTrace(skipFrames, totalFrames int) string {
-	sb := strings.Builder{}
-	pcCallers := make([]uintptr, totalFrames)
-	runtime.Callers(skipFrames, pcCallers)
-	frames := runtime.CallersFrames(pcCallers)
-	for {
-		frame, more := frames.Next()
-		sb.WriteString(frame.Function)
-		sb.WriteString("()\n\t")
-		sb.WriteString(frame.File)
-		sb.WriteRune(':')
-		sb.WriteString(fmt.Sprintf("%d\n", frame.Line))
-		if !more {
-			break
-		}
-	}
-	return sb.String()
-}
-
 func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
 	if !log.Should(LogCredential) {
 		return
@@ -106,7 +83,7 @@ func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
 	stack := ""
 	if includeStack {
 		// skip the stack trace frames and ourself
-		stack = "\n" + stackTrace(3, azcore.StackFrameCount)
+		stack = "\n" + diag.StackTrace(3, azcore.StackFrameCount)
 	}
 	log.Writef(LogCredential, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
 }

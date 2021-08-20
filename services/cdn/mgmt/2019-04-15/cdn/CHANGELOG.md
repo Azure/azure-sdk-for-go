@@ -1,17 +1,38 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Signature Changes
+
+#### Funcs
+
+1. CustomDomainsClient.DisableCustomHTTPS
+	- Returns
+		- From: CustomDomain, error
+		- To: CustomDomainsDisableCustomHTTPSFuture, error
+1. CustomDomainsClient.DisableCustomHTTPSSender
+	- Returns
+		- From: *http.Response, error
+		- To: CustomDomainsDisableCustomHTTPSFuture, error
+1. CustomDomainsClient.EnableCustomHTTPS
+	- Returns
+		- From: CustomDomain, error
+		- To: CustomDomainsEnableCustomHTTPSFuture, error
+1. CustomDomainsClient.EnableCustomHTTPSSender
+	- Returns
+		- From: *http.Response, error
+		- To: CustomDomainsEnableCustomHTTPSFuture, error
 
 ## Additive Changes
 
 ### New Funcs
 
-1. CheckNameAvailabilityOutput.MarshalJSON() ([]byte, error)
-1. ErrorResponse.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. ProfileProperties.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. ResourceUsage.MarshalJSON() ([]byte, error)
-1. SsoURI.MarshalJSON() ([]byte, error)
-1. SupportedOptimizationTypesListResult.MarshalJSON() ([]byte, error)
-1. ValidateCustomDomainOutput.MarshalJSON() ([]byte, error)
-1. ValidateProbeOutput.MarshalJSON() ([]byte, error)
+1. *CustomDomainsDisableCustomHTTPSFuture.UnmarshalJSON([]byte) error
+1. *CustomDomainsEnableCustomHTTPSFuture.UnmarshalJSON([]byte) error
+
+### Struct Changes
+
+#### New Structs
+
+1. CustomDomainsDisableCustomHTTPSFuture
+1. CustomDomainsEnableCustomHTTPSFuture

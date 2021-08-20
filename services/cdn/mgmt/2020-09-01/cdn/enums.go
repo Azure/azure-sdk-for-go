@@ -531,6 +531,111 @@ func PossibleLinkToDefaultDomainValues() []LinkToDefaultDomain {
 	return []LinkToDefaultDomain{LinkToDefaultDomainDisabled, LinkToDefaultDomainEnabled}
 }
 
+// LogMetric enumerates the values for log metric.
+type LogMetric string
+
+const (
+	// ClientRequestBandwidth ...
+	ClientRequestBandwidth LogMetric = "clientRequestBandwidth"
+	// ClientRequestCount ...
+	ClientRequestCount LogMetric = "clientRequestCount"
+	// ClientRequestTraffic ...
+	ClientRequestTraffic LogMetric = "clientRequestTraffic"
+	// OriginRequestBandwidth ...
+	OriginRequestBandwidth LogMetric = "originRequestBandwidth"
+	// OriginRequestTraffic ...
+	OriginRequestTraffic LogMetric = "originRequestTraffic"
+	// TotalLatency ...
+	TotalLatency LogMetric = "totalLatency"
+)
+
+// PossibleLogMetricValues returns an array of possible values for the LogMetric const type.
+func PossibleLogMetricValues() []LogMetric {
+	return []LogMetric{ClientRequestBandwidth, ClientRequestCount, ClientRequestTraffic, OriginRequestBandwidth, OriginRequestTraffic, TotalLatency}
+}
+
+// LogMetricsGranularity enumerates the values for log metrics granularity.
+type LogMetricsGranularity string
+
+const (
+	// LogMetricsGranularityP1D ...
+	LogMetricsGranularityP1D LogMetricsGranularity = "P1D"
+	// LogMetricsGranularityPT1H ...
+	LogMetricsGranularityPT1H LogMetricsGranularity = "PT1H"
+	// LogMetricsGranularityPT5M ...
+	LogMetricsGranularityPT5M LogMetricsGranularity = "PT5M"
+)
+
+// PossibleLogMetricsGranularityValues returns an array of possible values for the LogMetricsGranularity const type.
+func PossibleLogMetricsGranularityValues() []LogMetricsGranularity {
+	return []LogMetricsGranularity{LogMetricsGranularityP1D, LogMetricsGranularityPT1H, LogMetricsGranularityPT5M}
+}
+
+// LogMetricsGroupBy enumerates the values for log metrics group by.
+type LogMetricsGroupBy string
+
+const (
+	// LogMetricsGroupByCacheStatus ...
+	LogMetricsGroupByCacheStatus LogMetricsGroupBy = "cacheStatus"
+	// LogMetricsGroupByCountry ...
+	LogMetricsGroupByCountry LogMetricsGroupBy = "country"
+	// LogMetricsGroupByCustomDomain ...
+	LogMetricsGroupByCustomDomain LogMetricsGroupBy = "customDomain"
+	// LogMetricsGroupByHTTPStatusCode ...
+	LogMetricsGroupByHTTPStatusCode LogMetricsGroupBy = "httpStatusCode"
+	// LogMetricsGroupByProtocol ...
+	LogMetricsGroupByProtocol LogMetricsGroupBy = "protocol"
+)
+
+// PossibleLogMetricsGroupByValues returns an array of possible values for the LogMetricsGroupBy const type.
+func PossibleLogMetricsGroupByValues() []LogMetricsGroupBy {
+	return []LogMetricsGroupBy{LogMetricsGroupByCacheStatus, LogMetricsGroupByCountry, LogMetricsGroupByCustomDomain, LogMetricsGroupByHTTPStatusCode, LogMetricsGroupByProtocol}
+}
+
+// LogRanking enumerates the values for log ranking.
+type LogRanking string
+
+const (
+	// LogRankingBrowser ...
+	LogRankingBrowser LogRanking = "browser"
+	// LogRankingCountryOrRegion ...
+	LogRankingCountryOrRegion LogRanking = "countryOrRegion"
+	// LogRankingReferrer ...
+	LogRankingReferrer LogRanking = "referrer"
+	// LogRankingURL ...
+	LogRankingURL LogRanking = "url"
+	// LogRankingUserAgent ...
+	LogRankingUserAgent LogRanking = "userAgent"
+)
+
+// PossibleLogRankingValues returns an array of possible values for the LogRanking const type.
+func PossibleLogRankingValues() []LogRanking {
+	return []LogRanking{LogRankingBrowser, LogRankingCountryOrRegion, LogRankingReferrer, LogRankingURL, LogRankingUserAgent}
+}
+
+// LogRankingMetric enumerates the values for log ranking metric.
+type LogRankingMetric string
+
+const (
+	// LogRankingMetricClientRequestCount ...
+	LogRankingMetricClientRequestCount LogRankingMetric = "clientRequestCount"
+	// LogRankingMetricClientRequestTraffic ...
+	LogRankingMetricClientRequestTraffic LogRankingMetric = "clientRequestTraffic"
+	// LogRankingMetricErrorCount ...
+	LogRankingMetricErrorCount LogRankingMetric = "errorCount"
+	// LogRankingMetricHitCount ...
+	LogRankingMetricHitCount LogRankingMetric = "hitCount"
+	// LogRankingMetricMissCount ...
+	LogRankingMetricMissCount LogRankingMetric = "missCount"
+	// LogRankingMetricUserErrorCount ...
+	LogRankingMetricUserErrorCount LogRankingMetric = "userErrorCount"
+)
+
+// PossibleLogRankingMetricValues returns an array of possible values for the LogRankingMetric const type.
+func PossibleLogRankingMetricValues() []LogRankingMetric {
+	return []LogRankingMetric{LogRankingMetricClientRequestCount, LogRankingMetricClientRequestTraffic, LogRankingMetricErrorCount, LogRankingMetricHitCount, LogRankingMetricMissCount, LogRankingMetricUserErrorCount}
+}
+
 // ManagedRuleEnabledState enumerates the values for managed rule enabled state.
 type ManagedRuleEnabledState string
 
@@ -1476,4 +1581,112 @@ const (
 // PossibleValidateSecretTypeValues returns an array of possible values for the ValidateSecretType const type.
 func PossibleValidateSecretTypeValues() []ValidateSecretType {
 	return []ValidateSecretType{ValidateSecretTypeCustomerCertificate, ValidateSecretTypeManagedCertificate, ValidateSecretTypeURLSigningKey}
+}
+
+// WafAction enumerates the values for waf action.
+type WafAction string
+
+const (
+	// WafActionAllow ...
+	WafActionAllow WafAction = "allow"
+	// WafActionBlock ...
+	WafActionBlock WafAction = "block"
+	// WafActionLog ...
+	WafActionLog WafAction = "log"
+	// WafActionRedirect ...
+	WafActionRedirect WafAction = "redirect"
+)
+
+// PossibleWafActionValues returns an array of possible values for the WafAction const type.
+func PossibleWafActionValues() []WafAction {
+	return []WafAction{WafActionAllow, WafActionBlock, WafActionLog, WafActionRedirect}
+}
+
+// WafGranularity enumerates the values for waf granularity.
+type WafGranularity string
+
+const (
+	// WafGranularityP1D ...
+	WafGranularityP1D WafGranularity = "P1D"
+	// WafGranularityPT1H ...
+	WafGranularityPT1H WafGranularity = "PT1H"
+	// WafGranularityPT5M ...
+	WafGranularityPT5M WafGranularity = "PT5M"
+)
+
+// PossibleWafGranularityValues returns an array of possible values for the WafGranularity const type.
+func PossibleWafGranularityValues() []WafGranularity {
+	return []WafGranularity{WafGranularityP1D, WafGranularityPT1H, WafGranularityPT5M}
+}
+
+// WafMetric enumerates the values for waf metric.
+type WafMetric string
+
+const (
+	// WafMetricClientRequestCount ...
+	WafMetricClientRequestCount WafMetric = "clientRequestCount"
+)
+
+// PossibleWafMetricValues returns an array of possible values for the WafMetric const type.
+func PossibleWafMetricValues() []WafMetric {
+	return []WafMetric{WafMetricClientRequestCount}
+}
+
+// WafRankingGroupBy enumerates the values for waf ranking group by.
+type WafRankingGroupBy string
+
+const (
+	// WafRankingGroupByCustomDomain ...
+	WafRankingGroupByCustomDomain WafRankingGroupBy = "customDomain"
+	// WafRankingGroupByHTTPStatusCode ...
+	WafRankingGroupByHTTPStatusCode WafRankingGroupBy = "httpStatusCode"
+)
+
+// PossibleWafRankingGroupByValues returns an array of possible values for the WafRankingGroupBy const type.
+func PossibleWafRankingGroupByValues() []WafRankingGroupBy {
+	return []WafRankingGroupBy{WafRankingGroupByCustomDomain, WafRankingGroupByHTTPStatusCode}
+}
+
+// WafRankingType enumerates the values for waf ranking type.
+type WafRankingType string
+
+const (
+	// WafRankingTypeAction ...
+	WafRankingTypeAction WafRankingType = "action"
+	// WafRankingTypeClientIP ...
+	WafRankingTypeClientIP WafRankingType = "clientIp"
+	// WafRankingTypeCountry ...
+	WafRankingTypeCountry WafRankingType = "country"
+	// WafRankingTypeRuleGroup ...
+	WafRankingTypeRuleGroup WafRankingType = "ruleGroup"
+	// WafRankingTypeRuleID ...
+	WafRankingTypeRuleID WafRankingType = "ruleId"
+	// WafRankingTypeRuleType ...
+	WafRankingTypeRuleType WafRankingType = "ruleType"
+	// WafRankingTypeURL ...
+	WafRankingTypeURL WafRankingType = "url"
+	// WafRankingTypeUserAgent ...
+	WafRankingTypeUserAgent WafRankingType = "userAgent"
+)
+
+// PossibleWafRankingTypeValues returns an array of possible values for the WafRankingType const type.
+func PossibleWafRankingTypeValues() []WafRankingType {
+	return []WafRankingType{WafRankingTypeAction, WafRankingTypeClientIP, WafRankingTypeCountry, WafRankingTypeRuleGroup, WafRankingTypeRuleID, WafRankingTypeRuleType, WafRankingTypeURL, WafRankingTypeUserAgent}
+}
+
+// WafRuleType enumerates the values for waf rule type.
+type WafRuleType string
+
+const (
+	// Bot ...
+	Bot WafRuleType = "bot"
+	// Custom ...
+	Custom WafRuleType = "custom"
+	// Managed ...
+	Managed WafRuleType = "managed"
+)
+
+// PossibleWafRuleTypeValues returns an array of possible values for the WafRuleType const type.
+func PossibleWafRuleTypeValues() []WafRuleType {
+	return []WafRuleType{Bot, Custom, Managed}
 }

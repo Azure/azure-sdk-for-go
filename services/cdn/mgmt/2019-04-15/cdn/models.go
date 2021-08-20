@@ -670,6 +670,92 @@ func (future *CustomDomainsDeleteFuture) result(client CustomDomainsClient) (cd 
 	return
 }
 
+// CustomDomainsDisableCustomHTTPSFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsDisableCustomHTTPSFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomDomainsClient) (CustomDomain, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomDomainsDisableCustomHTTPSFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomDomainsDisableCustomHTTPSFuture.Result.
+func (future *CustomDomainsDisableCustomHTTPSFuture) result(client CustomDomainsClient) (cd CustomDomain, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDisableCustomHTTPSFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cd.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsDisableCustomHTTPSFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd, err = client.DisableCustomHTTPSResponder(cd.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDisableCustomHTTPSFuture", "Result", cd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CustomDomainsEnableCustomHTTPSFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsEnableCustomHTTPSFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomDomainsClient) (CustomDomain, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomDomainsEnableCustomHTTPSFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomDomainsEnableCustomHTTPSFuture.Result.
+func (future *CustomDomainsEnableCustomHTTPSFuture) result(client CustomDomainsClient) (cd CustomDomain, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsEnableCustomHTTPSFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cd.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsEnableCustomHTTPSFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd, err = client.EnableCustomHTTPSResponder(cd.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsEnableCustomHTTPSFuture", "Result", cd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DeepCreatedOrigin the main origin of CDN content which is added when creating a CDN endpoint.
 type DeepCreatedOrigin struct {
 	// Name - Origin name

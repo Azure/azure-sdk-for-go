@@ -6,10 +6,10 @@ package azidentity
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
 // LogCredential entries contain information about authentication.
@@ -75,6 +75,28 @@ func logMSIEnv(msi msiType) {
 	azcore.Log().Write(LogCredential, msg)
 }
 
+// stackTrace returns a formatted stack trace string.
+// skipFrames - the number of stack frames to skip before composing the trace string.
+// totalFrames - the maximum number of stack frames to include in the trace string.
+func stackTrace(skipFrames, totalFrames int) string {
+	sb := strings.Builder{}
+	pcCallers := make([]uintptr, totalFrames)
+	runtime.Callers(skipFrames, pcCallers)
+	frames := runtime.CallersFrames(pcCallers)
+	for {
+		frame, more := frames.Next()
+		sb.WriteString(frame.Function)
+		sb.WriteString("()\n\t")
+		sb.WriteString(frame.File)
+		sb.WriteRune(':')
+		sb.WriteString(fmt.Sprintf("%d\n", frame.Line))
+		if !more {
+			break
+		}
+	}
+	return sb.String()
+}
+
 func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
 	if !azcore.Log().Should(LogCredential) {
 		return
@@ -82,7 +104,7 @@ func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
 	stack := ""
 	if includeStack {
 		// skip the stack trace frames and ourself
-		stack = "\n" + runtime.StackTrace(3, azcore.StackFrameCount)
+		stack = "\n" + stackTrace(3, azcore.StackFrameCount)
 	}
 	azcore.Log().Writef(LogCredential, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
 }

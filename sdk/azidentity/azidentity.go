@@ -60,7 +60,7 @@ type AADAuthenticationFailedError struct {
 	TraceID       string `json:"trace_id"`
 	CorrelationID string `json:"correlation_id"`
 	URL           string `json:"error_uri"`
-	Response      *azcore.Response
+	Response      *http.Response
 }
 
 func (e *AADAuthenticationFailedError) Error() string {
@@ -98,9 +98,9 @@ func (e *AuthenticationFailedError) Error() string {
 
 var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)
 
-func newAADAuthenticationFailedError(resp *azcore.Response) error {
+func newAADAuthenticationFailedError(resp *http.Response) error {
 	authFailed := &AADAuthenticationFailedError{Response: resp}
-	err := resp.UnmarshalAsJSON(authFailed)
+	err := azcore.UnmarshalAsJSON(resp, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()
@@ -132,7 +132,7 @@ var _ azcore.NonRetriableError = (*CredentialUnavailableError)(nil)
 type pipelineOptions struct {
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 
 	// Retry configures the built-in retry policy behavior
 	Retry azcore.RetryOptions

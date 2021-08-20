@@ -1,15 +1,12 @@
 # Release History
 
-## v0.10.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## v0.9.3 (Unreleased)
 
 ### Bugs Fixed
 * `ManagedIdentityCredential.GetToken` no longer mutates its `opts.Scopes`
 
 ### Other Changes
+* Bumps version of `azcore` to `v0.18.1`
 
 
 ## v0.9.2 (2021-07-23)

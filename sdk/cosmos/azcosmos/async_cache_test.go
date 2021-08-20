@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"context"
-	"fmt"
 	"testing"
 	"time"
 
@@ -48,7 +47,8 @@ func Test_getAsync_while_another_func_running(t *testing.T) {
 	key := "testAsyncKey"
 	expectedValue0 := CosmosContainerProperties{Id: "0"}
 	expectedValue1 := CosmosContainerProperties{Id: "1"}
-	//expectedValue2 := CosmosContainerProperties{Id: "2"}
+	f1Called := false
+	f2Called := false
 
 	ctx := context.Background()
 
@@ -61,22 +61,25 @@ func Test_getAsync_while_another_func_running(t *testing.T) {
 	cache.setAsync(key, f0, ctx)
 
 	f1 := func() interface{} {
-		fmt.Println("f1")
+		f1Called = true
 		time.Sleep(3 * time.Second)
 		return expectedValue1
 	}
 
-	cacheValue, _ := cache.getAsync(key, f1)
+	cache.getAsync(key, expectedValue0, f1)
 
 	f2 := func() interface{} {
-		fmt.Println("f2")
+		f2Called = true
 		return expectedValue1
 	}
 
-	cacheValue2, _ := cache.getAsync(key, f2)
+	cache.getAsync(key, expectedValue0, f2)
 
-	value2, _ := cache.awaitCacheValue(key, cacheValue2.ch, ctx)
-	value, _ := cache.awaitCacheValue(key, cacheValue.ch, ctx)
+	value2, _ := cache.awaitCacheValue(key, ctx)
+	value, _ := cache.awaitCacheValue(key, ctx)
+
+	assert.True(t, f1Called)
+	assert.False(t, f2Called)
 
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue1.Id, containerProps.Id)
@@ -84,6 +87,54 @@ func Test_getAsync_while_another_func_running(t *testing.T) {
 	containerProps2, _ := value2.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue1.Id, containerProps2.Id)
 }
+
+/*
+func Test_getAsync_obsolete(t *testing.T) {
+	key := "testAsyncObsoleteKey"
+	expectedValue0 := CosmosContainerProperties{Id: "0"}
+	expectedValue1 := CosmosContainerProperties{Id: "1"}
+	expectedValue2 := CosmosContainerProperties{Id: "2"}
+	f1Called := false
+	f2Called := false
+
+	ctx := context.Background()
+
+	cache := newAsyncCache()
+
+	f0 := func() interface{} {
+		return expectedValue0
+	}
+
+	cache.setAsync(key, f0, ctx)
+
+	f1 := func() interface{} {
+		f1Called = true
+		time.Sleep(3 * time.Second)
+		return expectedValue1
+	}
+
+	cacheValue, _ := cache.getAsync(key, expectedValue0, f1)
+
+	f2 := func() interface{} {
+		f2Called = true
+		return expectedValue2
+	}
+
+	cacheValue2, _ := cache.getAsync(key, expectedValue1, f2)
+
+	value, _ := cache.awaitCacheValue(key, cacheValue.ch, ctx)
+	value2, _ := cache.awaitCacheValue(key, cacheValue2.ch, ctx)
+
+	assert.True(t, f1Called)
+	assert.True(t, f2Called)
+
+	containerProps, _ := value.(CosmosContainerProperties)
+	assert.Equal(t, expectedValue1.Id, containerProps.Id)
+
+	containerProps2, _ := value2.(CosmosContainerProperties)
+	assert.Equal(t, expectedValue2.Id, containerProps2.Id)
+}
+*/
 
 func Test_remove(t *testing.T) {
 	key := "someKeyToRemove"

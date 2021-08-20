@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"reflect"
 	"sync"
 )
 
@@ -21,6 +22,7 @@ type cacheValueTask func() interface{}
 type cacheValue struct {
 	value    interface{}
 	complete bool
+	fn       cacheValueTask
 	ch       <-chan interface{}
 }
 
@@ -34,9 +36,9 @@ func (ac *asyncCache) set(key interface{}, value interface{}) {
 
 func (ac *asyncCache) setAsync(key interface{}, singleValueInit cacheValueTask, ctx context.Context) error {
 	ch := ac.execCacheValueTask(singleValueInit)
-	cachedValue := cacheValue{value: nil, complete: false, ch: ch}
+	cachedValue := cacheValue{value: nil, complete: false, fn: singleValueInit, ch: ch}
 	ac.values.Store(key, cachedValue)
-	_, err := ac.awaitCacheValue(key, ch, ctx)
+	_, err := ac.awaitCacheValue(key, ctx)
 
 	if err != nil {
 		return err
@@ -62,28 +64,33 @@ func (ac *asyncCache) get(key interface{}) (interface{}, bool) {
 	return nil, false
 }
 
-func (ac *asyncCache) getAsync(key interface{}, singleValueInit cacheValueTask) (*cacheValue, error) {
+func (ac *asyncCache) getAsync(key interface{}, obsoleteValue interface{}, singleValueInit cacheValueTask) error {
 	var cachedValue cacheValue
 	value, valueExists := ac.values.Load(key)
 
 	if !valueExists {
-		return nil, nil
+		return nil
 	}
 
 	cachedValue, converted := value.(cacheValue)
 
 	if !converted {
-		return nil, invalidCacheValue{}
+		return invalidCacheValue{}
 	}
 
 	if cachedValue.complete {
+		if !reflect.DeepEqual(obsoleteValue, cachedValue.value) {
+			return nil
+		}
+
 		ch := ac.execCacheValueTask(singleValueInit)
 		cachedValue.complete = false
+		cachedValue.fn = singleValueInit
 		cachedValue.ch = ch
 		ac.values.Store(key, cachedValue)
 	}
 
-	return &cachedValue, nil
+	return nil
 }
 
 func (ac *asyncCache) remove(key interface{}) {
@@ -108,7 +115,7 @@ func (ac *asyncCache) execCacheValueTask(t cacheValueTask) <-chan interface{} {
 	return ch
 }
 
-func (ac *asyncCache) awaitCacheValue(key interface{}, ch <-chan interface{}, ctx context.Context) (interface{}, error) {
+func (ac *asyncCache) awaitCacheValue(key interface{}, ctx context.Context) (interface{}, error) {
 	value, exists := ac.values.Load(key)
 	if exists {
 		cachedValue, converted := value.(cacheValue)
@@ -121,10 +128,9 @@ func (ac *asyncCache) awaitCacheValue(key interface{}, ch <-chan interface{}, ct
 			select {
 			case <-ctx.Done():
 				return nil, ctx.Err()
-			case result := <-ch:
+			case result := <-cachedValue.ch:
 				cachedValue.complete = true
 				cachedValue.value = result
-				cachedValue.ch = ch
 				ac.values.Store(key, cachedValue)
 			}
 		}

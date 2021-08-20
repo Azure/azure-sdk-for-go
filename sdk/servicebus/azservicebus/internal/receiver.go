@@ -62,10 +62,18 @@ type (
 	// ReceiverOption provides a structure for configuring receivers
 	ReceiverOption func(receiver *Receiver) error
 
-	// ListenerHandle provides the ability to close or listen to the close of a Receiver
-	ListenerHandle struct {
+	// ListenerHandleImpl provides the ability to close or listen to the close of a Receiver
+	ListenerHandleImpl struct {
 		r   *Receiver
 		ctx context.Context
+	}
+
+	// Implemented by *Receiver
+	LegacyReceiver interface {
+		Close(ctx context.Context) error
+		Listen(ctx context.Context, handler Handler) ListenerHandle
+		CompleteMessage(ctx context.Context, message *Message) error
+		AbandonMessage(ctx context.Context, message *Message) error
 	}
 )
 
@@ -211,7 +219,7 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 }
 
 // Listen start a listener for messages sent to the entity path
-func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle {
+func (r *Receiver) Listen(ctx context.Context, handler Handler) ListenerHandle {
 	ctx, done := context.WithCancel(ctx)
 	r.doneListening = done
 
@@ -220,10 +228,20 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle 
 
 	go r.listenForMessages(ctx, newAmqpAdapterHandler(r, handler))
 
-	return &ListenerHandle{
+	return &ListenerHandleImpl{
 		r:   r,
 		ctx: ctx,
 	}
+}
+
+// NOTE: added to make mocking a bit simpler for the processor.
+func (r *Receiver) CompleteMessage(ctx context.Context, message *Message) error {
+	return message.Complete(ctx)
+}
+
+// NOTE: added to make mocking a bit simpler for the processor.
+func (r *Receiver) AbandonMessage(ctx context.Context, message *Message) error {
+	return message.Abandon(ctx)
 }
 
 func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
@@ -459,18 +477,18 @@ func messageID(msg *amqp.Message) interface{} {
 	return id
 }
 
-// Close will close the listener
-func (lc *ListenerHandle) Close(ctx context.Context) error {
-	return lc.r.Close(ctx)
+type ListenerHandle interface {
+	Done() <-chan struct{}
+	Err() error
 }
 
 // Done will close the channel when the listener has stopped
-func (lc *ListenerHandle) Done() <-chan struct{} {
+func (lc *ListenerHandleImpl) Done() <-chan struct{} {
 	return lc.ctx.Done()
 }
 
 // Err will return the last error encountered
-func (lc *ListenerHandle) Err() error {
+func (lc *ListenerHandleImpl) Err() error {
 	lc.r.lastErrorMu.RLock()
 	defer lc.r.lastErrorMu.RUnlock()
 	if lc.r.lastError != nil {

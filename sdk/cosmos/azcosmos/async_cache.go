@@ -22,10 +22,15 @@ type cacheValue struct {
 	obsoleteValue interface{}
 	complete      bool
 	fn            cacheValueTask
-	ch            <-chan interface{}
+	ch            <-chan *cacheTaskResult
+	err           error
 }
 
-type cacheValueTask func() interface{}
+type cacheValueTask func() *cacheTaskResult
+type cacheTaskResult struct {
+	value interface{}
+	err   error
+}
 
 func newAsyncCache() *asyncCache {
 	return &asyncCache{}
@@ -107,8 +112,8 @@ func (ac *asyncCache) clear() {
 
 }
 
-func (ac *asyncCache) execCacheValueTask(t cacheValueTask) <-chan interface{} {
-	ch := make(chan interface{})
+func (ac *asyncCache) execCacheValueTask(t cacheValueTask) <-chan *cacheTaskResult {
+	ch := make(chan *cacheTaskResult)
 
 	go func() {
 		defer close(ch)
@@ -132,11 +137,12 @@ func (ac *asyncCache) awaitCacheValue(key interface{}, ctx context.Context) (int
 			return nil, ctx.Err()
 		case result := <-cachedValue.ch:
 			if result == nil {
-				return cachedValue.value, nil
+				return cachedValue.value, cachedValue.err
 			}
 
-			if !reflect.DeepEqual(cachedValue.obsoleteValue, result) {
-				cachedValue.value = result
+			if !reflect.DeepEqual(cachedValue.obsoleteValue, result.value) {
+				cachedValue.value = result.value
+				cachedValue.err = result.err
 				cachedValue.complete = true
 				ac.values.Store(key, cachedValue)
 			} else {
@@ -148,7 +154,7 @@ func (ac *asyncCache) awaitCacheValue(key interface{}, ctx context.Context) (int
 			}
 		}
 
-		return cachedValue.value, nil
+		return cachedValue.value, cachedValue.err
 	}
 
 	return nil, nil

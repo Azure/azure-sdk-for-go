@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -33,8 +34,9 @@ func Test_setAsync(t *testing.T) {
 
 	cache := newAsyncCache()
 
-	f := func() interface{} {
-		return expectedValue
+	f := func() *cacheTaskResult {
+
+		return &cacheTaskResult{value: expectedValue, err: nil}
 	}
 
 	cache.setAsync(key, f, context.Background())
@@ -54,23 +56,23 @@ func Test_getAsync_not_obsolete(t *testing.T) {
 
 	cache := newAsyncCache()
 
-	f0 := func() interface{} {
-		return expectedValue0
+	f0 := func() *cacheTaskResult {
+		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
 	cache.setAsync(key, f0, ctx)
 
-	f1 := func() interface{} {
+	f1 := func() *cacheTaskResult {
 		f1Called = true
 		time.Sleep(3 * time.Second)
-		return expectedValue1
+		return &cacheTaskResult{value: expectedValue1, err: nil}
 	}
 
 	cache.getAsync(key, expectedValue0, f1)
 
-	f2 := func() interface{} {
+	f2 := func() *cacheTaskResult {
 		f2Called = true
-		return expectedValue1
+		return &cacheTaskResult{value: expectedValue1, err: nil}
 	}
 
 	cache.getAsync(key, expectedValue0, f2)
@@ -100,23 +102,23 @@ func Test_getAsync_obsolete(t *testing.T) {
 
 	cache := newAsyncCache()
 
-	f0 := func() interface{} {
-		return expectedValue0
+	f0 := func() *cacheTaskResult {
+		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
 	cache.setAsync(key, f0, ctx)
 
-	f1 := func() interface{} {
+	f1 := func() *cacheTaskResult {
 		f1Called = true
 		time.Sleep(3 * time.Second)
-		return expectedValue1
+		return &cacheTaskResult{value: expectedValue1, err: nil}
 	}
 
 	cache.getAsync(key, expectedValue0, f1)
 
-	f2 := func() interface{} {
+	f2 := func() *cacheTaskResult {
 		f2Called = true
-		return expectedValue2
+		return &cacheTaskResult{value: expectedValue2, err: nil}
 	}
 
 	cache.getAsync(key, expectedValue1, f2)
@@ -131,6 +133,49 @@ func Test_getAsync_obsolete(t *testing.T) {
 	assert.True(t, f2Called)
 	assert.Equal(t, expectedValue2.Id, containerProps.Id)
 	assert.Equal(t, expectedValue2.Id, containerProps2.Id)
+}
+
+func Test_getAsync_obsolete_with_error(t *testing.T) {
+	key := "testAsyncObsoleteKey"
+	expectedValue0 := CosmosContainerProperties{Id: "0"}
+	expectedValue1 := CosmosContainerProperties{Id: "1"}
+	expectedValue2 := CosmosContainerProperties{Id: "2"}
+	f1Called := false
+	f2Called := false
+
+	ctx := context.Background()
+
+	cache := newAsyncCache()
+
+	f0 := func() *cacheTaskResult {
+		return &cacheTaskResult{value: expectedValue0, err: nil}
+	}
+
+	cache.setAsync(key, f0, ctx)
+
+	f1 := func() *cacheTaskResult {
+		f1Called = true
+		time.Sleep(3 * time.Second)
+		return &cacheTaskResult{value: nil, err: errors.New("some error")}
+	}
+
+	cache.getAsync(key, expectedValue0, f1)
+
+	f2 := func() *cacheTaskResult {
+		f2Called = true
+		return &cacheTaskResult{value: expectedValue2, err: nil}
+	}
+
+	cache.getAsync(key, expectedValue1, f2)
+
+	_, err := cache.awaitCacheValue(key, ctx)
+
+	_, err2 := cache.awaitCacheValue(key, ctx)
+
+	assert.True(t, f1Called)
+	assert.False(t, f2Called)
+	assert.Error(t, err)
+	assert.Error(t, err2)
 }
 
 func Test_remove(t *testing.T) {

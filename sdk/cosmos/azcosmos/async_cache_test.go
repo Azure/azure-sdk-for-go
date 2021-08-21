@@ -22,8 +22,8 @@ func Test_set(t *testing.T) {
 
 	cache := newAsyncCache()
 
-	cache.set(key, expectedValue)
-	value, _ := cache.get(key)
+	cache.setValue(key, expectedValue)
+	value, _ := cache.getValue(key)
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
 }
@@ -39,8 +39,8 @@ func Test_setAsync(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue, err: nil}
 	}
 
-	cache.setAsync(key, f, context.Background())
-	value, _ := cache.get(key)
+	cache.set(key, f, context.Background())
+	value, _ := cache.getValue(key)
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
 }
@@ -60,7 +60,7 @@ func Test_getAsync_not_obsolete(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.setAsync(key, f0, ctx)
+	cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -106,7 +106,7 @@ func Test_getAsync_obsolete(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.setAsync(key, f0, ctx)
+	cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -151,7 +151,7 @@ func Test_getAsync_obsolete_with_error(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.setAsync(key, f0, ctx)
+	cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -184,14 +184,14 @@ func Test_remove(t *testing.T) {
 
 	cache := newAsyncCache()
 
-	cache.set(key, expectedValue)
-	value, _ := cache.get(key)
+	cache.setValue(key, expectedValue)
+	value, _ := cache.getValue(key)
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
 
 	cache.remove(key)
 
-	_, ok := cache.get(key)
+	_, ok := cache.getValue(key)
 
 	assert.False(t, ok)
 }
@@ -204,23 +204,23 @@ func Test_clear(t *testing.T) {
 
 	cache := newAsyncCache()
 
-	cache.set(key, expectedValue)
-	value, _ := cache.get(key)
+	cache.setValue(key, expectedValue)
+	value, _ := cache.getValue(key)
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
 
-	cache.set(key2, expectedValue2)
-	value2, _ := cache.get(key2)
+	cache.setValue(key2, expectedValue2)
+	value2, _ := cache.getValue(key2)
 	containerProps2, _ := value2.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue2.Id, containerProps2.Id)
 
 	cache.clear()
 
-	_, ok := cache.get(key)
+	_, ok := cache.getValue(key)
 
 	assert.False(t, ok)
 
-	_, ok2 := cache.get(key2)
+	_, ok2 := cache.getValue(key2)
 
 	assert.False(t, ok2)
 }

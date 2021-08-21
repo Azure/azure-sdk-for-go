@@ -36,11 +36,11 @@ func newAsyncCache() *asyncCache {
 	return &asyncCache{}
 }
 
-func (ac *asyncCache) set(key interface{}, value interface{}) {
+func (ac *asyncCache) setValue(key interface{}, value interface{}) {
 	ac.values.Store(key, cacheValue{value: value})
 }
 
-func (ac *asyncCache) setAsync(key interface{}, singleValueInit cacheValueTask, ctx context.Context) error {
+func (ac *asyncCache) set(key interface{}, singleValueInit cacheValueTask, ctx context.Context) error {
 	ch := ac.execCacheValueTask(singleValueInit)
 	cachedValue := cacheValue{complete: false, fn: singleValueInit, ch: ch}
 	ac.values.Store(key, cachedValue)
@@ -53,7 +53,7 @@ func (ac *asyncCache) setAsync(key interface{}, singleValueInit cacheValueTask, 
 	return nil
 }
 
-func (ac *asyncCache) get(key interface{}) (interface{}, bool) {
+func (ac *asyncCache) getValue(key interface{}) (interface{}, bool) {
 	var cachedValue cacheValue
 	value, ok := ac.values.Load(key)
 

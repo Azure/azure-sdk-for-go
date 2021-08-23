@@ -8,7 +8,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-type TableClientOptions struct {
+type ClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior.
@@ -21,7 +21,7 @@ type TableClientOptions struct {
 	Scopes []string
 }
 
-func (o *TableClientOptions) getConnectionOptions() *generated.ConnectionOptions {
+func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
 	if o == nil {
 		return nil
 	}

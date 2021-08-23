@@ -36,7 +36,7 @@ type Entity struct {
 }
 
 // EdmEntity is an entity that embeds the azcore.Entity type and has a Properties map for an unlimited
-// number of custom properties. The EdmEntity will serialize EDMGuid/EdmInt64/EDMDateTime/EdmBinary according to Odata annotations
+// number of custom properties. The EdmEntity will serialize EDMGUID/EdmInt64/EDMDateTime/EdmBinary according to Odata annotations
 // myEntity := EdmEntity{
 // 		Entity: Entity{
 // 			PartitionKey: "pk001",
@@ -57,7 +57,7 @@ type EDMEntity struct {
 	Type     string `json:"odata.type"`
 	Etag     string `json:"odata.etag"`
 	Entity
-	Properties map[string]interface{} // Type assert the value to 1 of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGuid, EDMInt64
+	Properties map[string]interface{} // Type assert the value to 1 of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
 }
 
 func (e EDMEntity) MarshalJSON() ([]byte, error) {
@@ -72,7 +72,7 @@ func (e EDMEntity) MarshalJSON() ([]byte, error) {
 			edmType = "Edm.DateTime"
 		case EDMBinary:
 			edmType = "Edm.Binary"
-		case EDMGuid:
+		case EDMGUID:
 			edmType = "Edm.Guid"
 		case EDMInt64:
 			edmType = "Edm.Int64"
@@ -141,7 +141,7 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 				err = json.Unmarshal(propRawValue, &v)
 				propValue = v
 			case "Edm.Guid":
-				var v EDMGuid
+				var v EDMGUID
 				err = json.Unmarshal(propRawValue, &v)
 				propValue = v
 			case "Edm.Int64":
@@ -192,16 +192,16 @@ func (e *EDMInt64) UnmarshalText(data []byte) error {
 	return nil
 }
 
-// EDMGuid represents an entity property that is a GUID wrapped in a string. Using EDMGuid guarantees
+// EDMGUID represents an entity property that is a GUID wrapped in a string. Using EDMGUID guarantees
 // proper odata type annotations.
-type EDMGuid string
+type EDMGUID string
 
-func (e EDMGuid) MarshalText() ([]byte, error) {
+func (e EDMGUID) MarshalText() ([]byte, error) {
 	return ([]byte)(e), nil
 }
 
-func (e *EDMGuid) UnmarshalText(data []byte) error {
-	*e = EDMGuid(string(data))
+func (e *EDMGUID) UnmarshalText(data []byte) error {
+	*e = EDMGUID(string(data))
 	return nil
 }
 

@@ -13,11 +13,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	DefaultStorageSuffix = "core.windows.net"
-	DefaultCosmosSuffix  = "cosmos.azure.com"
-)
-
 type EndpointType string
 
 const (
@@ -143,7 +138,7 @@ func createEdmEntity(count int, pk string) EDMEntity {
 			"Int64":    EDMInt64(123456789012),
 			"Double":   1234.1234,
 			"String":   "test",
-			"Guid":     EDMGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
+			"Guid":     EDMGUID("4185404a-5818-48c3-b9be-f217df0dba6f"),
 			"DateTime": EDMDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
 			"Binary":   EDMBinary("SomeBinary"),
 		},

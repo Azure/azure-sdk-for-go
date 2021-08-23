@@ -84,7 +84,14 @@ func (v AccountSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *Sh
 // The AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountSASPermissions struct {
-	Read, Write, Delete, List, Add, Create, Update, Process bool
+	Read    bool
+	Write   bool
+	Delete  bool
+	List    bool
+	Add     bool
+	Create  bool
+	Update  bool
+	Process bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
@@ -151,7 +158,9 @@ func (p *AccountSASPermissions) Parse(s string) error {
 // The AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type AccountSASResourceTypes struct {
-	Service, Container, Object bool
+	Service   bool
+	Container bool
+	Object    bool
 }
 
 // String produces the SAS resource types string for an Azure Storage account.

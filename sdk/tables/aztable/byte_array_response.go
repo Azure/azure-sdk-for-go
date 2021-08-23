@@ -6,15 +6,15 @@ package aztable
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 // ByteArrayResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
 type ByteArrayResponse struct {
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag azcore.ETag
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -29,7 +29,7 @@ func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 		return ByteArrayResponse{}, err
 	}
 	return ByteArrayResponse{
-		ETag:        m.ETag,
+		ETag:        azcore.ETag(*m.ETag),
 		RawResponse: m.RawResponse,
 		Value:       marshalledValue,
 	}, nil
@@ -37,27 +37,12 @@ func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 
 // ListEntitiesByteResponse is the response envelope for operations that return a TableEntityQueryResponse type.
 type ListEntitiesByteResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
 	// The properties for the table entity query response.
 	TableEntityQueryResponse *TableEntityQueryByteResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
 	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	XMSContinuationNextPartitionKey *string
-
 	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
 	XMSContinuationNextRowKey *string
 }
@@ -87,12 +72,8 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 	}
 
 	return ListEntitiesByteResponse{
-		ClientRequestID:                 resp.ClientRequestID,
-		Date:                            resp.Date,
 		RawResponse:                     resp.RawResponse,
-		RequestID:                       resp.RequestID,
 		TableEntityQueryResponse:        &t,
-		Version:                         resp.Version,
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 	}, nil

@@ -4,7 +4,9 @@
 package aztable
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 // Options for TableClient.Create and TableServiceClient.CreateTable method
@@ -166,14 +168,16 @@ type AddEntityOptions struct {
 	TableEntityProperties map[string]interface{}
 }
 
-type DeleteEntityOptions struct{}
+type DeleteEntityOptions struct {
+	ETag *azcore.ETag
+}
 
 func (d *DeleteEntityOptions) toGenerated() *generated.TableDeleteEntityOptions {
 	return &generated.TableDeleteEntityOptions{}
 }
 
 type UpdateEntityOptions struct {
-	IfMatch *string
+	ETag *azcore.ETag
 }
 
 func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableMergeEntityOptions {
@@ -181,7 +185,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 		return &generated.TableMergeEntityOptions{}
 	}
 	return &generated.TableMergeEntityOptions{
-		IfMatch:               u.IfMatch,
+		IfMatch:               to.StringPtr(string(*u.ETag)),
 		TableEntityProperties: m,
 	}
 }
@@ -191,7 +195,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 		return &generated.TableUpdateEntityOptions{}
 	}
 	return &generated.TableUpdateEntityOptions{
-		IfMatch:               u.IfMatch,
+		IfMatch:               to.StringPtr(string(*u.ETag)),
 		TableEntityProperties: m,
 	}
 }

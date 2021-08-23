@@ -29,18 +29,18 @@ const (
 )
 
 // NewTableClient creates a TableClient struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
-func NewTableClient(serviceURL string, tableName string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
+func NewTableClient(serviceURL string, tableName string, cred azcore.Credential, options *ClientOptions) (*TableClient, error) {
 	s, err := NewTableServiceClient(serviceURL, cred, options)
 	return s.NewTableClient(tableName), err
 }
 
 // Create creates the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Create(ctx context.Context, options *CreateTableOptions) (*CreateTableResponse, error) {
+func (t *TableClient) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
 	return t.service.CreateTable(ctx, t.name, options)
 }
 
 // Delete deletes the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (*DeleteTableResponse, error) {
+func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	return t.service.DeleteTable(ctx, t.name, options)
 }
 
@@ -100,16 +100,19 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte, options *Add
 		err = checkEntityForPkRk(&mapEntity, err)
 		return AddEntityResponse{}, err
 	}
-	return *addEntityResponseFromGenerated(&resp), err
+	return addEntityResponseFromGenerated(&resp), err
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
-func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag *string, options *DeleteEntityOptions) (*DeleteEntityResponse, error) {
-	if etag == nil {
-		nilEtag := "*"
-		etag = &nilEtag
+func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, options *DeleteEntityOptions) (DeleteEntityResponse, error) {
+	if options == nil {
+		options = &DeleteEntityOptions{}
 	}
-	resp, err := t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, *etag, options.toGenerated(), &generated.QueryOptions{})
+	if options.ETag == nil {
+		nilEtag := azcore.ETag("*")
+		options.ETag = &nilEtag
+	}
+	resp, err := t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, string(*options.ETag), options.toGenerated(), &generated.QueryOptions{})
 	return deleteEntityResponseFromGenerated(&resp), err
 }
 
@@ -118,21 +121,20 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 // If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity. Properties not specified in the merge will be unaffected.
 // The specified etag value will be used for optimistic concurrency. If the etag does not match the value of the entity in the table, the operation will fail.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *string, updateMode EntityUpdateMode, options *UpdateEntityOptions) (*UpdateEntityResponse, error) {
-	var ifMatch string = "*"
-	if etag != nil {
-		ifMatch = *etag
-	}
-
+func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
 	if options == nil {
 		options = &UpdateEntityOptions{}
 	}
-	options.IfMatch = &ifMatch
+
+	if options.ETag == nil {
+		star := azcore.ETag("*")
+		options.ETag = &star
+	}
 
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
-		return nil, err
+		return UpdateEntityResponse{}, err
 	}
 
 	pk := mapEntity[partitionKey]
@@ -150,20 +152,20 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
 	if pk == "" || rk == "" {
-		return nil, errPartitionKeyRowKeyError
+		return UpdateEntityResponse{}, errPartitionKeyRowKeyError
 	}
-	return nil, errInvalidUpdateMode
+	return UpdateEntityResponse{}, errInvalidUpdateMode
 }
 
 // InsertEntity inserts an entity if it does not already exist in the table. If the entity does exist, the entity is
 // replaced or merged as specified the updateMode parameter. If the entity exists and updateMode is Merge, the property
 // values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *InsertEntityOptions) (*InsertEntityResponse, error) {
+func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *InsertEntityOptions) (InsertEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
-		return nil, err
+		return InsertEntityResponse{}, err
 	}
 
 	pk := mapEntity[partitionKey]
@@ -182,19 +184,19 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
 	if pk == "" || rk == "" {
-		return nil, errPartitionKeyRowKeyError
+		return InsertEntityResponse{}, errPartitionKeyRowKeyError
 	}
-	return nil, errInvalidUpdateMode
+	return InsertEntityResponse{}, errInvalidUpdateMode
 }
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
-func (t *TableClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (*GetAccessPolicyResponse, error) {
+func (t *TableClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	resp, err := t.client.GetAccessPolicy(ctx, t.name, options.toGenerated())
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
-func (t *TableClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (*SetAccessPolicyResponse, error) {
+func (t *TableClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	response, err := t.client.SetAccessPolicy(ctx, t.name, options.toGenerated())
 	if len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError

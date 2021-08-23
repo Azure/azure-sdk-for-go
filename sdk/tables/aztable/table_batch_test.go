@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/require"
 )
 
@@ -110,10 +110,11 @@ func TestBatchMixed(t *testing.T) {
 			}
 			marshalledMergeEntity, err := json.Marshal(mergeEntity)
 			require.NoError(t, err)
+			etag := azcore.ETag((*resp.TransactionResponses)[0].Header.Get(etag))
 			batch[0] = TableTransactionAction{
 				ActionType: UpdateMerge,
 				Entity:     marshalledMergeEntity,
-				ETag:       to.StringPtr((*resp.TransactionResponses)[0].Header.Get(etag)),
+				ETag:       &etag,
 			}
 
 			// create a delete action for the second added entity

@@ -17,8 +17,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var AADAuthenticationScope = "https://storage.azure.com/.default"
-
 var pathToPackage = "sdk/tables/aztable"
 
 type recordingPolicy struct {
@@ -81,8 +79,7 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
-	options := &TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
+	options := &ClientOptions{
 		PerCallOptions: []azcore.Policy{policy},
 		HTTPClient:     client,
 	}
@@ -93,8 +90,7 @@ func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred 
 	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
-	options := &TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
+	options := &ClientOptions{
 		PerCallOptions: []azcore.Policy{policy},
 		HTTPClient:     client,
 	}

@@ -16,6 +16,7 @@ import (
 const (
 	legacyCosmosTableDomain = ".table.cosmosdb."
 	cosmosTableDomain       = ".table.cosmos."
+	scope                   = "https://storage.azure.com/.default"
 )
 
 // A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
@@ -26,15 +27,15 @@ type TableServiceClient struct {
 }
 
 // NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
-func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
+func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*TableServiceClient, error) {
 	if options == nil {
-		options = &TableClientOptions{}
+		options = &ClientOptions{}
 	}
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: []string{scope}}}))
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &TableServiceClient{
@@ -44,7 +45,7 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	}, nil
 }
 
-// NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
+// NewTableClient returns a pointer to a TableClient affinitized to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
 func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 	return &TableClient{
 		client:  t.client,
@@ -55,7 +56,7 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*CreateTableResponse, error) {
+func (t *TableServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
@@ -64,7 +65,7 @@ func (t *TableServiceClient) CreateTable(ctx context.Context, name string, optio
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (*DeleteTableResponse, error) {
+func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	if options == nil {
 		options = &DeleteTableOptions{}
 	}
@@ -104,7 +105,7 @@ func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) ListTabl
 // handle(err)
 // fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
 // fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
-func (t *TableServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (*GetStatisticsResponse, error) {
+func (t *TableServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
@@ -120,7 +121,7 @@ func (t *TableServiceClient) GetStatistics(ctx context.Context, options *GetStat
 // fmt.Println(resopnse.StorageServiceStats.HourMetrics)
 // fmt.Println(resopnse.StorageServiceStats.Logging)
 // fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
-func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (*GetPropertiesResponse, error) {
+func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
@@ -152,7 +153,7 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetProp
 // props := TableServiceProperties{Logging: &logging}
 // resp, err := context.client.SetProperties(ctx, props, nil)
 // handle(err)
-func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *SetPropertiesOptions) (*SetPropertiesResponse, error) {
+func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}

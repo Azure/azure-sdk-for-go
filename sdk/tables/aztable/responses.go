@@ -6,6 +6,7 @@ package aztable
 import (
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
@@ -13,11 +14,11 @@ type CreateTableResponse struct {
 	RawResponse *http.Response
 }
 
-func createTableResponseFromGen(g *generated.TableCreateResponse) *CreateTableResponse {
+func createTableResponseFromGen(g *generated.TableCreateResponse) CreateTableResponse {
 	if g == nil {
-		return &CreateTableResponse{}
+		return CreateTableResponse{}
 	}
-	return &CreateTableResponse{
+	return CreateTableResponse{
 		RawResponse: g.RawResponse,
 	}
 }
@@ -26,28 +27,28 @@ type DeleteTableResponse struct {
 	RawResponse *http.Response
 }
 
-func deleteTableResponseFromGen(g *generated.TableDeleteResponse) *DeleteTableResponse {
+func deleteTableResponseFromGen(g *generated.TableDeleteResponse) DeleteTableResponse {
 	if g == nil {
-		return &DeleteTableResponse{}
+		return DeleteTableResponse{}
 	}
-	return &DeleteTableResponse{
+	return DeleteTableResponse{
 		RawResponse: g.RawResponse,
 	}
 }
 
 type AddEntityResponse struct {
 	RawResponse *http.Response
-	ETag        *string
+	ETag        azcore.ETag
 }
 
-func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) *AddEntityResponse {
+func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) AddEntityResponse {
 	if g == nil {
-		return &AddEntityResponse{}
+		return AddEntityResponse{}
 	}
 
-	return &AddEntityResponse{
+	return AddEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        g.ETag,
+		ETag:        azcore.ETag(*g.ETag),
 	}
 }
 
@@ -55,66 +56,66 @@ type DeleteEntityResponse struct {
 	RawResponse *http.Response
 }
 
-func deleteEntityResponseFromGenerated(g *generated.TableDeleteEntityResponse) *DeleteEntityResponse {
+func deleteEntityResponseFromGenerated(g *generated.TableDeleteEntityResponse) DeleteEntityResponse {
 	if g == nil {
-		return &DeleteEntityResponse{}
+		return DeleteEntityResponse{}
 	}
-	return &DeleteEntityResponse{
+	return DeleteEntityResponse{
 		RawResponse: g.RawResponse,
 	}
 }
 
 type UpdateEntityResponse struct {
 	RawResponse *http.Response
-	ETag        *string
+	ETag        azcore.ETag
 }
 
-func updateEntityResponseFromMergeGenerated(g *generated.TableMergeEntityResponse) *UpdateEntityResponse {
+func updateEntityResponseFromMergeGenerated(g *generated.TableMergeEntityResponse) UpdateEntityResponse {
 	if g == nil {
-		return &UpdateEntityResponse{}
+		return UpdateEntityResponse{}
 	}
 
-	return &UpdateEntityResponse{
+	return UpdateEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        g.ETag,
+		ETag:        azcore.ETag(*g.ETag),
 	}
 }
 
-func updateEntityResponseFromUpdateGenerated(g *generated.TableUpdateEntityResponse) *UpdateEntityResponse {
+func updateEntityResponseFromUpdateGenerated(g *generated.TableUpdateEntityResponse) UpdateEntityResponse {
 	if g == nil {
-		return &UpdateEntityResponse{}
+		return UpdateEntityResponse{}
 	}
 
-	return &UpdateEntityResponse{
+	return UpdateEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        g.ETag,
+		ETag:        azcore.ETag(*g.ETag),
 	}
 }
 
 type InsertEntityResponse struct {
 	RawResponse *http.Response
-	ETag        *string
+	ETag        azcore.ETag
 }
 
-func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) *InsertEntityResponse {
+func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) InsertEntityResponse {
 	if g == nil {
-		return &InsertEntityResponse{}
+		return InsertEntityResponse{}
 	}
 
-	return &InsertEntityResponse{
+	return InsertEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        g.ETag,
+		ETag:        azcore.ETag(*g.ETag),
 	}
 }
 
-func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) *InsertEntityResponse {
+func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) InsertEntityResponse {
 	if g == nil {
-		return &InsertEntityResponse{}
+		return InsertEntityResponse{}
 	}
 
-	return &InsertEntityResponse{
+	return InsertEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        g.ETag,
+		ETag:        azcore.ETag(*g.ETag),
 	}
 }
 
@@ -123,16 +124,16 @@ type GetAccessPolicyResponse struct {
 	SignedIdentifiers []*SignedIdentifier
 }
 
-func getAccessPolicyResponseFromGenerated(g *generated.TableGetAccessPolicyResponse) *GetAccessPolicyResponse {
+func getAccessPolicyResponseFromGenerated(g *generated.TableGetAccessPolicyResponse) GetAccessPolicyResponse {
 	if g == nil {
-		return &GetAccessPolicyResponse{}
+		return GetAccessPolicyResponse{}
 	}
 
 	var sis []*SignedIdentifier
 	for _, s := range g.SignedIdentifiers {
 		sis = append(sis, fromGeneratedSignedIdentifier(s))
 	}
-	return &GetAccessPolicyResponse{
+	return GetAccessPolicyResponse{
 		RawResponse:       g.RawResponse,
 		SignedIdentifiers: sis,
 	}
@@ -142,11 +143,11 @@ type SetAccessPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-func setAccessPolicyResponseFromGenerated(g *generated.TableSetAccessPolicyResponse) *SetAccessPolicyResponse {
+func setAccessPolicyResponseFromGenerated(g *generated.TableSetAccessPolicyResponse) SetAccessPolicyResponse {
 	if g == nil {
-		return &SetAccessPolicyResponse{}
+		return SetAccessPolicyResponse{}
 	}
-	return &SetAccessPolicyResponse{
+	return SetAccessPolicyResponse{
 		RawResponse: g.RawResponse,
 	}
 }
@@ -155,8 +156,8 @@ type GetStatisticsResponse struct {
 	RawResponse *http.Response
 }
 
-func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsResponse) *GetStatisticsResponse {
-	return &GetStatisticsResponse{
+func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsResponse) GetStatisticsResponse {
+	return GetStatisticsResponse{
 		RawResponse: g.RawResponse,
 	}
 }
@@ -176,12 +177,12 @@ type GetPropertiesResponse struct {
 	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
-func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) *GetPropertiesResponse {
+func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) GetPropertiesResponse {
 	var cors []*CorsRule
 	for _, c := range g.Cors {
 		cors = append(cors, fromGeneratedCors(c))
 	}
-	return &GetPropertiesResponse{
+	return GetPropertiesResponse{
 		RawResponse:   g.RawResponse,
 		Cors:          cors,
 		HourMetrics:   fromGeneratedMetrics(g.HourMetrics),
@@ -194,8 +195,8 @@ type SetPropertiesResponse struct {
 	RawResponse *http.Response
 }
 
-func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesResponse) *SetPropertiesResponse {
-	return &SetPropertiesResponse{
+func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesResponse) SetPropertiesResponse {
+	return SetPropertiesResponse{
 		RawResponse: g.RawResponse,
 	}
 }

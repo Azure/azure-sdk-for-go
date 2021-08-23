@@ -86,7 +86,7 @@ func TestDeleteEntity(t *testing.T) {
 			require.NoError(t, err)
 			_, err = client.AddEntity(ctx, marshalledEntity, nil)
 			require.NoError(t, err)
-			_, delErr := client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, nil, nil)
+			_, delErr := client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, nil)
 			require.Nil(t, delErr)
 		})
 	}
@@ -124,7 +124,7 @@ func TestMergeEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 			require.NoError(err)
 
-			_, updateErr := client.UpdateEntity(ctx, reMarshalled, nil, MergeEntity, nil)
+			_, updateErr := client.UpdateEntity(ctx, reMarshalled, MergeEntity, nil)
 			require.Nil(updateErr)
 
 			var qResp ListEntitiesByteResponse

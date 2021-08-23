@@ -18,7 +18,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -65,33 +64,16 @@ func (e *TableTransactionError) Error() string {
 type TableTransactionAction struct {
 	ActionType TableTransactionActionType
 	Entity     []byte
-	ETag       *string
+	ETag       *azcore.ETag
 }
 
 type TableTransactionResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// PreferenceApplied contains the information returned from the Preference-Applied header response.
-	PreferenceApplied *string
-
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
 	// The response for a single table.
 	TransactionResponses *[]http.Response
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
 	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string
+	ContentType string
 }
 
 type TableSubmitTransactionOptions struct {
@@ -99,31 +81,31 @@ type TableSubmitTransactionOptions struct {
 }
 
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
-func (t *TableClient) SubmitTransaction(ctx context.Context, transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (*TableTransactionResponse, error) {
+func (t *TableClient) SubmitTransaction(ctx context.Context, transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
 	u1, err := uuid.New()
 	if err != nil {
-		return nil, err
+		return TableTransactionResponse{}, err
 	}
 	u2, err := uuid.New()
 	if err != nil {
-		return nil, err
+		return TableTransactionResponse{}, err
 	}
 	return t.submitTransactionInternal(ctx, &transactionActions, u1, u2, tableSubmitTransactionOptions)
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
-func (t *TableClient) submitTransactionInternal(ctx context.Context, transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (*TableTransactionResponse, error) {
+func (t *TableClient) submitTransactionInternal(ctx context.Context, transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
 	if len(*transactionActions) == 0 {
-		return &TableTransactionResponse{}, errors.New(error_empty_transaction)
+		return TableTransactionResponse{}, errors.New(error_empty_transaction)
 	}
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.Con.Endpoint(), "$batch"))
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 	req.Header.Set("x-ms-version", "2019-02-02")
 	if tableSubmitTransactionOptions != nil && tableSubmitTransactionOptions.RequestID != nil {
@@ -137,67 +119,47 @@ func (t *TableClient) submitTransactionInternal(ctx context.Context, transaction
 	writer := multipart.NewWriter(body)
 	err = writer.SetBoundary(boundary)
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
 	batchWriter, err := writer.CreatePart(h)
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 	_, err = batchWriter.Write(changeSetBody.Bytes())
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 	writer.Close()
 
 	err = req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 
 	resp, err := t.client.Con.Pipeline().Do(req)
 	if err != nil {
-		return &TableTransactionResponse{}, err
+		return TableTransactionResponse{}, err
 	}
 
 	transactionResponse, err := buildTransactionResponse(req, resp, len(*transactionActions))
 	if err != nil {
-		return transactionResponse, err
+		return *transactionResponse, err
 	}
 
 	if !azcore.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return &TableTransactionResponse{}, azcore.NewResponseError(err, resp)
+		return TableTransactionResponse{}, azcore.NewResponseError(err, resp)
 	}
-	return transactionResponse, nil
+	return *transactionResponse, nil
 }
 
 func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCount int) (*TableTransactionResponse, error) {
 	innerResponses := make([]http.Response, itemCount)
 	result := TableTransactionResponse{RawResponse: resp, TransactionResponses: &innerResponses}
 
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
-	}
-	if val := resp.Header.Get("Date"); val != "" {
-		date, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return &TableTransactionResponse{}, err
-		}
-		result.Date = &date
-	}
-
-	if val := resp.Header.Get("Preference-Applied"); val != "" {
-		result.PreferenceApplied = &val
-	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
+		result.ContentType = val
 	}
 
 	bytesBody, err := ioutil.ReadAll(resp.Body)
@@ -267,7 +229,7 @@ func newTableTransactionError(errorBody []byte) error {
 		}
 		return &oe
 	}
-	return errors.New("Unknown error.")
+	return fmt.Errorf("unknown error: %s", string(errorBody))
 }
 
 // generateChangesetBody generates the individual changesets for the various operations within the batch request.
@@ -318,12 +280,13 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	}
 	// Consider empty ETags as '*'
 	if transactionAction.ETag == nil {
-		transactionAction.ETag = to.StringPtr("*")
+		star := azcore.ETagAny
+		transactionAction.ETag = &star
 	}
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), *transactionAction.ETag, &generated.TableDeleteEntityOptions{}, qo)
+		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), string(*transactionAction.ETag), &generated.TableDeleteEntityOptions{}, qo)
 		if err != nil {
 			return err
 		}
@@ -337,7 +300,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case InsertMerge:
 		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.ETag != nil {
-			opts.IfMatch = transactionAction.ETag
+			opts.IfMatch = to.StringPtr(string(*transactionAction.ETag))
 		}
 		req, err = t.client.MergeEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
 		if err != nil {
@@ -349,7 +312,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case UpdateReplace:
 		fallthrough
 	case InsertReplace:
-		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: transactionAction.ETag}, qo)
+		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: to.StringPtr(string(*transactionAction.ETag))}, qo)
 		if err != nil {
 			return err
 		}

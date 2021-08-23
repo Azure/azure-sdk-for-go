@@ -3,16 +3,10 @@
 
 package aztable
 
-import "time"
+// import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-type TableAddEntityResponse struct {
-	ClientRequestID                 string
-	RequestID                       string
-	Version                         string
-	Date                            time.Time
-	ETag                            string
-	XMSContinuationNextPartitionKey string
-	XMSContinuationNextRowKey       string
-	PreferenceApplied               string
-	ContentType                     string
-}
+// type TableAddEntityResponse struct {
+// 	ETag                            azcore.ETag
+// 	XMSContinuationNextPartitionKey string
+// 	XMSContinuationNextRowKey       string
+// }

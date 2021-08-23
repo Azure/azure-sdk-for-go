@@ -144,5 +144,5 @@ func (c *cosmosClientConnection) executeAndEnsureSuccessResponse(request *azcore
 		return response, nil
 	}
 
-	return nil, azcore.NewResponseError(newCosmosError(response), response.Response)
+	return nil, newCosmosError(response)
 }

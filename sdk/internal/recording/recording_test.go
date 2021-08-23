@@ -388,6 +388,7 @@ func (s *recordingTests) TestRecordingOptions() {
 
 	require.Equal(GetEnvVariable(s.T(), "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	require.Equal(InPlayback(), !InRecord())
+	require.NotEqual(GetEnvVariable(s.T(), "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
 }
 
 var packagePath = "sdk/internal/recording"

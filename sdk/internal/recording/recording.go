@@ -511,7 +511,6 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 		return err
 	}
 	recordingId = resp.Header.Get(IdHeader)
-	fmt.Println("RECORDINGID: ", recordingId)
 	return nil
 }
 
@@ -573,32 +572,6 @@ func (o *RecordingOptions) Init() {
 	}
 }
 
-// type recordingPolicy struct {
-// 	options RecordingOptions
-// }
-
-// func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
-// 	if o == nil {
-// 		o = &RecordingOptions{}
-// 	}
-// 	p := &recordingPolicy{options: *o}
-// 	p.options.init()
-// 	return p
-// }
-
-// func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
-// 	originalURLHost := req.URL.Host
-// 	req.URL.Scheme = "https"
-// 	req.URL.Host = p.options.host
-// 	req.Host = p.options.host
-
-// 	req.Header.Set(UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.scheme, originalURLHost))
-// 	req.Header.Set(ModeHeader, recordMode)
-// 	req.Header.Set(IdHeader, recordingId)
-
-// 	return req.Next()
-// }
-
 // This looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 	val, ok := os.LookupEnv(varName)
@@ -638,26 +611,6 @@ func InPlayback() bool {
 func InRecord() bool {
 	return GetRecordMode() == ModeRecording
 }
-
-// type FakeCredential struct {
-// 	accountName string
-// 	accountKey  string
-// }
-
-// func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-// 	return &FakeCredential{
-// 		accountName: accountName,
-// 		accountKey:  accountKey,
-// 	}
-// }
-
-// func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-// 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-// 		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
-// 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
-// 		return req.Next()
-// 	})
-// }
 
 func getRootCas() (*x509.CertPool, error) {
 	localFile, ok := os.LookupEnv("PROXY_CERT")

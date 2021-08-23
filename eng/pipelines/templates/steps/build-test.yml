@@ -31,9 +31,8 @@ steps:
     env:
       GO111MODULE: 'on'
 
-  - pwsh: ./eng/scripts/create_coverage.ps1
+  - pwsh: ./eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
     workingDirectory: '${{parameters.GoWorkspace}}'
-    arguments: '${{parameters.ServiceDirectory}}'
     displayName: 'Create Coverage'
     env:
       GO111MODULE: 'off'

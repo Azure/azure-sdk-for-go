@@ -506,7 +506,6 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {

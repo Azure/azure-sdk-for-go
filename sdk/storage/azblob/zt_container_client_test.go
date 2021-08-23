@@ -14,11 +14,9 @@ import (
 	"time"
 )
 
-func (s *azblobTestSuite) TestNewContainerClientValidName() {
+func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
 	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -28,11 +26,9 @@ func (s *azblobTestSuite) TestNewContainerClientValidName() {
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
-func (s *azblobTestSuite) TestCreateRootContainerURL() {
+func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
 	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}

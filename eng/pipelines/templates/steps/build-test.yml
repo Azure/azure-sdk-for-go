@@ -31,6 +31,10 @@ steps:
     env:
       GO111MODULE: 'on'
 
+  - pwsh: ./eng/scripts/create_coverage.ps1
+    env:
+      GO111MODULE: 'off'
+
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

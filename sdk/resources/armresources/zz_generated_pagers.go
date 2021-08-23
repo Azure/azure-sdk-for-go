@@ -17,7 +17,7 @@ import (
 type DeploymentListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DeploymentListResultResponse.
+	// PageResponse returns the current DeploymentListResultResponse.
 	PageResponse() DeploymentListResultResponse
 }
 
@@ -93,7 +93,7 @@ func (p *deploymentListResultPager) PageResponse() DeploymentListResultResponse 
 type DeploymentOperationsListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DeploymentOperationsListResultResponse.
+	// PageResponse returns the current DeploymentOperationsListResultResponse.
 	PageResponse() DeploymentOperationsListResultResponse
 }
 
@@ -169,7 +169,7 @@ func (p *deploymentOperationsListResultPager) PageResponse() DeploymentOperation
 type OperationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current OperationListResultResponse.
+	// PageResponse returns the current OperationListResultResponse.
 	PageResponse() OperationListResultResponse
 }
 
@@ -245,7 +245,7 @@ func (p *operationListResultPager) PageResponse() OperationListResultResponse {
 type ProviderListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ProviderListResultResponse.
+	// PageResponse returns the current ProviderListResultResponse.
 	PageResponse() ProviderListResultResponse
 }
 
@@ -321,7 +321,7 @@ func (p *providerListResultPager) PageResponse() ProviderListResultResponse {
 type ResourceGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ResourceGroupListResultResponse.
+	// PageResponse returns the current ResourceGroupListResultResponse.
 	PageResponse() ResourceGroupListResultResponse
 }
 
@@ -397,7 +397,7 @@ func (p *resourceGroupListResultPager) PageResponse() ResourceGroupListResultRes
 type ResourceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ResourceListResultResponse.
+	// PageResponse returns the current ResourceListResultResponse.
 	PageResponse() ResourceListResultResponse
 }
 
@@ -473,7 +473,7 @@ func (p *resourceListResultPager) PageResponse() ResourceListResultResponse {
 type TagsListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current TagsListResultResponse.
+	// PageResponse returns the current TagsListResultResponse.
 	PageResponse() TagsListResultResponse
 }
 

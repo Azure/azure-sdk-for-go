@@ -19,7 +19,7 @@ type AuthorizationCodeCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
@@ -78,8 +78,8 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts azcore.
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AuthorizationCodeCredential.
-func (c *AuthorizationCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on AuthorizationCodeCredential.
+func (c *AuthorizationCodeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

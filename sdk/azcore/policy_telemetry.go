@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -8,6 +9,7 @@ package azcore
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"os"
 	"runtime"
 	"strings"
@@ -64,19 +66,19 @@ func NewTelemetryPolicy(o *TelemetryOptions) Policy {
 	return &tp
 }
 
-func (p telemetryPolicy) Do(req *Request) (*Response, error) {
+func (p telemetryPolicy) Do(req *Request) (*http.Response, error) {
 	if p.telemetryValue == "" {
 		return req.Next()
 	}
 	// preserve the existing User-Agent string
-	if ua := req.Request.Header.Get(HeaderUserAgent); ua != "" {
+	if ua := req.Request.Header.Get(headerUserAgent); ua != "" {
 		p.telemetryValue = fmt.Sprintf("%s %s", p.telemetryValue, ua)
 	}
 	var rt requestTelemetry
 	if req.OperationValue(&rt) {
 		p.telemetryValue = fmt.Sprintf("%s %s", string(rt), p.telemetryValue)
 	}
-	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
+	req.Request.Header.Set(headerUserAgent, p.telemetryValue)
 	return req.Next()
 }
 

@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,7 +9,7 @@
 
 package redisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-06-01/redis/redisapi"
+import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis/redisapi"
 
 type ClientAPI = original.ClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI

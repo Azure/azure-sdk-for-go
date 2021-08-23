@@ -40,13 +40,12 @@ func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resource
 	result := SnapshotPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SnapshotsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("SnapshotsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SnapshotPollerResponse{}, err
 	}
 	poller := &snapshotPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
@@ -58,13 +57,12 @@ func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resource
 // ResumeCreateOrUpdate creates a new SnapshotPoller from the specified resume token.
 // token - The value must come from a previous call to SnapshotPoller.ResumeToken().
 func (client *SnapshotsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SnapshotPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SnapshotsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SnapshotPollerResponse{}, err
 	}
 	poller := &snapshotPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -146,13 +144,12 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SnapshotsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("SnapshotsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -164,13 +161,12 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SnapshotsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SnapshotsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -316,13 +312,12 @@ func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGro
 	result := AccessURIPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SnapshotsClient.GrantAccess", "location", resp, client.grantAccessHandleError)
+	pt, err := armcore.NewLROPoller("SnapshotsClient.GrantAccess", "location", resp, client.con.Pipeline(), client.grantAccessHandleError)
 	if err != nil {
 		return AccessURIPollerResponse{}, err
 	}
 	poller := &accessURIPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
@@ -334,13 +329,12 @@ func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGro
 // ResumeGrantAccess creates a new AccessURIPoller from the specified resume token.
 // token - The value must come from a previous call to AccessURIPoller.ResumeToken().
 func (client *SnapshotsClient) ResumeGrantAccess(ctx context.Context, token string) (AccessURIPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SnapshotsClient.GrantAccess", token, client.grantAccessHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.GrantAccess", token, client.con.Pipeline(), client.grantAccessHandleError)
 	if err != nil {
 		return AccessURIPollerResponse{}, err
 	}
 	poller := &accessURIPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -540,13 +534,12 @@ func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGr
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SnapshotsClient.RevokeAccess", "location", resp, client.revokeAccessHandleError)
+	pt, err := armcore.NewLROPoller("SnapshotsClient.RevokeAccess", "location", resp, client.con.Pipeline(), client.revokeAccessHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -558,13 +551,12 @@ func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGr
 // ResumeRevokeAccess creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SnapshotsClient) ResumeRevokeAccess(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SnapshotsClient.RevokeAccess", token, client.revokeAccessHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.RevokeAccess", token, client.con.Pipeline(), client.revokeAccessHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -645,13 +637,12 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 	result := SnapshotPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SnapshotsClient.Update", "", resp, client.updateHandleError)
+	pt, err := armcore.NewLROPoller("SnapshotsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return SnapshotPollerResponse{}, err
 	}
 	poller := &snapshotPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
@@ -663,13 +654,12 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // ResumeUpdate creates a new SnapshotPoller from the specified resume token.
 // token - The value must come from a previous call to SnapshotPoller.ResumeToken().
 func (client *SnapshotsClient) ResumeUpdate(ctx context.Context, token string) (SnapshotPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SnapshotsClient.Update", token, client.updateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SnapshotsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return SnapshotPollerResponse{}, err
 	}
 	poller := &snapshotPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

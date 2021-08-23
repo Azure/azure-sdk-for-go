@@ -4,7 +4,7 @@
 
 The `armagfood` module provides operations for working with Azure agfood.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/agfood/armagfood)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/agfood/armagfood)
 
 # Getting started
 

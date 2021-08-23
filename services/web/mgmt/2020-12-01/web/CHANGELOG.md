@@ -2,55 +2,39 @@
 
 ## Additive Changes
 
+### New Constants
+
+1. StagingEnvironmentPolicy.StagingEnvironmentPolicyDisabled
+1. StagingEnvironmentPolicy.StagingEnvironmentPolicyEnabled
+
 ### New Funcs
 
-1. AnalysisDefinitionProperties.MarshalJSON() ([]byte, error)
-1. AppInsightsWebAppStackSettings.MarshalJSON() ([]byte, error)
-1. AppMajorVersion.MarshalJSON() ([]byte, error)
-1. AppMinorVersion.MarshalJSON() ([]byte, error)
-1. AppRuntimeSettings.MarshalJSON() ([]byte, error)
-1. AppRuntimes.MarshalJSON() ([]byte, error)
-1. AppStackProperties.MarshalJSON() ([]byte, error)
-1. ArmIDWrapper.MarshalJSON() ([]byte, error)
-1. BackupItemProperties.MarshalJSON() ([]byte, error)
-1. CertificateDetails.MarshalJSON() ([]byte, error)
-1. CertificateOrderActionProperties.MarshalJSON() ([]byte, error)
-1. DefaultErrorResponse.MarshalJSON() ([]byte, error)
-1. DefaultErrorResponseErrorDetailsItem.MarshalJSON() ([]byte, error)
-1. DeletedSiteProperties.MarshalJSON() ([]byte, error)
-1. DetectorDefinitionProperties.MarshalJSON() ([]byte, error)
-1. DetectorInfo.MarshalJSON() ([]byte, error)
-1. DiagnosticCategoryProperties.MarshalJSON() ([]byte, error)
-1. DomainControlCenterSsoRequest.MarshalJSON() ([]byte, error)
-1. FunctionAppMajorVersion.MarshalJSON() ([]byte, error)
-1. FunctionAppMinorVersion.MarshalJSON() ([]byte, error)
-1. FunctionAppRuntimes.MarshalJSON() ([]byte, error)
-1. FunctionAppStackProperties.MarshalJSON() ([]byte, error)
-1. GeoRegionProperties.MarshalJSON() ([]byte, error)
-1. GitHubActionWebAppStackSettings.MarshalJSON() ([]byte, error)
-1. HybridConnectionKeyProperties.MarshalJSON() ([]byte, error)
-1. HybridConnectionLimitsProperties.MarshalJSON() ([]byte, error)
-1. KeyValuePairStringObject.MarshalJSON() ([]byte, error)
-1. LinuxJavaContainerSettings.MarshalJSON() ([]byte, error)
-1. MSDeployLogEntry.MarshalJSON() ([]byte, error)
-1. MSDeployLogProperties.MarshalJSON() ([]byte, error)
-1. MSDeployStatusProperties.MarshalJSON() ([]byte, error)
-1. ManagedServiceIdentityUserAssignedIdentitiesValue.MarshalJSON() ([]byte, error)
-1. MigrateMySQLStatusProperties.MarshalJSON() ([]byte, error)
-1. NetworkFeaturesProperties.MarshalJSON() ([]byte, error)
-1. PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)
-1. ResourceMetricAvailability.MarshalJSON() ([]byte, error)
-1. SiteConfigPropertiesDictionary.MarshalJSON() ([]byte, error)
-1. SiteConfigurationSnapshotInfoProperties.MarshalJSON() ([]byte, error)
-1. SlotDifferenceProperties.MarshalJSON() ([]byte, error)
-1. SlotSwapStatus.MarshalJSON() ([]byte, error)
-1. SnapshotProperties.MarshalJSON() ([]byte, error)
-1. StaticSiteBuildARMResourceProperties.MarshalJSON() ([]byte, error)
-1. StaticSiteCustomDomainOverviewARMResourceProperties.MarshalJSON() ([]byte, error)
-1. StaticSiteFunctionOverviewARMResourceProperties.MarshalJSON() ([]byte, error)
-1. StaticSiteUserInvitationResponseResourceProperties.MarshalJSON() ([]byte, error)
-1. StaticSitesWorkflowPreviewProperties.MarshalJSON() ([]byte, error)
-1. StorageMigrationResponseProperties.MarshalJSON() ([]byte, error)
-1. SupportTopic.MarshalJSON() ([]byte, error)
-1. UsageProperties.MarshalJSON() ([]byte, error)
-1. WindowsJavaContainerSettings.MarshalJSON() ([]byte, error)
+1. *RemotePrivateEndpointConnection.UnmarshalJSON([]byte) error
+1. AppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck(context.Context, string, string, SwiftVirtualNetwork) (SwiftVirtualNetwork, error)
+1. AppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckPreparer(context.Context, string, string, SwiftVirtualNetwork) (*http.Request, error)
+1. AppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponder(*http.Response) (SwiftVirtualNetwork, error)
+1. AppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSender(*http.Request) (*http.Response, error)
+1. PossibleStagingEnvironmentPolicyValues() []StagingEnvironmentPolicy
+1. RemotePrivateEndpointConnection.MarshalJSON() ([]byte, error)
+1. RemotePrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)
+1. ResponseMessageEnvelopeRemotePrivateEndpointConnection.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. ArmPlan
+1. RemotePrivateEndpointConnection
+1. RemotePrivateEndpointConnectionProperties
+1. ResponseMessageEnvelopeRemotePrivateEndpointConnection
+
+#### New Struct Fields
+
+1. SiteConfig.AcrUseManagedIdentityCreds
+1. SiteConfig.AcrUserManagedIdentityID
+1. SiteConfig.PublicNetworkAccess
+1. SitePatchResourceProperties.VirtualNetworkSubnetID
+1. SiteProperties.VirtualNetworkSubnetID
+1. StaticSite.AllowConfigFileUpdates
+1. StaticSite.PrivateEndpointConnections
+1. StaticSite.StagingEnvironmentPolicy

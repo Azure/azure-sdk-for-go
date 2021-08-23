@@ -34,7 +34,7 @@ func NewDeploymentsClient(con *armcore.Connection, subscriptionID string) *Deplo
 
 // CalculateTemplateHash - Calculate the hash of the given template.
 // If the operation fails it returns the *CloudError error type.
-func (client *DeploymentsClient) CalculateTemplateHash(ctx context.Context, templateParam interface{}, options *DeploymentsCalculateTemplateHashOptions) (TemplateHashResultResponse, error) {
+func (client *DeploymentsClient) CalculateTemplateHash(ctx context.Context, templateParam map[string]interface{}, options *DeploymentsCalculateTemplateHashOptions) (TemplateHashResultResponse, error) {
 	req, err := client.calculateTemplateHashCreateRequest(ctx, templateParam, options)
 	if err != nil {
 		return TemplateHashResultResponse{}, err
@@ -50,7 +50,7 @@ func (client *DeploymentsClient) CalculateTemplateHash(ctx context.Context, temp
 }
 
 // calculateTemplateHashCreateRequest creates the CalculateTemplateHash request.
-func (client *DeploymentsClient) calculateTemplateHashCreateRequest(ctx context.Context, templateParam interface{}, options *DeploymentsCalculateTemplateHashOptions) (*azcore.Request, error) {
+func (client *DeploymentsClient) calculateTemplateHashCreateRequest(ctx context.Context, templateParam map[string]interface{}, options *DeploymentsCalculateTemplateHashOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/calculateTemplateHash"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -651,13 +651,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	result := DeploymentExtendedPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -669,13 +668,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // ResumeCreateOrUpdate creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -758,13 +756,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx c
 	result := DeploymentExtendedPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", "", resp, client.createOrUpdateAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", "", resp, client.con.Pipeline(), client.createOrUpdateAtManagementGroupScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -776,13 +773,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx c
 // ResumeCreateOrUpdateAtManagementGroupScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeCreateOrUpdateAtManagementGroupScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", token, client.createOrUpdateAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", token, client.con.Pipeline(), client.createOrUpdateAtManagementGroupScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -861,13 +857,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context,
 	result := DeploymentExtendedPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdateAtScope", "", resp, client.createOrUpdateAtScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.CreateOrUpdateAtScope", "", resp, client.con.Pipeline(), client.createOrUpdateAtScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -879,13 +874,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context,
 // ResumeCreateOrUpdateAtScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeCreateOrUpdateAtScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtScope", token, client.createOrUpdateAtScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtScope", token, client.con.Pipeline(), client.createOrUpdateAtScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -964,13 +958,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx cont
 	result := DeploymentExtendedPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", "", resp, client.createOrUpdateAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", "", resp, client.con.Pipeline(), client.createOrUpdateAtSubscriptionScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -982,13 +975,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx cont
 // ResumeCreateOrUpdateAtSubscriptionScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeCreateOrUpdateAtSubscriptionScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", token, client.createOrUpdateAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", token, client.con.Pipeline(), client.createOrUpdateAtSubscriptionScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1067,13 +1059,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Co
 	result := DeploymentExtendedPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdateAtTenantScope", "", resp, client.createOrUpdateAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.CreateOrUpdateAtTenantScope", "", resp, client.con.Pipeline(), client.createOrUpdateAtTenantScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -1085,13 +1076,12 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Co
 // ResumeCreateOrUpdateAtTenantScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeCreateOrUpdateAtTenantScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtTenantScope", token, client.createOrUpdateAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtTenantScope", token, client.con.Pipeline(), client.createOrUpdateAtTenantScopeHandleError)
 	if err != nil {
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1172,13 +1162,12 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1190,13 +1179,12 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1291,13 +1279,12 @@ func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.C
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.DeleteAtManagementGroupScope", "", resp, client.deleteAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.DeleteAtManagementGroupScope", "", resp, client.con.Pipeline(), client.deleteAtManagementGroupScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1309,13 +1296,12 @@ func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.C
 // ResumeDeleteAtManagementGroupScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeDeleteAtManagementGroupScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtManagementGroupScope", token, client.deleteAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.DeleteAtManagementGroupScope", token, client.con.Pipeline(), client.deleteAtManagementGroupScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1406,13 +1392,12 @@ func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope s
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.DeleteAtScope", "", resp, client.deleteAtScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.DeleteAtScope", "", resp, client.con.Pipeline(), client.deleteAtScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1424,13 +1409,12 @@ func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope s
 // ResumeDeleteAtScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeDeleteAtScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtScope", token, client.deleteAtScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.DeleteAtScope", token, client.con.Pipeline(), client.deleteAtScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1521,13 +1505,12 @@ func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Cont
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.DeleteAtSubscriptionScope", "", resp, client.deleteAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.DeleteAtSubscriptionScope", "", resp, client.con.Pipeline(), client.deleteAtSubscriptionScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1539,13 +1522,12 @@ func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Cont
 // ResumeDeleteAtSubscriptionScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeDeleteAtSubscriptionScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtSubscriptionScope", token, client.deleteAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.DeleteAtSubscriptionScope", token, client.con.Pipeline(), client.deleteAtSubscriptionScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1636,13 +1618,12 @@ func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, d
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.DeleteAtTenantScope", "", resp, client.deleteAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.DeleteAtTenantScope", "", resp, client.con.Pipeline(), client.deleteAtTenantScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1654,13 +1635,12 @@ func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, d
 // ResumeDeleteAtTenantScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeDeleteAtTenantScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtTenantScope", token, client.deleteAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.DeleteAtTenantScope", token, client.con.Pipeline(), client.deleteAtTenantScopeHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -2681,13 +2661,12 @@ func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGrou
 	result := DeploymentValidateResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.Validate", "", resp, client.validateHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.Validate", "", resp, client.con.Pipeline(), client.validateHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2699,13 +2678,12 @@ func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGrou
 // ResumeValidate creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeValidate(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.Validate", token, client.validateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.Validate", token, client.con.Pipeline(), client.validateHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -2788,13 +2766,12 @@ func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context
 	result := DeploymentValidateResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.ValidateAtManagementGroupScope", "", resp, client.validateAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.ValidateAtManagementGroupScope", "", resp, client.con.Pipeline(), client.validateAtManagementGroupScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2806,13 +2783,12 @@ func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context
 // ResumeValidateAtManagementGroupScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeValidateAtManagementGroupScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtManagementGroupScope", token, client.validateAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.ValidateAtManagementGroupScope", token, client.con.Pipeline(), client.validateAtManagementGroupScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -2891,13 +2867,12 @@ func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope
 	result := DeploymentValidateResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.ValidateAtScope", "", resp, client.validateAtScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.ValidateAtScope", "", resp, client.con.Pipeline(), client.validateAtScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2909,13 +2884,12 @@ func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope
 // ResumeValidateAtScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeValidateAtScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtScope", token, client.validateAtScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.ValidateAtScope", token, client.con.Pipeline(), client.validateAtScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -2994,13 +2968,12 @@ func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Co
 	result := DeploymentValidateResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.ValidateAtSubscriptionScope", "", resp, client.validateAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.ValidateAtSubscriptionScope", "", resp, client.con.Pipeline(), client.validateAtSubscriptionScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -3012,13 +2985,12 @@ func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Co
 // ResumeValidateAtSubscriptionScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeValidateAtSubscriptionScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtSubscriptionScope", token, client.validateAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.ValidateAtSubscriptionScope", token, client.con.Pipeline(), client.validateAtSubscriptionScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -3097,13 +3069,12 @@ func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context,
 	result := DeploymentValidateResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.ValidateAtTenantScope", "", resp, client.validateAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.ValidateAtTenantScope", "", resp, client.con.Pipeline(), client.validateAtTenantScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -3115,13 +3086,12 @@ func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context,
 // ResumeValidateAtTenantScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeValidateAtTenantScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtTenantScope", token, client.validateAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.ValidateAtTenantScope", token, client.con.Pipeline(), client.validateAtTenantScopeHandleError)
 	if err != nil {
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -3196,13 +3166,12 @@ func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupN
 	result := WhatIfOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.WhatIf", "location", resp, client.whatIfHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.WhatIf", "location", resp, client.con.Pipeline(), client.whatIfHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -3214,13 +3183,12 @@ func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupN
 // ResumeWhatIf creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeWhatIf(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIf", token, client.whatIfHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.WhatIf", token, client.con.Pipeline(), client.whatIfHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -3303,13 +3271,12 @@ func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.C
 	result := WhatIfOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.WhatIfAtManagementGroupScope", "location", resp, client.whatIfAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.WhatIfAtManagementGroupScope", "location", resp, client.con.Pipeline(), client.whatIfAtManagementGroupScopeHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -3321,13 +3288,12 @@ func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.C
 // ResumeWhatIfAtManagementGroupScope creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeWhatIfAtManagementGroupScope(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIfAtManagementGroupScope", token, client.whatIfAtManagementGroupScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.WhatIfAtManagementGroupScope", token, client.con.Pipeline(), client.whatIfAtManagementGroupScopeHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -3406,13 +3372,12 @@ func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Cont
 	result := WhatIfOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.WhatIfAtSubscriptionScope", "location", resp, client.whatIfAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.WhatIfAtSubscriptionScope", "location", resp, client.con.Pipeline(), client.whatIfAtSubscriptionScopeHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -3424,13 +3389,12 @@ func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Cont
 // ResumeWhatIfAtSubscriptionScope creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeWhatIfAtSubscriptionScope(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIfAtSubscriptionScope", token, client.whatIfAtSubscriptionScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.WhatIfAtSubscriptionScope", token, client.con.Pipeline(), client.whatIfAtSubscriptionScopeHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -3509,13 +3473,12 @@ func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, d
 	result := WhatIfOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DeploymentsClient.WhatIfAtTenantScope", "location", resp, client.whatIfAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPoller("DeploymentsClient.WhatIfAtTenantScope", "location", resp, client.con.Pipeline(), client.whatIfAtTenantScopeHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -3527,13 +3490,12 @@ func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, d
 // ResumeWhatIfAtTenantScope creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
 func (client *DeploymentsClient) ResumeWhatIfAtTenantScope(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIfAtTenantScope", token, client.whatIfAtTenantScopeHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DeploymentsClient.WhatIfAtTenantScope", token, client.con.Pipeline(), client.whatIfAtTenantScopeHandleError)
 	if err != nil {
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

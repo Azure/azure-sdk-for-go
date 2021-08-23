@@ -41,13 +41,12 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 	result := RestorePointPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("RestorePointsClient.Create", "", resp, client.createHandleError)
+	pt, err := armcore.NewLROPoller("RestorePointsClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return RestorePointPollerResponse{}, err
 	}
 	poller := &restorePointPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointResponse, error) {
@@ -59,13 +58,12 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 // ResumeCreate creates a new RestorePointPoller from the specified resume token.
 // token - The value must come from a previous call to RestorePointPoller.ResumeToken().
 func (client *RestorePointsClient) ResumeCreate(ctx context.Context, token string) (RestorePointPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("RestorePointsClient.Create", token, client.createHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("RestorePointsClient.Create", token, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return RestorePointPollerResponse{}, err
 	}
 	poller := &restorePointPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGrou
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("RestorePointsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("RestorePointsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGrou
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *RestorePointsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("RestorePointsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("RestorePointsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

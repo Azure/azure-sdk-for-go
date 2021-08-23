@@ -17,7 +17,7 @@ import (
 type AvailabilitySetListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AvailabilitySetListResultResponse.
+	// PageResponse returns the current AvailabilitySetListResultResponse.
 	PageResponse() AvailabilitySetListResultResponse
 }
 
@@ -93,7 +93,7 @@ func (p *availabilitySetListResultPager) PageResponse() AvailabilitySetListResul
 type CloudServiceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current CloudServiceListResultResponse.
+	// PageResponse returns the current CloudServiceListResultResponse.
 	PageResponse() CloudServiceListResultResponse
 }
 
@@ -169,7 +169,7 @@ func (p *cloudServiceListResultPager) PageResponse() CloudServiceListResultRespo
 type CloudServiceRoleListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current CloudServiceRoleListResultResponse.
+	// PageResponse returns the current CloudServiceRoleListResultResponse.
 	PageResponse() CloudServiceRoleListResultResponse
 }
 
@@ -245,7 +245,7 @@ func (p *cloudServiceRoleListResultPager) PageResponse() CloudServiceRoleListRes
 type DedicatedHostGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DedicatedHostGroupListResultResponse.
+	// PageResponse returns the current DedicatedHostGroupListResultResponse.
 	PageResponse() DedicatedHostGroupListResultResponse
 }
 
@@ -321,7 +321,7 @@ func (p *dedicatedHostGroupListResultPager) PageResponse() DedicatedHostGroupLis
 type DedicatedHostListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DedicatedHostListResultResponse.
+	// PageResponse returns the current DedicatedHostListResultResponse.
 	PageResponse() DedicatedHostListResultResponse
 }
 
@@ -397,7 +397,7 @@ func (p *dedicatedHostListResultPager) PageResponse() DedicatedHostListResultRes
 type DiskAccessListPager interface {
 	azcore.Pager
 
-	// Page returns the current DiskAccessListResponse.
+	// PageResponse returns the current DiskAccessListResponse.
 	PageResponse() DiskAccessListResponse
 }
 
@@ -473,7 +473,7 @@ func (p *diskAccessListPager) PageResponse() DiskAccessListResponse {
 type DiskEncryptionSetListPager interface {
 	azcore.Pager
 
-	// Page returns the current DiskEncryptionSetListResponse.
+	// PageResponse returns the current DiskEncryptionSetListResponse.
 	PageResponse() DiskEncryptionSetListResponse
 }
 
@@ -549,7 +549,7 @@ func (p *diskEncryptionSetListPager) PageResponse() DiskEncryptionSetListRespons
 type DiskListPager interface {
 	azcore.Pager
 
-	// Page returns the current DiskListResponse.
+	// PageResponse returns the current DiskListResponse.
 	PageResponse() DiskListResponse
 }
 
@@ -625,7 +625,7 @@ func (p *diskListPager) PageResponse() DiskListResponse {
 type DiskRestorePointListPager interface {
 	azcore.Pager
 
-	// Page returns the current DiskRestorePointListResponse.
+	// PageResponse returns the current DiskRestorePointListResponse.
 	PageResponse() DiskRestorePointListResponse
 }
 
@@ -701,7 +701,7 @@ func (p *diskRestorePointListPager) PageResponse() DiskRestorePointListResponse 
 type GalleryApplicationListPager interface {
 	azcore.Pager
 
-	// Page returns the current GalleryApplicationListResponse.
+	// PageResponse returns the current GalleryApplicationListResponse.
 	PageResponse() GalleryApplicationListResponse
 }
 
@@ -777,7 +777,7 @@ func (p *galleryApplicationListPager) PageResponse() GalleryApplicationListRespo
 type GalleryApplicationVersionListPager interface {
 	azcore.Pager
 
-	// Page returns the current GalleryApplicationVersionListResponse.
+	// PageResponse returns the current GalleryApplicationVersionListResponse.
 	PageResponse() GalleryApplicationVersionListResponse
 }
 
@@ -853,7 +853,7 @@ func (p *galleryApplicationVersionListPager) PageResponse() GalleryApplicationVe
 type GalleryImageListPager interface {
 	azcore.Pager
 
-	// Page returns the current GalleryImageListResponse.
+	// PageResponse returns the current GalleryImageListResponse.
 	PageResponse() GalleryImageListResponse
 }
 
@@ -929,7 +929,7 @@ func (p *galleryImageListPager) PageResponse() GalleryImageListResponse {
 type GalleryImageVersionListPager interface {
 	azcore.Pager
 
-	// Page returns the current GalleryImageVersionListResponse.
+	// PageResponse returns the current GalleryImageVersionListResponse.
 	PageResponse() GalleryImageVersionListResponse
 }
 
@@ -1005,7 +1005,7 @@ func (p *galleryImageVersionListPager) PageResponse() GalleryImageVersionListRes
 type GalleryListPager interface {
 	azcore.Pager
 
-	// Page returns the current GalleryListResponse.
+	// PageResponse returns the current GalleryListResponse.
 	PageResponse() GalleryListResponse
 }
 
@@ -1081,7 +1081,7 @@ func (p *galleryListPager) PageResponse() GalleryListResponse {
 type ImageListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ImageListResultResponse.
+	// PageResponse returns the current ImageListResultResponse.
 	PageResponse() ImageListResultResponse
 }
 
@@ -1157,7 +1157,7 @@ func (p *imageListResultPager) PageResponse() ImageListResultResponse {
 type ListUsagesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListUsagesResultResponse.
+	// PageResponse returns the current ListUsagesResultResponse.
 	PageResponse() ListUsagesResultResponse
 }
 
@@ -1233,7 +1233,7 @@ func (p *listUsagesResultPager) PageResponse() ListUsagesResultResponse {
 type OSFamilyListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current OSFamilyListResultResponse.
+	// PageResponse returns the current OSFamilyListResultResponse.
 	PageResponse() OSFamilyListResultResponse
 }
 
@@ -1309,7 +1309,7 @@ func (p *osFamilyListResultPager) PageResponse() OSFamilyListResultResponse {
 type OSVersionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current OSVersionListResultResponse.
+	// PageResponse returns the current OSVersionListResultResponse.
 	PageResponse() OSVersionListResultResponse
 }
 
@@ -1385,7 +1385,7 @@ func (p *osVersionListResultPager) PageResponse() OSVersionListResultResponse {
 type PrivateEndpointConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PrivateEndpointConnectionListResultResponse.
+	// PageResponse returns the current PrivateEndpointConnectionListResultResponse.
 	PageResponse() PrivateEndpointConnectionListResultResponse
 }
 
@@ -1461,7 +1461,7 @@ func (p *privateEndpointConnectionListResultPager) PageResponse() PrivateEndpoin
 type ProximityPlacementGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ProximityPlacementGroupListResultResponse.
+	// PageResponse returns the current ProximityPlacementGroupListResultResponse.
 	PageResponse() ProximityPlacementGroupListResultResponse
 }
 
@@ -1537,7 +1537,7 @@ func (p *proximityPlacementGroupListResultPager) PageResponse() ProximityPlaceme
 type ResourceSKUsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ResourceSKUsResultResponse.
+	// PageResponse returns the current ResourceSKUsResultResponse.
 	PageResponse() ResourceSKUsResultResponse
 }
 
@@ -1613,7 +1613,7 @@ func (p *resourceSKUsResultPager) PageResponse() ResourceSKUsResultResponse {
 type ResourceURIListPager interface {
 	azcore.Pager
 
-	// Page returns the current ResourceURIListResponse.
+	// PageResponse returns the current ResourceURIListResponse.
 	PageResponse() ResourceURIListResponse
 }
 
@@ -1689,7 +1689,7 @@ func (p *resourceURIListPager) PageResponse() ResourceURIListResponse {
 type RestorePointCollectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RestorePointCollectionListResultResponse.
+	// PageResponse returns the current RestorePointCollectionListResultResponse.
 	PageResponse() RestorePointCollectionListResultResponse
 }
 
@@ -1765,7 +1765,7 @@ func (p *restorePointCollectionListResultPager) PageResponse() RestorePointColle
 type RoleInstanceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RoleInstanceListResultResponse.
+	// PageResponse returns the current RoleInstanceListResultResponse.
 	PageResponse() RoleInstanceListResultResponse
 }
 
@@ -1841,7 +1841,7 @@ func (p *roleInstanceListResultPager) PageResponse() RoleInstanceListResultRespo
 type RunCommandListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RunCommandListResultResponse.
+	// PageResponse returns the current RunCommandListResultResponse.
 	PageResponse() RunCommandListResultResponse
 }
 
@@ -1917,7 +1917,7 @@ func (p *runCommandListResultPager) PageResponse() RunCommandListResultResponse 
 type SSHPublicKeysGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current SSHPublicKeysGroupListResultResponse.
+	// PageResponse returns the current SSHPublicKeysGroupListResultResponse.
 	PageResponse() SSHPublicKeysGroupListResultResponse
 }
 
@@ -1993,7 +1993,7 @@ func (p *sshPublicKeysGroupListResultPager) PageResponse() SSHPublicKeysGroupLis
 type SharedGalleryImageListPager interface {
 	azcore.Pager
 
-	// Page returns the current SharedGalleryImageListResponse.
+	// PageResponse returns the current SharedGalleryImageListResponse.
 	PageResponse() SharedGalleryImageListResponse
 }
 
@@ -2069,7 +2069,7 @@ func (p *sharedGalleryImageListPager) PageResponse() SharedGalleryImageListRespo
 type SharedGalleryImageVersionListPager interface {
 	azcore.Pager
 
-	// Page returns the current SharedGalleryImageVersionListResponse.
+	// PageResponse returns the current SharedGalleryImageVersionListResponse.
 	PageResponse() SharedGalleryImageVersionListResponse
 }
 
@@ -2145,7 +2145,7 @@ func (p *sharedGalleryImageVersionListPager) PageResponse() SharedGalleryImageVe
 type SharedGalleryListPager interface {
 	azcore.Pager
 
-	// Page returns the current SharedGalleryListResponse.
+	// PageResponse returns the current SharedGalleryListResponse.
 	PageResponse() SharedGalleryListResponse
 }
 
@@ -2221,7 +2221,7 @@ func (p *sharedGalleryListPager) PageResponse() SharedGalleryListResponse {
 type SnapshotListPager interface {
 	azcore.Pager
 
-	// Page returns the current SnapshotListResponse.
+	// PageResponse returns the current SnapshotListResponse.
 	PageResponse() SnapshotListResponse
 }
 
@@ -2297,7 +2297,7 @@ func (p *snapshotListPager) PageResponse() SnapshotListResponse {
 type UpdateDomainListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current UpdateDomainListResultResponse.
+	// PageResponse returns the current UpdateDomainListResultResponse.
 	PageResponse() UpdateDomainListResultResponse
 }
 
@@ -2373,7 +2373,7 @@ func (p *updateDomainListResultPager) PageResponse() UpdateDomainListResultRespo
 type VirtualMachineListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineListResultResponse.
+	// PageResponse returns the current VirtualMachineListResultResponse.
 	PageResponse() VirtualMachineListResultResponse
 }
 
@@ -2449,7 +2449,7 @@ func (p *virtualMachineListResultPager) PageResponse() VirtualMachineListResultR
 type VirtualMachineRunCommandsListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineRunCommandsListResultResponse.
+	// PageResponse returns the current VirtualMachineRunCommandsListResultResponse.
 	PageResponse() VirtualMachineRunCommandsListResultResponse
 }
 
@@ -2525,7 +2525,7 @@ func (p *virtualMachineRunCommandsListResultPager) PageResponse() VirtualMachine
 type VirtualMachineScaleSetExtensionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineScaleSetExtensionListResultResponse.
+	// PageResponse returns the current VirtualMachineScaleSetExtensionListResultResponse.
 	PageResponse() VirtualMachineScaleSetExtensionListResultResponse
 }
 
@@ -2601,7 +2601,7 @@ func (p *virtualMachineScaleSetExtensionListResultPager) PageResponse() VirtualM
 type VirtualMachineScaleSetListOSUpgradeHistoryPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineScaleSetListOSUpgradeHistoryResponse.
+	// PageResponse returns the current VirtualMachineScaleSetListOSUpgradeHistoryResponse.
 	PageResponse() VirtualMachineScaleSetListOSUpgradeHistoryResponse
 }
 
@@ -2677,7 +2677,7 @@ func (p *virtualMachineScaleSetListOSUpgradeHistoryPager) PageResponse() Virtual
 type VirtualMachineScaleSetListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineScaleSetListResultResponse.
+	// PageResponse returns the current VirtualMachineScaleSetListResultResponse.
 	PageResponse() VirtualMachineScaleSetListResultResponse
 }
 
@@ -2753,7 +2753,7 @@ func (p *virtualMachineScaleSetListResultPager) PageResponse() VirtualMachineSca
 type VirtualMachineScaleSetListSKUsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineScaleSetListSKUsResultResponse.
+	// PageResponse returns the current VirtualMachineScaleSetListSKUsResultResponse.
 	PageResponse() VirtualMachineScaleSetListSKUsResultResponse
 }
 
@@ -2829,7 +2829,7 @@ func (p *virtualMachineScaleSetListSKUsResultPager) PageResponse() VirtualMachin
 type VirtualMachineScaleSetListWithLinkResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineScaleSetListWithLinkResultResponse.
+	// PageResponse returns the current VirtualMachineScaleSetListWithLinkResultResponse.
 	PageResponse() VirtualMachineScaleSetListWithLinkResultResponse
 }
 
@@ -2905,7 +2905,7 @@ func (p *virtualMachineScaleSetListWithLinkResultPager) PageResponse() VirtualMa
 type VirtualMachineScaleSetVMListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualMachineScaleSetVMListResultResponse.
+	// PageResponse returns the current VirtualMachineScaleSetVMListResultResponse.
 	PageResponse() VirtualMachineScaleSetVMListResultResponse
 }
 

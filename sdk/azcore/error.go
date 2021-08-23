@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -6,15 +7,7 @@
 package azcore
 
 import (
-	"errors"
 	"net/http"
-
-	sdkruntime "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-)
-
-var (
-	// ErrNoMorePolicies is returned from Request.Next() if there are no more policies in the pipeline.
-	ErrNoMorePolicies = errors.New("no more policies")
 )
 
 var (
@@ -31,9 +24,6 @@ type HTTPResponse interface {
 	RawResponse() *http.Response
 }
 
-// ensure our internal ResponseError type implements HTTPResponse
-var _ HTTPResponse = (*sdkruntime.ResponseError)(nil)
-
 // NonRetriableError represents a non-transient error.  This works in
 // conjunction with the retry policy, indicating that the error condition
 // is idempotent, so no retries will be attempted.
@@ -48,7 +38,33 @@ type NonRetriableError interface {
 // in this error type so that callers can access the underlying *http.Response as required.
 // DO NOT wrap failed HTTP requests that returned an error and no response with this type.
 func NewResponseError(inner error, resp *http.Response) error {
-	return sdkruntime.NewResponseError(inner, resp)
+	return &responseError{inner: inner, resp: resp}
 }
 
-var _ NonRetriableError = (*sdkruntime.ResponseError)(nil)
+type responseError struct {
+	inner error
+	resp  *http.Response
+}
+
+// Error implements the error interface for type ResponseError.
+func (e *responseError) Error() string {
+	return e.inner.Error()
+}
+
+// Unwrap returns the inner error.
+func (e *responseError) Unwrap() error {
+	return e.inner
+}
+
+// RawResponse returns the HTTP response associated with this error.
+func (e *responseError) RawResponse() *http.Response {
+	return e.resp
+}
+
+// NonRetriable indicates this error is non-transient.
+func (e *responseError) NonRetriable() {
+	// marker method
+}
+
+var _ HTTPResponse = (*responseError)(nil)
+var _ NonRetriableError = (*responseError)(nil)

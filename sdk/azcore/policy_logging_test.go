@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -13,13 +14,14 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestPolicyLoggingSuccess(t *testing.T) {
-	log := map[LogClassification]string{}
-	Log().SetListener(func(cls LogClassification, s string) {
-		log[cls] = s
+	rawlog := map[log.Classification]string{}
+	log.SetListener(func(cls log.Classification, s string) {
+		rawlog[cls] = s
 	})
 	srv, close := mock.NewServer()
 	defer close()
@@ -40,7 +42,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if logReq, ok := log[LogRequest]; ok {
+	if logReq, ok := rawlog[log.Request]; ok {
 		// Request ==> OUTGOING REQUEST (Try=1)
 		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
 		// 	(no headers)
@@ -50,7 +52,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	} else {
 		t.Fatal("missing LogRequest")
 	}
-	if logResp, ok := log[LogResponse]; ok {
+	if logResp, ok := rawlog[log.Response]; ok {
 		// Response ==> REQUEST/RESPONSE (Try=1/1.0034ms, OpTime=1.0034ms) -- RESPONSE SUCCESSFULLY RECEIVED
 		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
 		// 	(no headers)
@@ -67,9 +69,9 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 }
 
 func TestPolicyLoggingError(t *testing.T) {
-	log := map[LogClassification]string{}
-	Log().SetListener(func(cls LogClassification, s string) {
-		log[cls] = s
+	rawlog := map[log.Classification]string{}
+	log.SetListener(func(cls log.Classification, s string) {
+		rawlog[cls] = s
 	})
 	srv, close := mock.NewServer()
 	defer close()
@@ -88,7 +90,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	if resp != nil {
 		t.Fatal("unexpected respose")
 	}
-	if logReq, ok := log[LogRequest]; ok {
+	if logReq, ok := rawlog[log.Request]; ok {
 		// Request ==> OUTGOING REQUEST (Try=1)
 		// 	GET http://127.0.0.1:50057
 		// 	Authorization: REDACTED
@@ -99,7 +101,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	} else {
 		t.Fatal("missing LogRequest")
 	}
-	if logResponse, ok := log[LogResponse]; ok {
+	if logResponse, ok := rawlog[log.Response]; ok {
 		// Response ==> REQUEST/RESPONSE (Try=1/0s, OpTime=0s) -- REQUEST ERROR
 		// 	GET http://127.0.0.1:50057
 		// 	Authorization: REDACTED

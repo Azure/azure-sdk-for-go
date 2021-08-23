@@ -5,7 +5,7 @@ Param(
 )
 
 Write-Host $serviceDirectory
-Push-Location $serviceDirectory
+Push-Location ./sdk/$serviceDirectory
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
@@ -42,7 +42,6 @@ $coverageGoals = Get-Content ./eng/config.json | Out-String | ConvertFrom-Json
 
 Write-Host $coverageGoals
 
-Write-Host $serviceDirectory
 Foreach ($pkg in $coverageGoals.Packages) {
   Write-Host $pkg
   if ($pkg.Name -Match $serviceDirectory) {

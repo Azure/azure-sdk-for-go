@@ -293,3 +293,30 @@ func (o *GetTagsBlobOptions) pointers() (*BlobGetTagsOptions, *ModifiedAccessCon
 
 	return options, o.ModifiedAccessConditions
 }
+
+type ObjectReplicationRules struct {
+	RuleId string
+	Status string
+}
+
+type ObjectReplicationPolicy struct {
+	PolicyId *string
+	Rules    *[]ObjectReplicationRules
+}
+
+type GetBlobPropertiesResponse struct {
+	BlobGetPropertiesResponse
+
+	// deserialized attributes
+	ObjectReplicationRules []ObjectReplicationPolicy
+}
+
+func (bgpr *BlobGetPropertiesResponse) deserializeAttributes() GetBlobPropertiesResponse {
+	getResp := GetBlobPropertiesResponse{}
+	if bgpr == nil {
+		return getResp
+	}
+	getResp.BlobGetPropertiesResponse = *bgpr
+	getResp.ObjectReplicationRules = deserializeORSPolicies(bgpr.ObjectReplicationRules)
+	return getResp
+}

@@ -13,6 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/template"
+	automation_v2 "github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/automation"
+	release_v2 "github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/release"
 	"github.com/spf13/cobra"
 )
 
@@ -35,6 +37,8 @@ func Command() *cobra.Command {
 
 	rootCmd.AddCommand(
 		automation.Command(),
+		automation_v2.Command(),
+		release_v2.Command(),
 		issue.Command(),
 		template.Command(),
 		refresh.Command(),

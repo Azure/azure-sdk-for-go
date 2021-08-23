@@ -440,8 +440,8 @@ var modeMap = map[RecordMode]recorder.Mode{
 }
 
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
-var ModeRecording = "record"
-var ModePlayback = "playback"
+var modeRecording = "record"
+var modePlayback = "playback"
 
 var baseProxyURLSecure = "localhost:5001"
 var baseProxyURL = "localhost:5000"
@@ -583,7 +583,7 @@ func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if GetRecordMode() != ModeRecording {
+	if GetRecordMode() != modeRecording {
 		t.Skip("Live Test Only")
 	}
 }
@@ -591,7 +591,7 @@ func LiveOnly(t *testing.T) {
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
 func Sleep(duration int) {
-	if GetRecordMode() == ModeRecording {
+	if GetRecordMode() == modeRecording {
 		time.Sleep(time.Duration(duration) * time.Second)
 	}
 }
@@ -605,11 +605,11 @@ func GetRecordMode() string {
 }
 
 func InPlayback() bool {
-	return GetRecordMode() == ModePlayback
+	return GetRecordMode() == modePlayback
 }
 
 func InRecord() bool {
-	return GetRecordMode() == ModeRecording
+	return GetRecordMode() == modeRecording
 }
 
 func getRootCas() (*x509.CertPool, error) {

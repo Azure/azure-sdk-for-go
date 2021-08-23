@@ -70,22 +70,14 @@ Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
 # merge coverage files
 gocovmerge $coverageFiles > mergedCoverage.txt
 gocov convert ./mergedCoverage.txt > ./coverage.json
-# if (!$?) {
-#     Write-Host "Issues converting the mergedCoverage.txt to a json file"
-#     Exit $LASTEXITCODE
-# }
 
 # gocov converts rely on standard input
 Get-Content ./coverage.json | gocov-xml > ./coverage.xml
 Get-Content ./coverage.json | gocov-html > ./coverage.html
 
-# use internal tool to fail if coverage is too low
-Write-Host "##[command] go run ./tools/internal/coverage/main.go -serviceDirectory $serviceDir"
-# go run ./tools/internal/coverage/main.go -serviceDirectory $serviceDir
-
 Pop-Location
-# go run ../tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory
 
+Set-Location $cwd
 $patternMatches = Get-Content ./coverage.xml | Select-String -Pattern '<coverage line-rate=\"(\d\.\d+)\"'
 
 if ($patternMatches.Length -eq 0) {

@@ -22,8 +22,6 @@ gocov convert ./mergedCoverage.txt > ./coverage.json
 Get-Content ./coverage.json | gocov-xml > ./coverage.xml
 Get-Content ./coverage.json | gocov-html > ./coverage.html
 
-# Convert this to a simple powershell script for reproducibility
-# use internal tool to fail if coverage is too low
 Pop-Location
 # go run ../tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory
 

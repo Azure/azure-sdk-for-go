@@ -44,15 +44,12 @@ foreach ($td in $testDirs) {
     Push-Location $td
     $temp = Get-Location
     Write-Host "Currently in $temp"
-    Write-Host "##[command] Executing go test -run ""^Test"" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml"
-    go test -run "^Test" -v -coverprofile coverage.txt $td | go-junit-report -set-exit-code > report.xml
-    if (!$?) {
-        Write-Host "There was an error running the tests"
-        go test -run "^Test" -v -coverprofile coverage.txt $td  # The error is not shown so I am going to re-run to get the error
-        Exit $LASTEXITCODE
-    } else {
-        Write-Host "" "Successfully ran test suite at $temp" ""
+    Write-Host "##[command]Executing 'go test -run ""^Test"" -v -coverprofile coverage.txt .' in $td"
+    go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
+    if ($LASTEXITCODE) {
+        exit $LASTEXITCODE
     }
+    Get-Content outfile.txt | go-junit-report > report.xml
     # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
     if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
         Write-Host "##[command] Deleting empty coverage file"

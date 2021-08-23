@@ -9993,6 +9993,53 @@ type ParameterContract struct {
 	SchemaID *string `json:"schemaId,omitempty"`
 	// TypeName - Type name defined by the schema.
 	TypeName *string `json:"typeName,omitempty"`
+	// Examples - Exampled defined for the parameter.
+	Examples map[string]*ParameterExampleContract `json:"examples"`
+}
+
+// MarshalJSON is the custom marshaler for ParameterContract.
+func (pc ParameterContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.Name != nil {
+		objectMap["name"] = pc.Name
+	}
+	if pc.Description != nil {
+		objectMap["description"] = pc.Description
+	}
+	if pc.Type != nil {
+		objectMap["type"] = pc.Type
+	}
+	if pc.DefaultValue != nil {
+		objectMap["defaultValue"] = pc.DefaultValue
+	}
+	if pc.Required != nil {
+		objectMap["required"] = pc.Required
+	}
+	if pc.Values != nil {
+		objectMap["values"] = pc.Values
+	}
+	if pc.SchemaID != nil {
+		objectMap["schemaId"] = pc.SchemaID
+	}
+	if pc.TypeName != nil {
+		objectMap["typeName"] = pc.TypeName
+	}
+	if pc.Examples != nil {
+		objectMap["examples"] = pc.Examples
+	}
+	return json.Marshal(objectMap)
+}
+
+// ParameterExampleContract parameter example.
+type ParameterExampleContract struct {
+	// Summary - Short description for the example
+	Summary *string `json:"summary,omitempty"`
+	// Description - Long description for the example
+	Description *string `json:"description,omitempty"`
+	// Value - Example value. May be a primitive value, or an object.
+	Value interface{} `json:"value,omitempty"`
+	// ExternalValue - A URL that points to the literal example
+	ExternalValue *string `json:"externalValue,omitempty"`
 }
 
 // PipelineDiagnosticSettings diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
@@ -12024,8 +12071,6 @@ func (rrc ReportRecordContract) MarshalJSON() ([]byte, error) {
 type RepresentationContract struct {
 	// ContentType - Specifies a registered or custom content type for this representation, e.g. application/xml.
 	ContentType *string `json:"contentType,omitempty"`
-	// Sample - An example of the representation.
-	Sample *string `json:"sample,omitempty"`
 	// SchemaID - Schema identifier. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
 	SchemaID *string `json:"schemaId,omitempty"`
 	// TypeName - Type name defined by the schema. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
@@ -13570,6 +13615,8 @@ type ServiceUpdateParameters struct {
 	Identity *ServiceIdentity `json:"identity,omitempty"`
 	// Etag - READ-ONLY; ETag of the resource.
 	Etag *string `json:"etag,omitempty"`
+	// Zones - A list of availability zones denoting where the resource needs to come from.
+	Zones *[]string `json:"zones,omitempty"`
 	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name.
@@ -13591,6 +13638,9 @@ func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if sup.Identity != nil {
 		objectMap["identity"] = sup.Identity
+	}
+	if sup.Zones != nil {
+		objectMap["zones"] = sup.Zones
 	}
 	if sup.Tags != nil {
 		objectMap["tags"] = sup.Tags
@@ -13642,6 +13692,15 @@ func (sup *ServiceUpdateParameters) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sup.Etag = &etag
+			}
+		case "zones":
+			if v != nil {
+				var zones []string
+				err = json.Unmarshal(*v, &zones)
+				if err != nil {
+					return err
+				}
+				sup.Zones = &zones
 			}
 		case "id":
 			if v != nil {

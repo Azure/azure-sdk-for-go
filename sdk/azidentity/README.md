@@ -238,13 +238,14 @@ Credentials log basic information only, including `GetToken` success or failure 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
 
 ```go
+import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-azcore.Log().SetListener(func(cls LogClassification, s string) {
+azlog.SetListener(func(cls LogClassification, s string) {
 		fmt.Println(s) // printing log out to the console
   })
 
 // Include only azidentity credential logs
-azcore.Log().SetClassifications(azidentity.LogCredential)
+azlog.SetClassifications(azidentity.LogCredential)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

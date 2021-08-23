@@ -40,7 +40,7 @@ type InteractiveBrowserCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
@@ -119,7 +119,11 @@ var authCodeReceiver = func(ctx context.Context, authorityHost string, opts *Int
 func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 	// start local redirect server so login can call us back
 	rs := newServer()
-	state := uuid.New().String()
+	uuidRaw, err := uuid.New()
+	if err != nil {
+		return nil, err
+	}
+	state := uuidRaw.String()
 	redirectURL := opts.RedirectURL
 	if redirectURL == "" {
 		redirectURL = rs.Start(state, opts.Port)

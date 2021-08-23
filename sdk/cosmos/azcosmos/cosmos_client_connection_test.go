@@ -15,9 +15,8 @@ import (
 )
 
 func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
-	someError := &cosmosError{
-		Code:    "SomeCode",
-		Message: "SomeMessage",
+	someError := &cosmosErrorResponse{
+		Code: "SomeCode",
 	}
 
 	jsonString, err := json.Marshal(someError)
@@ -44,11 +43,8 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 
 	asRuntimeError := err.(*runtime.ResponseError)
 	asError := asRuntimeError.Unwrap().(*cosmosError)
-	if asError.Code != someError.Code {
-		t.Errorf("Expected %v, but got %v", someError.Code, asError.Code)
-	}
-	if asError.Message != someError.Message {
-		t.Errorf("Expected %v, but got %v", someError.Message, asError.Message)
+	if asError.ErrorCode() != someError.Code {
+		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode())
 	}
 
 	if err.Error() != asError.Error() {

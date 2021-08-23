@@ -29,8 +29,8 @@ func TestCosmosErrorOnEmptyResponse(t *testing.T) {
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)
-	if cError.Error() != "" {
-		t.Errorf("Expected empty error, but got %v", cError)
+	if cError.Error() != "response contained no body" {
+		t.Errorf("Expected response contained no body, but got %v", cError)
 	}
 }
 
@@ -56,9 +56,8 @@ func TestCosmosErrorOnNonJsonBody(t *testing.T) {
 }
 
 func TestCosmosErrorOnJsonBody(t *testing.T) {
-	someError := &cosmosError{
-		Code:    "SomeCode",
-		Message: "SomeMessage",
+	someError := &cosmosErrorResponse{
+		Code: "SomeCode",
 	}
 
 	jsonString, err := json.Marshal(someError)
@@ -82,41 +81,15 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 
 	cError := newCosmosError(resp)
 	asError := cError.(*cosmosError)
-	if asError.Code != someError.Code {
-		t.Errorf("Expected %v, but got %v", someError.Code, asError.Code)
-	}
-	if asError.Message != someError.Message {
-		t.Errorf("Expected %v, but got %v", someError.Message, asError.Message)
-	}
-}
-
-func TestCosmosErrorOnJsonBodyWithEmptyProperties(t *testing.T) {
-	someError := &cosmosError{
-		Code:    "",
-		Message: "",
+	if asError.ErrorCode() != someError.Code {
+		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode())
 	}
 
-	jsonString, err := json.Marshal(someError)
-	if err != nil {
-		t.Fatal(err)
+	if asError.StatusCode() != "404 Not Found" {
+		t.Errorf("Expected 404 Not Found, but got %v", asError.StatusCode())
 	}
 
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.SetResponse(
-		mock.WithBody(jsonString),
-		mock.WithStatusCode(404))
-
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	pl := azcore.NewPipeline(srv)
-	resp, _ := pl.Do(req)
-
-	cError := newCosmosError(resp)
-	if cError.Error() != "Missing error body" {
-		t.Errorf("Expected Missing error body, but got %v", cError)
+	if asError.Error() != string(jsonString) {
+		t.Errorf("Expected %v, but got %v", string(jsonString), asError.Error())
 	}
 }

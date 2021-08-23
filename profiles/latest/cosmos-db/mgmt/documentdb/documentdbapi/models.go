@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,7 +9,7 @@
 
 package documentdbapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-03-15/documentdb/documentdbapi"
+import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-06-15/documentdb/documentdbapi"
 
 type CassandraResourcesClientAPI = original.CassandraResourcesClientAPI
 type CollectionClientAPI = original.CollectionClientAPI
@@ -29,5 +30,12 @@ type PercentileSourceTargetClientAPI = original.PercentileSourceTargetClientAPI
 type PercentileTargetClientAPI = original.PercentileTargetClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
+type RestorableDatabaseAccountsClientAPI = original.RestorableDatabaseAccountsClientAPI
+type RestorableMongodbCollectionsClientAPI = original.RestorableMongodbCollectionsClientAPI
+type RestorableMongodbDatabasesClientAPI = original.RestorableMongodbDatabasesClientAPI
+type RestorableMongodbResourcesClientAPI = original.RestorableMongodbResourcesClientAPI
+type RestorableSQLContainersClientAPI = original.RestorableSQLContainersClientAPI
+type RestorableSQLDatabasesClientAPI = original.RestorableSQLDatabasesClientAPI
+type RestorableSQLResourcesClientAPI = original.RestorableSQLResourcesClientAPI
 type SQLResourcesClientAPI = original.SQLResourcesClientAPI
 type TableResourcesClientAPI = original.TableResourcesClientAPI

@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -31,6 +32,7 @@ type DevicesForSubscriptionClientAPI = original.DevicesForSubscriptionClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
 type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
+type IngestionSettingsClientAPI = original.IngestionSettingsClientAPI
 type IotAlertTypesClientAPI = original.IotAlertTypesClientAPI
 type IotAlertsClientAPI = original.IotAlertsClientAPI
 type IotDefenderSettingsClientAPI = original.IotDefenderSettingsClientAPI
@@ -58,6 +60,7 @@ type SecureScoreControlsClientAPI = original.SecureScoreControlsClientAPI
 type SecureScoresClientAPI = original.SecureScoresClientAPI
 type ServerVulnerabilityAssessmentClientAPI = original.ServerVulnerabilityAssessmentClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
+type SoftwareInventoriesClientAPI = original.SoftwareInventoriesClientAPI
 type SolutionsClientAPI = original.SolutionsClientAPI
 type SolutionsReferenceDataClientAPI = original.SolutionsReferenceDataClientAPI
 type SubAssessmentsClientAPI = original.SubAssessmentsClientAPI

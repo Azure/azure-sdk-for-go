@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -34,6 +35,37 @@ type AzureEntityResource struct {
 // MarshalJSON is the custom marshaler for AzureEntityResource.
 func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// CheckNameAvailabilityParameters details of check name availability request body.
+type CheckNameAvailabilityParameters struct {
+	// Name - Name for checking availability.
+	Name *string `json:"name,omitempty"`
+	// Type - The resource type of Quantum Workspace.
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityResult result of check name availability.
+type CheckNameAvailabilityResult struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - Indicator of availability of the Quantum Workspace resource name.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason of unavailability.
+	Reason *string `json:"reason,omitempty"`
+	// Message - READ-ONLY; The detailed info regarding the reason associated with the Namespace.
+	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cnar.NameAvailable != nil {
+		objectMap["nameAvailable"] = cnar.NameAvailable
+	}
+	if cnar.Reason != nil {
+		objectMap["reason"] = cnar.Reason
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -609,14 +641,34 @@ type SkuDescription struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Display name of this sku.
 	Name *string `json:"name,omitempty"`
+	// Version - Display name of this sku.
+	Version *string `json:"version,omitempty"`
 	// Description - Description about this sku.
 	Description *string `json:"description,omitempty"`
+	// RestrictedAccessURI - Uri to subscribe to the restricted access sku.
+	RestrictedAccessURI *string `json:"restrictedAccessUri,omitempty"`
 	// Targets - The list of targets available for this sku.
 	Targets *[]string `json:"targets,omitempty"`
 	// QuotaDimensions - The list of quota dimensions for this sku.
 	QuotaDimensions *[]QuotaDimension `json:"quotaDimensions,omitempty"`
 	// PricingDetails - The list of pricing details for the sku.
 	PricingDetails *[]PricingDetail `json:"pricingDetails,omitempty"`
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TagsObject tags object for patch operations.
@@ -679,10 +731,12 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 // Workspace the resource proxy definition object for quantum workspace.
 type Workspace struct {
 	autorest.Response `json:"-"`
-	// WorkspaceResourceProperties - Gets or sets the properties. Define quantum space's specific properties.
+	// WorkspaceResourceProperties - Gets or sets the properties. Define quantum workspace's specific properties.
 	*WorkspaceResourceProperties `json:"properties,omitempty"`
 	// Identity - Managed Identity information.
 	Identity *WorkspaceIdentity `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; System metadata
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
@@ -739,6 +793,15 @@ func (w *Workspace) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				w.Identity = &identity
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				w.SystemData = &systemData
 			}
 		case "tags":
 			if v != nil {

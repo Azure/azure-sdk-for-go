@@ -1,20 +1,23 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package azcore
 
-func anonCredAuthPolicyFunc(AuthenticationPolicyOptions) Policy {
-	return PolicyFunc(anonCredPolicyFunc)
+import "net/http"
+
+func anonCredAuthPolicyFunc(AuthenticationOptions) Policy {
+	return policyFunc(anonCredPolicyFunc)
 }
 
-func anonCredPolicyFunc(req *Request) (*Response, error) {
+func anonCredPolicyFunc(req *Request) (*http.Response, error) {
 	return req.Next()
 }
 
-// AnonymousCredential is for use with HTTP(S) requests that read public resource
+// NewAnonymousCredential is for use with HTTP(S) requests that read public resource
 // or for use with Shared Access Signatures (SAS).
-func AnonymousCredential() Credential {
+func NewAnonymousCredential() Credential {
 	return credentialFunc(anonCredAuthPolicyFunc)
 }

@@ -133,7 +133,7 @@ func validate(readme string, metadataMap map[string]model.Metadata, validators [
 	for tag, metadata := range metadataMap {
 		errors := ValidateMetadata(validators, tag, metadata)
 		if len(errors) != 0 {
-			builder.addMultiple(errors)
+			builder.add(errors...)
 		}
 	}
 
@@ -145,12 +145,8 @@ type validationErrorBuilder struct {
 	errors []error
 }
 
-func (b *validationErrorBuilder) addMultiple(errors []error) {
+func (b *validationErrorBuilder) add(errors ...error) {
 	b.errors = append(b.errors, errors...)
-}
-
-func (b *validationErrorBuilder) add(err error) {
-	b.errors = append(b.errors, err)
 }
 
 func (b *validationErrorBuilder) build() error {

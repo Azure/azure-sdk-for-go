@@ -41,13 +41,12 @@ func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, res
 	result := HubRouteTablePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("HubRouteTablesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("HubRouteTablesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return HubRouteTablePollerResponse{}, err
 	}
 	poller := &hubRouteTablePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubRouteTableResponse, error) {
@@ -59,13 +58,12 @@ func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, res
 // ResumeCreateOrUpdate creates a new HubRouteTablePoller from the specified resume token.
 // token - The value must come from a previous call to HubRouteTablePoller.ResumeToken().
 func (client *HubRouteTablesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (HubRouteTablePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("HubRouteTablesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("HubRouteTablesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return HubRouteTablePollerResponse{}, err
 	}
 	poller := &hubRouteTablePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGro
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("HubRouteTablesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("HubRouteTablesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGro
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *HubRouteTablesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("HubRouteTablesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("HubRouteTablesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

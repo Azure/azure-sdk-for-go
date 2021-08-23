@@ -41,13 +41,12 @@ func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGro
 	result := PacketCaptureResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PacketCapturesClient.Create", "azure-async-operation", resp, client.createHandleError)
+	pt, err := armcore.NewLROPoller("PacketCapturesClient.Create", "azure-async-operation", resp, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return PacketCaptureResultPollerResponse{}, err
 	}
 	poller := &packetCaptureResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PacketCaptureResultResponse, error) {
@@ -59,13 +58,12 @@ func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGro
 // ResumeCreate creates a new PacketCaptureResultPoller from the specified resume token.
 // token - The value must come from a previous call to PacketCaptureResultPoller.ResumeToken().
 func (client *PacketCapturesClient) ResumeCreate(ctx context.Context, token string) (PacketCaptureResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.Create", token, client.createHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PacketCapturesClient.Create", token, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return PacketCaptureResultPollerResponse{}, err
 	}
 	poller := &packetCaptureResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGro
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PacketCapturesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("PacketCapturesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGro
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *PacketCapturesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PacketCapturesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -333,13 +329,12 @@ func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resource
 	result := PacketCaptureQueryStatusResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PacketCapturesClient.GetStatus", "location", resp, client.getStatusHandleError)
+	pt, err := armcore.NewLROPoller("PacketCapturesClient.GetStatus", "location", resp, client.con.Pipeline(), client.getStatusHandleError)
 	if err != nil {
 		return PacketCaptureQueryStatusResultPollerResponse{}, err
 	}
 	poller := &packetCaptureQueryStatusResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PacketCaptureQueryStatusResultResponse, error) {
@@ -351,13 +346,12 @@ func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resource
 // ResumeGetStatus creates a new PacketCaptureQueryStatusResultPoller from the specified resume token.
 // token - The value must come from a previous call to PacketCaptureQueryStatusResultPoller.ResumeToken().
 func (client *PacketCapturesClient) ResumeGetStatus(ctx context.Context, token string) (PacketCaptureQueryStatusResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.GetStatus", token, client.getStatusHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PacketCapturesClient.GetStatus", token, client.con.Pipeline(), client.getStatusHandleError)
 	if err != nil {
 		return PacketCaptureQueryStatusResultPollerResponse{}, err
 	}
 	poller := &packetCaptureQueryStatusResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -510,13 +504,12 @@ func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroup
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PacketCapturesClient.Stop", "location", resp, client.stopHandleError)
+	pt, err := armcore.NewLROPoller("PacketCapturesClient.Stop", "location", resp, client.con.Pipeline(), client.stopHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -528,13 +521,12 @@ func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroup
 // ResumeStop creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *PacketCapturesClient) ResumeStop(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PacketCapturesClient.Stop", token, client.stopHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PacketCapturesClient.Stop", token, client.con.Pipeline(), client.stopHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

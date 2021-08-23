@@ -41,13 +41,12 @@ func (client *VirtualHubsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	result := VirtualHubPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("VirtualHubsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VirtualHubPollerResponse{}, err
 	}
 	poller := &virtualHubPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualHubResponse, error) {
@@ -59,13 +58,12 @@ func (client *VirtualHubsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // ResumeCreateOrUpdate creates a new VirtualHubPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualHubPoller.ResumeToken().
 func (client *VirtualHubsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualHubPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VirtualHubPollerResponse{}, err
 	}
 	poller := &virtualHubPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *VirtualHubsClient) BeginDelete(ctx context.Context, resourceGroupN
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("VirtualHubsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *VirtualHubsClient) BeginDelete(ctx context.Context, resourceGroupN
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VirtualHubsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -321,13 +317,12 @@ func (client *VirtualHubsClient) BeginGetEffectiveVirtualHubRoutes(ctx context.C
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubsClient.GetEffectiveVirtualHubRoutes", "location", resp, client.getEffectiveVirtualHubRoutesHandleError)
+	pt, err := armcore.NewLROPoller("VirtualHubsClient.GetEffectiveVirtualHubRoutes", "location", resp, client.con.Pipeline(), client.getEffectiveVirtualHubRoutesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -339,13 +334,12 @@ func (client *VirtualHubsClient) BeginGetEffectiveVirtualHubRoutes(ctx context.C
 // ResumeGetEffectiveVirtualHubRoutes creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VirtualHubsClient) ResumeGetEffectiveVirtualHubRoutes(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubsClient.GetEffectiveVirtualHubRoutes", token, client.getEffectiveVirtualHubRoutesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubsClient.GetEffectiveVirtualHubRoutes", token, client.con.Pipeline(), client.getEffectiveVirtualHubRoutesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

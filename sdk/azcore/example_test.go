@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright 2017 Microsoft Corporation. All rights reserved.
 // Use of this source code is governed by an MIT
@@ -16,6 +17,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 )
 
 func ExamplePipeline_Do() {
@@ -48,23 +50,16 @@ func ExampleRequest_SetBody() {
 	}
 }
 
-func ExampleLogger_Should() {
-	// you can create your own logging classification as needed
-	const LogExpensiveThing azcore.LogClassification = "ExpensiveThing"
-	if azcore.Log().Should(LogExpensiveThing) {
-		// perform expensive calculation only when enabled
-		azcore.Log().Write(LogExpensiveThing, "expensive log message")
-	}
-}
-
-func ExampleLogger_SetClassifications() {
+// false positive by linter
+func ExampleSetClassifications() { //nolint:govet
 	// only log HTTP requests and responses
-	azcore.Log().SetClassifications(azcore.LogRequest, azcore.LogResponse)
+	azlog.SetClassifications(azlog.Request, azlog.Response)
 }
 
-func ExampleLogger_SetListener() {
+// false positive by linter
+func ExampleSetListener() { //nolint:govet
 	// a simple logger that writes to stdout
-	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
+	azlog.SetListener(func(cls azlog.Classification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
 }

@@ -40,13 +40,12 @@ func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 	result := DiskPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DisksClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("DisksClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DiskPollerResponse{}, err
 	}
 	poller := &diskPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
@@ -58,13 +57,12 @@ func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 // ResumeCreateOrUpdate creates a new DiskPoller from the specified resume token.
 // token - The value must come from a previous call to DiskPoller.ResumeToken().
 func (client *DisksClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DisksClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DiskPollerResponse{}, err
 	}
 	poller := &diskPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -146,13 +144,12 @@ func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName st
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DisksClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("DisksClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -164,13 +161,12 @@ func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName st
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DisksClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DisksClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -316,13 +312,12 @@ func (client *DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupNa
 	result := AccessURIPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DisksClient.GrantAccess", "location", resp, client.grantAccessHandleError)
+	pt, err := armcore.NewLROPoller("DisksClient.GrantAccess", "location", resp, client.con.Pipeline(), client.grantAccessHandleError)
 	if err != nil {
 		return AccessURIPollerResponse{}, err
 	}
 	poller := &accessURIPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
@@ -334,13 +329,12 @@ func (client *DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupNa
 // ResumeGrantAccess creates a new AccessURIPoller from the specified resume token.
 // token - The value must come from a previous call to AccessURIPoller.ResumeToken().
 func (client *DisksClient) ResumeGrantAccess(ctx context.Context, token string) (AccessURIPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DisksClient.GrantAccess", token, client.grantAccessHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.GrantAccess", token, client.con.Pipeline(), client.grantAccessHandleError)
 	if err != nil {
 		return AccessURIPollerResponse{}, err
 	}
 	poller := &accessURIPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -540,13 +534,12 @@ func (client *DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupN
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DisksClient.RevokeAccess", "location", resp, client.revokeAccessHandleError)
+	pt, err := armcore.NewLROPoller("DisksClient.RevokeAccess", "location", resp, client.con.Pipeline(), client.revokeAccessHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -558,13 +551,12 @@ func (client *DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupN
 // ResumeRevokeAccess creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DisksClient) ResumeRevokeAccess(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DisksClient.RevokeAccess", token, client.revokeAccessHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.RevokeAccess", token, client.con.Pipeline(), client.revokeAccessHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -645,13 +637,12 @@ func (client *DisksClient) BeginUpdate(ctx context.Context, resourceGroupName st
 	result := DiskPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DisksClient.Update", "", resp, client.updateHandleError)
+	pt, err := armcore.NewLROPoller("DisksClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return DiskPollerResponse{}, err
 	}
 	poller := &diskPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
@@ -663,13 +654,12 @@ func (client *DisksClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // ResumeUpdate creates a new DiskPoller from the specified resume token.
 // token - The value must come from a previous call to DiskPoller.ResumeToken().
 func (client *DisksClient) ResumeUpdate(ctx context.Context, token string) (DiskPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DisksClient.Update", token, client.updateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return DiskPollerResponse{}, err
 	}
 	poller := &diskPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

@@ -41,13 +41,12 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	result := VPNSitePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VPNSitesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("VPNSitesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VPNSitePollerResponse{}, err
 	}
 	poller := &vpnSitePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNSiteResponse, error) {
@@ -59,13 +58,12 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // ResumeCreateOrUpdate creates a new VPNSitePoller from the specified resume token.
 // token - The value must come from a previous call to VPNSitePoller.ResumeToken().
 func (client *VPNSitesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VPNSitePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VPNSitesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VPNSitesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VPNSitePollerResponse{}, err
 	}
 	poller := &vpnSitePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VPNSitesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("VPNSitesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VPNSitesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VPNSitesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VPNSitesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

@@ -10,6 +10,6 @@ Please verify the following before submitting your PR, thank you!
 - [ ] Tests are included and/or updated for code changes.
 - [ ] Updates to [CHANGELOG.md][] are included.
 - [ ] MIT license headers are included in each file.
- 
+
 [Azure/autorest.go]: https://github.com/Azure/autorest.go
-[CHANGELOG.md]: https://github.com/Azure/azure-sdk-for-go/blob/master/CHANGELOG.md
+[CHANGELOG.md]: https://github.com/Azure/azure-sdk-for-go/blob/main/CHANGELOG.md

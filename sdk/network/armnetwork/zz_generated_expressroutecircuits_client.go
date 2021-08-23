@@ -41,13 +41,12 @@ func (client *ExpressRouteCircuitsClient) BeginCreateOrUpdate(ctx context.Contex
 	result := ExpressRouteCircuitPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteCircuitPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitResponse, error) {
@@ -59,13 +58,12 @@ func (client *ExpressRouteCircuitsClient) BeginCreateOrUpdate(ctx context.Contex
 // ResumeCreateOrUpdate creates a new ExpressRouteCircuitPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitPoller.ResumeToken().
 func (client *ExpressRouteCircuitsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ExpressRouteCircuitPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteCircuitPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *ExpressRouteCircuitsClient) BeginDelete(ctx context.Context, resou
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *ExpressRouteCircuitsClient) BeginDelete(ctx context.Context, resou
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ExpressRouteCircuitsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -577,13 +573,12 @@ func (client *ExpressRouteCircuitsClient) BeginListArpTable(ctx context.Context,
 	result := ExpressRouteCircuitsArpTableListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitsClient.ListArpTable", "location", resp, client.listArpTableHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitsClient.ListArpTable", "location", resp, client.con.Pipeline(), client.listArpTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsArpTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error) {
@@ -595,13 +590,12 @@ func (client *ExpressRouteCircuitsClient) BeginListArpTable(ctx context.Context,
 // ResumeListArpTable creates a new ExpressRouteCircuitsArpTableListResultPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitsArpTableListResultPoller.ResumeToken().
 func (client *ExpressRouteCircuitsClient) ResumeListArpTable(ctx context.Context, token string) (ExpressRouteCircuitsArpTableListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitsClient.ListArpTable", token, client.listArpTableHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitsClient.ListArpTable", token, client.con.Pipeline(), client.listArpTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsArpTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -692,13 +686,12 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTable(ctx context.Conte
 	result := ExpressRouteCircuitsRoutesTableListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitsClient.ListRoutesTable", "location", resp, client.listRoutesTableHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitsClient.ListRoutesTable", "location", resp, client.con.Pipeline(), client.listRoutesTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
@@ -710,13 +703,12 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTable(ctx context.Conte
 // ResumeListRoutesTable creates a new ExpressRouteCircuitsRoutesTableListResultPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitsRoutesTableListResultPoller.ResumeToken().
 func (client *ExpressRouteCircuitsClient) ResumeListRoutesTable(ctx context.Context, token string) (ExpressRouteCircuitsRoutesTableListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitsClient.ListRoutesTable", token, client.listRoutesTableHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitsClient.ListRoutesTable", token, client.con.Pipeline(), client.listRoutesTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -807,13 +799,12 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTableSummary(ctx contex
 	result := ExpressRouteCircuitsRoutesTableSummaryListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitsClient.ListRoutesTableSummary", "location", resp, client.listRoutesTableSummaryHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitsClient.ListRoutesTableSummary", "location", resp, client.con.Pipeline(), client.listRoutesTableSummaryHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableSummaryListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableSummaryListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error) {
@@ -825,13 +816,12 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTableSummary(ctx contex
 // ResumeListRoutesTableSummary creates a new ExpressRouteCircuitsRoutesTableSummaryListResultPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitsRoutesTableSummaryListResultPoller.ResumeToken().
 func (client *ExpressRouteCircuitsClient) ResumeListRoutesTableSummary(ctx context.Context, token string) (ExpressRouteCircuitsRoutesTableSummaryListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitsClient.ListRoutesTableSummary", token, client.listRoutesTableSummaryHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitsClient.ListRoutesTableSummary", token, client.con.Pipeline(), client.listRoutesTableSummaryHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableSummaryListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableSummaryListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

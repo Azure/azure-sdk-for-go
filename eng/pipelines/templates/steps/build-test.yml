@@ -21,17 +21,20 @@ steps:
       GO111MODULE: 'on'
 
   - task: PowerShell@2
+    displayName: 'Run Tests'
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/run_tests.ps1
       workingDirectory: '${{parameters.GoWorkspace}}'
       arguments: '${{parameters.ServiceDirectory}}'
-      displayName: 'Run Tests and Create Coverage'
       pwsh: true
     env:
       GO111MODULE: 'on'
 
   - pwsh: ./eng/scripts/create_coverage.ps1
+    workingDirectory: '${{parameters.GoWorkspace}}'
+    arguments: '${{parameters.ServiceDirectory}}'
+    displayName: 'Create Coverage'
     env:
       GO111MODULE: 'off'
 

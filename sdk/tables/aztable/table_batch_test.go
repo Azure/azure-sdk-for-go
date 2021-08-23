@@ -31,7 +31,11 @@ func TestBatchAdd(t *testing.T) {
 				batch[i] = TableTransactionAction{ActionType: Add, Entity: marshalled}
 			}
 
-			resp, err := client.submitTransactionInternal(ctx, &batch, uuid.New(), uuid.New(), nil)
+			u1, err := uuid.New()
+			require.NoError(t, err)
+			u2, err := uuid.New()
+			require.NoError(t, err)
+			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -70,7 +74,11 @@ func TestBatchMixed(t *testing.T) {
 				}
 			}
 
-			resp, err := client.submitTransactionInternal(ctx, &batch, uuid.New(), uuid.New(), nil)
+			u1, err := uuid.New()
+			require.NoError(t, err)
+			u2, err := uuid.New()
+			require.NoError(t, err)
+			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -132,7 +140,11 @@ func TestBatchMixed(t *testing.T) {
 			batch[3] = TableTransactionAction{ActionType: Add, Entity: marshalled4thEntity}
 			batch[4] = TableTransactionAction{ActionType: Add, Entity: marshalled5thEntity}
 
-			resp, err = client.submitTransactionInternal(ctx, &batch, uuid.New(), uuid.New(), nil)
+			u1, err = uuid.New()
+			require.NoError(t, err)
+			u2, err = uuid.New()
+			require.NoError(t, err)
+			resp, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NoError(t, err)
 
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
@@ -169,15 +181,20 @@ func TestBatchError(t *testing.T) {
 			// Create the batch.
 			batch := make([]TableTransactionAction, 0, 3)
 
+			u1, err := uuid.New()
+			require.NoError(t, err)
+			u2, err := uuid.New()
+			require.NoError(t, err)
 			// Sending an empty batch throws.
-			_, err := client.submitTransactionInternal(ctx, &batch, uuid.New(), uuid.New(), nil)
+			_, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NotNil(t, err)
 			require.Equal(t, error_empty_transaction, err.Error())
 
 			// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
 			marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])
 			require.NoError(t, err)
-			client.AddEntity(ctx, marshalledFinalEntity, nil)
+			_, err = client.AddEntity(ctx, marshalledFinalEntity, nil)
+			require.NoError(t, err)
 
 			// Add the entities to the batch
 			for i := 0; i < cap(batch); i++ {
@@ -186,7 +203,11 @@ func TestBatchError(t *testing.T) {
 				batch = append(batch, TableTransactionAction{ActionType: Add, Entity: marshalledEntity})
 			}
 
-			resp, err := client.submitTransactionInternal(ctx, &batch, uuid.New(), uuid.New(), nil)
+			u1, err = uuid.New()
+			require.NoError(t, err)
+			u2, err = uuid.New()
+			require.NoError(t, err)
+			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NotNil(t, err)
 			transactionError, ok := err.(*TableTransactionError)
 			require.Truef(t, ok, "err should be of type TableTransactionError")
@@ -246,7 +267,11 @@ func TestBatchComplex(t *testing.T) {
 				Entity:     marshalled5,
 			}
 
-			resp, err := client.submitTransactionInternal(ctx, &batch, uuid.New(), uuid.New(), nil)
+			u1, err := uuid.New()
+			require.NoError(t, err)
+			u2, err := uuid.New()
+			require.NoError(t, err)
+			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]
@@ -278,7 +303,11 @@ func TestBatchComplex(t *testing.T) {
 				Entity:     marshalled3,
 			}
 
-			resp, err = client.submitTransactionInternal(ctx, &batch2, uuid.New(), uuid.New(), nil)
+			u1, err = uuid.New()
+			require.NoError(t, err)
+			u2, err = uuid.New()
+			require.NoError(t, err)
+			resp, err = client.submitTransactionInternal(ctx, &batch2, u1, u2, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]

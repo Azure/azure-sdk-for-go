@@ -34,7 +34,7 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *T
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
 	for _, p := range options.PerCallOptions {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, p)
 	}

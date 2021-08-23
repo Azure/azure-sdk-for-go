@@ -9,7 +9,6 @@ package internal
 
 import (
 	"fmt"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -17,7 +16,7 @@ import (
 // All zero-value fields will be initialized with their default values.
 type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
@@ -47,7 +46,7 @@ type Connection struct {
 	p azcore.Pipeline
 }
 
-// newConnection creates an instance of the connection type with the specified endpoint.
+// NewConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
 func NewConnection(endpoint string, options *ConnectionOptions) *Connection {
 	if options == nil {
@@ -69,6 +68,7 @@ func (c *Connection) Endpoint() string {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *Connection) Pipeline() azcore.Pipeline {
+func (c *Connection) Pipeline() (azcore.Pipeline) {
 	return c.p
 }
+

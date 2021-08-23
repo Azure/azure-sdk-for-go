@@ -7,7 +7,6 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
@@ -27,10 +26,13 @@ import (
 // }
 // err := pager.Err()
 type ListEntitiesPager interface {
-	azcore.Pager
 
 	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() ListEntitiesByteResponse
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+	// Err returns an error if there was an error on the last request
+	Err() error
 }
 
 type tableEntityQueryResponsePager struct {
@@ -95,10 +97,12 @@ func (p *tableEntityQueryResponsePager) Err() error {
 // }
 // err := pager.Err()
 type ListTablesPager interface {
-	azcore.Pager
-
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableListResponseEnvelope //generated.TableQueryResponseEnvelope
+	PageResponse() TableListResponseEnvelope
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+	// Err returns an error if there was an error on the last request
+	Err() error
 }
 
 type TableListResponseEnvelope struct {

@@ -135,10 +135,10 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 		return nil, err
 	}
 
-	pk, okPk := mapEntity[partitionKey]
+	pk := mapEntity[partitionKey]
 	partKey := pk.(string)
 
-	rk, okRk := mapEntity[rowKey]
+	rk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
 	switch updateMode {
@@ -149,7 +149,7 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, etag *str
 		resp, err := t.client.UpdateEntity(ctx, t.name, partKey, rowkey, options.toGeneratedUpdateEntity(mapEntity), &generated.QueryOptions{})
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
-	if !okPk || !okRk {
+	if pk == "" || rk == "" {
 		return nil, errPartitionKeyRowKeyError
 	}
 	return nil, errInvalidUpdateMode
@@ -166,10 +166,10 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 		return nil, err
 	}
 
-	pk, okPk := mapEntity[partitionKey]
+	pk := mapEntity[partitionKey]
 	partKey := pk.(string)
 
-	rk, okRk := mapEntity[rowKey]
+	rk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
 	// TODO: Fix the options on merge/update
@@ -181,7 +181,7 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 		resp, err := t.client.UpdateEntity(ctx, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
-	if !okPk || !okRk {
+	if pk == "" || rk == "" {
 		return nil, errPartitionKeyRowKeyError
 	}
 	return nil, errInvalidUpdateMode

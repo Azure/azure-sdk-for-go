@@ -10,7 +10,7 @@ import (
 
 type TableClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.

@@ -11,6 +11,10 @@
         {
             "Name": "internal",
             "CoverageGoal": 0.90
+        },
+        {
+            "Name": "tables",
+            "CoverageGoal": 0.01
         }
     ]
 }

@@ -54,7 +54,7 @@ func formatSASTime(t *time.Time, format string) string {
 }
 
 // parseSASTimeString try to parse sas time string.
-func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
+func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) { //nolint
 	for _, sasTimeFormat := range SASTimeFormats {
 		t, err = time.Parse(sasTimeFormat, val)
 		if err == nil {
@@ -182,7 +182,7 @@ func (ipr *IPRange) String() string {
 // query parameter map's passed-in values. If deleteSASParametersFromValues is true,
 // all SAS-related query parameters are removed from the passed-in map. If
 // deleteSASParametersFromValues is false, the map passed-in map is unaltered.
-func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool) SASQueryParameters {
+func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool) SASQueryParameters { //nolint
 	p := SASQueryParameters{}
 	for k, v := range values {
 		val := v[0]

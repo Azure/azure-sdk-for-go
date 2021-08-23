@@ -132,17 +132,6 @@ func (c ResponseFormat) ToPtr() *ResponseFormat {
 	return &c
 }
 
-func toGeneratedResponsePreference(r *ResponseFormat) *generated.ResponseFormat {
-	if r == nil {
-		return nil
-	} else if *r == ResponseFormatReturnContent {
-		return generated.ResponseFormatReturnContent.ToPtr()
-	} else if *r == ResponseFormatReturnNoContent {
-		return generated.ResponseFormatReturnNoContent.ToPtr()
-	}
-	return nil
-}
-
 // Options for TableClient.GetEntity method
 type GetEntityOptions struct {
 	Format ODataMetadataFormat
@@ -177,13 +166,6 @@ type AddEntityOptions struct {
 	TableEntityProperties map[string]interface{}
 }
 
-func (a *AddEntityOptions) toGenerated() *generated.TableInsertEntityOptions {
-	return &generated.TableInsertEntityOptions{
-		ResponsePreference:    toGeneratedResponsePreference(a.ResponsePreference),
-		TableEntityProperties: a.TableEntityProperties,
-	}
-}
-
 type DeleteEntityOptions struct{}
 
 func (d *DeleteEntityOptions) toGenerated() *generated.TableDeleteEntityOptions {
@@ -216,25 +198,6 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 
 type InsertEntityOptions struct {
 	IfMatch *string
-}
-
-func (i *InsertEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableMergeEntityOptions {
-	if i == nil {
-		return &generated.TableMergeEntityOptions{}
-	}
-	return &generated.TableMergeEntityOptions{
-		IfMatch:               i.IfMatch,
-		TableEntityProperties: m,
-	}
-}
-
-func (i *InsertEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) *generated.TableUpdateEntityOptions {
-	if i == nil {
-		return &generated.TableUpdateEntityOptions{}
-	}
-	return &generated.TableUpdateEntityOptions{
-		TableEntityProperties: m,
-	}
 }
 
 type GetAccessPolicyOptions struct {

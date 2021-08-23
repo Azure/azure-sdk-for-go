@@ -9,6 +9,7 @@ package internal
 
 import (
 	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -68,7 +69,6 @@ func (c *Connection) Endpoint() string {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *Connection) Pipeline() (azcore.Pipeline) {
+func (c *Connection) Pipeline() azcore.Pipeline {
 	return c.p
 }
-

@@ -106,17 +106,6 @@ type TableListResponse struct {
 	Value []*TableResponseProperties `json:"value,omitempty"`
 }
 
-func tableListResponseFromQueryResponse(q *generated.TableQueryResponse) *TableListResponse {
-	var value []*TableResponseProperties
-	for _, t := range q.Value {
-		value = append(value, fromGeneratedTableResponseProperties(t))
-	}
-	return &TableListResponse{
-		OdataMetadata: q.ODataMetadata,
-		Value:         value,
-	}
-}
-
 type TableResponseProperties struct {
 	// The edit link of the table.
 	ODataEditLink *string `json:"odata.editLink,omitempty"`

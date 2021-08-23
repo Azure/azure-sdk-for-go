@@ -3314,7 +3314,7 @@ type BastionActiveSession struct {
 	SessionID *string `json:"sessionId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the session started.
-	StartTime interface{} `json:"startTime,omitempty" azure:"ro"`
+	StartTime map[string]interface{} `json:"startTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The host name of the target.
 	TargetHostName *string `json:"targetHostName,omitempty" azure:"ro"`

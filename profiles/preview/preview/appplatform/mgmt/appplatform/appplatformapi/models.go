@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,7 +9,7 @@
 
 package appplatformapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2020-11-01-preview/appplatform/appplatformapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-06-01-preview/appplatform/appplatformapi"
 
 type AppsClientAPI = original.AppsClientAPI
 type BindingsClientAPI = original.BindingsClientAPI

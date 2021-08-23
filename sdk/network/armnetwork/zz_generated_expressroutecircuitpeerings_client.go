@@ -41,13 +41,12 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context
 	result := ExpressRouteCircuitPeeringPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteCircuitPeeringPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitPeeringPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitPeeringResponse, error) {
@@ -59,13 +58,12 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context
 // ResumeCreateOrUpdate creates a new ExpressRouteCircuitPeeringPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitPeeringPoller.ResumeToken().
 func (client *ExpressRouteCircuitPeeringsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ExpressRouteCircuitPeeringPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteCircuitPeeringPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitPeeringPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitPeeringsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCircuitPeeringsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ExpressRouteCircuitPeeringsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

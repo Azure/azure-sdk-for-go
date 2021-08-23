@@ -1,12 +1,12 @@
 Param(
-  [string] $serviceDir = ""
+    [string] $serviceDir = ""
 )
 
-if($serviceDir){
-  $targetDir = "$PSScriptRoot/../../sdk/$serviceDir"
+if ($serviceDir) {
+    $targetDir = "$PSScriptRoot/../../sdk/$serviceDir"
 }
 else {
-  $targetDir = "$PSScriptRoot/../../sdk"
+    $targetDir = "$PSScriptRoot/../../sdk"
 }
 
 $path = Resolve-Path -Path $targetDir

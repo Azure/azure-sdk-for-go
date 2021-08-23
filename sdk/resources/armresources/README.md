@@ -4,7 +4,7 @@
 
 The `armresources` module provides operations for working with Azure resources and resource groups.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/resources/armresources)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resources/armresources)
 
 # Getting Started
 

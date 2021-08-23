@@ -1,10 +1,10 @@
-github.com/Azure/azure-sdk-for-go v54.3.0+incompatible h1:aJ/WT32eVP8YmWpuSHLgnFJWjZzUFmhR3wBxxszo4PE=
-github.com/Azure/azure-sdk-for-go v54.3.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
-github.com/Azure/azure-sdk-for-go/sdk/armcore v0.7.1 h1:qvtCPHEhkkkiuHqoQU3c0a21l6qO3sXgpa3aC/SO4w8=
-github.com/Azure/azure-sdk-for-go/sdk/armcore v0.7.1/go.mod h1:6yYd2qNvutd94jHTMUg9KrdbR39jNzI4d+15lm2gxkg=
+github.com/Azure/azure-sdk-for-go v55.2.0+incompatible h1:TL2/vJWJEPOrmv97nHcbvjXES0Ntlb9P95hqGA1J2dU=
+github.com/Azure/azure-sdk-for-go v55.2.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
+github.com/Azure/azure-sdk-for-go/sdk/armcore v0.8.0 h1:HQQoaSGOh32mpoRkpLDjkngMwYJqkxu93FRx0epdLHE=
+github.com/Azure/azure-sdk-for-go/sdk/armcore v0.8.0/go.mod h1:BSKvHb/5cy8j4hahIInXH92X/2zGJ3TxKF6b9pw1Btg=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v0.14.0/go.mod h1:pElNP+u99BvCZD+0jOlhI9OC/NB2IDTOTGZOZH0Qhq8=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.1 h1:yQw8Ah26gBP4dv66ZNjZpRBRV+gaHH/0TLn1taU4FZ4=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.1/go.mod h1:MVdrcUC4Hup35qHym3VdzoW+NBgBxrta9Vei97jRtM8=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2 h1:UC4vfOhW2l0f2QOCQpOxJS4/K6oKFy2tQZE+uWU1MEo=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2/go.mod h1:MVdrcUC4Hup35qHym3VdzoW+NBgBxrta9Vei97jRtM8=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.1 h1:KchdKK3XlOjkzBROV+q3D+YgfRTvwoeBwbaoX4aVkjI=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.1/go.mod h1:acANgl9stsT5xflESXKjZx4rhZJSr0TGgTDYY0xJPIE=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0/go.mod h1:k4KbFSunV/+0hOHL1vyFaPsiYQ1Vmvy1TBpmtvCDLZM=

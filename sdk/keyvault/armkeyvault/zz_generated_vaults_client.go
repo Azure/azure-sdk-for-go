@@ -101,13 +101,12 @@ func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 	result := VaultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VaultsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("VaultsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VaultPollerResponse{}, err
 	}
 	poller := &vaultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
@@ -119,13 +118,12 @@ func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // ResumeCreateOrUpdate creates a new VaultPoller from the specified resume token.
 // token - The value must come from a previous call to VaultPoller.ResumeToken().
 func (client *VaultsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VaultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VaultPollerResponse{}, err
 	}
 	poller := &vaultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -646,13 +644,12 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VaultsClient.PurgeDeleted", "", resp, client.purgeDeletedHandleError)
+	pt, err := armcore.NewLROPoller("VaultsClient.PurgeDeleted", "", resp, client.con.Pipeline(), client.purgeDeletedHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -664,13 +661,12 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 // ResumePurgeDeleted creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VaultsClient) ResumePurgeDeleted(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VaultsClient.PurgeDeleted", token, client.purgeDeletedHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VaultsClient.PurgeDeleted", token, client.con.Pipeline(), client.purgeDeletedHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

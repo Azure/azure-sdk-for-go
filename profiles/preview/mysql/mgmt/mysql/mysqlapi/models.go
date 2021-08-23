@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -25,9 +26,12 @@ type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsCl
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type QueryTextsClientAPI = original.QueryTextsClientAPI
 type RecommendedActionsClientAPI = original.RecommendedActionsClientAPI
+type RecoverableServersClientAPI = original.RecoverableServersClientAPI
 type ReplicasClientAPI = original.ReplicasClientAPI
 type ServerAdministratorsClientAPI = original.ServerAdministratorsClientAPI
+type ServerBasedPerformanceTierClientAPI = original.ServerBasedPerformanceTierClientAPI
 type ServerKeysClientAPI = original.ServerKeysClientAPI
+type ServerParametersClientAPI = original.ServerParametersClientAPI
 type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
 type ServersClientAPI = original.ServersClientAPI
 type TopQueryStatisticsClientAPI = original.TopQueryStatisticsClientAPI

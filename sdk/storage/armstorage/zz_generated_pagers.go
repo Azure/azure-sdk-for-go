@@ -17,7 +17,7 @@ import (
 type DeletedAccountListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DeletedAccountListResultResponse.
+	// PageResponse returns the current DeletedAccountListResultResponse.
 	PageResponse() DeletedAccountListResultResponse
 }
 
@@ -93,7 +93,7 @@ func (p *deletedAccountListResultPager) PageResponse() DeletedAccountListResultR
 type EncryptionScopeListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current EncryptionScopeListResultResponse.
+	// PageResponse returns the current EncryptionScopeListResultResponse.
 	PageResponse() EncryptionScopeListResultResponse
 }
 
@@ -169,7 +169,7 @@ func (p *encryptionScopeListResultPager) PageResponse() EncryptionScopeListResul
 type FileShareItemsPager interface {
 	azcore.Pager
 
-	// Page returns the current FileShareItemsResponse.
+	// PageResponse returns the current FileShareItemsResponse.
 	PageResponse() FileShareItemsResponse
 }
 
@@ -245,7 +245,7 @@ func (p *fileShareItemsPager) PageResponse() FileShareItemsResponse {
 type ListContainerItemsPager interface {
 	azcore.Pager
 
-	// Page returns the current ListContainerItemsResponse.
+	// PageResponse returns the current ListContainerItemsResponse.
 	PageResponse() ListContainerItemsResponse
 }
 
@@ -321,7 +321,7 @@ func (p *listContainerItemsPager) PageResponse() ListContainerItemsResponse {
 type ListQueueResourcePager interface {
 	azcore.Pager
 
-	// Page returns the current ListQueueResourceResponse.
+	// PageResponse returns the current ListQueueResourceResponse.
 	PageResponse() ListQueueResourceResponse
 }
 
@@ -397,7 +397,7 @@ func (p *listQueueResourcePager) PageResponse() ListQueueResourceResponse {
 type ListTableResourcePager interface {
 	azcore.Pager
 
-	// Page returns the current ListTableResourceResponse.
+	// PageResponse returns the current ListTableResourceResponse.
 	PageResponse() ListTableResourceResponse
 }
 
@@ -473,7 +473,7 @@ func (p *listTableResourcePager) PageResponse() ListTableResourceResponse {
 type StorageAccountListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current StorageAccountListResultResponse.
+	// PageResponse returns the current StorageAccountListResultResponse.
 	PageResponse() StorageAccountListResultResponse
 }
 

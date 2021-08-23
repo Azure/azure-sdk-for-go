@@ -41,13 +41,12 @@ func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	result := SubnetPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SubnetsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("SubnetsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SubnetPollerResponse{}, err
 	}
 	poller := &subnetPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SubnetResponse, error) {
@@ -59,13 +58,12 @@ func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // ResumeCreateOrUpdate creates a new SubnetPoller from the specified resume token.
 // token - The value must come from a previous call to SubnetPoller.ResumeToken().
 func (client *SubnetsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SubnetPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SubnetsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SubnetsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SubnetPollerResponse{}, err
 	}
 	poller := &subnetPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SubnetsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("SubnetsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SubnetsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SubnetsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SubnetsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -402,13 +398,12 @@ func (client *SubnetsClient) BeginPrepareNetworkPolicies(ctx context.Context, re
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SubnetsClient.PrepareNetworkPolicies", "location", resp, client.prepareNetworkPoliciesHandleError)
+	pt, err := armcore.NewLROPoller("SubnetsClient.PrepareNetworkPolicies", "location", resp, client.con.Pipeline(), client.prepareNetworkPoliciesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -420,13 +415,12 @@ func (client *SubnetsClient) BeginPrepareNetworkPolicies(ctx context.Context, re
 // ResumePrepareNetworkPolicies creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SubnetsClient) ResumePrepareNetworkPolicies(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SubnetsClient.PrepareNetworkPolicies", token, client.prepareNetworkPoliciesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SubnetsClient.PrepareNetworkPolicies", token, client.con.Pipeline(), client.prepareNetworkPoliciesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -513,13 +507,12 @@ func (client *SubnetsClient) BeginUnprepareNetworkPolicies(ctx context.Context, 
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SubnetsClient.UnprepareNetworkPolicies", "location", resp, client.unprepareNetworkPoliciesHandleError)
+	pt, err := armcore.NewLROPoller("SubnetsClient.UnprepareNetworkPolicies", "location", resp, client.con.Pipeline(), client.unprepareNetworkPoliciesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -531,13 +524,12 @@ func (client *SubnetsClient) BeginUnprepareNetworkPolicies(ctx context.Context, 
 // ResumeUnprepareNetworkPolicies creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SubnetsClient) ResumeUnprepareNetworkPolicies(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SubnetsClient.UnprepareNetworkPolicies", token, client.unprepareNetworkPoliciesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SubnetsClient.UnprepareNetworkPolicies", token, client.con.Pipeline(), client.unprepareNetworkPoliciesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

@@ -41,13 +41,12 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 	result := InboundSecurityRulePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("InboundSecurityRuleClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("InboundSecurityRuleClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return InboundSecurityRulePollerResponse{}, err
 	}
 	poller := &inboundSecurityRulePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error) {
@@ -59,13 +58,12 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 // ResumeCreateOrUpdate creates a new InboundSecurityRulePoller from the specified resume token.
 // token - The value must come from a previous call to InboundSecurityRulePoller.ResumeToken().
 func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(ctx context.Context, token string) (InboundSecurityRulePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("InboundSecurityRuleClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("InboundSecurityRuleClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return InboundSecurityRulePollerResponse{}, err
 	}
 	poller := &inboundSecurityRulePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

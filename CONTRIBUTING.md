@@ -10,7 +10,22 @@ using [Azure/autorest.go][] and [Azure/autorest][]. These generated packages dep
 
 For bugs or feature requests you can submit them using the [Github issues page][issues] and filling the appropriate template.
 
-Also please see these [guidelines][] about contributing to Azure projects.
+## Building
+
+SDKs are either old (track 1) or new (track 2):
+
+- Old (Track 1) SDKs are found in the services/ and profiles/ top level folders. 
+    - CI is in /azure-pipelines.yml
+- New (Track 2) SDKs are found in the sdk/ top level folder.
+    - CI is in /eng/pipelines/templates/steps/build.yml
+
+To build, run `go build` from the respective SDK directory.
+
+There currently is not a repository wide way to build or regenerate code.
+
+## Guidelines and Code of Conduct
+
+Also please see these [guidelines][guidelines] about contributing to Azure projects.
 
 This project follows the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][cocfaq]. Contact [opencode@microsoft.com][cocmail] with questions and comments.
 

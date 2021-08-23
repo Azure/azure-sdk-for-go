@@ -25,8 +25,7 @@ type AccessURIPoller interface {
 }
 
 type accessURIPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *accessURIPoller) Done() bool {
@@ -34,12 +33,12 @@ func (p *accessURIPoller) Done() bool {
 }
 
 func (p *accessURIPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *accessURIPoller) FinalResponse(ctx context.Context) (AccessURIResponse, error) {
 	respType := AccessURIResponse{AccessURI: &AccessURI{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.AccessURI)
+	resp, err := p.pt.FinalResponse(ctx, respType.AccessURI)
 	if err != nil {
 		return AccessURIResponse{}, err
 	}
@@ -53,7 +52,7 @@ func (p *accessURIPoller) ResumeToken() (string, error) {
 
 func (p *accessURIPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AccessURIResponse, error) {
 	respType := AccessURIResponse{AccessURI: &AccessURI{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AccessURI)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AccessURI)
 	if err != nil {
 		return AccessURIResponse{}, err
 	}
@@ -71,8 +70,7 @@ type CloudServicePoller interface {
 }
 
 type cloudServicePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *cloudServicePoller) Done() bool {
@@ -80,12 +78,12 @@ func (p *cloudServicePoller) Done() bool {
 }
 
 func (p *cloudServicePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *cloudServicePoller) FinalResponse(ctx context.Context) (CloudServiceResponse, error) {
 	respType := CloudServiceResponse{CloudService: &CloudService{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.CloudService)
+	resp, err := p.pt.FinalResponse(ctx, respType.CloudService)
 	if err != nil {
 		return CloudServiceResponse{}, err
 	}
@@ -99,7 +97,7 @@ func (p *cloudServicePoller) ResumeToken() (string, error) {
 
 func (p *cloudServicePoller) pollUntilDone(ctx context.Context, freq time.Duration) (CloudServiceResponse, error) {
 	respType := CloudServiceResponse{CloudService: &CloudService{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.CloudService)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.CloudService)
 	if err != nil {
 		return CloudServiceResponse{}, err
 	}
@@ -117,8 +115,7 @@ type DedicatedHostPoller interface {
 }
 
 type dedicatedHostPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *dedicatedHostPoller) Done() bool {
@@ -126,12 +123,12 @@ func (p *dedicatedHostPoller) Done() bool {
 }
 
 func (p *dedicatedHostPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *dedicatedHostPoller) FinalResponse(ctx context.Context) (DedicatedHostResponse, error) {
 	respType := DedicatedHostResponse{DedicatedHost: &DedicatedHost{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DedicatedHost)
+	resp, err := p.pt.FinalResponse(ctx, respType.DedicatedHost)
 	if err != nil {
 		return DedicatedHostResponse{}, err
 	}
@@ -145,7 +142,7 @@ func (p *dedicatedHostPoller) ResumeToken() (string, error) {
 
 func (p *dedicatedHostPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostResponse, error) {
 	respType := DedicatedHostResponse{DedicatedHost: &DedicatedHost{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DedicatedHost)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DedicatedHost)
 	if err != nil {
 		return DedicatedHostResponse{}, err
 	}
@@ -163,8 +160,7 @@ type DiskAccessPoller interface {
 }
 
 type diskAccessPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *diskAccessPoller) Done() bool {
@@ -172,12 +168,12 @@ func (p *diskAccessPoller) Done() bool {
 }
 
 func (p *diskAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *diskAccessPoller) FinalResponse(ctx context.Context) (DiskAccessResponse, error) {
 	respType := DiskAccessResponse{DiskAccess: &DiskAccess{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DiskAccess)
+	resp, err := p.pt.FinalResponse(ctx, respType.DiskAccess)
 	if err != nil {
 		return DiskAccessResponse{}, err
 	}
@@ -191,7 +187,7 @@ func (p *diskAccessPoller) ResumeToken() (string, error) {
 
 func (p *diskAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessResponse, error) {
 	respType := DiskAccessResponse{DiskAccess: &DiskAccess{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DiskAccess)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DiskAccess)
 	if err != nil {
 		return DiskAccessResponse{}, err
 	}
@@ -209,8 +205,7 @@ type DiskEncryptionSetPoller interface {
 }
 
 type diskEncryptionSetPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *diskEncryptionSetPoller) Done() bool {
@@ -218,12 +213,12 @@ func (p *diskEncryptionSetPoller) Done() bool {
 }
 
 func (p *diskEncryptionSetPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *diskEncryptionSetPoller) FinalResponse(ctx context.Context) (DiskEncryptionSetResponse, error) {
 	respType := DiskEncryptionSetResponse{DiskEncryptionSet: &DiskEncryptionSet{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DiskEncryptionSet)
+	resp, err := p.pt.FinalResponse(ctx, respType.DiskEncryptionSet)
 	if err != nil {
 		return DiskEncryptionSetResponse{}, err
 	}
@@ -237,7 +232,7 @@ func (p *diskEncryptionSetPoller) ResumeToken() (string, error) {
 
 func (p *diskEncryptionSetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskEncryptionSetResponse, error) {
 	respType := DiskEncryptionSetResponse{DiskEncryptionSet: &DiskEncryptionSet{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DiskEncryptionSet)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DiskEncryptionSet)
 	if err != nil {
 		return DiskEncryptionSetResponse{}, err
 	}
@@ -255,8 +250,7 @@ type DiskPoller interface {
 }
 
 type diskPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *diskPoller) Done() bool {
@@ -264,12 +258,12 @@ func (p *diskPoller) Done() bool {
 }
 
 func (p *diskPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *diskPoller) FinalResponse(ctx context.Context) (DiskResponse, error) {
 	respType := DiskResponse{Disk: &Disk{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Disk)
+	resp, err := p.pt.FinalResponse(ctx, respType.Disk)
 	if err != nil {
 		return DiskResponse{}, err
 	}
@@ -283,7 +277,7 @@ func (p *diskPoller) ResumeToken() (string, error) {
 
 func (p *diskPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskResponse, error) {
 	respType := DiskResponse{Disk: &Disk{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Disk)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Disk)
 	if err != nil {
 		return DiskResponse{}, err
 	}
@@ -301,8 +295,7 @@ type GalleryApplicationPoller interface {
 }
 
 type galleryApplicationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *galleryApplicationPoller) Done() bool {
@@ -310,12 +303,12 @@ func (p *galleryApplicationPoller) Done() bool {
 }
 
 func (p *galleryApplicationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *galleryApplicationPoller) FinalResponse(ctx context.Context) (GalleryApplicationResponse, error) {
 	respType := GalleryApplicationResponse{GalleryApplication: &GalleryApplication{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GalleryApplication)
+	resp, err := p.pt.FinalResponse(ctx, respType.GalleryApplication)
 	if err != nil {
 		return GalleryApplicationResponse{}, err
 	}
@@ -329,7 +322,7 @@ func (p *galleryApplicationPoller) ResumeToken() (string, error) {
 
 func (p *galleryApplicationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationResponse, error) {
 	respType := GalleryApplicationResponse{GalleryApplication: &GalleryApplication{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryApplication)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryApplication)
 	if err != nil {
 		return GalleryApplicationResponse{}, err
 	}
@@ -347,8 +340,7 @@ type GalleryApplicationVersionPoller interface {
 }
 
 type galleryApplicationVersionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *galleryApplicationVersionPoller) Done() bool {
@@ -356,12 +348,12 @@ func (p *galleryApplicationVersionPoller) Done() bool {
 }
 
 func (p *galleryApplicationVersionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *galleryApplicationVersionPoller) FinalResponse(ctx context.Context) (GalleryApplicationVersionResponse, error) {
 	respType := GalleryApplicationVersionResponse{GalleryApplicationVersion: &GalleryApplicationVersion{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GalleryApplicationVersion)
+	resp, err := p.pt.FinalResponse(ctx, respType.GalleryApplicationVersion)
 	if err != nil {
 		return GalleryApplicationVersionResponse{}, err
 	}
@@ -375,7 +367,7 @@ func (p *galleryApplicationVersionPoller) ResumeToken() (string, error) {
 
 func (p *galleryApplicationVersionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationVersionResponse, error) {
 	respType := GalleryApplicationVersionResponse{GalleryApplicationVersion: &GalleryApplicationVersion{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryApplicationVersion)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryApplicationVersion)
 	if err != nil {
 		return GalleryApplicationVersionResponse{}, err
 	}
@@ -393,8 +385,7 @@ type GalleryImagePoller interface {
 }
 
 type galleryImagePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *galleryImagePoller) Done() bool {
@@ -402,12 +393,12 @@ func (p *galleryImagePoller) Done() bool {
 }
 
 func (p *galleryImagePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *galleryImagePoller) FinalResponse(ctx context.Context) (GalleryImageResponse, error) {
 	respType := GalleryImageResponse{GalleryImage: &GalleryImage{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GalleryImage)
+	resp, err := p.pt.FinalResponse(ctx, respType.GalleryImage)
 	if err != nil {
 		return GalleryImageResponse{}, err
 	}
@@ -421,7 +412,7 @@ func (p *galleryImagePoller) ResumeToken() (string, error) {
 
 func (p *galleryImagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageResponse, error) {
 	respType := GalleryImageResponse{GalleryImage: &GalleryImage{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryImage)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryImage)
 	if err != nil {
 		return GalleryImageResponse{}, err
 	}
@@ -439,8 +430,7 @@ type GalleryImageVersionPoller interface {
 }
 
 type galleryImageVersionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *galleryImageVersionPoller) Done() bool {
@@ -448,12 +438,12 @@ func (p *galleryImageVersionPoller) Done() bool {
 }
 
 func (p *galleryImageVersionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *galleryImageVersionPoller) FinalResponse(ctx context.Context) (GalleryImageVersionResponse, error) {
 	respType := GalleryImageVersionResponse{GalleryImageVersion: &GalleryImageVersion{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GalleryImageVersion)
+	resp, err := p.pt.FinalResponse(ctx, respType.GalleryImageVersion)
 	if err != nil {
 		return GalleryImageVersionResponse{}, err
 	}
@@ -467,7 +457,7 @@ func (p *galleryImageVersionPoller) ResumeToken() (string, error) {
 
 func (p *galleryImageVersionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageVersionResponse, error) {
 	respType := GalleryImageVersionResponse{GalleryImageVersion: &GalleryImageVersion{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryImageVersion)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GalleryImageVersion)
 	if err != nil {
 		return GalleryImageVersionResponse{}, err
 	}
@@ -485,8 +475,7 @@ type GalleryPoller interface {
 }
 
 type galleryPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *galleryPoller) Done() bool {
@@ -494,12 +483,12 @@ func (p *galleryPoller) Done() bool {
 }
 
 func (p *galleryPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *galleryPoller) FinalResponse(ctx context.Context) (GalleryResponse, error) {
 	respType := GalleryResponse{Gallery: &Gallery{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Gallery)
+	resp, err := p.pt.FinalResponse(ctx, respType.Gallery)
 	if err != nil {
 		return GalleryResponse{}, err
 	}
@@ -513,7 +502,7 @@ func (p *galleryPoller) ResumeToken() (string, error) {
 
 func (p *galleryPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryResponse, error) {
 	respType := GalleryResponse{Gallery: &Gallery{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Gallery)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Gallery)
 	if err != nil {
 		return GalleryResponse{}, err
 	}
@@ -531,8 +520,7 @@ type HTTPPoller interface {
 }
 
 type httpPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *httpPoller) Done() bool {
@@ -540,11 +528,11 @@ func (p *httpPoller) Done() bool {
 }
 
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, p.pipeline, nil)
+	return p.pt.FinalResponse(ctx, nil)
 }
 
 func (p *httpPoller) ResumeToken() (string, error) {
@@ -552,7 +540,7 @@ func (p *httpPoller) ResumeToken() (string, error) {
 }
 
 func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
+	return p.pt.PollUntilDone(ctx, freq, nil)
 }
 
 // ImagePoller provides polling facilities until the operation reaches a terminal state.
@@ -565,8 +553,7 @@ type ImagePoller interface {
 }
 
 type imagePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *imagePoller) Done() bool {
@@ -574,12 +561,12 @@ func (p *imagePoller) Done() bool {
 }
 
 func (p *imagePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *imagePoller) FinalResponse(ctx context.Context) (ImageResponse, error) {
 	respType := ImageResponse{Image: &Image{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Image)
+	resp, err := p.pt.FinalResponse(ctx, respType.Image)
 	if err != nil {
 		return ImageResponse{}, err
 	}
@@ -593,7 +580,7 @@ func (p *imagePoller) ResumeToken() (string, error) {
 
 func (p *imagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (ImageResponse, error) {
 	respType := ImageResponse{Image: &Image{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Image)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Image)
 	if err != nil {
 		return ImageResponse{}, err
 	}
@@ -611,8 +598,7 @@ type LogAnalyticsOperationResultPoller interface {
 }
 
 type logAnalyticsOperationResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *logAnalyticsOperationResultPoller) Done() bool {
@@ -620,12 +606,12 @@ func (p *logAnalyticsOperationResultPoller) Done() bool {
 }
 
 func (p *logAnalyticsOperationResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *logAnalyticsOperationResultPoller) FinalResponse(ctx context.Context) (LogAnalyticsOperationResultResponse, error) {
 	respType := LogAnalyticsOperationResultResponse{LogAnalyticsOperationResult: &LogAnalyticsOperationResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.LogAnalyticsOperationResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.LogAnalyticsOperationResult)
 	if err != nil {
 		return LogAnalyticsOperationResultResponse{}, err
 	}
@@ -639,7 +625,7 @@ func (p *logAnalyticsOperationResultPoller) ResumeToken() (string, error) {
 
 func (p *logAnalyticsOperationResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LogAnalyticsOperationResultResponse, error) {
 	respType := LogAnalyticsOperationResultResponse{LogAnalyticsOperationResult: &LogAnalyticsOperationResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.LogAnalyticsOperationResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.LogAnalyticsOperationResult)
 	if err != nil {
 		return LogAnalyticsOperationResultResponse{}, err
 	}
@@ -657,8 +643,7 @@ type PrivateEndpointConnectionPoller interface {
 }
 
 type privateEndpointConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *privateEndpointConnectionPoller) Done() bool {
@@ -666,12 +651,12 @@ func (p *privateEndpointConnectionPoller) Done() bool {
 }
 
 func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -685,7 +670,7 @@ func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 
 func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -703,8 +688,7 @@ type RestorePointPoller interface {
 }
 
 type restorePointPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *restorePointPoller) Done() bool {
@@ -712,12 +696,12 @@ func (p *restorePointPoller) Done() bool {
 }
 
 func (p *restorePointPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *restorePointPoller) FinalResponse(ctx context.Context) (RestorePointResponse, error) {
 	respType := RestorePointResponse{RestorePoint: &RestorePoint{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.RestorePoint)
+	resp, err := p.pt.FinalResponse(ctx, respType.RestorePoint)
 	if err != nil {
 		return RestorePointResponse{}, err
 	}
@@ -731,7 +715,7 @@ func (p *restorePointPoller) ResumeToken() (string, error) {
 
 func (p *restorePointPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RestorePointResponse, error) {
 	respType := RestorePointResponse{RestorePoint: &RestorePoint{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RestorePoint)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RestorePoint)
 	if err != nil {
 		return RestorePointResponse{}, err
 	}
@@ -749,8 +733,7 @@ type RunCommandResultPoller interface {
 }
 
 type runCommandResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *runCommandResultPoller) Done() bool {
@@ -758,12 +741,12 @@ func (p *runCommandResultPoller) Done() bool {
 }
 
 func (p *runCommandResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *runCommandResultPoller) FinalResponse(ctx context.Context) (RunCommandResultResponse, error) {
 	respType := RunCommandResultResponse{RunCommandResult: &RunCommandResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.RunCommandResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.RunCommandResult)
 	if err != nil {
 		return RunCommandResultResponse{}, err
 	}
@@ -777,7 +760,7 @@ func (p *runCommandResultPoller) ResumeToken() (string, error) {
 
 func (p *runCommandResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RunCommandResultResponse, error) {
 	respType := RunCommandResultResponse{RunCommandResult: &RunCommandResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RunCommandResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RunCommandResult)
 	if err != nil {
 		return RunCommandResultResponse{}, err
 	}
@@ -795,8 +778,7 @@ type SharingUpdatePoller interface {
 }
 
 type sharingUpdatePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *sharingUpdatePoller) Done() bool {
@@ -804,12 +786,12 @@ func (p *sharingUpdatePoller) Done() bool {
 }
 
 func (p *sharingUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *sharingUpdatePoller) FinalResponse(ctx context.Context) (SharingUpdateResponse, error) {
 	respType := SharingUpdateResponse{SharingUpdate: &SharingUpdate{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.SharingUpdate)
+	resp, err := p.pt.FinalResponse(ctx, respType.SharingUpdate)
 	if err != nil {
 		return SharingUpdateResponse{}, err
 	}
@@ -823,7 +805,7 @@ func (p *sharingUpdatePoller) ResumeToken() (string, error) {
 
 func (p *sharingUpdatePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SharingUpdateResponse, error) {
 	respType := SharingUpdateResponse{SharingUpdate: &SharingUpdate{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SharingUpdate)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SharingUpdate)
 	if err != nil {
 		return SharingUpdateResponse{}, err
 	}
@@ -841,8 +823,7 @@ type SnapshotPoller interface {
 }
 
 type snapshotPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *snapshotPoller) Done() bool {
@@ -850,12 +831,12 @@ func (p *snapshotPoller) Done() bool {
 }
 
 func (p *snapshotPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *snapshotPoller) FinalResponse(ctx context.Context) (SnapshotResponse, error) {
 	respType := SnapshotResponse{Snapshot: &Snapshot{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Snapshot)
+	resp, err := p.pt.FinalResponse(ctx, respType.Snapshot)
 	if err != nil {
 		return SnapshotResponse{}, err
 	}
@@ -869,7 +850,7 @@ func (p *snapshotPoller) ResumeToken() (string, error) {
 
 func (p *snapshotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotResponse, error) {
 	respType := SnapshotResponse{Snapshot: &Snapshot{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Snapshot)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Snapshot)
 	if err != nil {
 		return SnapshotResponse{}, err
 	}
@@ -887,8 +868,7 @@ type VirtualMachineAssessPatchesResultPoller interface {
 }
 
 type virtualMachineAssessPatchesResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineAssessPatchesResultPoller) Done() bool {
@@ -896,12 +876,12 @@ func (p *virtualMachineAssessPatchesResultPoller) Done() bool {
 }
 
 func (p *virtualMachineAssessPatchesResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineAssessPatchesResultPoller) FinalResponse(ctx context.Context) (VirtualMachineAssessPatchesResultResponse, error) {
 	respType := VirtualMachineAssessPatchesResultResponse{VirtualMachineAssessPatchesResult: &VirtualMachineAssessPatchesResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineAssessPatchesResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineAssessPatchesResult)
 	if err != nil {
 		return VirtualMachineAssessPatchesResultResponse{}, err
 	}
@@ -915,7 +895,7 @@ func (p *virtualMachineAssessPatchesResultPoller) ResumeToken() (string, error) 
 
 func (p *virtualMachineAssessPatchesResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineAssessPatchesResultResponse, error) {
 	respType := VirtualMachineAssessPatchesResultResponse{VirtualMachineAssessPatchesResult: &VirtualMachineAssessPatchesResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineAssessPatchesResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineAssessPatchesResult)
 	if err != nil {
 		return VirtualMachineAssessPatchesResultResponse{}, err
 	}
@@ -933,8 +913,7 @@ type VirtualMachineCaptureResultPoller interface {
 }
 
 type virtualMachineCaptureResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineCaptureResultPoller) Done() bool {
@@ -942,12 +921,12 @@ func (p *virtualMachineCaptureResultPoller) Done() bool {
 }
 
 func (p *virtualMachineCaptureResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineCaptureResultPoller) FinalResponse(ctx context.Context) (VirtualMachineCaptureResultResponse, error) {
 	respType := VirtualMachineCaptureResultResponse{VirtualMachineCaptureResult: &VirtualMachineCaptureResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineCaptureResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineCaptureResult)
 	if err != nil {
 		return VirtualMachineCaptureResultResponse{}, err
 	}
@@ -961,7 +940,7 @@ func (p *virtualMachineCaptureResultPoller) ResumeToken() (string, error) {
 
 func (p *virtualMachineCaptureResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineCaptureResultResponse, error) {
 	respType := VirtualMachineCaptureResultResponse{VirtualMachineCaptureResult: &VirtualMachineCaptureResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineCaptureResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineCaptureResult)
 	if err != nil {
 		return VirtualMachineCaptureResultResponse{}, err
 	}
@@ -979,8 +958,7 @@ type VirtualMachineExtensionPoller interface {
 }
 
 type virtualMachineExtensionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineExtensionPoller) Done() bool {
@@ -988,12 +966,12 @@ func (p *virtualMachineExtensionPoller) Done() bool {
 }
 
 func (p *virtualMachineExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineExtensionPoller) FinalResponse(ctx context.Context) (VirtualMachineExtensionResponse, error) {
 	respType := VirtualMachineExtensionResponse{VirtualMachineExtension: &VirtualMachineExtension{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineExtension)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineExtension)
 	if err != nil {
 		return VirtualMachineExtensionResponse{}, err
 	}
@@ -1007,7 +985,7 @@ func (p *virtualMachineExtensionPoller) ResumeToken() (string, error) {
 
 func (p *virtualMachineExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineExtensionResponse, error) {
 	respType := VirtualMachineExtensionResponse{VirtualMachineExtension: &VirtualMachineExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineExtension)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineExtension)
 	if err != nil {
 		return VirtualMachineExtensionResponse{}, err
 	}
@@ -1025,8 +1003,7 @@ type VirtualMachineInstallPatchesResultPoller interface {
 }
 
 type virtualMachineInstallPatchesResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineInstallPatchesResultPoller) Done() bool {
@@ -1034,12 +1011,12 @@ func (p *virtualMachineInstallPatchesResultPoller) Done() bool {
 }
 
 func (p *virtualMachineInstallPatchesResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineInstallPatchesResultPoller) FinalResponse(ctx context.Context) (VirtualMachineInstallPatchesResultResponse, error) {
 	respType := VirtualMachineInstallPatchesResultResponse{VirtualMachineInstallPatchesResult: &VirtualMachineInstallPatchesResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineInstallPatchesResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineInstallPatchesResult)
 	if err != nil {
 		return VirtualMachineInstallPatchesResultResponse{}, err
 	}
@@ -1053,7 +1030,7 @@ func (p *virtualMachineInstallPatchesResultPoller) ResumeToken() (string, error)
 
 func (p *virtualMachineInstallPatchesResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineInstallPatchesResultResponse, error) {
 	respType := VirtualMachineInstallPatchesResultResponse{VirtualMachineInstallPatchesResult: &VirtualMachineInstallPatchesResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineInstallPatchesResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineInstallPatchesResult)
 	if err != nil {
 		return VirtualMachineInstallPatchesResultResponse{}, err
 	}
@@ -1071,8 +1048,7 @@ type VirtualMachinePoller interface {
 }
 
 type virtualMachinePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachinePoller) Done() bool {
@@ -1080,12 +1056,12 @@ func (p *virtualMachinePoller) Done() bool {
 }
 
 func (p *virtualMachinePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachinePoller) FinalResponse(ctx context.Context) (VirtualMachineResponse, error) {
 	respType := VirtualMachineResponse{VirtualMachine: &VirtualMachine{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachine)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachine)
 	if err != nil {
 		return VirtualMachineResponse{}, err
 	}
@@ -1099,7 +1075,7 @@ func (p *virtualMachinePoller) ResumeToken() (string, error) {
 
 func (p *virtualMachinePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineResponse, error) {
 	respType := VirtualMachineResponse{VirtualMachine: &VirtualMachine{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachine)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachine)
 	if err != nil {
 		return VirtualMachineResponse{}, err
 	}
@@ -1117,8 +1093,7 @@ type VirtualMachineRunCommandPoller interface {
 }
 
 type virtualMachineRunCommandPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineRunCommandPoller) Done() bool {
@@ -1126,12 +1101,12 @@ func (p *virtualMachineRunCommandPoller) Done() bool {
 }
 
 func (p *virtualMachineRunCommandPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineRunCommandPoller) FinalResponse(ctx context.Context) (VirtualMachineRunCommandResponse, error) {
 	respType := VirtualMachineRunCommandResponse{VirtualMachineRunCommand: &VirtualMachineRunCommand{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineRunCommand)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineRunCommand)
 	if err != nil {
 		return VirtualMachineRunCommandResponse{}, err
 	}
@@ -1145,7 +1120,7 @@ func (p *virtualMachineRunCommandPoller) ResumeToken() (string, error) {
 
 func (p *virtualMachineRunCommandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineRunCommandResponse, error) {
 	respType := VirtualMachineRunCommandResponse{VirtualMachineRunCommand: &VirtualMachineRunCommand{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineRunCommand)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineRunCommand)
 	if err != nil {
 		return VirtualMachineRunCommandResponse{}, err
 	}
@@ -1163,8 +1138,7 @@ type VirtualMachineScaleSetExtensionPoller interface {
 }
 
 type virtualMachineScaleSetExtensionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineScaleSetExtensionPoller) Done() bool {
@@ -1172,12 +1146,12 @@ func (p *virtualMachineScaleSetExtensionPoller) Done() bool {
 }
 
 func (p *virtualMachineScaleSetExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineScaleSetExtensionPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetExtensionResponse, error) {
 	respType := VirtualMachineScaleSetExtensionResponse{VirtualMachineScaleSetExtension: &VirtualMachineScaleSetExtension{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineScaleSetExtension)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSetExtension)
 	if err != nil {
 		return VirtualMachineScaleSetExtensionResponse{}, err
 	}
@@ -1191,7 +1165,7 @@ func (p *virtualMachineScaleSetExtensionPoller) ResumeToken() (string, error) {
 
 func (p *virtualMachineScaleSetExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetExtensionResponse, error) {
 	respType := VirtualMachineScaleSetExtensionResponse{VirtualMachineScaleSetExtension: &VirtualMachineScaleSetExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSetExtension)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSetExtension)
 	if err != nil {
 		return VirtualMachineScaleSetExtensionResponse{}, err
 	}
@@ -1209,8 +1183,7 @@ type VirtualMachineScaleSetPoller interface {
 }
 
 type virtualMachineScaleSetPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineScaleSetPoller) Done() bool {
@@ -1218,12 +1191,12 @@ func (p *virtualMachineScaleSetPoller) Done() bool {
 }
 
 func (p *virtualMachineScaleSetPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineScaleSetPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetResponse, error) {
 	respType := VirtualMachineScaleSetResponse{VirtualMachineScaleSet: &VirtualMachineScaleSet{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineScaleSet)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSet)
 	if err != nil {
 		return VirtualMachineScaleSetResponse{}, err
 	}
@@ -1237,7 +1210,7 @@ func (p *virtualMachineScaleSetPoller) ResumeToken() (string, error) {
 
 func (p *virtualMachineScaleSetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetResponse, error) {
 	respType := VirtualMachineScaleSetResponse{VirtualMachineScaleSet: &VirtualMachineScaleSet{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSet)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSet)
 	if err != nil {
 		return VirtualMachineScaleSetResponse{}, err
 	}
@@ -1255,8 +1228,7 @@ type VirtualMachineScaleSetVMExtensionPoller interface {
 }
 
 type virtualMachineScaleSetVMExtensionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineScaleSetVMExtensionPoller) Done() bool {
@@ -1264,12 +1236,12 @@ func (p *virtualMachineScaleSetVMExtensionPoller) Done() bool {
 }
 
 func (p *virtualMachineScaleSetVMExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineScaleSetVMExtensionPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMExtensionResponse, error) {
 	respType := VirtualMachineScaleSetVMExtensionResponse{VirtualMachineScaleSetVMExtension: &VirtualMachineScaleSetVMExtension{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineScaleSetVMExtension)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSetVMExtension)
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionResponse{}, err
 	}
@@ -1283,7 +1255,7 @@ func (p *virtualMachineScaleSetVMExtensionPoller) ResumeToken() (string, error) 
 
 func (p *virtualMachineScaleSetVMExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
 	respType := VirtualMachineScaleSetVMExtensionResponse{VirtualMachineScaleSetVMExtension: &VirtualMachineScaleSetVMExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSetVMExtension)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSetVMExtension)
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionResponse{}, err
 	}
@@ -1301,8 +1273,7 @@ type VirtualMachineScaleSetVMPoller interface {
 }
 
 type virtualMachineScaleSetVMPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualMachineScaleSetVMPoller) Done() bool {
@@ -1310,12 +1281,12 @@ func (p *virtualMachineScaleSetVMPoller) Done() bool {
 }
 
 func (p *virtualMachineScaleSetVMPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualMachineScaleSetVMPoller) FinalResponse(ctx context.Context) (VirtualMachineScaleSetVMResponse, error) {
 	respType := VirtualMachineScaleSetVMResponse{VirtualMachineScaleSetVM: &VirtualMachineScaleSetVM{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualMachineScaleSetVM)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualMachineScaleSetVM)
 	if err != nil {
 		return VirtualMachineScaleSetVMResponse{}, err
 	}
@@ -1329,7 +1300,7 @@ func (p *virtualMachineScaleSetVMPoller) ResumeToken() (string, error) {
 
 func (p *virtualMachineScaleSetVMPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMResponse, error) {
 	respType := VirtualMachineScaleSetVMResponse{VirtualMachineScaleSetVM: &VirtualMachineScaleSetVM{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSetVM)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualMachineScaleSetVM)
 	if err != nil {
 		return VirtualMachineScaleSetVMResponse{}, err
 	}

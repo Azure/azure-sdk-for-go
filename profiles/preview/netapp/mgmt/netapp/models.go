@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-02-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-04-01/netapp"
 )
 
 const (
@@ -51,6 +52,13 @@ const (
 	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPools                 CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPools
 	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumes          CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumes
 	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
+)
+
+type ChownMode = original.ChownMode
+
+const (
+	ChownModeRestricted   ChownMode = original.ChownModeRestricted
+	ChownModeUnrestricted ChownMode = original.ChownModeUnrestricted
 )
 
 type CreatedByType = original.CreatedByType
@@ -167,6 +175,7 @@ type CloudErrorBody = original.CloudErrorBody
 type DailySchedule = original.DailySchedule
 type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
+type FilePathAvailabilityRequest = original.FilePathAvailabilityRequest
 type HourlySchedule = original.HourlySchedule
 type MetricSpecification = original.MetricSpecification
 type MonthlySchedule = original.MonthlySchedule
@@ -190,6 +199,7 @@ type ReplicationStatus = original.ReplicationStatus
 type ResourceClient = original.ResourceClient
 type ResourceIdentity = original.ResourceIdentity
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
+type RestoreStatus = original.RestoreStatus
 type ServiceSpecification = original.ServiceSpecification
 type Snapshot = original.Snapshot
 type SnapshotPoliciesClient = original.SnapshotPoliciesClient
@@ -341,6 +351,9 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 }
 func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
 	return original.PossibleCheckQuotaNameResourceTypesValues()
+}
+func PossibleChownModeValues() []ChownMode {
+	return original.PossibleChownModeValues()
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()

@@ -41,13 +41,12 @@ func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, 
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CloudServiceRoleInstancesClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -59,13 +58,12 @@ func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *CloudServiceRoleInstancesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CloudServiceRoleInstancesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -428,13 +426,12 @@ func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context,
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CloudServiceRoleInstancesClient.Rebuild", "", resp, client.rebuildHandleError)
+	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Rebuild", "", resp, client.con.Pipeline(), client.rebuildHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -446,13 +443,12 @@ func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context,
 // ResumeRebuild creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *CloudServiceRoleInstancesClient) ResumeRebuild(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CloudServiceRoleInstancesClient.Rebuild", token, client.rebuildHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Rebuild", token, client.con.Pipeline(), client.rebuildHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -541,13 +537,12 @@ func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context,
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CloudServiceRoleInstancesClient.Reimage", "", resp, client.reimageHandleError)
+	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Reimage", "", resp, client.con.Pipeline(), client.reimageHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -559,13 +554,12 @@ func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context,
 // ResumeReimage creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *CloudServiceRoleInstancesClient) ResumeReimage(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CloudServiceRoleInstancesClient.Reimage", token, client.reimageHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Reimage", token, client.con.Pipeline(), client.reimageHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -652,13 +646,12 @@ func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context,
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CloudServiceRoleInstancesClient.Restart", "", resp, client.restartHandleError)
+	pt, err := armcore.NewLROPoller("CloudServiceRoleInstancesClient.Restart", "", resp, client.con.Pipeline(), client.restartHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -670,13 +663,12 @@ func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context,
 // ResumeRestart creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *CloudServiceRoleInstancesClient) ResumeRestart(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CloudServiceRoleInstancesClient.Restart", token, client.restartHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("CloudServiceRoleInstancesClient.Restart", token, client.con.Pipeline(), client.restartHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

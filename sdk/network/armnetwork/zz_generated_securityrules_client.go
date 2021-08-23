@@ -41,13 +41,12 @@ func (client *SecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 	result := SecurityRulePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SecurityRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("SecurityRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SecurityRulePollerResponse{}, err
 	}
 	poller := &securityRulePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityRuleResponse, error) {
@@ -59,13 +58,12 @@ func (client *SecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // ResumeCreateOrUpdate creates a new SecurityRulePoller from the specified resume token.
 // token - The value must come from a previous call to SecurityRulePoller.ResumeToken().
 func (client *SecurityRulesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SecurityRulePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SecurityRulesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SecurityRulesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SecurityRulePollerResponse{}, err
 	}
 	poller := &securityRulePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGrou
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SecurityRulesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("SecurityRulesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGrou
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SecurityRulesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SecurityRulesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SecurityRulesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

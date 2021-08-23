@@ -18,7 +18,7 @@ type UsernamePasswordCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
@@ -77,7 +77,9 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 	return tk, err
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
-func (c *UsernamePasswordCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
+func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
+
+var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

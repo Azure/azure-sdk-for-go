@@ -16,7 +16,6 @@ import (
 const (
 	legacyCosmosTableDomain = ".table.cosmosdb."
 	cosmosTableDomain       = ".table.cosmos."
-	scope                   = "https://storage.azure.com/.default"
 )
 
 // A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
@@ -35,9 +34,8 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *C
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: []string{scope}}}))
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
-	con := generated.NewConnection(serviceURL, conOptions)
+	con := generated.NewConnection(serviceURL, cred, conOptions)
 	return &TableServiceClient{
 		client:  generated.NewTableClient(con),
 		service: generated.NewServiceClient(con),

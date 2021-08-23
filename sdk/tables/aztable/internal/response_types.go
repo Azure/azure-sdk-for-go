@@ -1,4 +1,3 @@
-//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -364,3 +363,4 @@ type TableUpdateEntityResult struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
+

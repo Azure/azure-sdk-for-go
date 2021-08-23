@@ -12,12 +12,12 @@ input-file: https://github.com/Azure/azure-rest-api-specs/blob/d744b6bcb95ab4034
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: false
 output-folder: aztable/internal
-# file-prefix: "zz_generated_"
 tag: package-2019-02
 credential-scope: none
 use: "@autorest/go@4.0.0-preview.26"
-# openapi-type: data-plane
 module-version: 0.1.0
+security: "AADToken"
+security-scopes: "https://storage.azure.com/.default"
 modelerfour:
   group-parameters: false
 ```

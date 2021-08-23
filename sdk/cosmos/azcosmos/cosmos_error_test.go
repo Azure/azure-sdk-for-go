@@ -89,3 +89,34 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", someError.Message, asError.Message)
 	}
 }
+
+func TestCosmosErrorOnJsonBodyWithEmptyProperties(t *testing.T) {
+	someError := &cosmosError{
+		Code:    "",
+		Message: "",
+	}
+
+	jsonString, err := json.Marshal(someError)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithStatusCode(404))
+
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	pl := azcore.NewPipeline(srv)
+	resp, _ := pl.Do(req)
+
+	cError := newCosmosError(resp)
+	if cError.Error() != "Missing error body" {
+		t.Errorf("Expected Missing error body, but got %v", cError)
+	}
+}

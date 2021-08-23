@@ -34,7 +34,7 @@ func newCosmosError(response *azcore.Response) error {
 
 func (e *cosmosError) Error() string {
 	if e.Code == "" && e.Message == "" {
-		return ""
+		return "Missing error body"
 	}
 	return fmt.Sprintf("Code: %v, Message %v", e.Code, e.Message)
 }

@@ -96,7 +96,7 @@ jobs:
       workingDirectory: '$(sdkPath)'
       displayName: 'Format Check'
       failOnStderr: true
-      condition: succeededOrFailed()
+      condition: and(succeededOrFailed(), startsWith(variables['go.version'], '1.16'))
 
     - script: |
         golint ./storage/... >&2

@@ -4,7 +4,8 @@
 
 ``` yaml
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/36172a10bc1941ec874f17dddc1a0f27b086337c/specification/web/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/36172a10bc1941ec874f17dddc1a0f27b086337c/specification/web/resource-manager/readme.go.md
-module-version: 0.1.0
+- https://github.com/Azure/azure-rest-api-specs/blob/e5c47c5615f81613263ff76fe25628ee19030a02/specification/web/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/e5c47c5615f81613263ff76fe25628ee19030a02/specification/web/resource-manager/readme.go.md
+module-version: 0.2.0
+
 ```

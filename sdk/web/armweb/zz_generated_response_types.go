@@ -971,7 +971,7 @@ type AppServicePlansGetVnetFromServerFarmResponse struct {
 
 // AppServicePlansGetVnetFromServerFarmResult contains the result from method AppServicePlans.GetVnetFromServerFarm.
 type AppServicePlansGetVnetFromServerFarmResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // AppServicePlansGetVnetGatewayResponse contains the response from method AppServicePlans.GetVnetGateway.
@@ -1081,8 +1081,8 @@ type AppServicePlansListVnetsResponse struct {
 
 // AppServicePlansListVnetsResult contains the result from method AppServicePlans.ListVnets.
 type AppServicePlansListVnetsResult struct {
-	// Array of VnetInfo
-	VnetInfoArray []*VnetInfo
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
 }
 
 // AppServicePlansListWebAppsByHybridConnectionResponse contains the response from method AppServicePlans.ListWebAppsByHybridConnection.
@@ -1412,7 +1412,7 @@ type DiagnosticsGetSiteDetectorResponseSlotResult struct {
 
 // DiagnosticsGetSiteDetectorResult contains the result from method Diagnostics.GetSiteDetector.
 type DiagnosticsGetSiteDetectorResult struct {
-	DetectorDefinition
+	DetectorDefinitionResource
 }
 
 // DiagnosticsGetSiteDetectorSlotResponse contains the response from method Diagnostics.GetSiteDetectorSlot.
@@ -1424,7 +1424,7 @@ type DiagnosticsGetSiteDetectorSlotResponse struct {
 
 // DiagnosticsGetSiteDetectorSlotResult contains the result from method Diagnostics.GetSiteDetectorSlot.
 type DiagnosticsGetSiteDetectorSlotResult struct {
-	DetectorDefinition
+	DetectorDefinitionResource
 }
 
 // DiagnosticsGetSiteDiagnosticCategoryResponse contains the response from method Diagnostics.GetSiteDiagnosticCategory.
@@ -3502,7 +3502,7 @@ type WebAppsCreateOrUpdateVnetConnectionResponse struct {
 
 // WebAppsCreateOrUpdateVnetConnectionResult contains the result from method WebApps.CreateOrUpdateVnetConnection.
 type WebAppsCreateOrUpdateVnetConnectionResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsCreateOrUpdateVnetConnectionSlotResponse contains the response from method WebApps.CreateOrUpdateVnetConnectionSlot.
@@ -3514,7 +3514,7 @@ type WebAppsCreateOrUpdateVnetConnectionSlotResponse struct {
 
 // WebAppsCreateOrUpdateVnetConnectionSlotResult contains the result from method WebApps.CreateOrUpdateVnetConnectionSlot.
 type WebAppsCreateOrUpdateVnetConnectionSlotResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsDeleteBackupConfigurationResponse contains the response from method WebApps.DeleteBackupConfiguration.
@@ -5084,7 +5084,7 @@ type WebAppsGetVnetConnectionResponse struct {
 
 // WebAppsGetVnetConnectionResult contains the result from method WebApps.GetVnetConnection.
 type WebAppsGetVnetConnectionResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsGetVnetConnectionSlotResponse contains the response from method WebApps.GetVnetConnectionSlot.
@@ -5096,7 +5096,7 @@ type WebAppsGetVnetConnectionSlotResponse struct {
 
 // WebAppsGetVnetConnectionSlotResult contains the result from method WebApps.GetVnetConnectionSlot.
 type WebAppsGetVnetConnectionSlotResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsGetWebJobResponse contains the response from method WebApps.GetWebJob.
@@ -6320,8 +6320,8 @@ type WebAppsListVnetConnectionsResponse struct {
 
 // WebAppsListVnetConnectionsResult contains the result from method WebApps.ListVnetConnections.
 type WebAppsListVnetConnectionsResult struct {
-	// Array of VnetInfo
-	VnetInfoArray []*VnetInfo
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
 }
 
 // WebAppsListVnetConnectionsSlotResponse contains the response from method WebApps.ListVnetConnectionsSlot.
@@ -6333,8 +6333,8 @@ type WebAppsListVnetConnectionsSlotResponse struct {
 
 // WebAppsListVnetConnectionsSlotResult contains the result from method WebApps.ListVnetConnectionsSlot.
 type WebAppsListVnetConnectionsSlotResult struct {
-	// Array of VnetInfo
-	VnetInfoArray []*VnetInfo
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
 }
 
 // WebAppsListWebJobsResponse contains the response from method WebApps.ListWebJobs.
@@ -7394,7 +7394,7 @@ type WebAppsUpdateVnetConnectionResponse struct {
 
 // WebAppsUpdateVnetConnectionResult contains the result from method WebApps.UpdateVnetConnection.
 type WebAppsUpdateVnetConnectionResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsUpdateVnetConnectionSlotResponse contains the response from method WebApps.UpdateVnetConnectionSlot.
@@ -7406,7 +7406,7 @@ type WebAppsUpdateVnetConnectionSlotResponse struct {
 
 // WebAppsUpdateVnetConnectionSlotResult contains the result from method WebApps.UpdateVnetConnectionSlot.
 type WebAppsUpdateVnetConnectionSlotResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebSiteManagementClientCheckNameAvailabilityResponse contains the response from method WebSiteManagementClient.CheckNameAvailability.

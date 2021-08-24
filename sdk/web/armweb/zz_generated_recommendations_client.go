@@ -70,7 +70,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
 	reqQP.Set("environmentName", environmentName)
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -127,7 +127,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -189,7 +189,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
 	reqQP.Set("environmentName", environmentName)
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -250,7 +250,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +303,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -370,7 +370,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -446,7 +446,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -504,7 +504,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.URL.RawQuery}
 	if options != nil && options.Filter != nil {
@@ -575,7 +575,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 	if options != nil && options.ExpiredOnly != nil {
 		reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.URL.RawQuery}
 	if options != nil && options.Filter != nil {
@@ -646,7 +646,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 	if options != nil && options.ExpiredOnly != nil {
 		reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.URL.RawQuery}
 	if options != nil && options.Filter != nil {
@@ -717,7 +717,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.URL.RawQuery}
 	if options != nil && options.Filter != nil {
@@ -788,7 +788,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	unencodedParams := []string{req.URL.RawQuery}
 	if options != nil && options.Filter != nil {
@@ -851,7 +851,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -909,7 +909,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
 	reqQP.Set("environmentName", environmentName)
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -966,7 +966,7 @@ func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

@@ -7,7 +7,7 @@
 
 package armweb
 
-const telemetryInfo = "azsdk-go-armweb/v0.1.0"
+const telemetryInfo = "azsdk-go-armweb/v0.2.0"
 
 type AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem string
 

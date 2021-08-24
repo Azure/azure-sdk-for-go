@@ -56,7 +56,7 @@ func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Contex
 	if options != nil && options.OSTypeSelected != nil {
 		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -114,7 +114,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 	if options != nil && options.OSTypeSelected != nil {
 		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -168,7 +168,7 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -226,7 +226,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -280,7 +280,7 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -338,7 +338,7 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -389,7 +389,7 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, o
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

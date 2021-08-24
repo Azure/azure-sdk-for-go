@@ -117,7 +117,7 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdateCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(certificateDistinguishedName)
@@ -226,7 +226,7 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdateCertificateCreate
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(keyVaultCertificate)
@@ -283,7 +283,7 @@ func (client *AppServiceCertificateOrdersClient) deleteCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -344,7 +344,7 @@ func (client *AppServiceCertificateOrdersClient) deleteCertificateCreateRequest(
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -401,7 +401,7 @@ func (client *AppServiceCertificateOrdersClient) getCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -471,7 +471,7 @@ func (client *AppServiceCertificateOrdersClient) getCertificateCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -526,7 +526,7 @@ func (client *AppServiceCertificateOrdersClient) listCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -585,7 +585,7 @@ func (client *AppServiceCertificateOrdersClient) listByResourceGroupCreateReques
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -648,7 +648,7 @@ func (client *AppServiceCertificateOrdersClient) listCertificatesCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -714,7 +714,7 @@ func (client *AppServiceCertificateOrdersClient) reissueCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(reissueCertificateOrderRequest)
@@ -771,7 +771,7 @@ func (client *AppServiceCertificateOrdersClient) renewCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(renewCertificateOrderRequest)
@@ -828,7 +828,7 @@ func (client *AppServiceCertificateOrdersClient) resendEmailCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -847,7 +847,7 @@ func (client *AppServiceCertificateOrdersClient) resendEmailHandleError(resp *az
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ResendRequestEmails - Description for Verify domain ownership for this certificate order.
+// ResendRequestEmails - Resend domain verification ownership email containing steps on how to verify a domain for a given certificate order
 // If the operation fails it returns the *DefaultErrorResponse error type.
 func (client *AppServiceCertificateOrdersClient) ResendRequestEmails(ctx context.Context, resourceGroupName string, certificateOrderName string, nameIdentifier NameIdentifier, options *AppServiceCertificateOrdersResendRequestEmailsOptions) (AppServiceCertificateOrdersResendRequestEmailsResponse, error) {
 	req, err := client.resendRequestEmailsCreateRequest(ctx, resourceGroupName, certificateOrderName, nameIdentifier, options)
@@ -885,7 +885,7 @@ func (client *AppServiceCertificateOrdersClient) resendRequestEmailsCreateReques
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(nameIdentifier)
@@ -942,7 +942,7 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsCreat
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1008,7 +1008,7 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistory
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1036,7 +1036,13 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistory
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// RetrieveSiteSeal - Description for Verify domain ownership for this certificate order.
+// RetrieveSiteSeal - This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that the certificate purchaser
+// can embed on their web site to show their visitors
+// information about their SSL certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains detailed information
+// about the SSL certificate. The site seal
+// token is used to link the site seal graphic image to the appropriate certificate details pop-up page display when a user clicks on the site seal. The
+// site seal images are expected to be static images
+// and hosted by the reseller, to minimize delays for customer page load times.
 // If the operation fails it returns the *DefaultErrorResponse error type.
 func (client *AppServiceCertificateOrdersClient) RetrieveSiteSeal(ctx context.Context, resourceGroupName string, certificateOrderName string, siteSealRequest SiteSealRequest, options *AppServiceCertificateOrdersRetrieveSiteSealOptions) (AppServiceCertificateOrdersRetrieveSiteSealResponse, error) {
 	req, err := client.retrieveSiteSealCreateRequest(ctx, resourceGroupName, certificateOrderName, siteSealRequest, options)
@@ -1074,7 +1080,7 @@ func (client *AppServiceCertificateOrdersClient) retrieveSiteSealCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(siteSealRequest)
@@ -1113,7 +1119,7 @@ func (client *AppServiceCertificateOrdersClient) Update(ctx context.Context, res
 	if err != nil {
 		return AppServiceCertificateOrdersUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !resp.HasStatusCode(http.StatusOK) {
 		return AppServiceCertificateOrdersUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
@@ -1140,7 +1146,7 @@ func (client *AppServiceCertificateOrdersClient) updateCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(certificateDistinguishedName)
@@ -1179,7 +1185,7 @@ func (client *AppServiceCertificateOrdersClient) UpdateCertificate(ctx context.C
 	if err != nil {
 		return AppServiceCertificateOrdersUpdateCertificateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !resp.HasStatusCode(http.StatusOK) {
 		return AppServiceCertificateOrdersUpdateCertificateResponse{}, client.updateCertificateHandleError(resp)
 	}
 	return client.updateCertificateHandleResponse(resp)
@@ -1210,7 +1216,7 @@ func (client *AppServiceCertificateOrdersClient) updateCertificateCreateRequest(
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(keyVaultCertificate)
@@ -1268,7 +1274,7 @@ func (client *AppServiceCertificateOrdersClient) validatePurchaseInformationCrea
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(appServiceCertificateOrder)
@@ -1325,7 +1331,7 @@ func (client *AppServiceCertificateOrdersClient) verifyDomainOwnershipCreateRequ
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

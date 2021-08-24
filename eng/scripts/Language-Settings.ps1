@@ -2,7 +2,9 @@ $Language = "go"
 $packagePattern = "go.mod"
 $RELEASE_TITLE_REGEX = "(?<releaseNoteTitle>^\#+\s+(?<version>v$([AzureEngSemanticVersion]::SEMVER_REGEX))(\s+(?<releaseStatus>\(.+\))))"
 $AUTOREST_VERSION_REGEX = "^module-version:\s+(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))"
-
+$GO_VERSION_REGEX = "Version\s=\s`"v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+$MGMT_PLANE_VERSION_FILE = "autorest.md"
+$DATA_PLANE_VERSION_FILE = "version.go"
 function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
 {
     $workFolder = $($pkg.Directory)
@@ -33,7 +35,18 @@ function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
 # get version from go config auterest.md
 function Get-Version ($pkgPath)
 {
-    $content = Get-Content(Join-Path $pkgPath "autorest.md")
+    if (Test-Path (Join-Path $pkgPath $MGMT_PLANE_VERSION_FILE))
+    {
+        $versionPath = Join-Path $pkgPath $MGMT_PLANE_VERSION_FILE
+        $versionRegex = $AUTOREST_VERSION_REGEX
+    }
+    elseif (Test-Path (Join-Path $pkgPath $DATA_PLANE_VERSION_FILE))
+    {
+        $versionPath = Join-Path $pkgPath $DATA_PLANE_VERSION_FILE
+        $versionRegex = $GO_VERSION_REGEX
+    }
+
+    $content = Get-Content($versionPath)
     $content = $content.Split("`n")
 
     try
@@ -41,7 +54,7 @@ function Get-Version ($pkgPath)
         # walk the document, finding where the version specifiers are
         foreach ($line in $content)
         {
-            if ($line -match $AUTOREST_VERSION_REGEX)
+            if ($line -match $versionRegex)
             {
                 return $matches["version"]
             }
@@ -52,6 +65,7 @@ function Get-Version ($pkgPath)
         Write-Error "Error parsing version."
         Write-Error $_
     }
+
     Write-Host "Cannot find release version."
     exit(1)
 }

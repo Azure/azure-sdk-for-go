@@ -7,7 +7,7 @@
 
 package armredis
 
-const telemetryInfo = "azsdk-go-armredis/v0.1.0"
+const telemetryInfo = "azsdk-go-armredis/v0.1.1"
 
 // DayOfWeek - Day of the week when a cache can be patched.
 type DayOfWeek string

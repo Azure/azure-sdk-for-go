@@ -29,6 +29,7 @@ jobs:
     variables:
       GOPATH: '$(system.defaultWorkingDirectory)/work'
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+      GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
       go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/tools'
       go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools -prune'
@@ -61,20 +62,14 @@ jobs:
     - script: go vet -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'
-      env:
-        GO111MODULE: 'off'
 
     - script: go build -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Build'
-      env:
-        GO111MODULE: 'off'
 
     - script: go test $(dirname $(find . $(go.test.filter) -name '*_test.go' -print) | sort -u)
       workingDirectory: '$(sdkPath)'
       displayName: 'Run Tests'
-      env:
-        GO111MODULE: 'off'
 
     - template: /eng/common/pipelines/templates/steps/verify-links.yml
       parameters:
@@ -86,14 +81,10 @@ jobs:
     - script: go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES
       workingDirectory: '$(sdkPath)'
       displayName: 'Display Breaking Changes'
-      env:
-        GO111MODULE: 'off'
 
     - script: go run ./tools/pkgchk/main.go ./services --exceptions ./tools/pkgchk/exceptions.txt
       workingDirectory: '$(sdkPath)'
       displayName: 'Verify Package Directory'
-      env:
-        GO111MODULE: 'off'
 
     - script: grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee >&2
       workingDirectory: '$(sdkPath)'
@@ -106,8 +97,6 @@ jobs:
       displayName: 'Format Check'
       failOnStderr: true
       condition: succeededOrFailed()
-      env:
-        GO111MODULE: 'off'
 
     - script: |
         golint ./storage/... >&2
@@ -115,5 +104,3 @@ jobs:
       displayName: 'Linter Check'
       failOnStderr: true
       condition: succeededOrFailed()
-      env:
-        GO111MODULE: 'off'

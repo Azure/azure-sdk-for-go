@@ -77,7 +77,7 @@ func (t *TableClient) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (ByteArrayResponse, error) {
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (GetEntityResponse, error) {
 	if options == nil {
 		options = &GetEntityOptions{}
 	}
@@ -85,9 +85,9 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	genOptions, queryOptions := options.toGenerated()
 	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, genOptions, queryOptions)
 	if err != nil {
-		return ByteArrayResponse{}, err
+		return GetEntityResponse{}, err
 	}
-	return newByteArrayResponse(resp)
+	return newGetEntityResponse(resp)
 }
 
 // AddEntity adds an entity (described by a JSON byte slice) to the table. This method returns an error if an entity with

@@ -29,7 +29,7 @@ import (
 type ListEntitiesPager interface {
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListEntitiesByteResponse
+	PageResponse() ListEntitiesResponseEnvelope
 	// NextPage returns true if there is another page of data available, false if not
 	NextPage(context.Context) bool
 	// Err returns an error if there was an error on the last request
@@ -38,7 +38,7 @@ type ListEntitiesPager interface {
 
 type tableEntityQueryResponsePager struct {
 	tableClient       *TableClient
-	current           *ListEntitiesByteResponse
+	current           *ListEntitiesResponseEnvelope
 	tableQueryOptions *generated.TableQueryEntitiesOptions
 	listOptions       *ListEntitiesOptions
 	err               error
@@ -73,7 +73,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesByteResponse {
+func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesResponseEnvelope {
 	return *p.current
 }
 
@@ -99,14 +99,14 @@ func (p *tableEntityQueryResponsePager) Err() error {
 // err := pager.Err()
 type ListTablesPager interface {
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() TableListResponseEnvelope
+	PageResponse() ListTablesResponseEnvelope
 	// NextPage returns true if there is another page of data available, false if not
 	NextPage(context.Context) bool
 	// Err returns an error if there was an error on the last request
 	Err() error
 }
 
-type TableListResponseEnvelope struct {
+type ListTablesResponseEnvelope struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
@@ -120,7 +120,7 @@ type TableListResponseEnvelope struct {
 	Value []*TableResponseProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *TableListResponseEnvelope {
+func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *ListTablesResponseEnvelope {
 	if g == nil {
 		return nil
 	}
@@ -131,7 +131,7 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnve
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return &TableListResponseEnvelope{
+	return &ListTablesResponseEnvelope{
 		RawResponse:                  g.RawResponse,
 		XMSContinuationNextTableName: g.XMSContinuationNextTableName,
 		ODataMetadata:                g.ODataMetadata,
@@ -168,7 +168,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
-func (p *tableQueryResponsePager) PageResponse() TableListResponseEnvelope {
+func (p *tableQueryResponsePager) PageResponse() ListTablesResponseEnvelope {
 	return *fromGeneratedTableQueryResponseEnvelope(p.current)
 }
 
@@ -192,7 +192,7 @@ type TableEntityListByteResponseResponse struct {
 	RequestID *string
 
 	// The properties for the table entity query response.
-	TableEntityQueryResponse *TableEntityQueryByteResponse
+	TableEntityQueryResponse *TableEntityListResponse
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string

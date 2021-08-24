@@ -11,8 +11,8 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// ByteArrayResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
-type ByteArrayResponse struct {
+// GetEntityResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
+type GetEntityResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag azcore.ETag
 
@@ -23,32 +23,32 @@ type ByteArrayResponse struct {
 	Value []byte
 }
 
-func newByteArrayResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (ByteArrayResponse, error) {
+func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
 	marshalledValue, err := json.Marshal(m.Value)
 	if err != nil {
-		return ByteArrayResponse{}, err
+		return GetEntityResponse{}, err
 	}
-	return ByteArrayResponse{
+	return GetEntityResponse{
 		ETag:        azcore.ETag(*m.ETag),
 		RawResponse: m.RawResponse,
 		Value:       marshalledValue,
 	}, nil
 }
 
-// ListEntitiesByteResponse is the response envelope for operations that return a TableEntityQueryResponse type.
-type ListEntitiesByteResponse struct {
+// ListEntitiesResponseEnvelope is the response envelope for operations that return a TableEntityQueryResponse type.
+type ListEntitiesResponseEnvelope struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 	// The properties for the table entity query response.
-	TableEntityQueryResponse *TableEntityQueryByteResponse
+	TableEntityQueryResponse *TableEntityListResponse
 	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	XMSContinuationNextPartitionKey *string
 	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
 	XMSContinuationNextRowKey *string
 }
 
-// TableEntityQueryByteResponse - The properties for the table entity query response.
-type TableEntityQueryByteResponse struct {
+// TableEntityListResponse - The properties for the table entity query response.
+type TableEntityListResponse struct {
 	// The metadata response of the table.
 	ODataMetadata *string
 
@@ -56,22 +56,22 @@ type TableEntityQueryByteResponse struct {
 	Value [][]byte
 }
 
-func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitiesByteResponse, error) {
+func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitiesResponseEnvelope, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return ListEntitiesByteResponse{}, err
+			return ListEntitiesResponseEnvelope{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
 
-	t := TableEntityQueryByteResponse{
+	t := TableEntityListResponse{
 		ODataMetadata: resp.TableEntityQueryResponse.ODataMetadata,
 		Value:         marshalledValue,
 	}
 
-	return ListEntitiesByteResponse{
+	return ListEntitiesResponseEnvelope{
 		RawResponse:                     resp.RawResponse,
 		TableEntityQueryResponse:        &t,
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,

@@ -525,42 +525,6 @@ type StorageInsightConfigsListByWorkspaceResult struct {
 	StorageInsightListResult
 }
 
-// TablesGetResponse contains the response from method Tables.Get.
-type TablesGetResponse struct {
-	TablesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TablesGetResult contains the result from method Tables.Get.
-type TablesGetResult struct {
-	Table
-}
-
-// TablesListByWorkspaceResponse contains the response from method Tables.ListByWorkspace.
-type TablesListByWorkspaceResponse struct {
-	TablesListByWorkspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TablesListByWorkspaceResult contains the result from method Tables.ListByWorkspace.
-type TablesListByWorkspaceResult struct {
-	TablesListResult
-}
-
-// TablesUpdateResponse contains the response from method Tables.Update.
-type TablesUpdateResponse struct {
-	TablesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TablesUpdateResult contains the result from method Tables.Update.
-type TablesUpdateResult struct {
-	Table
-}
-
 // UsagesListResponse contains the response from method Usages.List.
 type UsagesListResponse struct {
 	UsagesListResult

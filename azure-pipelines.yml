@@ -4,13 +4,13 @@ trigger:
   paths:
     exclude:
     - sdk/
-    - tools/generator
+    - tools/
 
 pr:
   paths:
     exclude:
     - sdk/
-    - tools/generator
+    - tools/
 
 jobs:
   - job: Build_Test
@@ -30,8 +30,8 @@ jobs:
       GOPATH: '$(system.defaultWorkingDirectory)/work'
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       IGNORE_BREAKING_CHANGES: true
-      go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/tools/generator'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools/generator -prune'
+      go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/tools'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools -prune'
 
     steps:
     - task: GoTool@0

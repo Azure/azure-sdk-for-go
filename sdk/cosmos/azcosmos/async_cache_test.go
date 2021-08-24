@@ -178,6 +178,51 @@ func Test_getAsync_obsolete_with_error(t *testing.T) {
 	assert.Error(t, err2)
 }
 
+func Test_getAsync_obsolete_with_context_error(t *testing.T) {
+	key := "testAsyncObsoleteKey"
+	expectedValue0 := CosmosContainerProperties{Id: "0"}
+	expectedValue1 := CosmosContainerProperties{Id: "1"}
+	expectedValue2 := CosmosContainerProperties{Id: "2"}
+	f1Called := false
+	f2Called := false
+
+	ctx := context.Background()
+
+	cache := newAsyncCache()
+
+	f0 := func() *cacheTaskResult {
+		return &cacheTaskResult{value: expectedValue0, err: nil}
+	}
+
+	cache.set(key, f0, ctx)
+
+	f1 := func() *cacheTaskResult {
+		f1Called = true
+		time.Sleep(3 * time.Second)
+		return &cacheTaskResult{value: nil, err: errors.New("some error")}
+	}
+
+	cache.getAsync(key, expectedValue0, f1)
+
+	f2 := func() *cacheTaskResult {
+		f2Called = true
+		return &cacheTaskResult{value: expectedValue2, err: nil}
+	}
+
+	ctx.Done()
+
+	cache.getAsync(key, expectedValue1, f2)
+
+	_, err := cache.awaitCacheValue(key, ctx)
+
+	_, err2 := cache.awaitCacheValue(key, ctx)
+
+	assert.True(t, f1Called)
+	assert.False(t, f2Called)
+	assert.Error(t, err)
+	assert.Error(t, err2)
+}
+
 func Test_remove(t *testing.T) {
 	key := "someKeyToRemove"
 	expectedValue := CosmosContainerProperties{Id: "someIdToRemove"}

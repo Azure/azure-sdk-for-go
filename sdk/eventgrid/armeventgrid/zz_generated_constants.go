@@ -7,7 +7,7 @@
 
 package armeventgrid
 
-const telemetryInfo = "azsdk-go-armeventgrid/v0.1.0"
+const telemetryInfo = "azsdk-go-armeventgrid/v0.1.1"
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
 type AdvancedFilterOperatorType string

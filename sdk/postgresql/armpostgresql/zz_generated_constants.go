@@ -7,7 +7,7 @@
 
 package armpostgresql
 
-const telemetryInfo = "azsdk-go-armpostgresql/v0.1.0"
+const telemetryInfo = "azsdk-go-armpostgresql/v0.1.1"
 
 // CreateMode - The mode to create a new server.
 type CreateMode string

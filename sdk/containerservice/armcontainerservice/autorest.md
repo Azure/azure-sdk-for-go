@@ -4,7 +4,8 @@
 
 ``` yaml
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/a331a455fd31e022f8df07105058ae586a02ab03/specification/containerservice/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/a331a455fd31e022f8df07105058ae586a02ab03/specification/containerservice/resource-manager/readme.go.md
-module-version: 0.1.0
+- https://github.com/Azure/azure-rest-api-specs/blob/e5c47c5615f81613263ff76fe25628ee19030a02/specification/containerservice/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/e5c47c5615f81613263ff76fe25628ee19030a02/specification/containerservice/resource-manager/readme.go.md
+module-version: 0.1.1
+
 ```

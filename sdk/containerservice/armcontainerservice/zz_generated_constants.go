@@ -7,7 +7,7 @@
 
 package armcontainerservice
 
-const telemetryInfo = "azsdk-go-armcontainerservice/v0.1.0"
+const telemetryInfo = "azsdk-go-armcontainerservice/v0.1.1"
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions and best practices,
 // see: https://docs.microsoft.com/azure/aks/use-system-pools

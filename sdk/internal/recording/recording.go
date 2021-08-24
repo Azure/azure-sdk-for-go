@@ -439,7 +439,7 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Playback: recorder.ModeReplaying,
 }
 
-var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
+var recordMode = os.Getenv("AZURE_RECORD_MODE")
 
 const (
 	modeRecording      = "record"
@@ -486,6 +486,9 @@ func (r RecordingOptions) HostScheme() string {
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {
+	if strings.HasSuffix(pathToRecordings, "/") {
+		pathToRecordings = strings.TrimRight(pathToRecordings, "/")
+	}
 	return pathToRecordings + "/recordings/" + t.Name() + ".json"
 }
 
@@ -493,13 +496,12 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if options == nil {
 		options = defaultOptions()
 	}
-	if recordMode == "" {
-		t.Log("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
-		recordMode = "playback"
+	if !(recordMode == modeRecording || recordMode == modePlayback) {
+		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are \"record\" or \"playback\". Received: %v", recordMode)
 	}
 	testId := getTestId(pathToRecordings, t)
 
-	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -591,9 +593,9 @@ func LiveOnly(t *testing.T) {
 
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
-func Sleep(duration int) {
+func Sleep(duration time.Duration) {
 	if GetRecordMode() == modeRecording {
-		time.Sleep(time.Duration(duration) * time.Second)
+		time.Sleep(duration)
 	}
 }
 
@@ -605,44 +607,37 @@ func GetRecordMode() string {
 	return recordMode
 }
 
-func InPlayback() bool {
-	return GetRecordMode() == modePlayback
-}
-
-func InRecord() bool {
-	return GetRecordMode() == modeRecording
-}
-
-func getRootCas() (*x509.CertPool, error) {
+func getRootCas(t *testing.T) (*x509.CertPool, error) {
 	localFile, ok := os.LookupEnv("PROXY_CERT")
 
 	rootCAs, err := x509.SystemCertPool()
-	if err != nil {
+	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
 		rootCAs = x509.NewCertPool()
+	} else if err != nil {
+		return rootCAs, err
 	}
 
 	if !ok {
-		fmt.Println("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
+		t.Log("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
 		return rootCAs, nil
 	}
 
 	cert, err := ioutil.ReadFile(localFile)
 	if err != nil {
-		fmt.Println("error opening cert file")
 		return nil, err
 	}
 
 	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
-		fmt.Println("No certs appended, using system certs only")
+		t.Log("No certs appended, using system certs only")
 	}
 
 	return rootCAs, nil
 }
 
-func GetHTTPClient() (*http.Client, error) {
+func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 
-	rootCAs, err := getRootCas()
+	rootCAs, err := getRootCas(t)
 	if err != nil {
 		return nil, err
 	}

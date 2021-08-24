@@ -62,7 +62,6 @@ func (s *recordingTests) TestStopDoesNotSaveVariablesWhenNoVariablesExist() {
 }
 
 func (s *recordingTests) TestRecordedVariables() {
-	s.T().Skipf("Skipping flaky test")
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
@@ -323,7 +322,6 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 }
 
 func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() {
-	s.T().Skipf("Skipping flaky test")
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
@@ -391,7 +389,6 @@ func (s *recordingTests) TestRecordingOptions() {
 	require.Equal(r.HostScheme(), "http://localhost:5000")
 
 	require.Equal(GetEnvVariable(s.T(), "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
-	require.Equal(InPlayback(), !InRecord())
 	require.NotEqual(GetEnvVariable(s.T(), "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
 }
 
@@ -406,7 +403,7 @@ func (s *recordingTests) TestStartStop() {
 	err := StartRecording(s.T(), packagePath, nil)
 	require.NoError(err)
 
-	client, err := GetHTTPClient()
+	client, err := GetHTTPClient(s.T())
 	require.NoError(err)
 
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
@@ -443,7 +440,7 @@ func (s *recordingTests) TestUriSanitizer() {
 	err = AddUriSanitizer("replacement", "bing", nil)
 	require.NoError(err)
 
-	client, err := GetHTTPClient()
+	client, err := GetHTTPClient(s.T())
 	require.NoError(err)
 
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
@@ -477,7 +474,7 @@ func (s *recordingTests) TestUriSanitizer() {
 }
 
 func TestProxyCert(t *testing.T) {
-	_, err := getRootCas()
+	_, err := getRootCas(t)
 	require.NoError(t, err)
 
 	tempProxyCert, ok := os.LookupEnv("PROXY_CERT")
@@ -485,28 +482,26 @@ func TestProxyCert(t *testing.T) {
 	err = os.Unsetenv("PROXY_CERT")
 	require.NoError(t, err)
 
-	_, err = getRootCas()
+	_, err = getRootCas(t)
 	require.NoError(t, err)
 
 	err = os.Setenv("PROXY_CERT", "not/a/path.crt")
 	require.NoError(t, err)
-	_, err = GetHTTPClient()
+	_, err = GetHTTPClient(t)
 	require.Error(t, err)
 
 	os.Setenv("PROXY_CERT", tempProxyCert)
 }
 
 func TestStopRecordingNoStart(t *testing.T) {
-	require := require.New(t)
-
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
 	err := StopRecording(t, nil)
-	require.Error(err)
+	require.Error(t, err)
 
 	jsonFile, err := os.Open("./recordings/TestStopRecordingNoStart.json")
-	require.Error(err)
+	require.Error(t, err)
 	defer jsonFile.Close()
 }
 

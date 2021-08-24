@@ -440,16 +440,18 @@ var modeMap = map[RecordMode]recorder.Mode{
 }
 
 var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
-var modeRecording = "record"
-var modePlayback = "playback"
 
-var baseProxyURLSecure = "localhost:5001"
-var baseProxyURL = "localhost:5000"
+const (
+	modeRecording      = "record"
+	modePlayback       = "playback"
+	baseProxyURLSecure = "localhost:5001"
+	baseProxyURL       = "localhost:5000"
+	IdHeader           = "x-recording-id"
+	ModeHeader         = "x-recording-mode"
+	UpstreamUriHeader  = "x-recording-upstream-base-uri"
+)
 
 var recordingId string
-var IdHeader = "x-recording-id"
-var ModeHeader = "x-recording-mode"
-var UpstreamUriHeader = "x-recording-upstream-base-uri"
 
 var tr = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -459,18 +461,20 @@ var client = http.Client{
 }
 
 type RecordingOptions struct {
-	MaxRetries int32
-	UseHTTPS   bool
-	Host       string
-	Scheme     string
+	UseHTTPS bool
+	Host     string
+	Scheme   string
+}
+
+func resetRecordingId() {
+	recordingId = ""
 }
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
-		MaxRetries: 0,
-		UseHTTPS:   true,
-		Host:       "localhost:5001",
-		Scheme:     "https",
+		UseHTTPS: true,
+		Host:     "localhost:5001",
+		Scheme:   "https",
 	}
 }
 
@@ -492,8 +496,6 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if recordMode == "" {
 		t.Log("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
 		recordMode = "playback"
-	} else {
-		t.Log("AZURE_RECORD_MODE: ", recordMode)
 	}
 	testId := getTestId(pathToRecordings, t)
 
@@ -514,15 +516,12 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	return nil
 }
 
-func resetRecordingId() {
-	recordingId = ""
-}
-
 func StopRecording(t *testing.T, options *RecordingOptions) error {
+	defer resetRecordingId()
+
 	if options == nil {
 		options = defaultOptions()
 	}
-	defer resetRecordingId()
 
 	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
@@ -565,9 +564,6 @@ func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error
 }
 
 func (o *RecordingOptions) Init() {
-	if o.MaxRetries != 0 {
-		o.MaxRetries = 0
-	}
 	if o.UseHTTPS {
 		o.Host = baseProxyURLSecure
 		o.Scheme = "https"
@@ -589,7 +585,6 @@ func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 
 func LiveOnly(t *testing.T) {
 	if GetRecordMode() != modeRecording {
-		fmt.Println("SKIPPING")
 		t.Skip("Live Test Only")
 	}
 }

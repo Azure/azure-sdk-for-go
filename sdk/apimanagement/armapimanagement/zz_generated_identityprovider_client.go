@@ -72,7 +72,7 @@ func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Header.Set("If-Match", *options.IfMatch)
@@ -148,7 +148,7 @@ func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")
@@ -210,7 +210,7 @@ func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -280,7 +280,7 @@ func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -333,7 +333,7 @@ func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -403,7 +403,7 @@ func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -476,7 +476,7 @@ func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")

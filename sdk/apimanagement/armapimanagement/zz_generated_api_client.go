@@ -122,7 +122,7 @@ func (client *APIClient) createOrUpdateCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Header.Set("If-Match", *options.IfMatch)
@@ -189,7 +189,7 @@ func (client *APIClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 	if options != nil && options.DeleteRevisions != nil {
 		reqQP.Set("deleteRevisions", strconv.FormatBool(*options.DeleteRevisions))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")
@@ -252,7 +252,7 @@ func (client *APIClient) getCreateRequest(ctx context.Context, resourceGroupName
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json, application/vnd.swagger.doc+json, application/vnd.oai.openapi+json, application/vnd.sun.wadl+xml, application/wsdl+xml")
 	return req, nil
@@ -322,7 +322,7 @@ func (client *APIClient) getEntityTagCreateRequest(ctx context.Context, resource
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -390,7 +390,7 @@ func (client *APIClient) listByServiceCreateRequest(ctx context.Context, resourc
 	if options != nil && options.ExpandAPIVersionSet != nil {
 		reqQP.Set("expandApiVersionSet", strconv.FormatBool(*options.ExpandAPIVersionSet))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -465,7 +465,7 @@ func (client *APIClient) listByTagsCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.IncludeNotTaggedApis != nil {
 		reqQP.Set("includeNotTaggedApis", strconv.FormatBool(*options.IncludeNotTaggedApis))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -535,7 +535,7 @@ func (client *APIClient) updateCreateRequest(ctx context.Context, resourceGroupN
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")

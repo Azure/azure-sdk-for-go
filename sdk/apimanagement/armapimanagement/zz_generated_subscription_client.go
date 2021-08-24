@@ -76,7 +76,7 @@ func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Contex
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	if options != nil && options.AppType != nil {
 		reqQP.Set("appType", string(*options.AppType))
 	}
@@ -155,7 +155,7 @@ func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")
@@ -217,7 +217,7 @@ func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resource
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -287,7 +287,7 @@ func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -349,7 +349,7 @@ func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -419,7 +419,7 @@ func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -492,7 +492,7 @@ func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -553,7 +553,7 @@ func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -617,7 +617,7 @@ func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resou
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	if options != nil && options.AppType != nil {
 		reqQP.Set("appType", string(*options.AppType))
 	}

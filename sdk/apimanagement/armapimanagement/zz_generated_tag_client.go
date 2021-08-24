@@ -77,7 +77,7 @@ func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -158,7 +158,7 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -232,7 +232,7 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -302,7 +302,7 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Header.Set("If-Match", *options.IfMatch)
@@ -378,7 +378,7 @@ func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")
@@ -444,7 +444,7 @@ func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourc
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -513,7 +513,7 @@ func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -578,7 +578,7 @@ func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -639,7 +639,7 @@ func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -716,7 +716,7 @@ func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGrou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -797,7 +797,7 @@ func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -874,7 +874,7 @@ func (client *TagClient) getByProductCreateRequest(ctx context.Context, resource
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -944,7 +944,7 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1005,7 +1005,7 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1070,7 +1070,7 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1131,7 +1131,7 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1197,7 +1197,7 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1277,7 +1277,7 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1353,7 +1353,7 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1428,7 +1428,7 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1498,7 +1498,7 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")

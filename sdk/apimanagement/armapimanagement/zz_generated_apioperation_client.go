@@ -77,7 +77,7 @@ func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Header.Set("If-Match", *options.IfMatch)
@@ -157,7 +157,7 @@ func (client *APIOperationClient) deleteCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")
@@ -223,7 +223,7 @@ func (client *APIOperationClient) getCreateRequest(ctx context.Context, resource
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -297,7 +297,7 @@ func (client *APIOperationClient) getEntityTagCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -366,7 +366,7 @@ func (client *APIOperationClient) listByAPICreateRequest(ctx context.Context, re
 	if options != nil && options.Tags != nil {
 		reqQP.Set("tags", *options.Tags)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -440,7 +440,7 @@ func (client *APIOperationClient) updateCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")

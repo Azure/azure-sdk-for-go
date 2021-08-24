@@ -73,7 +73,7 @@ func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Header.Set("If-Match", *options.IfMatch)
@@ -152,7 +152,7 @@ func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.DeleteSubscriptions != nil {
 		reqQP.Set("deleteSubscriptions", strconv.FormatBool(*options.DeleteSubscriptions))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")
@@ -214,7 +214,7 @@ func (client *ProductClient) getCreateRequest(ctx context.Context, resourceGroup
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -284,7 +284,7 @@ func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -352,7 +352,7 @@ func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, res
 	if options != nil && options.Tags != nil {
 		reqQP.Set("tags", *options.Tags)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -427,7 +427,7 @@ func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resour
 	if options != nil && options.IncludeNotTaggedProducts != nil {
 		reqQP.Set("includeNotTaggedProducts", strconv.FormatBool(*options.IncludeNotTaggedProducts))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -497,7 +497,7 @@ func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGr
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")

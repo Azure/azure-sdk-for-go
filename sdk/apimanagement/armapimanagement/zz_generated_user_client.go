@@ -76,7 +76,7 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Header.Set("If-Match", *options.IfMatch)
@@ -158,7 +158,7 @@ func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	if options != nil && options.AppType != nil {
 		reqQP.Set("appType", string(*options.AppType))
 	}
@@ -223,7 +223,7 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -293,7 +293,7 @@ func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -363,7 +363,7 @@ func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourc
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -423,7 +423,7 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -498,7 +498,7 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 	if options != nil && options.ExpandGroups != nil {
 		reqQP.Set("expandGroups", strconv.FormatBool(*options.ExpandGroups))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -568,7 +568,7 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("If-Match", ifMatch)
 	req.Header.Set("Accept", "application/json")

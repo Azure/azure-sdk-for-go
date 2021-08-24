@@ -82,7 +82,7 @@ func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, reso
 	if options != nil && options.IncludeNotTaggedOperations != nil {
 		reqQP.Set("includeNotTaggedOperations", strconv.FormatBool(*options.IncludeNotTaggedOperations))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

@@ -76,7 +76,7 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -146,7 +146,7 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -219,7 +219,7 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -292,7 +292,7 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -365,7 +365,7 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -438,7 +438,7 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -512,7 +512,7 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	reqQP.Set("interval", interval)
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -585,7 +585,7 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

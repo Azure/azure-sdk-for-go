@@ -72,7 +72,7 @@ func (client *UserConfirmationPasswordClient) sendCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	if options != nil && options.AppType != nil {
 		reqQP.Set("appType", string(*options.AppType))
 	}

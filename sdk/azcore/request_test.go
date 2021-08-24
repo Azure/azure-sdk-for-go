@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -9,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"io/ioutil"
 	"mime"
@@ -61,8 +61,8 @@ func TestRequestEmptyPipeline(t *testing.T) {
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
-	if !errors.Is(err, ErrNoMorePolicies) {
-		t.Fatalf("expected ErrNoMorePolicies, got %v", err)
+	if err == nil {
+		t.Fatal("unexpected nil error")
 	}
 }
 
@@ -510,11 +510,16 @@ func TestNewRequestFail(t *testing.T) {
 }
 
 func TestJoinPaths(t *testing.T) {
-	if path := JoinPaths(); path != "" {
+	if path := JoinPaths(""); path != "" {
 		t.Fatalf("unexpected path %s", path)
 	}
-	const expected = "http://test.contoso.com/path/one/path/two/path/three/path/four/"
+	expected := "http://test.contoso.com/path/one/path/two/path/three/path/four/"
 	if path := JoinPaths("http://test.contoso.com/", "/path/one", "path/two", "/path/three/", "path/four/"); path != expected {
+		t.Fatalf("got %s, expected %s", path, expected)
+	}
+
+	expected = "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def"
+	if path := JoinPaths("http://test.contoso.com/?qp1=abc&qp2=def", "/path/one", "path/two"); path != expected {
 		t.Fatalf("got %s, expected %s", path, expected)
 	}
 }

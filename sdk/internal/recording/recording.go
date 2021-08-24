@@ -482,7 +482,7 @@ func (r RecordingOptions) HostScheme() string {
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {
-	return pathToRecordings + "/testrecordings/" + t.Name() + ".json"
+	return pathToRecordings + "/recordings/" + t.Name() + ".json"
 }
 
 func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {

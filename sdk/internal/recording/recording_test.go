@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -372,8 +373,13 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 
 func (s *recordingTests) TearDownSuite() {
 	// cleanup test files
-	err := os.RemoveAll("recordings")
-	require.Nil(s.T(), err)
+	files, err := filepath.Glob("recordings/**/*.yaml")
+	// err := os.RemoveAll("recordings/**/*.yaml")
+	require.NoError(s.T(), err)
+	for _, f := range files {
+		err := os.Remove(f)
+		require.NoError(s.T(), err)
+	}
 }
 
 func (s *recordingTests) TestRecordingOptions() {
@@ -422,7 +428,7 @@ func (s *recordingTests) TestStartStop() {
 	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./testrecordings/TestRecording/TestStartStop.json")
+	jsonFile, err := os.Open("./recordings/TestRecording/TestStartStop.json")
 	require.NoError(err)
 	defer jsonFile.Close()
 }
@@ -459,7 +465,7 @@ func (s *recordingTests) TestUriSanitizer() {
 	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./testrecordings/TestRecording/TestUriSanitizer.json")
+	jsonFile, err := os.Open("./recordings/TestRecording/TestUriSanitizer.json")
 	require.NoError(err)
 	defer jsonFile.Close()
 

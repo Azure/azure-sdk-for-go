@@ -6,6 +6,7 @@ package aztable
 import (
 	"context"
 	"net/http"
+	"time"
 
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
@@ -174,4 +175,31 @@ func (p *tableQueryResponsePager) PageResponse() TableListResponseEnvelope {
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (p *tableQueryResponsePager) Err() error {
 	return p.err
+}
+
+// TableEntityListByteResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
+type TableEntityListByteResponseResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// The properties for the table entity query response.
+	TableEntityQueryResponse *TableEntityQueryByteResponse
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
+	XMSContinuationNextPartitionKey *string
+
+	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
+	XMSContinuationNextRowKey *string
 }

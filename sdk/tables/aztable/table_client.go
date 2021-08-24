@@ -30,6 +30,9 @@ const (
 
 // NewTableClient creates a TableClient struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
 func NewTableClient(serviceURL string, tableName string, cred azcore.Credential, options *ClientOptions) (*TableClient, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	s, err := NewTableServiceClient(serviceURL, cred, options)
 	return s.NewTableClient(tableName), err
 }

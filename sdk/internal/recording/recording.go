@@ -514,10 +514,15 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	return nil
 }
 
+func resetRecordingId() {
+	recordingId = ""
+}
+
 func StopRecording(t *testing.T, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
+	defer resetRecordingId()
 
 	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
@@ -584,6 +589,7 @@ func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 
 func LiveOnly(t *testing.T) {
 	if GetRecordMode() != modeRecording {
+		fmt.Println("SKIPPING")
 		t.Skip("Live Test Only")
 	}
 }

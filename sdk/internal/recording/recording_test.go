@@ -372,9 +372,7 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 }
 
 func (s *recordingTests) TearDownSuite() {
-	// cleanup test files
 	files, err := filepath.Glob("recordings/**/*.yaml")
-	// err := os.RemoveAll("recordings/**/*.yaml")
 	require.NoError(s.T(), err)
 	for _, f := range files {
 		err := os.Remove(f)
@@ -476,6 +474,40 @@ func (s *recordingTests) TestUriSanitizer() {
 	require.NoError(err)
 
 	require.Equal(data.Entries[0].RequestUri, "https://www.replacement.com/")
+}
+
+func TestProxyCert(t *testing.T) {
+	_, err := getRootCas()
+	require.NoError(t, err)
+
+	tempProxyCert, ok := os.LookupEnv("PROXY_CERT")
+	require.True(t, ok)
+	err = os.Unsetenv("PROXY_CERT")
+	require.NoError(t, err)
+
+	_, err = getRootCas()
+	require.NoError(t, err)
+
+	err = os.Setenv("PROXY_CERT", "not/a/path.crt")
+	require.NoError(t, err)
+	_, err = GetHTTPClient()
+	require.Error(t, err)
+
+	os.Setenv("PROXY_CERT", tempProxyCert)
+}
+
+func TestStopRecordingNoStart(t *testing.T) {
+	require := require.New(t)
+
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := StopRecording(t, nil)
+	require.Error(err)
+
+	jsonFile, err := os.Open("./recordings/TestStopRecordingNoStart.json")
+	require.Error(err)
+	defer jsonFile.Close()
 }
 
 type RecordingFileStruct struct {

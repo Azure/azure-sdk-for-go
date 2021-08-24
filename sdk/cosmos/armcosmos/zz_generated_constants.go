@@ -7,7 +7,7 @@
 
 package armcosmos
 
-const telemetryInfo = "azsdk-go-armcosmos/v0.1.0"
+const telemetryInfo = "azsdk-go-armcosmos/v0.1.1"
 
 // APIType - Enum to indicate the API type of the restorable database account.
 type APIType string

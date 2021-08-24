@@ -4,7 +4,8 @@
 
 ``` yaml
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/9161ee6b26ff405ad94c150216615983a5327e53/specification/cosmos-db/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/9161ee6b26ff405ad94c150216615983a5327e53/specification/cosmos-db/resource-manager/readme.go.md
-module-version: 0.1.0
+- https://github.com/Azure/azure-rest-api-specs/blob/e5c47c5615f81613263ff76fe25628ee19030a02/specification/cosmos-db/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/e5c47c5615f81613263ff76fe25628ee19030a02/specification/cosmos-db/resource-manager/readme.go.md
+module-version: 0.1.1
+
 ```

@@ -7,7 +7,7 @@
 
 package armpostgresqlflexibleservers
 
-const telemetryInfo = "azsdk-go-armpostgresqlflexibleservers/v0.1.0"
+const telemetryInfo = "azsdk-go-armpostgresqlflexibleservers/v0.1.1"
 
 // ConfigurationDataType - Data type of the configuration.
 type ConfigurationDataType string

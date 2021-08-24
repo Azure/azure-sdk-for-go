@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -1935,6 +1936,10 @@ type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonit
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
 type IntegrationRuntimeObjectMetadataClient = original.IntegrationRuntimeObjectMetadataClient
 type IntegrationRuntimeObjectMetadataRefreshFuture = original.IntegrationRuntimeObjectMetadataRefreshFuture
+type IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint = original.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
+type IntegrationRuntimeOutboundNetworkDependenciesEndpoint = original.IntegrationRuntimeOutboundNetworkDependenciesEndpoint
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails = original.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse = original.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse
 type IntegrationRuntimeReference = original.IntegrationRuntimeReference
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
 type IntegrationRuntimeResource = original.IntegrationRuntimeResource

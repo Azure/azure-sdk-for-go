@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -14,7 +15,7 @@ import (
 type ctxWithHTTPHeader struct{}
 
 // newHTTPHeaderPolicy creates a policy object that adds custom HTTP headers to a request
-func httpHeaderPolicy(req *Request) (*Response, error) {
+func httpHeaderPolicy(req *Request) (*http.Response, error) {
 	// check if any custom HTTP headers have been specified
 	if header := req.Context().Value(ctxWithHTTPHeader{}); header != nil {
 		for k, v := range header.(http.Header) {

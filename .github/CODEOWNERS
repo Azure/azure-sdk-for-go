@@ -7,13 +7,13 @@
 
 # Catch all for non-code project files and unowned files | folders
 *                        @rickwinter @jhendrixMSFT
-/sdk/                    @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/sdk/                    @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # Samples
-/samples/                @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/samples/                @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Core
-/sdk/azcore/             @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/sdk/azcore/             @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Identity
 /sdk/azidentity/         @rickwinter @jhendrixMSFT

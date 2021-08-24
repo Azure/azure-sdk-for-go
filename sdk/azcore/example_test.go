@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright 2017 Microsoft Corporation. All rights reserved.
 // Use of this source code is governed by an MIT
@@ -16,6 +17,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 )
 
 func ExamplePipeline_Do() {
@@ -49,15 +51,15 @@ func ExampleRequest_SetBody() {
 }
 
 // false positive by linter
-func ExampleLogger_SetClassifications() { //nolint:govet
+func ExampleSetClassifications() { //nolint:govet
 	// only log HTTP requests and responses
-	azcore.SetClassifications(azcore.LogRequest, azcore.LogResponse)
+	azlog.SetClassifications(azlog.Request, azlog.Response)
 }
 
 // false positive by linter
-func ExampleLogger_SetListener() { //nolint:govet
+func ExampleSetListener() { //nolint:govet
 	// a simple logger that writes to stdout
-	azcore.SetListener(func(cls azcore.LogClassification, msg string) {
+	azlog.SetListener(func(cls azlog.Classification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
 }

@@ -77,7 +77,7 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 	}
 
 	return ListEntitiesResponseEnvelope{
-		RawResponse:                     resp.RawResponse,
+		RawResponse: resp.RawResponse,
 		// TableEntityQueryResponse:        &t,
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,

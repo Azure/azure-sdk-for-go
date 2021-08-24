@@ -7,7 +7,7 @@
 
 package armeventhub
 
-const telemetryInfo = "azsdk-go-armeventhub/v0.1.0"
+const telemetryInfo = "azsdk-go-armeventhub/v0.1.1"
 
 type AccessRights string
 

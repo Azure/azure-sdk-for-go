@@ -192,7 +192,7 @@ func TestSASTableClientReadOnly(t *testing.T) {
 	pager := client.List(nil)
 	count := 0
 	for pager.NextPage(context.Background()) {
-		count += len(pager.PageResponse().TableEntityQueryResponse.Value)
+		count += len(pager.PageResponse().Value)
 	}
 
 	require.Equal(t, 4, count)
@@ -258,7 +258,7 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 	pager := client.List(nil)
 	count := 0
 	for pager.NextPage(context.Background()) {
-		count += len(pager.PageResponse().TableEntityQueryResponse.Value)
+		count += len(pager.PageResponse().Value)
 	}
 
 	require.Equal(t, 4, count)

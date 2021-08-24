@@ -47,7 +47,7 @@ func TestAddBasicEntity(t *testing.T) {
 			count := 0
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				for _, e := range resp.TableEntityQueryResponse.Value {
+				for _, e := range resp.Value {
 					err = json.Unmarshal(e, &receivedEntity)
 					require.NoError(t, err)
 					require.Equal(t, receivedEntity.PartitionKey, "pk001")

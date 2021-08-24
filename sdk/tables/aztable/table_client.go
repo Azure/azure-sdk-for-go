@@ -65,7 +65,7 @@ func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (
 // pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Value))
 // }
 // err := pager.Err()
 func (t *TableClient) List(listOptions *ListEntitiesOptions) ListEntitiesPager {

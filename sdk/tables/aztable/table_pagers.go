@@ -6,7 +6,6 @@ package aztable
 import (
 	"context"
 	"net/http"
-	"time"
 
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
@@ -23,7 +22,7 @@ import (
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Value))
 // }
 // err := pager.Err()
 type ListEntitiesPager interface {
@@ -70,7 +69,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Value))
 // }
 // err := pager.Err()
 func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesResponseEnvelope {
@@ -82,7 +81,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 	return p.err
 }
 
-// ListTablesPager is a Pager for Table Queries
+// ListTablesPager is a Pager for Table List operations
 //
 // NextPage should be called first. It fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
@@ -94,7 +93,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Value))
 // }
 // err := pager.Err()
 type ListTablesPager interface {
@@ -175,31 +174,4 @@ func (p *tableQueryResponsePager) PageResponse() ListTablesResponseEnvelope {
 // Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (p *tableQueryResponsePager) Err() error {
 	return p.err
-}
-
-// TableEntityListByteResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
-type TableEntityListByteResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The properties for the table entity query response.
-	TableEntityQueryResponse *TableEntityListResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	XMSContinuationNextPartitionKey *string
-
-	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	XMSContinuationNextRowKey *string
 }

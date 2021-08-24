@@ -40,11 +40,16 @@ type ListEntitiesResponseEnvelope struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 	// The properties for the table entity query response.
-	TableEntityQueryResponse *TableEntityListResponse
+	// TableEntityQueryResponse *TableEntityListResponse
 	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	XMSContinuationNextPartitionKey *string
 	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
 	XMSContinuationNextRowKey *string
+	// The metadata response of the table.
+	ODataMetadata *string
+
+	// List of table entities.
+	Value [][]byte
 }
 
 // TableEntityListResponse - The properties for the table entity query response.
@@ -73,9 +78,11 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 
 	return ListEntitiesResponseEnvelope{
 		RawResponse:                     resp.RawResponse,
-		TableEntityQueryResponse:        &t,
+		// TableEntityQueryResponse:        &t,
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
+		ODataMetadata:                   t.ODataMetadata,
+		Value:                           t.Value,
 	}, nil
 }
 

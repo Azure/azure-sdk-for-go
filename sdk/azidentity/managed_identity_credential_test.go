@@ -336,35 +336,6 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	}
 }
 
-// func TestManagedIdentityCredential_GetTokenIMDSMock(t *testing.T) {
-// 	timeout := time.After(5 * time.Second)
-// 	done := make(chan bool)
-// 	go func() {
-// 		err := resetEnvironmentVarsForTest()
-// 		if err != nil {
-// 			t.Fatalf("Unable to set environment variables")
-// 		}
-// 		srv, close := mock.NewServer()
-// 		defer close()
-// 		srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-//		options := DefaultManagedIdentityCredentialOptions()
-//		options.HTTPClient = srv
-// 		msiCred := NewManagedIdentityCredential("", &options)
-// 		_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
-// 		if err == nil {
-// 			t.Fatalf("Cannot run IMDS test in this environment")
-// 		}
-// 		time.Sleep(550 * time.Millisecond)
-// 		done <- true
-// 	}()
-
-// 	select {
-// 	case <-timeout:
-// 		t.Fatal("Test didn't finish in time")
-// 	case <-done:
-// 	}
-// }
-
 func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T) {
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()

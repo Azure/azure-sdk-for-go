@@ -291,7 +291,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 						progressLock.Unlock()
 					})
 			}
-			_, err = io.Copy(newSectionWriter(writer, chunkStart, count), body)
+			_, _ = io.Copy(newSectionWriter(writer, chunkStart, count), body)
 			err = body.Close()
 			return err
 		},

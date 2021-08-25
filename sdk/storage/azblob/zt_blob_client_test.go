@@ -399,6 +399,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_assert.Nil(err)
 
 	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
 	_ = resp2.Body(RetryReaderOptions{}).Close()

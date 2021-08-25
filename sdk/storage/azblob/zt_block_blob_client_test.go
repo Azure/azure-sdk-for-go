@@ -1230,6 +1230,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration

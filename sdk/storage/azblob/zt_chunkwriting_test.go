@@ -53,9 +53,7 @@ func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body i
 		return BlockBlobStageBlockResponse{}, fmt.Errorf("could not create a stage block file: %s", err)
 	}
 	defer func(fp *os.File) {
-		err := fp.Close()
-		if err != nil {
-		}
+		_ = fp.Close()
 	}(fp)
 
 	if _, err := io.Copy(fp, body); err != nil {
@@ -71,9 +69,7 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 		return BlockBlobCommitBlockListResponse{}, err
 	}
 	defer func(dst *os.File) {
-		err := dst.Close()
-		if err != nil {
-		}
+		_ = dst.Close()
 	}(dst)
 
 	for _, id := range base64BlockIDs {
@@ -83,9 +79,12 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 			return BlockBlobCommitBlockListResponse{}, fmt.Errorf("could not combine chunk %s: %s", id, err)
 		}
 		_, err = io.Copy(dst, src)
-		src.Close()
 		if err != nil {
 			return BlockBlobCommitBlockListResponse{}, fmt.Errorf("problem writing final file from chunks: %s", err)
+		}
+		err = src.Close()
+		if err != nil {
+			return BlockBlobCommitBlockListResponse{}, fmt.Errorf("problem closing the source : %s", err)
 		}
 	}
 	return BlockBlobCommitBlockListResponse{}, nil
@@ -109,9 +108,7 @@ func createSrcFile(size int) (string, error) {
 		return "", fmt.Errorf("could not create source file: %s", err)
 	}
 	defer func(fp *os.File) {
-		err := fp.Close()
-		if err != nil {
-		}
+		_ = fp.Close()
 	}(fp)
 
 	lr := &io.LimitedReader{R: rand.New(rand.NewSource(time.Now().UnixNano())), N: int64(size)}

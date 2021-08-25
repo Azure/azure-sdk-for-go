@@ -878,6 +878,9 @@ func Example_blobSnapshots() {
 
 	// Create a snapshot of the original blob & save its timestamp:
 	createSnapshot, err := baseBlobClient.CreateSnapshot(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	snapshot := *createSnapshot.Snapshot
 
 	// Modify the original blob & show it:
@@ -887,6 +890,9 @@ func Example_blobSnapshots() {
 	}
 
 	get, err := baseBlobClient.Download(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	b := bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{})
 	_, err = b.ReadFrom(reader)

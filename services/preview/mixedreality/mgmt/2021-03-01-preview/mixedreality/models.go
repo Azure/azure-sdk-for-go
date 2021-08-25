@@ -151,6 +151,8 @@ type MetricDimension struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// InternalName - Internal name of the dimension.
 	InternalName *string `json:"internalName,omitempty"`
+	// ToBeExportedForShoebox - Flag to indicate export for Shoebox
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // MetricSpecification specifications of the Metrics for Azure Monitoring
@@ -165,10 +167,28 @@ type MetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 	// AggregationType - Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
 	AggregationType *string `json:"aggregationType,omitempty"`
+	// SupportedAggregationTypes - Supported aggregation types. Valid values: Average, Minimum, Maximum, Total, Count.
+	SupportedAggregationTypes *[]string `json:"supportedAggregationTypes,omitempty"`
+	// SupportedTimeGrainTypes - Supported time grains. Valid values: PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, P1D
+	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
+	// EnableRegionalMdmAccount - Flag to indicate use of regional Mdm accounts
+	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
+	// SourceMdmAccount - Source mdm account
+	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	// SourceMdmNamespace - Source mdm namespace
+	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	// MetricFilterPattern - Metric filter regex pattern
+	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+	// FillGapWithZero - Flag to determine is Zero is returned for time duration where no metric is emitted
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	// Category - Metric category
+	Category *string `json:"category,omitempty"`
 	// InternalMetricName - Internal metric name.
 	InternalMetricName *string `json:"internalMetricName,omitempty"`
 	// Dimensions - Dimensions of the metric
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// LockedAggregationType - Locked aggregation type of the metric
+	LockedAggregationType *string `json:"lockedAggregationType,omitempty"`
 }
 
 // ObjectAnchorsAccount objectAnchorsAccount Response.
@@ -177,6 +197,12 @@ type ObjectAnchorsAccount struct {
 	Identity          *ObjectAnchorsAccountIdentity `json:"identity,omitempty"`
 	// AccountProperties - Property bag.
 	*AccountProperties `json:"properties,omitempty"`
+	// Plan - The plan associated with this account
+	Plan *Identity `json:"plan,omitempty"`
+	// Sku - The sku associated with this account
+	Sku *Sku `json:"sku,omitempty"`
+	// Kind - The kind of account, if supported
+	Kind *Sku `json:"kind,omitempty"`
 	// SystemData - READ-ONLY; The system metadata related to an object anchors account.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
@@ -199,6 +225,15 @@ func (oaa ObjectAnchorsAccount) MarshalJSON() ([]byte, error) {
 	}
 	if oaa.AccountProperties != nil {
 		objectMap["properties"] = oaa.AccountProperties
+	}
+	if oaa.Plan != nil {
+		objectMap["plan"] = oaa.Plan
+	}
+	if oaa.Sku != nil {
+		objectMap["sku"] = oaa.Sku
+	}
+	if oaa.Kind != nil {
+		objectMap["kind"] = oaa.Kind
 	}
 	if oaa.Tags != nil {
 		objectMap["tags"] = oaa.Tags
@@ -235,6 +270,33 @@ func (oaa *ObjectAnchorsAccount) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				oaa.AccountProperties = &accountProperties
+			}
+		case "plan":
+			if v != nil {
+				var plan Identity
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				oaa.Plan = &plan
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				oaa.Sku = &sku
+			}
+		case "kind":
+			if v != nil {
+				var kind Sku
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				oaa.Kind = &kind
 			}
 		case "systemData":
 			if v != nil {

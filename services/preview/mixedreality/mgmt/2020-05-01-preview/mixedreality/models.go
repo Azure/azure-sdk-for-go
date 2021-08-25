@@ -10,6 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -41,6 +42,8 @@ func (ak AccountKeys) MarshalJSON() ([]byte, error) {
 
 // AccountProperties common Properties shared by Mixed Reality Accounts
 type AccountProperties struct {
+	// StorageAccountName - The name of the storage account associated with this accountId
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
 	// AccountID - READ-ONLY; unique id of certain account.
 	AccountID *string `json:"accountId,omitempty"`
 	// AccountDomain - READ-ONLY; Correspond domain name of certain Spatial Anchors Account
@@ -50,6 +53,9 @@ type AccountProperties struct {
 // MarshalJSON is the custom marshaler for AccountProperties.
 func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if ap.StorageAccountName != nil {
+		objectMap["storageAccountName"] = ap.StorageAccountName
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -82,8 +88,8 @@ type CheckNameAvailabilityRequest struct {
 // CheckNameAvailabilityResponse check Name Availability Response
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - if name Available. Possible values include: 'True', 'False'
-	NameAvailable NameAvailability `json:"nameAvailable,omitempty"`
+	// NameAvailable - if name Available
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
 	// Reason - Resource Name To Verify. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason NameUnavailableReason `json:"reason,omitempty"`
 	// Message - detail message
@@ -126,12 +132,56 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// LogSpecification specifications of the Log for Azure Monitoring
+type LogSpecification struct {
+	// Name - Name of the log
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the log
+	DisplayName *string `json:"displayName,omitempty"`
+	// BlobDuration - Blob duration of the log
+	BlobDuration *string `json:"blobDuration,omitempty"`
+}
+
+// MetricDimension specifications of the Dimension of metrics
+type MetricDimension struct {
+	// Name - Name of the dimension
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the dimension
+	DisplayName *string `json:"displayName,omitempty"`
+	// InternalName - Internal name of the dimension.
+	InternalName *string `json:"internalName,omitempty"`
+}
+
+// MetricSpecification specifications of the Metrics for Azure Monitoring
+type MetricSpecification struct {
+	// Name - Name of the metric
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the metric
+	DisplayName *string `json:"displayName,omitempty"`
+	// DisplayDescription - Localized friendly description of the metric
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Unit - Unit that makes sense for the metric
+	Unit *string `json:"unit,omitempty"`
+	// AggregationType - Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
+	AggregationType *string `json:"aggregationType,omitempty"`
+	// InternalMetricName - Internal metric name.
+	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	// Dimensions - Dimensions of the metric
+	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+}
+
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// IsDataAction - Whether or not this is a data plane operation
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Origin - The origin
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operation
+	Properties *OperationProperties `json:"properties,omitempty"`
 }
 
 // OperationDisplay the object that represents the operation.
@@ -306,6 +356,12 @@ func NewOperationPagePage(cur OperationPage, getNextPage func(context.Context, O
 	}
 }
 
+// OperationProperties operation properties.
+type OperationProperties struct {
+	// ServiceSpecification - Service specification.
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
 // Plan plan for the resource.
 type Plan struct {
 	// Name - A user defined name of the 3rd Party Artifact that is being procured.
@@ -340,9 +396,18 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 // RemoteRenderingAccount remoteRenderingAccount Response.
 type RemoteRenderingAccount struct {
 	autorest.Response `json:"-"`
-	Identity          *RemoteRenderingAccountIdentity `json:"identity,omitempty"`
 	// AccountProperties - Property bag.
 	*AccountProperties `json:"properties,omitempty"`
+	// Identity - The identity associated with this account
+	Identity *Identity `json:"identity,omitempty"`
+	// Plan - The plan associated with this account
+	Plan *Identity `json:"plan,omitempty"`
+	// Sku - The sku associated with this account
+	Sku *Sku `json:"sku,omitempty"`
+	// Kind - The kind of account, if supported
+	Kind *Sku `json:"kind,omitempty"`
+	// SystemData - System metadata for this account
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
@@ -358,11 +423,23 @@ type RemoteRenderingAccount struct {
 // MarshalJSON is the custom marshaler for RemoteRenderingAccount.
 func (rra RemoteRenderingAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if rra.AccountProperties != nil {
+		objectMap["properties"] = rra.AccountProperties
+	}
 	if rra.Identity != nil {
 		objectMap["identity"] = rra.Identity
 	}
-	if rra.AccountProperties != nil {
-		objectMap["properties"] = rra.AccountProperties
+	if rra.Plan != nil {
+		objectMap["plan"] = rra.Plan
+	}
+	if rra.Sku != nil {
+		objectMap["sku"] = rra.Sku
+	}
+	if rra.Kind != nil {
+		objectMap["kind"] = rra.Kind
+	}
+	if rra.SystemData != nil {
+		objectMap["systemData"] = rra.SystemData
 	}
 	if rra.Tags != nil {
 		objectMap["tags"] = rra.Tags
@@ -382,15 +459,6 @@ func (rra *RemoteRenderingAccount) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "identity":
-			if v != nil {
-				var identity RemoteRenderingAccountIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				rra.Identity = &identity
-			}
 		case "properties":
 			if v != nil {
 				var accountProperties AccountProperties
@@ -399,6 +467,51 @@ func (rra *RemoteRenderingAccount) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				rra.AccountProperties = &accountProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				rra.Identity = &identity
+			}
+		case "plan":
+			if v != nil {
+				var plan Identity
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				rra.Plan = &plan
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				rra.Sku = &sku
+			}
+		case "kind":
+			if v != nil {
+				var kind Sku
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				rra.Kind = &kind
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				rra.SystemData = &systemData
 			}
 		case "tags":
 			if v != nil {
@@ -449,25 +562,6 @@ func (rra *RemoteRenderingAccount) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// RemoteRenderingAccountIdentity ...
-type RemoteRenderingAccountIdentity struct {
-	// PrincipalID - READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type. Possible values include: 'SystemAssigned'
-	Type ResourceIdentityType `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RemoteRenderingAccountIdentity.
-func (rra RemoteRenderingAccountIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rra.Type != "" {
-		objectMap["type"] = rra.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // RemoteRenderingAccountPage result of the request to get resource collection. It contains a list of
@@ -659,7 +753,7 @@ type ResourceModelWithAllowedPropertySet struct {
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ManagedBy - The  fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
 	Kind *string `json:"kind,omitempty"`
@@ -746,6 +840,14 @@ type ResourceModelWithAllowedPropertySetSku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
+// ServiceSpecification service specification payload
+type ServiceSpecification struct {
+	// LogSpecifications - Specifications of the Log for Azure Monitoring
+	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
+	// MetricSpecifications - Specifications of the Metrics for Azure Monitoring
+	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+}
+
 // Sku the resource model definition representing SKU
 type Sku struct {
 	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
@@ -765,6 +867,16 @@ type SpatialAnchorsAccount struct {
 	autorest.Response `json:"-"`
 	// AccountProperties - Property bag.
 	*AccountProperties `json:"properties,omitempty"`
+	// Identity - The identity associated with this account
+	Identity *Identity `json:"identity,omitempty"`
+	// Plan - The plan associated with this account
+	Plan *Identity `json:"plan,omitempty"`
+	// Sku - The sku associated with this account
+	Sku *Sku `json:"sku,omitempty"`
+	// Kind - The kind of account, if supported
+	Kind *Sku `json:"kind,omitempty"`
+	// SystemData - System metadata for this account
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
@@ -782,6 +894,21 @@ func (saa SpatialAnchorsAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if saa.AccountProperties != nil {
 		objectMap["properties"] = saa.AccountProperties
+	}
+	if saa.Identity != nil {
+		objectMap["identity"] = saa.Identity
+	}
+	if saa.Plan != nil {
+		objectMap["plan"] = saa.Plan
+	}
+	if saa.Sku != nil {
+		objectMap["sku"] = saa.Sku
+	}
+	if saa.Kind != nil {
+		objectMap["kind"] = saa.Kind
+	}
+	if saa.SystemData != nil {
+		objectMap["systemData"] = saa.SystemData
 	}
 	if saa.Tags != nil {
 		objectMap["tags"] = saa.Tags
@@ -809,6 +936,51 @@ func (saa *SpatialAnchorsAccount) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				saa.AccountProperties = &accountProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				saa.Identity = &identity
+			}
+		case "plan":
+			if v != nil {
+				var plan Identity
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				saa.Plan = &plan
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				saa.Sku = &sku
+			}
+		case "kind":
+			if v != nil {
+				var kind Sku
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				saa.Kind = &kind
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				saa.SystemData = &systemData
 			}
 		case "tags":
 			if v != nil {
@@ -1019,6 +1191,22 @@ func NewSpatialAnchorsAccountPagePage(cur SpatialAnchorsAccountPage, getNextPage
 		fn:   getNextPage,
 		saap: cur,
 	}
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource

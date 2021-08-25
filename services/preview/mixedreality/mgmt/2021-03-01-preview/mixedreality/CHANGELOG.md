@@ -1,10 +1,21 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. AccountKeys.MarshalJSON() ([]byte, error)
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. MetricDimension.ToBeExportedForShoebox
+1. MetricSpecification.Category
+1. MetricSpecification.EnableRegionalMdmAccount
+1. MetricSpecification.FillGapWithZero
+1. MetricSpecification.LockedAggregationType
+1. MetricSpecification.MetricFilterPattern
+1. MetricSpecification.SourceMdmAccount
+1. MetricSpecification.SourceMdmNamespace
+1. MetricSpecification.SupportedAggregationTypes
+1. MetricSpecification.SupportedTimeGrainTypes
+1. ObjectAnchorsAccount.Kind
+1. ObjectAnchorsAccount.Plan
+1. ObjectAnchorsAccount.Sku

@@ -393,12 +393,12 @@ func (s *recordingTests) TestRecordingOptions() {
 
 	r.Init()
 	require.Equal(r.Host, "localhost:5000")
-	require.Equal(r.Scheme, "https")
+	require.Equal(r.Scheme, "http")
 
-	r.UseHTTPS = false
+	r.UseHTTPS = true
 	r.Init()
 	require.Equal(r.Host, "localhost:5001")
-	require.Equal(r.Scheme, "http")
+	require.Equal(r.Scheme, "https")
 }
 
 var packagePath = "sdk/internal/recording"

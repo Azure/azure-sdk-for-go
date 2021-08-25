@@ -3,9 +3,7 @@
 
 package azcosmos
 
-import (
-	"encoding/json"
-)
+import "encoding/json"
 
 // PartitionKey represents a logical partition key value.
 type PartitionKey struct {
@@ -13,9 +11,11 @@ type PartitionKey struct {
 	partitionKeyInternal *partitionKeyInternal
 }
 
+// NewPartitionKeyNone creates a partition key value for non-partitioned containers.
 func NewPartitionKeyNone() *PartitionKey {
 	return &PartitionKey{
-		isNone: true,
+		isNone:               true,
+		partitionKeyInternal: nonePartitionKey,
 	}
 }
 
@@ -33,7 +33,11 @@ func NewPartitionKey(value interface{}) (*PartitionKey, error) {
 }
 
 func (pk *PartitionKey) toJsonString() (string, error) {
-	res, err := json.Marshal([]interface{}{pk.value})
+	if pk.isNone {
+		return "", nil
+	}
+
+	res, err := json.Marshal(pk.partitionKeyInternal)
 	if err != nil {
 		return "", err
 	}

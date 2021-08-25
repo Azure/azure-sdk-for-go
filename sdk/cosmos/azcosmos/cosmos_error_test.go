@@ -85,7 +85,7 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode())
 	}
 
-	if asError.StatusCode() != "404 Not Found" {
+	if asError.StatusCode() != 404 {
 		t.Errorf("Expected 404 Not Found, but got %v", asError.StatusCode())
 	}
 

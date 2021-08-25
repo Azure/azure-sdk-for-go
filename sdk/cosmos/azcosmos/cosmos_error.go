@@ -17,11 +17,11 @@ type cosmosError struct {
 	rawResponse *http.Response
 }
 
-func (e *cosmosError) StatusCode() string {
+func (e *cosmosError) StatusCode() int {
 	if e.rawResponse == nil {
-		return ""
+		return 0
 	}
-	return e.rawResponse.Status
+	return e.rawResponse.StatusCode
 }
 
 func (e *cosmosError) ErrorCode() string {

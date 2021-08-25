@@ -521,3 +521,36 @@ type RecordingFileStruct struct {
 type Entry struct {
 	RequestUri string `json:"RequestUri"`
 }
+
+
+func TestLiveModeOnly(t *testing.T) {
+	LiveOnly(t)
+	if GetRecordMode() == modePlayback {
+		t.Fatalf("Test should not run in playback")
+	}
+}
+
+func TestSleep(t *testing.T) {
+	start := time.Now()
+	Sleep(time.Second * 5)
+	duration := time.Since(start)
+	if GetRecordMode() == modePlayback {
+		if duration > (time.Second * 5) {
+			t.Fatalf("Sleep took longer than five seconds")
+		}
+	} else {
+		if duration < (time.Second * 5) {
+			t.Fatalf("Sleep took less than five seconds")
+		}
+	}
+}
+
+func TestBadAzureRecordMode(t *testing.T) {
+	temp := recordMode
+
+	recordMode = "badvalue"
+	err := StartRecording(t, packagePath, nil)
+	require.Error(t, err)
+
+	recordMode = temp
+}

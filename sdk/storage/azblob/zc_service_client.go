@@ -153,7 +153,7 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) *S
 			return nil, handleError(err)
 		}
 		queryValues, _ := url.ParseQuery(req.URL.RawQuery)
-		queryValues.Set("marker", *response.ListContainersSegmentResponse.NextMarker)
+		queryValues.Set("marker", *response.ServiceListContainersSegmentResult.NextMarker)
 
 		req.URL.RawQuery = queryValues.Encode()
 		return req, nil

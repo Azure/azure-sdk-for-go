@@ -19,10 +19,6 @@ func TestDatabaseCRUD(t *testing.T) {
 		t.Fatalf("Failed to create database: %v", err)
 	}
 
-	if resp.RawResponse.StatusCode != 201 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
-	}
-
 	if resp.DatabaseProperties.Id != database.Id {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
@@ -32,10 +28,6 @@ func TestDatabaseCRUD(t *testing.T) {
 		t.Fatalf("Failed to read database: %v", err)
 	}
 
-	if resp.RawResponse.StatusCode != 200 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
-	}
-
 	if resp.DatabaseProperties.Id != database.Id {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
@@ -43,9 +35,5 @@ func TestDatabaseCRUD(t *testing.T) {
 	resp, err = resp.DatabaseProperties.Database.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)
-	}
-
-	if resp.RawResponse.StatusCode != 204 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 }

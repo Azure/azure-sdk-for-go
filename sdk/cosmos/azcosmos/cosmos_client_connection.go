@@ -52,7 +52,7 @@ func (c *cosmosClientConnection) sendPostRequest(
 		return nil, err
 	}
 
-	return c.Pipeline.Do(req)
+	return c.executeAndEnsureSuccessResponse(req)
 }
 
 func (c *cosmosClientConnection) sendPutRequest(
@@ -71,7 +71,7 @@ func (c *cosmosClientConnection) sendPutRequest(
 		return nil, err
 	}
 
-	return c.Pipeline.Do(req)
+	return c.executeAndEnsureSuccessResponse(req)
 }
 
 func (c *cosmosClientConnection) sendGetRequest(
@@ -84,7 +84,7 @@ func (c *cosmosClientConnection) sendGetRequest(
 		return nil, err
 	}
 
-	return c.Pipeline.Do(req)
+	return c.executeAndEnsureSuccessResponse(req)
 }
 
 func (c *cosmosClientConnection) sendDeleteRequest(
@@ -97,7 +97,7 @@ func (c *cosmosClientConnection) sendDeleteRequest(
 		return nil, err
 	}
 
-	return c.Pipeline.Do(req)
+	return c.executeAndEnsureSuccessResponse(req)
 }
 
 func (c *cosmosClientConnection) createRequest(
@@ -131,4 +131,18 @@ func (c *cosmosClientConnection) createRequest(
 
 	req.SetOperationValue(operationContext)
 	return req, nil
+}
+
+func (c *cosmosClientConnection) executeAndEnsureSuccessResponse(request *azcore.Request) (*azcore.Response, error) {
+	response, err := c.Pipeline.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
+	if successResponse {
+		return response, nil
+	}
+
+	return nil, newCosmosError(response)
 }

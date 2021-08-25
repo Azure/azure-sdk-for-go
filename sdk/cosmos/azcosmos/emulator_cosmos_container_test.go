@@ -37,10 +37,6 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to create container2: %v", err)
 	}
 
-	if resp.RawResponse.StatusCode != 201 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
-	}
-
 	if resp.ContainerProperties.Id != properties.Id {
 		t.Errorf("Unexpected id match: %v", resp.ContainerProperties)
 	}
@@ -53,10 +49,6 @@ func TestContainerCRUD(t *testing.T) {
 	resp, err = container.Get(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read container: %v", err)
-	}
-
-	if resp.RawResponse.StatusCode != 200 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 
 	updatedProperties := CosmosContainerProperties{
@@ -77,16 +69,8 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to update container: %v", err)
 	}
 
-	if resp.RawResponse.StatusCode != 200 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
-	}
-
 	resp, err = container.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete container: %v", err)
-	}
-
-	if resp.RawResponse.StatusCode != 204 {
-		t.Fatal(emulatorTests.parseErrorResponse(resp.RawResponse))
 	}
 }

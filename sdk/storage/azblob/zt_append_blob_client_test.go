@@ -74,6 +74,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	// test append block with valid MD5 value
 	readerToBody, body := getRandomDataAndReader(1024)
 	md5Value := md5.Sum(body)
+	_ = body
 	contentMD5 := md5Value[:]
 	appendBlockOptions := AppendBlockOptions{
 		TransactionalContentMD5: contentMD5,
@@ -147,6 +148,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)

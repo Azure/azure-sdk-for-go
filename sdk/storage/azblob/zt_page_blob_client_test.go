@@ -431,6 +431,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	readerToBody, body := getRandomDataAndReader(contentSize)
 	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
 	md5Value := md5.Sum(body)
+	_ = body
 	contentMD5 := md5Value[:]
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange:               &HttpRange{offset, count},
@@ -2979,7 +2980,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
 
 	defer func() { // Invalid sequence number should panic
-		recover()
+		_ = recover()
 	}()
 
 	sequenceNumber := int64(-1)
@@ -3283,52 +3284,52 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func setupStartIncrementalCopyTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient,
-	pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
-	_context := getTestContext(testName)
-	var recording *testframework.Recording
-	if _context != nil {
-		recording = _context.recording
-	}
-	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-	if err != nil {
-		_assert.Fail("Unable to fetch service client because " + err.Error())
-	}
+//func setupStartIncrementalCopyTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient,
+//	pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
+//	_context := getTestContext(testName)
+//	var recording *testframework.Recording
+//	if _context != nil {
+//		recording = _context.recording
+//	}
+//	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
+//	if err != nil {
+//		_assert.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient = createNewContainer(_assert, containerName, svcClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	accessType := PublicAccessTypeBlob
+//	setAccessPolicyOptions := SetAccessPolicyOptions{
+//		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
+//	}
+//	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+//	_assert.Nil(err)
+//
+//	pbClient = createNewPageBlob(_assert, generateBlobName(testName), containerClient)
+//	resp, _ := pbClient.CreateSnapshot(ctx, nil)
+//
+//	copyPBClient = getPageBlobClient("copy"+generateBlobName(testName), containerClient)
+//
+//	// Must create the incremental copy pbClient so that the access conditions work on it
+//	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
+//	_assert.Nil(err)
+//	waitForIncrementalCopy(_assert, copyPBClient, &resp2)
+//
+//	resp, _ = pbClient.CreateSnapshot(ctx, nil) // Take a new snapshot so the next copy will succeed
+//	snapshot = *resp.Snapshot
+//	return
+//}
 
-	containerName := generateContainerName(testName)
-	containerClient = createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-
-	accessType := PublicAccessTypeBlob
-	setAccessPolicyOptions := SetAccessPolicyOptions{
-		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
-	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
-	_assert.Nil(err)
-
-	pbClient = createNewPageBlob(_assert, generateBlobName(testName), containerClient)
-	resp, _ := pbClient.CreateSnapshot(ctx, nil)
-
-	copyPBClient = getPageBlobClient("copy"+generateBlobName(testName), containerClient)
-
-	// Must create the incremental copy pbClient so that the access conditions work on it
-	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
-	_assert.Nil(err)
-	waitForIncrementalCopy(_assert, copyPBClient, &resp2)
-
-	resp, _ = pbClient.CreateSnapshot(ctx, nil) // Take a new snapshot so the next copy will succeed
-	snapshot = *resp.Snapshot
-	return
-}
-
-func validateIncrementalCopy(_assert *assert.Assertions, copyPBClient PageBlobClient, resp *PageBlobCopyIncrementalResponse) {
-	t := waitForIncrementalCopy(_assert, copyPBClient, resp)
-
-	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
-	copySnapshotURL := copyPBClient.WithSnapshot(*t)
-	_, err := copySnapshotURL.GetProperties(ctx, nil)
-	_assert.Nil(err)
-}
+//func validateIncrementalCopy(_assert *assert.Assertions, copyPBClient PageBlobClient, resp *PageBlobCopyIncrementalResponse) {
+//	t := waitForIncrementalCopy(_assert, copyPBClient, resp)
+//
+//	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
+//	copySnapshotURL := copyPBClient.WithSnapshot(*t)
+//	_, err := copySnapshotURL.GetProperties(ctx, nil)
+//	_assert.Nil(err)
+//}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
 //	_assert := assert.New(s.T())

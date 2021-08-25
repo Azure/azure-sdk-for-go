@@ -173,9 +173,10 @@ func (o *ReleaseLeaseContainerOptions) pointers() (containerReleaseLeaseOptions 
 // LeaseBreakNaturally tells ContainerClient's or BlobClient's BreakLease method to break the lease using service semantics.
 const LeaseBreakNaturally = -1
 
-func leasePeriodPointer(period int32) (p *int32) {
+func leasePeriodPointer(period int32) *int32 {
 	if period != LeaseBreakNaturally {
-		p = &period
+		return &period
+	} else {
+		return nil
 	}
-	return nil
 }

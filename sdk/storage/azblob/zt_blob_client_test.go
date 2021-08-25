@@ -46,6 +46,7 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	_assert.Nil(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -128,6 +129,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 
 	// Read the blob data to verify the copy
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
 	_ = resp.Body(RetryReaderOptions{}).Close()

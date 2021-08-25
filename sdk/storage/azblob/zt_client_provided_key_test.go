@@ -8,7 +8,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/base64"
-	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/assert"
@@ -65,20 +64,6 @@ var testCPKByScope = CpkScopeInfo{
 var testInvalidEncryptedScope = "mumbojumbo"
 var testInvalidCPKByScope = CpkScopeInfo{
 	EncryptionScope: &testInvalidEncryptedScope,
-}
-
-func blockIDBinaryToBase64(blockID []byte) string {
-	return base64.StdEncoding.EncodeToString(blockID)
-}
-
-func blockIDBase64ToBinary(blockID string) []byte {
-	binaryStr, _ := base64.StdEncoding.DecodeString(blockID)
-	return binaryStr
-}
-
-func blockIDBase64ToInt(blockID string) int {
-	blockIDBase64ToBinary(blockID)
-	return int(binary.LittleEndian.Uint32(blockIDBase64ToBinary(blockID)))
 }
 
 func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
@@ -447,20 +432,20 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_assert.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	// Get blob content without encryption key should fail the request.
-	downloadResp, err := bbClient.Download(ctx, nil)
+	_, err = bbClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = bbClient.Download(ctx, nil)
+	_, err = bbClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	_assert.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))

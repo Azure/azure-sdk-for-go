@@ -52,10 +52,13 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 	return nil
 }
 
-// computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
+// ComputeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
 func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
-	h.Write([]byte(message))
+	_, err := h.Write([]byte(message))
+	if err != nil {
+		return ""
+	}
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
@@ -117,7 +120,7 @@ func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) stri
 		ch.WriteRune(':')
 		ch.WriteString(strings.Join(cm[key], ","))
 	}
-	return string(ch.Bytes())
+	return ch.String()
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
@@ -157,7 +160,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 			cr.WriteString("\n" + paramName + ":" + strings.Join(paramValues, ","))
 		}
 	}
-	return string(cr.Bytes()), nil
+	return cr.String(), nil
 }
 
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.

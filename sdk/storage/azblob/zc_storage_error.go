@@ -190,7 +190,6 @@ func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err
 		switch tt := t.(type) {
 		case xml.StartElement:
 			tokName = tt.Name.Local
-			break
 		case xml.CharData:
 			switch tokName {
 			case "Message":

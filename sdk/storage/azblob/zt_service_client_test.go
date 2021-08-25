@@ -29,7 +29,7 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 	//Test on a container
 	containerClient := svcClient.NewContainerClient(generateContainerName(testName))
 	_, err = containerClient.Create(ctx, nil)
-	defer containerClient.Delete(ctx, nil)
+	defer deleteContainer(_assert, containerClient)
 	_assert.Nil(err)
 
 	cAccInfo, err := containerClient.GetAccountInfo(ctx)
@@ -62,7 +62,7 @@ func (s *azblobTestSuite) TestListContainersBasic() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: md})
-	defer containerClient.Delete(ctx, nil)
+	defer deleteContainer(_assert, containerClient)
 	_assert.Nil(err)
 
 	prefix := containerPrefix
@@ -341,7 +341,8 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 
 	// Disable for other tests
 	enabled = to.BoolPtr(false)
-	svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled}})
+	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: enabled}})
+	_assert.Nil(err)
 }
 
 func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {

@@ -126,6 +126,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
 	_assert.Nil(err)
+
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -1034,10 +1035,12 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 	defer deleteContainer(_assert, containerClient)
 
 	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
+	_assert.Nil(err)
 
 	resp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
-	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Equal(string(data), blockBlobDefaultData)
 }
 
@@ -1357,9 +1360,12 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 
 	bbClient1 := getBlockBlobClient(blobName1, containerClient)
 	reader1, _ := generateData(1024)
-	bbClient1.Upload(ctx, reader1, nil)
-	bbClient1.SetTier(ctx, AccessTierArchive, nil)
-	bbClient1.SetTier(ctx, AccessTierCool, nil)
+	_, err = bbClient1.Upload(ctx, reader1, nil)
+	_assert.Nil(err)
+	_, err = bbClient1.SetTier(ctx, AccessTierArchive, nil)
+	_assert.Nil(err)
+	_, err = bbClient1.SetTier(ctx, AccessTierCool, nil)
+	_assert.Nil(err)
 
 	getResp1, err := bbClient1.GetProperties(ctx, nil)
 	_assert.Nil(err)
@@ -1383,9 +1389,12 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 
 	bbClient2 := getBlockBlobClient(blobName2, containerClient)
 	reader2, _ := generateData(1024)
-	bbClient2.Upload(ctx, reader2, nil)
-	bbClient2.SetTier(ctx, AccessTierArchive, nil)
-	bbClient2.SetTier(ctx, AccessTierHot, nil)
+	_, err = bbClient2.Upload(ctx, reader2, nil)
+	_assert.Nil(err)
+	_, err = bbClient2.SetTier(ctx, AccessTierArchive, nil)
+	_assert.Nil(err)
+	_, err = bbClient2.SetTier(ctx, AccessTierHot, nil)
+	_assert.Nil(err)
 
 	getResp2, err := bbClient2.GetProperties(ctx, nil)
 	_assert.Nil(err)
@@ -1423,7 +1432,8 @@ func (s *azblobTestSuite) TestCopyBlobWithRehydratePriority() {
 	_assert.Nil(err)
 	_assert.Equal(*getResp1.AccessTier, string(blobTier))
 
-	destBBClient.SetTier(ctx, AccessTierHot, nil)
+	_, err = destBBClient.SetTier(ctx, AccessTierHot, nil)
+	_assert.Nil(err)
 
 	getResp2, err := destBBClient.GetProperties(ctx, nil)
 	_assert.Nil(err)

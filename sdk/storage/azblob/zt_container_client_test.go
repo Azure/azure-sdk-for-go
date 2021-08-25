@@ -1248,7 +1248,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
-	permissions := make([]*SignedIdentifier, 6, 6)
+	permissions := make([]*SignedIdentifier, 6)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 6; i++ {
 		id := "000" + strconv.Itoa(i)
@@ -1293,7 +1293,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
 	listOnly := AccessPolicyPermission{Read: true}.String()
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
 		permissions[i] = &SignedIdentifier{
@@ -1354,7 +1354,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
@@ -1415,7 +1415,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	_assert.Nil(err)
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
@@ -1477,7 +1477,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err)
 	start := expiry.Add(5 * time.Minute).UTC()
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		permissions[i] = &SignedIdentifier{

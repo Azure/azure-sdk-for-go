@@ -23,8 +23,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -41,7 +39,7 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
 	suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
@@ -88,7 +86,7 @@ func recordedTestTeardown(key string) {
 }
 
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-	// setup the test environment
+	// set up the test environment
 	recordedTestSetup(s.T(), s.mode)
 }
 
@@ -105,16 +103,16 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
 
-// Note that this function is adding to the list of ignored headers not creating from scratch
-func ignoreHeaders(recording *testframework.Recording, headers []string) {
-	ignoredHeaders := recording.Matcher.IgnoredHeaders
-	for _, header := range headers {
-		// TODO: Mohit Come Here
-		//ignoredHeaders[header] = nil
-		_ = header
-	}
-	_ = ignoredHeaders
-}
+//// Note that this function is adding to the list of ignored headers not creating from scratch
+//func ignoreHeaders(recording *testframework.Recording, headers []string) {
+//	ignoredHeaders := recording.Matcher.IgnoredHeaders
+//	for _, header := range headers {
+//		// TODO: Mohit Come Here
+//		//ignoredHeaders[header] = nil
+//		_ = header
+//	}
+//	_ = ignoredHeaders
+//}
 
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
@@ -127,7 +125,6 @@ const (
 	containerPrefix             = "goc"
 	blobPrefix                  = "gotestblob"
 	blockBlobDefaultData        = "GoBlockBlobData"
-	validationErrorSubstring    = "validation failed"
 	invalidHeaderErrorSubstring = "invalid header field" // error thrown by the http client
 )
 
@@ -165,18 +162,6 @@ var specialCharBlobTagsMap = map[string]string{
 	"Microsoft Azure": "Azure Storage",
 	"Storage+SDK":     "SDK/GO",
 	"GO ":             ".Net",
-}
-
-const testPipelineMessage string = "test factory invoked"
-
-func newTestPipeline() azcore.Pipeline {
-	return azcore.NewPipeline(nil, newTestPolicy())
-}
-
-func newTestPolicy() azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		return nil, errors.New(testPipelineMessage)
-	})
 }
 
 // This function generates an entity name by concatenating the passed prefix,
@@ -246,7 +231,7 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
 
 func generateData(sizeInBytes int) (*bytes.Reader, []byte) {
-	data := make([]byte, sizeInBytes, sizeInBytes)
+	data := make([]byte, sizeInBytes)
 	_len := len(random64BString)
 	if sizeInBytes > _len {
 		count := sizeInBytes / _len
@@ -391,35 +376,35 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func getOAuthCredential(_assert *assert.Assertions) azcore.Credential {
-	cred, err := azidentity.NewEnvironmentCredential(nil)
-	_assert.Nil(err)
-	return cred
-}
+//func getOAuthCredential(_assert *assert.Assertions) azcore.Credential {
+//	cred, err := azidentity.NewEnvironmentCredential(nil)
+//	_assert.Nil(err)
+//	return cred
+//}
 
-func getGenericServiceClientWithOAuth(_assert *assert.Assertions, accountType string) (ServiceClient, error) {
-	accountNameEnvVar := accountType + AccountNameEnvVar
-	accountName := os.Getenv(accountNameEnvVar)
-	if accountName == "" {
-		return ServiceClient{}, errors.New(accountNameEnvVar + " environment variables not specified.")
-	}
+//func getGenericServiceClientWithOAuth(_assert *assert.Assertions, accountType string) (ServiceClient, error) {
+//	accountNameEnvVar := accountType + AccountNameEnvVar
+//	accountName := os.Getenv(accountNameEnvVar)
+//	if accountName == "" {
+//		return ServiceClient{}, errors.New(accountNameEnvVar + " environment variables not specified.")
+//	}
+//
+//	blobPrimaryURL, _ := url.Parse("https://" + accountName + ".blob.core.windows.net/")
+//	return NewServiceClient(blobPrimaryURL.String(), getOAuthCredential(_assert), nil)
+//}
 
-	blobPrimaryURL, _ := url.Parse("https://" + accountName + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), getOAuthCredential(_assert), nil)
-}
-
-func getGenericBSU(accountType testAccountType, credential *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
-	blobPrimaryURL, _ := url.Parse("https://" + credential.AccountName() + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), credential, options)
-}
+//func getGenericBSU(accountType testAccountType, credential *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
+//	blobPrimaryURL, _ := url.Parse("https://" + credential.AccountName() + ".blob.core.windows.net/")
+//	return NewServiceClient(blobPrimaryURL.String(), credential, options)
+//}
 
 type testAccountType string
 
 const (
-	testAccountDefault     testAccountType = ""
-	testAccountSecondary   testAccountType = "SECONDARY_"
-	testAccountPremium     testAccountType = "PREMIUM_"
-	testAccountBlobStorage testAccountType = "BLOB_"
+	testAccountDefault   testAccountType = ""
+	testAccountSecondary testAccountType = "SECONDARY_"
+	testAccountPremium   testAccountType = "PREMIUM_"
+	//testAccountBlobStorage testAccountType = "BLOB_"
 )
 
 func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
@@ -452,11 +437,11 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 	return anchorTime.Add(amount * time.Second)
 }
 
-func generateCurrentTimeWithModerateResolution() time.Time {
-	highResolutionTime := time.Now().UTC()
-	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
-		highResolutionTime.Second(), 0, highResolutionTime.Location())
-}
+//func generateCurrentTimeWithModerateResolution() time.Time {
+//	highResolutionTime := time.Now().UTC()
+//	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
+//		highResolutionTime.Second(), 0, highResolutionTime.Location())
+//}
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.
 // We will enable the necessary property and try to run the test implementation. If it fails with an error that should be due to
@@ -495,7 +480,8 @@ func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
 func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Len(data, 0)
 }
 

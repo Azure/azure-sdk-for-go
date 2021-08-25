@@ -11,10 +11,10 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// A TableClient represents a client to the tables service affinitized to a specific table.
-type TableClient struct {
-	client  *generated.TableClient
-	service *TableServiceClient
+// A Client represents a client to the tables service affinitized to a specific table.
+type Client struct {
+	client  *generated.Client
+	service *ServiceClient
 	cred    azcore.Credential
 	name    string
 }
@@ -28,22 +28,22 @@ const (
 	MergeEntity   EntityUpdateMode = "merge"
 )
 
-// NewTableClient creates a TableClient struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
-func NewTableClient(serviceURL string, tableName string, cred azcore.Credential, options *ClientOptions) (*TableClient, error) {
+// NewClient creates a Client struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
+func NewClient(serviceURL string, tableName string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	s, err := NewTableServiceClient(serviceURL, cred, options)
-	return s.NewTableClient(tableName), err
+	s, err := NewServiceClient(serviceURL, cred, options)
+	return s.NewClient(tableName), err
 }
 
-// Create creates the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
+// Create creates the table with the tableName specified when NewClient was called.
+func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
 	return t.service.CreateTable(ctx, t.name, options)
 }
 
-// Delete deletes the table with the tableName specified when NewTableClient was called.
-func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (DeleteTableResponse, error) {
+// Delete deletes the table with the tableName specified when NewClient was called.
+func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	return t.service.DeleteTable(ctx, t.name, options)
 }
 
@@ -68,7 +68,7 @@ func (t *TableClient) Delete(ctx context.Context, options *DeleteTableOptions) (
 //     fmt.Printf("The page contains %i results.\n", len(resp.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
+func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
 		listOptions:       listOptions,
@@ -77,7 +77,7 @@ func (t *TableClient) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (GetEntityResponse, error) {
+func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (GetEntityResponse, error) {
 	if options == nil {
 		options = &GetEntityOptions{}
 	}
@@ -92,7 +92,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 
 // AddEntity adds an entity (described by a JSON byte slice) to the table. This method returns an error if an entity with
 // the same PartitionKey and RowKey already exists in the table.
-func (t *TableClient) AddEntity(ctx context.Context, entity []byte, options *AddEntityOptions) (AddEntityResponse, error) {
+func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntityOptions) (AddEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
@@ -107,7 +107,7 @@ func (t *TableClient) AddEntity(ctx context.Context, entity []byte, options *Add
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
-func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, options *DeleteEntityOptions) (DeleteEntityResponse, error) {
+func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, options *DeleteEntityOptions) (DeleteEntityResponse, error) {
 	if options == nil {
 		options = &DeleteEntityOptions{}
 	}
@@ -124,7 +124,7 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 // If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity. Properties not specified in the merge will be unaffected.
 // The specified etag value will be used for optimistic concurrency. If the etag does not match the value of the entity in the table, the operation will fail.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
+func (t *Client) UpdateEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
 	if options == nil {
 		options = &UpdateEntityOptions{}
 	}
@@ -164,7 +164,7 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity []byte, updateMod
 // replaced or merged as specified the updateMode parameter. If the entity exists and updateMode is Merge, the property
 // values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *InsertEntityOptions) (InsertEntityResponse, error) {
+func (t *Client) InsertEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *InsertEntityOptions) (InsertEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
@@ -193,13 +193,13 @@ func (t *TableClient) InsertEntity(ctx context.Context, entity []byte, updateMod
 }
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
-func (t *TableClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
+func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	resp, err := t.client.GetAccessPolicy(ctx, t.name, options.toGenerated())
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
-func (t *TableClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	response, err := t.client.SetAccessPolicy(ctx, t.name, options.toGenerated())
 	if len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError

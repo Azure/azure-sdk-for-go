@@ -10,9 +10,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// NewTableClientFromConnectionString creates a new TableClient struct from a connection string. The connection
+// NewClientFromConnectionString creates a new Client struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.
-func NewTableClientFromConnectionString(tableName string, connectionString string, options *ClientOptions) (*TableClient, error) {
+func NewClientFromConnectionString(tableName string, connectionString string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -20,17 +20,17 @@ func NewTableClientFromConnectionString(tableName string, connectionString strin
 	if err != nil {
 		return nil, err
 	}
-	return NewTableClient(endpoint, tableName, credential, options)
+	return NewClient(endpoint, tableName, credential, options)
 }
 
-// NewTableServiceClientFromConnectionString creates a new TableServiceClient struct from a connection string. The connection
+// NewServiceClientFromConnectionString creates a new ServiceClient struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.
-func NewTableServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*TableServiceClient, error) {
+func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
-	return NewTableServiceClient(endpoint, credential, options)
+	return NewServiceClient(endpoint, credential, options)
 }
 
 // convertConnStrToMap converts a connection string (in format key1=value1;key2=value2;key3=value3;) into a map of key-value pairs

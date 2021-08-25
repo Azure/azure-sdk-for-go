@@ -18,15 +18,15 @@ const (
 	cosmosTableDomain       = ".table.cosmos."
 )
 
-// A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
-type TableServiceClient struct {
-	client  *generated.TableClient
+// A ServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
+type ServiceClient struct {
+	client  *generated.Client
 	service *generated.ServiceClient
 	cred    azcore.Credential
 }
 
-// NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
-func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*TableServiceClient, error) {
+// NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
+func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*ServiceClient, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -36,16 +36,16 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *C
 	}
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
 	con := generated.NewConnection(serviceURL, cred, conOptions)
-	return &TableServiceClient{
-		client:  generated.NewTableClient(con),
+	return &ServiceClient{
+		client:  generated.NewClient(con),
 		service: generated.NewServiceClient(con),
 		cred:    cred,
 	}, nil
 }
 
-// NewTableClient returns a pointer to a TableClient affinitized to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
-func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
-	return &TableClient{
+// NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
+func (t *ServiceClient) NewClient(tableName string) *Client {
+	return &Client{
 		client:  t.client,
 		cred:    t.cred,
 		name:    tableName,
@@ -54,7 +54,7 @@ func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
+func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
@@ -63,7 +63,7 @@ func (t *TableServiceClient) CreateTable(ctx context.Context, name string, optio
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
+func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	if options == nil {
 		options = &DeleteTableOptions{}
 	}
@@ -89,7 +89,7 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
+func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return &tableQueryResponsePager{
 		client:            t.client,
 		listOptions:       listOptions,
@@ -103,7 +103,7 @@ func (t *TableServiceClient) ListTables(listOptions *ListTablesOptions) ListTabl
 // handle(err)
 // fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
 // fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
-func (t *TableServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
+func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
@@ -119,7 +119,7 @@ func (t *TableServiceClient) GetStatistics(ctx context.Context, options *GetStat
 // fmt.Println(resopnse.StorageServiceStats.HourMetrics)
 // fmt.Println(resopnse.StorageServiceStats.Logging)
 // fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
-func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
@@ -151,7 +151,7 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *GetProp
 // props := TableServiceProperties{Logging: &logging}
 // resp, err := context.client.SetProperties(ctx, props, nil)
 // handle(err)
-func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
+func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
@@ -161,7 +161,7 @@ func (t *TableServiceClient) SetProperties(ctx context.Context, properties Table
 
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	cred, ok := t.cred.(*SharedKeyCredential)
 	if !ok {
 		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
@@ -179,12 +179,12 @@ func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes
 
 // GetTableSASToken is a convenience method for generating a SAS token for a specific table.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+func (t ServiceClient) GetTableSASToken(tableName string, permissions SASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	cred, ok := t.cred.(*SharedKeyCredential)
 	if !ok {
 		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
-	return TableSASSignatureValues{
+	return SASSignatureValues{
 		TableName:         tableName,
 		Permissions:       permissions.String(),
 		StartTime:         start,

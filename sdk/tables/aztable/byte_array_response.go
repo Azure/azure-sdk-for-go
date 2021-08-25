@@ -39,21 +39,18 @@ func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 type ListEntitiesResponseEnvelope struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-	// The properties for the table entity query response.
-	// TableEntityQueryResponse *TableEntityListResponse
 	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	XMSContinuationNextPartitionKey *string
 	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
 	XMSContinuationNextRowKey *string
 	// The metadata response of the table.
 	ODataMetadata *string
-
 	// List of table entities.
 	Value [][]byte
 }
 
-// TableEntityListResponse - The properties for the table entity query response.
-type TableEntityListResponse struct {
+// ListEntitiesResponse - The properties for the table entity query response.
+type ListEntitiesResponse struct {
 	// The metadata response of the table.
 	ODataMetadata *string
 
@@ -71,14 +68,13 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 		marshalledValue = append(marshalledValue, m)
 	}
 
-	t := TableEntityListResponse{
+	t := ListEntitiesResponse{
 		ODataMetadata: resp.TableEntityQueryResponse.ODataMetadata,
 		Value:         marshalledValue,
 	}
 
 	return ListEntitiesResponseEnvelope{
 		RawResponse: resp.RawResponse,
-		// TableEntityQueryResponse:        &t,
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 		ODataMetadata:                   t.ODataMetadata,
@@ -86,15 +82,15 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 	}, nil
 }
 
-type TableListResponse struct {
+type ListTablesResponse struct {
 	// The metadata response of the table.
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Value []*TableResponseProperties `json:"value,omitempty"`
+	Value []*ResponseProperties `json:"value,omitempty"`
 }
 
-type TableResponseProperties struct {
+type ResponseProperties struct {
 	// The edit link of the table.
 	ODataEditLink *string `json:"odata.editLink,omitempty"`
 
@@ -108,12 +104,12 @@ type TableResponseProperties struct {
 	TableName *string `json:"TableName,omitempty"`
 }
 
-func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *TableResponseProperties {
+func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *ResponseProperties {
 	if g == nil {
 		return nil
 	}
 
-	return &TableResponseProperties{
+	return &ResponseProperties{
 		TableName:     g.TableName,
 		ODataEditLink: g.ODataEditLink,
 		ODataID:       g.ODataID,

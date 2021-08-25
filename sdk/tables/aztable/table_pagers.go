@@ -36,7 +36,7 @@ type ListEntitiesPager interface {
 }
 
 type tableEntityQueryResponsePager struct {
-	tableClient       *TableClient
+	tableClient       *Client
 	current           *ListEntitiesResponseEnvelope
 	tableQueryOptions *generated.TableQueryEntitiesOptions
 	listOptions       *ListEntitiesOptions
@@ -116,7 +116,7 @@ type ListTablesResponseEnvelope struct {
 	ODataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Value []*TableResponseProperties `json:"value,omitempty"`
+	Value []*ResponseProperties `json:"value,omitempty"`
 }
 
 func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *ListTablesResponseEnvelope {
@@ -124,7 +124,7 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnve
 		return nil
 	}
 
-	var value []*TableResponseProperties
+	var value []*ResponseProperties
 
 	for _, v := range g.Value {
 		value = append(value, fromGeneratedTableResponseProperties(v))
@@ -139,7 +139,7 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnve
 }
 
 type tableQueryResponsePager struct {
-	client            *generated.TableClient
+	client            *generated.Client
 	current           *generated.TableQueryResponseEnvelope
 	tableQueryOptions *generated.TableQueryOptions
 	listOptions       *ListTablesOptions

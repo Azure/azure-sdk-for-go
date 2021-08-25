@@ -23,12 +23,12 @@ func TestBatchAdd(t *testing.T) {
 			defer delete()
 
 			entitiesToCreate := createComplexEntities(10, "partition")
-			batch := make([]TableTransactionAction, 10)
+			batch := make([]TransactionAction, 10)
 
 			for i, e := range *entitiesToCreate {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
-				batch[i] = TableTransactionAction{ActionType: Add, Entity: marshalled}
+				batch[i] = TransactionAction{ActionType: Add, Entity: marshalled}
 			}
 
 			u1, err := uuid.New()
@@ -63,12 +63,12 @@ func TestBatchMixed(t *testing.T) {
 			defer delete()
 
 			entitiesToCreate := createComplexEntities(5, "partition")
-			batch := make([]TableTransactionAction, 3)
+			batch := make([]TransactionAction, 3)
 
 			for i := range batch {
 				marshalled, err := json.Marshal((*entitiesToCreate)[i])
 				require.NoError(t, err)
-				batch[i] = TableTransactionAction{
+				batch[i] = TransactionAction{
 					ActionType: Add,
 					Entity:     marshalled,
 				}
@@ -98,7 +98,7 @@ func TestBatchMixed(t *testing.T) {
 			require.NoError(t, err)
 
 			// create a new batch slice.
-			batch = make([]TableTransactionAction, 5)
+			batch = make([]TransactionAction, 5)
 
 			// create a merge action for the first added entity
 			mergeProp := "MergeProperty"
@@ -111,7 +111,7 @@ func TestBatchMixed(t *testing.T) {
 			marshalledMergeEntity, err := json.Marshal(mergeEntity)
 			require.NoError(t, err)
 			etag := azcore.ETag((*resp.TransactionResponses)[0].Header.Get(etag))
-			batch[0] = TableTransactionAction{
+			batch[0] = TransactionAction{
 				ActionType: UpdateMerge,
 				Entity:     marshalledMergeEntity,
 				ETag:       &etag,
@@ -120,7 +120,7 @@ func TestBatchMixed(t *testing.T) {
 			// create a delete action for the second added entity
 			marshalledSecondEntity, err := json.Marshal((*entitiesToCreate)[1])
 			require.NoError(t, err)
-			batch[1] = TableTransactionAction{ActionType: Delete, Entity: marshalledSecondEntity}
+			batch[1] = TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity}
 
 			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
@@ -131,15 +131,15 @@ func TestBatchMixed(t *testing.T) {
 			}
 			marshalledThirdEntity, err := json.Marshal(replaceProperties)
 			require.NoError(t, err)
-			batch[2] = TableTransactionAction{ActionType: InsertReplace, Entity: marshalledThirdEntity}
+			batch[2] = TransactionAction{ActionType: InsertReplace, Entity: marshalledThirdEntity}
 
 			// Add the remaining 2 entities.
 			marshalled4thEntity, err := json.Marshal((*entitiesToCreate)[3])
 			require.NoError(t, err)
 			marshalled5thEntity, err := json.Marshal((*entitiesToCreate)[4])
 			require.NoError(t, err)
-			batch[3] = TableTransactionAction{ActionType: Add, Entity: marshalled4thEntity}
-			batch[4] = TableTransactionAction{ActionType: Add, Entity: marshalled5thEntity}
+			batch[3] = TransactionAction{ActionType: Add, Entity: marshalled4thEntity}
+			batch[4] = TransactionAction{ActionType: Add, Entity: marshalled5thEntity}
 
 			u1, err = uuid.New()
 			require.NoError(t, err)
@@ -180,7 +180,7 @@ func TestBatchError(t *testing.T) {
 			entitiesToCreate := createComplexEntities(3, "partition")
 
 			// Create the batch.
-			batch := make([]TableTransactionAction, 0, 3)
+			batch := make([]TransactionAction, 0, 3)
 
 			u1, err := uuid.New()
 			require.NoError(t, err)
@@ -201,7 +201,7 @@ func TestBatchError(t *testing.T) {
 			for i := 0; i < cap(batch); i++ {
 				marshalledEntity, err := json.Marshal((*entitiesToCreate)[i])
 				require.NoError(t, err)
-				batch = append(batch, TableTransactionAction{ActionType: Add, Entity: marshalledEntity})
+				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalledEntity})
 			}
 
 			u1, err = uuid.New()
@@ -231,39 +231,39 @@ func TestBatchComplex(t *testing.T) {
 			edmEntity3 := createEdmEntity(3, "pk001")
 			edmEntity4 := createEdmEntity(4, "pk001")
 			edmEntity5 := createEdmEntity(5, "pk001")
-			batch := make([]TableTransactionAction, 5)
+			batch := make([]TransactionAction, 5)
 
 			marshalled1, err := json.Marshal(edmEntity)
 			require.NoError(t, err)
-			batch[0] = TableTransactionAction{
+			batch[0] = TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled1,
 			}
 
 			marshalled2, err := json.Marshal(edmEntity2)
 			require.NoError(t, err)
-			batch[1] = TableTransactionAction{
+			batch[1] = TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled2,
 			}
 
 			marshalled3, err := json.Marshal(edmEntity3)
 			require.NoError(t, err)
-			batch[2] = TableTransactionAction{
+			batch[2] = TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled3,
 			}
 
 			marshalled4, err := json.Marshal(edmEntity4)
 			require.NoError(t, err)
-			batch[3] = TableTransactionAction{
+			batch[3] = TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled4,
 			}
 
 			marshalled5, err := json.Marshal(edmEntity5)
 			require.NoError(t, err)
-			batch[4] = TableTransactionAction{
+			batch[4] = TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled5,
 			}
@@ -279,27 +279,27 @@ func TestBatchComplex(t *testing.T) {
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 
-			batch2 := make([]TableTransactionAction, 3)
+			batch2 := make([]TransactionAction, 3)
 			edmEntity.Properties["Bool"] = false
 			edmEntity2.Properties["Int32"] = int32(10)
 
 			marshalled1, err = json.Marshal(edmEntity)
 			require.NoError(t, err)
-			batch2[0] = TableTransactionAction{
+			batch2[0] = TransactionAction{
 				ActionType: InsertMerge,
 				Entity:     marshalled1,
 			}
 
 			marshalled2, err = json.Marshal(edmEntity2)
 			require.NoError(t, err)
-			batch2[1] = TableTransactionAction{
+			batch2[1] = TransactionAction{
 				ActionType: InsertReplace,
 				Entity:     marshalled2,
 			}
 
 			marshalled3, err = json.Marshal(edmEntity3)
 			require.NoError(t, err)
-			batch2[2] = TableTransactionAction{
+			batch2[2] = TransactionAction{
 				ActionType: Delete,
 				Entity:     marshalled3,
 			}

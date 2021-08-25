@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-// Options for TableClient.Create and TableServiceClient.CreateTable method
+// Options for Client.Create and ServiceClient.CreateTable method
 type CreateTableOptions struct {
 }
 
@@ -17,7 +17,7 @@ func (c *CreateTableOptions) toGenerated() *generated.TableCreateOptions {
 	return &generated.TableCreateOptions{}
 }
 
-// Options for TableClient.Delete and TableServiceClient.DeleteTable methods
+// Options for Client.Delete and ServiceClient.DeleteTable methods
 type DeleteTableOptions struct {
 }
 
@@ -50,7 +50,7 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 	}
 }
 
-// ListEntitiesOptions contains a group of parameters for the TableServiceClient.QueryTables method.
+// ListEntitiesOptions contains a group of parameters for the ServiceClient.QueryTables method.
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
@@ -134,7 +134,7 @@ func (c ResponseFormat) ToPtr() *ResponseFormat {
 	return &c
 }
 
-// Options for TableClient.GetEntity method
+// Options for Client.GetEntity method
 type GetEntityOptions struct {
 	Format ODataMetadataFormat
 }
@@ -160,7 +160,7 @@ func (g *GetEntityOptions) toGenerated() (*generated.TableQueryEntityWithPartiti
 	return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{}
 }
 
-// Options for the TableClient.AddEntity operation
+// Options for the Client.AddEntity operation
 type AddEntityOptions struct {
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
 	ResponsePreference *ResponseFormat

@@ -160,7 +160,7 @@ func TestGetStatistics(t *testing.T) {
 	require.NoError(t, err)
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
-	service, err := createTableServiceClientForRecording(t, serviceURL, cred)
+	service, err := createServiceClientForRecording(t, serviceURL, cred)
 	require.NoError(t, err)
 
 	// s.T().Skip() // TODO: need to change URL to -secondary https://docs.microsoft.com/en-us/rest/api/storageservices/get-table-service-stats
@@ -194,7 +194,7 @@ func TestSetLogging(t *testing.T) {
 			Days:    to.Int32Ptr(5),
 		},
 	}
-	props := TableServiceProperties{Logging: &logging}
+	props := ServiceProperties{Logging: &logging}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -225,7 +225,7 @@ func TestSetHoursMetrics(t *testing.T) {
 		},
 		Version: to.StringPtr("1.0"),
 	}
-	props := TableServiceProperties{HourMetrics: &metrics}
+	props := ServiceProperties{HourMetrics: &metrics}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -255,7 +255,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 		},
 		Version: to.StringPtr("1.0"),
 	}
-	props := TableServiceProperties{MinuteMetrics: &metrics}
+	props := ServiceProperties{MinuteMetrics: &metrics}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -283,7 +283,7 @@ func TestSetCors(t *testing.T) {
 		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
 		MaxAgeInSeconds: to.Int32Ptr(500),
 	}
-	props := TableServiceProperties{Cors: []*CorsRule{&corsRules1}}
+	props := ServiceProperties{Cors: []*CorsRule{&corsRules1}}
 
 	resp, err := service.SetProperties(ctx, props, nil)
 	require.NoError(t, err)
@@ -312,7 +312,7 @@ func TestSetTooManyCors(t *testing.T) {
 		ExposedHeaders:  to.StringPtr("x-ms-meta-source*"),
 		MaxAgeInSeconds: to.Int32Ptr(500),
 	}
-	props := TableServiceProperties{Cors: make([]*CorsRule, 0)}
+	props := ServiceProperties{Cors: make([]*CorsRule, 0)}
 	for i := 0; i < 6; i++ {
 		props.Cors = append(props.Cors, &corsRules1)
 	}
@@ -334,7 +334,7 @@ func TestRetentionTooLong(t *testing.T) {
 		},
 		Version: to.StringPtr("1.0"),
 	}
-	props := TableServiceProperties{MinuteMetrics: &metrics}
+	props := ServiceProperties{MinuteMetrics: &metrics}
 
 	_, err := service.SetProperties(ctx, props, nil)
 	require.Error(t, err)

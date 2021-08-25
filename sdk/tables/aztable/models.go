@@ -9,7 +9,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// ListOptions contains a group of parameters for the Table.Query method.
+// ListOptions contains a group of parameters for the ServiceClient.Query method.
 type ListOptions struct {
 	// OData filter expression.
 	Filter *string
@@ -73,8 +73,8 @@ func fromGeneratedCors(c *generated.CorsRule) *CorsRule {
 	}
 }
 
-// TableServiceProperties - Table Service Properties.
-type TableServiceProperties struct {
+// ServiceProperties - Service Properties for a given table
+type ServiceProperties struct {
 	// The set of CORS rules.
 	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
@@ -88,7 +88,7 @@ type TableServiceProperties struct {
 	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
-func (t *TableServiceProperties) toGenerated() *generated.TableServiceProperties {
+func (t *ServiceProperties) toGenerated() *generated.TableServiceProperties {
 	if t == nil {
 		return &generated.TableServiceProperties{}
 	}

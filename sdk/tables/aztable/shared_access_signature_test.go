@@ -23,7 +23,7 @@ func TestSASServiceClient(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, "tableName")
@@ -60,7 +60,7 @@ func TestSASServiceClient(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err := createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -76,14 +76,14 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestSASTableClient(t *testing.T) {
+func TestSASClient(t *testing.T) {
 	recording.LiveOnly(t)
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, "tableName")
@@ -99,7 +99,7 @@ func TestSASTableClient(t *testing.T) {
 	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
-	permissions := TableSASPermissions{
+	permissions := SASPermissions{
 		Read: true,
 		Add:  true,
 	}
@@ -115,7 +115,7 @@ func TestSASTableClient(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err := createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -131,14 +131,14 @@ func TestSASTableClient(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestSASTableClientReadOnly(t *testing.T) {
+func TestSASClientReadOnly(t *testing.T) {
 	recording.LiveOnly(t)
 	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, "tableName")
@@ -153,11 +153,11 @@ func TestSASTableClientReadOnly(t *testing.T) {
 	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
-	client := serviceClient.NewTableClient(tableName)
+	client := serviceClient.NewClient(tableName)
 	err = insertNEntities("pk001", 4, client)
 	require.NoError(t, err)
 
-	permissions := TableSASPermissions{
+	permissions := SASPermissions{
 		Read: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
@@ -172,7 +172,7 @@ func TestSASTableClientReadOnly(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -198,14 +198,14 @@ func TestSASTableClientReadOnly(t *testing.T) {
 	require.Equal(t, 4, count)
 }
 
-func TestSASCosmosTableClientReadOnly(t *testing.T) {
+func TestSASCosmosClientReadOnly(t *testing.T) {
 	recording.LiveOnly(t)
 	accountName := os.Getenv("TABLES_COSMOS_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, "tableName")
@@ -220,11 +220,11 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
-	client := serviceClient.NewTableClient(tableName)
+	client := serviceClient.NewClient(tableName)
 	err = insertNEntities("pk001", 4, client)
 	require.NoError(t, err)
 
-	permissions := TableSASPermissions{
+	permissions := SASPermissions{
 		Read: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
@@ -238,7 +238,7 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 

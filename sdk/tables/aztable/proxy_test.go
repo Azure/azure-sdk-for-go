@@ -75,7 +75,7 @@ func (f *FakeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOp
 	return newFakeCredPolicy(f, options)
 }
 
-func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
+func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*Client, error) {
 	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
@@ -83,10 +83,10 @@ func createTableClientForRecording(t *testing.T, tableName string, serviceURL st
 		PerCallOptions: []azcore.Policy{policy},
 		HTTPClient:     client,
 	}
-	return NewTableClient(serviceURL, tableName, cred, options)
+	return NewClient(serviceURL, tableName, cred, options)
 }
 
-func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {
+func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*ServiceClient, error) {
 	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
@@ -94,17 +94,17 @@ func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred 
 		PerCallOptions: []azcore.Policy{policy},
 		HTTPClient:     client,
 	}
-	return NewTableServiceClient(serviceURL, cred, options)
+	return NewServiceClient(serviceURL, cred, options)
 }
 
-func initClientTest(t *testing.T, service string, createTable bool) (*TableClient, func()) {
-	var client *TableClient
+func initClientTest(t *testing.T, service string, createTable bool) (*Client, func()) {
+	var client *Client
 	var err error
 	if service == string(storageEndpoint) {
-		client, err = createStorageTableClient(t)
+		client, err = createStorageClient(t)
 		require.NoError(t, err)
 	} else if service == string(cosmosEndpoint) {
-		client, err = createCosmosTableClient(t)
+		client, err = createCosmosClient(t)
 		require.NoError(t, err)
 	}
 
@@ -124,8 +124,8 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 	}
 }
 
-func initServiceTest(t *testing.T, service string) (*TableServiceClient, func()) {
-	var client *TableServiceClient
+func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
+	var client *ServiceClient
 	var err error
 	if service == string(storageEndpoint) {
 		client, err = createStorageServiceClient(t)
@@ -171,7 +171,7 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func createStorageTableClient(t *testing.T) (*TableClient, error) {
+func createStorageClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -186,10 +186,10 @@ func createStorageTableClient(t *testing.T) (*TableClient, error) {
 	tableName, err := createRandomName(t, "tableName")
 	require.NoError(t, err)
 
-	return createTableClientForRecording(t, tableName, serviceURL, cred)
+	return createClientForRecording(t, tableName, serviceURL, cred)
 }
 
-func createCosmosTableClient(t *testing.T) (*TableClient, error) {
+func createCosmosClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -204,10 +204,10 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 	tableName, err := createRandomName(t, "tableName")
 	require.NoError(t, err)
 
-	return createTableClientForRecording(t, tableName, serviceURL, cred)
+	return createClientForRecording(t, tableName, serviceURL, cred)
 }
 
-func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
+func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -219,10 +219,10 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 
-	return createTableServiceClientForRecording(t, serviceURL, cred)
+	return createServiceClientForRecording(t, serviceURL, cred)
 }
 
-func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
+func createCosmosServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -234,7 +234,7 @@ func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 
-	return createTableServiceClientForRecording(t, serviceURL, cred)
+	return createServiceClientForRecording(t, serviceURL, cred)
 }
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
@@ -243,7 +243,7 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-func clearAllTables(service *TableServiceClient) error {
+func clearAllTables(service *ServiceClient) error {
 	pager := service.ListTables(nil)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()

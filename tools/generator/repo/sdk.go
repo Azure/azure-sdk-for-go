@@ -6,16 +6,17 @@ package repo
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"path/filepath"
+
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5/plumbing"
-	"io"
-	"io/ioutil"
-	"log"
-	"path/filepath"
 )
 
 type SDKRepository interface {

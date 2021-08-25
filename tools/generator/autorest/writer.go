@@ -5,16 +5,17 @@ package autorest
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
-	"github.com/ahmetb/go-linq/v3"
 	"io/ioutil"
 	"os"
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"github.com/ahmetb/go-linq/v3"
 )
 
 const (

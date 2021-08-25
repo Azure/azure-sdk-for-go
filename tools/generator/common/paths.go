@@ -3,9 +3,7 @@
 
 package common
 
-import (
-	"path/filepath"
-)
+import "path/filepath"
 
 func ServicesPath(root string) string {
 	return filepath.Join(root, Services)

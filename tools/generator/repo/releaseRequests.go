@@ -5,6 +5,7 @@ package repo
 
 import (
 	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 )

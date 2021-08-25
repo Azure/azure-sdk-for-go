@@ -5,7 +5,6 @@ package release
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 

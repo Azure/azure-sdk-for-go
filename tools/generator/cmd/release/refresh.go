@@ -5,11 +5,11 @@ package release
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/refresh"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 

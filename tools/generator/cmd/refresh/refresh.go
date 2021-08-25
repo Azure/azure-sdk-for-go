@@ -5,9 +5,6 @@ package refresh
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"log"
 	"path/filepath"
 	"strings"
@@ -17,6 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	sdkutils "github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/go-git/go-git/v5/plumbing"

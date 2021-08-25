@@ -11,7 +11,7 @@ import (
 var (
 	nonePartitionKey      = &partitionKeyInternal{components: nil}
 	emptyPartitionKey     = &partitionKeyInternal{components: []interface{}{}}
-	undefinedPartitionKey = &partitionKeyInternal{components: []interface{}{partitionKeyUndefinedComponent{}}}
+	undefinedPartitionKey = &partitionKeyInternal{components: []interface{}{&partitionKeyUndefinedComponent{}}}
 )
 
 type partitionKeyInternal struct {

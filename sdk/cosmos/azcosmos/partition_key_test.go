@@ -68,6 +68,36 @@ func TestValidPartitionKeyValues(t *testing.T) {
 	}
 }
 
+func TestPartitionKeyEmpty(t *testing.T) {
+	pk := &PartitionKey{
+		partitionKeyInternal: emptyPartitionKey,
+	}
+
+	serialization, err := pk.toJsonString()
+	if err != nil {
+		t.Errorf("Failed to serialize PK, %v", err)
+	}
+
+	if serialization != "[]" {
+		t.Errorf("Expected serialization [], but got %v", serialization)
+	}
+}
+
+func TestPartitionKeyUndefined(t *testing.T) {
+	pk := &PartitionKey{
+		partitionKeyInternal: undefinedPartitionKey,
+	}
+
+	serialization, err := pk.toJsonString()
+	if err != nil {
+		t.Errorf("Failed to serialize PK, %v", err)
+	}
+
+	if serialization != "[{}]" {
+		t.Errorf("Expected serialization [{}], but got %v", serialization)
+	}
+}
+
 func TestPartitionKeyEquality(t *testing.T) {
 	validTypes := []interface{}{
 		nil,

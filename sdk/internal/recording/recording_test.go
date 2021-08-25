@@ -522,7 +522,6 @@ type Entry struct {
 	RequestUri string `json:"RequestUri"`
 }
 
-
 func TestLiveModeOnly(t *testing.T) {
 	LiveOnly(t)
 	if GetRecordMode() == modePlayback {

@@ -17,6 +17,12 @@ parameters:
   - name: PostSteps
     type: object
     default: []
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: Location
+    type: string
+    default: ''
   - name: CloudConfig
     type: object
     default:
@@ -64,6 +70,7 @@ stages:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               EnvVars: ${{ parameters.EnvVars }}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+              Location: ${{ parameters.Location }}
               PreSteps:
                 - ${{ parameters.PreSteps }}
               PostSteps:

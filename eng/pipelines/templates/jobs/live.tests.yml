@@ -30,7 +30,8 @@ parameters:
     default: false
 
 jobs:
-  - job: Live Test on
+  - job:
+    displayName: Live Test on
     dependsOn: ${{ parameters.DependsOn }}
     condition: ne(${{ parameters.Matrix }}, '{}')
     strategy:

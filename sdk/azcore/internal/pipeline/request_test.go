@@ -4,13 +4,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package shared
+package pipeline
 
 import (
 	"context"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 const testURL = "http://test.contoso.com/"
@@ -46,7 +48,7 @@ func TestRequestPolicies(t *testing.T) {
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
-	SetPolicies(req, []Policy{})
+	req.policies = []Policy{}
 	resp, err = req.Next()
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -57,7 +59,7 @@ func TestRequestPolicies(t *testing.T) {
 	testPolicy := func(*Request) (*http.Response, error) {
 		return &http.Response{}, nil
 	}
-	SetPolicies(req, []Policy{PolicyFunc(testPolicy)})
+	req.policies = []Policy{PolicyFunc(testPolicy)}
 	resp, err = req.Next()
 	if err != nil {
 		t.Fatal(err)
@@ -79,7 +81,7 @@ func TestRequestBody(t *testing.T) {
 	if err := req.Close(); err != nil {
 		t.Fatal(err)
 	}
-	if err := req.SetBody(NopCloser(strings.NewReader("test")), "application/text"); err != nil {
+	if err := req.SetBody(shared.NopCloser(strings.NewReader("test")), "application/text"); err != nil {
 		t.Fatal(err)
 	}
 	if err := req.RewindBody(); err != nil {
@@ -96,11 +98,11 @@ func TestRequestClone(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.SkipBodyDownload()
-	if err := req.SetBody(NopCloser(strings.NewReader("test")), "application/text"); err != nil {
+	if err := req.SetBody(shared.NopCloser(strings.NewReader("test")), "application/text"); err != nil {
 		t.Fatal(err)
 	}
 	clone := req.Clone(context.Background())
-	var skip BodyDownloadPolicyOpValues
+	var skip shared.BodyDownloadPolicyOpValues
 	if !clone.OperationValue(&skip) {
 		t.Fatal("missing operation value")
 	}

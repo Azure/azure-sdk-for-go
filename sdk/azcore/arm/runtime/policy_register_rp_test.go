@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package arm
+package runtime
 
 import (
 	"context"
@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -59,6 +60,21 @@ func testRPRegistrationOptions(t policy.Transporter) *RegistrationOptions {
 	def.PollingDelay = 100 * time.Millisecond
 	def.PollingDuration = 1 * time.Second
 	return &def
+}
+
+type mockTokenCred struct{}
+
+func (mockTokenCred) NewAuthenticationPolicy(runtime.AuthenticationOptions) policy.Policy {
+	return pipeline.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
+		return req.Next()
+	})
+}
+
+func (mockTokenCred) GetToken(context.Context, policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return &azcore.AccessToken{
+		Token:     "abc123",
+		ExpiresOn: time.Now().Add(1 * time.Hour),
+	}, nil
 }
 
 func TestRPRegistrationPolicySuccess(t *testing.T) {

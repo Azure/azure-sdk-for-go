@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -105,7 +105,7 @@ func TestNewPoller(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusNoContent)) // terminal
 	defer close()
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 		Header:     http.Header{},
@@ -153,7 +153,7 @@ func TestNewPollerWithFinalGET(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))                                                // terminal
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{ "shape": "round" }`))) // final GET
 	defer close()
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
@@ -191,7 +191,7 @@ func TestNewPollerFail1(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict)) // terminal
 	defer close()
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
@@ -214,7 +214,7 @@ func TestNewPollerFail2(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated)) // terminal
 	defer close()
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
@@ -237,7 +237,7 @@ func TestNewPollerError(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendError(errors.New("fatal"))
 	defer close()
-	pl := runtime.NewPipeline(srv)
+	pl := pipeline.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}

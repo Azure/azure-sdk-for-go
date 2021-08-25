@@ -77,3 +77,57 @@ func TestGetJSON(t *testing.T) {
 		t.Fatalf("unexpected value %s", v)
 	}
 }
+
+func TestRetryAfter(t *testing.T) {
+	if RetryAfter(nil) != 0 {
+		t.Fatal("expected zero duration")
+	}
+	resp := &http.Response{
+		Header: http.Header{},
+	}
+	if d := RetryAfter(resp); d > 0 {
+		t.Fatalf("unexpected retry-after value %d", d)
+	}
+	resp.Header.Set(HeaderRetryAfter, "300")
+	d := RetryAfter(resp)
+	if d <= 0 {
+		t.Fatal("expected retry-after value from seconds")
+	}
+	if d != 300*time.Second {
+		t.Fatalf("expected 300 seconds, got %d", d/time.Second)
+	}
+	atDate := time.Now().Add(600 * time.Second)
+	resp.Header.Set(HeaderRetryAfter, atDate.Format(time.RFC1123))
+	d = RetryAfter(resp)
+	if d <= 0 {
+		t.Fatal("expected retry-after value from date")
+	}
+	// d will not be exactly 600 seconds but it will be close
+	if s := d / time.Second; s < 598 || s > 602 {
+		t.Fatalf("expected ~600 seconds, got %d", s)
+	}
+}
+
+func TestHasStatusCode(t *testing.T) {
+	if HasStatusCode(nil, http.StatusAccepted) {
+		t.Fatal("unexpected success")
+	}
+	if HasStatusCode(&http.Response{}) {
+		t.Fatal("unexpected success")
+	}
+	if HasStatusCode(&http.Response{StatusCode: http.StatusBadGateway}, http.StatusBadRequest) {
+		t.Fatal("unexpected success")
+	}
+	if !HasStatusCode(&http.Response{StatusCode: http.StatusOK}, http.StatusAccepted, http.StatusOK, http.StatusNoContent) {
+		t.Fatal("unexpected failure")
+	}
+}
+
+func TestEndpointToScope(t *testing.T) {
+	if s := EndpointToScope("https://management.microsoftazure.de/"); s != "https://management.microsoftazure.de//.default" {
+		t.Fatalf("unexpected scope %s", s)
+	}
+	if s := EndpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
+		t.Fatalf("unexpected scope %s", s)
+	}
+}

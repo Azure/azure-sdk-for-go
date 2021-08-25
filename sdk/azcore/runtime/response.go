@@ -16,9 +16,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"sort"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -42,15 +40,7 @@ func Payload(resp *http.Response) ([]byte, error) {
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
 func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
-	if resp == nil {
-		return false
-	}
-	for _, sc := range statusCodes {
-		if resp.StatusCode == sc {
-			return true
-		}
-	}
-	return false
+	return shared.HasStatusCode(resp, statusCodes...)
 }
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
@@ -124,25 +114,6 @@ func removeBOM(resp *http.Response) error {
 		resp.Body.(*nopClosingBytesReader).Set(trimmed)
 	}
 	return nil
-}
-
-// RetryAfter returns non-zero if the response contains a Retry-After header value.
-func RetryAfter(resp *http.Response) time.Duration {
-	if resp == nil {
-		return 0
-	}
-	ra := resp.Header.Get(shared.HeaderRetryAfter)
-	if ra == "" {
-		return 0
-	}
-	// retry-after values are expressed in either number of
-	// seconds or an HTTP-date indicating when to try again
-	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
-		return time.Duration(retryAfter) * time.Second
-	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
-		return time.Until(t)
-	}
-	return 0
 }
 
 // DecodeByteArray will base-64 decode the provided string into v.

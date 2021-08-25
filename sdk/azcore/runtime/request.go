@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
@@ -17,9 +18,14 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+// Pipeline represents a primitive for sending HTTP requests and receiving responses.
+// Its behavior can be extended by specifying policies during construction.
+type Pipeline = pipeline.Pipeline
 
 // Base64Encoding is usesd to specify which base-64 encoder/decoder to use when
 // encoding/decoding a slice of bytes to/from a string.
@@ -32,6 +38,22 @@ const (
 	// Base64URLFormat uses base64.RawURLEncoding for encoding and decoding payloads.
 	Base64URLFormat Base64Encoding = 1
 )
+
+// NewRequest creates a new policy.Request with the specified input.
+func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*pipeline.Request, error) {
+	return pipeline.NewRequest(ctx, httpMethod, endpoint)
+}
+
+// NewPipeline creates a new Pipeline object from the specified Transport and Policies.
+// If no transport is provided then the default *http.Client transport will be used.
+func NewPipeline(transport pipeline.Transporter, policies ...pipeline.Policy) pipeline.Pipeline {
+	if transport == nil {
+		transport = defaultHTTPClient
+	}
+	// transport policy must always be the last in the slice
+	policies = append(policies, pipeline.PolicyFunc(httpHeaderPolicy), pipeline.PolicyFunc(bodyDownloadPolicy))
+	return pipeline.NewPipeline(transport, policies...)
+}
 
 // JoinPaths concatenates multiple URL path segments into one path,
 // inserting path separation characters as required. JoinPaths will preserve

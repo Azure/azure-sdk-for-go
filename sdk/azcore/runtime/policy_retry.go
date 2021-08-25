@@ -158,7 +158,7 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		Drain(resp)
 
 		// use the delay from retry-after if available
-		delay := RetryAfter(resp)
+		delay := shared.RetryAfter(resp)
 		if delay <= 0 {
 			delay = calcDelay(options, try)
 		}

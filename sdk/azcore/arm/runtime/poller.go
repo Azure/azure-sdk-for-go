@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package arm
+package runtime
 
 import (
 	"encoding/json"
@@ -15,15 +15,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // NewPoller creates a Poller based on the provided initial response.
 // pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
-// NOTE: this is only meant for internal use in generated code.
-func NewPoller(pollerID string, finalState string, resp *http.Response, pl runtime.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
+func NewPoller(pollerID string, finalState string, resp *http.Response, pl pipeline.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
 	if !pollers.StatusCodeValid(resp) {
@@ -55,8 +54,7 @@ func NewPoller(pollerID string, finalState string, resp *http.Response, pl runti
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
 // pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
-// NOTE: this is only meant for internal use in generated code.
-func NewPollerFromResumeToken(pollerID string, token string, pl runtime.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
+func NewPollerFromResumeToken(pollerID string, token string, pl pipeline.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
 	kind, err := pollers.KindFromToken(pollerID, token)
 	if err != nil {
 		return nil, err

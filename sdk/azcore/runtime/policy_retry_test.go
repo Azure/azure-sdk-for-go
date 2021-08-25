@@ -17,6 +17,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -95,7 +96,7 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError), mock.WithBody([]byte(respBody)))
 	// add a per-request policy that reads and restores the request body.
 	// this is to simulate how something like httputil.DumpRequest works.
-	pl := NewPipeline(srv, shared.PolicyFunc(func(r *policy.Request) (*http.Response, error) {
+	pl := NewPipeline(srv, pipeline.PolicyFunc(func(r *policy.Request) (*http.Response, error) {
 		b, err := ioutil.ReadAll(r.Raw().Body)
 		if err != nil {
 			t.Fatal(err)

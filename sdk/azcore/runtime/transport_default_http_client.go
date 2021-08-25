@@ -8,7 +8,6 @@ package runtime
 
 import (
 	"crypto/tls"
-	"errors"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -24,19 +23,13 @@ func init() {
 	}
 }
 
-// used to adapt a TransportPolicy to a Policy
-type transportPolicy struct {
-	trans policy.Transporter
-}
-
-func (tp transportPolicy) Do(req *policy.Request) (*http.Response, error) {
-	resp, err := tp.trans.Do(req.Raw())
-	if err != nil {
-		return nil, err
-	} else if resp == nil {
-		// there was no response and no error (rare but can happen)
-		// this ensures the retry policy will retry the request
-		return nil, errors.New("received nil response")
-	}
-	return resp, nil
+// AuthenticationOptions contains various options used to create a credential policy.
+type AuthenticationOptions struct {
+	// TokenRequest is a TokenRequestOptions that includes a scopes field which contains
+	// the list of OAuth2 authentication scopes used when requesting a token.
+	// This field is ignored for other forms of authentication (e.g. shared key).
+	TokenRequest policy.TokenRequestOptions
+	// AuxiliaryTenants contains a list of additional tenant IDs to be used to authenticate
+	// in cross-tenant applications.
+	AuxiliaryTenants []string
 }

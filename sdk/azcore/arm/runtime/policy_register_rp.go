@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package arm
+package runtime
 
 import (
 	"context"
@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -91,7 +92,7 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *Registr
 		pipeline: runtime.NewPipeline(o.HTTPClient,
 			runtime.NewTelemetryPolicy(shared.Module, shared.Version, &o.Telemetry),
 			runtime.NewRetryPolicy(&o.Retry),
-			cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
+			cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}}),
 			runtime.NewLogPolicy(&o.Logging)),
 		options: *o,
 	}
@@ -102,7 +103,7 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *Registr
 
 type rpRegistrationPolicy struct {
 	endpoint string
-	pipeline runtime.Pipeline
+	pipeline pipeline.Pipeline
 	options  RegistrationOptions
 }
 
@@ -239,7 +240,7 @@ type serviceErrorDetails struct {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 type providersOperations struct {
-	p     runtime.Pipeline
+	p     pipeline.Pipeline
 	u     string
 	subID string
 }

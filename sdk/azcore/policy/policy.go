@@ -11,16 +11,20 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
 // Request and react to the received Response.
-type Policy = shared.Policy
+type Policy = pipeline.Policy
+
+// Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
+type Transporter = pipeline.Transporter
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 // Don't use this type directly, use runtime.NewRequest() instead.
-type Request = shared.Request
+type Request = pipeline.Request
 
 // LogOptions configures the logging policy's behavior.
 type LogOptions struct {
@@ -76,12 +80,6 @@ type TokenRequestOptions struct {
 	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
 	// it will override the tenant ID that was added at credential creation time.
 	TenantID string
-}
-
-// Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
-type Transporter interface {
-	// Do sends the HTTP request and returns the HTTP response or error.
-	Do(req *http.Request) (*http.Response, error)
 }
 
 // WithHTTPHeader adds the specified http.Header to the parent context.

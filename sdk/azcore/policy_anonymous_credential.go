@@ -9,13 +9,13 @@ package azcore
 import (
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 func anonCredAuthPolicyFunc(runtime.AuthenticationOptions) policy.Policy {
-	return shared.PolicyFunc(anonCredPolicyFunc)
+	return pipeline.PolicyFunc(anonCredPolicyFunc)
 }
 
 func anonCredPolicyFunc(req *policy.Request) (*http.Response, error) {

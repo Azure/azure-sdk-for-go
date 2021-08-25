@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcore
+package runtime
 
 import (
 	"context"
@@ -17,7 +17,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -31,7 +30,7 @@ func (p pollerError) Error() string {
 
 func errUnmarshall(resp *http.Response) error {
 	var pe pollerError
-	if err := runtime.UnmarshalAsJSON(resp, &pe); err != nil {
+	if err := UnmarshalAsJSON(resp, &pe); err != nil {
 		panic(err)
 	}
 	return pe
@@ -44,7 +43,7 @@ type widget struct {
 func TestNewPollerFail(t *testing.T) {
 	p, err := NewPoller("fake.poller", &http.Response{
 		StatusCode: http.StatusBadRequest,
-	}, runtime.NewPipeline(nil), errUnmarshall)
+	}, NewPipeline(nil), errUnmarshall)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -67,7 +66,7 @@ func TestNewPollerFromResumeTokenFail(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			p, err := NewPollerFromResumeToken("fake.poller", test.token, runtime.NewPipeline(nil), errUnmarshall)
+			p, err := NewPollerFromResumeToken("fake.poller", test.token, NewPipeline(nil), errUnmarshall)
 			if err == nil {
 				t.Fatal("unexpected nil error")
 			}
@@ -92,7 +91,7 @@ func TestLocPollerSimple(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -120,7 +119,7 @@ func TestLocPollerWithWidget(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -152,7 +151,7 @@ func TestLocPollerCancelled(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -187,7 +186,7 @@ func TestLocPollerWithError(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -222,7 +221,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -274,7 +273,7 @@ func TestLocPollerWithTimeout(t *testing.T) {
 			"Location": []string{srv.URL()},
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -313,7 +312,7 @@ func TestOpPollerSimple(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -352,7 +351,7 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -396,7 +395,7 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -438,7 +437,7 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -483,7 +482,7 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -524,7 +523,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := runtime.NewPipeline(srv)
+	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -567,7 +566,7 @@ func TestNopPoller(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusOK,
 	}
-	pl := runtime.NewPipeline(nil)
+	pl := NewPipeline(nil)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)

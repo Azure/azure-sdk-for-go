@@ -14,17 +14,18 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 type mockTokenCred struct{}
 
-func (mockTokenCred) NewAuthenticationPolicy(runtime.AuthenticationOptions) policy.Policy {
-	return shared.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
+func (mockTokenCred) NewAuthenticationPolicy(azruntime.AuthenticationOptions) policy.Policy {
+	return pipeline.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
 		return req.Next()
 	})
 }
@@ -35,6 +36,19 @@ func (mockTokenCred) GetToken(context.Context, policy.TokenRequestOptions) (*azc
 		ExpiresOn: time.Now().Add(1 * time.Hour),
 	}, nil
 }
+
+const rpUnregisteredResp = `{
+	"error":{
+		"code":"MissingSubscriptionRegistration",
+		"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions.",
+		"details":[{
+				"code":"MissingSubscriptionRegistration",
+				"target":"Microsoft.Storage",
+				"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
+			}
+		]
+	}
+}`
 
 func TestNewDefaultConnection(t *testing.T) {
 	opt := ConnectionOptions{}
@@ -62,7 +76,7 @@ func TestNewConnectionWithOptions(t *testing.T) {
 	if ep := con.Endpoint(); ep != srv.URL() {
 		t.Fatalf("unexpected endpoint %s", ep)
 	}
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -93,7 +107,7 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	if opt.Telemetry.ApplicationID != myTelemetry {
 		t.Fatalf("telemetry was modified: %s", opt.Telemetry.ApplicationID)
 	}
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -109,15 +123,6 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	}
 }
 
-func TestScope(t *testing.T) {
-	if s := endpointToScope(AzureGermany); s != "https://management.microsoftazure.de//.default" {
-		t.Fatalf("unexpected scope %s", s)
-	}
-	if s := endpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
-		t.Fatalf("unexpected scope %s", s)
-	}
-}
-
 func TestDisableAutoRPRegistration(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -127,12 +132,12 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	if ep := con.Endpoint(); ep != srv.URL() {
 		t.Fatalf("unexpected endpoint %s", ep)
 	}
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetClassifications(armruntime.LogRPRegistration)
 	defer func() {
 		// reset logging
 		log.SetClassifications()
@@ -177,7 +182,7 @@ func TestConnectionWithCustomPolicies(t *testing.T) {
 		PerCallPolicies:       []policy.Policy{&perCallPolicy},
 		PerRetryPolicies:      []policy.Policy{&perRetryPolicy},
 	})
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}

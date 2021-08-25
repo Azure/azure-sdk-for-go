@@ -12,7 +12,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 const (
@@ -43,7 +43,7 @@ func Failed(s string) bool {
 
 // returns true if the LRO response contains a valid HTTP status code
 func StatusCodeValid(resp *http.Response) bool {
-	return runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)
+	return shared.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)
 }
 
 // IsValidURL verifies that the URL is valid and absolute.

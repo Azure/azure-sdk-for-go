@@ -16,8 +16,8 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -55,14 +55,14 @@ func PollerType(p *Poller) reflect.Type {
 }
 
 // NewPoller creates a Poller from the specified input.
-func NewPoller(lro Operation, resp *http.Response, pl runtime.Pipeline, eu func(*http.Response) error) *Poller {
+func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline, eu func(*http.Response) error) *Poller {
 	return &Poller{lro: lro, pl: pl, eu: eu, resp: resp}
 }
 
 // Poller encapsulates state and logic for polling on long-running operations.
 type Poller struct {
 	lro  Operation
-	pl   runtime.Pipeline
+	pl   pipeline.Pipeline
 	eu   func(*http.Response) error
 	resp *http.Response
 	err  error
@@ -85,7 +85,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 		}
 		return nil, l.err
 	}
-	req, err := runtime.NewRequest(ctx, http.MethodGet, l.lro.URL())
+	req, err := pipeline.NewRequest(ctx, http.MethodGet, l.lro.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +135,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 	// update l.resp with the content from final GET if applicable
 	if u := l.lro.FinalGetURL(); u != "" {
 		log.Write(log.LongRunningOperation, "Performing final GET.")
-		req, err := runtime.NewRequest(ctx, http.MethodGet, u)
+		req, err := pipeline.NewRequest(ctx, http.MethodGet, u)
 		if err != nil {
 			return nil, err
 		}
@@ -179,7 +179,7 @@ func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType
 	log.Writef(log.LongRunningOperation, "BEGIN PollUntilDone() for %T", l.lro)
 	if l.resp != nil {
 		// initial check for a retry-after header existing on the initial response
-		if retryAfter := runtime.RetryAfter(l.resp); retryAfter > 0 {
+		if retryAfter := shared.RetryAfter(l.resp); retryAfter > 0 {
 			log.Writef(log.LongRunningOperation, "initial Retry-After delay for %s", retryAfter.String())
 			if err := shared.Delay(ctx, retryAfter); err != nil {
 				logPollUntilDoneExit(err)
@@ -199,7 +199,7 @@ func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType
 			return l.FinalResponse(ctx, respType)
 		}
 		d := freq
-		if retryAfter := runtime.RetryAfter(resp); retryAfter > 0 {
+		if retryAfter := shared.RetryAfter(resp); retryAfter > 0 {
 			log.Writef(log.LongRunningOperation, "Retry-After delay for %s", retryAfter.String())
 			d = retryAfter
 		} else {

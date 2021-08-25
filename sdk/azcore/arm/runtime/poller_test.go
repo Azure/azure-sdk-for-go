@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package arm
+package runtime
 
 import (
 	"context"
@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -49,7 +50,7 @@ func (m mockError) Error() string {
 	return m.Msg
 }
 
-func getPipeline(srv *mock.Server) runtime.Pipeline {
+func getPipeline(srv *mock.Server) pipeline.Pipeline {
 	return runtime.NewPipeline(
 		srv,
 		runtime.NewLogPolicy(nil))

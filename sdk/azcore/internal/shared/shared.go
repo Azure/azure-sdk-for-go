@@ -14,6 +14,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -39,15 +40,6 @@ func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
 // BodyDownloadPolicyOpValues is the struct containing the per-operation values
 type BodyDownloadPolicyOpValues struct {
 	Skip bool
-}
-
-// PolicyFunc is a type that implements the Policy interface.
-// Use this type when implementing a stateless policy as a first-class function.
-type PolicyFunc func(*Request) (*http.Response, error)
-
-// Do implements the Policy interface on PolicyFunc.
-func (pf PolicyFunc) Do(req *Request) (*http.Response, error) {
-	return pf(req)
 }
 
 func NewResponseError(inner error, resp *http.Response) error {
@@ -111,4 +103,46 @@ func GetJSON(resp *http.Response) (map[string]interface{}, error) {
 		return nil, err
 	}
 	return jsonBody, nil
+}
+
+// RetryAfter returns non-zero if the response contains a Retry-After header value.
+func RetryAfter(resp *http.Response) time.Duration {
+	if resp == nil {
+		return 0
+	}
+	ra := resp.Header.Get(HeaderRetryAfter)
+	if ra == "" {
+		return 0
+	}
+	// retry-after values are expressed in either number of
+	// seconds or an HTTP-date indicating when to try again
+	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
+		return time.Duration(retryAfter) * time.Second
+	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
+		return time.Until(t)
+	}
+	return 0
+}
+
+// HasStatusCode returns true if the Response's status code is one of the specified values.
+func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
+	if resp == nil {
+		return false
+	}
+	for _, sc := range statusCodes {
+		if resp.StatusCode == sc {
+			return true
+		}
+	}
+	return false
+}
+
+const defaultScope = "/.default"
+
+// EndpointToScope converts the provided URL endpoint to its default scope.
+func EndpointToScope(endpoint string) string {
+	if endpoint[len(endpoint)-1] != '/' {
+		endpoint += "/"
+	}
+	return endpoint + defaultScope
 }

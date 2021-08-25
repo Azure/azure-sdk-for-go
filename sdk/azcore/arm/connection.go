@@ -8,11 +8,12 @@ package arm
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
-
-const defaultScope = "/.default"
 
 const (
 	// AzureChina is the Azure Resource Manager China cloud endpoint.
@@ -88,39 +89,32 @@ func (con *Connection) Endpoint() string {
 
 // NewPipeline creates a pipeline from the connection's options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func (con *Connection) NewPipeline(module, version string) runtime.Pipeline {
+func (con *Connection) NewPipeline(module, version string) pipeline.Pipeline {
 	policies := []policy.Policy{}
 	if !con.opt.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(module, version, &con.opt.Telemetry))
+		policies = append(policies, azruntime.NewTelemetryPolicy(module, version, &con.opt.Telemetry))
 	}
 	if !con.opt.DisableRPRegistration {
-		regRPOpts := RegistrationOptions{
+		regRPOpts := armruntime.RegistrationOptions{
 			HTTPClient: con.opt.HTTPClient,
 			Logging:    con.opt.Logging,
 			Retry:      con.opt.Retry,
 			Telemetry:  con.opt.Telemetry,
 		}
-		policies = append(policies, NewRPRegistrationPolicy(con.ep, con.cred, &regRPOpts))
+		policies = append(policies, armruntime.NewRPRegistrationPolicy(con.ep, con.cred, &regRPOpts))
 	}
 	policies = append(policies, con.opt.PerCallPolicies...)
-	policies = append(policies, runtime.NewRetryPolicy(&con.opt.Retry))
+	policies = append(policies, azruntime.NewRetryPolicy(&con.opt.Retry))
 	policies = append(policies, con.opt.PerRetryPolicies...)
 	policies = append(policies,
 		con.cred.NewAuthenticationPolicy(
-			runtime.AuthenticationOptions{
+			azruntime.AuthenticationOptions{
 				TokenRequest: policy.TokenRequestOptions{
-					Scopes: []string{endpointToScope(con.ep)},
+					Scopes: []string{shared.EndpointToScope(con.ep)},
 				},
 				AuxiliaryTenants: con.opt.AuxiliaryTenants,
 			},
 		),
-		runtime.NewLogPolicy(&con.opt.Logging))
-	return runtime.NewPipeline(con.opt.HTTPClient, policies...)
-}
-
-func endpointToScope(endpoint string) string {
-	if endpoint[len(endpoint)-1] != '/' {
-		endpoint += "/"
-	}
-	return endpoint + defaultScope
+		azruntime.NewLogPolicy(&con.opt.Logging))
+	return azruntime.NewPipeline(con.opt.HTTPClient, policies...)
 }

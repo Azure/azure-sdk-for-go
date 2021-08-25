@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package shared
+package pipeline
 
 import (
 	"context"
@@ -14,15 +14,17 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
-// Policy represents an extensibility point for the Pipeline that can mutate the specified
-// Request and react to the received Response.
-type Policy interface {
-	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
-	// request before calling req.Next() to move on to the next policy, and respond to the result
-	// before returning to the caller.
-	Do(req *Request) (*http.Response, error)
+// PolicyFunc is a type that implements the Policy interface.
+// Use this type when implementing a stateless policy as a first-class function.
+type PolicyFunc func(*Request) (*http.Response, error)
+
+// Do implements the Policy interface on PolicyFunc.
+func (pf PolicyFunc) Do(req *Request) (*http.Response, error) {
+	return pf(req)
 }
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
@@ -63,11 +65,6 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 		return nil, fmt.Errorf("unsupported protocol scheme %s", req.URL.Scheme)
 	}
 	return &Request{req: req}, nil
-}
-
-// SetPolicies assigns the policies to the Request (INTERNAL ONLY).
-func SetPolicies(req *Request, policies []Policy) {
-	req.policies = policies
 }
 
 // Body returns the original body specified when the Request was created.
@@ -134,14 +131,14 @@ func (req *Request) SetBody(body io.ReadSeekCloser, contentType string) error {
 	req.body = body
 	req.req.Body = body
 	req.req.ContentLength = size
-	req.req.Header.Set(HeaderContentType, contentType)
-	req.req.Header.Set(HeaderContentLength, strconv.FormatInt(size, 10))
+	req.req.Header.Set(shared.HeaderContentType, contentType)
+	req.req.Header.Set(shared.HeaderContentLength, strconv.FormatInt(size, 10))
 	return nil
 }
 
 // SkipBodyDownload will disable automatic downloading of the response body.
 func (req *Request) SkipBodyDownload() {
-	req.SetOperationValue(BodyDownloadPolicyOpValues{Skip: true})
+	req.SetOperationValue(shared.BodyDownloadPolicyOpValues{Skip: true})
 }
 
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.

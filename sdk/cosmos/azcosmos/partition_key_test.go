@@ -27,26 +27,26 @@ func TestInvalidPartitionKeyValues(t *testing.T) {
 }
 
 func TestValidPartitionKeyValues(t *testing.T) {
-	validTypes := []interface{}{
-		nil,
-		true,
-		false,
-		"some string",
-		int(0),
-		int8(0),
-		int16(0),
-		int32(0),
-		int64(0),
-		uint(0),
-		uint8(0),
-		uint16(0),
-		uint32(0),
-		uint64(0),
-		float32(0),
-		float64(0),
+	validTypes := map[interface{}]string{
+		nil:           "[null]",
+		true:          "[true]",
+		false:         "[false]",
+		"some string": "[\"some string\"]",
+		int(10):       "[10]",
+		int8(10):      "[10]",
+		int16(10):     "[10]",
+		int32(10):     "[10]",
+		int64(10):     "[10]",
+		uint(10):      "[10]",
+		uint8(10):     "[10]",
+		uint16(10):    "[10]",
+		uint32(10):    "[10]",
+		uint64(10):    "[10]",
+		float32(10.5): "[10.5]",
+		float64(10.5): "[10.5]",
 	}
 
-	for _, validType := range validTypes {
+	for validType, expectedSerialization := range validTypes {
 		pk, err := NewPartitionKey(validType)
 		if err != nil {
 			t.Errorf("Expected success for partition key type %v and got %v", validType, err)
@@ -54,6 +54,15 @@ func TestValidPartitionKeyValues(t *testing.T) {
 
 		if len(pk.partitionKeyInternal.components) != 1 {
 			t.Errorf("Expected partition key to have 1 component, but it has %v", len(pk.partitionKeyInternal.components))
+		}
+
+		serialization, err := pk.toJsonString()
+		if err != nil {
+			t.Errorf("Failed to serialize PK for %v, got %v", validType, err)
+		}
+
+		if serialization != expectedSerialization {
+			t.Errorf("Expected serialization %v, but got %v", expectedSerialization, serialization)
 		}
 	}
 }

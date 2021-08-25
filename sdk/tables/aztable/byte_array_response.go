@@ -11,7 +11,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// GetEntityResponse is the return type for a GetEntity operation. The entities properties are stored in the Value property
+// GetEntityResponse is the return type for a GetEntity operation. The individual entities are stored in the Value property
 type GetEntityResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag azcore.ETag
@@ -19,10 +19,11 @@ type GetEntityResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
-	// The other properties of the table entity.
+	// The properties of the table entity.
 	Value []byte
 }
 
+// newGetEntityResponse transforms a generated response to the GetEntityResponse type
 func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
 	marshalledValue, err := json.Marshal(m.Value)
 	if err != nil {
@@ -35,7 +36,7 @@ func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 	}, nil
 }
 
-// ListEntitiesResponseEnvelope is the response envelope for operations that return a TableEntityQueryResponse type.
+// ListEntitiesResponseEnvelope is the response envelope for operations that return a list of entities.
 type ListEntitiesResponseEnvelope struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -53,12 +54,12 @@ type ListEntitiesResponseEnvelope struct {
 type ListEntitiesResponse struct {
 	// The metadata response of the table.
 	ODataMetadata *string
-
-	// List of table entities.
+	// List of table entities stored as byte slices.
 	Value [][]byte
 }
 
-func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitiesResponseEnvelope, error) {
+// transforms a generated query response into the ListEntitiesResponseEnveloped
+func newListEntitiesResponseEnvelope(resp *generated.TableQueryEntitiesResponse) (ListEntitiesResponseEnvelope, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
@@ -82,6 +83,7 @@ func castToByteResponse(resp *generated.TableQueryEntitiesResponse) (ListEntitie
 	}, nil
 }
 
+// ListTablesResponse contains the properties for a list of tables.
 type ListTablesResponse struct {
 	// The metadata response of the table.
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
@@ -90,6 +92,7 @@ type ListTablesResponse struct {
 	Value []*ResponseProperties `json:"value,omitempty"`
 }
 
+// ResponseProperties contains the properties for a single Table
 type ResponseProperties struct {
 	// The edit link of the table.
 	ODataEditLink *string `json:"odata.editLink,omitempty"`
@@ -104,6 +107,7 @@ type ResponseProperties struct {
 	TableName *string `json:"TableName,omitempty"`
 }
 
+// Convets a generated TableResponseProperties to a ResponseProperties
 func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *ResponseProperties {
 	if g == nil {
 		return nil

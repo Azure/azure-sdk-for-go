@@ -16,8 +16,6 @@ import (
 	"net/http"
 	"net/textproto"
 	"sort"
-	"strconv"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -47,25 +45,53 @@ const (
 // ErrorCode string set equal to OdataErrorMessage ("DuplicateRowKey")
 // Lang/Value are useless at runtime, failedentity index as well
 
+type oDataErrorMessage struct {
+	Lang  string `json:"lang"`
+	Value string `json:"value"`
+}
 
-// type ODataErrorMessage struct {
-// 	Lang  string `json:"lang"`
-// 	Value string `json:"value"`
-// }
+type oDataError struct {
+	Code    string            `json:"code"`
+	Message oDataErrorMessage `json:"message"`
+}
 
-// type ODataError struct {
-// 	Code    string            `json:"code"`
-// 	Message ODataErrorMessage `json:"message"`
-// }
+type tableTransactionError struct {
+	ODataError        oDataError `json:"odata.error"`
+	FailedEntityIndex int
+}
 
-// type TableTransactionError struct {
-// 	ODataError        ODataError `json:"odata.error"`
-// 	FailedEntityIndex int
-// }
+type transactionError struct {
+	rawResponse *http.Response
+	statusCode  int
+	errorCode   string
+	odataError  oDataError `json:"odata.error"`
+}
 
-// func (e *TableTransactionError) Error() string {
-// 	return fmt.Sprintf("Code: %s, Message: %s", e.ODataError.Code, e.ODataError.Message.Value)
-// }
+func (t *transactionError) StatusCode() int {
+	return t.rawResponse.StatusCode
+}
+
+func (t *transactionError) ErrorCode() string {
+	return t.odataError.Code
+}
+
+func (t *transactionError) RawResponse() *http.Response {
+	return t.rawResponse
+}
+
+func (t *transactionError) Error() string {
+	return fmt.Sprintf("Code: %s, Message: %s", t.odataError.Code, t.odataError.Message.Value)
+}
+
+type ResponseError interface {
+	error
+
+	StatusCode() int
+
+	ErrorCode() string
+
+	RawResponse() *http.Response
+}
 
 type TransactionAction struct {
 	ActionType TransactionType
@@ -86,7 +112,8 @@ type SubmitTransactionOptions struct {
 	RequestID *string
 }
 
-// SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
+// SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided. All transactionActions must be for entities
+// with the same PartitionKey. There can only be one transaction action for a row key, a duplicated row key will return an error.
 func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []TransactionAction, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
 	u1, err := uuid.New()
 	if err != nil {
@@ -160,6 +187,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	return *transactionResponse, nil
 }
 
+// create the transaction response. This will read the inner responses
 func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
 	innerResponses := make([]http.Response, itemCount)
 	result := TransactionResponse{RawResponse: resp, TransactionResponses: &innerResponses}
@@ -175,7 +203,7 @@ func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCoun
 	reader := bytes.NewReader(bytesBody)
 	if bytes.IndexByte(bytesBody, '{') == 0 {
 		// This is a failure and the body is json
-		return &TransactionResponse{}, newTableTransactionError(bytesBody)
+		return &TransactionResponse{}, newTableTransactionError(bytesBody, resp)
 	}
 
 	outerBoundary := getBoundaryName(bytesBody)
@@ -209,7 +237,11 @@ func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCoun
 				return &TransactionResponse{}, err
 			} else {
 				innerResponses = []http.Response{*r}
-				return &result, newTableTransactionError(errorBody)
+				retError := newTableTransactionError(errorBody, resp)
+				ret := retError.(*transactionError)
+				ret.statusCode = r.StatusCode
+				return &result, ret
+				// return &result, azcore.NewResponseError(ErrFailedBatch, resp) //newTableTransactionError(errorBody)
 			}
 		}
 		innerResponses[i] = *r
@@ -228,15 +260,15 @@ func getBoundaryName(bytesBody []byte) string {
 }
 
 // newTableTransactionError handles the SubmitTransaction error response.
-func newTableTransactionError(errorBody []byte) error {
-	oe := TableTransactionError{}
+func newTableTransactionError(errorBody []byte, resp *http.Response) error {
+	oe := tableTransactionError{}
 	if err := json.Unmarshal(errorBody, &oe); err == nil {
-		if i := strings.Index(oe.ODataError.Message.Value, ":"); i > 0 {
-			if val, err := strconv.Atoi(oe.ODataError.Message.Value[0:i]); err == nil {
-				oe.FailedEntityIndex = val
-			}
+		return &transactionError{
+			rawResponse: resp,
+			errorCode:   oe.ODataError.Code,
+			odataError:  oe.ODataError,
 		}
-		return &oe
+		// return &oe
 	}
 	return fmt.Errorf("unknown error: %s", string(errorBody))
 }

@@ -210,10 +210,9 @@ func TestBatchError(t *testing.T) {
 			require.NoError(t, err)
 			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NotNil(t, err)
-			transactionError, ok := err.(*TableTransactionError)
+			transactionError, ok := err.(*transactionError)
 			require.Truef(t, ok, "err should be of type TableTransactionError")
-			require.Equal(t, "EntityAlreadyExists", transactionError.ODataError.Code)
-			require.Equal(t, 2, transactionError.FailedEntityIndex)
+			require.Equal(t, "EntityAlreadyExists", transactionError.ErrorCode())
 			require.Equal(t, http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 		})
 	}

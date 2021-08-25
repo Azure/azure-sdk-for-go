@@ -53,7 +53,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	var resp generated.TableQueryEntitiesResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.listOptions.toQueryOptions())
 
-	c, err := castToByteResponse(&resp)
+	c, err := newListEntitiesResponseEnvelope(&resp)
 	if err != nil {
 		p.err = nil
 	}
@@ -139,7 +139,7 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnve
 }
 
 type tableQueryResponsePager struct {
-	client            *generated.Client
+	client            *generated.TableClient
 	current           *generated.TableQueryResponseEnvelope
 	tableQueryOptions *generated.TableQueryOptions
 	listOptions       *ListTablesOptions

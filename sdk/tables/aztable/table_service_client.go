@@ -20,7 +20,7 @@ const (
 
 // A ServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
 type ServiceClient struct {
-	client  *generated.Client
+	client  *generated.TableClient
 	service *generated.ServiceClient
 	cred    azcore.Credential
 }
@@ -37,7 +37,7 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
 	con := generated.NewConnection(serviceURL, cred, conOptions)
 	return &ServiceClient{
-		client:  generated.NewClient(con),
+		client:  generated.NewTableClient(con),
 		service: generated.NewServiceClient(con),
 		cred:    cred,
 	}, nil

@@ -13,7 +13,7 @@ import (
 
 // A Client represents a client to the tables service affinitized to a specific table.
 type Client struct {
-	client  *generated.Client
+	client  *generated.TableClient
 	service *ServiceClient
 	cred    azcore.Credential
 	name    string
@@ -76,7 +76,7 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	}
 }
 
-// GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.
+// GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values. If no entity is available it returns an error
 func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (GetEntityResponse, error) {
 	if options == nil {
 		options = &GetEntityOptions{}
@@ -90,8 +90,9 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	return newGetEntityResponse(resp)
 }
 
-// AddEntity adds an entity (described by a JSON byte slice) to the table. This method returns an error if an entity with
-// the same PartitionKey and RowKey already exists in the table.
+// AddEntity adds an entity (described by a byte slice) to the table. This method returns an error if an entity with
+// the same PartitionKey and RowKey already exists in the table. If the supplied entity does not contain both a PartitionKey
+// and a RowKey an error will be returned. 
 func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntityOptions) (AddEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)

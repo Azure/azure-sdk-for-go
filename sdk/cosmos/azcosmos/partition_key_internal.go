@@ -29,8 +29,30 @@ func newPartitionKeyInternal(values []interface{}) (*partitionKeyInternal, error
 			component = partitionKeyBoolComponent{val}
 		case string:
 			component = partitionKeyStringComponent{val}
-		case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, float32, float64:
-			component = partitionKeyNumberComponent{v.(float64)}
+		case int:
+			component = partitionKeyNumberComponent{float64(val)}
+		case int8:
+			component = partitionKeyNumberComponent{float64(val)}
+		case int16:
+			component = partitionKeyNumberComponent{float64(val)}
+		case int32:
+			component = partitionKeyNumberComponent{float64(val)}
+		case int64:
+			component = partitionKeyNumberComponent{float64(val)}
+		case uint:
+			component = partitionKeyNumberComponent{float64(val)}
+		case uint8:
+			component = partitionKeyNumberComponent{float64(val)}
+		case uint16:
+			component = partitionKeyNumberComponent{float64(val)}
+		case uint32:
+			component = partitionKeyNumberComponent{float64(val)}
+		case uint64:
+			component = partitionKeyNumberComponent{float64(val)}
+		case float32:
+			component = partitionKeyNumberComponent{float64(val)}
+		case float64:
+			component = partitionKeyNumberComponent{val}
 		default:
 			return nil, fmt.Errorf("PartitionKey can only be a string, bool, or a number: '%T'", v)
 		}

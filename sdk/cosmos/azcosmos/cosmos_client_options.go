@@ -33,6 +33,7 @@ type CosmosClientOptions struct {
 	// ConsistencyLevel can be used to weaken the database account consistency level for read operations. If this is not set the database account consistency level will be used for all requests.
 	ConsistencyLevel ConsistencyLevel
 	// When EnableContentResponseOnWrite is false will cause the response to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
+	// The default is false.
 	EnableContentResponseOnWrite bool
 	// LimitToEndpoint limits the operations to the provided endpoint on the CosmosClient. See https://docs.microsoft.com/azure/cosmos-db/troubleshoot-sdk-availability
 	LimitToEndpoint bool

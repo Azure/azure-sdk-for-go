@@ -22,7 +22,6 @@ parameters:
     default: {}
 
 steps:
-
   - pwsh: ./eng/scripts/build.ps1
     displayName: 'Build'
     workingDirectory: '${{parameters.GoWorkspace}}'

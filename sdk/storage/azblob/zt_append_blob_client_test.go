@@ -96,6 +96,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	// test append block with bad MD5 value
 	readerToBody, body = getRandomDataAndReader(1024)
 	_, badMD5 := getRandomDataAndReader(16)
+	_ = body
 	appendBlockOptions = AppendBlockOptions{
 		TransactionalContentMD5: badMD5,
 	}

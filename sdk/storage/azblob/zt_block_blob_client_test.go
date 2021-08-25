@@ -1376,9 +1376,7 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 	var blobs []*BlobItemInternal
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-			blobs = append(blobs, blob)
-		}
+		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 	_assert.GreaterOrEqual(len(blobs), 1)

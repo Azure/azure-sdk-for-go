@@ -456,6 +456,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	readerToBody, body = getRandomDataAndReader(1024)
 	_, badMD5 := getRandomDataAndReader(16)
 	basContentMD5 := badMD5[:]
+	_ = body
 	uploadPagesOptions = UploadPagesOptions{
 		PageRange:               &HttpRange{offset, count},
 		TransactionalContentMD5: basContentMD5,

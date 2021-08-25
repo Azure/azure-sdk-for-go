@@ -196,6 +196,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	contentResp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
 	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 
 	getTagsBlobOptions := GetTagsBlobOptions{
@@ -519,10 +520,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-
-		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-			found = append(found, blob)
-		}
+		found = append(found, resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems...)
 	}
 	_assert.Nil(pager.Err())
 

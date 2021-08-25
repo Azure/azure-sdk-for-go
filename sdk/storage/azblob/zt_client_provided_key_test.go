@@ -158,13 +158,13 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
+	_, err = bbClient.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	getResp, err = bbClient.Download(ctx, &downloadBlobOptions)
+	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	b := bytes.Buffer{}
 	reader := getResp.Body(RetryReaderOptions{})
@@ -280,13 +280,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert.Len(blockList.BlockList.CommittedBlocks, 2)
 
 	// Check data integrity through downloading.
-	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
+	_, err = destBlob.BlobClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	_assert.Nil(err)
@@ -690,21 +690,21 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert.Equal(*appendFromURLResp.IsServerEncrypted, true)
 
 	// Get blob content without encryption key should fail the request.
-	downloadResp, err := destBlob.Download(ctx, nil)
+	_, err = destBlob.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
+	_, err = destBlob.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 
 	_assert.Equal(*downloadResp.IsServerEncrypted, true)

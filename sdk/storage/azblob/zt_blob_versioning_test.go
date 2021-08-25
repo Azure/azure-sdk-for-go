@@ -501,6 +501,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	contentResp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
 	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 

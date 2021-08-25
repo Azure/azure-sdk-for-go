@@ -305,6 +305,9 @@ func ExampleBlobSASSignatureValues() {
 		// and make sure the BlobName field is ""
 		Permissions: BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
 	}.NewSASQueryParameters(credential)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Create the URL of this resource you wish to access, and append the SAS query parameters.
 	// Since this is a blob SAS, the URL is to the Azure Storage blob.
@@ -400,7 +403,9 @@ func ExampleBlobAccessConditions() {
 		log.Fatal(err)
 	}
 	blockBlob, err := NewBlockBlobClient(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// This helper function displays the results of an operation; it is called frequently below.

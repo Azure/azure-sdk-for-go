@@ -390,6 +390,15 @@ func (s *recordingTests) TestRecordingOptions() {
 
 	require.Equal(GetEnvVariable(s.T(), "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	require.NotEqual(GetEnvVariable(s.T(), "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
+
+	r.Init()
+	require.Equal(r.Host, "localhost:5000")
+	require.Equal(r.Scheme, "https")
+
+	r.UseHTTPS = false
+	r.Init()
+	require.Equal(r.Host, "localhost:5001")
+	require.Equal(r.Scheme, "http")
 }
 
 var packagePath = "sdk/internal/recording"

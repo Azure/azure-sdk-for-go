@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -501,17 +502,17 @@ func (client *containerClient) deleteHandleError(resp *azcore.Response) error {
 
 // GetAccessPolicy - gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
 // If the operation fails it returns the *StorageError error type.
-func (client *containerClient) GetAccessPolicy(ctx context.Context, containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (SignedIdentifierArrayResponse, error) {
+func (client *containerClient) GetAccessPolicy(ctx context.Context, containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ContainerGetAccessPolicyResponse, error) {
 	req, err := client.getAccessPolicyCreateRequest(ctx, containerGetAccessPolicyOptions, leaseAccessConditions)
 	if err != nil {
-		return SignedIdentifierArrayResponse{}, err
+		return ContainerGetAccessPolicyResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return SignedIdentifierArrayResponse{}, err
+		return ContainerGetAccessPolicyResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return SignedIdentifierArrayResponse{}, client.getAccessPolicyHandleError(resp)
+		return ContainerGetAccessPolicyResponse{}, client.getAccessPolicyHandleError(resp)
 	}
 	return client.getAccessPolicyHandleResponse(resp)
 }
@@ -542,11 +543,8 @@ func (client *containerClient) getAccessPolicyCreateRequest(ctx context.Context,
 }
 
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
-func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Response) (SignedIdentifierArrayResponse, error) {
-	result := SignedIdentifierArrayResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsXML(&result); err != nil {
-		return SignedIdentifierArrayResponse{}, err
-	}
+func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Response) (ContainerGetAccessPolicyResponse, error) {
+	result := ContainerGetAccessPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
 		result.BlobPublicAccess = (*PublicAccessType)(&val)
 	}
@@ -556,7 +554,7 @@ func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Respon
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return SignedIdentifierArrayResponse{}, err
+			return ContainerGetAccessPolicyResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -572,9 +570,12 @@ func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Respon
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return SignedIdentifierArrayResponse{}, err
+			return ContainerGetAccessPolicyResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result); err != nil {
+		return ContainerGetAccessPolicyResponse{}, err
 	}
 	return result, nil
 }
@@ -799,18 +800,15 @@ func (client *containerClient) getPropertiesHandleError(resp *azcore.Response) e
 
 // ListBlobFlatSegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
 // If the operation fails it returns the *StorageError error type.
-func (client *containerClient) ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
-	return &listBlobsFlatSegmentResponsePager{
-		pipeline: client.con.Pipeline(),
+func (client *containerClient) ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) *ContainerListBlobFlatSegmentPager {
+	return &ContainerListBlobFlatSegmentPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBlobFlatSegmentCreateRequest(ctx, options)
 		},
-		responder: client.listBlobFlatSegmentHandleResponse,
-		errorer:   client.listBlobFlatSegmentHandleError,
-		advancer: func(ctx context.Context, resp ListBlobsFlatSegmentResponseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.EnumerationResults.NextMarker)
+		advancer: func(ctx context.Context, resp ContainerListBlobFlatSegmentResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListBlobsFlatSegmentResponse.NextMarker)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -849,12 +847,8 @@ func (client *containerClient) listBlobFlatSegmentCreateRequest(ctx context.Cont
 }
 
 // listBlobFlatSegmentHandleResponse handles the ListBlobFlatSegment response.
-func (client *containerClient) listBlobFlatSegmentHandleResponse(resp *azcore.Response) (ListBlobsFlatSegmentResponseResponse, error) {
-	var val *ListBlobsFlatSegmentResponse
-	if err := resp.UnmarshalAsXML(&val); err != nil {
-		return ListBlobsFlatSegmentResponseResponse{}, err
-	}
-	result := ListBlobsFlatSegmentResponseResponse{RawResponse: resp.Response, EnumerationResults: val}
+func (client *containerClient) listBlobFlatSegmentHandleResponse(resp *azcore.Response) (ContainerListBlobFlatSegmentResponse, error) {
+	result := ContainerListBlobFlatSegmentResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -870,9 +864,12 @@ func (client *containerClient) listBlobFlatSegmentHandleResponse(resp *azcore.Re
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ListBlobsFlatSegmentResponseResponse{}, err
+			return ContainerListBlobFlatSegmentResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result.ListBlobsFlatSegmentResponse); err != nil {
+		return ContainerListBlobFlatSegmentResponse{}, err
 	}
 	return result, nil
 }
@@ -892,18 +889,15 @@ func (client *containerClient) listBlobFlatSegmentHandleError(resp *azcore.Respo
 
 // ListBlobHierarchySegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
 // If the operation fails it returns the *StorageError error type.
-func (client *containerClient) ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
-	return &listBlobsHierarchySegmentResponsePager{
-		pipeline: client.con.Pipeline(),
+func (client *containerClient) ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) *ContainerListBlobHierarchySegmentPager {
+	return &ContainerListBlobHierarchySegmentPager{
+		client: client,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, options)
 		},
-		responder: client.listBlobHierarchySegmentHandleResponse,
-		errorer:   client.listBlobHierarchySegmentHandleError,
-		advancer: func(ctx context.Context, resp ListBlobsHierarchySegmentResponseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.EnumerationResults.NextMarker)
+		advancer: func(ctx context.Context, resp ContainerListBlobHierarchySegmentResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListBlobsHierarchySegmentResponse.NextMarker)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
@@ -943,12 +937,8 @@ func (client *containerClient) listBlobHierarchySegmentCreateRequest(ctx context
 }
 
 // listBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
-func (client *containerClient) listBlobHierarchySegmentHandleResponse(resp *azcore.Response) (ListBlobsHierarchySegmentResponseResponse, error) {
-	var val *ListBlobsHierarchySegmentResponse
-	if err := resp.UnmarshalAsXML(&val); err != nil {
-		return ListBlobsHierarchySegmentResponseResponse{}, err
-	}
-	result := ListBlobsHierarchySegmentResponseResponse{RawResponse: resp.Response, EnumerationResults: val}
+func (client *containerClient) listBlobHierarchySegmentHandleResponse(resp *azcore.Response) (ContainerListBlobHierarchySegmentResponse, error) {
+	result := ContainerListBlobHierarchySegmentResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -964,9 +954,12 @@ func (client *containerClient) listBlobHierarchySegmentHandleResponse(resp *azco
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ListBlobsHierarchySegmentResponseResponse{}, err
+			return ContainerListBlobHierarchySegmentResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result.ListBlobsHierarchySegmentResponse); err != nil {
+		return ContainerListBlobHierarchySegmentResponse{}, err
 	}
 	return result, nil
 }

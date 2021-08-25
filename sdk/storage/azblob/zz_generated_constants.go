@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,7 +8,7 @@
 
 package azblob
 
-const telemetryInfo = "azsdk-go-generated/<version>"
+const telemetryInfo = "azsdk-go-generated/v0.1"
 
 type AccessTier string
 

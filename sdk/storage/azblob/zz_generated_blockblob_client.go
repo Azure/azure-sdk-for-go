@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -207,17 +208,17 @@ func (client *blockBlobClient) commitBlockListHandleError(resp *azcore.Response)
 
 // GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
 // If the operation fails it returns the *StorageError error type.
-func (client *blockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, blockBlobGetBlockListOptions *BlockBlobGetBlockListOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (BlockListResponse, error) {
+func (client *blockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, blockBlobGetBlockListOptions *BlockBlobGetBlockListOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (BlockBlobGetBlockListResponse, error) {
 	req, err := client.getBlockListCreateRequest(ctx, listType, blockBlobGetBlockListOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
-		return BlockListResponse{}, err
+		return BlockBlobGetBlockListResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BlockListResponse{}, err
+		return BlockBlobGetBlockListResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BlockListResponse{}, client.getBlockListHandleError(resp)
+		return BlockBlobGetBlockListResponse{}, client.getBlockListHandleError(resp)
 	}
 	return client.getBlockListHandleResponse(resp)
 }
@@ -254,16 +255,12 @@ func (client *blockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 }
 
 // getBlockListHandleResponse handles the GetBlockList response.
-func (client *blockBlobClient) getBlockListHandleResponse(resp *azcore.Response) (BlockListResponse, error) {
-	var val *BlockList
-	if err := resp.UnmarshalAsXML(&val); err != nil {
-		return BlockListResponse{}, err
-	}
-	result := BlockListResponse{RawResponse: resp.Response, BlockList: val}
+func (client *blockBlobClient) getBlockListHandleResponse(resp *azcore.Response) (BlockBlobGetBlockListResponse, error) {
+	result := BlockBlobGetBlockListResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlockListResponse{}, err
+			return BlockBlobGetBlockListResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -276,7 +273,7 @@ func (client *blockBlobClient) getBlockListHandleResponse(resp *azcore.Response)
 	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
 		blobContentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return BlockListResponse{}, err
+			return BlockBlobGetBlockListResponse{}, err
 		}
 		result.BlobContentLength = &blobContentLength
 	}
@@ -292,9 +289,12 @@ func (client *blockBlobClient) getBlockListHandleResponse(resp *azcore.Response)
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlockListResponse{}, err
+			return BlockBlobGetBlockListResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result.BlockList); err != nil {
+		return BlockBlobGetBlockListResponse{}, err
 	}
 	return result, nil
 }

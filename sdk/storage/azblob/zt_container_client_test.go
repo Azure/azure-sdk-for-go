@@ -702,7 +702,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			if *blob.Name == snapBlobName && blob.Snapshot != nil {
 				wasFound = true
 				_assert.Equal(*blob.Snapshot, *snap.Snapshot)
@@ -734,7 +734,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 
 	pager.NextPage(ctx)
 	_assert.Nil(pager.Err())
-	_assert.Nil(pager.PageResponse().EnumerationResults.Segment.BlobPrefixes)
+	_assert.Nil(pager.PageResponse().ContainerListBlobHierarchySegmentResult.Segment.BlobPrefixes)
 }
 
 ////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeMetadata() {
@@ -947,7 +947,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			_assert.Equal(nameMap[*blob.Name], true)
 		}
 	}
@@ -985,7 +985,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			_assert.Equal(nameMap[*blob.Name], true)
 		}
 	}

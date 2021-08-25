@@ -98,7 +98,7 @@ func Example() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, v := range resp.EnumerationResults.Segment.BlobItems {
+		for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			fmt.Println(*v.Name)
 		}
 	}
@@ -871,7 +871,7 @@ func Example_blobSnapshots() {
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			// Process the blobs returned
 			snapTime := "N/A"
 			if blob.Snapshot != nil {

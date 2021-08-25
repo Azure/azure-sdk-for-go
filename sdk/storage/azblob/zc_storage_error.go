@@ -13,17 +13,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
-
-// // StorageError identifies a responder-generated network or response parsing error.
-// type StorageError interface {
-// 	// ResponseError implements error's Error(), net.Error's Temporary() and Timeout() methods & Response().
-// 	// ResponseError
-//
-// 	// ErrorCode returns a service error code. Your code can use this to make error recovery decisions.
-// 	ErrorCode() ServiceCodeType
-// }
 
 // InternalError is an internal error type that all errors get wrapped in.
 type InternalError struct {
@@ -69,7 +59,7 @@ type StorageError struct {
 }
 
 func handleError(err error) error {
-	if err, ok := err.(*runtime.ResponseError); ok {
+	if err, ok := err.(ResponseError); ok {
 		return &InternalError{defunkifyStorageError(err)}
 	}
 
@@ -80,8 +70,8 @@ func handleError(err error) error {
 	return nil
 }
 
-// defunkifyStorageError is a function that takes the "funky" *runtime.ResponseError and reduces it to a storageError.
-func defunkifyStorageError(responseError *runtime.ResponseError) error {
+// defunkifyStorageError is a function that takes the "funky" ResponseError and reduces it to a storageError.
+func defunkifyStorageError(responseError ResponseError) error {
 	if err, ok := responseError.Unwrap().(*StorageError); ok {
 		// errors.Unwrap(responseError.Unwrap())
 

@@ -2077,7 +2077,7 @@ func setupGetPageRangesTest(_assert *assert.Assertions, testName string) (contai
 	return
 }
 
-func validateBasicGetPageRanges(_assert *assert.Assertions, resp *PageList, err error) {
+func validateBasicGetPageRanges(_assert *assert.Assertions, resp PageList, err error) {
 	_assert.Nil(err)
 	_assert.NotNil(resp.PageRange)
 	_assert.Len(resp.PageRange, 1)
@@ -2403,7 +2403,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 	return
 }
 
-func validateDiffPageRanges(_assert *assert.Assertions, resp *PageList, err error) {
+func validateDiffPageRanges(_assert *assert.Assertions, resp PageList, err error) {
 	_assert.Nil(err)
 	pageListResp := resp.PageRange
 	_assert.NotNil(pageListResp)

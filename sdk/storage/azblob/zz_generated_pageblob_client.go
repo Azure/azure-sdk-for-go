@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -450,17 +451,17 @@ func (client *pageBlobClient) createHandleError(resp *azcore.Response) error {
 
 // GetPageRanges - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob
 // If the operation fails it returns the *StorageError error type.
-func (client *pageBlobClient) GetPageRanges(ctx context.Context, pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (PageListResponse, error) {
+func (client *pageBlobClient) GetPageRanges(ctx context.Context, pageBlobGetPageRangesOptions *PageBlobGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (PageBlobGetPageRangesResponse, error) {
 	req, err := client.getPageRangesCreateRequest(ctx, pageBlobGetPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
-		return PageListResponse{}, err
+		return PageBlobGetPageRangesResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PageListResponse{}, err
+		return PageBlobGetPageRangesResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PageListResponse{}, client.getPageRangesHandleError(resp)
+		return PageBlobGetPageRangesResponse{}, client.getPageRangesHandleError(resp)
 	}
 	return client.getPageRangesHandleResponse(resp)
 }
@@ -511,16 +512,12 @@ func (client *pageBlobClient) getPageRangesCreateRequest(ctx context.Context, pa
 }
 
 // getPageRangesHandleResponse handles the GetPageRanges response.
-func (client *pageBlobClient) getPageRangesHandleResponse(resp *azcore.Response) (PageListResponse, error) {
-	var val *PageList
-	if err := resp.UnmarshalAsXML(&val); err != nil {
-		return PageListResponse{}, err
-	}
-	result := PageListResponse{RawResponse: resp.Response, PageList: val}
+func (client *pageBlobClient) getPageRangesHandleResponse(resp *azcore.Response) (PageBlobGetPageRangesResponse, error) {
+	result := PageBlobGetPageRangesResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PageListResponse{}, err
+			return PageBlobGetPageRangesResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -530,7 +527,7 @@ func (client *pageBlobClient) getPageRangesHandleResponse(resp *azcore.Response)
 	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
 		blobContentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return PageListResponse{}, err
+			return PageBlobGetPageRangesResponse{}, err
 		}
 		result.BlobContentLength = &blobContentLength
 	}
@@ -546,9 +543,12 @@ func (client *pageBlobClient) getPageRangesHandleResponse(resp *azcore.Response)
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PageListResponse{}, err
+			return PageBlobGetPageRangesResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result.PageList); err != nil {
+		return PageBlobGetPageRangesResponse{}, err
 	}
 	return result, nil
 }
@@ -569,17 +569,17 @@ func (client *pageBlobClient) getPageRangesHandleError(resp *azcore.Response) er
 // GetPageRangesDiff - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and
 // previous snapshot.
 // If the operation fails it returns the *StorageError error type.
-func (client *pageBlobClient) GetPageRangesDiff(ctx context.Context, pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (PageListResponse, error) {
+func (client *pageBlobClient) GetPageRangesDiff(ctx context.Context, pageBlobGetPageRangesDiffOptions *PageBlobGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (PageBlobGetPageRangesDiffResponse, error) {
 	req, err := client.getPageRangesDiffCreateRequest(ctx, pageBlobGetPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
-		return PageListResponse{}, err
+		return PageBlobGetPageRangesDiffResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return PageListResponse{}, err
+		return PageBlobGetPageRangesDiffResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return PageListResponse{}, client.getPageRangesDiffHandleError(resp)
+		return PageBlobGetPageRangesDiffResponse{}, client.getPageRangesDiffHandleError(resp)
 	}
 	return client.getPageRangesDiffHandleResponse(resp)
 }
@@ -636,16 +636,12 @@ func (client *pageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context
 }
 
 // getPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
-func (client *pageBlobClient) getPageRangesDiffHandleResponse(resp *azcore.Response) (PageListResponse, error) {
-	var val *PageList
-	if err := resp.UnmarshalAsXML(&val); err != nil {
-		return PageListResponse{}, err
-	}
-	result := PageListResponse{RawResponse: resp.Response, PageList: val}
+func (client *pageBlobClient) getPageRangesDiffHandleResponse(resp *azcore.Response) (PageBlobGetPageRangesDiffResponse, error) {
+	result := PageBlobGetPageRangesDiffResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PageListResponse{}, err
+			return PageBlobGetPageRangesDiffResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -655,7 +651,7 @@ func (client *pageBlobClient) getPageRangesDiffHandleResponse(resp *azcore.Respo
 	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
 		blobContentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return PageListResponse{}, err
+			return PageBlobGetPageRangesDiffResponse{}, err
 		}
 		result.BlobContentLength = &blobContentLength
 	}
@@ -671,9 +667,12 @@ func (client *pageBlobClient) getPageRangesDiffHandleResponse(resp *azcore.Respo
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PageListResponse{}, err
+			return PageBlobGetPageRangesDiffResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result.PageList); err != nil {
+		return PageBlobGetPageRangesDiffResponse{}, err
 	}
 	return result, nil
 }

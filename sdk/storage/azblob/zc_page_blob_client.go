@@ -16,7 +16,7 @@ const (
 	PageBlobPageBytes = 512
 
 	// PageBlobMaxUploadPagesBytes indicates the maximum number of bytes that can be sent in a call to PutPage.
-	PageBlobMaxUploadPagesBytes = 4 * 1024 * 1024 // 4MB
+	//PageBlobMaxUploadPagesBytes = 4 * 1024 * 1024 // 4MB
 )
 
 type PageBlobClient struct {

@@ -205,7 +205,7 @@ func (p *ContainerSASPermissions) Parse(s string) error {
 		case 'l':
 			p.List = true
 		default:
-			return fmt.Errorf("Invalid permission: '%v'", r)
+			return fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
 	return nil
@@ -258,7 +258,7 @@ func (p *BlobSASPermissions) Parse(s string) error {
 		case 'x':
 			p.DeletePreviousVersion = true
 		default:
-			return fmt.Errorf("Invalid permission: '%v'", r)
+			return fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
 	return nil

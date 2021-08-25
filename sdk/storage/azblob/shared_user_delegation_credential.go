@@ -38,7 +38,7 @@ func (f UserDelegationCredential) ComputeHMACSHA256(message string) (base64Strin
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
-// Private method to return important parameters for NewSASQueryParameters
+// GetUDKParams : Private method to return important parameters for NewSASQueryParameters
 func (f UserDelegationCredential) GetUDKParams() UserDelegationKey {
 	return f.accountKey
 }

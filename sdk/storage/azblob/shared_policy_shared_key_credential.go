@@ -44,11 +44,11 @@ func (c *SharedKeyCredential) AccountName() string {
 
 // SetAccountKey replaces the existing account key with the specified account key.
 func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
-	bytes, err := base64.StdEncoding.DecodeString(accountKey)
+	_bytes, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
 		return fmt.Errorf("decode account key: %w", err)
 	}
-	c.accountKey.Store(bytes)
+	c.accountKey.Store(_bytes)
 	return nil
 }
 
@@ -145,7 +145,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	}
 
 	if len(params) > 0 { // There is at least 1 query parameter
-		paramNames := []string{} // We use this to sort the parameter key names
+		var paramNames []string // We use this to sort the parameter key names
 		for paramName := range params {
 			paramNames = append(paramNames, paramName) // paramNames must be lowercase
 		}

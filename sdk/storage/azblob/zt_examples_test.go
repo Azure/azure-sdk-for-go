@@ -153,7 +153,7 @@ func ExampleStorageError() {
 	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
 	*/
 
-	container, err := NewContainerClient("http://myaccount.blob.core.windows.net/mycontainer", azcore.AnonymousCredential(), nil)
+	container, err := NewContainerClient("https://myaccount.blob.core.windows.net/mycontainer", azcore.AnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}

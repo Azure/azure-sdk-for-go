@@ -102,8 +102,8 @@ func (e StorageError) Error() string {
 	b := &bytes.Buffer{}
 
 	if e.response != nil {
-		fmt.Fprintf(b, "===== RESPONSE ERROR (ErrorCode=%s) =====\n", e.ErrorCode)
-		fmt.Fprintf(b, "Description=%s, Details: ", e.description)
+		_, _ = fmt.Fprintf(b, "===== RESPONSE ERROR (ErrorCode=%s) =====\n", e.ErrorCode)
+		_, _ = fmt.Fprintf(b, "Description=%s, Details: ", e.description)
 		if len(e.details) == 0 {
 			b.WriteString("(none)\n")
 		} else {
@@ -115,7 +115,7 @@ func (e StorageError) Error() string {
 			}
 			sort.Strings(keys)
 			for _, k := range keys {
-				fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
+				_, _ = fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
 			}
 		}
 		// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
@@ -140,11 +140,11 @@ func (e StorageError) Response() *http.Response {
 
 func writeRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {
 	// Write the request into the buffer.
-	fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
+	_, _ = fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
 	writeHeader(b, request.Header)
 	if response != nil {
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
+		_, _ = fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
+		_, _ = fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
 		writeHeader(b, response.Header)
 	}
 }
@@ -167,7 +167,7 @@ func writeHeader(b *bytes.Buffer, header map[string][]string) {
 		if !strings.EqualFold(k, "Authorization") {
 			value = header[k]
 		}
-		fmt.Fprintf(b, "   %s: %+v\n", k, value)
+		_, _ = fmt.Fprintf(b, "   %s: %+v\n", k, value)
 	}
 }
 

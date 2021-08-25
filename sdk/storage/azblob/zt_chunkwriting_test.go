@@ -52,7 +52,11 @@ func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body i
 	if err != nil {
 		return BlockBlobStageBlockResponse{}, fmt.Errorf("could not create a stage block file: %s", err)
 	}
-	defer fp.Close()
+	defer func(fp *os.File) {
+		err := fp.Close()
+		if err != nil {
+		}
+	}(fp)
 
 	if _, err := io.Copy(fp, body); err != nil {
 		return BlockBlobStageBlockResponse{}, err
@@ -66,7 +70,11 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
-	defer dst.Close()
+	defer func(dst *os.File) {
+		err := dst.Close()
+		if err != nil {
+		}
+	}(dst)
 
 	for _, id := range base64BlockIDs {
 		id = strings.Replace(id, "/", "slash", -1)
@@ -84,7 +92,10 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 }
 
 func (f *fakeBlockWriter) cleanup() {
-	os.RemoveAll(f.path)
+	err := os.RemoveAll(f.path)
+	if err != nil {
+		return
+	}
 }
 
 func (f *fakeBlockWriter) final() string {
@@ -97,7 +108,11 @@ func createSrcFile(size int) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("could not create source file: %s", err)
 	}
-	defer fp.Close()
+	defer func(fp *os.File) {
+		err := fp.Close()
+		if err != nil {
+		}
+	}(fp)
 
 	lr := &io.LimitedReader{R: rand.New(rand.NewSource(time.Now().UnixNano())), N: int64(size)}
 	copied, err := io.Copy(fp, lr)
@@ -115,7 +130,11 @@ func fileMD5(p string) string {
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+		}
+	}(f)
 
 	h := md5.New()
 	if _, err := io.Copy(h, f); err != nil {
@@ -264,7 +283,11 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 		if err != nil {
 			panic(err)
 		}
-		defer os.Remove(p)
+		defer func(name string) {
+			err := os.Remove(name)
+			if err != nil {
+			}
+		}(p)
 
 		from, err := os.Open(p)
 		if err != nil {

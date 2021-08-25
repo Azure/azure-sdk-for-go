@@ -20,9 +20,7 @@ const (
 	ContainerNameRoot = "$root"
 
 	// ContainerNameLogs is the special Azure Storage name used to identify a storage account's logs container.
-	ContainerNameLogs = "$logs"
-
-	ContainerNameWeb = "$web"
+	//ContainerNameLogs = "$logs"
 )
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.

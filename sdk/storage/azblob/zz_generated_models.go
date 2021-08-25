@@ -397,7 +397,7 @@ func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) 
 	if err := d.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	b.ObjectReplicationMetadata = (map[string]*string)(aux.ObjectReplicationMetadata)
+	b.ObjectReplicationMetadata = aux.ObjectReplicationMetadata
 	return nil
 }
 
@@ -996,7 +996,7 @@ func (c *ContainerItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) err
 	if err := d.DecodeElement(aux, &start); err != nil {
 		return err
 	}
-	c.Metadata = (map[string]*string)(aux.Metadata)
+	c.Metadata = aux.Metadata
 	return nil
 }
 
@@ -1197,7 +1197,7 @@ type CpkScopeInfo struct {
 	EncryptionScope *string
 }
 
-// Implements the error and azcore.HTTPResponse interfaces.
+// DataLakeStorageError implements the error and azcore.HTTPResponse interfaces.
 type DataLakeStorageError struct {
 	raw string
 	// The service error response object.

@@ -827,6 +827,7 @@ const (
 	TypeBasicActivityTypeExecuteDataFlow          TypeBasicActivity = original.TypeBasicActivityTypeExecuteDataFlow
 	TypeBasicActivityTypeExecutePipeline          TypeBasicActivity = original.TypeBasicActivityTypeExecutePipeline
 	TypeBasicActivityTypeExecuteSSISPackage       TypeBasicActivity = original.TypeBasicActivityTypeExecuteSSISPackage
+	TypeBasicActivityTypeExecuteWranglingDataflow TypeBasicActivity = original.TypeBasicActivityTypeExecuteWranglingDataflow
 	TypeBasicActivityTypeExecution                TypeBasicActivity = original.TypeBasicActivityTypeExecution
 	TypeBasicActivityTypeFilter                   TypeBasicActivity = original.TypeBasicActivityTypeFilter
 	TypeBasicActivityTypeForEach                  TypeBasicActivity = original.TypeBasicActivityTypeForEach
@@ -1029,8 +1030,9 @@ const (
 type TypeBasicDataFlow = original.TypeBasicDataFlow
 
 const (
-	TypeBasicDataFlowTypeDataFlow        TypeBasicDataFlow = original.TypeBasicDataFlowTypeDataFlow
-	TypeBasicDataFlowTypeMappingDataFlow TypeBasicDataFlow = original.TypeBasicDataFlowTypeMappingDataFlow
+	TypeBasicDataFlowTypeDataFlow          TypeBasicDataFlow = original.TypeBasicDataFlowTypeDataFlow
+	TypeBasicDataFlowTypeMappingDataFlow   TypeBasicDataFlow = original.TypeBasicDataFlowTypeMappingDataFlow
+	TypeBasicDataFlowTypeWranglingDataFlow TypeBasicDataFlow = original.TypeBasicDataFlowTypeWranglingDataFlow
 )
 
 type TypeBasicDataset = original.TypeBasicDataset
@@ -1798,8 +1800,10 @@ type ExecuteDataFlowActivityTypeProperties = original.ExecuteDataFlowActivityTyp
 type ExecuteDataFlowActivityTypePropertiesCompute = original.ExecuteDataFlowActivityTypePropertiesCompute
 type ExecutePipelineActivity = original.ExecutePipelineActivity
 type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTypeProperties
+type ExecutePowerQueryActivityTypeProperties = original.ExecutePowerQueryActivityTypeProperties
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
+type ExecuteWranglingDataflowActivity = original.ExecuteWranglingDataflowActivity
 type ExecutionActivity = original.ExecutionActivity
 type ExportSettings = original.ExportSettings
 type ExposureControlBatchRequest = original.ExposureControlBatchRequest
@@ -2141,6 +2145,9 @@ type PostgreSQLLinkedServiceTypeProperties = original.PostgreSQLLinkedServiceTyp
 type PostgreSQLSource = original.PostgreSQLSource
 type PostgreSQLTableDataset = original.PostgreSQLTableDataset
 type PostgreSQLTableDatasetTypeProperties = original.PostgreSQLTableDatasetTypeProperties
+type PowerQuerySink = original.PowerQuerySink
+type PowerQuerySource = original.PowerQuerySource
+type PowerQueryTypeProperties = original.PowerQueryTypeProperties
 type PrestoDatasetTypeProperties = original.PrestoDatasetTypeProperties
 type PrestoLinkedService = original.PrestoLinkedService
 type PrestoLinkedServiceTypeProperties = original.PrestoLinkedServiceTypeProperties
@@ -2406,6 +2413,7 @@ type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
 type WebSource = original.WebSource
 type WebTableDataset = original.WebTableDataset
 type WebTableDatasetTypeProperties = original.WebTableDatasetTypeProperties
+type WranglingDataFlow = original.WranglingDataFlow
 type XMLDataset = original.XMLDataset
 type XMLDatasetTypeProperties = original.XMLDatasetTypeProperties
 type XMLReadSettings = original.XMLReadSettings

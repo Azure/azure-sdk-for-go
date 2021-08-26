@@ -1717,6 +1717,8 @@ const (
 	TypeBasicActivityTypeExecutePipeline TypeBasicActivity = "ExecutePipeline"
 	// TypeBasicActivityTypeExecuteSSISPackage ...
 	TypeBasicActivityTypeExecuteSSISPackage TypeBasicActivity = "ExecuteSSISPackage"
+	// TypeBasicActivityTypeExecuteWranglingDataflow ...
+	TypeBasicActivityTypeExecuteWranglingDataflow TypeBasicActivity = "ExecuteWranglingDataflow"
 	// TypeBasicActivityTypeExecution ...
 	TypeBasicActivityTypeExecution TypeBasicActivity = "Execution"
 	// TypeBasicActivityTypeFilter ...
@@ -1759,7 +1761,7 @@ const (
 
 // PossibleTypeBasicActivityValues returns an array of possible values for the TypeBasicActivity const type.
 func PossibleTypeBasicActivityValues() []TypeBasicActivity {
-	return []TypeBasicActivity{TypeBasicActivityTypeActivity, TypeBasicActivityTypeAppendVariable, TypeBasicActivityTypeAzureDataExplorerCommand, TypeBasicActivityTypeAzureFunctionActivity, TypeBasicActivityTypeAzureMLBatchExecution, TypeBasicActivityTypeAzureMLExecutePipeline, TypeBasicActivityTypeAzureMLUpdateResource, TypeBasicActivityTypeContainer, TypeBasicActivityTypeCopy, TypeBasicActivityTypeCustom, TypeBasicActivityTypeDatabricksNotebook, TypeBasicActivityTypeDatabricksSparkJar, TypeBasicActivityTypeDatabricksSparkPython, TypeBasicActivityTypeDataLakeAnalyticsUSQL, TypeBasicActivityTypeDelete, TypeBasicActivityTypeExecuteDataFlow, TypeBasicActivityTypeExecutePipeline, TypeBasicActivityTypeExecuteSSISPackage, TypeBasicActivityTypeExecution, TypeBasicActivityTypeFilter, TypeBasicActivityTypeForEach, TypeBasicActivityTypeGetMetadata, TypeBasicActivityTypeHDInsightHive, TypeBasicActivityTypeHDInsightMapReduce, TypeBasicActivityTypeHDInsightPig, TypeBasicActivityTypeHDInsightSpark, TypeBasicActivityTypeHDInsightStreaming, TypeBasicActivityTypeIfCondition, TypeBasicActivityTypeLookup, TypeBasicActivityTypeSetVariable, TypeBasicActivityTypeSQLServerStoredProcedure, TypeBasicActivityTypeSwitch, TypeBasicActivityTypeUntil, TypeBasicActivityTypeValidation, TypeBasicActivityTypeWait, TypeBasicActivityTypeWebActivity, TypeBasicActivityTypeWebHook}
+	return []TypeBasicActivity{TypeBasicActivityTypeActivity, TypeBasicActivityTypeAppendVariable, TypeBasicActivityTypeAzureDataExplorerCommand, TypeBasicActivityTypeAzureFunctionActivity, TypeBasicActivityTypeAzureMLBatchExecution, TypeBasicActivityTypeAzureMLExecutePipeline, TypeBasicActivityTypeAzureMLUpdateResource, TypeBasicActivityTypeContainer, TypeBasicActivityTypeCopy, TypeBasicActivityTypeCustom, TypeBasicActivityTypeDatabricksNotebook, TypeBasicActivityTypeDatabricksSparkJar, TypeBasicActivityTypeDatabricksSparkPython, TypeBasicActivityTypeDataLakeAnalyticsUSQL, TypeBasicActivityTypeDelete, TypeBasicActivityTypeExecuteDataFlow, TypeBasicActivityTypeExecutePipeline, TypeBasicActivityTypeExecuteSSISPackage, TypeBasicActivityTypeExecuteWranglingDataflow, TypeBasicActivityTypeExecution, TypeBasicActivityTypeFilter, TypeBasicActivityTypeForEach, TypeBasicActivityTypeGetMetadata, TypeBasicActivityTypeHDInsightHive, TypeBasicActivityTypeHDInsightMapReduce, TypeBasicActivityTypeHDInsightPig, TypeBasicActivityTypeHDInsightSpark, TypeBasicActivityTypeHDInsightStreaming, TypeBasicActivityTypeIfCondition, TypeBasicActivityTypeLookup, TypeBasicActivityTypeSetVariable, TypeBasicActivityTypeSQLServerStoredProcedure, TypeBasicActivityTypeSwitch, TypeBasicActivityTypeUntil, TypeBasicActivityTypeValidation, TypeBasicActivityTypeWait, TypeBasicActivityTypeWebActivity, TypeBasicActivityTypeWebHook}
 }
 
 // TypeBasicCompressionReadSettings enumerates the values for type basic compression read settings.
@@ -2132,11 +2134,13 @@ const (
 	TypeBasicDataFlowTypeDataFlow TypeBasicDataFlow = "DataFlow"
 	// TypeBasicDataFlowTypeMappingDataFlow ...
 	TypeBasicDataFlowTypeMappingDataFlow TypeBasicDataFlow = "MappingDataFlow"
+	// TypeBasicDataFlowTypeWranglingDataFlow ...
+	TypeBasicDataFlowTypeWranglingDataFlow TypeBasicDataFlow = "WranglingDataFlow"
 )
 
 // PossibleTypeBasicDataFlowValues returns an array of possible values for the TypeBasicDataFlow const type.
 func PossibleTypeBasicDataFlowValues() []TypeBasicDataFlow {
-	return []TypeBasicDataFlow{TypeBasicDataFlowTypeDataFlow, TypeBasicDataFlowTypeMappingDataFlow}
+	return []TypeBasicDataFlow{TypeBasicDataFlowTypeDataFlow, TypeBasicDataFlowTypeMappingDataFlow, TypeBasicDataFlowTypeWranglingDataFlow}
 }
 
 // TypeBasicDataset enumerates the values for type basic dataset.

@@ -9,7 +9,7 @@
 
 package guestconfiguration
 
-import original "github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration"
+import original "github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -36,6 +36,15 @@ const (
 	ApplyAndAutoCorrect ConfigurationMode = original.ApplyAndAutoCorrect
 	ApplyAndMonitor     ConfigurationMode = original.ApplyAndMonitor
 	ApplyOnly           ConfigurationMode = original.ApplyOnly
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type Kind = original.Kind
@@ -72,7 +81,9 @@ type AssignmentReportResource = original.AssignmentReportResource
 type AssignmentReportResourceComplianceReason = original.AssignmentReportResourceComplianceReason
 type AssignmentReportType = original.AssignmentReportType
 type AssignmentReportsClient = original.AssignmentReportsClient
+type AssignmentReportsVMSSClient = original.AssignmentReportsVMSSClient
 type AssignmentsClient = original.AssignmentsClient
+type AssignmentsVMSSClient = original.AssignmentsVMSSClient
 type BaseClient = original.BaseClient
 type ConfigurationInfo = original.ConfigurationInfo
 type ConfigurationParameter = original.ConfigurationParameter
@@ -89,8 +100,10 @@ type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type VMInfo = original.VMInfo
+type VMSSVMInfo = original.VMSSVMInfo
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -101,11 +114,23 @@ func NewAssignmentReportsClient(subscriptionID string) AssignmentReportsClient {
 func NewAssignmentReportsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentReportsClient {
 	return original.NewAssignmentReportsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewAssignmentReportsVMSSClient(subscriptionID string) AssignmentReportsVMSSClient {
+	return original.NewAssignmentReportsVMSSClient(subscriptionID)
+}
+func NewAssignmentReportsVMSSClientWithBaseURI(baseURI string, subscriptionID string) AssignmentReportsVMSSClient {
+	return original.NewAssignmentReportsVMSSClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)
 }
 func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAssignmentsVMSSClient(subscriptionID string) AssignmentsVMSSClient {
+	return original.NewAssignmentsVMSSClient(subscriptionID)
+}
+func NewAssignmentsVMSSClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsVMSSClient {
+	return original.NewAssignmentsVMSSClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewHCRPAssignmentReportsClient(subscriptionID string) HCRPAssignmentReportsClient {
 	return original.NewHCRPAssignmentReportsClient(subscriptionID)
@@ -136,6 +161,9 @@ func PossibleComplianceStatusValues() []ComplianceStatus {
 }
 func PossibleConfigurationModeValues() []ConfigurationMode {
 	return original.PossibleConfigurationModeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

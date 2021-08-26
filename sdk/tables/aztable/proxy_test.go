@@ -173,13 +173,15 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 
 func createStorageClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
+	var err error
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
-	cred, err := NewSharedKeyCredential(accountName, accountKey)
-	require.NoError(t, err)
 	if recording.InPlayback() {
 		cred, err = getSharedKeyCredential(t)
+		require.NoError(t, err)
+	} else {
+		cred, err = NewSharedKeyCredential(accountName, accountKey)
 		require.NoError(t, err)
 	}
 

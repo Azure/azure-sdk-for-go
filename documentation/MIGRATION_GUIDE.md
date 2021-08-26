@@ -2,7 +2,7 @@
 
 This document is intended for users that are familiar with an older version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/**/arm**`)
 
-**For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/armcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/armcore) and the README for every individual package.**
+**For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/azcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azcore) and the README for every individual package.**
 
 ## Table of contents
 

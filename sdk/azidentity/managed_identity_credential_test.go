@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"reflect"
 	"strings"
 	"testing"
 
@@ -380,7 +379,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 		if !errors.As(err, &expected) {
-			t.Fatalf("Expected CredentialUnavailableError, got %s", reflect.TypeOf(err))
+			t.Fatalf("Expected %T, got %T", expected, err)
 		}
 	}
 }

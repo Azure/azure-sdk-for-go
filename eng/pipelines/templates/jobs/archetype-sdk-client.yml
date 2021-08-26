@@ -2,9 +2,6 @@ parameters:
   - name:  ServiceDirectory
     type: string
     default: ''
-  - name:  CoverageGoal
-    type: string
-    default: '0.95'
   - name:  RunTests
     type: string
     default: false

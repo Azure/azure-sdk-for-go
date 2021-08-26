@@ -1,7 +1,10 @@
 parameters:
-  ServiceDirectory: ''
-  CoverageGoal: 0.95
-  RunTests: false
+  - name:  ServiceDirectory
+    type: string
+    default: ''
+  - name:  RunTests
+    type: string
+    default: false
 
 stages:
   - stage: Build

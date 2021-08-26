@@ -99,14 +99,14 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 		return nil, err
 	}
 
-	if resp.HasStatusCode(successStatusCodes[:]...) {
+	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
 	value := struct {
 		// these are the only fields that we use
 		Token        string        `json:"access_token,omitempty"`
@@ -114,7 +114,7 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		ExpiresIn    wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
-	if err := res.UnmarshalAsJSON(&value); err != nil {
+	if err := azcore.UnmarshalAsJSON(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	if value.ExpiresIn != "" {
@@ -356,7 +356,7 @@ func (c *managedIdentityClient) imdsAvailable() bool {
 	request.URL.RawQuery = q.Encode()
 	resp, err := c.pipeline.Do(request)
 	if err == nil {
-		resp.Drain()
+		azcore.Drain(resp)
 	}
 	return err == nil
 }

@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -72,6 +73,6 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		logCredentialError(err.credentialType, err)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
+	log.Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
 	return NewChainedTokenCredential(creds...)
 }

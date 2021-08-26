@@ -172,6 +172,52 @@ func (c *CosmosContainer) CreateItem(
 	return newCosmosItemResponse(azResponse)
 }
 
+// Replaces an item in a Cosmos container.
+// ctx - The context for the request.
+// partitionKey - The partition key of the item to replace.
+// itemId - The id of the item to replace.
+// item - The content to be used to replace.
+// requestOptions - Optional parameters for the request.
+func (c *CosmosContainer) ReplaceItem(
+	ctx context.Context,
+	partitionKey PartitionKey,
+	itemId string,
+	item interface{},
+	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+
+	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions)
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
+	if requestOptions == nil {
+		requestOptions = &CosmosItemRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDocument,
+		resourceAddress: itemId,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeDocument, createLink(c.link, pathSegmentDocument, itemId), false)
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
+	azResponse, err := c.Database.client.connection.sendPutRequest(
+		path,
+		ctx,
+		item,
+		operationContext,
+		requestOptions,
+		addHeader)
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
+	return newCosmosItemResponse(azResponse)
+}
+
 // Reads an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.

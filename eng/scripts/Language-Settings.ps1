@@ -7,13 +7,13 @@ $MGMT_PLANE_VERSION_FILE = "autorest.md"
 $DATA_PLANE_VERSION_FILE = "version.go"
 function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
 {
-    $workFolder = $($pkg.Directory)
+    $workFolder = $pkg.Directory
     $releaseNotes = ""
     $namespaceName = $workFolder.Name
     $rpName = $workFolder.Parent.Name
 
     $pkgId = "sdk/$rpName/$namespaceName"
-    $pkgVersion = Get-Version($workFolder)
+    $pkgVersion = Get-Version $workFolder
 
     $changeLogLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
     if ($changeLogLoc)
@@ -24,7 +24,7 @@ function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     $resultObj = New-Object PSObject -Property @{
         PackageId      = $pkgId
         PackageVersion = $pkgVersion
-        ReleaseTag     = "$($pkgId)/v$($pkgVersion)"
+        ReleaseTag     = "$pkgId/v$pkgVersion"
         Deployable     = $true
         ReleaseNotes   = $releaseNotes
     }
@@ -46,7 +46,7 @@ function Get-Version ($pkgPath)
         $versionRegex = $GO_VERSION_REGEX
     }
 
-    $content = Get-Content($versionPath)
+    $content = Get-Content $versionPath
     $content = $content.Split("`n")
 
     try
@@ -67,7 +67,7 @@ function Get-Version ($pkgPath)
     }
 
     Write-Host "Cannot find release version."
-    exit(1)
+    exit 1
 }
 
 # rewrite for go as all 0.x.x version should be considered prerelease
@@ -78,7 +78,7 @@ function CreateReleases($pkgList, $releaseApiUrl, $releaseSha)
         Write-Host "Creating release $($pkgInfo.Tag)"
   
         $releaseNotes = ""
-        if ($pkgInfo.ReleaseNotes -ne $null)
+        if ($null -ne $pkgInfo.ReleaseNotes)
         {
             $releaseNotes = $pkgInfo.ReleaseNotes
         }

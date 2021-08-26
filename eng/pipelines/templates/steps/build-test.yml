@@ -1,13 +1,27 @@
 parameters:
-  ServiceDirectory: ''
-  GoWorkspace: ''
-  Scope: 'sdk/...'
-  Image: ''
-  GoVersion: ''
-  RunTests: false
+  - name:  ServiceDirectory
+    type: string
+    default: ''
+  - name:  GoWorkspace
+    type: string
+    default: ''
+  - name:  Scope
+    type: string
+    default: 'sdk/...'
+  - name:  Image
+    type: string
+    default: ''
+  - name:  GoVersion
+    type: string
+    default: ''
+  - name:  RunTests
+    type: boolean
+    default: false
+  - name: EnvVars
+    type: object
+    default: {}
 
 steps:
-
   - pwsh: ./eng/scripts/build.ps1
     displayName: 'Build'
     workingDirectory: '${{parameters.GoWorkspace}}'
@@ -48,6 +62,7 @@ steps:
       workingDirectory: '${{parameters.GoWorkspace}}'
       env:
         GO111MODULE: 'on'
+        ${{ insert }}: ${{ parameters.EnvVars }}
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'

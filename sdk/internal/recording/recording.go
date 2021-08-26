@@ -523,8 +523,6 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 }
 
 func StopRecording(t *testing.T, options *RecordingOptions) error {
-	// defer resetRecordingId()
-
 	if options == nil {
 		options = defaultOptions()
 	}

@@ -16,6 +16,7 @@ const (
 	cosmosHeaderConsistencyLevel   string = "x-ms-consistency-level"
 	cosmosHeaderPartitionKey       string = "x-ms-documentdb-partitionkey"
 	cosmosHeaderPrefer             string = "Prefer"
+	cosmosHeaderIsUpsert           string = "x-ms-documentdb-is-upsert"
 )
 
 const (

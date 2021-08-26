@@ -173,6 +173,54 @@ func (c *CosmosContainer) CreateItem(
 	return newCosmosItemResponse(azResponse)
 }
 
+// Upserts (create or replace) an item in a Cosmos container.
+// ctx - The context for the request.
+// partitionKey - The partition key for the item.
+// item - The item to upsert.
+// requestOptions - Optional parameters for the request.
+func (c *CosmosContainer) UpsertItem(
+	ctx context.Context,
+	partitionKey *PartitionKey,
+	item interface{},
+	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+
+	addHeaderInternal, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
+	addHeader := func(r *azcore.Request) {
+		addHeaderInternal(r)
+		r.Header.Add(cosmosHeaderIsUpsert, "true")
+	}
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
+	if requestOptions == nil {
+		requestOptions = &CosmosItemRequestOptions{}
+	}
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDocument,
+		resourceAddress: c.link,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
+	azResponse, err := c.Database.client.connection.sendPostRequest(
+		path,
+		ctx,
+		item,
+		operationContext,
+		requestOptions,
+		addHeader)
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
+	return newCosmosItemResponse(azResponse)
+}
+
 // Replaces an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key of the item to replace.

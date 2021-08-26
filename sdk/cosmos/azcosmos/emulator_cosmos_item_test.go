@@ -92,6 +92,28 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Expected value to be 3, got %v", itemResponseBody["value"])
 	}
 
+	item["value"] = "4"
+	itemResponse, err = container.UpsertItem(context.TODO(), pk, item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	if err != nil {
+		t.Fatalf("Failed to upsert item: %v", err)
+	}
+
+	// Explicitly requesting body on write
+	if len(itemResponse.Value) == 0 {
+		t.Fatalf("Expected non-empty response, got %v", itemResponse.Value)
+	}
+
+	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal item response: %v", err)
+	}
+	if itemResponseBody["id"] != "1" {
+		t.Fatalf("Expected id to be 1, got %v", itemResponseBody["id"])
+	}
+	if itemResponseBody["value"] != "4" {
+		t.Fatalf("Expected value to be 4, got %v", itemResponseBody["value"])
+	}
+
 	itemResponse, err = container.DeleteItem(context.TODO(), pk, "1", nil)
 	if err != nil {
 		t.Fatalf("Failed to replace item: %v", err)

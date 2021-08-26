@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -135,11 +136,11 @@ func (c *CosmosContainer) Delete(
 // requestOptions - Optional parameters for the request.
 func (c *CosmosContainer) CreateItem(
 	ctx context.Context,
-	partitionKey PartitionKey,
+	partitionKey *PartitionKey,
 	item interface{},
 	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
 
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions)
+	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -180,12 +181,12 @@ func (c *CosmosContainer) CreateItem(
 // requestOptions - Optional parameters for the request.
 func (c *CosmosContainer) ReplaceItem(
 	ctx context.Context,
-	partitionKey PartitionKey,
+	partitionKey *PartitionKey,
 	itemId string,
 	item interface{},
 	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
 
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions)
+	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -196,10 +197,10 @@ func (c *CosmosContainer) ReplaceItem(
 
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDocument,
-		resourceAddress: itemId,
+		resourceAddress: createLink(c.link, pathSegmentDocument, itemId),
 	}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, createLink(c.link, pathSegmentDocument, itemId), false)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -225,11 +226,11 @@ func (c *CosmosContainer) ReplaceItem(
 // requestOptions - Optional parameters for the request.
 func (c *CosmosContainer) ReadItem(
 	ctx context.Context,
-	partitionKey PartitionKey,
+	partitionKey *PartitionKey,
 	itemId string,
 	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
 
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions)
+	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, false)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -240,10 +241,10 @@ func (c *CosmosContainer) ReadItem(
 
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDocument,
-		resourceAddress: itemId,
+		resourceAddress: createLink(c.link, pathSegmentDocument, itemId),
 	}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, createLink(c.link, pathSegmentDocument, itemId), false)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -268,11 +269,11 @@ func (c *CosmosContainer) ReadItem(
 // requestOptions - Optional parameters for the request.
 func (c *CosmosContainer) DeleteItem(
 	ctx context.Context,
-	partitionKey PartitionKey,
+	partitionKey *PartitionKey,
 	itemId string,
 	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
 
-	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions)
+	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -283,10 +284,10 @@ func (c *CosmosContainer) DeleteItem(
 
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDocument,
-		resourceAddress: itemId,
+		resourceAddress: createLink(c.link, pathSegmentDocument, itemId),
 	}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, createLink(c.link, pathSegmentDocument, itemId), false)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
 		return CosmosItemResponse{}, err
 	}
@@ -305,8 +306,13 @@ func (c *CosmosContainer) DeleteItem(
 }
 
 func (c *CosmosContainer) buildRequestEnricher(
-	partitionKey PartitionKey,
-	requestOptions *CosmosItemRequestOptions) (func(r *azcore.Request), error) {
+	partitionKey *PartitionKey,
+	requestOptions *CosmosItemRequestOptions,
+	writeOperation bool) (func(r *azcore.Request), error) {
+	if partitionKey == nil {
+		return nil, errors.New("partitionKey is required")
+	}
+
 	pk, err := partitionKey.toJsonString()
 	if err != nil {
 		return nil, err
@@ -321,7 +327,7 @@ func (c *CosmosContainer) buildRequestEnricher(
 
 	return func(r *azcore.Request) {
 		r.Header.Add(cosmosHeaderPartitionKey, pk)
-		if !enableContentResponseOnWrite {
+		if writeOperation && !enableContentResponseOnWrite {
 			r.Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
 		}
 	}, nil

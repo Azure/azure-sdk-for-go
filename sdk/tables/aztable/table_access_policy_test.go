@@ -5,32 +5,22 @@ package aztable
 
 import (
 	"strconv"
+	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func (s *tableClientLiveTests) TestSetEmptyAccessPolicy() {
-	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
-		s.T().Skip("TableAccessPolicies are not available on Cosmos Accounts")
-	}
-
-	assert := assert.New(s.T())
-	client, delete := s.init(true)
+func TestSetEmptyAccessPolicy(t *testing.T) {
+	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
 	_, err := client.SetAccessPolicy(ctx, &TableSetAccessPolicyOptions{})
-	assert.Nil(err, "Set access policy failed")
+	require.NoError(t, err)
 }
 
-func (s *tableClientLiveTests) TestSetAccessPolicy() {
-	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
-		s.T().Skip("TableAccessPolicies are not available on Cosmos Accounts")
-	}
-
-	assert := assert.New(s.T())
-	// context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
+func TestSetAccessPolicy(t *testing.T) {
+	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -54,16 +44,11 @@ func (s *tableClientLiveTests) TestSetAccessPolicy() {
 	}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
-	assert.Nil(err, "Set access policy failed")
+	require.NoError(t, err)
 }
 
-func (s *tableClientLiveTests) TestSetMultipleAccessPolicies() {
-	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
-		s.T().Skip("TableAccessPolicies are not available on Cosmos Accounts")
-	}
-
-	assert := assert.New(s.T())
-	client, delete := s.init(true)
+func TestSetMultipleAccessPolicies(t *testing.T) {
+	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
 	id := "empty"
@@ -102,24 +87,16 @@ func (s *tableClientLiveTests) TestSetMultipleAccessPolicies() {
 	}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
-	if err != nil {
-		assert.FailNow("Set access policy failed")
-	}
+	require.NoError(t, err)
 
 	// Make a Get to assert two access policies
 	resp, err := client.GetAccessPolicy(ctx)
-	assert.Nil(err, "Get Access Policy failed")
-	assert.Equal(len(resp.SignedIdentifiers), 3)
+	require.NoError(t, err)
+	require.Equal(t, len(resp.SignedIdentifiers), 3)
 }
 
-func (s *tableClientLiveTests) TestSetTooManyAccessPolicies() {
-	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
-		s.T().Skip("TableAccessPolicies are not available on Cosmos Accounts")
-	}
-
-	assert := assert.New(s.T())
-	// context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
+func TestSetTooManyAccessPolicies(t *testing.T) {
+	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -146,17 +123,12 @@ func (s *tableClientLiveTests) TestSetTooManyAccessPolicies() {
 	param := TableSetAccessPolicyOptions{TableACL: signedIdentifiers}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
-	assert.NotNil(err, "Set access policy succeeded but should have failed")
-	assert.Contains(err.Error(), tooManyAccessPoliciesError.Error())
+	require.NotNil(t, err, "Set access policy succeeded but should have failed")
+	require.Contains(t, err.Error(), errTooManyAccessPoliciesError.Error())
 }
 
-func (s *tableClientLiveTests) TestSetNullAccessPolicy() {
-	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
-		s.T().Skip("TableAccessPolicies are not available on Cosmos Accounts")
-	}
-
-	assert := assert.New(s.T())
-	client, delete := s.init(true)
+func TestSetNullAccessPolicy(t *testing.T) {
+	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
 	id := "null"
@@ -171,11 +143,9 @@ func (s *tableClientLiveTests) TestSetNullAccessPolicy() {
 	}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
-	if err != nil {
-		assert.FailNow("Set access policy failed")
-	}
+	require.NoError(t, err)
 
 	resp, err := client.GetAccessPolicy(ctx)
-	assert.Nil(err, "Get Access Policy failed")
-	assert.Equal(len(resp.SignedIdentifiers), 1)
+	require.NoError(t, err)
+	require.Equal(t, len(resp.SignedIdentifiers), 1)
 }

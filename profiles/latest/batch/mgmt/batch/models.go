@@ -11,7 +11,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2020-09-01/batch"
+	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
 )
 
 const (
@@ -21,16 +21,31 @@ const (
 type AccountKeyType = original.AccountKeyType
 
 const (
-	Primary   AccountKeyType = original.Primary
-	Secondary AccountKeyType = original.Secondary
+	AccountKeyTypePrimary   AccountKeyType = original.AccountKeyTypePrimary
+	AccountKeyTypeSecondary AccountKeyType = original.AccountKeyTypeSecondary
 )
 
 type AllocationState = original.AllocationState
 
 const (
-	Resizing AllocationState = original.Resizing
-	Steady   AllocationState = original.Steady
-	Stopping AllocationState = original.Stopping
+	AllocationStateResizing AllocationState = original.AllocationStateResizing
+	AllocationStateSteady   AllocationState = original.AllocationStateSteady
+	AllocationStateStopping AllocationState = original.AllocationStateStopping
+)
+
+type AuthenticationMode = original.AuthenticationMode
+
+const (
+	AuthenticationModeAAD                     AuthenticationMode = original.AuthenticationModeAAD
+	AuthenticationModeSharedKey               AuthenticationMode = original.AuthenticationModeSharedKey
+	AuthenticationModeTaskAuthenticationToken AuthenticationMode = original.AuthenticationModeTaskAuthenticationToken
+)
+
+type AutoStorageAuthenticationMode = original.AutoStorageAuthenticationMode
+
+const (
+	AutoStorageAuthenticationModeBatchAccountManagedIdentity AutoStorageAuthenticationMode = original.AutoStorageAuthenticationModeBatchAccountManagedIdentity
+	AutoStorageAuthenticationModeStorageKeys                 AutoStorageAuthenticationMode = original.AutoStorageAuthenticationModeStorageKeys
 )
 
 type AutoUserScope = original.AutoUserScope
@@ -43,31 +58,31 @@ const (
 type CachingType = original.CachingType
 
 const (
-	None      CachingType = original.None
-	ReadOnly  CachingType = original.ReadOnly
-	ReadWrite CachingType = original.ReadWrite
+	CachingTypeNone      CachingType = original.CachingTypeNone
+	CachingTypeReadOnly  CachingType = original.CachingTypeReadOnly
+	CachingTypeReadWrite CachingType = original.CachingTypeReadWrite
 )
 
 type CertificateFormat = original.CertificateFormat
 
 const (
-	Cer CertificateFormat = original.Cer
-	Pfx CertificateFormat = original.Pfx
+	CertificateFormatCer CertificateFormat = original.CertificateFormatCer
+	CertificateFormatPfx CertificateFormat = original.CertificateFormatPfx
 )
 
 type CertificateProvisioningState = original.CertificateProvisioningState
 
 const (
-	Deleting  CertificateProvisioningState = original.Deleting
-	Failed    CertificateProvisioningState = original.Failed
-	Succeeded CertificateProvisioningState = original.Succeeded
+	CertificateProvisioningStateDeleting  CertificateProvisioningState = original.CertificateProvisioningStateDeleting
+	CertificateProvisioningStateFailed    CertificateProvisioningState = original.CertificateProvisioningStateFailed
+	CertificateProvisioningStateSucceeded CertificateProvisioningState = original.CertificateProvisioningStateSucceeded
 )
 
 type CertificateStoreLocation = original.CertificateStoreLocation
 
 const (
-	CurrentUser  CertificateStoreLocation = original.CurrentUser
-	LocalMachine CertificateStoreLocation = original.LocalMachine
+	CertificateStoreLocationCurrentUser  CertificateStoreLocation = original.CertificateStoreLocationCurrentUser
+	CertificateStoreLocationLocalMachine CertificateStoreLocation = original.CertificateStoreLocationLocalMachine
 )
 
 type CertificateVisibility = original.CertificateVisibility
@@ -81,102 +96,122 @@ const (
 type ComputeNodeDeallocationOption = original.ComputeNodeDeallocationOption
 
 const (
-	Requeue        ComputeNodeDeallocationOption = original.Requeue
-	RetainedData   ComputeNodeDeallocationOption = original.RetainedData
-	TaskCompletion ComputeNodeDeallocationOption = original.TaskCompletion
-	Terminate      ComputeNodeDeallocationOption = original.Terminate
+	ComputeNodeDeallocationOptionRequeue        ComputeNodeDeallocationOption = original.ComputeNodeDeallocationOptionRequeue
+	ComputeNodeDeallocationOptionRetainedData   ComputeNodeDeallocationOption = original.ComputeNodeDeallocationOptionRetainedData
+	ComputeNodeDeallocationOptionTaskCompletion ComputeNodeDeallocationOption = original.ComputeNodeDeallocationOptionTaskCompletion
+	ComputeNodeDeallocationOptionTerminate      ComputeNodeDeallocationOption = original.ComputeNodeDeallocationOptionTerminate
 )
 
 type ComputeNodeFillType = original.ComputeNodeFillType
 
 const (
-	Pack   ComputeNodeFillType = original.Pack
-	Spread ComputeNodeFillType = original.Spread
+	ComputeNodeFillTypePack   ComputeNodeFillType = original.ComputeNodeFillTypePack
+	ComputeNodeFillTypeSpread ComputeNodeFillType = original.ComputeNodeFillTypeSpread
 )
 
 type ContainerWorkingDirectory = original.ContainerWorkingDirectory
 
 const (
-	ContainerImageDefault ContainerWorkingDirectory = original.ContainerImageDefault
-	TaskWorkingDirectory  ContainerWorkingDirectory = original.TaskWorkingDirectory
+	ContainerWorkingDirectoryContainerImageDefault ContainerWorkingDirectory = original.ContainerWorkingDirectoryContainerImageDefault
+	ContainerWorkingDirectoryTaskWorkingDirectory  ContainerWorkingDirectory = original.ContainerWorkingDirectoryTaskWorkingDirectory
+)
+
+type DiffDiskPlacement = original.DiffDiskPlacement
+
+const (
+	DiffDiskPlacementCacheDisk DiffDiskPlacement = original.DiffDiskPlacementCacheDisk
 )
 
 type DiskEncryptionTarget = original.DiskEncryptionTarget
 
 const (
-	OsDisk        DiskEncryptionTarget = original.OsDisk
-	TemporaryDisk DiskEncryptionTarget = original.TemporaryDisk
+	DiskEncryptionTargetOsDisk        DiskEncryptionTarget = original.DiskEncryptionTargetOsDisk
+	DiskEncryptionTargetTemporaryDisk DiskEncryptionTarget = original.DiskEncryptionTargetTemporaryDisk
 )
 
 type ElevationLevel = original.ElevationLevel
 
 const (
-	Admin    ElevationLevel = original.Admin
-	NonAdmin ElevationLevel = original.NonAdmin
+	ElevationLevelAdmin    ElevationLevel = original.ElevationLevelAdmin
+	ElevationLevelNonAdmin ElevationLevel = original.ElevationLevelNonAdmin
 )
 
 type IPAddressProvisioningType = original.IPAddressProvisioningType
 
 const (
-	BatchManaged        IPAddressProvisioningType = original.BatchManaged
-	NoPublicIPAddresses IPAddressProvisioningType = original.NoPublicIPAddresses
-	UserManaged         IPAddressProvisioningType = original.UserManaged
+	IPAddressProvisioningTypeBatchManaged        IPAddressProvisioningType = original.IPAddressProvisioningTypeBatchManaged
+	IPAddressProvisioningTypeNoPublicIPAddresses IPAddressProvisioningType = original.IPAddressProvisioningTypeNoPublicIPAddresses
+	IPAddressProvisioningTypeUserManaged         IPAddressProvisioningType = original.IPAddressProvisioningTypeUserManaged
 )
 
 type InboundEndpointProtocol = original.InboundEndpointProtocol
 
 const (
-	TCP InboundEndpointProtocol = original.TCP
-	UDP InboundEndpointProtocol = original.UDP
+	InboundEndpointProtocolTCP InboundEndpointProtocol = original.InboundEndpointProtocolTCP
+	InboundEndpointProtocolUDP InboundEndpointProtocol = original.InboundEndpointProtocolUDP
 )
 
 type InterNodeCommunicationState = original.InterNodeCommunicationState
 
 const (
-	Disabled InterNodeCommunicationState = original.Disabled
-	Enabled  InterNodeCommunicationState = original.Enabled
+	InterNodeCommunicationStateDisabled InterNodeCommunicationState = original.InterNodeCommunicationStateDisabled
+	InterNodeCommunicationStateEnabled  InterNodeCommunicationState = original.InterNodeCommunicationStateEnabled
 )
 
 type KeySource = original.KeySource
 
 const (
-	MicrosoftBatch    KeySource = original.MicrosoftBatch
-	MicrosoftKeyVault KeySource = original.MicrosoftKeyVault
+	KeySourceMicrosoftBatch    KeySource = original.KeySourceMicrosoftBatch
+	KeySourceMicrosoftKeyVault KeySource = original.KeySourceMicrosoftKeyVault
 )
 
 type LoginMode = original.LoginMode
 
 const (
-	Batch       LoginMode = original.Batch
-	Interactive LoginMode = original.Interactive
+	LoginModeBatch       LoginMode = original.LoginModeBatch
+	LoginModeInteractive LoginMode = original.LoginModeInteractive
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
-	AlreadyExists NameAvailabilityReason = original.AlreadyExists
-	Invalid       NameAvailabilityReason = original.Invalid
+	NameAvailabilityReasonAlreadyExists NameAvailabilityReason = original.NameAvailabilityReasonAlreadyExists
+	NameAvailabilityReasonInvalid       NameAvailabilityReason = original.NameAvailabilityReasonInvalid
 )
 
 type NetworkSecurityGroupRuleAccess = original.NetworkSecurityGroupRuleAccess
 
 const (
-	Allow NetworkSecurityGroupRuleAccess = original.Allow
-	Deny  NetworkSecurityGroupRuleAccess = original.Deny
+	NetworkSecurityGroupRuleAccessAllow NetworkSecurityGroupRuleAccess = original.NetworkSecurityGroupRuleAccessAllow
+	NetworkSecurityGroupRuleAccessDeny  NetworkSecurityGroupRuleAccess = original.NetworkSecurityGroupRuleAccessDeny
+)
+
+type NodePlacementPolicyType = original.NodePlacementPolicyType
+
+const (
+	NodePlacementPolicyTypeRegional NodePlacementPolicyType = original.NodePlacementPolicyTypeRegional
+	NodePlacementPolicyTypeZonal    NodePlacementPolicyType = original.NodePlacementPolicyTypeZonal
 )
 
 type PackageState = original.PackageState
 
 const (
-	Active  PackageState = original.Active
-	Pending PackageState = original.Pending
+	PackageStateActive  PackageState = original.PackageStateActive
+	PackageStatePending PackageState = original.PackageStatePending
 )
 
 type PoolAllocationMode = original.PoolAllocationMode
 
 const (
-	BatchService     PoolAllocationMode = original.BatchService
-	UserSubscription PoolAllocationMode = original.UserSubscription
+	PoolAllocationModeBatchService     PoolAllocationMode = original.PoolAllocationModeBatchService
+	PoolAllocationModeUserSubscription PoolAllocationMode = original.PoolAllocationModeUserSubscription
+)
+
+type PoolIdentityType = original.PoolIdentityType
+
+const (
+	PoolIdentityTypeNone         PoolIdentityType = original.PoolIdentityTypeNone
+	PoolIdentityTypeUserAssigned PoolIdentityType = original.PoolIdentityTypeUserAssigned
 )
 
 type PoolProvisioningState = original.PoolProvisioningState
@@ -226,13 +261,14 @@ type ResourceIdentityType = original.ResourceIdentityType
 const (
 	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeUserAssigned   ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type StorageAccountType = original.StorageAccountType
 
 const (
-	PremiumLRS  StorageAccountType = original.PremiumLRS
-	StandardLRS StorageAccountType = original.StandardLRS
+	StorageAccountTypePremiumLRS  StorageAccountType = original.StorageAccountTypePremiumLRS
+	StorageAccountTypeStandardLRS StorageAccountType = original.StorageAccountTypeStandardLRS
 )
 
 type Account = original.Account
@@ -271,7 +307,6 @@ type CIFSMountConfiguration = original.CIFSMountConfiguration
 type Certificate = original.Certificate
 type CertificateBaseProperties = original.CertificateBaseProperties
 type CertificateClient = original.CertificateClient
-type CertificateCreateFuture = original.CertificateCreateFuture
 type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
 type CertificateDeleteFuture = original.CertificateDeleteFuture
@@ -282,13 +317,17 @@ type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CloudServiceConfiguration = original.CloudServiceConfiguration
+type ComputeNodeIdentityReference = original.ComputeNodeIdentityReference
 type ContainerConfiguration = original.ContainerConfiguration
 type ContainerRegistry = original.ContainerRegistry
 type DataDisk = original.DataDisk
 type DeleteCertificateError = original.DeleteCertificateError
 type DeploymentConfiguration = original.DeploymentConfiguration
+type DiffDiskSettings = original.DiffDiskSettings
 type DiskEncryptionConfiguration = original.DiskEncryptionConfiguration
 type EncryptionProperties = original.EncryptionProperties
+type EndpointDependency = original.EndpointDependency
+type EndpointDetail = original.EndpointDetail
 type EnvironmentSetting = original.EnvironmentSetting
 type FixedScaleSettings = original.FixedScaleSettings
 type ImageReference = original.ImageReference
@@ -321,17 +360,23 @@ type MountConfiguration = original.MountConfiguration
 type NFSMountConfiguration = original.NFSMountConfiguration
 type NetworkConfiguration = original.NetworkConfiguration
 type NetworkSecurityGroupRule = original.NetworkSecurityGroupRule
+type NodePlacementConfiguration = original.NodePlacementConfiguration
+type OSDisk = original.OSDisk
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type OutboundEnvironmentEndpoint = original.OutboundEnvironmentEndpoint
+type OutboundEnvironmentEndpointCollection = original.OutboundEnvironmentEndpointCollection
+type OutboundEnvironmentEndpointCollectionIterator = original.OutboundEnvironmentEndpointCollectionIterator
+type OutboundEnvironmentEndpointCollectionPage = original.OutboundEnvironmentEndpointCollectionPage
 type Pool = original.Pool
 type PoolClient = original.PoolClient
-type PoolCreateFuture = original.PoolCreateFuture
 type PoolDeleteFuture = original.PoolDeleteFuture
 type PoolEndpointConfiguration = original.PoolEndpointConfiguration
+type PoolIdentity = original.PoolIdentity
 type PoolProperties = original.PoolProperties
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
@@ -349,11 +394,18 @@ type ResizeOperationStatus = original.ResizeOperationStatus
 type Resource = original.Resource
 type ResourceFile = original.ResourceFile
 type ScaleSettings = original.ScaleSettings
+type SkuCapability = original.SkuCapability
 type StartTask = original.StartTask
+type SupportedSku = original.SupportedSku
+type SupportedSkusResult = original.SupportedSkusResult
+type SupportedSkusResultIterator = original.SupportedSkusResultIterator
+type SupportedSkusResultPage = original.SupportedSkusResultPage
 type TaskContainerSettings = original.TaskContainerSettings
 type TaskSchedulingPolicy = original.TaskSchedulingPolicy
 type UserAccount = original.UserAccount
+type UserAssignedIdentities = original.UserAssignedIdentities
 type UserIdentity = original.UserIdentity
+type VMExtension = original.VMExtension
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type VirtualMachineFamilyCoreQuota = original.VirtualMachineFamilyCoreQuota
 type WindowsConfiguration = original.WindowsConfiguration
@@ -446,6 +498,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
+	return original.NewOutboundEnvironmentEndpointCollectionIterator(page)
+}
+func NewOutboundEnvironmentEndpointCollectionPage(cur OutboundEnvironmentEndpointCollection, getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return original.NewOutboundEnvironmentEndpointCollectionPage(cur, getNextPage)
+}
 func NewPoolClient(subscriptionID string) PoolClient {
 	return original.NewPoolClient(subscriptionID)
 }
@@ -464,6 +522,12 @@ func NewPrivateLinkResourceClient(subscriptionID string) PrivateLinkResourceClie
 func NewPrivateLinkResourceClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourceClient {
 	return original.NewPrivateLinkResourceClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSupportedSkusResultIterator(page SupportedSkusResultPage) SupportedSkusResultIterator {
+	return original.NewSupportedSkusResultIterator(page)
+}
+func NewSupportedSkusResultPage(cur SupportedSkusResult, getNextPage func(context.Context, SupportedSkusResult) (SupportedSkusResult, error)) SupportedSkusResultPage {
+	return original.NewSupportedSkusResultPage(cur, getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -472,6 +536,12 @@ func PossibleAccountKeyTypeValues() []AccountKeyType {
 }
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
+}
+func PossibleAuthenticationModeValues() []AuthenticationMode {
+	return original.PossibleAuthenticationModeValues()
+}
+func PossibleAutoStorageAuthenticationModeValues() []AutoStorageAuthenticationMode {
+	return original.PossibleAutoStorageAuthenticationModeValues()
 }
 func PossibleAutoUserScopeValues() []AutoUserScope {
 	return original.PossibleAutoUserScopeValues()
@@ -500,6 +570,9 @@ func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 func PossibleContainerWorkingDirectoryValues() []ContainerWorkingDirectory {
 	return original.PossibleContainerWorkingDirectoryValues()
 }
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return original.PossibleDiffDiskPlacementValues()
+}
 func PossibleDiskEncryptionTargetValues() []DiskEncryptionTarget {
 	return original.PossibleDiskEncryptionTargetValues()
 }
@@ -527,11 +600,17 @@ func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAccess {
 	return original.PossibleNetworkSecurityGroupRuleAccessValues()
 }
+func PossibleNodePlacementPolicyTypeValues() []NodePlacementPolicyType {
+	return original.PossibleNodePlacementPolicyTypeValues()
+}
 func PossiblePackageStateValues() []PackageState {
 	return original.PossiblePackageStateValues()
 }
 func PossiblePoolAllocationModeValues() []PoolAllocationMode {
 	return original.PossiblePoolAllocationModeValues()
+}
+func PossiblePoolIdentityTypeValues() []PoolIdentityType {
+	return original.PossiblePoolIdentityTypeValues()
 }
 func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
 	return original.PossiblePoolProvisioningStateValues()

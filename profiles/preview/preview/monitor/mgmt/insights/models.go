@@ -11,7 +11,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-04-01-preview/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 )
 
 const (
@@ -296,6 +296,7 @@ type MetricStatisticType = original.MetricStatisticType
 
 const (
 	MetricStatisticTypeAverage MetricStatisticType = original.MetricStatisticTypeAverage
+	MetricStatisticTypeCount   MetricStatisticType = original.MetricStatisticTypeCount
 	MetricStatisticTypeMax     MetricStatisticType = original.MetricStatisticTypeMax
 	MetricStatisticTypeMin     MetricStatisticType = original.MetricStatisticTypeMin
 	MetricStatisticTypeSum     MetricStatisticType = original.MetricStatisticTypeSum
@@ -456,9 +457,10 @@ const (
 type ScaleType = original.ScaleType
 
 const (
-	ScaleTypeChangeCount        ScaleType = original.ScaleTypeChangeCount
-	ScaleTypeExactCount         ScaleType = original.ScaleTypeExactCount
-	ScaleTypePercentChangeCount ScaleType = original.ScaleTypePercentChangeCount
+	ScaleTypeChangeCount             ScaleType = original.ScaleTypeChangeCount
+	ScaleTypeExactCount              ScaleType = original.ScaleTypeExactCount
+	ScaleTypePercentChangeCount      ScaleType = original.ScaleTypePercentChangeCount
+	ScaleTypeServiceAllowedNextValue ScaleType = original.ScaleTypeServiceAllowedNextValue
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
@@ -489,19 +491,21 @@ type ActionGroupPatch = original.ActionGroupPatch
 type ActionGroupPatchBody = original.ActionGroupPatchBody
 type ActionGroupResource = original.ActionGroupResource
 type ActionGroupsClient = original.ActionGroupsClient
-type ActivityLogAlert = original.ActivityLogAlert
-type ActivityLogAlertActionGroup = original.ActivityLogAlertActionGroup
-type ActivityLogAlertActionList = original.ActivityLogAlertActionList
-type ActivityLogAlertAllOfCondition = original.ActivityLogAlertAllOfCondition
-type ActivityLogAlertLeafCondition = original.ActivityLogAlertLeafCondition
-type ActivityLogAlertList = original.ActivityLogAlertList
-type ActivityLogAlertPatch = original.ActivityLogAlertPatch
-type ActivityLogAlertPatchBody = original.ActivityLogAlertPatchBody
+type ActionList = original.ActionList
 type ActivityLogAlertResource = original.ActivityLogAlertResource
 type ActivityLogAlertsClient = original.ActivityLogAlertsClient
 type ActivityLogsClient = original.ActivityLogsClient
 type AlertRule = original.AlertRule
+type AlertRuleAllOfCondition = original.AlertRuleAllOfCondition
+type AlertRuleAnyOfOrLeafCondition = original.AlertRuleAnyOfOrLeafCondition
 type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
+type AlertRuleLeafCondition = original.AlertRuleLeafCondition
+type AlertRuleList = original.AlertRuleList
+type AlertRuleListIterator = original.AlertRuleListIterator
+type AlertRuleListPage = original.AlertRuleListPage
+type AlertRulePatchObject = original.AlertRulePatchObject
+type AlertRulePatchProperties = original.AlertRulePatchProperties
+type AlertRuleProperties = original.AlertRuleProperties
 type AlertRuleResource = original.AlertRuleResource
 type AlertRuleResourceCollection = original.AlertRuleResourceCollection
 type AlertRuleResourcePatch = original.AlertRuleResourcePatch
@@ -768,6 +772,12 @@ func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient
 }
 func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsClient {
 	return original.NewAlertRuleIncidentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertRuleListIterator(page AlertRuleListPage) AlertRuleListIterator {
+	return original.NewAlertRuleListIterator(page)
+}
+func NewAlertRuleListPage(cur AlertRuleList, getNextPage func(context.Context, AlertRuleList) (AlertRuleList, error)) AlertRuleListPage {
+	return original.NewAlertRuleListPage(cur, getNextPage)
 }
 func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClient(subscriptionID)

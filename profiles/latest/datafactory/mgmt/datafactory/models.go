@@ -346,7 +346,6 @@ const (
 type IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceType
 
 const (
-	IntegrationRuntimeEntityReferenceTypeCredentialReference         IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceTypeCredentialReference
 	IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference
 	IntegrationRuntimeEntityReferenceTypeLinkedServiceReference      IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceTypeLinkedServiceReference
 )
@@ -593,12 +592,27 @@ const (
 	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeServicePrincipal
 )
 
+type SQLDWWriteBehaviorEnum = original.SQLDWWriteBehaviorEnum
+
+const (
+	SQLDWWriteBehaviorEnumInsert SQLDWWriteBehaviorEnum = original.SQLDWWriteBehaviorEnumInsert
+	SQLDWWriteBehaviorEnumUpsert SQLDWWriteBehaviorEnum = original.SQLDWWriteBehaviorEnumUpsert
+)
+
 type SQLPartitionOption = original.SQLPartitionOption
 
 const (
 	SQLPartitionOptionDynamicRange              SQLPartitionOption = original.SQLPartitionOptionDynamicRange
 	SQLPartitionOptionNone                      SQLPartitionOption = original.SQLPartitionOptionNone
 	SQLPartitionOptionPhysicalPartitionsOfTable SQLPartitionOption = original.SQLPartitionOptionPhysicalPartitionsOfTable
+)
+
+type SQLWriteBehaviorEnum = original.SQLWriteBehaviorEnum
+
+const (
+	SQLWriteBehaviorEnumInsert          SQLWriteBehaviorEnum = original.SQLWriteBehaviorEnumInsert
+	SQLWriteBehaviorEnumStoredProcedure SQLWriteBehaviorEnum = original.SQLWriteBehaviorEnumStoredProcedure
+	SQLWriteBehaviorEnumUpsert          SQLWriteBehaviorEnum = original.SQLWriteBehaviorEnumUpsert
 )
 
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
@@ -991,6 +1005,14 @@ type TypeBasicCopyTranslator = original.TypeBasicCopyTranslator
 const (
 	TypeBasicCopyTranslatorTypeCopyTranslator    TypeBasicCopyTranslator = original.TypeBasicCopyTranslatorTypeCopyTranslator
 	TypeBasicCopyTranslatorTypeTabularTranslator TypeBasicCopyTranslator = original.TypeBasicCopyTranslatorTypeTabularTranslator
+)
+
+type TypeBasicCredential = original.TypeBasicCredential
+
+const (
+	TypeBasicCredentialTypeCredential       TypeBasicCredential = original.TypeBasicCredentialTypeCredential
+	TypeBasicCredentialTypeManagedIdentity  TypeBasicCredential = original.TypeBasicCredentialTypeManagedIdentity
+	TypeBasicCredentialTypeServicePrincipal TypeBasicCredential = original.TypeBasicCredentialTypeServicePrincipal
 )
 
 type TypeBasicCustomSetupBase = original.TypeBasicCustomSetupBase
@@ -1564,6 +1586,7 @@ type BasicControlActivity = original.BasicControlActivity
 type BasicCopySink = original.BasicCopySink
 type BasicCopySource = original.BasicCopySource
 type BasicCopyTranslator = original.BasicCopyTranslator
+type BasicCredential = original.BasicCredential
 type BasicCustomSetupBase = original.BasicCustomSetupBase
 type BasicDataFlow = original.BasicDataFlow
 type BasicDataset = original.BasicDataset
@@ -1653,6 +1676,9 @@ type CreateDataFlowDebugSessionRequest = original.CreateDataFlowDebugSessionRequ
 type CreateDataFlowDebugSessionResponse = original.CreateDataFlowDebugSessionResponse
 type CreateLinkedIntegrationRuntimeRequest = original.CreateLinkedIntegrationRuntimeRequest
 type CreateRunResponse = original.CreateRunResponse
+type Credential = original.Credential
+type CredentialReference = original.CredentialReference
+type CredentialResource = original.CredentialResource
 type CustomActivity = original.CustomActivity
 type CustomActivityReferenceObject = original.CustomActivityReferenceObject
 type CustomActivityTypeProperties = original.CustomActivityTypeProperties
@@ -1819,6 +1845,7 @@ type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypePropert
 type GetSsisObjectMetadataRequest = original.GetSsisObjectMetadataRequest
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest
 type GitHubAccessTokenResponse = original.GitHubAccessTokenResponse
+type GitHubClientSecret = original.GitHubClientSecret
 type GlobalParameterSpecification = original.GlobalParameterSpecification
 type GoogleAdWordsLinkedService = original.GoogleAdWordsLinkedService
 type GoogleAdWordsLinkedServiceTypeProperties = original.GoogleAdWordsLinkedServiceTypeProperties
@@ -1908,6 +1935,10 @@ type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonit
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
 type IntegrationRuntimeObjectMetadataClient = original.IntegrationRuntimeObjectMetadataClient
 type IntegrationRuntimeObjectMetadataRefreshFuture = original.IntegrationRuntimeObjectMetadataRefreshFuture
+type IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint = original.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
+type IntegrationRuntimeOutboundNetworkDependenciesEndpoint = original.IntegrationRuntimeOutboundNetworkDependenciesEndpoint
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails = original.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse = original.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse
 type IntegrationRuntimeReference = original.IntegrationRuntimeReference
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
 type IntegrationRuntimeResource = original.IntegrationRuntimeResource
@@ -1954,6 +1985,8 @@ type MagentoLinkedService = original.MagentoLinkedService
 type MagentoLinkedServiceTypeProperties = original.MagentoLinkedServiceTypeProperties
 type MagentoObjectDataset = original.MagentoObjectDataset
 type MagentoSource = original.MagentoSource
+type ManagedIdentityCredential = original.ManagedIdentityCredential
+type ManagedIdentityTypeProperties = original.ManagedIdentityTypeProperties
 type ManagedIntegrationRuntime = original.ManagedIntegrationRuntime
 type ManagedIntegrationRuntimeError = original.ManagedIntegrationRuntimeError
 type ManagedIntegrationRuntimeNode = original.ManagedIntegrationRuntimeNode
@@ -2160,6 +2193,7 @@ type RunQueryOrderBy = original.RunQueryOrderBy
 type SQLAlwaysEncryptedProperties = original.SQLAlwaysEncryptedProperties
 type SQLDWSink = original.SQLDWSink
 type SQLDWSource = original.SQLDWSource
+type SQLDWUpsertSettings = original.SQLDWUpsertSettings
 type SQLMISink = original.SQLMISink
 type SQLMISource = original.SQLMISource
 type SQLPartitionSettings = original.SQLPartitionSettings
@@ -2173,6 +2207,7 @@ type SQLServerTableDataset = original.SQLServerTableDataset
 type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypeProperties
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
+type SQLUpsertSettings = original.SQLUpsertSettings
 type SSISAccessCredential = original.SSISAccessCredential
 type SSISChildPackage = original.SSISChildPackage
 type SSISExecutionCredential = original.SSISExecutionCredential
@@ -2246,6 +2281,8 @@ type ServiceNowLinkedService = original.ServiceNowLinkedService
 type ServiceNowLinkedServiceTypeProperties = original.ServiceNowLinkedServiceTypeProperties
 type ServiceNowObjectDataset = original.ServiceNowObjectDataset
 type ServiceNowSource = original.ServiceNowSource
+type ServicePrincipalCredential = original.ServicePrincipalCredential
+type ServicePrincipalCredentialTypeProperties = original.ServicePrincipalCredentialTypeProperties
 type SetVariableActivity = original.SetVariableActivity
 type SetVariableActivityTypeProperties = original.SetVariableActivityTypeProperties
 type SftpLocation = original.SftpLocation
@@ -2778,8 +2815,14 @@ func PossibleRunQueryOrderValues() []RunQueryOrder {
 func PossibleSQLAlwaysEncryptedAkvAuthTypeValues() []SQLAlwaysEncryptedAkvAuthType {
 	return original.PossibleSQLAlwaysEncryptedAkvAuthTypeValues()
 }
+func PossibleSQLDWWriteBehaviorEnumValues() []SQLDWWriteBehaviorEnum {
+	return original.PossibleSQLDWWriteBehaviorEnumValues()
+}
 func PossibleSQLPartitionOptionValues() []SQLPartitionOption {
 	return original.PossibleSQLPartitionOptionValues()
+}
+func PossibleSQLWriteBehaviorEnumValues() []SQLWriteBehaviorEnum {
+	return original.PossibleSQLWriteBehaviorEnumValues()
 }
 func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 	return original.PossibleSalesforceSinkWriteBehaviorValues()
@@ -2861,6 +2904,9 @@ func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
 }
 func PossibleTypeBasicCopyTranslatorValues() []TypeBasicCopyTranslator {
 	return original.PossibleTypeBasicCopyTranslatorValues()
+}
+func PossibleTypeBasicCredentialValues() []TypeBasicCredential {
+	return original.PossibleTypeBasicCredentialValues()
 }
 func PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase {
 	return original.PossibleTypeBasicCustomSetupBaseValues()

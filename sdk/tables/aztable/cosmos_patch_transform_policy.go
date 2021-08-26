@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,10 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// CosmosPatchTransformPolicy transforms PATCH requests into POST requests with the "X-HTTP-Method":"MERGE" header set.
-type CosmosPatchTransformPolicy struct{}
+// cosmosPatchTransformPolicy transforms PATCH requests into POST requests with the "X-HTTP-Method":"MERGE" header set.
+type cosmosPatchTransformPolicy struct{}
 
-func (p CosmosPatchTransformPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
+func (p cosmosPatchTransformPolicy) Do(req *azcore.Request) (*http.Response, error) {
 	transformPatchToCosmosPost(req)
 	return req.Next()
 }

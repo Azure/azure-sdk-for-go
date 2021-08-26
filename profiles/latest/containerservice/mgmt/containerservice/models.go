@@ -11,7 +11,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-05-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-07-01/containerservice"
 )
 
 const (
@@ -170,8 +170,10 @@ const (
 type OutboundType = original.OutboundType
 
 const (
-	OutboundTypeLoadBalancer       OutboundType = original.OutboundTypeLoadBalancer
-	OutboundTypeUserDefinedRouting OutboundType = original.OutboundTypeUserDefinedRouting
+	OutboundTypeLoadBalancer           OutboundType = original.OutboundTypeLoadBalancer
+	OutboundTypeManagedNATGateway      OutboundType = original.OutboundTypeManagedNATGateway
+	OutboundTypeUserAssignedNATGateway OutboundType = original.OutboundTypeUserAssignedNATGateway
+	OutboundTypeUserDefinedRouting     OutboundType = original.OutboundTypeUserDefinedRouting
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -189,6 +191,13 @@ const (
 	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 	ResourceIdentityTypeUserAssigned   ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type ScaleDownMode = original.ScaleDownMode
+
+const (
+	ScaleDownModeDeallocate ScaleDownMode = original.ScaleDownModeDeallocate
+	ScaleDownModeDelete     ScaleDownMode = original.ScaleDownModeDelete
 )
 
 type ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicy
@@ -467,16 +476,21 @@ type ManagedClusterLoadBalancerProfile = original.ManagedClusterLoadBalancerProf
 type ManagedClusterLoadBalancerProfileManagedOutboundIPs = original.ManagedClusterLoadBalancerProfileManagedOutboundIPs
 type ManagedClusterLoadBalancerProfileOutboundIPPrefixes = original.ManagedClusterLoadBalancerProfileOutboundIPPrefixes
 type ManagedClusterLoadBalancerProfileOutboundIPs = original.ManagedClusterLoadBalancerProfileOutboundIPs
+type ManagedClusterManagedOutboundIPProfile = original.ManagedClusterManagedOutboundIPProfile
+type ManagedClusterNATGatewayProfile = original.ManagedClusterNATGatewayProfile
 type ManagedClusterPodIdentity = original.ManagedClusterPodIdentity
 type ManagedClusterPodIdentityException = original.ManagedClusterPodIdentityException
 type ManagedClusterPodIdentityProfile = original.ManagedClusterPodIdentityProfile
+type ManagedClusterPodIdentityProvisioningError = original.ManagedClusterPodIdentityProvisioningError
+type ManagedClusterPodIdentityProvisioningErrorBody = original.ManagedClusterPodIdentityProvisioningErrorBody
 type ManagedClusterPodIdentityProvisioningInfo = original.ManagedClusterPodIdentityProvisioningInfo
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
-type ManagedClusterPropertiesIdentityProfileValue = original.ManagedClusterPropertiesIdentityProfileValue
 type ManagedClusterSKU = original.ManagedClusterSKU
+type ManagedClusterSecurityProfile = original.ManagedClusterSecurityProfile
+type ManagedClusterSecurityProfileAzureDefender = original.ManagedClusterSecurityProfileAzureDefender
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
@@ -671,6 +685,9 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleScaleDownModeValues() []ScaleDownMode {
+	return original.PossibleScaleDownModeValues()
 }
 func PossibleScaleSetEvictionPolicyValues() []ScaleSetEvictionPolicy {
 	return original.PossibleScaleSetEvictionPolicyValues()

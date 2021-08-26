@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -29,7 +30,7 @@ func TestPolicyTelemetryDefault(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != defaultTelemetry {
+	if v := resp.Request.Header.Get(headerUserAgent); v != defaultTelemetry {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -48,7 +49,7 @@ func TestPolicyTelemetryWithCustomInfo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s", testValue, defaultTelemetry) {
+	if v := resp.Request.Header.Get(headerUserAgent); v != fmt.Sprintf("%s %s", testValue, defaultTelemetry) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -63,12 +64,12 @@ func TestPolicyTelemetryPreserveExisting(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	const otherValue = "this should stay"
-	req.Header.Set(HeaderUserAgent, otherValue)
+	req.Header.Set(headerUserAgent, otherValue)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s", defaultTelemetry, otherValue) {
+	if v := resp.Request.Header.Get(headerUserAgent); v != fmt.Sprintf("%s %s", defaultTelemetry, otherValue) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -87,7 +88,7 @@ func TestPolicyTelemetryWithAppID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s", appID, defaultTelemetry) {
+	if v := resp.Request.Header.Get(headerUserAgent); v != fmt.Sprintf("%s %s", appID, defaultTelemetry) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -107,7 +108,7 @@ func TestPolicyTelemetryWithAppIDAndReqTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s %s", "TestPolicyTelemetryWithAppIDAndReqTelemetry", appID, defaultTelemetry) {
+	if v := resp.Request.Header.Get(headerUserAgent); v != fmt.Sprintf("%s %s %s", "TestPolicyTelemetryWithAppIDAndReqTelemetry", appID, defaultTelemetry) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -127,7 +128,7 @@ func TestPolicyTelemetryWithAppIDSanitized(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	const newAppID = "This/will/get/the/spaces"
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s", newAppID, defaultTelemetry) {
+	if v := resp.Request.Header.Get(headerUserAgent); v != fmt.Sprintf("%s %s", newAppID, defaultTelemetry) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -143,12 +144,12 @@ func TestPolicyTelemetryPreserveExistingWithAppID(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	const otherValue = "this should stay"
-	req.Header.Set(HeaderUserAgent, otherValue)
+	req.Header.Set(headerUserAgent, otherValue)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s %s", appID, defaultTelemetry, otherValue) {
+	if v := resp.Request.Header.Get(headerUserAgent); v != fmt.Sprintf("%s %s %s", appID, defaultTelemetry, otherValue) {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }
@@ -168,7 +169,7 @@ func TestPolicyTelemetryDisabled(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v := resp.Request.Header.Get(HeaderUserAgent); v != "" {
+	if v := resp.Request.Header.Get(headerUserAgent); v != "" {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }

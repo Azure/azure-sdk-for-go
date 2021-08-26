@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -10,10 +11,9 @@ package aztable
 import (
 	"encoding/json"
 	"encoding/xml"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessPolicy - An Access policy.

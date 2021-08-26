@@ -1,0 +1,20 @@
+{
+    "Packages": [
+        {
+            "Name": "azidentity",
+            "CoverageGoal": 0.68
+        },
+        {
+            "Name": "azcore",
+            "CoverageGoal": 0.85
+        },
+        {
+            "Name": "internal",
+            "CoverageGoal": 0.70
+        },
+        {
+            "Name": "tables",
+            "CoverageGoal": 0.01
+        }
+    ]
+}

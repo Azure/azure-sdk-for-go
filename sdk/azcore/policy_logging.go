@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -8,10 +9,12 @@ package azcore
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/diag"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // LogOptions configures the logging policy's behavior.
@@ -41,7 +44,7 @@ type logPolicyOpValues struct {
 	start time.Time
 }
 
-func (p *logPolicy) Do(req *Request) (*Response, error) {
+func (p *logPolicy) Do(req *Request) (*http.Response, error) {
 	// Get the per-operation values. These are saved in the Message's map so that they persist across each retry calling into this policy object.
 	var opValues logPolicyOpValues
 	if req.OperationValue(&opValues); opValues.start.IsZero() {
@@ -51,7 +54,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 	req.SetOperationValue(opValues)
 
 	// Log the outgoing request as informational
-	if Log().Should(LogRequest) {
+	if log.Should(log.Request) {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", opValues.try)
 		writeRequestWithResponse(b, req, nil, nil)
@@ -59,7 +62,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		if p.options.IncludeBody {
 			err = req.writeBody(b)
 		}
-		Log().Write(LogRequest, b.String())
+		log.Write(log.Request, b.String())
 		if err != nil {
 			return nil, err
 		}
@@ -72,7 +75,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)
 
-	if Log().Should(LogResponse) {
+	if log.Should(log.Response) {
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v, OpTime=%v) -- ", opValues.try, tryDuration, opDuration)
@@ -85,11 +88,11 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 		writeRequestWithResponse(b, req, response, err)
 		if err != nil {
 			// skip frames runtime.Callers() and runtime.StackTrace()
-			b.WriteString(runtime.StackTrace(2, StackFrameCount))
+			b.WriteString(diag.StackTrace(2, StackFrameCount))
 		} else if p.options.IncludeBody {
-			err = response.writeBody(b)
+			err = writeBody(response, b)
 		}
-		Log().Write(LogResponse, b.String())
+		log.Write(log.Response, b.String())
 	}
 	return response, err
 }

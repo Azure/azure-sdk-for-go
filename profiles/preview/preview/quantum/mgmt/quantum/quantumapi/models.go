@@ -12,4 +12,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt
 
 type OfferingsClientAPI = original.OfferingsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type WorkspaceClientAPI = original.WorkspaceClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

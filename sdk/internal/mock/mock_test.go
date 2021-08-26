@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -305,7 +306,6 @@ func TestTLSServerConfig(t *testing.T) {
 func TestBodyReadError(t *testing.T) {
 	srv, close := NewServer()
 	defer close()
-	const body = "this is the response body"
 	srv.AppendResponse(WithBodyReadError())
 	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {

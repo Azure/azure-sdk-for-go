@@ -14,7 +14,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	client := emulatorTests.getClient(t)
 
 	database := CosmosDatabaseProperties{Id: "baseDbTest"}
-	resp, err := client.AddDatabase(context.TODO(), database, nil)
+	resp, err := client.CreateDatabase(context.TODO(), database, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}
@@ -23,7 +23,7 @@ func TestDatabaseCRUD(t *testing.T) {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
-	resp, err = resp.DatabaseProperties.Database.Get(context.TODO(), nil)
+	resp, err = resp.DatabaseProperties.Database.Read(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read database: %v", err)
 	}

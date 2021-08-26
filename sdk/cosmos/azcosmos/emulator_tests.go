@@ -37,7 +37,7 @@ func (e *emulatorTests) createDatabase(
 	client *CosmosClient,
 	dbName string) *CosmosDatabase {
 	database := CosmosDatabaseProperties{Id: dbName}
-	resp, err := client.AddDatabase(ctx, database, nil)
+	resp, err := client.CreateDatabase(ctx, database, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}

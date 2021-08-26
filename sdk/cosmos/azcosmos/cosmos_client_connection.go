@@ -21,9 +21,6 @@ type cosmosClientConnection struct {
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
 func newCosmosClientConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *cosmosClientConnection {
-	if options == nil {
-		options = &CosmosClientOptions{}
-	}
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.enrichTelemetryOptions()),
 	}

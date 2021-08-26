@@ -14,4 +14,10 @@ const (
 	cosmosHeaderIndexingDirective  string = "x-ms-indexing-directive"
 	cosmosHeaderSessionToken       string = "x-ms-session-token"
 	cosmosHeaderConsistencyLevel   string = "x-ms-consistency-level"
+	cosmosHeaderPartitionKey       string = "x-ms-documentdb-partitionkey"
+	cosmosHeaderPrefer             string = "Prefer"
+)
+
+const (
+	cosmosHeaderValuesPreferMinimal string = "return=minimal"
 )

@@ -174,16 +174,14 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 func createStorageClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-	if recording.InPlayback() {
-		accountName = "fakestorageaccount"
-	}
+	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
-	cred, err := getAADCredential(t)
+	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	return createClientForRecording(t, tableName, serviceURL, cred)
@@ -201,7 +199,7 @@ func createCosmosClient(t *testing.T) (*Client, error) {
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	return createClientForRecording(t, tableName, serviceURL, cred)

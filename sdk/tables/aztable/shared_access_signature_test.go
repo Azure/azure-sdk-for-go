@@ -18,7 +18,7 @@ import (
 
 func TestSASServiceClient(t *testing.T) {
 	recording.LiveOnly(t)
-	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountName := os.Getenv("TABLES_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -26,7 +26,7 @@ func TestSASServiceClient(t *testing.T) {
 	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
@@ -78,7 +78,7 @@ func TestSASServiceClient(t *testing.T) {
 
 func TestSASClient(t *testing.T) {
 	recording.LiveOnly(t)
-	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountName := os.Getenv("TABLES_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -86,9 +86,8 @@ func TestSASClient(t *testing.T) {
 	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
-	tableName = "tablename"
 
 	delete := func() {
 		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
@@ -133,7 +132,7 @@ func TestSASClient(t *testing.T) {
 
 func TestSASClientReadOnly(t *testing.T) {
 	recording.LiveOnly(t)
-	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountName := os.Getenv("TABLES_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -141,7 +140,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
@@ -208,7 +207,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {

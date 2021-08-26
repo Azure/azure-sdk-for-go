@@ -14,19 +14,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const tableNamePrefix = "tableName"
+
 func TestServiceErrorsServiceClient(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			service, delete := initServiceTest(t, service)
 			defer delete()
-			_, err := service.CreateTable(context.Background(), "tableName", nil)
+
+			tableName, err := createRandomName(t, tableNamePrefix)
+			require.NoError(t, err)
+
+			_, err = service.CreateTable(context.Background(), tableName, nil)
 			require.NoError(t, err)
 
 			// Create a duplicate table to produce an error
-			_, err = service.CreateTable(context.Background(), "tableName", nil)
+			_, err = service.CreateTable(context.Background(), tableName, nil)
 			require.Error(t, err)
 
-			_, err = service.DeleteTable(context.Background(), "tableName", nil)
+			_, err = service.DeleteTable(context.Background(), tableName, nil)
 			require.NoError(t, err)
 		})
 	}
@@ -37,7 +43,8 @@ func TestCreateTableFromService(t *testing.T) {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			service, delete := initServiceTest(t, service)
 			defer delete()
-			tableName, err := createRandomName(t, "tableName")
+
+			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
 
 			_, err = service.CreateTable(ctx, tableName, nil)
@@ -118,7 +125,7 @@ func TestListTables(t *testing.T) {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			service, delete := initServiceTest(t, service)
 			defer delete()
-			tableName, err := createRandomName(t, "tableName")
+			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
 
 			err = clearAllTables(service)

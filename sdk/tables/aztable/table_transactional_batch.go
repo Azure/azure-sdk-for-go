@@ -214,7 +214,7 @@ func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCoun
 	}
 
 	innerBytes, err := ioutil.ReadAll(outerPart)
-	if err != nil {
+	if err != nil && err != io.ErrUnexpectedEOF { // Cosmos specific error handling																															
 		return &TransactionResponse{}, err
 	}
 	innerBoundary := getBoundaryName(innerBytes)

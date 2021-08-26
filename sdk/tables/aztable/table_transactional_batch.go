@@ -64,7 +64,7 @@ type transactionError struct {
 	rawResponse *http.Response
 	statusCode  int
 	errorCode   string
-	odataError  oDataError `json:"odata.error"`
+	odataError  oDataError `json:"odata.error"` //nolint
 }
 
 func (t *transactionError) StatusCode() int {
@@ -268,7 +268,6 @@ func newTableTransactionError(errorBody []byte, resp *http.Response) error {
 			errorCode:   oe.ODataError.Code,
 			odataError:  oe.ODataError,
 		}
-		// return &oe
 	}
 	return fmt.Errorf("unknown error: %s", string(errorBody))
 }

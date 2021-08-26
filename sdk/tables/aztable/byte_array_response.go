@@ -75,7 +75,7 @@ func newListEntitiesResponseEnvelope(resp *generated.TableQueryEntitiesResponse)
 	}
 
 	return ListEntitiesResponseEnvelope{
-		RawResponse: resp.RawResponse,
+		RawResponse:                     resp.RawResponse,
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 		ODataMetadata:                   t.ODataMetadata,

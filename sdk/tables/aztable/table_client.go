@@ -92,7 +92,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 
 // AddEntity adds an entity (described by a byte slice) to the table. This method returns an error if an entity with
 // the same PartitionKey and RowKey already exists in the table. If the supplied entity does not contain both a PartitionKey
-// and a RowKey an error will be returned. 
+// and a RowKey an error will be returned.
 func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntityOptions) (AddEntityResponse, error) {
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)

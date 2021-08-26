@@ -102,6 +102,7 @@ func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Ac
 // http.Response Body if it receives an error.
 func (client AccountsClient) CreateOrUpdateSender(req *http.Request) (future AccountsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,6 +189,7 @@ func (client AccountsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client AccountsClient) DeleteSender(req *http.Request) (future AccountsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

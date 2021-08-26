@@ -75,6 +75,7 @@ func (client Client) Recognize(ctx context.Context, body AnalysisRequest, xMsCli
 // RecognizePreparer prepares the Recognize request.
 func (client Client) RecognizePreparer(ctx context.Context, body AnalysisRequest, xMsClientRequestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

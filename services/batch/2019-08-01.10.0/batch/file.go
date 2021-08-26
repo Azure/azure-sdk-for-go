@@ -78,6 +78,7 @@ func (client FileClient) DeleteFromComputeNode(ctx context.Context, poolID strin
 // DeleteFromComputeNodePreparer prepares the DeleteFromComputeNode request.
 func (client FileClient) DeleteFromComputeNodePreparer(ctx context.Context, poolID string, nodeID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -191,6 +192,7 @@ func (client FileClient) DeleteFromTask(ctx context.Context, jobID string, taskI
 // DeleteFromTaskPreparer prepares the DeleteFromTask request.
 func (client FileClient) DeleteFromTaskPreparer(ctx context.Context, jobID string, taskID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -308,6 +310,7 @@ func (client FileClient) GetFromComputeNode(ctx context.Context, poolID string, 
 // GetFromComputeNodePreparer prepares the GetFromComputeNode request.
 func (client FileClient) GetFromComputeNodePreparer(ctx context.Context, poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -434,6 +437,7 @@ func (client FileClient) GetFromTask(ctx context.Context, jobID string, taskID s
 // GetFromTaskPreparer prepares the GetFromTask request.
 func (client FileClient) GetFromTaskPreparer(ctx context.Context, jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -558,6 +562,7 @@ func (client FileClient) GetPropertiesFromComputeNode(ctx context.Context, poolI
 // GetPropertiesFromComputeNodePreparer prepares the GetPropertiesFromComputeNode request.
 func (client FileClient) GetPropertiesFromComputeNodePreparer(ctx context.Context, poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -678,6 +683,7 @@ func (client FileClient) GetPropertiesFromTask(ctx context.Context, jobID string
 // GetPropertiesFromTaskPreparer prepares the GetPropertiesFromTask request.
 func (client FileClient) GetPropertiesFromTaskPreparer(ctx context.Context, jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -810,6 +816,7 @@ func (client FileClient) ListFromComputeNode(ctx context.Context, poolID string,
 // ListFromComputeNodePreparer prepares the ListFromComputeNode request.
 func (client FileClient) ListFromComputeNodePreparer(ctx context.Context, poolID string, nodeID string, filter string, recursive *bool, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -983,6 +990,7 @@ func (client FileClient) ListFromTask(ctx context.Context, jobID string, taskID 
 // ListFromTaskPreparer prepares the ListFromTask request.
 func (client FileClient) ListFromTaskPreparer(ctx context.Context, jobID string, taskID string, filter string, recursive *bool, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

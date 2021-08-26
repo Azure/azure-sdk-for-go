@@ -66,6 +66,7 @@ func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, apimBas
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -149,6 +150,7 @@ func (client IdentityProviderClient) Delete(ctx context.Context, apimBaseURL str
 // DeletePreparer prepares the Delete request.
 func (client IdentityProviderClient) DeletePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -228,6 +230,7 @@ func (client IdentityProviderClient) Get(ctx context.Context, apimBaseURL string
 // GetPreparer prepares the Get request.
 func (client IdentityProviderClient) GetPreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -306,6 +309,7 @@ func (client IdentityProviderClient) List(ctx context.Context, apimBaseURL strin
 // ListPreparer prepares the List request.
 func (client IdentityProviderClient) ListPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -384,6 +388,7 @@ func (client IdentityProviderClient) Update(ctx context.Context, apimBaseURL str
 // UpdatePreparer prepares the Update request.
 func (client IdentityProviderClient) UpdatePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderUpdateParameters, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

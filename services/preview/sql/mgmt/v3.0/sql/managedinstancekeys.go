@@ -95,6 +95,7 @@ func (client ManagedInstanceKeysClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client ManagedInstanceKeysClient) CreateOrUpdateSender(req *http.Request) (future ManagedInstanceKeysCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,6 +177,7 @@ func (client ManagedInstanceKeysClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ManagedInstanceKeysClient) DeleteSender(req *http.Request) (future ManagedInstanceKeysDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

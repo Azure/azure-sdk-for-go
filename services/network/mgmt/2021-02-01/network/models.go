@@ -41693,6 +41693,7 @@ func (future *VirtualNetworkGatewayConnectionsDeleteFuture) result(client Virtua
 // VirtualNetworkGatewayConnectionsGetIkeSasFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type VirtualNetworkGatewayConnectionsGetIkeSasFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -41859,6 +41860,7 @@ func (future *VirtualNetworkGatewayConnectionsSetSharedKeyFuture) result(client 
 // VirtualNetworkGatewayConnectionsStartPacketCaptureFuture an abstraction for monitoring and retrieving
 // the results of a long-running operation.
 type VirtualNetworkGatewayConnectionsStartPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -41902,6 +41904,7 @@ func (future *VirtualNetworkGatewayConnectionsStartPacketCaptureFuture) result(c
 // VirtualNetworkGatewayConnectionsStopPacketCaptureFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type VirtualNetworkGatewayConnectionsStopPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -42855,6 +42858,7 @@ func (future *VirtualNetworkGatewaysDisconnectVirtualNetworkGatewayVpnConnection
 // VirtualNetworkGatewaysGeneratevpnclientpackageFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type VirtualNetworkGatewaysGeneratevpnclientpackageFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -42898,6 +42902,7 @@ func (future *VirtualNetworkGatewaysGeneratevpnclientpackageFuture) result(clien
 // VirtualNetworkGatewaysGenerateVpnProfileFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type VirtualNetworkGatewaysGenerateVpnProfileFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -43156,6 +43161,7 @@ func (future *VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture) result(cl
 // VirtualNetworkGatewaysGetVpnProfilePackageURLFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type VirtualNetworkGatewaysGetVpnProfilePackageURLFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -43344,6 +43350,7 @@ func (future *VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture) result(cl
 // VirtualNetworkGatewaysStartPacketCaptureFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type VirtualNetworkGatewaysStartPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -43387,6 +43394,7 @@ func (future *VirtualNetworkGatewaysStartPacketCaptureFuture) result(client Virt
 // VirtualNetworkGatewaysStopPacketCaptureFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type VirtualNetworkGatewaysStopPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -46393,6 +46401,7 @@ func (future *VpnConnectionsDeleteFuture) result(client VpnConnectionsClient) (a
 // VpnConnectionsStartPacketCaptureFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VpnConnectionsStartPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -46436,6 +46445,7 @@ func (future *VpnConnectionsStartPacketCaptureFuture) result(client VpnConnectio
 // VpnConnectionsStopPacketCaptureFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VpnConnectionsStopPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -46924,6 +46934,7 @@ func (future *VpnGatewaysResetFuture) result(client VpnGatewaysClient) (vg VpnGa
 // VpnGatewaysStartPacketCaptureFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VpnGatewaysStartPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -46967,6 +46978,7 @@ func (future *VpnGatewaysStartPacketCaptureFuture) result(client VpnGatewaysClie
 // VpnGatewaysStopPacketCaptureFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VpnGatewaysStopPacketCaptureFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -47061,6 +47073,7 @@ type VpnLinkBgpSettings struct {
 // VpnLinkConnectionsGetIkeSasFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VpnLinkConnectionsGetIkeSasFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

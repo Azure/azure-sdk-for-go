@@ -121,6 +121,7 @@ func (client LargePersonGroupPersonClient) AddFaceFromStream(ctx context.Context
 // AddFaceFromStreamPreparer prepares the AddFaceFromStream request.
 func (client LargePersonGroupPersonClient) AddFaceFromStreamPreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -266,6 +267,7 @@ func (client LargePersonGroupPersonClient) AddFaceFromURL(ctx context.Context, l
 // AddFaceFromURLPreparer prepares the AddFaceFromURL request.
 func (client LargePersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -367,6 +369,7 @@ func (client LargePersonGroupPersonClient) Create(ctx context.Context, largePers
 // CreatePreparer prepares the Create request.
 func (client LargePersonGroupPersonClient) CreatePreparer(ctx context.Context, largePersonGroupID string, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -449,6 +452,7 @@ func (client LargePersonGroupPersonClient) Delete(ctx context.Context, largePers
 // DeletePreparer prepares the Delete request.
 func (client LargePersonGroupPersonClient) DeletePreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -532,6 +536,7 @@ func (client LargePersonGroupPersonClient) DeleteFace(ctx context.Context, large
 // DeleteFacePreparer prepares the DeleteFace request.
 func (client LargePersonGroupPersonClient) DeleteFacePreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -613,6 +618,7 @@ func (client LargePersonGroupPersonClient) Get(ctx context.Context, largePersonG
 // GetPreparer prepares the Get request.
 func (client LargePersonGroupPersonClient) GetPreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -695,6 +701,7 @@ func (client LargePersonGroupPersonClient) GetFace(ctx context.Context, largePer
 // GetFacePreparer prepares the GetFace request.
 func (client LargePersonGroupPersonClient) GetFacePreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -783,6 +790,7 @@ func (client LargePersonGroupPersonClient) List(ctx context.Context, largePerson
 // ListPreparer prepares the List request.
 func (client LargePersonGroupPersonClient) ListPreparer(ctx context.Context, largePersonGroupID string, start string, top *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -872,6 +880,7 @@ func (client LargePersonGroupPersonClient) Update(ctx context.Context, largePers
 // UpdatePreparer prepares the Update request.
 func (client LargePersonGroupPersonClient) UpdatePreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -955,6 +964,7 @@ func (client LargePersonGroupPersonClient) UpdateFace(ctx context.Context, large
 // UpdateFacePreparer prepares the UpdateFace request.
 func (client LargePersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, largePersonGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdateFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

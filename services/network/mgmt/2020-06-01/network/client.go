@@ -179,6 +179,7 @@ func (client BaseClient) DeleteBastionShareableLinkPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteBastionShareableLinkSender(req *http.Request) (future DeleteBastionShareableLinkFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -381,6 +382,7 @@ func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofilePrepa
 // http.Response Body if it receives an error.
 func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofileSender(req *http.Request) (future GeneratevirtualwanvpnserverconfigurationvpnprofileFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -459,6 +461,7 @@ func (client BaseClient) GetActiveSessionsPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client BaseClient) GetActiveSessionsSender(req *http.Request) (future GetActiveSessionsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -702,6 +705,7 @@ func (client BaseClient) PutBastionShareableLinkPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client BaseClient) PutBastionShareableLinkSender(req *http.Request) (future PutBastionShareableLinkFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

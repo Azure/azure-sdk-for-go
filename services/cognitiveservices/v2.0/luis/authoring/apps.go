@@ -74,6 +74,7 @@ func (client AppsClient) Add(ctx context.Context, applicationCreateObject Applic
 // AddPreparer prepares the Add request.
 func (client AppsClient) AddPreparer(ctx context.Context, applicationCreateObject ApplicationCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -143,6 +144,7 @@ func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDo
 // AddCustomPrebuiltDomainPreparer prepares the AddCustomPrebuiltDomain request.
 func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -213,6 +215,7 @@ func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID, force *boo
 // DeletePreparer prepares the Delete request.
 func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, force *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -292,6 +295,7 @@ func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID)
 // DownloadQueryLogsPreparer prepares the DownloadQueryLogs request.
 func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -362,6 +366,7 @@ func (client AppsClient) Get(ctx context.Context, appID uuid.UUID) (result Appli
 // GetPreparer prepares the Get request.
 func (client AppsClient) GetPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -433,6 +438,7 @@ func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID
 // GetPublishSettingsPreparer prepares the GetPublishSettings request.
 func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -504,6 +510,7 @@ func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (resu
 // GetSettingsPreparer prepares the GetSettings request.
 func (client AppsClient) GetSettingsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -577,6 +584,7 @@ func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName st
 // ImportPreparer prepares the Import request.
 func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, appName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -665,6 +673,7 @@ func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (re
 // ListPreparer prepares the List request.
 func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -743,6 +752,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context)
 // ListAvailableCustomPrebuiltDomainsPreparer prepares the ListAvailableCustomPrebuiltDomains request.
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -810,6 +820,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx contex
 // ListAvailableCustomPrebuiltDomainsForCulturePreparer prepares the ListAvailableCustomPrebuiltDomainsForCulture request.
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ctx context.Context, culture string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -879,6 +890,7 @@ func (client AppsClient) ListCortanaEndpoints(ctx context.Context) (result Perso
 // ListCortanaEndpointsPreparer prepares the ListCortanaEndpoints request.
 func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -944,6 +956,7 @@ func (client AppsClient) ListDomains(ctx context.Context) (result ListString, er
 // ListDomainsPreparer prepares the ListDomains request.
 func (client AppsClient) ListDomainsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1011,6 +1024,7 @@ func (client AppsClient) ListEndpoints(ctx context.Context, appID uuid.UUID) (re
 // ListEndpointsPreparer prepares the ListEndpoints request.
 func (client AppsClient) ListEndpointsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1081,6 +1095,7 @@ func (client AppsClient) ListSupportedCultures(ctx context.Context) (result List
 // ListSupportedCulturesPreparer prepares the ListSupportedCultures request.
 func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1146,6 +1161,7 @@ func (client AppsClient) ListUsageScenarios(ctx context.Context) (result ListStr
 // ListUsageScenariosPreparer prepares the ListUsageScenarios request.
 func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1215,6 +1231,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, 
 // PackagePublishedApplicationAsGzipPreparer prepares the PackagePublishedApplicationAsGzip request.
 func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, slotName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1287,6 +1304,7 @@ func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, ap
 // PackageTrainedApplicationAsGzipPreparer prepares the PackageTrainedApplicationAsGzip request.
 func (client AppsClient) PackageTrainedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1360,6 +1378,7 @@ func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicati
 // PublishPreparer prepares the Publish request.
 func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1434,6 +1453,7 @@ func (client AppsClient) Update(ctx context.Context, appID uuid.UUID, applicatio
 // UpdatePreparer prepares the Update request.
 func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1508,6 +1528,7 @@ func (client AppsClient) UpdatePublishSettings(ctx context.Context, appID uuid.U
 // UpdatePublishSettingsPreparer prepares the UpdatePublishSettings request.
 func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1582,6 +1603,7 @@ func (client AppsClient) UpdateSettings(ctx context.Context, appID uuid.UUID, ap
 // UpdateSettingsPreparer prepares the UpdateSettings request.
 func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

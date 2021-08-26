@@ -86,6 +86,7 @@ func (client InvoicesClient) DownloadBillingSubscriptionInvoicePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client InvoicesClient) DownloadBillingSubscriptionInvoiceSender(req *http.Request) (future InvoicesDownloadBillingSubscriptionInvoiceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -166,6 +167,7 @@ func (client InvoicesClient) DownloadInvoicePreparer(ctx context.Context, billin
 // http.Response Body if it receives an error.
 func (client InvoicesClient) DownloadInvoiceSender(req *http.Request) (future InvoicesDownloadInvoiceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -252,6 +254,7 @@ func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesSender(req *http.Request) (future InvoicesDownloadMultipleBillingProfileInvoicesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -336,6 +339,7 @@ func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesPreparer
 // http.Response Body if it receives an error.
 func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesSender(req *http.Request) (future InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

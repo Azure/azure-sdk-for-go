@@ -2,9 +2,8 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. CheckNameAvailabilityResult.MarshalJSON() ([]byte, error)
-1. CreateManagementGroupChildInfo.MarshalJSON() ([]byte, error)
-1. OperationDisplayProperties.MarshalJSON() ([]byte, error)
-1. OperationListResult.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. CreateOrUpdateFuture.autorest.Response

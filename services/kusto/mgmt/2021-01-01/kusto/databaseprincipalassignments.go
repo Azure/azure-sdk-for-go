@@ -191,6 +191,7 @@ func (client DatabasePrincipalAssignmentsClient) CreateOrUpdatePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client DatabasePrincipalAssignmentsClient) CreateOrUpdateSender(req *http.Request) (future DatabasePrincipalAssignmentsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -273,6 +274,7 @@ func (client DatabasePrincipalAssignmentsClient) DeletePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DatabasePrincipalAssignmentsClient) DeleteSender(req *http.Request) (future DatabasePrincipalAssignmentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

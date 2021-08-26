@@ -167,6 +167,7 @@ func (client RestorePointCollectionsClient) DeletePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client RestorePointCollectionsClient) DeleteSender(req *http.Request) (future RestorePointCollectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

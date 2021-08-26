@@ -62,6 +62,7 @@ func (client AlterationsClient) Get(ctx context.Context) (result WordAlterations
 // GetPreparer prepares the Get request.
 func (client AlterationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -129,6 +130,7 @@ func (client AlterationsClient) GetAlterationsForKb(ctx context.Context, kbID st
 // GetAlterationsForKbPreparer prepares the GetAlterationsForKb request.
 func (client AlterationsClient) GetAlterationsForKbPreparer(ctx context.Context, kbID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -206,6 +208,7 @@ func (client AlterationsClient) Replace(ctx context.Context, wordAlterations Wor
 // ReplacePreparer prepares the Replace request.
 func (client AlterationsClient) ReplacePreparer(ctx context.Context, wordAlterations WordAlterationsDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -281,6 +284,7 @@ func (client AlterationsClient) ReplaceAlterationsForKb(ctx context.Context, kbI
 // ReplaceAlterationsForKbPreparer prepares the ReplaceAlterationsForKb request.
 func (client AlterationsClient) ReplaceAlterationsForKbPreparer(ctx context.Context, kbID string, wordAlterations WordAlterationsDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -92,6 +92,7 @@ func (client ServiceEndpointPolicyDefinitionsClient) CreateOrUpdatePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateSender(req *http.Request) (future ServiceEndpointPolicyDefinitionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -172,6 +173,7 @@ func (client ServiceEndpointPolicyDefinitionsClient) DeletePreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client ServiceEndpointPolicyDefinitionsClient) DeleteSender(req *http.Request) (future ServiceEndpointPolicyDefinitionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

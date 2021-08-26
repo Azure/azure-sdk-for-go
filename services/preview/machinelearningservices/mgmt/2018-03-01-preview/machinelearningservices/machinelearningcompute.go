@@ -93,6 +93,7 @@ func (client MachineLearningComputeClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Request) (future MachineLearningComputeCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,6 +174,7 @@ func (client MachineLearningComputeClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (future MachineLearningComputeDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -531,6 +533,7 @@ func (client MachineLearningComputeClient) SystemUpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) SystemUpdateSender(req *http.Request) (future MachineLearningComputeSystemUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

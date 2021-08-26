@@ -75,6 +75,7 @@ func (client ProductClient) CreateOrUpdate(ctx context.Context, apimBaseURL stri
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ProductClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, productID string, parameters ProductContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -167,6 +168,7 @@ func (client ProductClient) Delete(ctx context.Context, apimBaseURL string, prod
 // DeletePreparer prepares the Delete request.
 func (client ProductClient) DeletePreparer(ctx context.Context, apimBaseURL string, productID string, ifMatch string, deleteSubscriptions *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -257,6 +259,7 @@ func (client ProductClient) Get(ctx context.Context, apimBaseURL string, product
 // GetPreparer prepares the Get request.
 func (client ProductClient) GetPreparer(ctx context.Context, apimBaseURL string, productID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -361,6 +364,7 @@ func (client ProductClient) List(ctx context.Context, apimBaseURL string, filter
 // ListPreparer prepares the List request.
 func (client ProductClient) ListPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32, expandGroups *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -496,6 +500,7 @@ func (client ProductClient) Update(ctx context.Context, apimBaseURL string, prod
 // UpdatePreparer prepares the Update request.
 func (client ProductClient) UpdatePreparer(ctx context.Context, apimBaseURL string, productID string, parameters ProductUpdateParameters, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

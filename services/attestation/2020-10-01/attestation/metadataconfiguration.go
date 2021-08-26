@@ -63,6 +63,7 @@ func (client MetadataConfigurationClient) Get(ctx context.Context, instanceURL s
 // GetPreparer prepares the Get request.
 func (client MetadataConfigurationClient) GetPreparer(ctx context.Context, instanceURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 

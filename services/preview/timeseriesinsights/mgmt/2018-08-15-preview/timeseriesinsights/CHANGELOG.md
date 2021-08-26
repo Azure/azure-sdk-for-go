@@ -2,9 +2,9 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. Operation.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. OperationListResult.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. EnvironmentsCreateOrUpdateFuture.autorest.Response
+1. EnvironmentsUpdateFuture.autorest.Response

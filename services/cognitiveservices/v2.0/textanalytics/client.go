@@ -80,6 +80,7 @@ func (client BaseClient) DetectLanguage(ctx context.Context, input BatchInput) (
 // DetectLanguagePreparer prepares the DetectLanguage request.
 func (client BaseClient) DetectLanguagePreparer(ctx context.Context, input BatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -152,6 +153,7 @@ func (client BaseClient) Entities(ctx context.Context, input MultiLanguageBatchI
 // EntitiesPreparer prepares the Entities request.
 func (client BaseClient) EntitiesPreparer(ctx context.Context, input MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -224,6 +226,7 @@ func (client BaseClient) KeyPhrases(ctx context.Context, input MultiLanguageBatc
 // KeyPhrasesPreparer prepares the KeyPhrases request.
 func (client BaseClient) KeyPhrasesPreparer(ctx context.Context, input MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -296,6 +299,7 @@ func (client BaseClient) Sentiment(ctx context.Context, input MultiLanguageBatch
 // SentimentPreparer prepares the Sentiment request.
 func (client BaseClient) SentimentPreparer(ctx context.Context, input MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

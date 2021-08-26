@@ -94,6 +94,7 @@ func (client DatabasesClient) FailoverPreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client DatabasesClient) FailoverSender(req *http.Request) (future DatabasesFailoverFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

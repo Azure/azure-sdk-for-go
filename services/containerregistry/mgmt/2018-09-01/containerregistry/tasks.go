@@ -117,6 +117,7 @@ func (client TasksClient) CreatePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client TasksClient) CreateSender(req *http.Request) (future TasksCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -211,6 +212,7 @@ func (client TasksClient) DeletePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client TasksClient) DeleteSender(req *http.Request) (future TasksDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -619,6 +621,7 @@ func (client TasksClient) UpdatePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client TasksClient) UpdateSender(req *http.Request) (future TasksUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -91,6 +91,7 @@ func (client MachineExtensionsClient) CreateOrUpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client MachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (future MachineExtensionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -171,6 +172,7 @@ func (client MachineExtensionsClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client MachineExtensionsClient) DeleteSender(req *http.Request) (future MachineExtensionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -453,6 +455,7 @@ func (client MachineExtensionsClient) UpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client MachineExtensionsClient) UpdateSender(req *http.Request) (future MachineExtensionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

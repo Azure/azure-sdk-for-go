@@ -92,6 +92,7 @@ func (client VirtualMachineRunCommandsClient) CreateOrUpdatePreparer(ctx context
 // http.Response Body if it receives an error.
 func (client VirtualMachineRunCommandsClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachineRunCommandsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -172,6 +173,7 @@ func (client VirtualMachineRunCommandsClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client VirtualMachineRunCommandsClient) DeleteSender(req *http.Request) (future VirtualMachineRunCommandsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -662,6 +664,7 @@ func (client VirtualMachineRunCommandsClient) UpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client VirtualMachineRunCommandsClient) UpdateSender(req *http.Request) (future VirtualMachineRunCommandsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

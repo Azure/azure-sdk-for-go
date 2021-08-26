@@ -77,6 +77,7 @@ func (client ProductPolicyClient) CreateOrUpdate(ctx context.Context, apimBaseUR
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ProductPolicyClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, productID string, parameters PolicyContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -169,6 +170,7 @@ func (client ProductPolicyClient) Delete(ctx context.Context, apimBaseURL string
 // DeletePreparer prepares the Delete request.
 func (client ProductPolicyClient) DeletePreparer(ctx context.Context, apimBaseURL string, productID string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -257,6 +259,7 @@ func (client ProductPolicyClient) Get(ctx context.Context, apimBaseURL string, p
 // GetPreparer prepares the Get request.
 func (client ProductPolicyClient) GetPreparer(ctx context.Context, apimBaseURL string, productID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -345,6 +348,7 @@ func (client ProductPolicyClient) ListByProduct(ctx context.Context, apimBaseURL
 // ListByProductPreparer prepares the ListByProduct request.
 func (client ProductPolicyClient) ListByProductPreparer(ctx context.Context, apimBaseURL string, productID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

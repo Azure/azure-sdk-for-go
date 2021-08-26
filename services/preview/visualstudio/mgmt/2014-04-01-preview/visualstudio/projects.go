@@ -101,6 +101,7 @@ func (client ProjectsClient) CreatePreparer(ctx context.Context, body ProjectRes
 // http.Response Body if it receives an error.
 func (client ProjectsClient) CreateSender(req *http.Request) (future ProjectsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

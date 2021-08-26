@@ -104,6 +104,7 @@ func (client DscCompilationJobClient) CreatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client DscCompilationJobClient) CreateSender(req *http.Request) (future DscCompilationJobCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

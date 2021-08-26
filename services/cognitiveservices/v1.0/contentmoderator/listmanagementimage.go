@@ -73,6 +73,7 @@ func (client ListManagementImageClient) AddImage(ctx context.Context, listID str
 // AddImagePreparer prepares the AddImage request.
 func (client ListManagementImageClient) AddImagePreparer(ctx context.Context, listID string, tag *int32, label string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -156,6 +157,7 @@ func (client ListManagementImageClient) AddImageFileInput(ctx context.Context, l
 // AddImageFileInputPreparer prepares the AddImageFileInput request.
 func (client ListManagementImageClient) AddImageFileInputPreparer(ctx context.Context, listID string, imageStream io.ReadCloser, tag *int32, label string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -242,6 +244,7 @@ func (client ListManagementImageClient) AddImageURLInput(ctx context.Context, li
 // AddImageURLInputPreparer prepares the AddImageURLInput request.
 func (client ListManagementImageClient) AddImageURLInputPreparer(ctx context.Context, listID string, contentType string, imageURL ImageURL, tag *int32, label string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -325,6 +328,7 @@ func (client ListManagementImageClient) DeleteAllImages(ctx context.Context, lis
 // DeleteAllImagesPreparer prepares the DeleteAllImages request.
 func (client ListManagementImageClient) DeleteAllImagesPreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -397,6 +401,7 @@ func (client ListManagementImageClient) DeleteImage(ctx context.Context, listID 
 // DeleteImagePreparer prepares the DeleteImage request.
 func (client ListManagementImageClient) DeleteImagePreparer(ctx context.Context, listID string, imageID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -469,6 +474,7 @@ func (client ListManagementImageClient) GetAllImageIds(ctx context.Context, list
 // GetAllImageIdsPreparer prepares the GetAllImageIds request.
 func (client ListManagementImageClient) GetAllImageIdsPreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

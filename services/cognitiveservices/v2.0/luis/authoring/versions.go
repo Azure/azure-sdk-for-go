@@ -67,6 +67,7 @@ func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, version
 // ClonePreparer prepares the Clone request.
 func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID, versionID string, versionCloneObject TaskUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -142,6 +143,7 @@ func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versio
 // DeletePreparer prepares the Delete request.
 func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -216,6 +218,7 @@ func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appI
 // DeleteUnlabelledUtterancePreparer prepares the DeleteUnlabelledUtterance request.
 func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -291,6 +294,7 @@ func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versio
 // ExportPreparer prepares the Export request.
 func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -365,6 +369,7 @@ func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID
 // GetPreparer prepares the Get request.
 func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -440,6 +445,7 @@ func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisAp
 // ImportPreparer prepares the Import request.
 func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID, luisApp LuisApp, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -533,6 +539,7 @@ func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *in
 // ListPreparer prepares the List request.
 func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -619,6 +626,7 @@ func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versio
 // UpdatePreparer prepares the Update request.
 func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

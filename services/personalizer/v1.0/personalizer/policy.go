@@ -66,6 +66,7 @@ func (client PolicyClient) Get(ctx context.Context) (result PolicyContract, err 
 // GetPreparer prepares the Get request.
 func (client PolicyClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -131,6 +132,7 @@ func (client PolicyClient) Reset(ctx context.Context) (result PolicyContract, er
 // ResetPreparer prepares the Reset request.
 func (client PolicyClient) ResetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -207,6 +209,7 @@ func (client PolicyClient) Update(ctx context.Context, policy PolicyContract) (r
 // UpdatePreparer prepares the Update request.
 func (client PolicyClient) UpdatePreparer(ctx context.Context, policy PolicyContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

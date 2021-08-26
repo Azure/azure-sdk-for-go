@@ -106,6 +106,7 @@ func (client WorkloadClassifiersClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client WorkloadClassifiersClient) CreateOrUpdateSender(req *http.Request) (future WorkloadClassifiersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -191,6 +192,7 @@ func (client WorkloadClassifiersClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client WorkloadClassifiersClient) DeleteSender(req *http.Request) (future WorkloadClassifiersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

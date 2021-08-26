@@ -2,10 +2,8 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. Key.MarshalJSON() ([]byte, error)
-1. LinkedWorkspace.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. Statistics.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. RunbookDraftReplaceContentFuture.autorest.Response

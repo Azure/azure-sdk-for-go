@@ -63,6 +63,7 @@ func (client RepositoryClient) Delete(ctx context.Context, name string) (result 
 // DeletePreparer prepares the Delete request.
 func (client RepositoryClient) DeletePreparer(ctx context.Context, name string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -134,6 +135,7 @@ func (client RepositoryClient) GetAttributes(ctx context.Context, name string) (
 // GetAttributesPreparer prepares the GetAttributes request.
 func (client RepositoryClient) GetAttributesPreparer(ctx context.Context, name string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -207,6 +209,7 @@ func (client RepositoryClient) GetList(ctx context.Context, last string, n *int3
 // GetListPreparer prepares the GetList request.
 func (client RepositoryClient) GetListPreparer(ctx context.Context, last string, n *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -284,6 +287,7 @@ func (client RepositoryClient) UpdateAttributes(ctx context.Context, name string
 // UpdateAttributesPreparer prepares the UpdateAttributes request.
 func (client RepositoryClient) UpdateAttributesPreparer(ctx context.Context, name string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

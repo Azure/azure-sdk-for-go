@@ -65,6 +65,7 @@ func (client ModelClient) Get(ctx context.Context) (result ReadCloser, err error
 // GetPreparer prepares the Get request.
 func (client ModelClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -129,6 +130,7 @@ func (client ModelClient) GetProperties(ctx context.Context) (result ModelProper
 // GetPropertiesPreparer prepares the GetProperties request.
 func (client ModelClient) GetPropertiesPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -194,6 +196,7 @@ func (client ModelClient) Reset(ctx context.Context) (result autorest.Response, 
 // ResetPreparer prepares the Reset request.
 func (client ModelClient) ResetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

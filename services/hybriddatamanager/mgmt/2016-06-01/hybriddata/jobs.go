@@ -101,6 +101,7 @@ func (client JobsClient) CancelPreparer(ctx context.Context, dataServiceName str
 // http.Response Body if it receives an error.
 func (client JobsClient) CancelSender(req *http.Request) (future JobsCancelFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -687,6 +688,7 @@ func (client JobsClient) ResumePreparer(ctx context.Context, dataServiceName str
 // http.Response Body if it receives an error.
 func (client JobsClient) ResumeSender(req *http.Request) (future JobsResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

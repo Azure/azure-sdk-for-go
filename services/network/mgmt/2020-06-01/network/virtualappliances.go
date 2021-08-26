@@ -102,6 +102,7 @@ func (client VirtualAppliancesClient) CreateOrUpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client VirtualAppliancesClient) CreateOrUpdateSender(req *http.Request) (future VirtualAppliancesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -180,6 +181,7 @@ func (client VirtualAppliancesClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client VirtualAppliancesClient) DeleteSender(req *http.Request) (future VirtualAppliancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

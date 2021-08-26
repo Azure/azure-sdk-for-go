@@ -95,6 +95,7 @@ func (client TransactionNodesClient) CreatePreparer(ctx context.Context, blockch
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) CreateSender(req *http.Request) (future TransactionNodesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,6 +177,7 @@ func (client TransactionNodesClient) DeletePreparer(ctx context.Context, blockch
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) DeleteSender(req *http.Request) (future TransactionNodesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

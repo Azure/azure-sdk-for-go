@@ -104,6 +104,7 @@ func (client ServerTrustGroupsClient) CreateOrUpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ServerTrustGroupsClient) CreateOrUpdateSender(req *http.Request) (future ServerTrustGroupsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -185,6 +186,7 @@ func (client ServerTrustGroupsClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client ServerTrustGroupsClient) DeleteSender(req *http.Request) (future ServerTrustGroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

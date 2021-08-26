@@ -249,6 +249,7 @@ func (client VirtualMachinesClient) RestartHostsPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) RestartHostsSender(req *http.Request) (future VirtualMachinesRestartHostsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

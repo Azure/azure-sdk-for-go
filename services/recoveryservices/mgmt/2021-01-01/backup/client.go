@@ -110,6 +110,7 @@ func (client BaseClient) BMSPrepareDataMovePreparer(ctx context.Context, vaultNa
 // http.Response Body if it receives an error.
 func (client BaseClient) BMSPrepareDataMoveSender(req *http.Request) (future BMSPrepareDataMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -198,6 +199,7 @@ func (client BaseClient) BMSTriggerDataMovePreparer(ctx context.Context, vaultNa
 // http.Response Body if it receives an error.
 func (client BaseClient) BMSTriggerDataMoveSender(req *http.Request) (future BMSTriggerDataMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -359,6 +361,7 @@ func (client BaseClient) MoveRecoveryPointPreparer(ctx context.Context, vaultNam
 // http.Response Body if it receives an error.
 func (client BaseClient) MoveRecoveryPointSender(req *http.Request) (future MoveRecoveryPointFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

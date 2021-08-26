@@ -99,6 +99,7 @@ func (client CapacityReservationsClient) CreateOrUpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client CapacityReservationsClient) CreateOrUpdateSender(req *http.Request) (future CapacityReservationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -181,6 +182,7 @@ func (client CapacityReservationsClient) DeletePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client CapacityReservationsClient) DeleteSender(req *http.Request) (future CapacityReservationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -466,6 +468,7 @@ func (client CapacityReservationsClient) UpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client CapacityReservationsClient) UpdateSender(req *http.Request) (future CapacityReservationsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

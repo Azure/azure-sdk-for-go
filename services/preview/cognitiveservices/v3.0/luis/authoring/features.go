@@ -68,6 +68,7 @@ func (client FeaturesClient) AddEntityFeature(ctx context.Context, appID uuid.UU
 // AddEntityFeaturePreparer prepares the AddEntityFeature request.
 func (client FeaturesClient) AddEntityFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationCreateObject ModelFeatureInformation) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -146,6 +147,7 @@ func (client FeaturesClient) AddIntentFeature(ctx context.Context, appID uuid.UU
 // AddIntentFeaturePreparer prepares the AddIntentFeature request.
 func (client FeaturesClient) AddIntentFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationCreateObject ModelFeatureInformation) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -224,6 +226,7 @@ func (client FeaturesClient) AddPhraseList(ctx context.Context, appID uuid.UUID,
 // AddPhraseListPreparer prepares the AddPhraseList request.
 func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -300,6 +303,7 @@ func (client FeaturesClient) DeletePhraseList(ctx context.Context, appID uuid.UU
 // DeletePhraseListPreparer prepares the DeletePhraseList request.
 func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -375,6 +379,7 @@ func (client FeaturesClient) GetPhraseList(ctx context.Context, appID uuid.UUID,
 // GetPhraseListPreparer prepares the GetPhraseList request.
 func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -463,6 +468,7 @@ func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionI
 // ListPreparer prepares the List request.
 func (client FeaturesClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -563,6 +569,7 @@ func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUI
 // ListPhraseListsPreparer prepares the ListPhraseLists request.
 func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -653,6 +660,7 @@ func (client FeaturesClient) UpdatePhraseList(ctx context.Context, appID uuid.UU
 // UpdatePhraseListPreparer prepares the UpdatePhraseList request.
 func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

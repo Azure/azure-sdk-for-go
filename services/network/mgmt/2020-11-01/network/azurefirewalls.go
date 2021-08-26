@@ -97,6 +97,7 @@ func (client AzureFirewallsClient) CreateOrUpdatePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client AzureFirewallsClient) CreateOrUpdateSender(req *http.Request) (future AzureFirewallsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -175,6 +176,7 @@ func (client AzureFirewallsClient) DeletePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client AzureFirewallsClient) DeleteSender(req *http.Request) (future AzureFirewallsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -560,6 +562,7 @@ func (client AzureFirewallsClient) UpdateTagsPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client AzureFirewallsClient) UpdateTagsSender(req *http.Request) (future AzureFirewallsUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

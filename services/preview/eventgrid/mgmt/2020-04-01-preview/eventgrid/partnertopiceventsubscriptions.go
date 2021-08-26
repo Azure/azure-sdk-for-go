@@ -93,6 +93,7 @@ func (client PartnerTopicEventSubscriptionsClient) CreateOrUpdatePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client PartnerTopicEventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (future PartnerTopicEventSubscriptionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -174,6 +175,7 @@ func (client PartnerTopicEventSubscriptionsClient) DeletePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client PartnerTopicEventSubscriptionsClient) DeleteSender(req *http.Request) (future PartnerTopicEventSubscriptionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -547,6 +549,7 @@ func (client PartnerTopicEventSubscriptionsClient) UpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client PartnerTopicEventSubscriptionsClient) UpdateSender(req *http.Request) (future PartnerTopicEventSubscriptionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

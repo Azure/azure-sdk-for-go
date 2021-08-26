@@ -156,6 +156,7 @@ func (client ReplicationVaultHealthClient) RefreshPreparer(ctx context.Context) 
 // http.Response Body if it receives an error.
 func (client ReplicationVaultHealthClient) RefreshSender(req *http.Request) (future ReplicationVaultHealthRefreshFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

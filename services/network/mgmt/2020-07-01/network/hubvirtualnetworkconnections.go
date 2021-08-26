@@ -93,6 +93,7 @@ func (client HubVirtualNetworkConnectionsClient) CreateOrUpdatePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client HubVirtualNetworkConnectionsClient) CreateOrUpdateSender(req *http.Request) (future HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,6 +174,7 @@ func (client HubVirtualNetworkConnectionsClient) DeletePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client HubVirtualNetworkConnectionsClient) DeleteSender(req *http.Request) (future HubVirtualNetworkConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

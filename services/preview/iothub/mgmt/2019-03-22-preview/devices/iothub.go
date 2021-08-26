@@ -95,6 +95,7 @@ func (client IotHubClient) ManualFailoverPreparer(ctx context.Context, iotHubNam
 // http.Response Body if it receives an error.
 func (client IotHubClient) ManualFailoverSender(req *http.Request) (future IotHubManualFailoverFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

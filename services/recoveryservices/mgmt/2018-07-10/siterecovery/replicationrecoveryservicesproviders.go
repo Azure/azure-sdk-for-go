@@ -123,6 +123,7 @@ func (client ReplicationRecoveryServicesProvidersClient) CreatePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) CreateSender(req *http.Request) (future ReplicationRecoveryServicesProvidersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -203,6 +204,7 @@ func (client ReplicationRecoveryServicesProvidersClient) DeletePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) DeleteSender(req *http.Request) (future ReplicationRecoveryServicesProvidersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -593,6 +595,7 @@ func (client ReplicationRecoveryServicesProvidersClient) PurgePreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) PurgeSender(req *http.Request) (future ReplicationRecoveryServicesProvidersPurgeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -672,6 +675,7 @@ func (client ReplicationRecoveryServicesProvidersClient) RefreshProviderPreparer
 // http.Response Body if it receives an error.
 func (client ReplicationRecoveryServicesProvidersClient) RefreshProviderSender(req *http.Request) (future ReplicationRecoveryServicesProvidersRefreshProviderFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

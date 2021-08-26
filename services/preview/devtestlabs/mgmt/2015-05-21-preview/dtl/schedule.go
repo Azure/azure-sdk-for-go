@@ -89,6 +89,7 @@ func (client ScheduleClient) CreateOrUpdateResourcePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ScheduleClient) CreateOrUpdateResourceSender(req *http.Request) (future ScheduleCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -169,6 +170,7 @@ func (client ScheduleClient) DeleteResourcePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ScheduleClient) DeleteResourceSender(req *http.Request) (future ScheduleDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -248,6 +250,7 @@ func (client ScheduleClient) ExecutePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client ScheduleClient) ExecuteSender(req *http.Request) (future ScheduleExecuteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

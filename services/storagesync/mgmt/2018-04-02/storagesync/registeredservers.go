@@ -102,6 +102,7 @@ func (client RegisteredServersClient) CreatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) CreateSender(req *http.Request) (future RegisteredServersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -192,6 +193,7 @@ func (client RegisteredServersClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) DeleteSender(req *http.Request) (future RegisteredServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

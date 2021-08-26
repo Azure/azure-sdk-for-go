@@ -111,6 +111,7 @@ func (client CassandraDataCentersClient) CreateUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CassandraDataCentersClient) CreateUpdateSender(req *http.Request) (future CassandraDataCentersCreateUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -209,6 +210,7 @@ func (client CassandraDataCentersClient) DeletePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client CassandraDataCentersClient) DeleteSender(req *http.Request) (future CassandraDataCentersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -495,6 +497,7 @@ func (client CassandraDataCentersClient) UpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client CassandraDataCentersClient) UpdateSender(req *http.Request) (future CassandraDataCentersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

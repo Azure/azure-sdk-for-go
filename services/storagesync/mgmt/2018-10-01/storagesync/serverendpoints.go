@@ -114,6 +114,7 @@ func (client ServerEndpointsClient) CreatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) CreateSender(req *http.Request) (future ServerEndpointsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -206,6 +207,7 @@ func (client ServerEndpointsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) DeleteSender(req *http.Request) (future ServerEndpointsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -478,6 +480,7 @@ func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) RecallActionSender(req *http.Request) (future ServerEndpointsRecallActionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -575,6 +578,7 @@ func (client ServerEndpointsClient) UpdatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) UpdateSender(req *http.Request) (future ServerEndpointsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -2,7 +2,11 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. QuotaRequestStatusDetails.MarshalJSON() ([]byte, error)
-1. ServiceErrorDetail.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. QuotaCreateOrUpdateFuture.autorest.Response
+1. QuotaUpdateFuture.autorest.Response
+1. ReservationMergeFuture.autorest.Response
+1. SplitFuture.autorest.Response

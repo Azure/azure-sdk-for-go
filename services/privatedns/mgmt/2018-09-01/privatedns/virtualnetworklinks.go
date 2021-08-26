@@ -104,6 +104,7 @@ func (client VirtualNetworkLinksClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client VirtualNetworkLinksClient) CreateOrUpdateSender(req *http.Request) (future VirtualNetworkLinksCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -192,6 +193,7 @@ func (client VirtualNetworkLinksClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client VirtualNetworkLinksClient) DeleteSender(req *http.Request) (future VirtualNetworkLinksDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -482,6 +484,7 @@ func (client VirtualNetworkLinksClient) UpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client VirtualNetworkLinksClient) UpdateSender(req *http.Request) (future VirtualNetworkLinksUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

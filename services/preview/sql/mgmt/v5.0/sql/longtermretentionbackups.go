@@ -95,6 +95,7 @@ func (client LongTermRetentionBackupsClient) CopyPreparer(ctx context.Context, l
 // http.Response Body if it receives an error.
 func (client LongTermRetentionBackupsClient) CopySender(req *http.Request) (future LongTermRetentionBackupsCopyFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -183,6 +184,7 @@ func (client LongTermRetentionBackupsClient) CopyByResourceGroupPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client LongTermRetentionBackupsClient) CopyByResourceGroupSender(req *http.Request) (future LongTermRetentionBackupsCopyByResourceGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -265,6 +267,7 @@ func (client LongTermRetentionBackupsClient) DeletePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client LongTermRetentionBackupsClient) DeleteSender(req *http.Request) (future LongTermRetentionBackupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -349,6 +352,7 @@ func (client LongTermRetentionBackupsClient) DeleteByResourceGroupPreparer(ctx c
 // http.Response Body if it receives an error.
 func (client LongTermRetentionBackupsClient) DeleteByResourceGroupSender(req *http.Request) (future LongTermRetentionBackupsDeleteByResourceGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1361,6 +1365,7 @@ func (client LongTermRetentionBackupsClient) UpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client LongTermRetentionBackupsClient) UpdateSender(req *http.Request) (future LongTermRetentionBackupsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1449,6 +1454,7 @@ func (client LongTermRetentionBackupsClient) UpdateByResourceGroupPreparer(ctx c
 // http.Response Body if it receives an error.
 func (client LongTermRetentionBackupsClient) UpdateByResourceGroupSender(req *http.Request) (future LongTermRetentionBackupsUpdateByResourceGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

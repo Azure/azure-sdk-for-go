@@ -63,6 +63,7 @@ func (client MetadataConfigurationClient) Get(ctx context.Context, tenantBaseURL
 // GetPreparer prepares the Get request.
 func (client MetadataConfigurationClient) GetPreparer(ctx context.Context, tenantBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"tenantBaseUrl": tenantBaseURL,
 	}
 

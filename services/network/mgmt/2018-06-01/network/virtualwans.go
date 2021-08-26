@@ -89,6 +89,7 @@ func (client VirtualWANsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client VirtualWANsClient) CreateOrUpdateSender(req *http.Request) (future VirtualWANsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,6 +168,7 @@ func (client VirtualWANsClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client VirtualWANsClient) DeleteSender(req *http.Request) (future VirtualWANsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -552,6 +554,7 @@ func (client VirtualWANsClient) UpdateTagsPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client VirtualWANsClient) UpdateTagsSender(req *http.Request) (future VirtualWANsUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -187,6 +187,7 @@ func (client ClusterPrincipalAssignmentsClient) CreateOrUpdatePreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client ClusterPrincipalAssignmentsClient) CreateOrUpdateSender(req *http.Request) (future ClusterPrincipalAssignmentsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -267,6 +268,7 @@ func (client ClusterPrincipalAssignmentsClient) DeletePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client ClusterPrincipalAssignmentsClient) DeleteSender(req *http.Request) (future ClusterPrincipalAssignmentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -65,6 +65,7 @@ func (client PipelineRunClient) CancelPipelineRun(ctx context.Context, runID str
 // CancelPipelineRunPreparer prepares the CancelPipelineRun request.
 func (client PipelineRunClient) CancelPipelineRunPreparer(ctx context.Context, runID string, isRecursive *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -144,6 +145,7 @@ func (client PipelineRunClient) GetPipelineRun(ctx context.Context, runID string
 // GetPipelineRunPreparer prepares the GetPipelineRun request.
 func (client PipelineRunClient) GetPipelineRunPreparer(ctx context.Context, runID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -234,6 +236,7 @@ func (client PipelineRunClient) QueryActivityRuns(ctx context.Context, pipelineN
 // QueryActivityRunsPreparer prepares the QueryActivityRuns request.
 func (client PipelineRunClient) QueryActivityRunsPreparer(ctx context.Context, pipelineName string, runID string, filterParameters RunFilterParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -321,6 +324,7 @@ func (client PipelineRunClient) QueryPipelineRunsByWorkspace(ctx context.Context
 // QueryPipelineRunsByWorkspacePreparer prepares the QueryPipelineRunsByWorkspace request.
 func (client PipelineRunClient) QueryPipelineRunsByWorkspacePreparer(ctx context.Context, filterParameters RunFilterParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

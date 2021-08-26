@@ -201,6 +201,7 @@ func (client DataFlowDebugSessionClient) CreatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client DataFlowDebugSessionClient) CreateSender(req *http.Request) (future DataFlowDebugSessionCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -387,6 +388,7 @@ func (client DataFlowDebugSessionClient) ExecuteCommandPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request) (future DataFlowDebugSessionExecuteCommandFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

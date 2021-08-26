@@ -169,6 +169,7 @@ func (client ManagedNetworksClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ManagedNetworksClient) DeleteSender(req *http.Request) (future ManagedNetworksDeleteFutureType, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -596,6 +597,7 @@ func (client ManagedNetworksClient) UpdatePreparer(ctx context.Context, paramete
 // http.Response Body if it receives an error.
 func (client ManagedNetworksClient) UpdateSender(req *http.Request) (future ManagedNetworksUpdateFutureType, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

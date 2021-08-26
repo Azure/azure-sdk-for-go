@@ -89,6 +89,7 @@ func (client PublicIPPrefixesClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client PublicIPPrefixesClient) CreateOrUpdateSender(req *http.Request) (future PublicIPPrefixesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,6 +168,7 @@ func (client PublicIPPrefixesClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client PublicIPPrefixesClient) DeleteSender(req *http.Request) (future PublicIPPrefixesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -556,6 +558,7 @@ func (client PublicIPPrefixesClient) UpdateTagsPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client PublicIPPrefixesClient) UpdateTagsSender(req *http.Request) (future PublicIPPrefixesUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -181,6 +181,7 @@ func (client DedicatedCloudServicesClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client DedicatedCloudServicesClient) DeleteSender(req *http.Request) (future DedicatedCloudServicesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

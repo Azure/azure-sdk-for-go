@@ -114,6 +114,7 @@ func (client BaseClient) CreateRecommendedActionSessionPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateRecommendedActionSessionSender(req *http.Request) (future CreateRecommendedActionSessionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

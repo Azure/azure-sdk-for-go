@@ -136,6 +136,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateSender(req *http.Request) (future VirtualNetworkGatewayConnectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -214,6 +215,7 @@ func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) DeleteSender(req *http.Request) (future VirtualNetworkGatewayConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -368,6 +370,7 @@ func (client VirtualNetworkGatewayConnectionsClient) GetIkeSasPreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) GetIkeSasSender(req *http.Request) (future VirtualNetworkGatewayConnectionsGetIkeSasFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -385,7 +388,7 @@ func (client VirtualNetworkGatewayConnectionsClient) GetIkeSasResponder(resp *ht
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -655,6 +658,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeySender(req *http.Request) (future VirtualNetworkGatewayConnectionsResetSharedKeyFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -745,6 +749,7 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeySender(req *http.Request) (future VirtualNetworkGatewayConnectionsSetSharedKeyFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -830,6 +835,7 @@ func (client VirtualNetworkGatewayConnectionsClient) StartPacketCapturePreparer(
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) StartPacketCaptureSender(req *http.Request) (future VirtualNetworkGatewayConnectionsStartPacketCaptureFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -847,7 +853,7 @@ func (client VirtualNetworkGatewayConnectionsClient) StartPacketCaptureResponder
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -912,6 +918,7 @@ func (client VirtualNetworkGatewayConnectionsClient) StopPacketCapturePreparer(c
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) StopPacketCaptureSender(req *http.Request) (future VirtualNetworkGatewayConnectionsStopPacketCaptureFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -929,7 +936,7 @@ func (client VirtualNetworkGatewayConnectionsClient) StopPacketCaptureResponder(
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -993,6 +1000,7 @@ func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsPreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsSender(req *http.Request) (future VirtualNetworkGatewayConnectionsUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

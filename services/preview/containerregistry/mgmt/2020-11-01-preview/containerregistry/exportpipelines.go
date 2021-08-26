@@ -110,6 +110,7 @@ func (client ExportPipelinesClient) CreatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ExportPipelinesClient) CreateSender(req *http.Request) (future ExportPipelinesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -204,6 +205,7 @@ func (client ExportPipelinesClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ExportPipelinesClient) DeleteSender(req *http.Request) (future ExportPipelinesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

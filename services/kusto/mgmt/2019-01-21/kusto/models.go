@@ -1091,6 +1091,7 @@ func (dcm *DataConnectionModel) UnmarshalJSON(body []byte) error {
 // DataConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DataConnectionsCreateOrUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -1171,6 +1172,7 @@ func (future *DataConnectionsDeleteFuture) result(client DataConnectionsClient) 
 // DataConnectionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DataConnectionsUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

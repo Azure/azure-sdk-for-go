@@ -66,6 +66,7 @@ func (client ServiceConfigurationClient) Get(ctx context.Context) (result Servic
 // GetPreparer prepares the Get request.
 func (client ServiceConfigurationClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -154,6 +155,7 @@ func (client ServiceConfigurationClient) Update(ctx context.Context, config Serv
 // UpdatePreparer prepares the Update request.
 func (client ServiceConfigurationClient) UpdatePreparer(ctx context.Context, config ServiceConfiguration) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

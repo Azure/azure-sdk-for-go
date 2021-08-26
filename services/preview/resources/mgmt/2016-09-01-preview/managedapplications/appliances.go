@@ -111,6 +111,7 @@ func (client AppliancesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client AppliancesClient) CreateOrUpdateSender(req *http.Request) (future AppliancesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -206,6 +207,7 @@ func (client AppliancesClient) CreateOrUpdateByIDPreparer(ctx context.Context, a
 // http.Response Body if it receives an error.
 func (client AppliancesClient) CreateOrUpdateByIDSender(req *http.Request) (future AppliancesCreateOrUpdateByIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -295,6 +297,7 @@ func (client AppliancesClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client AppliancesClient) DeleteSender(req *http.Request) (future AppliancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -371,6 +374,7 @@ func (client AppliancesClient) DeleteByIDPreparer(ctx context.Context, appliance
 // http.Response Body if it receives an error.
 func (client AppliancesClient) DeleteByIDSender(req *http.Request) (future AppliancesDeleteByIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

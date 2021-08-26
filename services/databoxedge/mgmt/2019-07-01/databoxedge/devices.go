@@ -95,6 +95,7 @@ func (client DevicesClient) CreateOrUpdatePreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) CreateOrUpdateSender(req *http.Request) (future DevicesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -185,6 +186,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettingsPreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client DevicesClient) CreateOrUpdateSecuritySettingsSender(req *http.Request) (future DevicesCreateOrUpdateSecuritySettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -262,6 +264,7 @@ func (client DevicesClient) DeletePreparer(ctx context.Context, deviceName strin
 // http.Response Body if it receives an error.
 func (client DevicesClient) DeleteSender(req *http.Request) (future DevicesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -339,6 +342,7 @@ func (client DevicesClient) DownloadUpdatesPreparer(ctx context.Context, deviceN
 // http.Response Body if it receives an error.
 func (client DevicesClient) DownloadUpdatesSender(req *http.Request) (future DevicesDownloadUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -720,6 +724,7 @@ func (client DevicesClient) InstallUpdatesPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) InstallUpdatesSender(req *http.Request) (future DevicesInstallUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1037,6 +1042,7 @@ func (client DevicesClient) ScanForUpdatesPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) ScanForUpdatesSender(req *http.Request) (future DevicesScanForUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

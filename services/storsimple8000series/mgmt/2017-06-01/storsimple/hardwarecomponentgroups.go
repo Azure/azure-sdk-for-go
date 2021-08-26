@@ -103,6 +103,7 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerStatePreparer(c
 // http.Response Body if it receives an error.
 func (client HardwareComponentGroupsClient) ChangeControllerPowerStateSender(req *http.Request) (future HardwareComponentGroupsChangeControllerPowerStateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

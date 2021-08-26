@@ -93,6 +93,7 @@ func (client VirtualHubRouteTableV2sClient) CreateOrUpdatePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client VirtualHubRouteTableV2sClient) CreateOrUpdateSender(req *http.Request) (future VirtualHubRouteTableV2sCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,6 +174,7 @@ func (client VirtualHubRouteTableV2sClient) DeletePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client VirtualHubRouteTableV2sClient) DeleteSender(req *http.Request) (future VirtualHubRouteTableV2sDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

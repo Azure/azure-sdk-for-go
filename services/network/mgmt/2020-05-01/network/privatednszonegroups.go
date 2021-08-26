@@ -92,6 +92,7 @@ func (client PrivateDNSZoneGroupsClient) CreateOrUpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client PrivateDNSZoneGroupsClient) CreateOrUpdateSender(req *http.Request) (future PrivateDNSZoneGroupsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -172,6 +173,7 @@ func (client PrivateDNSZoneGroupsClient) DeletePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client PrivateDNSZoneGroupsClient) DeleteSender(req *http.Request) (future PrivateDNSZoneGroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

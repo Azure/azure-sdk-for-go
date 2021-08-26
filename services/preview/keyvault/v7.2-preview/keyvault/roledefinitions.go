@@ -72,6 +72,7 @@ func (client RoleDefinitionsClient) List(ctx context.Context, vaultBaseURL strin
 // ListPreparer prepares the List request.
 func (client RoleDefinitionsClient) ListPreparer(ctx context.Context, vaultBaseURL string, scope string, filter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 

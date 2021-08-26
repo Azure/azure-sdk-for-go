@@ -89,6 +89,7 @@ func (client IntegrationServiceEnvironmentsClient) CreateOrUpdatePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client IntegrationServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Request) (future IntegrationServiceEnvironmentsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -634,6 +635,7 @@ func (client IntegrationServiceEnvironmentsClient) UpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client IntegrationServiceEnvironmentsClient) UpdateSender(req *http.Request) (future IntegrationServiceEnvironmentsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

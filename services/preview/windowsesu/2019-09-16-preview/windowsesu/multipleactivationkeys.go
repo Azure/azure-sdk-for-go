@@ -108,6 +108,7 @@ func (client MultipleActivationKeysClient) CreatePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client MultipleActivationKeysClient) CreateSender(req *http.Request) (future MultipleActivationKeysCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

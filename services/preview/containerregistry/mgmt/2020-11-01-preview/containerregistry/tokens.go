@@ -105,6 +105,7 @@ func (client TokensClient) CreatePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client TokensClient) CreateSender(req *http.Request) (future TokensCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -199,6 +200,7 @@ func (client TokensClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client TokensClient) DeleteSender(req *http.Request) (future TokensDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -515,6 +517,7 @@ func (client TokensClient) UpdatePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client TokensClient) UpdateSender(req *http.Request) (future TokensUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -333,6 +333,7 @@ func (am *AddonModel) UnmarshalJSON(body []byte) error {
 // AddonsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AddonsCreateOrUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -6090,6 +6091,7 @@ func (rm *RoleModel) UnmarshalJSON(body []byte) error {
 // RolesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RolesCreateOrUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -8080,6 +8082,7 @@ func (tm *TriggerModel) UnmarshalJSON(body []byte) error {
 // TriggersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TriggersCreateOrUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

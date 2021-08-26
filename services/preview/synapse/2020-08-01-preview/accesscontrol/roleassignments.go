@@ -73,6 +73,7 @@ func (client RoleAssignmentsClient) CheckPrincipalAccess(ctx context.Context, re
 // CheckPrincipalAccessPreparer prepares the CheckPrincipalAccess request.
 func (client RoleAssignmentsClient) CheckPrincipalAccessPreparer(ctx context.Context, request CheckPrincipalAccessRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -159,6 +160,7 @@ func (client RoleAssignmentsClient) CreateRoleAssignment(ctx context.Context, re
 // CreateRoleAssignmentPreparer prepares the CreateRoleAssignment request.
 func (client RoleAssignmentsClient) CreateRoleAssignmentPreparer(ctx context.Context, request RoleAssignmentRequest, roleAssignmentID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -245,6 +247,7 @@ func (client RoleAssignmentsClient) DeleteRoleAssignmentByID(ctx context.Context
 // DeleteRoleAssignmentByIDPreparer prepares the DeleteRoleAssignmentByID request.
 func (client RoleAssignmentsClient) DeleteRoleAssignmentByIDPreparer(ctx context.Context, roleAssignmentID string, scope string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -330,6 +333,7 @@ func (client RoleAssignmentsClient) GetRoleAssignmentByID(ctx context.Context, r
 // GetRoleAssignmentByIDPreparer prepares the GetRoleAssignmentByID request.
 func (client RoleAssignmentsClient) GetRoleAssignmentByIDPreparer(ctx context.Context, roleAssignmentID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -410,6 +414,7 @@ func (client RoleAssignmentsClient) ListRoleAssignments(ctx context.Context, rol
 // ListRoleAssignmentsPreparer prepares the ListRoleAssignments request.
 func (client RoleAssignmentsClient) ListRoleAssignmentsPreparer(ctx context.Context, roleID string, principalID string, scope string, continuationToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

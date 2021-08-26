@@ -532,6 +532,7 @@ func (future *BigDataPoolsCreateOrUpdateFuture) result(client BigDataPoolsClient
 // BigDataPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BigDataPoolsDeleteFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -4290,6 +4291,7 @@ func (future *IPFirewallRulesCreateOrUpdateFuture) result(client IPFirewallRules
 // IPFirewallRulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IPFirewallRulesDeleteFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -11332,6 +11334,7 @@ func (future *SQLPoolsCreateFuture) result(client SQLPoolsClient) (sp SQLPool, e
 // SQLPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SQLPoolsDeleteFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -11448,6 +11451,7 @@ func (spsap *SQLPoolSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 // SQLPoolsPauseFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SQLPoolsPauseFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -11491,6 +11495,7 @@ func (future *SQLPoolsPauseFuture) result(client SQLPoolsClient) (so SetObject, 
 // SQLPoolsResumeFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SQLPoolsResumeFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -15055,6 +15060,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 // WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type WorkspacesDeleteFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

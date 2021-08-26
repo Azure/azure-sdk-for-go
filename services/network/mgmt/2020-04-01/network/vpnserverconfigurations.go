@@ -91,6 +91,7 @@ func (client VpnServerConfigurationsClient) CreateOrUpdatePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client VpnServerConfigurationsClient) CreateOrUpdateSender(req *http.Request) (future VpnServerConfigurationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -169,6 +170,7 @@ func (client VpnServerConfigurationsClient) DeletePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client VpnServerConfigurationsClient) DeleteSender(req *http.Request) (future VpnServerConfigurationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

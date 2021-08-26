@@ -92,6 +92,7 @@ func (client AssociationsClient) CreateOrUpdatePreparer(ctx context.Context, sco
 // http.Response Body if it receives an error.
 func (client AssociationsClient) CreateOrUpdateSender(req *http.Request) (future AssociationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -169,6 +170,7 @@ func (client AssociationsClient) DeletePreparer(ctx context.Context, scope strin
 // http.Response Body if it receives an error.
 func (client AssociationsClient) DeleteSender(req *http.Request) (future AssociationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

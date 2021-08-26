@@ -107,6 +107,7 @@ func (client FileSharesClient) CreateOrUpdatePreparer(ctx context.Context, devic
 // http.Response Body if it receives an error.
 func (client FileSharesClient) CreateOrUpdateSender(req *http.Request) (future FileSharesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -198,6 +199,7 @@ func (client FileSharesClient) DeletePreparer(ctx context.Context, deviceName st
 // http.Response Body if it receives an error.
 func (client FileSharesClient) DeleteSender(req *http.Request) (future FileSharesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

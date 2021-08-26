@@ -950,6 +950,7 @@ func (client WorkflowsClient) MovePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client WorkflowsClient) MoveSender(req *http.Request) (future WorkflowsMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

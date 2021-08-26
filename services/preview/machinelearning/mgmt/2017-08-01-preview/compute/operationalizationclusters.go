@@ -225,6 +225,7 @@ func (client OperationalizationClustersClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client OperationalizationClustersClient) CreateOrUpdateSender(req *http.Request) (future OperationalizationClustersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -319,6 +320,7 @@ func (client OperationalizationClustersClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client OperationalizationClustersClient) DeleteSender(req *http.Request) (future OperationalizationClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -924,6 +926,7 @@ func (client OperationalizationClustersClient) UpdateSystemServicesPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client OperationalizationClustersClient) UpdateSystemServicesSender(req *http.Request) (future OperationalizationClustersUpdateSystemServicesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

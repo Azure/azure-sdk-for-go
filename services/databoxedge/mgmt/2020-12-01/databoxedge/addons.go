@@ -92,6 +92,7 @@ func (client AddonsClient) CreateOrUpdatePreparer(ctx context.Context, deviceNam
 // http.Response Body if it receives an error.
 func (client AddonsClient) CreateOrUpdateSender(req *http.Request) (future AddonsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -109,7 +110,7 @@ func (client AddonsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -174,6 +175,7 @@ func (client AddonsClient) DeletePreparer(ctx context.Context, deviceName string
 // http.Response Body if it receives an error.
 func (client AddonsClient) DeleteSender(req *http.Request) (future AddonsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

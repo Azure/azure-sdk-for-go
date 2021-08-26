@@ -103,6 +103,7 @@ func (client ServicesClient) BackupPreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ServicesClient) BackupSender(req *http.Request) (future ServicesBackupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -851,6 +852,7 @@ func (client ServicesClient) ManageDeploymentsPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ServicesClient) ManageDeploymentsSender(req *http.Request) (future ServicesManageDeploymentsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -946,6 +948,7 @@ func (client ServicesClient) RestorePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client ServicesClient) RestoreSender(req *http.Request) (future ServicesRestoreFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1035,6 +1038,7 @@ func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ServicesClient) UpdateSender(req *http.Request) (future ServicesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1126,6 +1130,7 @@ func (client ServicesClient) UpdateHostnamePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ServicesClient) UpdateHostnameSender(req *http.Request) (future ServicesUpdateHostnameFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -81,6 +81,7 @@ func (client CertificateClient) Add(ctx context.Context, certificate Certificate
 // AddPreparer prepares the Add request.
 func (client CertificateClient) AddPreparer(ctx context.Context, certificate CertificateAddParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -187,6 +188,7 @@ func (client CertificateClient) CancelDeletion(ctx context.Context, thumbprintAl
 // CancelDeletionPreparer prepares the CancelDeletion request.
 func (client CertificateClient) CancelDeletionPreparer(ctx context.Context, thumbprintAlgorithm string, thumbprint string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -298,6 +300,7 @@ func (client CertificateClient) Delete(ctx context.Context, thumbprintAlgorithm 
 // DeletePreparer prepares the Delete request.
 func (client CertificateClient) DeletePreparer(ctx context.Context, thumbprintAlgorithm string, thumbprint string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -404,6 +407,7 @@ func (client CertificateClient) Get(ctx context.Context, thumbprintAlgorithm str
 // GetPreparer prepares the Get request.
 func (client CertificateClient) GetPreparer(ctx context.Context, thumbprintAlgorithm string, thumbprint string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -530,6 +534,7 @@ func (client CertificateClient) List(ctx context.Context, filter string, selectP
 // ListPreparer prepares the List request.
 func (client CertificateClient) ListPreparer(ctx context.Context, filter string, selectParameter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

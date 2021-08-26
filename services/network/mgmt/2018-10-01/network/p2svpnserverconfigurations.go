@@ -93,6 +93,7 @@ func (client P2sVpnServerConfigurationsClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client P2sVpnServerConfigurationsClient) CreateOrUpdateSender(req *http.Request) (future P2sVpnServerConfigurationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,6 +174,7 @@ func (client P2sVpnServerConfigurationsClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client P2sVpnServerConfigurationsClient) DeleteSender(req *http.Request) (future P2sVpnServerConfigurationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

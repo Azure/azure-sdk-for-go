@@ -85,6 +85,7 @@ func (client ReplicationJobsClient) CancelPreparer(ctx context.Context, jobName 
 // http.Response Body if it receives an error.
 func (client ReplicationJobsClient) CancelSender(req *http.Request) (future ReplicationJobsCancelFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -164,6 +165,7 @@ func (client ReplicationJobsClient) ExportPreparer(ctx context.Context, jobQuery
 // http.Response Body if it receives an error.
 func (client ReplicationJobsClient) ExportSender(req *http.Request) (future ReplicationJobsExportFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -438,6 +440,7 @@ func (client ReplicationJobsClient) RestartPreparer(ctx context.Context, jobName
 // http.Response Body if it receives an error.
 func (client ReplicationJobsClient) RestartSender(req *http.Request) (future ReplicationJobsRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -519,6 +522,7 @@ func (client ReplicationJobsClient) ResumePreparer(ctx context.Context, jobName 
 // http.Response Body if it receives an error.
 func (client ReplicationJobsClient) ResumeSender(req *http.Request) (future ReplicationJobsResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

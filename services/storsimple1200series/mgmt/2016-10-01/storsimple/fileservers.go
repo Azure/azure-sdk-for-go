@@ -97,6 +97,7 @@ func (client FileServersClient) BackupNowPreparer(ctx context.Context, deviceNam
 // http.Response Body if it receives an error.
 func (client FileServersClient) BackupNowSender(req *http.Request) (future FileServersBackupNowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -194,6 +195,7 @@ func (client FileServersClient) CreateOrUpdatePreparer(ctx context.Context, devi
 // http.Response Body if it receives an error.
 func (client FileServersClient) CreateOrUpdateSender(req *http.Request) (future FileServersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -283,6 +285,7 @@ func (client FileServersClient) DeletePreparer(ctx context.Context, deviceName s
 // http.Response Body if it receives an error.
 func (client FileServersClient) DeleteSender(req *http.Request) (future FileServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

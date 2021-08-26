@@ -604,6 +604,7 @@ func (future *CachesCreateOrUpdateFuture) result(client CachesClient) (c Cache, 
 
 // CachesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CachesDeleteFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -652,6 +653,7 @@ type CacheSecuritySettings struct {
 
 // CachesFlushFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CachesFlushFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -860,6 +862,7 @@ func NewCachesListResultPage(cur CachesListResult, getNextPage func(context.Cont
 
 // CachesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CachesStartFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -902,6 +905,7 @@ func (future *CachesStartFuture) result(client CachesClient) (so SetObject, err 
 
 // CachesStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CachesStopFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -945,6 +949,7 @@ func (future *CachesStopFuture) result(client CachesClient) (so SetObject, err e
 // CachesUpgradeFirmwareFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CachesUpgradeFirmwareFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -1753,6 +1758,7 @@ func (future *StorageTargetsCreateOrUpdateFuture) result(client StorageTargetsCl
 // StorageTargetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type StorageTargetsDeleteFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

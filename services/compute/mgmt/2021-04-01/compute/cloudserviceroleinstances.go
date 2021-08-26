@@ -86,6 +86,7 @@ func (client CloudServiceRoleInstancesClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client CloudServiceRoleInstancesClient) DeleteSender(req *http.Request) (future CloudServiceRoleInstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -517,6 +518,7 @@ func (client CloudServiceRoleInstancesClient) RebuildPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CloudServiceRoleInstancesClient) RebuildSender(req *http.Request) (future CloudServiceRoleInstancesRebuildFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -595,6 +597,7 @@ func (client CloudServiceRoleInstancesClient) ReimagePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CloudServiceRoleInstancesClient) ReimageSender(req *http.Request) (future CloudServiceRoleInstancesReimageFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -672,6 +675,7 @@ func (client CloudServiceRoleInstancesClient) RestartPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CloudServiceRoleInstancesClient) RestartSender(req *http.Request) (future CloudServiceRoleInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

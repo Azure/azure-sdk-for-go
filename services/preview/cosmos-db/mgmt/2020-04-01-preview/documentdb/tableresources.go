@@ -111,6 +111,7 @@ func (client TableResourcesClient) CreateUpdateTablePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) CreateUpdateTableSender(req *http.Request) (future TableResourcesCreateUpdateTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -205,6 +206,7 @@ func (client TableResourcesClient) DeleteTablePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) DeleteTableSender(req *http.Request) (future TableResourcesDeleteTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -573,6 +575,7 @@ func (client TableResourcesClient) MigrateTableToAutoscalePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) MigrateTableToAutoscaleSender(req *http.Request) (future TableResourcesMigrateTableToAutoscaleFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -667,6 +670,7 @@ func (client TableResourcesClient) MigrateTableToManualThroughputPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) MigrateTableToManualThroughputSender(req *http.Request) (future TableResourcesMigrateTableToManualThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -771,6 +775,7 @@ func (client TableResourcesClient) UpdateTableThroughputPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client TableResourcesClient) UpdateTableThroughputSender(req *http.Request) (future TableResourcesUpdateTableThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -308,6 +308,7 @@ func (client RoleInstancesClient) RestartPreparer(ctx context.Context, locationN
 // http.Response Body if it receives an error.
 func (client RoleInstancesClient) RestartSender(req *http.Request) (future RoleInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -395,6 +396,7 @@ func (client RoleInstancesClient) StartPreparer(ctx context.Context, locationNam
 // http.Response Body if it receives an error.
 func (client RoleInstancesClient) StartSender(req *http.Request) (future RoleInstancesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -482,6 +484,7 @@ func (client RoleInstancesClient) StopPreparer(ctx context.Context, locationName
 // http.Response Body if it receives an error.
 func (client RoleInstancesClient) StopSender(req *http.Request) (future RoleInstancesStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -71,6 +71,7 @@ func (client TranslationClient) CancelOperation(ctx context.Context, endpoint st
 // CancelOperationPreparer prepares the CancelOperation request.
 func (client TranslationClient) CancelOperationPreparer(ctx context.Context, endpoint string, ID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -145,6 +146,7 @@ func (client TranslationClient) GetDocumentFormats(ctx context.Context, endpoint
 // GetDocumentFormatsPreparer prepares the GetDocumentFormats request.
 func (client TranslationClient) GetDocumentFormatsPreparer(ctx context.Context, endpoint string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -215,6 +217,7 @@ func (client TranslationClient) GetDocumentStatus(ctx context.Context, endpoint 
 // GetDocumentStatusPreparer prepares the GetDocumentStatus request.
 func (client TranslationClient) GetDocumentStatusPreparer(ctx context.Context, endpoint string, ID uuid.UUID, documentID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -288,6 +291,7 @@ func (client TranslationClient) GetDocumentStorageSource(ctx context.Context, en
 // GetDocumentStorageSourcePreparer prepares the GetDocumentStorageSource request.
 func (client TranslationClient) GetDocumentStorageSourcePreparer(ctx context.Context, endpoint string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -357,6 +361,7 @@ func (client TranslationClient) GetGlossaryFormats(ctx context.Context, endpoint
 // GetGlossaryFormatsPreparer prepares the GetGlossaryFormats request.
 func (client TranslationClient) GetGlossaryFormatsPreparer(ctx context.Context, endpoint string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -460,6 +465,7 @@ func (client TranslationClient) GetOperationDocumentsStatus(ctx context.Context,
 // GetOperationDocumentsStatusPreparer prepares the GetOperationDocumentsStatus request.
 func (client TranslationClient) GetOperationDocumentsStatusPreparer(ctx context.Context, endpoint string, ID uuid.UUID, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -579,6 +585,7 @@ func (client TranslationClient) GetOperations(ctx context.Context, endpoint stri
 // GetOperationsPreparer prepares the GetOperations request.
 func (client TranslationClient) GetOperationsPreparer(ctx context.Context, endpoint string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -663,6 +670,7 @@ func (client TranslationClient) GetOperationStatus(ctx context.Context, endpoint
 // GetOperationStatusPreparer prepares the GetOperationStatus request.
 func (client TranslationClient) GetOperationStatusPreparer(ctx context.Context, endpoint string, ID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 
@@ -756,6 +764,7 @@ func (client TranslationClient) SubmitBatchRequest(ctx context.Context, endpoint
 // SubmitBatchRequestPreparer prepares the SubmitBatchRequest request.
 func (client TranslationClient) SubmitBatchRequestPreparer(ctx context.Context, endpoint string, body *BatchSubmissionRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": endpoint,
 	}
 

@@ -93,6 +93,7 @@ func (client LoadBalancerBackendAddressPoolsClient) CreateOrUpdatePreparer(ctx c
 // http.Response Body if it receives an error.
 func (client LoadBalancerBackendAddressPoolsClient) CreateOrUpdateSender(req *http.Request) (future LoadBalancerBackendAddressPoolsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,6 +174,7 @@ func (client LoadBalancerBackendAddressPoolsClient) DeletePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client LoadBalancerBackendAddressPoolsClient) DeleteSender(req *http.Request) (future LoadBalancerBackendAddressPoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

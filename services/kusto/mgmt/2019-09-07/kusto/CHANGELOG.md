@@ -2,11 +2,11 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. IdentityUserAssignedIdentitiesValue.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. SkuDescription.MarshalJSON() ([]byte, error)
-1. SkuDescriptionList.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. DataConnectionsCreateOrUpdateFuture.autorest.Response
+1. DataConnectionsUpdateFuture.autorest.Response
+1. DatabasesCreateOrUpdateFuture.autorest.Response
+1. DatabasesUpdateFuture.autorest.Response

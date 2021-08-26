@@ -90,6 +90,7 @@ func (client DefinitionsClient) CreatePreparer(ctx context.Context, subscription
 // http.Response Body if it receives an error.
 func (client DefinitionsClient) CreateSender(req *http.Request) (future DefinitionsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

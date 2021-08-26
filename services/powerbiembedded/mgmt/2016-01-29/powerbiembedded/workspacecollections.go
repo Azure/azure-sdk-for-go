@@ -254,6 +254,7 @@ func (client WorkspaceCollectionsClient) DeletePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) DeleteSender(req *http.Request) (future WorkspaceCollectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

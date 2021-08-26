@@ -68,6 +68,7 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Contex
 // CreateOrUpdateLinkedServicePreparer prepares the CreateOrUpdateLinkedService request.
 func (client LinkedServiceClient) CreateOrUpdateLinkedServicePreparer(ctx context.Context, linkedServiceName string, linkedService LinkedServiceResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -98,6 +99,7 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedServicePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client LinkedServiceClient) CreateOrUpdateLinkedServiceSender(req *http.Request) (future LinkedServiceCreateOrUpdateLinkedServiceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -161,6 +163,7 @@ func (client LinkedServiceClient) DeleteLinkedService(ctx context.Context, linke
 // DeleteLinkedServicePreparer prepares the DeleteLinkedService request.
 func (client LinkedServiceClient) DeleteLinkedServicePreparer(ctx context.Context, linkedServiceName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -185,6 +188,7 @@ func (client LinkedServiceClient) DeleteLinkedServicePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client LinkedServiceClient) DeleteLinkedServiceSender(req *http.Request) (future LinkedServiceDeleteLinkedServiceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -256,6 +260,7 @@ func (client LinkedServiceClient) GetLinkedService(ctx context.Context, linkedSe
 // GetLinkedServicePreparer prepares the GetLinkedService request.
 func (client LinkedServiceClient) GetLinkedServicePreparer(ctx context.Context, linkedServiceName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -340,6 +345,7 @@ func (client LinkedServiceClient) GetLinkedServicesByWorkspace(ctx context.Conte
 // GetLinkedServicesByWorkspacePreparer prepares the GetLinkedServicesByWorkspace request.
 func (client LinkedServiceClient) GetLinkedServicesByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -458,6 +464,7 @@ func (client LinkedServiceClient) RenameLinkedService(ctx context.Context, linke
 // RenameLinkedServicePreparer prepares the RenameLinkedService request.
 func (client LinkedServiceClient) RenameLinkedServicePreparer(ctx context.Context, linkedServiceName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -484,6 +491,7 @@ func (client LinkedServiceClient) RenameLinkedServicePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client LinkedServiceClient) RenameLinkedServiceSender(req *http.Request) (future LinkedServiceRenameLinkedServiceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

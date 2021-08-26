@@ -103,6 +103,7 @@ func (client BandwidthSchedulesClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client BandwidthSchedulesClient) CreateOrUpdateSender(req *http.Request) (future BandwidthSchedulesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -183,6 +184,7 @@ func (client BandwidthSchedulesClient) DeletePreparer(ctx context.Context, devic
 // http.Response Body if it receives an error.
 func (client BandwidthSchedulesClient) DeleteSender(req *http.Request) (future BandwidthSchedulesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

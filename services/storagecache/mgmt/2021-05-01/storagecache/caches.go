@@ -135,6 +135,7 @@ func (client CachesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client CachesClient) CreateOrUpdateSender(req *http.Request) (future CachesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -220,6 +221,7 @@ func (client CachesClient) DebugInfoPreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client CachesClient) DebugInfoSender(req *http.Request) (future CachesDebugInfoFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -304,6 +306,7 @@ func (client CachesClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client CachesClient) DeleteSender(req *http.Request) (future CachesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -389,6 +392,7 @@ func (client CachesClient) FlushPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client CachesClient) FlushSender(req *http.Request) (future CachesFlushFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -785,6 +789,7 @@ func (client CachesClient) StartPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client CachesClient) StartSender(req *http.Request) (future CachesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -869,6 +874,7 @@ func (client CachesClient) StopPreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client CachesClient) StopSender(req *http.Request) (future CachesStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1047,6 +1053,7 @@ func (client CachesClient) UpgradeFirmwarePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client CachesClient) UpgradeFirmwareSender(req *http.Request) (future CachesUpgradeFirmwareFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

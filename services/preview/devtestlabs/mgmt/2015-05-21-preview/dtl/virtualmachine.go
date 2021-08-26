@@ -89,6 +89,7 @@ func (client VirtualMachineClient) ApplyArtifactsPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) ApplyArtifactsSender(req *http.Request) (future VirtualMachineApplyArtifactsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -170,6 +171,7 @@ func (client VirtualMachineClient) CreateOrUpdateResourcePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) CreateOrUpdateResourceSender(req *http.Request) (future VirtualMachineCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -250,6 +252,7 @@ func (client VirtualMachineClient) DeleteResourcePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) DeleteResourceSender(req *http.Request) (future VirtualMachineDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -615,6 +618,7 @@ func (client VirtualMachineClient) StartPreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) StartSender(req *http.Request) (future VirtualMachineStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -694,6 +698,7 @@ func (client VirtualMachineClient) StopPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) StopSender(req *http.Request) (future VirtualMachineStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -90,6 +90,7 @@ func (client RolesClient) CreateOrUpdatePreparer(ctx context.Context, deviceName
 // http.Response Body if it receives an error.
 func (client RolesClient) CreateOrUpdateSender(req *http.Request) (future RolesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -107,7 +108,7 @@ func (client RolesClient) CreateOrUpdateResponder(resp *http.Response) (result R
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -170,6 +171,7 @@ func (client RolesClient) DeletePreparer(ctx context.Context, deviceName string,
 // http.Response Body if it receives an error.
 func (client RolesClient) DeleteSender(req *http.Request) (future RolesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

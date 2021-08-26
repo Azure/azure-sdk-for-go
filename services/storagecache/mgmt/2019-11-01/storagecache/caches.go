@@ -103,6 +103,7 @@ func (client CachesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client CachesClient) CreateOrUpdateSender(req *http.Request) (future CachesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -187,6 +188,7 @@ func (client CachesClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client CachesClient) DeleteSender(req *http.Request) (future CachesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -204,7 +206,7 @@ func (client CachesClient) DeleteResponder(resp *http.Response) (result SetObjec
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -272,6 +274,7 @@ func (client CachesClient) FlushPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client CachesClient) FlushSender(req *http.Request) (future CachesFlushFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -289,7 +292,7 @@ func (client CachesClient) FlushResponder(resp *http.Response) (result SetObject
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -667,6 +670,7 @@ func (client CachesClient) StartPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client CachesClient) StartSender(req *http.Request) (future CachesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -684,7 +688,7 @@ func (client CachesClient) StartResponder(resp *http.Response) (result SetObject
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -751,6 +755,7 @@ func (client CachesClient) StopPreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client CachesClient) StopSender(req *http.Request) (future CachesStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -768,7 +773,7 @@ func (client CachesClient) StopResponder(resp *http.Response) (result SetObject,
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -927,6 +932,7 @@ func (client CachesClient) UpgradeFirmwarePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client CachesClient) UpgradeFirmwareSender(req *http.Request) (future CachesUpgradeFirmwareFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -944,7 +950,7 @@ func (client CachesClient) UpgradeFirmwareResponder(resp *http.Response) (result
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

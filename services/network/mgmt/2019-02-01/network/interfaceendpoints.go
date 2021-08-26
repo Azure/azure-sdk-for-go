@@ -89,6 +89,7 @@ func (client InterfaceEndpointsClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client InterfaceEndpointsClient) CreateOrUpdateSender(req *http.Request) (future InterfaceEndpointsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,6 +168,7 @@ func (client InterfaceEndpointsClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client InterfaceEndpointsClient) DeleteSender(req *http.Request) (future InterfaceEndpointsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

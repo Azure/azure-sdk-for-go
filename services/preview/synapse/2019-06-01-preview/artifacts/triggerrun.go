@@ -73,6 +73,7 @@ func (client TriggerRunClient) CancelTriggerInstance(ctx context.Context, trigge
 // CancelTriggerInstancePreparer prepares the CancelTriggerInstance request.
 func (client TriggerRunClient) CancelTriggerInstancePreparer(ctx context.Context, triggerName string, runID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -157,6 +158,7 @@ func (client TriggerRunClient) QueryTriggerRunsByWorkspace(ctx context.Context, 
 // QueryTriggerRunsByWorkspacePreparer prepares the QueryTriggerRunsByWorkspace request.
 func (client TriggerRunClient) QueryTriggerRunsByWorkspacePreparer(ctx context.Context, filterParameters RunFilterParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -241,6 +243,7 @@ func (client TriggerRunClient) RerunTriggerInstance(ctx context.Context, trigger
 // RerunTriggerInstancePreparer prepares the RerunTriggerInstance request.
 func (client TriggerRunClient) RerunTriggerInstancePreparer(ctx context.Context, triggerName string, runID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

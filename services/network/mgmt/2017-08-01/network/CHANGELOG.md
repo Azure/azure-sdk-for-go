@@ -2,14 +2,10 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. BgpPeerStatus.MarshalJSON() ([]byte, error)
-1. ConnectivityHop.MarshalJSON() ([]byte, error)
-1. ConnectivityInformation.MarshalJSON() ([]byte, error)
-1. ConnectivityIssue.MarshalJSON() ([]byte, error)
-1. GatewayRoute.MarshalJSON() ([]byte, error)
-1. TunnelConnectionHealth.MarshalJSON() ([]byte, error)
-1. VirtualNetworkUsage.MarshalJSON() ([]byte, error)
-1. VirtualNetworkUsageName.MarshalJSON() ([]byte, error)
-1. WatcherPropertiesFormat.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. VirtualNetworkGatewaysGenerateVpnProfileFuture.autorest.Response
+1. VirtualNetworkGatewaysGeneratevpnclientpackageFuture.autorest.Response
+1. VirtualNetworkGatewaysGetVpnProfilePackageURLFuture.autorest.Response

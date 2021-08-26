@@ -9414,6 +9414,7 @@ func (tm *TriggerModel) UnmarshalJSON(body []byte) error {
 // TriggersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TriggersCreateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

@@ -91,6 +91,7 @@ func (client MoveCollectionsClient) BulkRemovePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) BulkRemoveSender(req *http.Request) (future MoveCollectionsBulkRemoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -184,6 +185,7 @@ func (client MoveCollectionsClient) CommitPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) CommitSender(req *http.Request) (future MoveCollectionsCommitFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -358,6 +360,7 @@ func (client MoveCollectionsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) DeleteSender(req *http.Request) (future MoveCollectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -451,6 +454,7 @@ func (client MoveCollectionsClient) DiscardPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) DiscardSender(req *http.Request) (future MoveCollectionsDiscardFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -620,6 +624,7 @@ func (client MoveCollectionsClient) InitiateMovePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) InitiateMoveSender(req *http.Request) (future MoveCollectionsInitiateMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1020,6 +1025,7 @@ func (client MoveCollectionsClient) PreparePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) PrepareSender(req *http.Request) (future MoveCollectionsPrepareFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1098,6 +1104,7 @@ func (client MoveCollectionsClient) ResolveDependenciesPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) ResolveDependenciesSender(req *http.Request) (future MoveCollectionsResolveDependenciesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

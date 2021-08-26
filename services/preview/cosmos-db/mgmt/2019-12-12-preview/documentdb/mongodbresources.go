@@ -112,6 +112,7 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionPreparer(ctx c
 // http.Response Body if it receives an error.
 func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionSender(req *http.Request) (future MongoDBResourcesCreateUpdateMongoDBCollectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -213,6 +214,7 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabasePreparer(ctx con
 // http.Response Body if it receives an error.
 func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabaseSender(req *http.Request) (future MongoDBResourcesCreateUpdateMongoDBDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -307,6 +309,7 @@ func (client MongoDBResourcesClient) DeleteMongoDBCollectionPreparer(ctx context
 // http.Response Body if it receives an error.
 func (client MongoDBResourcesClient) DeleteMongoDBCollectionSender(req *http.Request) (future MongoDBResourcesDeleteMongoDBCollectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -398,6 +401,7 @@ func (client MongoDBResourcesClient) DeleteMongoDBDatabasePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client MongoDBResourcesClient) DeleteMongoDBDatabaseSender(req *http.Request) (future MongoDBResourcesDeleteMongoDBDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1047,6 +1051,7 @@ func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputPreparer(c
 // http.Response Body if it receives an error.
 func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputSender(req *http.Request) (future MongoDBResourcesUpdateMongoDBCollectionThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1150,6 +1155,7 @@ func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputPreparer(ctx
 // http.Response Body if it receives an error.
 func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputSender(req *http.Request) (future MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

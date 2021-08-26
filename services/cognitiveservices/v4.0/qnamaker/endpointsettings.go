@@ -61,6 +61,7 @@ func (client EndpointSettingsClient) GetSettings(ctx context.Context) (result En
 // GetSettingsPreparer prepares the GetSettings request.
 func (client EndpointSettingsClient) GetSettingsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -128,6 +129,7 @@ func (client EndpointSettingsClient) UpdateSettings(ctx context.Context, endpoin
 // UpdateSettingsPreparer prepares the UpdateSettings request.
 func (client EndpointSettingsClient) UpdateSettingsPreparer(ctx context.Context, endpointSettingsPayload EndpointSettingsDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -103,6 +103,7 @@ func (client SharedPrivateLinkResourcesClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client SharedPrivateLinkResourcesClient) CreateOrUpdateSender(req *http.Request) (future SharedPrivateLinkResourcesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -184,6 +185,7 @@ func (client SharedPrivateLinkResourcesClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client SharedPrivateLinkResourcesClient) DeleteSender(req *http.Request) (future SharedPrivateLinkResourcesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

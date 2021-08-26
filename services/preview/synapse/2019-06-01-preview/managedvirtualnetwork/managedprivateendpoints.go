@@ -66,6 +66,7 @@ func (client ManagedPrivateEndpointsClient) Create(ctx context.Context, managedV
 // CreatePreparer prepares the Create request.
 func (client ManagedPrivateEndpointsClient) CreatePreparer(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string, managedPrivateEndpoint ManagedPrivateEndpoint) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -150,6 +151,7 @@ func (client ManagedPrivateEndpointsClient) Delete(ctx context.Context, managedV
 // DeletePreparer prepares the Delete request.
 func (client ManagedPrivateEndpointsClient) DeletePreparer(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -228,6 +230,7 @@ func (client ManagedPrivateEndpointsClient) Get(ctx context.Context, managedVirt
 // GetPreparer prepares the Get request.
 func (client ManagedPrivateEndpointsClient) GetPreparer(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -311,6 +314,7 @@ func (client ManagedPrivateEndpointsClient) List(ctx context.Context, managedVir
 // ListPreparer prepares the List request.
 func (client ManagedPrivateEndpointsClient) ListPreparer(ctx context.Context, managedVirtualNetworkName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

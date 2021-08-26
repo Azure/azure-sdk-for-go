@@ -76,6 +76,7 @@ func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UU
 // AssignToAppPreparer prepares the AssignToApp request.
 func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -152,6 +153,7 @@ func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UU
 // GetAssignedPreparer prepares the GetAssigned request.
 func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -221,6 +223,7 @@ func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context) (res
 // ListUserLUISAccountsPreparer prepares the ListUserLUISAccounts request.
 func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -299,6 +302,7 @@ func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.
 // RemoveFromAppPreparer prepares the RemoveFromApp request.
 func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

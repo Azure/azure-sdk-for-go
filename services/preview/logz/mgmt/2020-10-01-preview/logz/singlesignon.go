@@ -105,6 +105,7 @@ func (client SingleSignOnClient) CreateOrUpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client SingleSignOnClient) CreateOrUpdateSender(req *http.Request) (future SingleSignOnCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

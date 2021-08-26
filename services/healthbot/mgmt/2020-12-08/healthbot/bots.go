@@ -105,6 +105,7 @@ func (client BotsClient) CreatePreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client BotsClient) CreateSender(req *http.Request) (future BotsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -195,6 +196,7 @@ func (client BotsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client BotsClient) DeleteSender(req *http.Request) (future BotsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

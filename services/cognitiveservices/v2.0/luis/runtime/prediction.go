@@ -79,6 +79,7 @@ func (client PredictionClient) Resolve(ctx context.Context, appID uuid.UUID, que
 // ResolvePreparer prepares the Resolve request.
 func (client PredictionClient) ResolvePreparer(ctx context.Context, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

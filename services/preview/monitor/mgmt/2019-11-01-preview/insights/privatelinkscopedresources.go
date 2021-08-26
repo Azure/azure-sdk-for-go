@@ -97,6 +97,7 @@ func (client PrivateLinkScopedResourcesClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client PrivateLinkScopedResourcesClient) CreateOrUpdateSender(req *http.Request) (future PrivateLinkScopedResourcesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -183,6 +184,7 @@ func (client PrivateLinkScopedResourcesClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client PrivateLinkScopedResourcesClient) DeleteSender(req *http.Request) (future PrivateLinkScopedResourcesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

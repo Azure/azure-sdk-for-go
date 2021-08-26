@@ -82,6 +82,7 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, apimBaseURL st
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -183,6 +184,7 @@ func (client APISchemaClient) Delete(ctx context.Context, apimBaseURL string, ap
 // DeletePreparer prepares the Delete request.
 func (client APISchemaClient) DeletePreparer(ctx context.Context, apimBaseURL string, apiid string, schemaID string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -276,6 +278,7 @@ func (client APISchemaClient) Get(ctx context.Context, apimBaseURL string, apiid
 // GetPreparer prepares the Get request.
 func (client APISchemaClient) GetPreparer(ctx context.Context, apimBaseURL string, apiid string, schemaID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -369,6 +372,7 @@ func (client APISchemaClient) ListByAPI(ctx context.Context, apimBaseURL string,
 // ListByAPIPreparer prepares the ListByAPI request.
 func (client APISchemaClient) ListByAPIPreparer(ctx context.Context, apimBaseURL string, apiid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

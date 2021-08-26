@@ -103,6 +103,7 @@ func (client VpnGatewaysClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client VpnGatewaysClient) CreateOrUpdateSender(req *http.Request) (future VpnGatewaysCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -181,6 +182,7 @@ func (client VpnGatewaysClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client VpnGatewaysClient) DeleteSender(req *http.Request) (future VpnGatewaysDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -563,6 +565,7 @@ func (client VpnGatewaysClient) ResetPreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client VpnGatewaysClient) ResetSender(req *http.Request) (future VpnGatewaysResetFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -647,6 +650,7 @@ func (client VpnGatewaysClient) StartPacketCapturePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client VpnGatewaysClient) StartPacketCaptureSender(req *http.Request) (future VpnGatewaysStartPacketCaptureFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -664,7 +668,7 @@ func (client VpnGatewaysClient) StartPacketCaptureResponder(resp *http.Response)
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -731,6 +735,7 @@ func (client VpnGatewaysClient) StopPacketCapturePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client VpnGatewaysClient) StopPacketCaptureSender(req *http.Request) (future VpnGatewaysStopPacketCaptureFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -748,7 +753,7 @@ func (client VpnGatewaysClient) StopPacketCaptureResponder(resp *http.Response) 
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -812,6 +817,7 @@ func (client VpnGatewaysClient) UpdateTagsPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client VpnGatewaysClient) UpdateTagsSender(req *http.Request) (future VpnGatewaysUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

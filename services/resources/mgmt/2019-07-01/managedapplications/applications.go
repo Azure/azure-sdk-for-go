@@ -117,6 +117,7 @@ func (client ApplicationsClient) CreateOrUpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) CreateOrUpdateSender(req *http.Request) (future ApplicationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -218,6 +219,7 @@ func (client ApplicationsClient) CreateOrUpdateByIDPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) CreateOrUpdateByIDSender(req *http.Request) (future ApplicationsCreateOrUpdateByIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -307,6 +309,7 @@ func (client ApplicationsClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) DeleteSender(req *http.Request) (future ApplicationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -383,6 +386,7 @@ func (client ApplicationsClient) DeleteByIDPreparer(ctx context.Context, applica
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) DeleteByIDSender(req *http.Request) (future ApplicationsDeleteByIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -870,6 +874,7 @@ func (client ApplicationsClient) RefreshPermissionsPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) RefreshPermissionsSender(req *http.Request) (future ApplicationsRefreshPermissionsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

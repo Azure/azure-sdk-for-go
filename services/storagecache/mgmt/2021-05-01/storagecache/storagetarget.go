@@ -100,6 +100,7 @@ func (client StorageTargetClient) FlushPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client StorageTargetClient) FlushSender(req *http.Request) (future StorageTargetFlushFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,6 +189,7 @@ func (client StorageTargetClient) ResumePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client StorageTargetClient) ResumeSender(req *http.Request) (future StorageTargetResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -276,6 +278,7 @@ func (client StorageTargetClient) SuspendPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client StorageTargetClient) SuspendSender(req *http.Request) (future StorageTargetSuspendFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

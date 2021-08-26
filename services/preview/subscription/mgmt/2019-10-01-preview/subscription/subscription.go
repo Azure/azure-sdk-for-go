@@ -167,6 +167,7 @@ func (client Client) CreateAliasPreparer(ctx context.Context, aliasName string, 
 // http.Response Body if it receives an error.
 func (client Client) CreateAliasSender(req *http.Request) (future CreateAliasFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -255,6 +256,7 @@ func (client Client) CreateCspSubscriptionPreparer(ctx context.Context, billingA
 // http.Response Body if it receives an error.
 func (client Client) CreateCspSubscriptionSender(req *http.Request) (future CreateCspSubscriptionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -349,6 +351,7 @@ func (client Client) CreateSubscriptionPreparer(ctx context.Context, billingAcco
 // http.Response Body if it receives an error.
 func (client Client) CreateSubscriptionSender(req *http.Request) (future CreateSubscriptionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -427,6 +430,7 @@ func (client Client) CreateSubscriptionInEnrollmentAccountPreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client Client) CreateSubscriptionInEnrollmentAccountSender(req *http.Request) (future CreateSubscriptionInEnrollmentAccountFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

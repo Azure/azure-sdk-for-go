@@ -100,6 +100,7 @@ func (client SecurityPoliciesClient) CreatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client SecurityPoliciesClient) CreateSender(req *http.Request) (future SecurityPoliciesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,6 +189,7 @@ func (client SecurityPoliciesClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client SecurityPoliciesClient) DeleteSender(req *http.Request) (future SecurityPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -490,6 +492,7 @@ func (client SecurityPoliciesClient) PatchPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client SecurityPoliciesClient) PatchSender(req *http.Request) (future SecurityPoliciesPatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

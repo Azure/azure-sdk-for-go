@@ -95,6 +95,7 @@ func (client ReplicationProtectionContainerMappingsClient) CreatePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainerMappingsClient) CreateSender(req *http.Request) (future ReplicationProtectionContainerMappingsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -180,6 +181,7 @@ func (client ReplicationProtectionContainerMappingsClient) DeletePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainerMappingsClient) DeleteSender(req *http.Request) (future ReplicationProtectionContainerMappingsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -576,6 +578,7 @@ func (client ReplicationProtectionContainerMappingsClient) PurgePreparer(ctx con
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainerMappingsClient) PurgeSender(req *http.Request) (future ReplicationProtectionContainerMappingsPurgeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -660,6 +663,7 @@ func (client ReplicationProtectionContainerMappingsClient) UpdatePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainerMappingsClient) UpdateSender(req *http.Request) (future ReplicationProtectionContainerMappingsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

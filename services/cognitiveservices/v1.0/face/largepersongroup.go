@@ -101,6 +101,7 @@ func (client LargePersonGroupClient) Create(ctx context.Context, largePersonGrou
 // CreatePreparer prepares the Create request.
 func (client LargePersonGroupClient) CreatePreparer(ctx context.Context, largePersonGroupID string, body MetaDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -181,6 +182,7 @@ func (client LargePersonGroupClient) Delete(ctx context.Context, largePersonGrou
 // DeletePreparer prepares the Delete request.
 func (client LargePersonGroupClient) DeletePreparer(ctx context.Context, largePersonGroupID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -263,6 +265,7 @@ func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID
 // GetPreparer prepares the Get request.
 func (client LargePersonGroupClient) GetPreparer(ctx context.Context, largePersonGroupID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -349,6 +352,7 @@ func (client LargePersonGroupClient) GetTrainingStatus(ctx context.Context, larg
 // GetTrainingStatusPreparer prepares the GetTrainingStatus request.
 func (client LargePersonGroupClient) GetTrainingStatusPreparer(ctx context.Context, largePersonGroupID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -445,6 +449,7 @@ func (client LargePersonGroupClient) List(ctx context.Context, start string, top
 // ListPreparer prepares the List request.
 func (client LargePersonGroupClient) ListPreparer(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -535,6 +540,7 @@ func (client LargePersonGroupClient) Train(ctx context.Context, largePersonGroup
 // TrainPreparer prepares the Train request.
 func (client LargePersonGroupClient) TrainPreparer(ctx context.Context, largePersonGroupID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -614,6 +620,7 @@ func (client LargePersonGroupClient) Update(ctx context.Context, largePersonGrou
 // UpdatePreparer prepares the Update request.
 func (client LargePersonGroupClient) UpdatePreparer(ctx context.Context, largePersonGroupID string, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

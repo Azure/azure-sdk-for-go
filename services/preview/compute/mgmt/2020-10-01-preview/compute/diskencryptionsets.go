@@ -102,6 +102,7 @@ func (client DiskEncryptionSetsClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client DiskEncryptionSetsClient) CreateOrUpdateSender(req *http.Request) (future DiskEncryptionSetsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -182,6 +183,7 @@ func (client DiskEncryptionSetsClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client DiskEncryptionSetsClient) DeleteSender(req *http.Request) (future DiskEncryptionSetsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -692,6 +694,7 @@ func (client DiskEncryptionSetsClient) UpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client DiskEncryptionSetsClient) UpdateSender(req *http.Request) (future DiskEncryptionSetsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

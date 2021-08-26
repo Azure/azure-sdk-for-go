@@ -66,6 +66,7 @@ func (client SettingsClient) List(ctx context.Context, appID uuid.UUID, versionI
 // ListPreparer prepares the List request.
 func (client SettingsClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -146,6 +147,7 @@ func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versio
 // UpdatePreparer prepares the Update request.
 func (client SettingsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

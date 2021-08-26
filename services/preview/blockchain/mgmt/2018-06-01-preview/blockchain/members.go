@@ -92,6 +92,7 @@ func (client MembersClient) CreatePreparer(ctx context.Context, blockchainMember
 // http.Response Body if it receives an error.
 func (client MembersClient) CreateSender(req *http.Request) (future MembersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -171,6 +172,7 @@ func (client MembersClient) DeletePreparer(ctx context.Context, blockchainMember
 // http.Response Body if it receives an error.
 func (client MembersClient) DeleteSender(req *http.Request) (future MembersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -64,6 +64,7 @@ func (client BatchClient) CancelSparkBatchJob(ctx context.Context, batchID int32
 // CancelSparkBatchJobPreparer prepares the CancelSparkBatchJob request.
 func (client BatchClient) CancelSparkBatchJobPreparer(ctx context.Context, batchID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -144,6 +145,7 @@ func (client BatchClient) CreateSparkBatchJob(ctx context.Context, sparkBatchJob
 // CreateSparkBatchJobPreparer prepares the CreateSparkBatchJob request.
 func (client BatchClient) CreateSparkBatchJobPreparer(ctx context.Context, sparkBatchJobOptions BatchJobOptions, detailed *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -222,6 +224,7 @@ func (client BatchClient) GetSparkBatchJob(ctx context.Context, batchID int32, d
 // GetSparkBatchJobPreparer prepares the GetSparkBatchJob request.
 func (client BatchClient) GetSparkBatchJobPreparer(ctx context.Context, batchID int32, detailed *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -304,6 +307,7 @@ func (client BatchClient) GetSparkBatchJobs(ctx context.Context, from *int32, si
 // GetSparkBatchJobsPreparer prepares the GetSparkBatchJobs request.
 func (client BatchClient) GetSparkBatchJobsPreparer(ctx context.Context, from *int32, size *int32, detailed *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,

@@ -95,6 +95,7 @@ func (client ReplicationStorageClassificationMappingsClient) CreatePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client ReplicationStorageClassificationMappingsClient) CreateSender(req *http.Request) (future ReplicationStorageClassificationMappingsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -177,6 +178,7 @@ func (client ReplicationStorageClassificationMappingsClient) DeletePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client ReplicationStorageClassificationMappingsClient) DeleteSender(req *http.Request) (future ReplicationStorageClassificationMappingsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

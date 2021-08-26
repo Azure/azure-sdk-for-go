@@ -185,6 +185,7 @@ func (client EnvironmentSettingsClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) CreateOrUpdateSender(req *http.Request) (future EnvironmentSettingsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -267,6 +268,7 @@ func (client EnvironmentSettingsClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) DeleteSender(req *http.Request) (future EnvironmentSettingsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -651,6 +653,7 @@ func (client EnvironmentSettingsClient) StartPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) StartSender(req *http.Request) (future EnvironmentSettingsStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -732,6 +735,7 @@ func (client EnvironmentSettingsClient) StopPreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) StopSender(req *http.Request) (future EnvironmentSettingsStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

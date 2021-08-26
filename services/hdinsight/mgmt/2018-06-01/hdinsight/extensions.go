@@ -90,6 +90,7 @@ func (client ExtensionsClient) CreatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) CreateSender(req *http.Request) (future ExtensionsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -169,6 +170,7 @@ func (client ExtensionsClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) DeleteSender(req *http.Request) (future ExtensionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -246,6 +248,7 @@ func (client ExtensionsClient) DisableAzureMonitorPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) DisableAzureMonitorSender(req *http.Request) (future ExtensionsDisableAzureMonitorFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -323,6 +326,7 @@ func (client ExtensionsClient) DisableMonitoringPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) DisableMonitoringSender(req *http.Request) (future ExtensionsDisableMonitoringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -403,6 +407,7 @@ func (client ExtensionsClient) EnableAzureMonitorPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) EnableAzureMonitorSender(req *http.Request) (future ExtensionsEnableAzureMonitorFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -483,6 +488,7 @@ func (client ExtensionsClient) EnableMonitoringPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client ExtensionsClient) EnableMonitoringSender(req *http.Request) (future ExtensionsEnableMonitoringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -103,6 +103,7 @@ func (client ServerAzureADOnlyAuthenticationsClient) CreateOrUpdatePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client ServerAzureADOnlyAuthenticationsClient) CreateOrUpdateSender(req *http.Request) (future ServerAzureADOnlyAuthenticationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -183,6 +184,7 @@ func (client ServerAzureADOnlyAuthenticationsClient) DeletePreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client ServerAzureADOnlyAuthenticationsClient) DeleteSender(req *http.Request) (future ServerAzureADOnlyAuthenticationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

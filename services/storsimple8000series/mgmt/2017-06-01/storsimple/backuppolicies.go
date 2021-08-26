@@ -99,6 +99,7 @@ func (client BackupPoliciesClient) BackupNowPreparer(ctx context.Context, device
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) BackupNowSender(req *http.Request) (future BackupPoliciesBackupNowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -193,6 +194,7 @@ func (client BackupPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, d
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) CreateOrUpdateSender(req *http.Request) (future BackupPoliciesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -282,6 +284,7 @@ func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, deviceNam
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) DeleteSender(req *http.Request) (future BackupPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

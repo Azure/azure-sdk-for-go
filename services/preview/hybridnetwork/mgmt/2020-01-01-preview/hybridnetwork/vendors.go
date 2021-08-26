@@ -96,6 +96,7 @@ func (client VendorsClient) CreateOrUpdatePreparer(ctx context.Context, vendorNa
 // http.Response Body if it receives an error.
 func (client VendorsClient) CreateOrUpdateSender(req *http.Request) (future VendorsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -178,6 +179,7 @@ func (client VendorsClient) DeletePreparer(ctx context.Context, vendorName strin
 // http.Response Body if it receives an error.
 func (client VendorsClient) DeleteSender(req *http.Request) (future VendorsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

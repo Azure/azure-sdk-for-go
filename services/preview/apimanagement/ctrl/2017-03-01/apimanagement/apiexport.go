@@ -75,6 +75,7 @@ func (client APIExportClient) Get(ctx context.Context, apimBaseURL string, apiid
 // GetPreparer prepares the Get request.
 func (client APIExportClient) GetPreparer(ctx context.Context, apimBaseURL string, apiid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

@@ -69,6 +69,7 @@ func (client QuotaByCounterKeysClient) List(ctx context.Context, apimBaseURL str
 // ListPreparer prepares the List request.
 func (client QuotaByCounterKeysClient) ListPreparer(ctx context.Context, apimBaseURL string, quotaCounterKey string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -153,6 +154,7 @@ func (client QuotaByCounterKeysClient) Update(ctx context.Context, apimBaseURL s
 // UpdatePreparer prepares the Update request.
 func (client QuotaByCounterKeysClient) UpdatePreparer(ctx context.Context, apimBaseURL string, quotaCounterKey string, parameters QuotaCounterValueContractProperties) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

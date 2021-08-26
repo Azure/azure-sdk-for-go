@@ -61,6 +61,7 @@ func (client WorkspaceClient) Get(ctx context.Context) (result Workspace, err er
 // GetPreparer prepares the Get request.
 func (client WorkspaceClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

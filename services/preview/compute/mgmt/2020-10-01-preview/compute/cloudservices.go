@@ -103,6 +103,7 @@ func (client CloudServicesClient) CreateOrUpdatePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) CreateOrUpdateSender(req *http.Request) (future CloudServicesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -181,6 +182,7 @@ func (client CloudServicesClient) DeletePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) DeleteSender(req *http.Request) (future CloudServicesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -271,6 +273,7 @@ func (client CloudServicesClient) DeleteInstancesPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) DeleteInstancesSender(req *http.Request) (future CloudServicesDeleteInstancesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -733,6 +736,7 @@ func (client CloudServicesClient) PowerOffPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) PowerOffSender(req *http.Request) (future CloudServicesPowerOffFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -825,6 +829,7 @@ func (client CloudServicesClient) RebuildPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) RebuildSender(req *http.Request) (future CloudServicesRebuildFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -915,6 +920,7 @@ func (client CloudServicesClient) ReimagePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) ReimageSender(req *http.Request) (future CloudServicesReimageFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1005,6 +1011,7 @@ func (client CloudServicesClient) RestartPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) RestartSender(req *http.Request) (future CloudServicesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1082,6 +1089,7 @@ func (client CloudServicesClient) StartPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) StartSender(req *http.Request) (future CloudServicesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1165,6 +1173,7 @@ func (client CloudServicesClient) UpdatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client CloudServicesClient) UpdateSender(req *http.Request) (future CloudServicesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -103,6 +103,7 @@ func (client PoolClient) Add(ctx context.Context, pool PoolAddParameter, timeout
 // AddPreparer prepares the Add request.
 func (client PoolClient) AddPreparer(ctx context.Context, pool PoolAddParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -222,6 +223,7 @@ func (client PoolClient) Delete(ctx context.Context, poolID string, timeout *int
 // DeletePreparer prepares the Delete request.
 func (client PoolClient) DeletePreparer(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -341,6 +343,7 @@ func (client PoolClient) DisableAutoScale(ctx context.Context, poolID string, ti
 // DisableAutoScalePreparer prepares the DisableAutoScale request.
 func (client PoolClient) DisableAutoScalePreparer(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -459,6 +462,7 @@ func (client PoolClient) EnableAutoScale(ctx context.Context, poolID string, poo
 // EnableAutoScalePreparer prepares the EnableAutoScale request.
 func (client PoolClient) EnableAutoScalePreparer(ctx context.Context, poolID string, poolEnableAutoScaleParameter PoolEnableAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -588,6 +592,7 @@ func (client PoolClient) EvaluateAutoScale(ctx context.Context, poolID string, p
 // EvaluateAutoScalePreparer prepares the EvaluateAutoScale request.
 func (client PoolClient) EvaluateAutoScalePreparer(ctx context.Context, poolID string, poolEvaluateAutoScaleParameter PoolEvaluateAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -705,6 +710,7 @@ func (client PoolClient) Exists(ctx context.Context, poolID string, timeout *int
 // ExistsPreparer prepares the Exists request.
 func (client PoolClient) ExistsPreparer(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -837,6 +843,7 @@ func (client PoolClient) Get(ctx context.Context, poolID string, selectParameter
 // GetPreparer prepares the Get request.
 func (client PoolClient) GetPreparer(ctx context.Context, poolID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -964,6 +971,7 @@ func (client PoolClient) GetAllLifetimeStatistics(ctx context.Context, timeout *
 // GetAllLifetimeStatisticsPreparer prepares the GetAllLifetimeStatistics request.
 func (client PoolClient) GetAllLifetimeStatisticsPreparer(ctx context.Context, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1082,6 +1090,7 @@ func (client PoolClient) List(ctx context.Context, filter string, selectParamete
 // ListPreparer prepares the List request.
 func (client PoolClient) ListPreparer(ctx context.Context, filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1258,6 +1267,7 @@ func (client PoolClient) ListUsageMetrics(ctx context.Context, startTime *date.T
 // ListUsageMetricsPreparer prepares the ListUsageMetrics request.
 func (client PoolClient) ListUsageMetricsPreparer(ctx context.Context, startTime *date.Time, endTime *date.Time, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1422,6 +1432,7 @@ func (client PoolClient) Patch(ctx context.Context, poolID string, poolPatchPara
 // PatchPreparer prepares the Patch request.
 func (client PoolClient) PatchPreparer(ctx context.Context, poolID string, poolPatchParameter PoolPatchParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1563,6 +1574,7 @@ func (client PoolClient) RemoveNodes(ctx context.Context, poolID string, nodeRem
 // RemoveNodesPreparer prepares the RemoveNodes request.
 func (client PoolClient) RemoveNodesPreparer(ctx context.Context, poolID string, nodeRemoveParameter NodeRemoveParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1700,6 +1712,7 @@ func (client PoolClient) Resize(ctx context.Context, poolID string, poolResizePa
 // ResizePreparer prepares the Resize request.
 func (client PoolClient) ResizePreparer(ctx context.Context, poolID string, poolResizeParameter PoolResizeParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1836,6 +1849,7 @@ func (client PoolClient) StopResize(ctx context.Context, poolID string, timeout 
 // StopResizePreparer prepares the StopResize request.
 func (client PoolClient) StopResizePreparer(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1976,6 +1990,7 @@ func (client PoolClient) UpdateProperties(ctx context.Context, poolID string, po
 // UpdatePropertiesPreparer prepares the UpdateProperties request.
 func (client PoolClient) UpdatePropertiesPreparer(ctx context.Context, poolID string, poolUpdatePropertiesParameter PoolUpdatePropertiesParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

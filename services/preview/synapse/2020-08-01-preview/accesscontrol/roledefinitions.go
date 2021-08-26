@@ -63,6 +63,7 @@ func (client RoleDefinitionsClient) GetRoleDefinitionByID(ctx context.Context, r
 // GetRoleDefinitionByIDPreparer prepares the GetRoleDefinitionByID request.
 func (client RoleDefinitionsClient) GetRoleDefinitionByIDPreparer(ctx context.Context, roleDefinitionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -141,6 +142,7 @@ func (client RoleDefinitionsClient) ListRoleDefinitions(ctx context.Context, isB
 // ListRoleDefinitionsPreparer prepares the ListRoleDefinitions request.
 func (client RoleDefinitionsClient) ListRoleDefinitionsPreparer(ctx context.Context, isBuiltIn *bool, scope string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -218,6 +220,7 @@ func (client RoleDefinitionsClient) ListScopes(ctx context.Context) (result List
 // ListScopesPreparer prepares the ListScopes request.
 func (client RoleDefinitionsClient) ListScopesPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

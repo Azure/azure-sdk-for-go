@@ -67,6 +67,7 @@ func (client RefreshTokensClient) GetFromExchange(ctx context.Context, grantType
 // GetFromExchangePreparer prepares the GetFromExchange request.
 func (client RefreshTokensClient) GetFromExchangePreparer(ctx context.Context, grantType string, service string, tenant string, refreshToken string, accessToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

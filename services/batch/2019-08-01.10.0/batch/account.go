@@ -89,6 +89,7 @@ func (client AccountClient) ListPoolNodeCounts(ctx context.Context, filter strin
 // ListPoolNodeCountsPreparer prepares the ListPoolNodeCounts request.
 func (client AccountClient) ListPoolNodeCountsPreparer(ctx context.Context, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -251,6 +252,7 @@ func (client AccountClient) ListSupportedImages(ctx context.Context, filter stri
 // ListSupportedImagesPreparer prepares the ListSupportedImages request.
 func (client AccountClient) ListSupportedImagesPreparer(ctx context.Context, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

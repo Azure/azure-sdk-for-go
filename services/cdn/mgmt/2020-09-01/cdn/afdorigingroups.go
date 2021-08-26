@@ -118,6 +118,7 @@ func (client AFDOriginGroupsClient) CreatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client AFDOriginGroupsClient) CreateSender(req *http.Request) (future AFDOriginGroupsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -206,6 +207,7 @@ func (client AFDOriginGroupsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client AFDOriginGroupsClient) DeleteSender(req *http.Request) (future AFDOriginGroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -636,6 +638,7 @@ func (client AFDOriginGroupsClient) UpdatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client AFDOriginGroupsClient) UpdateSender(req *http.Request) (future AFDOriginGroupsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

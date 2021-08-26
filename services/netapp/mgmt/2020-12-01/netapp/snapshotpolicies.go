@@ -192,6 +192,7 @@ func (client SnapshotPoliciesClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client SnapshotPoliciesClient) DeleteSender(req *http.Request) (future SnapshotPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -541,6 +542,7 @@ func (client SnapshotPoliciesClient) UpdatePreparer(ctx context.Context, body Sn
 // http.Response Body if it receives an error.
 func (client SnapshotPoliciesClient) UpdateSender(req *http.Request) (future SnapshotPoliciesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

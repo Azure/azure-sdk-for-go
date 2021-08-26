@@ -93,6 +93,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) DeletePreparer(ctx c
 // http.Response Body if it receives an error.
 func (client LongTermRetentionManagedInstanceBackupsClient) DeleteSender(req *http.Request) (future LongTermRetentionManagedInstanceBackupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -177,6 +178,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) DeleteByResourceGrou
 // http.Response Body if it receives an error.
 func (client LongTermRetentionManagedInstanceBackupsClient) DeleteByResourceGroupSender(req *http.Request) (future LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

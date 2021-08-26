@@ -107,6 +107,7 @@ func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (future WorkspacesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -194,6 +195,7 @@ func (client WorkspacesClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) DeleteSender(req *http.Request) (future WorkspacesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -286,6 +288,7 @@ func (client WorkspacesClient) DiagnosePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) DiagnoseSender(req *http.Request) (future WorkspacesDiagnoseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1137,6 +1140,7 @@ func (client WorkspacesClient) PrepareNotebookPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) PrepareNotebookSender(req *http.Request) (future WorkspacesPrepareNotebookFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1225,6 +1229,7 @@ func (client WorkspacesClient) ResyncKeysPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) ResyncKeysSender(req *http.Request) (future WorkspacesResyncKeysFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

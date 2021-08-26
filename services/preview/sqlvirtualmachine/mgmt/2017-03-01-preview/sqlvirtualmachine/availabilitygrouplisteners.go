@@ -95,6 +95,7 @@ func (client AvailabilityGroupListenersClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client AvailabilityGroupListenersClient) CreateOrUpdateSender(req *http.Request) (future AvailabilityGroupListenersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,6 +177,7 @@ func (client AvailabilityGroupListenersClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client AvailabilityGroupListenersClient) DeleteSender(req *http.Request) (future AvailabilityGroupListenersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -65,6 +65,7 @@ func (client ManifestsClient) Create(ctx context.Context, name string, reference
 // CreatePreparer prepares the Create request.
 func (client ManifestsClient) CreatePreparer(ctx context.Context, name string, reference string, payload Manifest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -141,6 +142,7 @@ func (client ManifestsClient) Delete(ctx context.Context, name string, reference
 // DeletePreparer prepares the Delete request.
 func (client ManifestsClient) DeletePreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -215,6 +217,7 @@ func (client ManifestsClient) Get(ctx context.Context, name string, reference st
 // GetPreparer prepares the Get request.
 func (client ManifestsClient) GetPreparer(ctx context.Context, name string, reference string, accept string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -292,6 +295,7 @@ func (client ManifestsClient) GetAttributes(ctx context.Context, name string, re
 // GetAttributesPreparer prepares the GetAttributes request.
 func (client ManifestsClient) GetAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -368,6 +372,7 @@ func (client ManifestsClient) GetList(ctx context.Context, name string, last str
 // GetListPreparer prepares the GetList request.
 func (client ManifestsClient) GetListPreparer(ctx context.Context, name string, last string, n *int32, orderby string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -453,6 +458,7 @@ func (client ManifestsClient) UpdateAttributes(ctx context.Context, name string,
 // UpdateAttributesPreparer prepares the UpdateAttributes request.
 func (client ManifestsClient) UpdateAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

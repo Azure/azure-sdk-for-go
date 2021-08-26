@@ -101,6 +101,7 @@ func (client ApplicationTypeVersionsClient) CreatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client ApplicationTypeVersionsClient) CreateSender(req *http.Request) (future ApplicationTypeVersionsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -183,6 +184,7 @@ func (client ApplicationTypeVersionsClient) DeletePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client ApplicationTypeVersionsClient) DeleteSender(req *http.Request) (future ApplicationTypeVersionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

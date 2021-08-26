@@ -167,6 +167,7 @@ func (client ConfigServersClient) UpdatePatchPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client ConfigServersClient) UpdatePatchSender(req *http.Request) (future ConfigServersUpdatePatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -260,6 +261,7 @@ func (client ConfigServersClient) UpdatePutPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConfigServersClient) UpdatePutSender(req *http.Request) (future ConfigServersUpdatePutFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -349,6 +351,7 @@ func (client ConfigServersClient) ValidatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ConfigServersClient) ValidateSender(req *http.Request) (future ConfigServersValidateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

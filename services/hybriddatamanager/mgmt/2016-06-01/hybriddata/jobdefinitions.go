@@ -107,6 +107,7 @@ func (client JobDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, d
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) CreateOrUpdateSender(req *http.Request) (future JobDefinitionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -198,6 +199,7 @@ func (client JobDefinitionsClient) DeletePreparer(ctx context.Context, dataServi
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) DeleteSender(req *http.Request) (future JobDefinitionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -644,6 +646,7 @@ func (client JobDefinitionsClient) RunPreparer(ctx context.Context, dataServiceN
 // http.Response Body if it receives an error.
 func (client JobDefinitionsClient) RunSender(req *http.Request) (future JobDefinitionsRunFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

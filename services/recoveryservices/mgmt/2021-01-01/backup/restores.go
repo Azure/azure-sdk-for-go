@@ -98,6 +98,7 @@ func (client RestoresClient) TriggerPreparer(ctx context.Context, vaultName stri
 // http.Response Body if it receives an error.
 func (client RestoresClient) TriggerSender(req *http.Request) (future RestoresTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -98,6 +98,7 @@ func (client RunsClient) CancelPreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client RunsClient) CancelSender(req *http.Request) (future RunsCancelFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -503,6 +504,7 @@ func (client RunsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client RunsClient) UpdateSender(req *http.Request) (future RunsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

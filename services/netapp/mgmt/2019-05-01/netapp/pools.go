@@ -115,6 +115,7 @@ func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body Capac
 // http.Response Body if it receives an error.
 func (client PoolsClient) CreateOrUpdateSender(req *http.Request) (future PoolsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -203,6 +204,7 @@ func (client PoolsClient) DeletePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client PoolsClient) DeleteSender(req *http.Request) (future PoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

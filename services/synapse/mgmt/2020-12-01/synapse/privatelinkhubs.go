@@ -185,6 +185,7 @@ func (client PrivateLinkHubsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client PrivateLinkHubsClient) DeleteSender(req *http.Request) (future PrivateLinkHubsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

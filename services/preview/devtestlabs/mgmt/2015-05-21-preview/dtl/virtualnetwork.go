@@ -89,6 +89,7 @@ func (client VirtualNetworkClient) CreateOrUpdateResourcePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client VirtualNetworkClient) CreateOrUpdateResourceSender(req *http.Request) (future VirtualNetworkCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -169,6 +170,7 @@ func (client VirtualNetworkClient) DeleteResourcePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client VirtualNetworkClient) DeleteResourceSender(req *http.Request) (future VirtualNetworkDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

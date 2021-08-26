@@ -105,6 +105,7 @@ func (client CassandraClustersClient) CreateUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) CreateUpdateSender(req *http.Request) (future CassandraClustersCreateUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -197,6 +198,7 @@ func (client CassandraClustersClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) DeleteSender(req *http.Request) (future CassandraClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -288,6 +290,7 @@ func (client CassandraClustersClient) FetchNodeStatusPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) FetchNodeStatusSender(req *http.Request) (future CassandraClustersFetchNodeStatusFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -822,6 +825,7 @@ func (client CassandraClustersClient) RequestRepairPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) RequestRepairSender(req *http.Request) (future CassandraClustersRequestRepairFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -916,6 +920,7 @@ func (client CassandraClustersClient) UpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) UpdateSender(req *http.Request) (future CassandraClustersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

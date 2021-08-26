@@ -74,6 +74,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, ap
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, opid string, parameters OpenidConnectProviderContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -164,6 +165,7 @@ func (client OpenIDConnectProviderClient) Delete(ctx context.Context, apimBaseUR
 // DeletePreparer prepares the Delete request.
 func (client OpenIDConnectProviderClient) DeletePreparer(ctx context.Context, apimBaseURL string, opid string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -250,6 +252,7 @@ func (client OpenIDConnectProviderClient) Get(ctx context.Context, apimBaseURL s
 // GetPreparer prepares the Get request.
 func (client OpenIDConnectProviderClient) GetPreparer(ctx context.Context, apimBaseURL string, opid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -349,6 +352,7 @@ func (client OpenIDConnectProviderClient) List(ctx context.Context, apimBaseURL 
 // ListPreparer prepares the List request.
 func (client OpenIDConnectProviderClient) ListPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -480,6 +484,7 @@ func (client OpenIDConnectProviderClient) Update(ctx context.Context, apimBaseUR
 // UpdatePreparer prepares the Update request.
 func (client OpenIDConnectProviderClient) UpdatePreparer(ctx context.Context, apimBaseURL string, opid string, parameters OpenidConnectProviderUpdateContract, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

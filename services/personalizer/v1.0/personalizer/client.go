@@ -89,6 +89,7 @@ func (client BaseClient) Rank(ctx context.Context, rankRequest RankRequest) (res
 // RankPreparer prepares the Rank request.
 func (client BaseClient) RankPreparer(ctx context.Context, rankRequest RankRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

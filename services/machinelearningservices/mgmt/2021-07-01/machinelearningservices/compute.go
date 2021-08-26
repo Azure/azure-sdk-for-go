@@ -101,6 +101,7 @@ func (client ComputeClient) CreateOrUpdatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ComputeClient) CreateOrUpdateSender(req *http.Request) (future ComputeCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -193,6 +194,7 @@ func (client ComputeClient) DeletePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ComputeClient) DeleteSender(req *http.Request) (future ComputeDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -716,6 +718,7 @@ func (client ComputeClient) RestartPreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ComputeClient) RestartSender(req *http.Request) (future ComputeRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -804,6 +807,7 @@ func (client ComputeClient) StartPreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client ComputeClient) StartSender(req *http.Request) (future ComputeStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -892,6 +896,7 @@ func (client ComputeClient) StopPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client ComputeClient) StopSender(req *http.Request) (future ComputeStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -984,6 +989,7 @@ func (client ComputeClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ComputeClient) UpdateSender(req *http.Request) (future ComputeUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

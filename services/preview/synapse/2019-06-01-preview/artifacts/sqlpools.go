@@ -63,6 +63,7 @@ func (client SQLPoolsClient) Get(ctx context.Context, SQLPoolName string) (resul
 // GetPreparer prepares the Get request.
 func (client SQLPoolsClient) GetPreparer(ctx context.Context, SQLPoolName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -138,6 +139,7 @@ func (client SQLPoolsClient) List(ctx context.Context) (result SQLPoolInfoListRe
 // ListPreparer prepares the List request.
 func (client SQLPoolsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

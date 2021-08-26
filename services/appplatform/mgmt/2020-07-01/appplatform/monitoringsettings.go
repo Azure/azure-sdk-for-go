@@ -167,6 +167,7 @@ func (client MonitoringSettingsClient) UpdatePatchPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client MonitoringSettingsClient) UpdatePatchSender(req *http.Request) (future MonitoringSettingsUpdatePatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -249,6 +250,7 @@ func (client MonitoringSettingsClient) UpdatePutPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client MonitoringSettingsClient) UpdatePutSender(req *http.Request) (future MonitoringSettingsUpdatePutFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

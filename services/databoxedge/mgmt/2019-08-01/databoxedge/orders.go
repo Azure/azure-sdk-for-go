@@ -109,6 +109,7 @@ func (client OrdersClient) CreateOrUpdatePreparer(ctx context.Context, deviceNam
 // http.Response Body if it receives an error.
 func (client OrdersClient) CreateOrUpdateSender(req *http.Request) (future OrdersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -187,6 +188,7 @@ func (client OrdersClient) DeletePreparer(ctx context.Context, deviceName string
 // http.Response Body if it receives an error.
 func (client OrdersClient) DeleteSender(req *http.Request) (future OrdersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

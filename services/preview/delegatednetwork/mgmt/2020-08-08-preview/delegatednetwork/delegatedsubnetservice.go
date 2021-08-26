@@ -100,6 +100,7 @@ func (client DelegatedSubnetServiceClient) DeleteDetailsPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client DelegatedSubnetServiceClient) DeleteDetailsSender(req *http.Request) (future DelegatedSubnetServiceDeleteDetailsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -520,6 +521,7 @@ func (client DelegatedSubnetServiceClient) PatchDetailsPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DelegatedSubnetServiceClient) PatchDetailsSender(req *http.Request) (future DelegatedSubnetServicePatchDetailsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -615,6 +617,7 @@ func (client DelegatedSubnetServiceClient) PutDetailsPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client DelegatedSubnetServiceClient) PutDetailsSender(req *http.Request) (future DelegatedSubnetServicePutDetailsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

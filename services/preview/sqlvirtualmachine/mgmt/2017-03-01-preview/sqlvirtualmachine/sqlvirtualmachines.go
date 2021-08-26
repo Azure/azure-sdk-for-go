@@ -93,6 +93,7 @@ func (client SQLVirtualMachinesClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client SQLVirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (future SQLVirtualMachinesCreateOrUpdateFutureType, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -172,6 +173,7 @@ func (client SQLVirtualMachinesClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client SQLVirtualMachinesClient) DeleteSender(req *http.Request) (future SQLVirtualMachinesDeleteFutureType, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -683,6 +685,7 @@ func (client SQLVirtualMachinesClient) UpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client SQLVirtualMachinesClient) UpdateSender(req *http.Request) (future SQLVirtualMachinesUpdateFutureType, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

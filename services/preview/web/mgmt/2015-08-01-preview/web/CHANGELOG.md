@@ -2,6 +2,11 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. KeyValuePairStringString.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. HostingEnvironmentsDeleteHostingEnvironmentFuture.autorest.Response
+1. ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture.autorest.Response
+1. SitesSwapSlotWithProductionFuture.autorest.Response
+1. SitesSwapSlotsSlotFuture.autorest.Response

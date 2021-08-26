@@ -110,6 +110,7 @@ func (client AdaptiveNetworkHardeningsClient) EnforcePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client AdaptiveNetworkHardeningsClient) EnforceSender(req *http.Request) (future AdaptiveNetworkHardeningsEnforceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

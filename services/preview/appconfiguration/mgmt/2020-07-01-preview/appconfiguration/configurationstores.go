@@ -101,6 +101,7 @@ func (client ConfigurationStoresClient) CreatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ConfigurationStoresClient) CreateSender(req *http.Request) (future ConfigurationStoresCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -187,6 +188,7 @@ func (client ConfigurationStoresClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ConfigurationStoresClient) DeleteSender(req *http.Request) (future ConfigurationStoresDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -820,6 +822,7 @@ func (client ConfigurationStoresClient) UpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ConfigurationStoresClient) UpdateSender(req *http.Request) (future ConfigurationStoresUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

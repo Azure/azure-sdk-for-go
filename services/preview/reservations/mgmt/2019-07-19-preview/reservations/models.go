@@ -1386,6 +1386,7 @@ type PurchaseRequestPropertiesReservedResourceProperties struct {
 // QuotaCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type QuotaCreateOrUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -2141,6 +2142,7 @@ func (qrsr2 *QuotaRequestSubmitResponse201) UnmarshalJSON(body []byte) error {
 
 // QuotaUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type QuotaUpdateFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -2250,6 +2252,7 @@ func (future *ReservationAvailableScopesFuture) result(client Client) (p Propert
 // ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ReservationMergeFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -2455,6 +2458,7 @@ type SkuRestriction struct {
 
 // SplitFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SplitFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

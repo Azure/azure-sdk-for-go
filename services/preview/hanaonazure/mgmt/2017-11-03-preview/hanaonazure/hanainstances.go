@@ -88,6 +88,7 @@ func (client HanaInstancesClient) CreatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) CreateSender(req *http.Request) (future HanaInstancesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -166,6 +167,7 @@ func (client HanaInstancesClient) DeletePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) DeleteSender(req *http.Request) (future HanaInstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -550,6 +552,7 @@ func (client HanaInstancesClient) RestartPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) RestartSender(req *http.Request) (future HanaInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -627,6 +630,7 @@ func (client HanaInstancesClient) ShutdownPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) ShutdownSender(req *http.Request) (future HanaInstancesShutdownFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -704,6 +708,7 @@ func (client HanaInstancesClient) StartPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) StartSender(req *http.Request) (future HanaInstancesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

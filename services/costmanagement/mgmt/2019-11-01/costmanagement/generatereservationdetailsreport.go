@@ -89,6 +89,7 @@ func (client GenerateReservationDetailsReportClient) ByBillingAccountIDPreparer(
 // http.Response Body if it receives an error.
 func (client GenerateReservationDetailsReportClient) ByBillingAccountIDSender(req *http.Request) (future GenerateReservationDetailsReportByBillingAccountIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -171,6 +172,7 @@ func (client GenerateReservationDetailsReportClient) ByBillingProfileIDPreparer(
 // http.Response Body if it receives an error.
 func (client GenerateReservationDetailsReportClient) ByBillingProfileIDSender(req *http.Request) (future GenerateReservationDetailsReportByBillingProfileIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

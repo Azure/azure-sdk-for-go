@@ -97,6 +97,7 @@ func (client AzureBareMetalInstancesClient) DeletePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) DeleteSender(req *http.Request) (future AzureBareMetalInstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -516,6 +517,7 @@ func (client AzureBareMetalInstancesClient) RestartPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) RestartSender(req *http.Request) (future AzureBareMetalInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -603,6 +605,7 @@ func (client AzureBareMetalInstancesClient) ShutdownPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) ShutdownSender(req *http.Request) (future AzureBareMetalInstancesShutdownFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -690,6 +693,7 @@ func (client AzureBareMetalInstancesClient) StartPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) StartSender(req *http.Request) (future AzureBareMetalInstancesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

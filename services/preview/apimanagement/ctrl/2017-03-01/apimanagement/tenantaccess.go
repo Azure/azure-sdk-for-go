@@ -64,6 +64,7 @@ func (client TenantAccessClient) Get(ctx context.Context, apimBaseURL string) (r
 // GetPreparer prepares the Get request.
 func (client TenantAccessClient) GetPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -142,6 +143,7 @@ func (client TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, apimB
 // RegeneratePrimaryKeyPreparer prepares the RegeneratePrimaryKey request.
 func (client TenantAccessClient) RegeneratePrimaryKeyPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -219,6 +221,7 @@ func (client TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, api
 // RegenerateSecondaryKeyPreparer prepares the RegenerateSecondaryKey request.
 func (client TenantAccessClient) RegenerateSecondaryKeyPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -299,6 +302,7 @@ func (client TenantAccessClient) Update(ctx context.Context, apimBaseURL string,
 // UpdatePreparer prepares the Update request.
 func (client TenantAccessClient) UpdatePreparer(ctx context.Context, apimBaseURL string, parameters AccessInformationUpdateParameters, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

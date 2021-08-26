@@ -90,6 +90,7 @@ func (client DscpConfigurationClient) CreateOrUpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client DscpConfigurationClient) CreateOrUpdateSender(req *http.Request) (future DscpConfigurationCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,6 +169,7 @@ func (client DscpConfigurationClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client DscpConfigurationClient) DeleteSender(req *http.Request) (future DscpConfigurationDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

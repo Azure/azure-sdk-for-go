@@ -99,6 +99,7 @@ func (client ContainersClient) CreateOrUpdatePreparer(ctx context.Context, devic
 // http.Response Body if it receives an error.
 func (client ContainersClient) CreateOrUpdateSender(req *http.Request) (future ContainersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -181,6 +182,7 @@ func (client ContainersClient) DeletePreparer(ctx context.Context, deviceName st
 // http.Response Body if it receives an error.
 func (client ContainersClient) DeleteSender(req *http.Request) (future ContainersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -462,6 +464,7 @@ func (client ContainersClient) RefreshPreparer(ctx context.Context, deviceName s
 // http.Response Body if it receives an error.
 func (client ContainersClient) RefreshSender(req *http.Request) (future ContainersRefreshFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

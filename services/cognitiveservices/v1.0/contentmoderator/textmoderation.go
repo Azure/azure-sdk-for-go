@@ -74,6 +74,7 @@ func (client TextModerationClient) DetectLanguage(ctx context.Context, textConte
 // DetectLanguagePreparer prepares the DetectLanguage request.
 func (client TextModerationClient) DetectLanguagePreparer(ctx context.Context, textContentType string, textContent io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -150,6 +151,7 @@ func (client TextModerationClient) ScreenText(ctx context.Context, textContentTy
 // ScreenTextPreparer prepares the ScreenText request.
 func (client TextModerationClient) ScreenTextPreparer(ctx context.Context, textContentType string, textContent io.ReadCloser, language string, autocorrect *bool, pii *bool, listID string, classify *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

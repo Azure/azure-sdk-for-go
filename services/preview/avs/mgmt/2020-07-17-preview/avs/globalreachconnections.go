@@ -102,6 +102,7 @@ func (client GlobalReachConnectionsClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client GlobalReachConnectionsClient) CreateOrUpdateSender(req *http.Request) (future GlobalReachConnectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -192,6 +193,7 @@ func (client GlobalReachConnectionsClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client GlobalReachConnectionsClient) DeleteSender(req *http.Request) (future GlobalReachConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -104,6 +104,7 @@ func (client ConnectedClusterClient) CreatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) CreateSender(req *http.Request) (future ConnectedClusterCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -191,6 +192,7 @@ func (client ConnectedClusterClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) DeleteSender(req *http.Request) (future ConnectedClusterDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -701,6 +703,7 @@ func (client ConnectedClusterClient) UpdatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) UpdateSender(req *http.Request) (future ConnectedClusterUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

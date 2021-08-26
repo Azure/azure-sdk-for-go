@@ -92,6 +92,7 @@ func (client ReplicationProtectionContainersClient) CreatePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainersClient) CreateSender(req *http.Request) (future ReplicationProtectionContainersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -172,6 +173,7 @@ func (client ReplicationProtectionContainersClient) DeletePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainersClient) DeleteSender(req *http.Request) (future ReplicationProtectionContainersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -254,6 +256,7 @@ func (client ReplicationProtectionContainersClient) DiscoverProtectableItemPrepa
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainersClient) DiscoverProtectableItemSender(req *http.Request) (future ReplicationProtectionContainersDiscoverProtectableItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -649,6 +652,7 @@ func (client ReplicationProtectionContainersClient) SwitchProtectionPreparer(ctx
 // http.Response Body if it receives an error.
 func (client ReplicationProtectionContainersClient) SwitchProtectionSender(req *http.Request) (future ReplicationProtectionContainersSwitchProtectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

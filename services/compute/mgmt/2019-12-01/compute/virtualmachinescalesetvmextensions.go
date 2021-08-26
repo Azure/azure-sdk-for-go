@@ -94,6 +94,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdatePreparer(ct
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,6 +177,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) DeletePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetVMExtensionsClient) DeleteSender(req *http.Request) (future VirtualMachineScaleSetVMExtensionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -426,6 +428,7 @@ func (client VirtualMachineScaleSetVMExtensionsClient) UpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetVMExtensionsClient) UpdateSender(req *http.Request) (future VirtualMachineScaleSetVMExtensionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

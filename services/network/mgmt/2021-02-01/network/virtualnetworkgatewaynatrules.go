@@ -94,6 +94,7 @@ func (client VirtualNetworkGatewayNatRulesClient) CreateOrUpdatePreparer(ctx con
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayNatRulesClient) CreateOrUpdateSender(req *http.Request) (future VirtualNetworkGatewayNatRulesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -174,6 +175,7 @@ func (client VirtualNetworkGatewayNatRulesClient) DeletePreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayNatRulesClient) DeleteSender(req *http.Request) (future VirtualNetworkGatewayNatRulesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

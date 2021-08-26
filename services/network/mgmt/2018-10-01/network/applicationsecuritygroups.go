@@ -90,6 +90,7 @@ func (client ApplicationSecurityGroupsClient) CreateOrUpdatePreparer(ctx context
 // http.Response Body if it receives an error.
 func (client ApplicationSecurityGroupsClient) CreateOrUpdateSender(req *http.Request) (future ApplicationSecurityGroupsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,6 +169,7 @@ func (client ApplicationSecurityGroupsClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ApplicationSecurityGroupsClient) DeleteSender(req *http.Request) (future ApplicationSecurityGroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

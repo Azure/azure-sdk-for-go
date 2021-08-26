@@ -116,6 +116,7 @@ func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID strin
 // AddFaceFromStreamPreparer prepares the AddFaceFromStream request.
 func (client ListClient) AddFaceFromStreamPreparer(ctx context.Context, faceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -255,6 +256,7 @@ func (client ListClient) AddFaceFromURL(ctx context.Context, faceListID string, 
 // AddFaceFromURLPreparer prepares the AddFaceFromURL request.
 func (client ListClient) AddFaceFromURLPreparer(ctx context.Context, faceListID string, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -375,6 +377,7 @@ func (client ListClient) Create(ctx context.Context, faceListID string, body Met
 // CreatePreparer prepares the Create request.
 func (client ListClient) CreatePreparer(ctx context.Context, faceListID string, body MetaDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -454,6 +457,7 @@ func (client ListClient) Delete(ctx context.Context, faceListID string) (result 
 // DeletePreparer prepares the Delete request.
 func (client ListClient) DeletePreparer(ctx context.Context, faceListID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -534,6 +538,7 @@ func (client ListClient) DeleteFace(ctx context.Context, faceListID string, pers
 // DeleteFacePreparer prepares the DeleteFace request.
 func (client ListClient) DeleteFacePreparer(ctx context.Context, faceListID string, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -614,6 +619,7 @@ func (client ListClient) Get(ctx context.Context, faceListID string, returnRecog
 // GetPreparer prepares the Get request.
 func (client ListClient) GetPreparer(ctx context.Context, faceListID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -696,6 +702,7 @@ func (client ListClient) List(ctx context.Context, returnRecognitionModel *bool)
 // ListPreparer prepares the List request.
 func (client ListClient) ListPreparer(ctx context.Context, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -779,6 +786,7 @@ func (client ListClient) Update(ctx context.Context, faceListID string, body Nam
 // UpdatePreparer prepares the Update request.
 func (client ListClient) UpdatePreparer(ctx context.Context, faceListID string, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -107,6 +107,7 @@ func (client LinksClient) CreateOrUpdatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client LinksClient) CreateOrUpdateSender(req *http.Request) (future LinksCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

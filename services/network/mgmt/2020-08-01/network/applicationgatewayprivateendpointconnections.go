@@ -90,6 +90,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) DeletePreparer(
 // http.Response Body if it receives an error.
 func (client ApplicationGatewayPrivateEndpointConnectionsClient) DeleteSender(req *http.Request) (future ApplicationGatewayPrivateEndpointConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -383,6 +384,7 @@ func (client ApplicationGatewayPrivateEndpointConnectionsClient) UpdatePreparer(
 // http.Response Body if it receives an error.
 func (client ApplicationGatewayPrivateEndpointConnectionsClient) UpdateSender(req *http.Request) (future ApplicationGatewayPrivateEndpointConnectionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -89,6 +89,7 @@ func (client IntegrationServiceEnvironmentManagedApisClient) DeletePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client IntegrationServiceEnvironmentManagedApisClient) DeleteSender(req *http.Request) (future IntegrationServiceEnvironmentManagedApisDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -364,6 +365,7 @@ func (client IntegrationServiceEnvironmentManagedApisClient) PutPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client IntegrationServiceEnvironmentManagedApisClient) PutSender(req *http.Request) (future IntegrationServiceEnvironmentManagedApisPutFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

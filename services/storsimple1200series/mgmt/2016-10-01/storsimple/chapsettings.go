@@ -105,6 +105,7 @@ func (client ChapSettingsClient) CreateOrUpdatePreparer(ctx context.Context, dev
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) CreateOrUpdateSender(req *http.Request) (future ChapSettingsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -194,6 +195,7 @@ func (client ChapSettingsClient) DeletePreparer(ctx context.Context, deviceName 
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) DeleteSender(req *http.Request) (future ChapSettingsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

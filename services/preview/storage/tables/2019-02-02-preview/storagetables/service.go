@@ -74,6 +74,7 @@ func (client ServiceClient) GetProperties(ctx context.Context, timeout *int32, r
 // GetPropertiesPreparer prepares the GetProperties request.
 func (client ServiceClient) GetPropertiesPreparer(ctx context.Context, timeout *int32, requestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -165,6 +166,7 @@ func (client ServiceClient) GetStatistics(ctx context.Context, timeout *int32, r
 // GetStatisticsPreparer prepares the GetStatistics request.
 func (client ServiceClient) GetStatisticsPreparer(ctx context.Context, timeout *int32, requestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -285,6 +287,7 @@ func (client ServiceClient) SetProperties(ctx context.Context, tableServicePrope
 // SetPropertiesPreparer prepares the SetProperties request.
 func (client ServiceClient) SetPropertiesPreparer(ctx context.Context, tableServiceProperties TableServiceProperties, timeout *int32, requestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 

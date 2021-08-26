@@ -81,6 +81,7 @@ func (client BaseClient) ClassifyImage(ctx context.Context, projectID uuid.UUID,
 // ClassifyImagePreparer prepares the ClassifyImage request.
 func (client BaseClient) ClassifyImagePreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageData io.ReadCloser, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -173,6 +174,7 @@ func (client BaseClient) ClassifyImageURL(ctx context.Context, projectID uuid.UU
 // ClassifyImageURLPreparer prepares the ClassifyImageURL request.
 func (client BaseClient) ClassifyImageURLPreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageURL ImageURL, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -262,6 +264,7 @@ func (client BaseClient) ClassifyImageURLWithNoStore(ctx context.Context, projec
 // ClassifyImageURLWithNoStorePreparer prepares the ClassifyImageURLWithNoStore request.
 func (client BaseClient) ClassifyImageURLWithNoStorePreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageURL ImageURL, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -345,6 +348,7 @@ func (client BaseClient) ClassifyImageWithNoStore(ctx context.Context, projectID
 // ClassifyImageWithNoStorePreparer prepares the ClassifyImageWithNoStore request.
 func (client BaseClient) ClassifyImageWithNoStorePreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageData io.ReadCloser, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -431,6 +435,7 @@ func (client BaseClient) DetectImage(ctx context.Context, projectID uuid.UUID, p
 // DetectImagePreparer prepares the DetectImage request.
 func (client BaseClient) DetectImagePreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageData io.ReadCloser, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -523,6 +528,7 @@ func (client BaseClient) DetectImageURL(ctx context.Context, projectID uuid.UUID
 // DetectImageURLPreparer prepares the DetectImageURL request.
 func (client BaseClient) DetectImageURLPreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageURL ImageURL, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -612,6 +618,7 @@ func (client BaseClient) DetectImageURLWithNoStore(ctx context.Context, projectI
 // DetectImageURLWithNoStorePreparer prepares the DetectImageURLWithNoStore request.
 func (client BaseClient) DetectImageURLWithNoStorePreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageURL ImageURL, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -695,6 +702,7 @@ func (client BaseClient) DetectImageWithNoStore(ctx context.Context, projectID u
 // DetectImageWithNoStorePreparer prepares the DetectImageWithNoStore request.
 func (client BaseClient) DetectImageWithNoStorePreparer(ctx context.Context, projectID uuid.UUID, publishedName string, imageData io.ReadCloser, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

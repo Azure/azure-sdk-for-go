@@ -90,6 +90,7 @@ func (client DdosCustomPoliciesClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client DdosCustomPoliciesClient) CreateOrUpdateSender(req *http.Request) (future DdosCustomPoliciesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,6 +169,7 @@ func (client DdosCustomPoliciesClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client DdosCustomPoliciesClient) DeleteSender(req *http.Request) (future DdosCustomPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -324,6 +326,7 @@ func (client DdosCustomPoliciesClient) UpdateTagsPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client DdosCustomPoliciesClient) UpdateTagsSender(req *http.Request) (future DdosCustomPoliciesUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -83,6 +83,7 @@ func (client BaseClient) CreateRoleAssignment(ctx context.Context, createRoleAss
 // CreateRoleAssignmentPreparer prepares the CreateRoleAssignment request.
 func (client BaseClient) CreateRoleAssignmentPreparer(ctx context.Context, createRoleAssignmentOptions RoleAssignmentOptions) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -164,6 +165,7 @@ func (client BaseClient) DeleteRoleAssignmentByID(ctx context.Context, roleAssig
 // DeleteRoleAssignmentByIDPreparer prepares the DeleteRoleAssignmentByID request.
 func (client BaseClient) DeleteRoleAssignmentByIDPreparer(ctx context.Context, roleAssignmentID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -238,6 +240,7 @@ func (client BaseClient) GetCallerRoleAssignments(ctx context.Context) (result L
 // GetCallerRoleAssignmentsPreparer prepares the GetCallerRoleAssignments request.
 func (client BaseClient) GetCallerRoleAssignmentsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -317,6 +320,7 @@ func (client BaseClient) GetRoleAssignmentByID(ctx context.Context, roleAssignme
 // GetRoleAssignmentByIDPreparer prepares the GetRoleAssignmentByID request.
 func (client BaseClient) GetRoleAssignmentByIDPreparer(ctx context.Context, roleAssignmentID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -396,6 +400,7 @@ func (client BaseClient) GetRoleAssignments(ctx context.Context, roleID string, 
 // GetRoleAssignmentsPreparer prepares the GetRoleAssignments request.
 func (client BaseClient) GetRoleAssignmentsPreparer(ctx context.Context, roleID string, principalID string, continuationToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -479,6 +484,7 @@ func (client BaseClient) GetRoleDefinitionByID(ctx context.Context, roleID strin
 // GetRoleDefinitionByIDPreparer prepares the GetRoleDefinitionByID request.
 func (client BaseClient) GetRoleDefinitionByIDPreparer(ctx context.Context, roleID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -559,6 +565,7 @@ func (client BaseClient) GetRoleDefinitions(ctx context.Context) (result RolesLi
 // GetRoleDefinitionsPreparer prepares the GetRoleDefinitions request.
 func (client BaseClient) GetRoleDefinitionsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

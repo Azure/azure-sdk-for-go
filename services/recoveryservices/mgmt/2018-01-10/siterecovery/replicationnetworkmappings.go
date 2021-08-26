@@ -94,6 +94,7 @@ func (client ReplicationNetworkMappingsClient) CreatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client ReplicationNetworkMappingsClient) CreateSender(req *http.Request) (future ReplicationNetworkMappingsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,6 +177,7 @@ func (client ReplicationNetworkMappingsClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client ReplicationNetworkMappingsClient) DeleteSender(req *http.Request) (future ReplicationNetworkMappingsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -575,6 +577,7 @@ func (client ReplicationNetworkMappingsClient) UpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client ReplicationNetworkMappingsClient) UpdateSender(req *http.Request) (future ReplicationNetworkMappingsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

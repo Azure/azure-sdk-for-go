@@ -6902,6 +6902,7 @@ func (future *HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) result(client H
 // HostingEnvironmentsDeleteHostingEnvironmentFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type HostingEnvironmentsDeleteHostingEnvironmentFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -8025,6 +8026,7 @@ func (future *ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentF
 // ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture an abstraction for monitoring and
 // retrieving the results of a long-running operation.
 type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -12002,6 +12004,7 @@ func (future *SitesRestoreSiteSlotFuture) result(client SitesClient) (rr Restore
 // SitesSwapSlotsSlotFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SitesSwapSlotsSlotFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -12045,6 +12048,7 @@ func (future *SitesSwapSlotsSlotFuture) result(client SitesClient) (so SetObject
 // SitesSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SitesSwapSlotWithProductionFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

@@ -67,6 +67,7 @@ func (client Client) Build(ctx context.Context, accountName string, parameters B
 // BuildPreparer prepares the Build request.
 func (client Client) BuildPreparer(ctx context.Context, accountName string, parameters BuildJobParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -144,6 +145,7 @@ func (client Client) Cancel(ctx context.Context, accountName string, jobIdentity
 // CancelPreparer prepares the Cancel request.
 func (client Client) CancelPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -236,6 +238,7 @@ func (client Client) Create(ctx context.Context, accountName string, jobIdentity
 // CreatePreparer prepares the Create request.
 func (client Client) CreatePreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID, parameters CreateJobParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -317,6 +320,7 @@ func (client Client) Get(ctx context.Context, accountName string, jobIdentity uu
 // GetPreparer prepares the Get request.
 func (client Client) GetPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -396,6 +400,7 @@ func (client Client) GetDebugDataPath(ctx context.Context, accountName string, j
 // GetDebugDataPathPreparer prepares the GetDebugDataPath request.
 func (client Client) GetDebugDataPathPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -475,6 +480,7 @@ func (client Client) GetStatistics(ctx context.Context, accountName string, jobI
 // GetStatisticsPreparer prepares the GetStatistics request.
 func (client Client) GetStatisticsPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -579,6 +585,7 @@ func (client Client) List(ctx context.Context, accountName string, filter string
 // ListPreparer prepares the List request.
 func (client Client) ListPreparer(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}

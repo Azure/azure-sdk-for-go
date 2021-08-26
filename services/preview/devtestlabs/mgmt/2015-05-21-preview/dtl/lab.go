@@ -87,6 +87,7 @@ func (client LabClient) CreateEnvironmentPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client LabClient) CreateEnvironmentSender(req *http.Request) (future LabCreateEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -166,6 +167,7 @@ func (client LabClient) CreateOrUpdateResourcePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client LabClient) CreateOrUpdateResourceSender(req *http.Request) (future LabCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -244,6 +246,7 @@ func (client LabClient) DeleteResourcePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client LabClient) DeleteResourceSender(req *http.Request) (future LabDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

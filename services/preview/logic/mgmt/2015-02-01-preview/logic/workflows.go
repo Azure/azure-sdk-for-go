@@ -714,6 +714,7 @@ func (client WorkflowsClient) RunPreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client WorkflowsClient) RunSender(req *http.Request) (future WorkflowsRunFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

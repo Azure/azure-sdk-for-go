@@ -83,6 +83,7 @@ func (client ReportsClient) ListByAPI(ctx context.Context, apimBaseURL string, f
 // ListByAPIPreparer prepares the ListByAPI request.
 func (client ReportsClient) ListByAPIPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -219,6 +220,7 @@ func (client ReportsClient) ListByGeo(ctx context.Context, apimBaseURL string, f
 // ListByGeoPreparer prepares the ListByGeo request.
 func (client ReportsClient) ListByGeoPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -357,6 +359,7 @@ func (client ReportsClient) ListByOperation(ctx context.Context, apimBaseURL str
 // ListByOperationPreparer prepares the ListByOperation request.
 func (client ReportsClient) ListByOperationPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -493,6 +496,7 @@ func (client ReportsClient) ListByProduct(ctx context.Context, apimBaseURL strin
 // ListByProductPreparer prepares the ListByProduct request.
 func (client ReportsClient) ListByProductPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -624,6 +628,7 @@ func (client ReportsClient) ListByRequest(ctx context.Context, apimBaseURL strin
 // ListByRequestPreparer prepares the ListByRequest request.
 func (client ReportsClient) ListByRequestPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -723,6 +728,7 @@ func (client ReportsClient) ListBySubscription(ctx context.Context, apimBaseURL 
 // ListBySubscriptionPreparer prepares the ListBySubscription request.
 func (client ReportsClient) ListBySubscriptionPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -864,6 +870,7 @@ func (client ReportsClient) ListByTime(ctx context.Context, apimBaseURL string, 
 // ListByTimePreparer prepares the ListByTime request.
 func (client ReportsClient) ListByTimePreparer(ctx context.Context, apimBaseURL string, interval string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -1003,6 +1010,7 @@ func (client ReportsClient) ListByUser(ctx context.Context, apimBaseURL string, 
 // ListByUserPreparer prepares the ListByUser request.
 func (client ReportsClient) ListByUserPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

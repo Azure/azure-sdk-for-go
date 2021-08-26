@@ -65,6 +65,7 @@ func (client LogClient) Delete(ctx context.Context) (result autorest.Response, e
 // DeletePreparer prepares the Delete request.
 func (client LogClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -129,6 +130,7 @@ func (client LogClient) GetProperties(ctx context.Context) (result LogsPropertie
 // GetPropertiesPreparer prepares the GetProperties request.
 func (client LogClient) GetPropertiesPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

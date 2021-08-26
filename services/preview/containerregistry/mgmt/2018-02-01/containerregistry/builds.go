@@ -96,6 +96,7 @@ func (client BuildsClient) CancelPreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client BuildsClient) CancelSender(req *http.Request) (future BuildsCancelFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -497,6 +498,7 @@ func (client BuildsClient) UpdatePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client BuildsClient) UpdateSender(req *http.Request) (future BuildsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

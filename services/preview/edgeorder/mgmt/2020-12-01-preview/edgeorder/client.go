@@ -220,6 +220,7 @@ func (client BaseClient) CreateAddressPreparer(ctx context.Context, addressName 
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateAddressSender(req *http.Request) (future CreateAddressFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -344,6 +345,7 @@ func (client BaseClient) CreateOrderItemPreparer(ctx context.Context, orderItemN
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateOrderItemSender(req *http.Request) (future CreateOrderItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -436,6 +438,7 @@ func (client BaseClient) DeleteAddressByNamePreparer(ctx context.Context, addres
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteAddressByNameSender(req *http.Request) (future DeleteAddressByNameFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -522,6 +525,7 @@ func (client BaseClient) DeleteOrderItemByNamePreparer(ctx context.Context, orde
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteOrderItemByNameSender(req *http.Request) (future DeleteOrderItemByNameFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2184,6 +2188,7 @@ func (client BaseClient) ReturnOrderItemPreparer(ctx context.Context, orderItemN
 // http.Response Body if it receives an error.
 func (client BaseClient) ReturnOrderItemSender(req *http.Request) (future ReturnOrderItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2284,6 +2289,7 @@ func (client BaseClient) UpdateAddressPreparer(ctx context.Context, addressName 
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateAddressSender(req *http.Request) (future UpdateAddressFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2380,6 +2386,7 @@ func (client BaseClient) UpdateOrderItemPreparer(ctx context.Context, orderItemN
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateOrderItemSender(req *http.Request) (future UpdateOrderItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

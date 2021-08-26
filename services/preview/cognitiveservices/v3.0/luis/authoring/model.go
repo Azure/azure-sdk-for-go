@@ -67,6 +67,7 @@ func (client ModelClient) AddClosedList(ctx context.Context, appID uuid.UUID, ve
 // AddClosedListPreparer prepares the AddClosedList request.
 func (client ModelClient) AddClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -145,6 +146,7 @@ func (client ModelClient) AddCompositeEntityChild(ctx context.Context, appID uui
 // AddCompositeEntityChildPreparer prepares the AddCompositeEntityChild request.
 func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -223,6 +225,7 @@ func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, appID uui
 // AddCustomPrebuiltDomainPreparer prepares the AddCustomPrebuiltDomain request.
 func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -300,6 +303,7 @@ func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, appID uui
 // AddCustomPrebuiltEntityPreparer prepares the AddCustomPrebuiltEntity request.
 func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -377,6 +381,7 @@ func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, appID uui
 // AddCustomPrebuiltIntentPreparer prepares the AddCustomPrebuiltIntent request.
 func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -453,6 +458,7 @@ func (client ModelClient) AddEntity(ctx context.Context, appID uuid.UUID, versio
 // AddEntityPreparer prepares the AddEntity request.
 func (client ModelClient) AddEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityModelCreateObject EntityModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -530,6 +536,7 @@ func (client ModelClient) AddEntityChild(ctx context.Context, appID uuid.UUID, v
 // AddEntityChildPreparer prepares the AddEntityChild request.
 func (client ModelClient) AddEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, childEntityModelCreateObject ChildEntityModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -608,6 +615,7 @@ func (client ModelClient) AddExplicitListItem(ctx context.Context, appID uuid.UU
 // AddExplicitListItemPreparer prepares the AddExplicitListItem request.
 func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -685,6 +693,7 @@ func (client ModelClient) AddIntent(ctx context.Context, appID uuid.UUID, versio
 // AddIntentPreparer prepares the AddIntent request.
 func (client ModelClient) AddIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -767,6 +776,7 @@ func (client ModelClient) AddPrebuilt(ctx context.Context, appID uuid.UUID, vers
 // AddPrebuiltPreparer prepares the AddPrebuilt request.
 func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -844,6 +854,7 @@ func (client ModelClient) AddSubList(ctx context.Context, appID uuid.UUID, versi
 // AddSubListPreparer prepares the AddSubList request.
 func (client ModelClient) AddSubListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -922,6 +933,7 @@ func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, appID 
 // CreateClosedListEntityRolePreparer prepares the CreateClosedListEntityRole request.
 func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1000,6 +1012,7 @@ func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, appID u
 // CreateCompositeEntityRolePreparer prepares the CreateCompositeEntityRole request.
 func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1078,6 +1091,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, ap
 // CreateCustomPrebuiltEntityRolePreparer prepares the CreateCustomPrebuiltEntityRole request.
 func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1156,6 +1170,7 @@ func (client ModelClient) CreateEntityRole(ctx context.Context, appID uuid.UUID,
 // CreateEntityRolePreparer prepares the CreateEntityRole request.
 func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1234,6 +1249,7 @@ func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, appI
 // CreateHierarchicalEntityRolePreparer prepares the CreateHierarchicalEntityRole request.
 func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1312,6 +1328,7 @@ func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, appID
 // CreatePatternAnyEntityModelPreparer prepares the CreatePatternAnyEntityModel request.
 func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1389,6 +1406,7 @@ func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, appID 
 // CreatePatternAnyEntityRolePreparer prepares the CreatePatternAnyEntityRole request.
 func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1467,6 +1485,7 @@ func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, appID uu
 // CreatePrebuiltEntityRolePreparer prepares the CreatePrebuiltEntityRole request.
 func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1545,6 +1564,7 @@ func (client ModelClient) CreateRegexEntityModel(ctx context.Context, appID uuid
 // CreateRegexEntityModelPreparer prepares the CreateRegexEntityModel request.
 func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1622,6 +1642,7 @@ func (client ModelClient) CreateRegexEntityRole(ctx context.Context, appID uuid.
 // CreateRegexEntityRolePreparer prepares the CreateRegexEntityRole request.
 func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1699,6 +1720,7 @@ func (client ModelClient) DeleteClosedList(ctx context.Context, appID uuid.UUID,
 // DeleteClosedListPreparer prepares the DeleteClosedList request.
 func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1775,6 +1797,7 @@ func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, appID 
 // DeleteClosedListEntityRolePreparer prepares the DeleteClosedListEntityRole request.
 func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1851,6 +1874,7 @@ func (client ModelClient) DeleteCompositeEntity(ctx context.Context, appID uuid.
 // DeleteCompositeEntityPreparer prepares the DeleteCompositeEntity request.
 func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1927,6 +1951,7 @@ func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, appID 
 // DeleteCompositeEntityChildPreparer prepares the DeleteCompositeEntityChild request.
 func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2004,6 +2029,7 @@ func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, appID u
 // DeleteCompositeEntityRolePreparer prepares the DeleteCompositeEntityRole request.
 func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2081,6 +2107,7 @@ func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, appID uuid
 // DeleteCustomEntityRolePreparer prepares the DeleteCustomEntityRole request.
 func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2157,6 +2184,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, appID 
 // DeleteCustomPrebuiltDomainPreparer prepares the DeleteCustomPrebuiltDomain request.
 func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context, appID uuid.UUID, versionID string, domainName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2232,6 +2260,7 @@ func (client ModelClient) DeleteEntity(ctx context.Context, appID uuid.UUID, ver
 // DeleteEntityPreparer prepares the DeleteEntity request.
 func (client ModelClient) DeleteEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2309,6 +2338,7 @@ func (client ModelClient) DeleteEntityFeature(ctx context.Context, appID uuid.UU
 // DeleteEntityFeaturePreparer prepares the DeleteEntityFeature request.
 func (client ModelClient) DeleteEntityFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationDeleteObject ModelFeatureInformation) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2387,6 +2417,7 @@ func (client ModelClient) DeleteEntityRole(ctx context.Context, appID uuid.UUID,
 // DeleteEntityRolePreparer prepares the DeleteEntityRole request.
 func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2464,6 +2495,7 @@ func (client ModelClient) DeleteExplicitListItem(ctx context.Context, appID uuid
 // DeleteExplicitListItemPreparer prepares the DeleteExplicitListItem request.
 func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2540,6 +2572,7 @@ func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, appID uu
 // DeleteHierarchicalEntityPreparer prepares the DeleteHierarchicalEntity request.
 func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2616,6 +2649,7 @@ func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, app
 // DeleteHierarchicalEntityChildPreparer prepares the DeleteHierarchicalEntityChild request.
 func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2693,6 +2727,7 @@ func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, appI
 // DeleteHierarchicalEntityRolePreparer prepares the DeleteHierarchicalEntityRole request.
 func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2771,6 +2806,7 @@ func (client ModelClient) DeleteIntent(ctx context.Context, appID uuid.UUID, ver
 // DeleteIntentPreparer prepares the DeleteIntent request.
 func (client ModelClient) DeleteIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2856,6 +2892,7 @@ func (client ModelClient) DeleteIntentFeature(ctx context.Context, appID uuid.UU
 // DeleteIntentFeaturePreparer prepares the DeleteIntentFeature request.
 func (client ModelClient) DeleteIntentFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationDeleteObject ModelFeatureInformation) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2933,6 +2970,7 @@ func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, appID
 // DeletePatternAnyEntityModelPreparer prepares the DeletePatternAnyEntityModel request.
 func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3009,6 +3047,7 @@ func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, appID 
 // DeletePatternAnyEntityRolePreparer prepares the DeletePatternAnyEntityRole request.
 func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3085,6 +3124,7 @@ func (client ModelClient) DeletePrebuilt(ctx context.Context, appID uuid.UUID, v
 // DeletePrebuiltPreparer prepares the DeletePrebuilt request.
 func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3161,6 +3201,7 @@ func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, appID uu
 // DeletePrebuiltEntityRolePreparer prepares the DeletePrebuiltEntityRole request.
 func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3237,6 +3278,7 @@ func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, appID uuid
 // DeleteRegexEntityModelPreparer prepares the DeleteRegexEntityModel request.
 func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3313,6 +3355,7 @@ func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, appID uuid.
 // DeleteRegexEntityRolePreparer prepares the DeleteRegexEntityRole request.
 func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3390,6 +3433,7 @@ func (client ModelClient) DeleteSubList(ctx context.Context, appID uuid.UUID, ve
 // DeleteSubListPreparer prepares the DeleteSubList request.
 func (client ModelClient) DeleteSubListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3480,6 +3524,7 @@ func (client ModelClient) ExamplesMethod(ctx context.Context, appID uuid.UUID, v
 // ExamplesMethodPreparer prepares the ExamplesMethod request.
 func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3568,6 +3613,7 @@ func (client ModelClient) GetClosedList(ctx context.Context, appID uuid.UUID, ve
 // GetClosedListPreparer prepares the GetClosedList request.
 func (client ModelClient) GetClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3644,6 +3690,7 @@ func (client ModelClient) GetClosedListEntityRole(ctx context.Context, appID uui
 // GetClosedListEntityRolePreparer prepares the GetClosedListEntityRole request.
 func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3720,6 +3767,7 @@ func (client ModelClient) GetCompositeEntity(ctx context.Context, appID uuid.UUI
 // GetCompositeEntityPreparer prepares the GetCompositeEntity request.
 func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3796,6 +3844,7 @@ func (client ModelClient) GetCompositeEntityRole(ctx context.Context, appID uuid
 // GetCompositeEntityRolePreparer prepares the GetCompositeEntityRole request.
 func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3873,6 +3922,7 @@ func (client ModelClient) GetCustomEntityRole(ctx context.Context, appID uuid.UU
 // GetCustomEntityRolePreparer prepares the GetCustomEntityRole request.
 func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3949,6 +3999,7 @@ func (client ModelClient) GetEntity(ctx context.Context, appID uuid.UUID, versio
 // GetEntityPreparer prepares the GetEntity request.
 func (client ModelClient) GetEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4024,6 +4075,7 @@ func (client ModelClient) GetEntityFeatures(ctx context.Context, appID uuid.UUID
 // GetEntityFeaturesPreparer prepares the GetEntityFeatures request.
 func (client ModelClient) GetEntityFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4100,6 +4152,7 @@ func (client ModelClient) GetEntityRole(ctx context.Context, appID uuid.UUID, ve
 // GetEntityRolePreparer prepares the GetEntityRole request.
 func (client ModelClient) GetEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4176,6 +4229,7 @@ func (client ModelClient) GetExplicitList(ctx context.Context, appID uuid.UUID, 
 // GetExplicitListPreparer prepares the GetExplicitList request.
 func (client ModelClient) GetExplicitListPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4252,6 +4306,7 @@ func (client ModelClient) GetExplicitListItem(ctx context.Context, appID uuid.UU
 // GetExplicitListItemPreparer prepares the GetExplicitListItem request.
 func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4328,6 +4383,7 @@ func (client ModelClient) GetHierarchicalEntity(ctx context.Context, appID uuid.
 // GetHierarchicalEntityPreparer prepares the GetHierarchicalEntity request.
 func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4405,6 +4461,7 @@ func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, appID 
 // GetHierarchicalEntityChildPreparer prepares the GetHierarchicalEntityChild request.
 func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4482,6 +4539,7 @@ func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, appID u
 // GetHierarchicalEntityRolePreparer prepares the GetHierarchicalEntityRole request.
 func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4558,6 +4616,7 @@ func (client ModelClient) GetIntent(ctx context.Context, appID uuid.UUID, versio
 // GetIntentPreparer prepares the GetIntent request.
 func (client ModelClient) GetIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4633,6 +4692,7 @@ func (client ModelClient) GetIntentFeatures(ctx context.Context, appID uuid.UUID
 // GetIntentFeaturesPreparer prepares the GetIntentFeatures request.
 func (client ModelClient) GetIntentFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4708,6 +4768,7 @@ func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uui
 // GetPatternAnyEntityInfoPreparer prepares the GetPatternAnyEntityInfo request.
 func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4784,6 +4845,7 @@ func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, appID uui
 // GetPatternAnyEntityRolePreparer prepares the GetPatternAnyEntityRole request.
 func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4860,6 +4922,7 @@ func (client ModelClient) GetPrebuilt(ctx context.Context, appID uuid.UUID, vers
 // GetPrebuiltPreparer prepares the GetPrebuilt request.
 func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -4936,6 +4999,7 @@ func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, appID uuid.
 // GetPrebuiltEntityRolePreparer prepares the GetPrebuiltEntityRole request.
 func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5012,6 +5076,7 @@ func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, appID uu
 // GetRegexEntityEntityInfoPreparer prepares the GetRegexEntityEntityInfo request.
 func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5088,6 +5153,7 @@ func (client ModelClient) GetRegexEntityRole(ctx context.Context, appID uuid.UUI
 // GetRegexEntityRolePreparer prepares the GetRegexEntityRole request.
 func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5164,6 +5230,7 @@ func (client ModelClient) ListClosedListEntityRoles(ctx context.Context, appID u
 // ListClosedListEntityRolesPreparer prepares the ListClosedListEntityRoles request.
 func (client ModelClient) ListClosedListEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5252,6 +5319,7 @@ func (client ModelClient) ListClosedLists(ctx context.Context, appID uuid.UUID, 
 // ListClosedListsPreparer prepares the ListClosedLists request.
 func (client ModelClient) ListClosedListsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5352,6 +5420,7 @@ func (client ModelClient) ListCompositeEntities(ctx context.Context, appID uuid.
 // ListCompositeEntitiesPreparer prepares the ListCompositeEntities request.
 func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5439,6 +5508,7 @@ func (client ModelClient) ListCompositeEntityRoles(ctx context.Context, appID uu
 // ListCompositeEntityRolesPreparer prepares the ListCompositeEntityRoles request.
 func (client ModelClient) ListCompositeEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5513,6 +5583,7 @@ func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, appID 
 // ListCustomPrebuiltEntitiesPreparer prepares the ListCustomPrebuiltEntities request.
 func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5587,6 +5658,7 @@ func (client ModelClient) ListCustomPrebuiltEntityRoles(ctx context.Context, app
 // ListCustomPrebuiltEntityRolesPreparer prepares the ListCustomPrebuiltEntityRoles request.
 func (client ModelClient) ListCustomPrebuiltEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5662,6 +5734,7 @@ func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, appID u
 // ListCustomPrebuiltIntentsPreparer prepares the ListCustomPrebuiltIntents request.
 func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5736,6 +5809,7 @@ func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, appID uu
 // ListCustomPrebuiltModelsPreparer prepares the ListCustomPrebuiltModels request.
 func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5823,6 +5897,7 @@ func (client ModelClient) ListEntities(ctx context.Context, appID uuid.UUID, ver
 // ListEntitiesPreparer prepares the ListEntities request.
 func (client ModelClient) ListEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5910,6 +5985,7 @@ func (client ModelClient) ListEntityRoles(ctx context.Context, appID uuid.UUID, 
 // ListEntityRolesPreparer prepares the ListEntityRoles request.
 func (client ModelClient) ListEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -5997,6 +6073,7 @@ func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.
 // ListEntitySuggestionsPreparer prepares the ListEntitySuggestions request.
 func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6098,6 +6175,7 @@ func (client ModelClient) ListHierarchicalEntities(ctx context.Context, appID uu
 // ListHierarchicalEntitiesPreparer prepares the ListHierarchicalEntities request.
 func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6185,6 +6263,7 @@ func (client ModelClient) ListHierarchicalEntityRoles(ctx context.Context, appID
 // ListHierarchicalEntityRolesPreparer prepares the ListHierarchicalEntityRoles request.
 func (client ModelClient) ListHierarchicalEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6273,6 +6352,7 @@ func (client ModelClient) ListIntents(ctx context.Context, appID uuid.UUID, vers
 // ListIntentsPreparer prepares the ListIntents request.
 func (client ModelClient) ListIntentsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6372,6 +6452,7 @@ func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.
 // ListIntentSuggestionsPreparer prepares the ListIntentSuggestions request.
 func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32, enableNestedChildren *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6473,6 +6554,7 @@ func (client ModelClient) ListModels(ctx context.Context, appID uuid.UUID, versi
 // ListModelsPreparer prepares the ListModels request.
 func (client ModelClient) ListModelsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6573,6 +6655,7 @@ func (client ModelClient) ListPatternAnyEntityInfos(ctx context.Context, appID u
 // ListPatternAnyEntityInfosPreparer prepares the ListPatternAnyEntityInfos request.
 func (client ModelClient) ListPatternAnyEntityInfosPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6660,6 +6743,7 @@ func (client ModelClient) ListPatternAnyEntityRoles(ctx context.Context, appID u
 // ListPatternAnyEntityRolesPreparer prepares the ListPatternAnyEntityRoles request.
 func (client ModelClient) ListPatternAnyEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6734,6 +6818,7 @@ func (client ModelClient) ListPrebuiltEntities(ctx context.Context, appID uuid.U
 // ListPrebuiltEntitiesPreparer prepares the ListPrebuiltEntities request.
 func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6808,6 +6893,7 @@ func (client ModelClient) ListPrebuiltEntityRoles(ctx context.Context, appID uui
 // ListPrebuiltEntityRolesPreparer prepares the ListPrebuiltEntityRoles request.
 func (client ModelClient) ListPrebuiltEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6896,6 +6982,7 @@ func (client ModelClient) ListPrebuilts(ctx context.Context, appID uuid.UUID, ve
 // ListPrebuiltsPreparer prepares the ListPrebuilts request.
 func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -6996,6 +7083,7 @@ func (client ModelClient) ListRegexEntityInfos(ctx context.Context, appID uuid.U
 // ListRegexEntityInfosPreparer prepares the ListRegexEntityInfos request.
 func (client ModelClient) ListRegexEntityInfosPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7083,6 +7171,7 @@ func (client ModelClient) ListRegexEntityRoles(ctx context.Context, appID uuid.U
 // ListRegexEntityRolesPreparer prepares the ListRegexEntityRoles request.
 func (client ModelClient) ListRegexEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7159,6 +7248,7 @@ func (client ModelClient) PatchClosedList(ctx context.Context, appID uuid.UUID, 
 // PatchClosedListPreparer prepares the PatchClosedList request.
 func (client ModelClient) PatchClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7243,6 +7333,7 @@ func (client ModelClient) ReplaceEntityFeatures(ctx context.Context, appID uuid.
 // ReplaceEntityFeaturesPreparer prepares the ReplaceEntityFeatures request.
 func (client ModelClient) ReplaceEntityFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationsUpdateObject []ModelFeatureInformation) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7327,6 +7418,7 @@ func (client ModelClient) ReplaceIntentFeatures(ctx context.Context, appID uuid.
 // ReplaceIntentFeaturesPreparer prepares the ReplaceIntentFeatures request.
 func (client ModelClient) ReplaceIntentFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationsUpdateObject []ModelFeatureInformation) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7405,6 +7497,7 @@ func (client ModelClient) UpdateClosedList(ctx context.Context, appID uuid.UUID,
 // UpdateClosedListPreparer prepares the UpdateClosedList request.
 func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7484,6 +7577,7 @@ func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, appID 
 // UpdateClosedListEntityRolePreparer prepares the UpdateClosedListEntityRole request.
 func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7563,6 +7657,7 @@ func (client ModelClient) UpdateCompositeEntity(ctx context.Context, appID uuid.
 // UpdateCompositeEntityPreparer prepares the UpdateCompositeEntity request.
 func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7642,6 +7737,7 @@ func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, appID u
 // UpdateCompositeEntityRolePreparer prepares the UpdateCompositeEntityRole request.
 func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7722,6 +7818,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, ap
 // UpdateCustomPrebuiltEntityRolePreparer prepares the UpdateCustomPrebuiltEntityRole request.
 func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7803,6 +7900,7 @@ func (client ModelClient) UpdateEntityChild(ctx context.Context, appID uuid.UUID
 // UpdateEntityChildPreparer prepares the UpdateEntityChild request.
 func (client ModelClient) UpdateEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityModelUpdateObject EntityModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7882,6 +7980,7 @@ func (client ModelClient) UpdateEntityRole(ctx context.Context, appID uuid.UUID,
 // UpdateEntityRolePreparer prepares the UpdateEntityRole request.
 func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -7962,6 +8061,7 @@ func (client ModelClient) UpdateExplicitListItem(ctx context.Context, appID uuid
 // UpdateExplicitListItemPreparer prepares the UpdateExplicitListItem request.
 func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8041,6 +8141,7 @@ func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, appID uu
 // UpdateHierarchicalEntityPreparer prepares the UpdateHierarchicalEntity request.
 func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, modelUpdateObject ModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8121,6 +8222,7 @@ func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, app
 // UpdateHierarchicalEntityChildPreparer prepares the UpdateHierarchicalEntityChild request.
 func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8201,6 +8303,7 @@ func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, appI
 // UpdateHierarchicalEntityRolePreparer prepares the UpdateHierarchicalEntityRole request.
 func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8280,6 +8383,7 @@ func (client ModelClient) UpdateIntent(ctx context.Context, appID uuid.UUID, ver
 // UpdateIntentPreparer prepares the UpdateIntent request.
 func (client ModelClient) UpdateIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8358,6 +8462,7 @@ func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, appID
 // UpdatePatternAnyEntityModelPreparer prepares the UpdatePatternAnyEntityModel request.
 func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8437,6 +8542,7 @@ func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, appID 
 // UpdatePatternAnyEntityRolePreparer prepares the UpdatePatternAnyEntityRole request.
 func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8517,6 +8623,7 @@ func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, appID uu
 // UpdatePrebuiltEntityRolePreparer prepares the UpdatePrebuiltEntityRole request.
 func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8596,6 +8703,7 @@ func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, appID uuid
 // UpdateRegexEntityModelPreparer prepares the UpdateRegexEntityModel request.
 func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8675,6 +8783,7 @@ func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, appID uuid.
 // UpdateRegexEntityRolePreparer prepares the UpdateRegexEntityRole request.
 func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -8755,6 +8864,7 @@ func (client ModelClient) UpdateSubList(ctx context.Context, appID uuid.UUID, ve
 // UpdateSubListPreparer prepares the UpdateSubList request.
 func (client ModelClient) UpdateSubListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64, wordListBaseUpdateObject WordListBaseUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

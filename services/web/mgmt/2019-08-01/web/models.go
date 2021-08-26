@@ -1456,6 +1456,7 @@ func (future *AppsCreateOrUpdateSourceControlSlotFuture) result(client AppsClien
 // AppsDeletePrivateEndpointConnectionFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AppsDeletePrivateEndpointConnectionFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -4587,6 +4588,7 @@ func (future *AppsRestoreSnapshotSlotFuture) result(client AppsClient) (ar autor
 // AppsStartNetworkTraceFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AppsStartNetworkTraceFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -4630,6 +4632,7 @@ func (future *AppsStartNetworkTraceFuture) result(client AppsClient) (lnt ListNe
 // AppsStartNetworkTraceSlotFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AppsStartNetworkTraceSlotFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -4673,6 +4676,7 @@ func (future *AppsStartNetworkTraceSlotFuture) result(client AppsClient) (lnt Li
 // AppsStartWebSiteNetworkTraceOperationFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type AppsStartWebSiteNetworkTraceOperationFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
@@ -4716,6 +4720,7 @@ func (future *AppsStartWebSiteNetworkTraceOperationFuture) result(client AppsCli
 // AppsStartWebSiteNetworkTraceOperationSlotFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type AppsStartWebSiteNetworkTraceOperationSlotFuture struct {
+	autorest.Response `json:"-"`
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.

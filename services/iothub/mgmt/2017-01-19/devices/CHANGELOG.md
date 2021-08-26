@@ -2,10 +2,8 @@
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. ErrorDetails.MarshalJSON() ([]byte, error)
-1. IotHubCapacity.MarshalJSON() ([]byte, error)
-1. IotHubQuotaMetricInfo.MarshalJSON() ([]byte, error)
-1. JobResponse.MarshalJSON() ([]byte, error)
-1. RegistryStatistics.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. IotHubResourceDeleteFuture.autorest.Response

@@ -104,6 +104,7 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdatePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplatesClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachineImageTemplatesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,6 +189,7 @@ func (client VirtualMachineImageTemplatesClient) DeletePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplatesClient) DeleteSender(req *http.Request) (future VirtualMachineImageTemplatesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -792,6 +794,7 @@ func (client VirtualMachineImageTemplatesClient) RunPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplatesClient) RunSender(req *http.Request) (future VirtualMachineImageTemplatesRunFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -878,6 +881,7 @@ func (client VirtualMachineImageTemplatesClient) UpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplatesClient) UpdateSender(req *http.Request) (future VirtualMachineImageTemplatesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

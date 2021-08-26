@@ -180,6 +180,7 @@ func (client IotDpsResourceClient) CreateOrUpdatePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client IotDpsResourceClient) CreateOrUpdateSender(req *http.Request) (future IotDpsResourceCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -258,6 +259,7 @@ func (client IotDpsResourceClient) DeletePreparer(ctx context.Context, provision
 // http.Response Body if it receives an error.
 func (client IotDpsResourceClient) DeleteSender(req *http.Request) (future IotDpsResourceDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

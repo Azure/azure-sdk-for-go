@@ -98,6 +98,7 @@ func (client ExpressRouteGatewaysClient) CreateOrUpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client ExpressRouteGatewaysClient) CreateOrUpdateSender(req *http.Request) (future ExpressRouteGatewaysCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -177,6 +178,7 @@ func (client ExpressRouteGatewaysClient) DeletePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client ExpressRouteGatewaysClient) DeleteSender(req *http.Request) (future ExpressRouteGatewaysDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -478,6 +480,7 @@ func (client ExpressRouteGatewaysClient) UpdateTagsPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ExpressRouteGatewaysClient) UpdateTagsSender(req *http.Request) (future ExpressRouteGatewaysUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

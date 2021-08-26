@@ -90,6 +90,7 @@ func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, deviceN
 // http.Response Body if it receives an error.
 func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (future TriggersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -107,7 +108,7 @@ func (client TriggersClient) CreateOrUpdateResponder(resp *http.Response) (resul
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -170,6 +171,7 @@ func (client TriggersClient) DeletePreparer(ctx context.Context, deviceName stri
 // http.Response Body if it receives an error.
 func (client TriggersClient) DeleteSender(req *http.Request) (future TriggersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -91,6 +91,7 @@ func (client AliasClient) CreatePreparer(ctx context.Context, aliasName string, 
 // http.Response Body if it receives an error.
 func (client AliasClient) CreateSender(req *http.Request) (future AliasCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

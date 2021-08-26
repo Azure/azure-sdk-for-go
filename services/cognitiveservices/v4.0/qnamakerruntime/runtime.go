@@ -64,6 +64,7 @@ func (client RuntimeClient) GenerateAnswer(ctx context.Context, kbID string, gen
 // GenerateAnswerPreparer prepares the GenerateAnswer request.
 func (client RuntimeClient) GenerateAnswerPreparer(ctx context.Context, kbID string, generateAnswerPayload QueryDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                autorest.Encode("path"),
 		"RuntimeEndpoint": client.RuntimeEndpoint,
 	}
 
@@ -138,6 +139,7 @@ func (client RuntimeClient) Train(ctx context.Context, kbID string, trainPayload
 // TrainPreparer prepares the Train request.
 func (client RuntimeClient) TrainPreparer(ctx context.Context, kbID string, trainPayload FeedbackRecordsDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                autorest.Encode("path"),
 		"RuntimeEndpoint": client.RuntimeEndpoint,
 	}
 

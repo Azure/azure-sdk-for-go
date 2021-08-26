@@ -93,6 +93,7 @@ func (client MachineLearningComputeClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Request) (future MachineLearningComputeCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,6 +177,7 @@ func (client MachineLearningComputeClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (future MachineLearningComputeDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -731,6 +733,7 @@ func (client MachineLearningComputeClient) StartPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) StartSender(req *http.Request) (future MachineLearningComputeStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -810,6 +813,7 @@ func (client MachineLearningComputeClient) StopPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) StopSender(req *http.Request) (future MachineLearningComputeStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -893,6 +897,7 @@ func (client MachineLearningComputeClient) UpdatePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) UpdateSender(req *http.Request) (future MachineLearningComputeUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -78,6 +78,7 @@ func (client EvaluationsClient) Create(ctx context.Context, evaluation Evaluatio
 // CreatePreparer prepares the Create request.
 func (client EvaluationsClient) CreatePreparer(ctx context.Context, evaluation EvaluationContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -153,6 +154,7 @@ func (client EvaluationsClient) Delete(ctx context.Context, evaluationID string)
 // DeletePreparer prepares the Delete request.
 func (client EvaluationsClient) DeletePreparer(ctx context.Context, evaluationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -229,6 +231,7 @@ func (client EvaluationsClient) Get(ctx context.Context, evaluationID string) (r
 // GetPreparer prepares the Get request.
 func (client EvaluationsClient) GetPreparer(ctx context.Context, evaluationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -298,6 +301,7 @@ func (client EvaluationsClient) List(ctx context.Context) (result ListEvaluation
 // ListPreparer prepares the List request.
 func (client EvaluationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

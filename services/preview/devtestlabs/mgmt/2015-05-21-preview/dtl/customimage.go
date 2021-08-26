@@ -89,6 +89,7 @@ func (client CustomImageClient) CreateOrUpdateResourcePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client CustomImageClient) CreateOrUpdateResourceSender(req *http.Request) (future CustomImageCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -169,6 +170,7 @@ func (client CustomImageClient) DeleteResourcePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client CustomImageClient) DeleteResourceSender(req *http.Request) (future CustomImageDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

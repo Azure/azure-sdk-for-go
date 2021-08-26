@@ -74,6 +74,7 @@ func (client EventsClient) Activate(ctx context.Context, eventID string) (result
 // ActivatePreparer prepares the Activate request.
 func (client EventsClient) ActivatePreparer(ctx context.Context, eventID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -153,6 +154,7 @@ func (client EventsClient) Reward(ctx context.Context, eventID string, reward Re
 // RewardPreparer prepares the Reward request.
 func (client EventsClient) RewardPreparer(ctx context.Context, eventID string, reward RewardRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

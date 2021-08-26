@@ -186,6 +186,7 @@ func (client DiskRestorePointClient) GrantAccessPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client DiskRestorePointClient) GrantAccessSender(req *http.Request) (future DiskRestorePointGrantAccessFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -393,6 +394,7 @@ func (client DiskRestorePointClient) RevokeAccessPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client DiskRestorePointClient) RevokeAccessSender(req *http.Request) (future DiskRestorePointRevokeAccessFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

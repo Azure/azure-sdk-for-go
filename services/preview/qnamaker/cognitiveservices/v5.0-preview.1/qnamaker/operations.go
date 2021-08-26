@@ -63,6 +63,7 @@ func (client OperationsClient) GetDetails(ctx context.Context, operationID strin
 // GetDetailsPreparer prepares the GetDetails request.
 func (client OperationsClient) GetDetailsPreparer(ctx context.Context, operationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

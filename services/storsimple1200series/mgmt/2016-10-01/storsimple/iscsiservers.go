@@ -97,6 +97,7 @@ func (client IscsiServersClient) BackupNowPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client IscsiServersClient) BackupNowSender(req *http.Request) (future IscsiServersBackupNowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -193,6 +194,7 @@ func (client IscsiServersClient) CreateOrUpdatePreparer(ctx context.Context, dev
 // http.Response Body if it receives an error.
 func (client IscsiServersClient) CreateOrUpdateSender(req *http.Request) (future IscsiServersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -282,6 +284,7 @@ func (client IscsiServersClient) DeletePreparer(ctx context.Context, deviceName 
 // http.Response Body if it receives an error.
 func (client IscsiServersClient) DeleteSender(req *http.Request) (future IscsiServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -79,6 +79,7 @@ func (client ProductGroupClient) CreateOrUpdate(ctx context.Context, apimBaseURL
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ProductGroupClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, productID string, groupID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -172,6 +173,7 @@ func (client ProductGroupClient) Delete(ctx context.Context, apimBaseURL string,
 // DeletePreparer prepares the Delete request.
 func (client ProductGroupClient) DeletePreparer(ctx context.Context, apimBaseURL string, productID string, groupID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -278,6 +280,7 @@ func (client ProductGroupClient) ListByProduct(ctx context.Context, apimBaseURL 
 // ListByProductPreparer prepares the ListByProduct request.
 func (client ProductGroupClient) ListByProductPreparer(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

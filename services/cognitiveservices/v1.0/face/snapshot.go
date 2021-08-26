@@ -99,6 +99,7 @@ func (client SnapshotClient) Apply(ctx context.Context, snapshotID uuid.UUID, bo
 // ApplyPreparer prepares the Apply request.
 func (client SnapshotClient) ApplyPreparer(ctx context.Context, snapshotID uuid.UUID, body ApplySnapshotRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -173,6 +174,7 @@ func (client SnapshotClient) Delete(ctx context.Context, snapshotID uuid.UUID) (
 // DeletePreparer prepares the Delete request.
 func (client SnapshotClient) DeletePreparer(ctx context.Context, snapshotID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -244,6 +246,7 @@ func (client SnapshotClient) Get(ctx context.Context, snapshotID uuid.UUID) (res
 // GetPreparer prepares the Get request.
 func (client SnapshotClient) GetPreparer(ctx context.Context, snapshotID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -315,6 +318,7 @@ func (client SnapshotClient) GetOperationStatus(ctx context.Context, operationID
 // GetOperationStatusPreparer prepares the GetOperationStatus request.
 func (client SnapshotClient) GetOperationStatusPreparer(ctx context.Context, operationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -389,6 +393,7 @@ func (client SnapshotClient) List(ctx context.Context, typeParameter SnapshotObj
 // ListPreparer prepares the List request.
 func (client SnapshotClient) ListPreparer(ctx context.Context, typeParameter SnapshotObjectType, applyScope []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -500,6 +505,7 @@ func (client SnapshotClient) Take(ctx context.Context, body TakeSnapshotRequest)
 // TakePreparer prepares the Take request.
 func (client SnapshotClient) TakePreparer(ctx context.Context, body TakeSnapshotRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -570,6 +576,7 @@ func (client SnapshotClient) Update(ctx context.Context, snapshotID uuid.UUID, b
 // UpdatePreparer prepares the Update request.
 func (client SnapshotClient) UpdatePreparer(ctx context.Context, snapshotID uuid.UUID, body UpdateSnapshotRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -206,6 +206,7 @@ func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutesPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutesSender(req *http.Request) (future VirtualHubBgpConnectionsListAdvertisedRoutesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -286,6 +287,7 @@ func (client VirtualHubBgpConnectionsClient) ListLearnedRoutesPreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client VirtualHubBgpConnectionsClient) ListLearnedRoutesSender(req *http.Request) (future VirtualHubBgpConnectionsListLearnedRoutesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -258,6 +258,7 @@ func (client EnvironmentsClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) DeleteSender(req *http.Request) (future EnvironmentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -574,6 +575,7 @@ func (client EnvironmentsClient) ResetPasswordPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) ResetPasswordSender(req *http.Request) (future EnvironmentsResetPasswordFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -658,6 +660,7 @@ func (client EnvironmentsClient) StartPreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) StartSender(req *http.Request) (future EnvironmentsStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -742,6 +745,7 @@ func (client EnvironmentsClient) StopPreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) StopSender(req *http.Request) (future EnvironmentsStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

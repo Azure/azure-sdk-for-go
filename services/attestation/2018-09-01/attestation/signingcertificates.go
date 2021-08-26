@@ -63,6 +63,7 @@ func (client SigningCertificatesClient) Get(ctx context.Context, tenantBaseURL s
 // GetPreparer prepares the Get request.
 func (client SigningCertificatesClient) GetPreparer(ctx context.Context, tenantBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"tenantBaseUrl": tenantBaseURL,
 	}
 

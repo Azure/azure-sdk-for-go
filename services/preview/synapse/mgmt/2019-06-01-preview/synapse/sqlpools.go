@@ -101,6 +101,7 @@ func (client SQLPoolsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client SQLPoolsClient) CreateSender(req *http.Request) (future SQLPoolsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -191,6 +192,7 @@ func (client SQLPoolsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client SQLPoolsClient) DeleteSender(req *http.Request) (future SQLPoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -208,7 +210,7 @@ func (client SQLPoolsClient) DeleteResponder(resp *http.Response) (result SetObj
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -497,6 +499,7 @@ func (client SQLPoolsClient) PausePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client SQLPoolsClient) PauseSender(req *http.Request) (future SQLPoolsPauseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -514,7 +517,7 @@ func (client SQLPoolsClient) PauseResponder(resp *http.Response) (result SetObje
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -587,6 +590,7 @@ func (client SQLPoolsClient) ResumePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client SQLPoolsClient) ResumeSender(req *http.Request) (future SQLPoolsResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -604,7 +608,7 @@ func (client SQLPoolsClient) ResumeResponder(resp *http.Response) (result SetObj
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -92,6 +92,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request) (future ServerFarmsCreateOrUpdateServerFarmFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

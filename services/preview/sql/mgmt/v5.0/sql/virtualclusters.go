@@ -88,6 +88,7 @@ func (client VirtualClustersClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client VirtualClustersClient) DeleteSender(req *http.Request) (future VirtualClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -476,6 +477,7 @@ func (client VirtualClustersClient) UpdatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client VirtualClustersClient) UpdateSender(req *http.Request) (future VirtualClustersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

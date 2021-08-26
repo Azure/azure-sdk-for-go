@@ -89,6 +89,7 @@ func (client BastionHostsClient) CreateOrUpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client BastionHostsClient) CreateOrUpdateSender(req *http.Request) (future BastionHostsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,6 +168,7 @@ func (client BastionHostsClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client BastionHostsClient) DeleteSender(req *http.Request) (future BastionHostsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -552,6 +554,7 @@ func (client BastionHostsClient) UpdateTagsPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client BastionHostsClient) UpdateTagsSender(req *http.Request) (future BastionHostsUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

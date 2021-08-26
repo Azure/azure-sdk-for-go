@@ -64,6 +64,7 @@ func (client RegionsClient) List(ctx context.Context, apimBaseURL string) (resul
 // ListPreparer prepares the List request.
 func (client RegionsClient) ListPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

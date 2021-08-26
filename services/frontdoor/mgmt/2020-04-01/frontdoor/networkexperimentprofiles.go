@@ -100,6 +100,7 @@ func (client NetworkExperimentProfilesClient) CreateOrUpdatePreparer(ctx context
 // http.Response Body if it receives an error.
 func (client NetworkExperimentProfilesClient) CreateOrUpdateSender(req *http.Request) (future NetworkExperimentProfilesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,6 +189,7 @@ func (client NetworkExperimentProfilesClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client NetworkExperimentProfilesClient) DeleteSender(req *http.Request) (future NetworkExperimentProfilesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -601,6 +603,7 @@ func (client NetworkExperimentProfilesClient) UpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client NetworkExperimentProfilesClient) UpdateSender(req *http.Request) (future NetworkExperimentProfilesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

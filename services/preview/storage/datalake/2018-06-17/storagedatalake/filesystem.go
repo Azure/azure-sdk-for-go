@@ -84,6 +84,7 @@ func (client FilesystemClient) Create(ctx context.Context, filesystem string, xM
 // CreatePreparer prepares the Create request.
 func (client FilesystemClient) CreatePreparer(ctx context.Context, filesystem string, xMsProperties string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -207,6 +208,7 @@ func (client FilesystemClient) Delete(ctx context.Context, filesystem string, if
 // DeletePreparer prepares the Delete request.
 func (client FilesystemClient) DeletePreparer(ctx context.Context, filesystem string, ifModifiedSince string, ifUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -323,6 +325,7 @@ func (client FilesystemClient) GetProperties(ctx context.Context, filesystem str
 // GetPropertiesPreparer prepares the GetProperties request.
 func (client FilesystemClient) GetPropertiesPreparer(ctx context.Context, filesystem string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -438,6 +441,7 @@ func (client FilesystemClient) List(ctx context.Context, prefix string, continua
 // ListPreparer prepares the List request.
 func (client FilesystemClient) ListPreparer(ctx context.Context, prefix string, continuation string, maxResults *int32, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -563,6 +567,7 @@ func (client FilesystemClient) SetProperties(ctx context.Context, filesystem str
 // SetPropertiesPreparer prepares the SetProperties request.
 func (client FilesystemClient) SetPropertiesPreparer(ctx context.Context, filesystem string, xMsProperties string, ifModifiedSince string, ifUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}

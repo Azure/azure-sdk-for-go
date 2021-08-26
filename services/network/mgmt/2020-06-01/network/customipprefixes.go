@@ -90,6 +90,7 @@ func (client CustomIPPrefixesClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client CustomIPPrefixesClient) CreateOrUpdateSender(req *http.Request) (future CustomIPPrefixesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,6 +169,7 @@ func (client CustomIPPrefixesClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client CustomIPPrefixesClient) DeleteSender(req *http.Request) (future CustomIPPrefixesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

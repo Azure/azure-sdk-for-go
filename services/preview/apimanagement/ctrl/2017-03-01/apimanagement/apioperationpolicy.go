@@ -85,6 +85,7 @@ func (client APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, apimB
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIOperationPolicyClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string, parameters PolicyContract, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -185,6 +186,7 @@ func (client APIOperationPolicyClient) Delete(ctx context.Context, apimBaseURL s
 // DeletePreparer prepares the Delete request.
 func (client APIOperationPolicyClient) DeletePreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -280,6 +282,7 @@ func (client APIOperationPolicyClient) Get(ctx context.Context, apimBaseURL stri
 // GetPreparer prepares the Get request.
 func (client APIOperationPolicyClient) GetPreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -375,6 +378,7 @@ func (client APIOperationPolicyClient) ListByOperation(ctx context.Context, apim
 // ListByOperationPreparer prepares the ListByOperation request.
 func (client APIOperationPolicyClient) ListByOperationPreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

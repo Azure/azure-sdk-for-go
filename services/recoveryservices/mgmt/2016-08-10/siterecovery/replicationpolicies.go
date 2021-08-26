@@ -89,6 +89,7 @@ func (client ReplicationPoliciesClient) CreatePreparer(ctx context.Context, poli
 // http.Response Body if it receives an error.
 func (client ReplicationPoliciesClient) CreateSender(req *http.Request) (future ReplicationPoliciesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,6 +168,7 @@ func (client ReplicationPoliciesClient) DeletePreparer(ctx context.Context, poli
 // http.Response Body if it receives an error.
 func (client ReplicationPoliciesClient) DeleteSender(req *http.Request) (future ReplicationPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -438,6 +440,7 @@ func (client ReplicationPoliciesClient) UpdatePreparer(ctx context.Context, poli
 // http.Response Body if it receives an error.
 func (client ReplicationPoliciesClient) UpdateSender(req *http.Request) (future ReplicationPoliciesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

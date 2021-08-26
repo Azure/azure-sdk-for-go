@@ -97,6 +97,7 @@ func (client EventSubscriptionsClient) CreatePreparer(ctx context.Context, scope
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) CreateSender(req *http.Request) (future EventSubscriptionsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -181,6 +182,7 @@ func (client EventSubscriptionsClient) DeletePreparer(ctx context.Context, scope
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) DeleteSender(req *http.Request) (future EventSubscriptionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -1115,6 +1117,7 @@ func (client EventSubscriptionsClient) UpdatePreparer(ctx context.Context, scope
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) UpdateSender(req *http.Request) (future EventSubscriptionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

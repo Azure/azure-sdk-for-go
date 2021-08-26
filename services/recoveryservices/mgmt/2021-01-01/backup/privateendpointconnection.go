@@ -88,6 +88,7 @@ func (client PrivateEndpointConnectionClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client PrivateEndpointConnectionClient) DeleteSender(req *http.Request) (future PrivateEndpointConnectionDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -248,6 +249,7 @@ func (client PrivateEndpointConnectionClient) PutPreparer(ctx context.Context, v
 // http.Response Body if it receives an error.
 func (client PrivateEndpointConnectionClient) PutSender(req *http.Request) (future PrivateEndpointConnectionPutFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

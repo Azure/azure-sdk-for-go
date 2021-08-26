@@ -100,6 +100,7 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client WorkspaceAadAdminsClient) CreateOrUpdateSender(req *http.Request) (future WorkspaceAadAdminsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,6 +189,7 @@ func (client WorkspaceAadAdminsClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client WorkspaceAadAdminsClient) DeleteSender(req *http.Request) (future WorkspaceAadAdminsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

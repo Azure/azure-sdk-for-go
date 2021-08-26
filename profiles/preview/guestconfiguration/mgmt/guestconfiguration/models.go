@@ -18,24 +18,33 @@ const (
 type ActionAfterReboot = original.ActionAfterReboot
 
 const (
-	ContinueConfiguration ActionAfterReboot = original.ContinueConfiguration
-	StopConfiguration     ActionAfterReboot = original.StopConfiguration
+	ActionAfterRebootContinueConfiguration ActionAfterReboot = original.ActionAfterRebootContinueConfiguration
+	ActionAfterRebootStopConfiguration     ActionAfterReboot = original.ActionAfterRebootStopConfiguration
+)
+
+type AssignmentType = original.AssignmentType
+
+const (
+	AssignmentTypeApplyAndAutoCorrect  AssignmentType = original.AssignmentTypeApplyAndAutoCorrect
+	AssignmentTypeApplyAndMonitor      AssignmentType = original.AssignmentTypeApplyAndMonitor
+	AssignmentTypeAudit                AssignmentType = original.AssignmentTypeAudit
+	AssignmentTypeDeployAndAutoCorrect AssignmentType = original.AssignmentTypeDeployAndAutoCorrect
 )
 
 type ComplianceStatus = original.ComplianceStatus
 
 const (
-	Compliant    ComplianceStatus = original.Compliant
-	NonCompliant ComplianceStatus = original.NonCompliant
-	Pending      ComplianceStatus = original.Pending
+	ComplianceStatusCompliant    ComplianceStatus = original.ComplianceStatusCompliant
+	ComplianceStatusNonCompliant ComplianceStatus = original.ComplianceStatusNonCompliant
+	ComplianceStatusPending      ComplianceStatus = original.ComplianceStatusPending
 )
 
 type ConfigurationMode = original.ConfigurationMode
 
 const (
-	ApplyAndAutoCorrect ConfigurationMode = original.ApplyAndAutoCorrect
-	ApplyAndMonitor     ConfigurationMode = original.ApplyAndMonitor
-	ApplyOnly           ConfigurationMode = original.ApplyOnly
+	ConfigurationModeApplyAndAutoCorrect ConfigurationMode = original.ConfigurationModeApplyAndAutoCorrect
+	ConfigurationModeApplyAndMonitor     ConfigurationMode = original.ConfigurationModeApplyAndMonitor
+	ConfigurationModeApplyOnly           ConfigurationMode = original.ConfigurationModeApplyOnly
 )
 
 type CreatedByType = original.CreatedByType
@@ -50,23 +59,23 @@ const (
 type Kind = original.Kind
 
 const (
-	DSC Kind = original.DSC
+	KindDSC Kind = original.KindDSC
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Created   ProvisioningState = original.Created
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreated   ProvisioningState = original.ProvisioningStateCreated
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type Type = original.Type
 
 const (
-	Consistency Type = original.Consistency
-	Initial     Type = original.Initial
+	TypeConsistency Type = original.TypeConsistency
+	TypeInitial     Type = original.TypeInitial
 )
 
 type Assignment = original.Assignment
@@ -155,6 +164,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleActionAfterRebootValues() []ActionAfterReboot {
 	return original.PossibleActionAfterRebootValues()
+}
+func PossibleAssignmentTypeValues() []AssignmentType {
+	return original.PossibleAssignmentTypeValues()
 }
 func PossibleComplianceStatusValues() []ComplianceStatus {
 	return original.PossibleComplianceStatusValues()

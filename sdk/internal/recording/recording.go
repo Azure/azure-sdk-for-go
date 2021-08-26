@@ -451,7 +451,7 @@ const (
 	UpstreamUriHeader  = "x-recording-upstream-base-uri"
 )
 
-var recordingId string
+var recordingIds = map[string]string{}
 
 var tr = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -464,10 +464,6 @@ type RecordingOptions struct {
 	UseHTTPS bool
 	Host     string
 	Scheme   string
-}
-
-func resetRecordingId() {
-	recordingId = ""
 }
 
 func defaultOptions() *RecordingOptions {
@@ -514,19 +510,20 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if err != nil {
 		return err
 	}
-	recordingId = resp.Header.Get(IdHeader)
-	if recordingId == "" {
+	recId := resp.Header.Get(IdHeader)
+	if recId == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			return err
 		}
 		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
 	}
+	recordingIds[t.Name()] = recId
 	return nil
 }
 
 func StopRecording(t *testing.T, options *RecordingOptions) error {
-	defer resetRecordingId()
+	// defer resetRecordingId()
 
 	if options == nil {
 		options = defaultOptions()
@@ -537,10 +534,12 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	if recordingId == "" {
+	var recId string
+	var ok bool
+	if recId, ok = recordingIds[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recordingId)
+	req.Header.Set("x-recording-id", recId)
 	_, err = client.Do(req)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -606,8 +605,8 @@ func Sleep(duration time.Duration) {
 	}
 }
 
-func GetRecordingId() string {
-	return recordingId
+func GetRecordingId(t *testing.T) string {
+	return recordingIds[t.Name()]
 }
 
 func GetRecordMode() string {

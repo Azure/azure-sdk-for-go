@@ -178,6 +178,10 @@ func createStorageClient(t *testing.T) (*Client, error) {
 
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
+	if recording.InPlayback() {
+		cred, err = getSharedKeyCredential(t)
+		require.NoError(t, err)
+	}
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 

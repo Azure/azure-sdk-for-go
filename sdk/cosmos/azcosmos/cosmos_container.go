@@ -185,12 +185,13 @@ func (c *CosmosContainer) UpsertItem(
 	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
 
 	addHeaderInternal, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
+	if err != nil {
+		return CosmosItemResponse{}, err
+	}
+
 	addHeader := func(r *azcore.Request) {
 		addHeaderInternal(r)
 		r.Header.Add(cosmosHeaderIsUpsert, "true")
-	}
-	if err != nil {
-		return CosmosItemResponse{}, err
 	}
 
 	if requestOptions == nil {

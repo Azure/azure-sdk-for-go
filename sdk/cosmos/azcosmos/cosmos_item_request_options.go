@@ -24,7 +24,7 @@ type CosmosItemRequestOptions struct {
 	ConsistencyLevel *ConsistencyLevel
 	// Indexing directive to be applied to the operation.
 	IndexingDirective *IndexingDirective
-	// When EnableContentResponseOnWrite is false will cause the response to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
+	// When EnableContentResponseOnWrite is false will cause the response on write operations to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
 	// The default is false.
 	EnableContentResponseOnWrite bool
 }

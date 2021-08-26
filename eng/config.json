@@ -10,7 +10,7 @@
         },
         {
             "Name": "internal",
-            "CoverageGoal": 0.89
+            "CoverageGoal": 0.88
         }
     ]
 }

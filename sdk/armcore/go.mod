@@ -1,3 +1,4 @@
+// Deprecated: The contents of this module have moved to github.com/Azure/azure-sdk-for-go/sdk/azcore/arm
 module github.com/Azure/azure-sdk-for-go/sdk/armcore
 
 go 1.14

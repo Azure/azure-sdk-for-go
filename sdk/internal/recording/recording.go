@@ -515,6 +515,13 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 		return err
 	}
 	recordingId = resp.Header.Get(IdHeader)
+	if recordingId == "" {
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
+	}
 	return nil
 }
 

@@ -553,3 +553,13 @@ func TestBadAzureRecordMode(t *testing.T) {
 
 	recordMode = temp
 }
+
+func TestBackwardSlashPath(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	packagePathBackslash := "sdk\\internal\\recordings"
+
+	err := StartRecording(t, packagePathBackslash, nil)
+	require.Error(t, err)
+}

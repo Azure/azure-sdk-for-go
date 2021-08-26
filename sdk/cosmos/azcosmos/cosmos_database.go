@@ -39,7 +39,7 @@ func (db *CosmosDatabase) GetContainer(id string) (*CosmosContainer, error) {
 // ctx - The context for the request.
 // containerProperties - The properties for the container.
 // requestOptions - Optional parameters for the request.
-func (db *CosmosDatabase) AddContainer(
+func (db *CosmosDatabase) CreateContainer(
 	ctx context.Context,
 	containerProperties CosmosContainerProperties,
 	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
@@ -62,7 +62,13 @@ func (db *CosmosDatabase) AddContainer(
 		return CosmosContainerResponse{}, err
 	}
 
-	azResponse, err := db.client.connection.sendPostRequest(path, ctx, containerProperties, operationContext, requestOptions)
+	azResponse, err := db.client.connection.sendPostRequest(
+		path,
+		ctx,
+		containerProperties,
+		operationContext,
+		requestOptions,
+		nil)
 	if err != nil {
 		return CosmosContainerResponse{}, err
 	}
@@ -73,7 +79,7 @@ func (db *CosmosDatabase) AddContainer(
 // Get reads a Cosmos database.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (db *CosmosDatabase) Get(
+func (db *CosmosDatabase) Read(
 	ctx context.Context,
 	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
 	if requestOptions == nil {
@@ -90,7 +96,12 @@ func (db *CosmosDatabase) Get(
 		return CosmosDatabaseResponse{}, err
 	}
 
-	azResponse, err := db.client.connection.sendGetRequest(path, ctx, operationContext, requestOptions)
+	azResponse, err := db.client.connection.sendGetRequest(
+		path,
+		ctx,
+		operationContext,
+		requestOptions,
+		nil)
 	if err != nil {
 		return CosmosDatabaseResponse{}, err
 	}
@@ -118,7 +129,12 @@ func (db *CosmosDatabase) Delete(
 		return CosmosDatabaseResponse{}, err
 	}
 
-	azResponse, err := db.client.connection.sendDeleteRequest(path, ctx, operationContext, requestOptions)
+	azResponse, err := db.client.connection.sendDeleteRequest(
+		path,
+		ctx,
+		operationContext,
+		requestOptions,
+		nil)
 	if err != nil {
 		return CosmosDatabaseResponse{}, err
 	}

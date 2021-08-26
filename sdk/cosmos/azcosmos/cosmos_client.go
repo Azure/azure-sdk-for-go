@@ -16,6 +16,7 @@ type CosmosClient struct {
 	Endpoint   string
 	connection *cosmosClientConnection
 	cred       *SharedKeyCredential
+	options    *CosmosClientOptions
 }
 
 // NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
@@ -23,11 +24,15 @@ type CosmosClient struct {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional CosmosClient options.  Pass nil to accept default values.
 func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosClientOptions) (*CosmosClient, error) {
+	if options == nil {
+		options = &CosmosClientOptions{}
+	}
+
 	connection := newCosmosClientConnection(endpoint, cred, options)
 
 	c, _ := cred.(*SharedKeyCredential)
 
-	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: c}, nil
+	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: c, options: options}, nil
 }
 
 // GetCosmosDatabase returns a CosmosDatabase object.
@@ -55,11 +60,11 @@ func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string)
 	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
 }
 
-// AddDatabase creates a new database.
+// CreateDatabase creates a new database.
 // ctx - The context for the request.
 // databaseProperties - The definition of the database
 // requestOptions - Optional parameters for the request.
-func (c *CosmosClient) AddDatabase(
+func (c *CosmosClient) CreateDatabase(
 	ctx context.Context,
 	databaseProperties CosmosDatabaseProperties,
 	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
@@ -82,7 +87,13 @@ func (c *CosmosClient) AddDatabase(
 		return CosmosDatabaseResponse{}, err
 	}
 
-	azResponse, err := c.connection.sendPostRequest(path, ctx, databaseProperties, operationContext, requestOptions)
+	azResponse, err := c.connection.sendPostRequest(
+		path,
+		ctx,
+		databaseProperties,
+		operationContext,
+		requestOptions,
+		nil)
 	if err != nil {
 		return CosmosDatabaseResponse{}, err
 	}

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -29,7 +29,7 @@ func TestMSITelemetryDefaultUserAgent(t *testing.T) {
 		HTTPClient: srv,
 	}
 	pipeline := newDefaultMSIPipeline(options)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -40,7 +40,7 @@ func TestMSITelemetryDefaultUserAgent(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, UserAgent) {
+	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, "azsdk-go-"+component+"/"+version) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
@@ -53,9 +53,9 @@ func TestMSITelemetryCustom(t *testing.T) {
 	options := ManagedIdentityCredentialOptions{
 		HTTPClient: srv,
 	}
-	options.Telemetry.Value = customTelemetry
+	options.Telemetry.ApplicationID = customTelemetry
 	pipeline := newDefaultMSIPipeline(options)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -66,7 +66,7 @@ func TestMSITelemetryCustom(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+UserAgent) {
+	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+"azsdk-go-"+component+"/"+version) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }

@@ -95,7 +95,7 @@
 ## v0.2.0 (2020-09-11)
 ### Features Added
 * Refactor `azidentity` on top of `azcore` refactor
-* Updated policies to conform to `azcore.Policy` interface changes.
+* Updated policies to conform to `policy.Policy` interface changes.
 * Updated non-retriable errors to conform to `azcore.NonRetriableError`.
 * Fixed calls to `Request.SetBody()` to include content type.
 * Switched endpoints to string types and removed extra parsing code.

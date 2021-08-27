@@ -121,6 +121,7 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+// ManualThroughput returns the provisioned throughput in manual mode.
 func (tp *ThroughputProperties) ManualThroughput() (int, error) {
 	if tp.offer.Throughput == nil {
 		return 0, fmt.Errorf("offer is not a manual offer")
@@ -129,6 +130,7 @@ func (tp *ThroughputProperties) ManualThroughput() (int, error) {
 	return *tp.offer.Throughput, nil
 }
 
+// AutoscaleMaxThroughput returns the configured max throughput on autoscale mode.
 func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int, error) {
 	if tp.offer.AutoScale == nil {
 		return 0, fmt.Errorf("offer is not an autoscale offer")
@@ -137,6 +139,8 @@ func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int, error) {
 	return tp.offer.AutoScale.MaxThroughput, nil
 }
 
+// NewManualThroughputProperties returns a ThroughputProperties object with the given throughput in manual mode.
+// throughput - the throughput in RU/s
 func NewManualThroughputProperties(throughput int) *ThroughputProperties {
 	return &ThroughputProperties{
 		version: offerVersion2,
@@ -144,6 +148,9 @@ func NewManualThroughputProperties(throughput int) *ThroughputProperties {
 	}
 }
 
+// NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
+// maxThroughput - the max throughput in RU/s
+// incrementPercentage - the auto upgrade max throughput increment percentage
 func NewAutoscaleThroughputProperties(startingMaxThroughput int, incrementPercentage int) *ThroughputProperties {
 	return &ThroughputProperties{
 		version: offerVersion2,

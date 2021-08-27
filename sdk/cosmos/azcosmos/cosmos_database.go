@@ -111,6 +111,25 @@ func (db *CosmosDatabase) Read(
 	return newCosmosDatabaseResponse(azResponse, db)
 }
 
+// ReadThroughput obtains the provisioned throughput information for the database.
+// ctx - The context for the request.
+// requestOptions - Optional parameters for the request.
+func (db *CosmosDatabase) ReadThroughput(
+	ctx context.Context,
+	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &ThroughputRequestOptions{}
+	}
+
+	rid, err := db.getRID(ctx)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	offers := &cosmosOffers{connection: db.client.connection}
+	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+}
+
 // Delete a Cosmos database.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
@@ -142,4 +161,13 @@ func (db *CosmosDatabase) Delete(
 	}
 
 	return newCosmosDatabaseResponse(azResponse, db)
+}
+
+func (db *CosmosDatabase) getRID(ctx context.Context) (string, error) {
+	dbResponse, err := db.Read(ctx, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return dbResponse.DatabaseProperties.ResourceId, nil
 }

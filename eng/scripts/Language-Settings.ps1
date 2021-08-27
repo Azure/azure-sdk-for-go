@@ -1,10 +1,12 @@
 $Language = "go"
 $packagePattern = "go.mod"
+# rewrite from ChangeLog-Operations.ps1 used in Get-ChangeLogEntriesFromContent for go uses vx.x.x as version number
 $RELEASE_TITLE_REGEX = "(?<releaseNoteTitle>^\#+\s+(?<version>v$([AzureEngSemanticVersion]::SEMVER_REGEX))(\s+(?<releaseStatus>\(.+\))))"
-$AUTOREST_VERSION_REGEX = "^module-version:\s+(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))"
-$GO_VERSION_REGEX = "Version\s=\s`"v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-$MGMT_PLANE_VERSION_FILE = "autorest.md"
-$DATA_PLANE_VERSION_FILE = "version.go"
+# constants for go version fetch
+$GO_VERSION_REGEX = ".+\s*=\s*`".*v?(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+$VERSION_FILE_SUFFIXS = "*constants.go", "*version.go"
+
+# rewrite from artifact-metadata-parsing.ps1 used in RetrievePackages for fetch go single module info
 function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
 {
     $workFolder = $pkg.Directory
@@ -32,45 +34,47 @@ function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     return $resultObj
 }
 
-# get version from go config auterest.md
+# get version from specific files (*constants.go, *version.go)
 function Get-Version ($pkgPath)
 {
-    if (Test-Path (Join-Path $pkgPath $MGMT_PLANE_VERSION_FILE))
+    # find any file with surfix
+    $versionFiles = [Collections.Generic.List[String]]@()
+    foreach ($versionFileSuffix in $VERSION_FILE_SUFFIXS)
     {
-        $versionPath = Join-Path $pkgPath $MGMT_PLANE_VERSION_FILE
-        $versionRegex = $AUTOREST_VERSION_REGEX
-    }
-    elseif (Test-Path (Join-Path $pkgPath $DATA_PLANE_VERSION_FILE))
-    {
-        $versionPath = Join-Path $pkgPath $DATA_PLANE_VERSION_FILE
-        $versionRegex = $GO_VERSION_REGEX
-    }
-
-    $content = Get-Content $versionPath
-    $content = $content.Split("`n")
-
-    try
-    {
-        # walk the document, finding where the version specifiers are
-        foreach ($line in $content)
-        {
-            if ($line -match $versionRegex)
-            {
-                return $matches["version"]
-            }
+        Get-ChildItem -Recurse -Path $pkgPath -Filter $versionFileSuffix | ForEach-Object {
+            Write-Host "Adding $_ to list of version files"
+            $versionFiles.Add($_)
         }
     }
-    catch
+    
+    # for each version file, use regex to search go version num
+    foreach ($versionFile in $versionFiles)
     {
-        Write-Error "Error parsing version."
-        Write-Error $_
+        $content = Get-Content $versionFile
+        $content = $content.Split("`n")
+        try
+        {
+            # walk the document, finding where the version number are
+            foreach ($line in $content)
+            {
+                if ($line -match $GO_VERSION_REGEX)
+                {
+                    return $matches["version"]
+                }
+            }
+        }
+        catch
+        {
+            Write-Error "Error parsing version."
+            Write-Error $_
+        }
     }
 
     Write-Host "Cannot find release version."
     exit 1
 }
 
-# rewrite for go as all 0.x.x version should be considered prerelease
+# rewrite from artifact-metadata-parsing.ps1 as all 0.x.x version should be considered prerelease in go sdk
 function CreateReleases($pkgList, $releaseApiUrl, $releaseSha)
 {
     foreach ($pkgInfo in $pkgList)

@@ -1,4 +1,3 @@
-//go:build !emulator
 // +build !emulator
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

@@ -21,9 +21,6 @@ type cosmosClientConnection struct {
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
 func newCosmosClientConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *cosmosClientConnection {
-	if options == nil {
-		options = &CosmosClientOptions{}
-	}
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.enrichTelemetryOptions()),
 	}
@@ -41,8 +38,9 @@ func (c *cosmosClientConnection) sendPostRequest(
 	ctx context.Context,
 	content interface{},
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions)
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
 	}
@@ -60,8 +58,9 @@ func (c *cosmosClientConnection) sendPutRequest(
 	ctx context.Context,
 	content interface{},
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions)
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
 	}
@@ -78,8 +77,9 @@ func (c *cosmosClientConnection) sendGetRequest(
 	path string,
 	ctx context.Context,
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions)
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
 	}
@@ -91,8 +91,9 @@ func (c *cosmosClientConnection) sendDeleteRequest(
 	path string,
 	ctx context.Context,
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions) (*azcore.Response, error) {
-	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions)
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +106,8 @@ func (c *cosmosClientConnection) createRequest(
 	ctx context.Context,
 	method string,
 	operationContext cosmosOperationContext,
-	requestOptions cosmosRequestOptions) (*azcore.Request, error) {
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*azcore.Request)) (*azcore.Request, error) {
 
 	// todo: endpoint will be set originally by globalendpointmanager
 	finalURL := c.endpoint
@@ -130,6 +132,11 @@ func (c *cosmosClientConnection) createRequest(
 	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
 
 	req.SetOperationValue(operationContext)
+
+	if requestEnricher != nil {
+		requestEnricher(req)
+	}
+
 	return req, nil
 }
 

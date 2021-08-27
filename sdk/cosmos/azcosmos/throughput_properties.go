@@ -7,6 +7,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const (
@@ -24,6 +27,25 @@ type ThroughputProperties struct {
 	offer           *offer
 	offerResourceId string
 	offerId         string
+}
+
+// NewManualThroughputProperties returns a ThroughputProperties object with the given throughput in manual mode.
+// throughput - the throughput in RU/s
+func NewManualThroughputProperties(throughput int) *ThroughputProperties {
+	return &ThroughputProperties{
+		version: offerVersion2,
+		offer:   newManualOffer(throughput),
+	}
+}
+
+// NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
+// maxThroughput - the max throughput in RU/s
+// incrementPercentage - the auto upgrade max throughput increment percentage
+func NewAutoscaleThroughputProperties(startingMaxThroughput int, incrementPercentage int) *ThroughputProperties {
+	return &ThroughputProperties{
+		version: offerVersion2,
+		offer:   newAutoscaleOfferWithIncrement(startingMaxThroughput, incrementPercentage),
+	}
 }
 
 func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
@@ -139,22 +161,15 @@ func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int, error) {
 	return tp.offer.AutoScale.MaxThroughput, nil
 }
 
-// NewManualThroughputProperties returns a ThroughputProperties object with the given throughput in manual mode.
-// throughput - the throughput in RU/s
-func NewManualThroughputProperties(throughput int) *ThroughputProperties {
-	return &ThroughputProperties{
-		version: offerVersion2,
-		offer:   newManualOffer(throughput),
+func (tp *ThroughputProperties) addHeadersToRequest(req *azcore.Request) {
+	if tp == nil {
+		return
 	}
-}
 
-// NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
-// maxThroughput - the max throughput in RU/s
-// incrementPercentage - the auto upgrade max throughput increment percentage
-func NewAutoscaleThroughputProperties(startingMaxThroughput int, incrementPercentage int) *ThroughputProperties {
-	return &ThroughputProperties{
-		version: offerVersion2,
-		offer:   newAutoscaleOfferWithIncrement(startingMaxThroughput, incrementPercentage),
+	if tp.offer.Throughput != nil {
+		req.Header.Add(cosmosHeaderOfferThroughput, strconv.Itoa(*tp.offer.Throughput))
+	} else {
+		req.Header.Add(cosmosHeaderOfferAutoscale, tp.offer.AutoScale.ToJsonString())
 	}
 }
 
@@ -185,6 +200,16 @@ func newAutoscaleOfferWithIncrement(startingMaxThroughput int, incrementPercenta
 type autoscaleSettings struct {
 	MaxThroughput                  int                             `json:"maxThroughput,omitempty"`
 	AutoscaleAutoUpgradeProperties *autoscaleAutoUpgradeProperties `json:"autoUpgradePolicy,omitempty"`
+}
+
+func (as *autoscaleSettings) ToJsonString() string {
+	if as == nil {
+		return ""
+	}
+
+	jsonString, _ := json.Marshal(as)
+
+	return string(jsonString)
 }
 
 type autoscaleAutoUpgradeProperties struct {

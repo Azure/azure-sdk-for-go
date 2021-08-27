@@ -35,13 +35,15 @@ func (db *CosmosDatabase) GetContainer(id string) (*CosmosContainer, error) {
 	return newCosmosContainer(id, db), nil
 }
 
-// AddContainer creates a container in the Cosmos database.
+// CreateContainer creates a container in the Cosmos database.
 // ctx - The context for the request.
 // containerProperties - The properties for the container.
+// throughputProperties - Optional throughput configuration of the container
 // requestOptions - Optional parameters for the request.
 func (db *CosmosDatabase) CreateContainer(
 	ctx context.Context,
 	containerProperties CosmosContainerProperties,
+	throughputProperties *ThroughputProperties,
 	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
 	if requestOptions == nil {
 		requestOptions = &CosmosContainerRequestOptions{}
@@ -68,7 +70,7 @@ func (db *CosmosDatabase) CreateContainer(
 		containerProperties,
 		operationContext,
 		requestOptions,
-		nil)
+		throughputProperties.addHeadersToRequest)
 	if err != nil {
 		return CosmosContainerResponse{}, err
 	}
@@ -76,7 +78,7 @@ func (db *CosmosDatabase) CreateContainer(
 	return newCosmosContainerResponse(azResponse, container)
 }
 
-// Get reads a Cosmos database.
+// Read obtains the information for a Cosmos database.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
 func (db *CosmosDatabase) Read(

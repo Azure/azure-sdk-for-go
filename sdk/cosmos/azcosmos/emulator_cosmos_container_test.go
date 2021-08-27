@@ -32,9 +32,9 @@ func TestContainerCRUD(t *testing.T) {
 		},
 	}
 
-	resp, err := database.AddContainer(context.TODO(), properties, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, nil)
 	if err != nil {
-		t.Fatalf("Failed to create container2: %v", err)
+		t.Fatalf("Failed to create container: %v", err)
 	}
 
 	if resp.ContainerProperties.Id != properties.Id {
@@ -46,7 +46,7 @@ func TestContainerCRUD(t *testing.T) {
 	}
 
 	container := resp.ContainerProperties.Container
-	resp, err = container.Get(context.TODO(), nil)
+	resp, err = container.Read(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read container: %v", err)
 	}
@@ -64,7 +64,7 @@ func TestContainerCRUD(t *testing.T) {
 		},
 	}
 
-	resp, err = container.Update(context.TODO(), updatedProperties, nil)
+	resp, err = container.Replace(context.TODO(), updatedProperties, nil)
 	if err != nil {
 		t.Fatalf("Failed to update container: %v", err)
 	}

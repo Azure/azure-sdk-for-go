@@ -4,14 +4,14 @@
 package azcosmos
 
 // Consistency levels supported by the Azure Cosmos DB service.
-type ConsistencyLevel int
+type ConsistencyLevel string
 
 const (
-	ConsistencyLevelStrong           ConsistencyLevel = iota
-	ConsistencyLevelBoundedStaleness ConsistencyLevel = iota
-	ConsistencyLevelSession          ConsistencyLevel = iota
-	ConsistencyLevelEventual         ConsistencyLevel = iota
-	ConsistencyLevelConsistentPrefix ConsistencyLevel = iota
+	ConsistencyLevelStrong           ConsistencyLevel = "Strong"
+	ConsistencyLevelBoundedStaleness ConsistencyLevel = "BoundedStaleness"
+	ConsistencyLevelSession          ConsistencyLevel = "Session"
+	ConsistencyLevelEventual         ConsistencyLevel = "Eventual"
+	ConsistencyLevelConsistentPrefix ConsistencyLevel = "ConsistentPrefix"
 )
 
 // Returns a list of available consistency levels

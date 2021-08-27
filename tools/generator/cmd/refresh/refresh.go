@@ -257,7 +257,7 @@ func (c *CommandContext) generateOnCommit(commit string, infoList []GenerationIn
 			errors = append(errors, err)
 			continue
 		}
-		//options = options.MergeOptions(additionalOptions...)
+		options = options.MergeOptions(additionalOptions...)
 		start := time.Now()
 		generateCtx := generateContext{
 			sdkRoot:        c.SDK().Root(),

@@ -53,6 +53,15 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type FailoverMode = original.FailoverMode
+
+const (
+	FailoverModeForcedFailover    FailoverMode = original.FailoverModeForcedFailover
+	FailoverModeForcedSwitchover  FailoverMode = original.FailoverModeForcedSwitchover
+	FailoverModePlannedFailover   FailoverMode = original.FailoverModePlannedFailover
+	FailoverModePlannedSwitchover FailoverMode = original.FailoverModePlannedSwitchover
+)
+
 type GeoRedundantBackupEnum = original.GeoRedundantBackupEnum
 
 const (
@@ -302,6 +311,9 @@ func PossibleCreateModeValues() []CreateMode {
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleFailoverModeValues() []FailoverMode {
+	return original.PossibleFailoverModeValues()
 }
 func PossibleGeoRedundantBackupEnumValues() []GeoRedundantBackupEnum {
 	return original.PossibleGeoRedundantBackupEnumValues()

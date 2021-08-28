@@ -19,7 +19,7 @@ const (
 	cosmosHeaderIsUpsert           string = "x-ms-documentdb-is-upsert"
 	cosmosHeaderOfferThroughput    string = "x-ms-offer-throughput"
 	cosmosHeaderOfferAutoscale     string = "x-ms-cosmos-offer-autopilot-settings"
-	c
+	cosmosHeaderQuery              string = "x-ms-documentdb-query"
 )
 
 const (

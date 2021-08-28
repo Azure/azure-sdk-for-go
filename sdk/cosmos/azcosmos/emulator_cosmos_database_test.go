@@ -63,6 +63,20 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
+	throughputResponse, err := resp.DatabaseProperties.Database.ReadThroughput(context.TODO(), nil)
+	if err != nil {
+		t.Fatalf("Failed to read throughput: %v", err)
+	}
+
+	mt, err := throughputResponse.ThroughputProperties.ManualThroughput()
+	if err != nil {
+		t.Errorf("Failed to read throughput: %v", err)
+	}
+
+	if mt != 400 {
+		t.Errorf("Unexpected throughput: %v", mt)
+	}
+
 	resp, err = resp.DatabaseProperties.Database.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)

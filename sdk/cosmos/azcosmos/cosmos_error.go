@@ -53,6 +53,14 @@ func newCosmosError(response *azcore.Response) error {
 	return &cError
 }
 
+func newCosmosErrorWithStatusCode(statusCode int) error {
+	return &cosmosError{
+		rawResponse: &http.Response{
+			StatusCode: statusCode,
+		},
+	}
+}
+
 func (e *cosmosError) Error() string {
 	if e.body == "" {
 		return "response contained no body"

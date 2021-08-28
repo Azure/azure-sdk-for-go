@@ -3,7 +3,11 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 // ThroughputResponse represents the response from a throughput request.
 type ThroughputResponse struct {
@@ -13,13 +17,22 @@ type ThroughputResponse struct {
 }
 
 func newThroughputResponse(resp *azcore.Response) (ThroughputResponse, error) {
+	type offers struct {
+		Offers []ThroughputProperties `json:"Offers"`
+	}
+
+	var theOffers offers
+	err := resp.UnmarshalAsJSON(&theOffers)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	if len(theOffers.Offers) == 0 {
+		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound)
+	}
+
 	response := ThroughputResponse{}
 	response.RawResponse = resp.Response
-	properties := &ThroughputProperties{}
-	err := resp.UnmarshalAsJSON(properties)
-	if err != nil {
-		return response, err
-	}
-	response.ThroughputProperties = properties
+	response.ThroughputProperties = &theOffers.Offers[0]
 	return response, nil
 }

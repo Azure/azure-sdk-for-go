@@ -17,11 +17,7 @@ type ThroughputResponse struct {
 }
 
 func newThroughputResponse(resp *azcore.Response) (ThroughputResponse, error) {
-	type offers struct {
-		Offers []ThroughputProperties `json:"Offers"`
-	}
-
-	var theOffers offers
+	var theOffers cosmosOffersResponse
 	err := resp.UnmarshalAsJSON(&theOffers)
 	if err != nil {
 		return ThroughputResponse{}, err

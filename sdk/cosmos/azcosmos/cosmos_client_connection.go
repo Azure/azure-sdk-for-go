@@ -53,6 +53,36 @@ func (c *cosmosClientConnection) sendPostRequest(
 	return c.executeAndEnsureSuccessResponse(req)
 }
 
+func (c *cosmosClientConnection) sendQueryRequest(
+	path string,
+	ctx context.Context,
+	query string,
+	operationContext cosmosOperationContext,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	type queryBody struct {
+		Query string `json:"query"`
+	}
+
+	err = req.MarshalAsJSON(queryBody{
+		Query: query,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add(cosmosHeaderQuery, "True")
+	// Override content type for query
+	req.Header.Set(azcore.HeaderContentType, "application/query+json")
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
 func (c *cosmosClientConnection) sendPutRequest(
 	path string,
 	ctx context.Context,

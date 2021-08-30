@@ -27,6 +27,7 @@ type ThroughputProperties struct {
 	offer           *offer
 	offerResourceId string
 	offerId         string
+	selfLink        string
 }
 
 // NewManualThroughputProperties returns a ThroughputProperties object with the given throughput in manual mode.
@@ -76,6 +77,10 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buffer.Write(etag)
+	}
+
+	if tp.selfLink != "" {
+		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.selfLink))
 	}
 
 	if tp.LastModified != nil {
@@ -136,6 +141,12 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 
 	if id, ok := attributes["id"]; ok {
 		if err := json.Unmarshal(id, &tp.offerId); err != nil {
+			return err
+		}
+	}
+
+	if self, ok := attributes["_self"]; ok {
+		if err := json.Unmarshal(self, &tp.selfLink); err != nil {
 			return err
 		}
 	}

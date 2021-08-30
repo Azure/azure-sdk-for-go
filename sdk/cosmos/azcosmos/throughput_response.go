@@ -4,7 +4,7 @@
 package azcosmos
 
 import (
-	"net/http"
+	"strconv"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -16,19 +16,46 @@ type ThroughputResponse struct {
 	cosmosResponse
 }
 
-func newThroughputResponse(resp *azcore.Response) (ThroughputResponse, error) {
-	var theOffers cosmosOffersResponse
-	err := resp.UnmarshalAsJSON(&theOffers)
+// IsReplacePending returns the state of a throughput update.
+func (r *ThroughputResponse) IsReplacePending() *bool {
+	isPending := r.RawResponse.Header.Get(cosmosHeaderActivityId)
+	if isPending == "" {
+		return nil
+	}
+
+	isPendingBool, err := strconv.ParseBool(isPending)
 	if err != nil {
-		return ThroughputResponse{}, err
+		return nil
 	}
 
-	if len(theOffers.Offers) == 0 {
-		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound)
+	return &isPendingBool
+}
+
+// MinThroughput is minimum throughput in measurement of request units per second in the Azure Cosmos service.
+func (r *ThroughputResponse) MinThroughput() *int {
+	minThroughput := r.RawResponse.Header.Get(cosmosHeaderOfferMinimumThroughput)
+	if minThroughput == "" {
+		return nil
 	}
 
+	minThroughputInt, err := strconv.ParseInt(minThroughput, 10, 32)
+	if err != nil {
+		return nil
+	}
+
+	minThroughputAsInt := int(minThroughputInt)
+
+	return &minThroughputAsInt
+}
+
+func newThroughputResponse(resp *azcore.Response) (ThroughputResponse, error) {
 	response := ThroughputResponse{}
 	response.RawResponse = resp.Response
-	response.ThroughputProperties = &theOffers.Offers[0]
+	properties := &ThroughputProperties{}
+	err := resp.UnmarshalAsJSON(properties)
+	if err != nil {
+		return response, err
+	}
+	response.ThroughputProperties = properties
 	return response, nil
 }

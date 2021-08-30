@@ -9,7 +9,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -33,7 +34,7 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	at, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	at, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -52,7 +53,7 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -69,7 +70,7 @@ func TestBearerPolicy_AzureCLICredential(t *testing.T) {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}
 	pipeline := defaultTestPipeline(srv, cred, scope)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}

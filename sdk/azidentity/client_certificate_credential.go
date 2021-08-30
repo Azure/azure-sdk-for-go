@@ -15,6 +15,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"golang.org/x/crypto/pkcs12"
 )
 
@@ -31,13 +33,13 @@ type ClientCertificateCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transporter
+	HTTPClient policy.Transporter
 	// Retry configures the built-in retry policy behavior
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 }
 
 // ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information
@@ -206,7 +208,7 @@ func extractFromPFXFile(certData []byte, password string, sendCertificateChain b
 // scopes: The list of scopes for which the token will have access.
 // ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Client Certificate Credential", err, true)
@@ -217,7 +219,7 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 }
 
 // NewAuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
-func (c *ClientCertificateCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *ClientCertificateCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

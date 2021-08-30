@@ -17,6 +17,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 const (
@@ -49,14 +52,14 @@ const (
 )
 
 // managedIdentityClient provides the base for authenticating in managed identity environments
-// This type includes an azcore.Pipeline and TokenCredentialOptions.
+// This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	pipeline               azcore.Pipeline
-	imdsAPIVersion         string
-	imdsAvailableTimeoutMS time.Duration
-	msiType                msiType
-	endpoint               string
-	id                     ManagedIdentityIDKind
+	pipeline             runtime.Pipeline
+	imdsAPIVersion       string
+	imdsAvailableTimeout time.Duration
+	msiType              msiType
+	endpoint             string
+	id                   ManagedIdentityIDKind
 }
 
 type wrappedNumber json.Number
@@ -76,11 +79,11 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
 	logEnvVars()
 	return &managedIdentityClient{
-		id:                     options.ID,
-		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
-		imdsAPIVersion:         imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
-		imdsAvailableTimeoutMS: 500,                             // we allow a timeout of 500 ms since the endpoint might be slow to respond
-		msiType:                msiTypeUnknown,                  // when creating a new managedIdentityClient, the current MSI type is unknown and will be tested for and replaced once authenticate() is called from GetToken on the credential side
+		id:                   options.ID,
+		pipeline:             newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
+		imdsAPIVersion:       imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
+		imdsAvailableTimeout: 500 * time.Millisecond,          // we allow a timeout of 500 ms since the endpoint might be slow to respond
+		msiType:              msiTypeUnknown,                  // when creating a new managedIdentityClient, the current MSI type is unknown and will be tested for and replaced once authenticate() is called from GetToken on the credential side
 	}
 }
 
@@ -99,7 +102,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 		return nil, err
 	}
 
-	if azcore.HasStatusCode(resp, successStatusCodes[:]...) {
+	if runtime.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -114,7 +117,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		ExpiresIn    wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
-	if err := azcore.UnmarshalAsJSON(res, &value); err != nil {
+	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
 	}
 	if value.ExpiresIn != "" {
@@ -147,7 +150,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 	}
 }
 
-func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID string, scopes []string) (*policy.Request, error) {
 	switch c.msiType {
 	case msiTypeIMDS:
 		return c.createIMDSAuthRequest(ctx, clientID, scopes)
@@ -176,13 +179,13 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
-	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id string, scopes []string) (*policy.Request, error) {
+	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set(headerMetadata, "true")
-	q := request.URL.Query()
+	request.Raw().Header.Set(headerMetadata, "true")
+	q := request.Raw().URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if c.id == ResourceID {
@@ -190,18 +193,18 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id st
 	} else if id != "" {
 		q.Add(qpClientID, id)
 	}
-	request.URL.RawQuery = q.Encode()
+	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
 
-func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
-	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, id string, scopes []string) (*policy.Request, error) {
+	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
 	}
-	q := request.URL.Query()
+	q := request.Raw().URL.Query()
 	if c.msiType == msiTypeAppServiceV20170901 {
-		request.Header.Set("secret", os.Getenv(msiSecret))
+		request.Raw().Header.Set("secret", os.Getenv(msiSecret))
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
 		if c.id == ResourceID {
@@ -211,7 +214,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 			q.Add("clientid", id)
 		}
 	} else if c.msiType == msiTypeAppServiceV20190801 {
-		request.Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
+		request.Raw().Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
 		if c.id == ResourceID {
@@ -221,38 +224,38 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		}
 	}
 
-	request.URL.RawQuery = q.Encode()
+	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
 
-func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
-	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Context, id string, scopes []string) (*policy.Request, error) {
+	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
 	}
-	q := request.URL.Query()
-	request.Header.Set("Accept", "application/json")
-	request.Header.Set("Secret", os.Getenv(identityHeader))
+	q := request.Raw().URL.Query()
+	request.Raw().Header.Set("Accept", "application/json")
+	request.Raw().Header.Set("Secret", os.Getenv(identityHeader))
 	q.Add("api-version", serviceFabricAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != "" {
 		q.Add(qpClientID, id)
 	}
-	request.URL.RawQuery = q.Encode()
+	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
 
 func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resources []string) (string, error) {
 	// create the request to retreive the secret key challenge provided by the HIMDS service
-	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return "", err
 	}
-	request.Header.Set(headerMetadata, "true")
-	q := request.URL.Query()
+	request.Raw().Header.Set(headerMetadata, "true")
+	q := request.Raw().URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
-	request.URL.RawQuery = q.Encode()
+	request.Raw().URL.RawQuery = q.Encode()
 	// send the initial request to get the short-lived secret key
 	response, err := c.pipeline.Do(request)
 	if err != nil {
@@ -265,47 +268,47 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	}
 	header := response.Header.Get("WWW-Authenticate")
 	if len(header) == 0 {
-		return "", errors.New("Did not receive a value from WWW-Authenticate header")
+		return "", errors.New("did not receive a value from WWW-Authenticate header")
 	}
 	// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
 	pos := strings.LastIndex(header, "=")
 	if pos == -1 {
-		return "", fmt.Errorf("Did not receive a correct value from WWW-Authenticate header: %s", header)
+		return "", fmt.Errorf("did not receive a correct value from WWW-Authenticate header: %s", header)
 	}
 	key, err := ioutil.ReadFile(header[pos+1:])
 	if err != nil {
-		return "", fmt.Errorf("Could not read file (%s) contents: %w", header[pos+1:], err)
+		return "", fmt.Errorf("could not read file (%s) contents: %w", header[pos+1:], err)
 	}
 	return string(key), nil
 }
 
-func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, resources []string) (*azcore.Request, error) {
-	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, resources []string) (*policy.Request, error) {
+	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set(headerMetadata, "true")
-	request.Header.Set(headerAuthorization, fmt.Sprintf("Basic %s", key))
-	q := request.URL.Query()
+	request.Raw().Header.Set(headerMetadata, "true")
+	request.Raw().Header.Set(headerAuthorization, fmt.Sprintf("Basic %s", key))
+	q := request.Raw().URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
-	request.URL.RawQuery = q.Encode()
+	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
 
-func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
-	request, err := azcore.NewRequest(ctx, http.MethodPost, c.endpoint)
+func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, clientID string, scopes []string) (*policy.Request, error) {
+	request, err := runtime.NewRequest(ctx, http.MethodPost, c.endpoint)
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set(headerMetadata, "true")
+	request.Raw().Header.Set(headerMetadata, "true")
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
 	if clientID != "" {
 		data.Set(qpClientID, clientID)
 	}
 	dataEncoded := data.Encode()
-	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	body := streaming.NopCloser(strings.NewReader(dataEncoded))
 	if err := request.SetBody(body, headerURLEncoded); err != nil {
 		return nil, err
 	}
@@ -347,16 +350,16 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 
 // performs an I/O request that has a timeout of 500 milliseconds
 func (c *managedIdentityClient) imdsAvailable() bool {
-	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeoutMS*time.Millisecond)
+	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeout)
 	defer cancel()
 	// this should never fail
-	request, _ := azcore.NewRequest(tempCtx, http.MethodGet, imdsEndpoint)
-	q := request.URL.Query()
+	request, _ := runtime.NewRequest(tempCtx, http.MethodGet, imdsEndpoint)
+	q := request.Raw().URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
-	request.URL.RawQuery = q.Encode()
+	request.Raw().URL.RawQuery = q.Encode()
 	resp, err := c.pipeline.Do(request)
 	if err == nil {
-		azcore.Drain(resp)
+		runtime.Drain(resp)
 	}
 	return err == nil
 }

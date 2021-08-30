@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/diag"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -45,7 +46,7 @@ func logEnvVars() {
 	}
 }
 
-func logGetTokenSuccess(cred azcore.TokenCredential, opts azcore.TokenRequestOptions) {
+func logGetTokenSuccess(cred azcore.TokenCredential, opts policy.TokenRequestOptions) {
 	if !log.Should(LogCredential) {
 		return
 	}
@@ -83,7 +84,7 @@ func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
 	stack := ""
 	if includeStack {
 		// skip the stack trace frames and ourself
-		stack = "\n" + diag.StackTrace(3, azcore.StackFrameCount)
+		stack = "\n" + diag.StackTrace(3, 32)
 	}
 	log.Writef(LogCredential, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
 }

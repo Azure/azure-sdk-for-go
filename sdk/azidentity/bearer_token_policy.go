@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const (
@@ -24,7 +26,7 @@ type bearerTokenPolicy struct {
 	auxResources map[string]*expiringResource
 	// the following fields are read-only
 	creds   azcore.TokenCredential
-	options azcore.TokenRequestOptions
+	options policy.TokenRequestOptions
 }
 
 type expiringResource struct {
@@ -47,7 +49,7 @@ type expiringResource struct {
 type acquireResource func(state interface{}) (newResource interface{}, newExpiration time.Time, err error)
 
 type acquiringResourceState struct {
-	req *azcore.Request
+	req *policy.Request
 	p   bearerTokenPolicy
 }
 
@@ -55,7 +57,7 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.creds.GetToken(s.req.Context(), s.p.options)
+	tk, err := s.p.creds.GetToken(s.req.Raw().Context(), s.p.options)
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -125,7 +127,7 @@ func (er *expiringResource) GetResource(state interface{}) (interface{}, error) 
 	return resource, err // Return the resource this thread/goroutine can use
 }
 
-func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationOptions) *bearerTokenPolicy {
+func newBearerTokenPolicy(creds azcore.TokenCredential, opts runtime.AuthenticationOptions) *bearerTokenPolicy {
 	p := &bearerTokenPolicy{
 		creds:        creds,
 		options:      opts.TokenRequest,
@@ -141,7 +143,7 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.Authenticati
 	return p
 }
 
-func (b *bearerTokenPolicy) Do(req *azcore.Request) (*http.Response, error) {
+func (b *bearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
 		p:   *b,
 		req: req,
@@ -151,8 +153,8 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*http.Response, error) {
 		return nil, err
 	}
 	if token, ok := tk.(*azcore.AccessToken); ok {
-		req.Request.Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-		req.Request.Header.Set(headerAuthorization, fmt.Sprintf("Bearer %s", token.Token))
+		req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+		req.Raw().Header.Set(headerAuthorization, fmt.Sprintf("Bearer %s", token.Token))
 	}
 	auxTokens := []string{}
 	for tenant, er := range b.auxResources {
@@ -169,7 +171,7 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*http.Response, error) {
 		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", bearerTokenPrefix, auxTk.(*azcore.AccessToken).Token))
 	}
 	if len(auxTokens) > 0 {
-		req.Request.Header.Set(headerAuxiliaryAuthorization, strings.Join(auxTokens, ", "))
+		req.Raw().Header.Set(headerAuxiliaryAuthorization, strings.Join(auxTokens, ", "))
 	}
 	return req.Next()
 }

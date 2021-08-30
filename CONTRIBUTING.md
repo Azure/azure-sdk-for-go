@@ -1,6 +1,6 @@
 # Azure SDK for Go Contributing Guide
 
-Thank you for your interest in contributing to Azure SDK for go.
+Thank you for your interest in contributing to Azure SDK for Go.
 
 - For reporting bugs, requesting features, or asking for support, please file an issue in the [issues](https://github.com/Azure/azure-sdk-for-go/issues) section of the project.
 

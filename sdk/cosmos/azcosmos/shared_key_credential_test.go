@@ -1,15 +1,20 @@
+//go:build !emulator
 // +build !emulator
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package azcosmos
 
 import (
+	"context"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -39,5 +44,70 @@ func Test_buildCanonicalizedAuthHeader(t *testing.T) {
 	authHeader := cred.buildCanonicalizedAuthHeader(method, resourceType, resourceId, xmsDate, tokenType, version)
 
 	assert.GreaterOrEqual(t, len(authHeader), 1)
+	assert.Equal(t, expected, authHeader)
+}
+
+func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
+	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+
+	cred, err := NewSharedKeyCredential(key)
+
+	assert.NoError(t, err)
+
+	method := "GET"
+	resourceType := "dbs"
+	resourceId := "dbs/testdb"
+	xmsDate := "Thu, 27 Apr 2017 00:51:12 GMT"
+	tokenType := "master"
+	version := "1.0"
+
+	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceId, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
+	signature := cred.computeHMACSHA256(stringToSign)
+	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
+
+	req, _ := azcore.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "dbs/testdb",
+	}
+
+	req.Request.Header.Set(azcore.HeaderXmsDate, xmsDate)
+	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
+	req.SetOperationValue(operationContext)
+	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
+
+	assert.Equal(t, expected, authHeader)
+}
+
+func Test_buildCanonicalizedAuthHeaderFromRequestWithRid(t *testing.T) {
+	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+
+	cred, err := NewSharedKeyCredential(key)
+
+	assert.NoError(t, err)
+
+	method := "GET"
+	resourceType := "dbs"
+	resourceId := "dbs/rid"
+	xmsDate := "Thu, 27 Apr 2017 00:51:12 GMT"
+	tokenType := "master"
+	version := "1.0"
+
+	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceId, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
+	signature := cred.computeHMACSHA256(stringToSign)
+	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
+
+	req, _ := azcore.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "dbs/Rid",
+		isRidBased:      true,
+	}
+
+	req.Request.Header.Set(azcore.HeaderXmsDate, xmsDate)
+	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
+	req.SetOperationValue(operationContext)
+	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
+
 	assert.Equal(t, expected, authHeader)
 }

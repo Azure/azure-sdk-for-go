@@ -62,7 +62,12 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcor
 			return "", err
 		}
 
-		value = c.buildCanonicalizedAuthHeader(req.Method, resourceTypePath, opValues.resourceAddress, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+		resourceAddress := opValues.resourceAddress
+		if opValues.isRidBased {
+			resourceAddress = strings.ToLower(resourceAddress)
+		}
+
+		value = c.buildCanonicalizedAuthHeader(req.Method, resourceTypePath, resourceAddress, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
 	}
 
 	return value, nil

@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 type cosmosOffers struct {
@@ -20,7 +21,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 	ctx context.Context,
 	targetRID string,
 	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
-	// TODO: might want to replace with query once that is in
+	// TODO: might want to replace with query iterator once that is in
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeOffer,
 		resourceAddress: "",
@@ -37,6 +38,32 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		fmt.Sprintf(`SELECT * FROM c WHERE c.offerResourceId = '%s'`, targetRID),
 		operationContext,
 		requestOptions,
+		nil)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	var theOffers cosmosOffersResponse
+	err = azResponse.UnmarshalAsJSON(&theOffers)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	if len(theOffers.Offers) == 0 {
+		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound)
+	}
+
+	// Now read the individual offer
+	operationContext = cosmosOperationContext{
+		resourceType:    resourceTypeOffer,
+		resourceAddress: theOffers.Offers[0].selfLink,
+	}
+
+	azResponse, err = c.connection.sendGetRequest(
+		operationContext.resourceAddress,
+		ctx,
+		operationContext,
+		nil,
 		nil)
 	if err != nil {
 		return ThroughputResponse{}, err

@@ -49,8 +49,9 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
+	queryRequestCharge := (&cosmosResponse{RawResponse: azResponse.Response}).RequestCharge()
 	if len(theOffers.Offers) == 0 {
-		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound)
+		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound, &queryRequestCharge)
 	}
 
 	// Now read the individual offer
@@ -75,5 +76,5 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	return newThroughputResponse(azResponse)
+	return newThroughputResponse(azResponse, &queryRequestCharge)
 }

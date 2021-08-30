@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,11 +54,17 @@ func newCosmosError(response *azcore.Response) error {
 	return &cError
 }
 
-func newCosmosErrorWithStatusCode(statusCode int) error {
+func newCosmosErrorWithStatusCode(statusCode int, requestCharge *float32) error {
+	rawResponse := &http.Response{
+		StatusCode: statusCode,
+	}
+
+	if requestCharge != nil {
+		rawResponse.Header.Add(cosmosHeaderRequestCharge, fmt.Sprint(*requestCharge))
+	}
+
 	return &cosmosError{
-		rawResponse: &http.Response{
-			StatusCode: statusCode,
-		},
+		rawResponse: rawResponse,
 	}
 }
 

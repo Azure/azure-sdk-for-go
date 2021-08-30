@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -48,7 +49,7 @@ func (r *ThroughputResponse) MinThroughput() *int {
 	return &minThroughputAsInt
 }
 
-func newThroughputResponse(resp *azcore.Response) (ThroughputResponse, error) {
+func newThroughputResponse(resp *azcore.Response, extraRequestCharge *float32) (ThroughputResponse, error) {
 	response := ThroughputResponse{}
 	response.RawResponse = resp.Response
 	properties := &ThroughputProperties{}
@@ -57,5 +58,11 @@ func newThroughputResponse(resp *azcore.Response) (ThroughputResponse, error) {
 		return response, err
 	}
 	response.ThroughputProperties = properties
+
+	if extraRequestCharge != nil {
+		currentRequestCharge := response.RequestCharge() + *extraRequestCharge
+		response.RawResponse.Header.Set(cosmosHeaderRequestCharge, fmt.Sprint(currentRequestCharge))
+	}
+
 	return response, nil
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type cosmosOffers struct {
@@ -56,14 +57,19 @@ func (c cosmosOffers) ReadThroughputIfExists(
 	// Now read the individual offer
 	operationContext = cosmosOperationContext{
 		resourceType:    resourceTypeOffer,
-		resourceAddress: theOffers.Offers[0].selfLink,
+		resourceAddress: strings.ToLower(theOffers.Offers[0].offerId), //RID auth is lowercase
+	}
+
+	path, err = generatePathForNameBased(resourceTypeOffer, theOffers.Offers[0].selfLink, false)
+	if err != nil {
+		return ThroughputResponse{}, err
 	}
 
 	azResponse, err = c.connection.sendGetRequest(
-		operationContext.resourceAddress,
+		path,
 		ctx,
 		operationContext,
-		nil,
+		requestOptions,
 		nil)
 	if err != nil {
 		return ThroughputResponse{}, err

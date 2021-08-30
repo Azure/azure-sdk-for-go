@@ -78,7 +78,7 @@ func (c *cosmosClientConnection) sendQueryRequest(
 
 	req.Header.Add(cosmosHeaderQuery, "True")
 	// Override content type for query
-	req.Header.Set(azcore.HeaderContentType, "application/query+json")
+	req.Header.Set(azcore.HeaderContentType, cosmosHeaderValuesQuery)
 
 	return c.executeAndEnsureSuccessResponse(req)
 }

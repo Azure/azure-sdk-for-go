@@ -120,7 +120,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 		},
 	}
 
-	throughput := NewAutoscaleThroughputProperties(5000, 10)
+	throughput := NewAutoscaleThroughputProperties(5000)
 
 	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 		t.Errorf("Unexpected throughput: %v", maxru)
 	}
 
-	newScale := NewAutoscaleThroughputProperties(10000, 10)
+	newScale := NewAutoscaleThroughputProperties(10000)
 	_, err = container.ReplaceThroughput(context.TODO(), *newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)

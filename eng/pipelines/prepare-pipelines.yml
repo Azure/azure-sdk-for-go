@@ -8,4 +8,4 @@ extends:
     CIConventionOptions: ''
     UPConventionOptions: '--variablegroup 58 --variablegroup 76 --variablegroup 56 --variablegroup 93'
     # Uncomment once live tests (tests.yml) are added to the repository
-    # TestsConventionOptions: '--variablegroup 64'
+    TestsConventionOptions: '--variablegroup 64'

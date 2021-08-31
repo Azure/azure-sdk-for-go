@@ -12,7 +12,7 @@ import (
 
 // NewClientFromConnectionString creates a new Client struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.
-func NewClientFromConnectionString(tableName string, connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, tableName string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}

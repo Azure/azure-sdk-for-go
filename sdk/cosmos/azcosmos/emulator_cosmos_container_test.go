@@ -97,7 +97,6 @@ func TestContainerCRUD(t *testing.T) {
 	}
 }
 
-
 func TestContainerAutoscaleCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests()
 	client := emulatorTests.getClient(t)

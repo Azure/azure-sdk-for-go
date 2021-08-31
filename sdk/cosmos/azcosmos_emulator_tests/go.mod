@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/cosmos/azcosmos_emulator
+module github.com/Azure/azure-sdk-for-go/sdk/cosmos/azcosmos_emulator_tests
 
 go 1.13
 

@@ -72,12 +72,12 @@ stages:
 
     - template:  /eng/pipelines/templates/steps/set-scope.yml
       parameters: 
-        ServiceDirectory: 'cosmos/azcosmos_emulator'
+        ServiceDirectory: 'cosmos/azcosmos_emulator_tests'
         GoWorkspace: $(GO_WORKSPACE_PATH)
 
     - template:  /eng/pipelines/templates/steps/build-test.yml
       parameters: 
-        ServiceDirectory: 'cosmos/azcosmos_emulator'
+        ServiceDirectory: 'cosmos/azcosmos_emulator_tests'
         GoWorkspace: $(GO_WORKSPACE_PATH)
         Scope: $(SCOPE)
         Image: $(vm.image)

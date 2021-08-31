@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcosmos_emulator
+package azcosmos_emulator_tests
 
 import (
 	"context"

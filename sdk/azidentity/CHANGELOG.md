@@ -11,7 +11,7 @@
 
 ## v0.10.0 (2021-08-30)
 ### Breaking Changes
-* Update based on `azcore` refact [#15383](https://github.com/Azure/azure-sdk-for-go/pull/15383)
+* Update based on `azcore` refactor [#15383](https://github.com/Azure/azure-sdk-for-go/pull/15383)
 
 ## v0.9.3 (2021-08-20)
 

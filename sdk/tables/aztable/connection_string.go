@@ -20,7 +20,11 @@ func NewClientFromConnectionString(tableName string, connectionString string, op
 	if err != nil {
 		return nil, err
 	}
-	return NewClient(endpoint, tableName, credential, options)
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint = endpoint + "/"
+	}
+	endpoint = endpoint + tableName
+	return NewClient(endpoint, credential, options)
 }
 
 // NewServiceClientFromConnectionString creates a new ServiceClient struct from a connection string. The connection

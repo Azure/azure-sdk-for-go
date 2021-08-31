@@ -83,7 +83,11 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 		PerCallOptions: []azcore.Policy{policy},
 		HTTPClient:     client,
 	}
-	return NewClient(serviceURL, tableName, cred, options)
+	if !strings.HasSuffix(serviceURL, "/") {
+		serviceURL += "/"
+	}
+	serviceURL += tableName
+	return NewClient(serviceURL, cred, options)
 }
 
 func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*ServiceClient, error) {

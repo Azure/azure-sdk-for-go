@@ -6,6 +6,7 @@ package aztable
 import (
 	"context"
 	"encoding/json"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
@@ -28,13 +29,19 @@ const (
 	MergeEntity   EntityUpdateMode = "merge"
 )
 
-// NewClient creates a Client struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
-func NewClient(serviceURL string, tableName string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
+// NewClient creates a Client struct in the context of the table specified in the serviceURL, credential, and options.
+func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	s, err := NewServiceClient(serviceURL, cred, options)
-	return s.NewClient(tableName), err
+	parts := strings.Split(serviceURL, "/")
+	tableName := parts[len(parts)-1]
+	rawServiceURL := strings.Join(parts[:len(parts) - 1], "/")
+	s, err := NewServiceClient(rawServiceURL, cred, options)
+	if err != nil {
+		return &Client{}, err
+	}
+	return s.NewClient(tableName), nil
 }
 
 // Create creates the table with the tableName specified when NewClient was called.

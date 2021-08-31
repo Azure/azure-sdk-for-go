@@ -96,7 +96,7 @@ type ResponseError interface {
 type TransactionAction struct {
 	ActionType TransactionType
 	Entity     []byte
-	ETag       *azcore.ETag
+	IfMatch    *azcore.ETag
 }
 
 type TransactionResponse struct {
@@ -113,7 +113,8 @@ type SubmitTransactionOptions struct {
 }
 
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided. All transactionActions must be for entities
-// with the same PartitionKey. There can only be one transaction action for a row key, a duplicated row key will return an error.
+// with the same PartitionKey. There can only be one transaction action for a row key, a duplicated row key will return an error. The TransactionResponse object
+// contains the response for each sub-request in the same order that they are made in the transactionActions parameter.
 func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []TransactionAction, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
 	u1, err := uuid.New()
 	if err != nil {
@@ -319,14 +320,14 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		return fmt.Errorf("entity properties must contain a %s property", rowKey)
 	}
 	// Consider empty ETags as '*'
-	if transactionAction.ETag == nil {
+	if transactionAction.IfMatch == nil {
 		star := azcore.ETagAny
-		transactionAction.ETag = &star
+		transactionAction.IfMatch = &star
 	}
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), string(*transactionAction.ETag), &generated.TableDeleteEntityOptions{}, qo)
+		req, err = t.client.DeleteEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), string(*transactionAction.IfMatch), &generated.TableDeleteEntityOptions{}, qo)
 		if err != nil {
 			return err
 		}
@@ -339,8 +340,8 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		fallthrough
 	case InsertMerge:
 		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
-		if transactionAction.ETag != nil {
-			opts.IfMatch = to.StringPtr(string(*transactionAction.ETag))
+		if transactionAction.IfMatch != nil {
+			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
 		}
 		req, err = t.client.MergeEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
 		if err != nil {
@@ -352,7 +353,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case UpdateReplace:
 		fallthrough
 	case InsertReplace:
-		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: to.StringPtr(string(*transactionAction.ETag))}, qo)
+		req, err = t.client.UpdateEntityCreateRequest(ctx, t.name, entity[partitionKey].(string), entity[rowKey].(string), &generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: to.StringPtr(string(*transactionAction.IfMatch))}, qo)
 		if err != nil {
 			return err
 		}

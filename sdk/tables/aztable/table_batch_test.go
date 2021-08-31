@@ -114,7 +114,7 @@ func TestBatchMixed(t *testing.T) {
 			batch[0] = TransactionAction{
 				ActionType: UpdateMerge,
 				Entity:     marshalledMergeEntity,
-				ETag:       &etag,
+				IfMatch:    &etag,
 			}
 
 			// create a delete action for the second added entity

@@ -23,7 +23,7 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'cosmos'
+    ServiceDirectory: 'cosmos/azcosmos'
 
 - stage: Emulator
   displayName: 'Cosmos Emulator'
@@ -72,14 +72,13 @@ stages:
 
     - template:  /eng/pipelines/templates/steps/set-scope.yml
       parameters: 
-        ServiceDirectory: 'cosmos'
+        ServiceDirectory: 'cosmos/azcosmos/emulator'
         GoWorkspace: $(GO_WORKSPACE_PATH)
 
     - template:  /eng/pipelines/templates/steps/build-test.yml
       parameters: 
-        ServiceDirectory: 'cosmos'
+        ServiceDirectory: 'cosmos/azcosmos/emulator'
         GoWorkspace: $(GO_WORKSPACE_PATH)
         Scope: $(SCOPE)
         Image: $(vm.image)
         GoVersion: $(go.version)
-        Tags: 'emulator'

@@ -168,6 +168,10 @@ func TestThroughputPropertiesAutoscaleE2ESerialization(t *testing.T) {
 	if at != 400 {
 		t.Errorf("MaxThroughput mismatch %v", at)
 	}
+
+	if otherProperties.offer.AutoScale.AutoscaleAutoUpgradeProperties != nil {
+		t.Errorf("AutoscaleAutoUpgradeProperties mismatch %v", otherProperties.offer.AutoScale.AutoscaleAutoUpgradeProperties)
+	}
 }
 
 func TestThroughputPropertiesAutoscaleIncrementE2ESerialization(t *testing.T) {

@@ -9,7 +9,7 @@
 package internal
 
 const (
-	module = "internal"
+	module  = "internal"
 	version = "v0.1.0"
 )
 
@@ -17,14 +17,14 @@ const (
 type GeoReplicationStatusType string
 
 const (
-	GeoReplicationStatusTypeBootstrap GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive GeoReplicationStatusType = "live"
+	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
+	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
 	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
 )
 
 // PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
 func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{	
+	return []GeoReplicationStatusType{
 		GeoReplicationStatusTypeBootstrap,
 		GeoReplicationStatusTypeLive,
 		GeoReplicationStatusTypeUnavailable,
@@ -39,14 +39,14 @@ func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
 type ODataMetadataFormat string
 
 const (
-	ODataMetadataFormatApplicationJSONODataFullmetadata ODataMetadataFormat = "application/json;odata=fullmetadata"
+	ODataMetadataFormatApplicationJSONODataFullmetadata    ODataMetadataFormat = "application/json;odata=fullmetadata"
 	ODataMetadataFormatApplicationJSONODataMinimalmetadata ODataMetadataFormat = "application/json;odata=minimalmetadata"
-	ODataMetadataFormatApplicationJSONODataNometadata ODataMetadataFormat = "application/json;odata=nometadata"
+	ODataMetadataFormatApplicationJSONODataNometadata      ODataMetadataFormat = "application/json;odata=nometadata"
 )
 
 // PossibleODataMetadataFormatValues returns the possible values for the ODataMetadataFormat const type.
 func PossibleODataMetadataFormatValues() []ODataMetadataFormat {
-	return []ODataMetadataFormat{	
+	return []ODataMetadataFormat{
 		ODataMetadataFormatApplicationJSONODataFullmetadata,
 		ODataMetadataFormatApplicationJSONODataMinimalmetadata,
 		ODataMetadataFormatApplicationJSONODataNometadata,
@@ -61,13 +61,13 @@ func (c ODataMetadataFormat) ToPtr() *ODataMetadataFormat {
 type ResponseFormat string
 
 const (
-	ResponseFormatReturnContent ResponseFormat = "return-content"
+	ResponseFormatReturnContent   ResponseFormat = "return-content"
 	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
 )
 
 // PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
 func PossibleResponseFormatValues() []ResponseFormat {
-	return []ResponseFormat{	
+	return []ResponseFormat{
 		ResponseFormatReturnContent,
 		ResponseFormatReturnNoContent,
 	}
@@ -77,4 +77,3 @@ func PossibleResponseFormatValues() []ResponseFormat {
 func (c ResponseFormat) ToPtr() *ResponseFormat {
 	return &c
 }
-

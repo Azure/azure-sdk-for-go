@@ -13,13 +13,14 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TableClient contains the methods for the Table group.
@@ -40,7 +41,7 @@ func (client *TableClient) Create(ctx context.Context, tableProperties TableProp
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
@@ -108,7 +109,7 @@ func (client *TableClient) createHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -122,7 +123,7 @@ func (client *TableClient) Delete(ctx context.Context, table string, options *Ta
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
@@ -179,7 +180,7 @@ func (client *TableClient) deleteHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -193,7 +194,7 @@ func (client *TableClient) DeleteEntity(ctx context.Context, table string, parti
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
@@ -268,7 +269,7 @@ func (client *TableClient) deleteEntityHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -282,7 +283,7 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, op
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
@@ -348,7 +349,7 @@ func (client *TableClient) getAccessPolicyHandleError(resp *http.Response) error
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -362,7 +363,7 @@ func (client *TableClient) InsertEntity(ctx context.Context, table string, table
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
@@ -446,7 +447,7 @@ func (client *TableClient) insertEntityHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -460,7 +461,7 @@ func (client *TableClient) MergeEntity(ctx context.Context, table string, partit
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
@@ -543,7 +544,7 @@ func (client *TableClient) mergeEntityHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -557,7 +558,7 @@ func (client *TableClient) Query(ctx context.Context, tableQueryOptions *TableQu
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
@@ -635,10 +636,10 @@ func (client *TableClient) queryHandleError(resp *http.Response) error {
 		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-      return runtime.NewResponseError(errors.New(resp.Status), resp)
-    }
-    return runtime.NewResponseError(errors.New(string(body)), resp)
-    }
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
+	}
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
 
 // QueryEntities - Queries entities in a table.
 // If the operation fails it returns the *TableServiceError error type.
@@ -647,7 +648,7 @@ func (client *TableClient) QueryEntities(ctx context.Context, table string, tabl
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
@@ -737,7 +738,7 @@ func (client *TableClient) queryEntitiesHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -751,7 +752,7 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
@@ -843,7 +844,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleError(resp *ht
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -857,7 +858,7 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, op
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
@@ -890,7 +891,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	}
 	req.Raw().Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		TableACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if options != nil && options.TableACL != nil {
@@ -927,7 +928,7 @@ func (client *TableClient) setAccessPolicyHandleError(resp *http.Response) error
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -941,7 +942,7 @@ func (client *TableClient) UpdateEntity(ctx context.Context, table string, parti
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
-	resp, err := 	client.Con.Pipeline().Do(req)
+	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
@@ -1024,10 +1025,9 @@ func (client *TableClient) updateEntityHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := TableServiceError{raw: string(body)}
+	errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
 	return runtime.NewResponseError(&errType, resp)
 }
-

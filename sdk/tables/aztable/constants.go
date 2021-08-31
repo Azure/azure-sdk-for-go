@@ -3,8 +3,6 @@
 
 package aztable
 
-var version = "0.1.0"
-
 const (
 	headerXmsDate       = "x-ms-date"
 	headerAuthorization = "Authorization"

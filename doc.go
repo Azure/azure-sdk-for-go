@@ -7,7 +7,6 @@ Official documentation: https://docs.microsoft.com/azure/go
 
 API reference: https://godoc.org/github.com/Azure/azure-sdk-for-go
 
-Samples: https://github.com/Azure-Samples/azure-sdk-for-go-samples
 */
 package sdk
 

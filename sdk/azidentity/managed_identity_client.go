@@ -113,10 +113,9 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 
 	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
 		if len(clientID) > 0 {
-			c.unavailableMessage = "The requested identity isn't assigned to this resource."
-		} else {
-			c.unavailableMessage = "No default identity is assigned to this resource."
+			return nil, &AuthenticationFailedError{msg: "The requested identity isn't assigned to this resource."}
 		}
+		c.unavailableMessage = "No default identity is assigned to this resource."
 		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
 	}
 

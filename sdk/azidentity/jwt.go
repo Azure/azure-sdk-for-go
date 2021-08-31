@@ -48,17 +48,15 @@ func createClientAssertionJWT(clientID string, audience string, cert *certConten
 
 	headerJSON, err := json.Marshal(headerData)
 	if err != nil {
-		return "", fmt.Errorf("Marshal headerJWT: %w", err)
+		return "", fmt.Errorf("marshal headerJWT: %w", err)
 	}
 	header := base64.RawURLEncoding.EncodeToString(headerJSON)
-
-	rawUuid, err := uuid.New()
+	jti, err := uuid.New()
 	if err != nil {
 		return "", err
 	}
-
 	payloadData := payloadJWT{
-		JTI: rawUuid.String(),
+		JTI: jti.String(),
 		AUD: audience,
 		ISS: clientID,
 		SUB: clientID,
@@ -68,7 +66,7 @@ func createClientAssertionJWT(clientID string, audience string, cert *certConten
 
 	payloadJSON, err := json.Marshal(payloadData)
 	if err != nil {
-		return "", fmt.Errorf("Marshal payloadJWT: %w", err)
+		return "", fmt.Errorf("marshal payloadJWT: %w", err)
 	}
 	payload := base64.RawURLEncoding.EncodeToString(payloadJSON)
 	result := header + "." + payload

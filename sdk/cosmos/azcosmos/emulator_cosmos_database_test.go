@@ -82,6 +82,12 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 		t.Errorf("Unexpected throughput: %v", mt)
 	}
 
+	newScale := NewManualThroughputProperties(500)
+	_, err = resp.DatabaseProperties.Database.ReplaceThroughput(context.TODO(), *newScale, nil)
+	if err != nil {
+		t.Errorf("Failed to read throughput: %v", err)
+	}
+
 	resp, err = resp.DatabaseProperties.Database.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)

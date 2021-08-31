@@ -174,7 +174,7 @@ func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, per
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.NewSASQueryParameters(cred)
+	}.Sign(cred)
 }
 
 // GetTableSASToken is a convenience method for generating a SAS token for a specific table.

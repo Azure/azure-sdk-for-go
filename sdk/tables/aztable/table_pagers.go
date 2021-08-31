@@ -28,7 +28,7 @@ import (
 type ListEntitiesPager interface {
 
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListEntitiesResponseEnvelope
+	PageResponse() ListEntitiesPage
 	// NextPage returns true if there is another page of data available, false if not
 	NextPage(context.Context) bool
 	// Err returns an error if there was an error on the last request
@@ -37,7 +37,7 @@ type ListEntitiesPager interface {
 
 type tableEntityQueryResponsePager struct {
 	tableClient       *Client
-	current           *ListEntitiesResponseEnvelope
+	current           *ListEntitiesPage
 	tableQueryOptions *generated.TableQueryEntitiesOptions
 	listOptions       *ListEntitiesOptions
 	err               error
@@ -47,13 +47,13 @@ type tableEntityQueryResponsePager struct {
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
 func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextPartitionKey == nil && p.current.XMSContinuationNextRowKey == nil) {
+	if p.err != nil || (p.current != nil && p.current.ContinuationNextPartitionKey == nil && p.current.ContinuationNextRowKey == nil) {
 		return false
 	}
 	var resp generated.TableQueryEntitiesResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.listOptions.toQueryOptions())
 
-	c, err := newListEntitiesResponseEnvelope(&resp)
+	c, err := newListEntitiesPage(&resp)
 	if err != nil {
 		p.err = nil
 	}
@@ -72,7 +72,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //     fmt.Printf("The page contains %i results.\n", len(resp.Value))
 // }
 // err := pager.Err()
-func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesResponseEnvelope {
+func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesPage {
 	return *p.current
 }
 
@@ -98,28 +98,28 @@ func (p *tableEntityQueryResponsePager) Err() error {
 // err := pager.Err()
 type ListTablesPager interface {
 	// PageResponse returns the current TableQueryResponseResponse.
-	PageResponse() ListTablesResponseEnvelope
+	PageResponse() ListTablesPage
 	// NextPage returns true if there is another page of data available, false if not
 	NextPage(context.Context) bool
 	// Err returns an error if there was an error on the last request
 	Err() error
 }
 
-type ListTablesResponseEnvelope struct {
+type ListTablesPage struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
-	// XMSContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
-	XMSContinuationNextTableName *string
+	// ContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
+	ContinuationNextTableName *string
 
 	// The metadata response of the table.
 	ODataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Value []*ResponseProperties `json:"value,omitempty"`
+	Tables []*ResponseProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *ListTablesResponseEnvelope {
+func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *ListTablesPage {
 	if g == nil {
 		return nil
 	}
@@ -130,11 +130,11 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnve
 		value = append(value, fromGeneratedTableResponseProperties(v))
 	}
 
-	return &ListTablesResponseEnvelope{
-		RawResponse:                  g.RawResponse,
-		XMSContinuationNextTableName: g.XMSContinuationNextTableName,
-		ODataMetadata:                g.ODataMetadata,
-		Value:                        value,
+	return &ListTablesPage{
+		RawResponse:               g.RawResponse,
+		ContinuationNextTableName: g.XMSContinuationNextTableName,
+		ODataMetadata:             g.ODataMetadata,
+		Tables:                    value,
 	}
 }
 
@@ -167,7 +167,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
 // }
-func (p *tableQueryResponsePager) PageResponse() ListTablesResponseEnvelope {
+func (p *tableQueryResponsePager) PageResponse() ListTablesPage {
 	return *fromGeneratedTableQueryResponseEnvelope(p.current)
 }
 

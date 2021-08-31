@@ -26,9 +26,9 @@ type AccountSASSignatureValues struct {
 	ResourceTypes string      `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
-// NewSASQueryParameters uses an account's SharedKeyCredential to sign this signature values to produce
+// Sign uses an account's SharedKeyCredential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v AccountSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
+func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")

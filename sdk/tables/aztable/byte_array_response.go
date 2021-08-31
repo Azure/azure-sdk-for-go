@@ -36,14 +36,14 @@ func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 	}, nil
 }
 
-// ListEntitiesResponseEnvelope is the response envelope for operations that return a list of entities.
-type ListEntitiesResponseEnvelope struct {
+// ListEntitiesPage is the response envelope for operations that return a list of entities.
+type ListEntitiesPage struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	XMSContinuationNextPartitionKey *string
-	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	XMSContinuationNextRowKey *string
+	// ContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
+	ContinuationNextPartitionKey *string
+	// ContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
+	ContinuationNextRowKey *string
 	// The metadata response of the table.
 	ODataMetadata *string
 	// List of table entities.
@@ -58,13 +58,13 @@ type ListEntitiesResponse struct {
 	Entities [][]byte
 }
 
-// transforms a generated query response into the ListEntitiesResponseEnveloped
-func newListEntitiesResponseEnvelope(resp *generated.TableQueryEntitiesResponse) (ListEntitiesResponseEnvelope, error) {
+// transforms a generated query response into the ListEntitiesPaged
+func newListEntitiesPage(resp *generated.TableQueryEntitiesResponse) (ListEntitiesPage, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
 		if err != nil {
-			return ListEntitiesResponseEnvelope{}, err
+			return ListEntitiesPage{}, err
 		}
 		marshalledValue = append(marshalledValue, m)
 	}
@@ -74,12 +74,12 @@ func newListEntitiesResponseEnvelope(resp *generated.TableQueryEntitiesResponse)
 		Entities:      marshalledValue,
 	}
 
-	return ListEntitiesResponseEnvelope{
+	return ListEntitiesPage{
 		RawResponse:                     resp.RawResponse,
-		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
-		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
+		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
+		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 		ODataMetadata:                   t.ODataMetadata,
-		Entities:                           t.Entities,
+		Entities:                        t.Entities,
 	}, nil
 }
 

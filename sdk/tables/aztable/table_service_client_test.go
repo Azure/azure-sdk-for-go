@@ -94,7 +94,7 @@ func TestQueryTable(t *testing.T) {
 			resultCount := 0
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				resultCount += len(resp.Value)
+				resultCount += len(resp.Tables)
 			}
 
 			require.NoError(t, pager.Err())
@@ -108,7 +108,7 @@ func TestQueryTable(t *testing.T) {
 			pageCount := 0
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				resultCount += len(resp.Value)
+				resultCount += len(resp.Tables)
 				pageCount++
 			}
 
@@ -140,7 +140,7 @@ func TestListTables(t *testing.T) {
 			pager := service.ListTables(nil)
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				count += len(resp.Value)
+				count += len(resp.Tables)
 			}
 
 			require.NoError(t, pager.Err())

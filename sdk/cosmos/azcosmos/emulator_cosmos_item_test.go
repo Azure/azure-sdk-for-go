@@ -23,7 +23,7 @@ func TestItemCRUD(t *testing.T) {
 		},
 	}
 
-	resp, err := database.CreateContainer(context.TODO(), properties, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, nil, nil)
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}

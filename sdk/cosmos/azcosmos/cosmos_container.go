@@ -129,6 +129,46 @@ func (c *CosmosContainer) Delete(
 	return newCosmosContainerResponse(azResponse, c)
 }
 
+// ReadThroughput obtains the provisioned throughput information for the container.
+// ctx - The context for the request.
+// requestOptions - Optional parameters for the request.
+func (c *CosmosContainer) ReadThroughput(
+	ctx context.Context,
+	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &ThroughputRequestOptions{}
+	}
+
+	rid, err := c.getRID(ctx)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	offers := &cosmosOffers{connection: c.Database.client.connection}
+	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+}
+
+// ReplaceThroughput updates the provisioned throughput for the container.
+// ctx - The context for the request.
+// throughputProperties - The throughput configuration of the container.
+// requestOptions - Optional parameters for the request.
+func (c *CosmosContainer) ReplaceThroughput(
+	ctx context.Context,
+	throughputProperties ThroughputProperties,
+	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &ThroughputRequestOptions{}
+	}
+
+	rid, err := c.getRID(ctx)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	offers := &cosmosOffers{connection: c.Database.client.connection}
+	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+}
+
 // Creates an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
@@ -380,4 +420,13 @@ func (c *CosmosContainer) buildRequestEnricher(
 			r.Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
 		}
 	}, nil
+}
+
+func (c *CosmosContainer) getRID(ctx context.Context) (string, error) {
+	containerResponse, err := c.Read(ctx, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return containerResponse.ContainerProperties.ResourceId, nil
 }

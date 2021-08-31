@@ -39,13 +39,22 @@ func NewManualThroughputProperties(throughput int) *ThroughputProperties {
 	}
 }
 
-// NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
+// NewAutoscaleThroughputPropertiesWithIncrement returns a ThroughputProperties object with the given max throughput on autoscale mode.
 // maxThroughput - the max throughput in RU/s
 // incrementPercentage - the auto upgrade max throughput increment percentage
-func NewAutoscaleThroughputProperties(startingMaxThroughput int, incrementPercentage int) *ThroughputProperties {
+func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int, incrementPercentage int) *ThroughputProperties {
 	return &ThroughputProperties{
 		version: offerVersion2,
 		offer:   newAutoscaleOfferWithIncrement(startingMaxThroughput, incrementPercentage),
+	}
+}
+
+// NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
+// maxThroughput - the max throughput in RU/s
+func NewAutoscaleThroughputProperties(startingMaxThroughput int) *ThroughputProperties {
+	return &ThroughputProperties{
+		version: offerVersion2,
+		offer:   newAutoscaleOffer(startingMaxThroughput),
 	}
 }
 
@@ -200,10 +209,18 @@ func newAutoscaleOfferWithIncrement(startingMaxThroughput int, incrementPercenta
 		AutoScale: &autoscaleSettings{
 			MaxThroughput: startingMaxThroughput,
 			AutoscaleAutoUpgradeProperties: &autoscaleAutoUpgradeProperties{
-				ThroughputProperties: &autoscaleThroughputProperties{
+				ThroughputPolicy: &autoscaleThroughputPolicy{
 					IncrementPercent: incrementPercentage,
 				},
 			},
+		},
+	}
+}
+
+func newAutoscaleOffer(startingMaxThroughput int) *offer {
+	return &offer{
+		AutoScale: &autoscaleSettings{
+			MaxThroughput: startingMaxThroughput,
 		},
 	}
 }
@@ -224,9 +241,9 @@ func (as *autoscaleSettings) ToJsonString() string {
 }
 
 type autoscaleAutoUpgradeProperties struct {
-	ThroughputProperties *autoscaleThroughputProperties `json:"throughputPolicy,omitempty"`
+	ThroughputPolicy *autoscaleThroughputPolicy `json:"throughputPolicy,omitempty"`
 }
 
-type autoscaleThroughputProperties struct {
+type autoscaleThroughputPolicy struct {
 	IncrementPercent int `json:"incrementPercent,omitempty"`
 }

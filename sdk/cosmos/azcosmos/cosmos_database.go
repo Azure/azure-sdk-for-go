@@ -130,6 +130,27 @@ func (db *CosmosDatabase) ReadThroughput(
 	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
 }
 
+// ReplaceThroughput updates the provisioned throughput for the database.
+// ctx - The context for the request.
+// throughputProperties - The throughput configuration of the database.
+// requestOptions - Optional parameters for the request.
+func (db *CosmosDatabase) ReplaceThroughput(
+	ctx context.Context,
+	throughputProperties ThroughputProperties,
+	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+	if requestOptions == nil {
+		requestOptions = &ThroughputRequestOptions{}
+	}
+
+	rid, err := db.getRID(ctx)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	offers := &cosmosOffers{connection: db.client.connection}
+	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+}
+
 // Delete a Cosmos database.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.

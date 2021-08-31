@@ -78,3 +78,42 @@ func (c cosmosOffers) ReadThroughputIfExists(
 
 	return newThroughputResponse(azResponse, &queryRequestCharge)
 }
+
+func (c cosmosOffers) ReplaceThroughputIfExists(
+	ctx context.Context,
+	properties ThroughputProperties,
+	targetRID string,
+	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+
+	readResponse, err := c.ReadThroughputIfExists(ctx, targetRID, requestOptions)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	readRequestCharge := readResponse.RequestCharge()
+	readResponse.ThroughputProperties.offer = properties.offer
+
+	operationContext := cosmosOperationContext{
+		resourceType:    resourceTypeOffer,
+		resourceAddress: readResponse.ThroughputProperties.offerId,
+		isRidBased:      true,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeOffer, readResponse.ThroughputProperties.selfLink, false)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	azResponse, err := c.connection.sendPutRequest(
+		path,
+		ctx,
+		readResponse.ThroughputProperties,
+		operationContext,
+		requestOptions,
+		nil)
+	if err != nil {
+		return ThroughputResponse{}, err
+	}
+
+	return newThroughputResponse(azResponse, &readRequestCharge)
+}

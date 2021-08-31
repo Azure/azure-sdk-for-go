@@ -57,6 +57,7 @@ func newCosmosError(response *azcore.Response) error {
 func newCosmosErrorWithStatusCode(statusCode int, requestCharge *float32) error {
 	rawResponse := &http.Response{
 		StatusCode: statusCode,
+		Header:     http.Header{},
 	}
 
 	if requestCharge != nil {

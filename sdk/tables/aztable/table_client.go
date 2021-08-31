@@ -6,7 +6,9 @@ package aztable
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
@@ -223,4 +225,34 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 		err = errTooManyAccessPoliciesError
 	}
 	return setAccessPolicyResponseFromGenerated(&response), err
+}
+
+// GetTableSASToken is a convenience method for generating a SAS token for a specific table.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+func (t Client) GetTableSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+	cred, ok := t.cred.(*SharedKeyCredential)
+	if !ok {
+		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
+	qps, err := SASSignatureValues{
+		TableName:         t.name,
+		Permissions:       permissions.String(),
+		StartTime:         start,
+		ExpiryTime:        expiry,
+		StartPartitionKey: permissions.StartPartitionKey,
+		StartRowKey:       permissions.StartRowKey,
+		EndPartitionKey:   permissions.EndPartitionKey,
+		EndRowKey:         permissions.EndRowKey,
+	}.NewSASQueryParameters(cred)
+	if err != nil {
+		return "", err
+	}
+
+	serviceURL := t.client.Con.Endpoint()
+	if !strings.Contains(serviceURL, "/") {
+		serviceURL += "/"
+	}
+	serviceURL += t.name
+	serviceURL += qps.Encode()
+	return serviceURL, nil
 }

@@ -51,12 +51,8 @@ func TestSASServiceClient(t *testing.T) {
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	accountSAS, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
+	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
 	require.NoError(t, err)
-
-	queryParams := accountSAS.Encode()
-
-	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
@@ -105,12 +101,13 @@ func TestSASClient(t *testing.T) {
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
+	c := serviceClient.NewClient(tableName)
+	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	queryParams := accountSAS.Encode()
+	// queryParams := accountSAS.Encode()
 
-	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
+	// sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
@@ -162,12 +159,13 @@ func TestSASClientReadOnly(t *testing.T) {
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
+	c := serviceClient.NewClient(tableName)
+	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	queryParams := accountSAS.Encode()
+	// queryParams := accountSAS.Encode()
 
-	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
+	// sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
@@ -228,12 +226,14 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
-	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
+
+	c := serviceClient.NewClient(tableName)
+	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	queryParams := accountSAS.Encode()
+	// queryParams := accountSAS.Encode()
 
-	sasUrl := fmt.Sprintf("https://%s.table.cosmos.azure.com/?%s", accountName, queryParams)
+	// sasUrl := fmt.Sprintf("https://%s.table.cosmos.azure.com/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)

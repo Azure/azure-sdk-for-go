@@ -159,14 +159,14 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 
-// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
+// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
+// if there was an error during creation. This method can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
 	cred, ok := t.cred.(*SharedKeyCredential)
 	if !ok {
-		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
-	return AccountSASSignatureValues{
+	qps, err := AccountSASSignatureValues{
 		Version:       SASVersion,
 		Protocol:      SASProtocolHTTPS,
 		Permissions:   permissions.String(),
@@ -175,25 +175,15 @@ func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, per
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
 	}.Sign(cred)
-}
-
-// GetTableSASToken is a convenience method for generating a SAS token for a specific table.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-func (t ServiceClient) GetTableSASToken(tableName string, permissions SASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
-	cred, ok := t.cred.(*SharedKeyCredential)
-	if !ok {
-		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	if err != nil {
+		return "", err
 	}
-	return SASSignatureValues{
-		TableName:         tableName,
-		Permissions:       permissions.String(),
-		StartTime:         start,
-		ExpiryTime:        expiry,
-		StartPartitionKey: permissions.StartPartitionKey,
-		StartRowKey:       permissions.StartRowKey,
-		EndPartitionKey:   permissions.EndPartitionKey,
-		EndRowKey:         permissions.EndRowKey,
-	}.NewSASQueryParameters(cred)
+	endpoint := t.client.Con.Endpoint()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += qps.Encode()
+	return endpoint, nil
 }
 
 func isCosmosEndpoint(url string) bool {

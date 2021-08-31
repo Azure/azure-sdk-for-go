@@ -18,6 +18,9 @@ import (
 	"sort"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
@@ -137,16 +140,16 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.Con.Endpoint(), "$batch"))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.client.Con.Endpoint(), "$batch"))
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableSubmitTransactionOptions != nil && tableSubmitTransactionOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableSubmitTransactionOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableSubmitTransactionOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("Accept", string(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata))
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("Accept", string(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata))
 
 	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
 	body := new(bytes.Buffer)
@@ -167,7 +170,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	}
 	writer.Close()
 
-	err = req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
+	err = req.SetBody(streaming.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -182,14 +185,14 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return *transactionResponse, err
 	}
 
-	if !azcore.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return TransactionResponse{}, azcore.NewResponseError(err, resp)
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
+		return TransactionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return *transactionResponse, nil
 }
 
 // create the transaction response. This will read the inner responses
-func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
+func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (*TransactionResponse, error) {
 	innerResponses := make([]http.Response, itemCount)
 	result := TransactionResponse{RawResponse: resp, TransactionResponses: &innerResponses}
 
@@ -228,7 +231,7 @@ func buildTransactionResponse(req *azcore.Request, resp *http.Response, itemCoun
 		if err != nil {
 			break
 		}
-		r, err := http.ReadResponse(bufio.NewReader(bytes.NewBuffer(part)), req.Request)
+		r, err := http.ReadResponse(bufio.NewReader(bytes.NewBuffer(part)), req.Raw())
 		if err != nil {
 			return &TransactionResponse{}, err
 		}
@@ -306,7 +309,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	if err != nil {
 		return err
 	}
-	var req *azcore.Request
+	var req *policy.Request
 	var entity map[string]interface{}
 	err = json.Unmarshal(transactionAction.Entity, &entity)
 	if err != nil {
@@ -359,12 +362,12 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		}
 	}
 
-	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
+	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Raw().Method, req.Raw().URL)
 	_, err = operationWriter.Write([]byte(urlAndVerb))
 	if err != nil {
 		return err
 	}
-	err = writeHeaders(req.Header, &operationWriter)
+	err = writeHeaders(req.Raw().Header, &operationWriter)
 	if err != nil {
 		return err
 	}
@@ -372,10 +375,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	if err != nil {
 		return err
 	}
-	if req.Body != nil {
-		_, err = io.Copy(operationWriter, req.Body)
-
-	}
+	_, err = io.Copy(operationWriter, req.Body())
 
 	return err
 }

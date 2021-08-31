@@ -32,7 +32,7 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 	}
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
+		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
 	con := generated.NewConnection(serviceURL, cred, conOptions)

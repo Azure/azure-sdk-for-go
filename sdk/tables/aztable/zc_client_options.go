@@ -4,19 +4,19 @@
 package aztable
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 type ClientOptions struct {
 	// Transporter sets the transport for making HTTP requests.
-	Transporter azcore.Transporter
+	Transporter policy.Transporter
 	// Retry configures the built-in retry policy behavior.
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 	// PerCallOptions are options to run on every request
-	PerCallOptions []azcore.Policy
+	PerCallOptions []policy.Policy
 }
 
 func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
@@ -25,8 +25,9 @@ func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
 	}
 
 	return &generated.ConnectionOptions{
-		HTTPClient: o.Transporter,
-		Retry:      o.Retry,
-		Telemetry:  o.Telemetry,
+		HTTPClient:      o.Transporter,
+		Retry:           o.Retry,
+		Telemetry:       o.Telemetry,
+		PerCallPolicies: []policy.Policy{},
 	}
 }

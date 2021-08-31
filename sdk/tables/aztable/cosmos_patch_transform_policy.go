@@ -9,20 +9,20 @@ package aztable
 import (
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // cosmosPatchTransformPolicy transforms PATCH requests into POST requests with the "X-HTTP-Method":"MERGE" header set.
 type cosmosPatchTransformPolicy struct{}
 
-func (p cosmosPatchTransformPolicy) Do(req *azcore.Request) (*http.Response, error) {
+func (p cosmosPatchTransformPolicy) Do(req *policy.Request) (*http.Response, error) {
 	transformPatchToCosmosPost(req)
 	return req.Next()
 }
 
-func transformPatchToCosmosPost(req *azcore.Request) {
-	if req.Method == http.MethodPatch {
-		req.Method = http.MethodPost
-		req.Header.Set("X-HTTP-Method", "MERGE")
+func transformPatchToCosmosPost(req *policy.Request) {
+	if req.Raw().Method == http.MethodPatch {
+		req.Raw().Method = http.MethodPost
+		req.Raw().Header.Set("X-HTTP-Method", "MERGE")
 	}
 }

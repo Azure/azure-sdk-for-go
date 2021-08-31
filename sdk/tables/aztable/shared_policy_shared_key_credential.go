@@ -16,7 +16,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -138,7 +139,7 @@ type sharedKeyCredPolicy struct {
 	cred *SharedKeyCredential
 }
 
-func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts azcore.AuthenticationOptions) *sharedKeyCredPolicy {
+func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts runtime.AuthenticationOptions) *sharedKeyCredPolicy {
 	s := &sharedKeyCredPolicy{
 		cred: cred,
 	}
@@ -146,11 +147,11 @@ func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts azcore.Authenticatio
 	return s
 }
 
-func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
-	if d := req.Request.Header.Get(headerXmsDate); d == "" {
-		req.Request.Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if d := req.Raw().Header.Get(headerXmsDate); d == "" {
+		req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	}
-	stringToSign, err := s.cred.buildStringToSign(req.Request)
+	stringToSign, err := s.cred.buildStringToSign(req.Raw())
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +160,7 @@ func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
 		return nil, err
 	}
 	authHeader := strings.Join([]string{"SharedKeyLite ", s.cred.AccountName(), ":", signature}, "")
-	req.Request.Header.Set(headerAuthorization, authHeader)
+	req.Raw().Header.Set(headerAuthorization, authHeader)
 
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
@@ -170,6 +171,6 @@ func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
 }
 
 // NewAuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newSharedKeyCredPolicy(c, options)
 }

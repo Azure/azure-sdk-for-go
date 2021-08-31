@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,23 +13,23 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	Con *Connection
+	Con *connection
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
-func NewTableClient(con *Connection) *TableClient {
+func NewTableClient(con *connection) *TableClient {
 	return &TableClient{Con: con}
 }
 
@@ -44,35 +44,34 @@ func (client *TableClient) Create(ctx context.Context, tableProperties TableProp
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusCreated, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusNoContent) {
 		return TableCreateResponse{}, client.createHandleError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *TableClient) createCreateRequest(ctx context.Context, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) createCreateRequest(ctx context.Context, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableCreateOptions != nil && tableCreateOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableCreateOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableCreateOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
 	if tableCreateOptions != nil && tableCreateOptions.ResponsePreference != nil {
-		req.Header.Set("Prefer", string(*tableCreateOptions.ResponsePreference))
+		req.Raw().Header.Set("Prefer", string(*tableCreateOptions.ResponsePreference))
 	}
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
-	return req, req.MarshalAsJSON(tableProperties)
+	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
+	return req, runtime.MarshalAsJSON(req, tableProperties)
 }
 
 // createHandleResponse handles the Create response.
@@ -97,7 +96,7 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableCreat
 	if val := resp.Header.Get("Preference-Applied"); val != "" {
 		result.PreferenceApplied = &val
 	}
-	if err := azcore.UnmarshalAsJSON(resp, &result.TableResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TableResponse); err != nil {
 		return TableCreateResponse{}, err
 	}
 	return result, nil
@@ -105,15 +104,15 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableCreat
 
 // createHandleError handles the Create error response.
 func (client *TableClient) createHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Operation permanently deletes the specified table.
@@ -127,29 +126,28 @@ func (client *TableClient) Delete(ctx context.Context, table string, options *Ta
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableDeleteResponse{}, client.deleteHandleError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TableClient) deleteCreateRequest(ctx context.Context, table string, options *TableDeleteOptions) (*azcore.Request, error) {
+func (client *TableClient) deleteCreateRequest(ctx context.Context, table string, options *TableDeleteOptions) (*policy.Request, error) {
 	urlPath := "/Tables('{table}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if options != nil && options.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -177,15 +175,15 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableDelet
 
 // deleteHandleError handles the Delete error response.
 func (client *TableClient) deleteHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DeleteEntity - Deletes the specified entity in a table.
@@ -199,14 +197,14 @@ func (client *TableClient) DeleteEntity(ctx context.Context, table string, parti
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableDeleteEntityResponse{}, client.deleteEntityHandleError(resp)
 	}
 	return client.deleteEntityHandleResponse(resp)
 }
 
 // DeleteEntityCreateRequest creates the DeleteEntity request.
-func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -220,26 +218,25 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table 
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if tableDeleteEntityOptions != nil && tableDeleteEntityOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*tableDeleteEntityOptions.Timeout), 10))
 	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableDeleteEntityOptions != nil && tableDeleteEntityOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableDeleteEntityOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableDeleteEntityOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
 
@@ -267,15 +264,15 @@ func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (Tabl
 
 // deleteEntityHandleError handles the DeleteEntity error response.
 func (client *TableClient) deleteEntityHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetAccessPolicy - Retrieves details about any stored access policies specified on the table that may be used with Shared Access Signatures.
@@ -289,35 +286,34 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, op
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TableGetAccessPolicyResponse{}, client.getAccessPolicyHandleError(resp)
 	}
 	return client.getAccessPolicyHandleResponse(resp)
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, table string, options *TableGetAccessPolicyOptions) (*azcore.Request, error) {
+func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, table string, options *TableGetAccessPolicyOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	reqQP.Set("comp", "acl")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if options != nil && options.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
-	req.Header.Set("Accept", "application/xml")
+	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
 
@@ -340,7 +336,7 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 		}
 		result.Date = &date
 	}
-	if err := azcore.UnmarshalAsXML(resp, &result); err != nil {
+	if err := runtime.UnmarshalAsXML(resp, &result); err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
 	return result, nil
@@ -348,15 +344,15 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 
 // getAccessPolicyHandleError handles the GetAccessPolicy error response.
 func (client *TableClient) getAccessPolicyHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // InsertEntity - Insert entity in a table.
@@ -370,43 +366,42 @@ func (client *TableClient) InsertEntity(ctx context.Context, table string, table
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusCreated, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusNoContent) {
 		return TableInsertEntityResponse{}, client.insertEntityHandleError(resp)
 	}
 	return client.insertEntityHandleResponse(resp)
 }
 
 // InsertEntityCreateRequest creates the InsertEntity request.
-func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*tableInsertEntityOptions.Timeout), 10))
 	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableInsertEntityOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableInsertEntityOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.ResponsePreference != nil {
-		req.Header.Set("Prefer", string(*tableInsertEntityOptions.ResponsePreference))
+		req.Raw().Header.Set("Prefer", string(*tableInsertEntityOptions.ResponsePreference))
 	}
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
+	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.TableEntityProperties != nil {
-		return req, req.MarshalAsJSON(tableInsertEntityOptions.TableEntityProperties)
+		return req, runtime.MarshalAsJSON(req, tableInsertEntityOptions.TableEntityProperties)
 	}
 	return req, nil
 }
@@ -439,7 +434,7 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if err := azcore.UnmarshalAsJSON(resp, &result.Value); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return TableInsertEntityResponse{}, err
 	}
 	return result, nil
@@ -447,15 +442,15 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 
 // insertEntityHandleError handles the InsertEntity error response.
 func (client *TableClient) insertEntityHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // MergeEntity - Merge entity in a table.
@@ -469,14 +464,14 @@ func (client *TableClient) MergeEntity(ctx context.Context, table string, partit
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableMergeEntityResponse{}, client.mergeEntityHandleError(resp)
 	}
 	return client.mergeEntityHandleResponse(resp)
 }
 
 // MergeEntityCreateRequest creates the MergeEntity request.
-func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -490,30 +485,29 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table s
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if tableMergeEntityOptions != nil && tableMergeEntityOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*tableMergeEntityOptions.Timeout), 10))
 	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableMergeEntityOptions != nil && tableMergeEntityOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableMergeEntityOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableMergeEntityOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
 	if tableMergeEntityOptions != nil && tableMergeEntityOptions.IfMatch != nil {
-		req.Header.Set("If-Match", *tableMergeEntityOptions.IfMatch)
+		req.Raw().Header.Set("If-Match", *tableMergeEntityOptions.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	if tableMergeEntityOptions != nil && tableMergeEntityOptions.TableEntityProperties != nil {
-		return req, req.MarshalAsJSON(tableMergeEntityOptions.TableEntityProperties)
+		return req, runtime.MarshalAsJSON(req, tableMergeEntityOptions.TableEntityProperties)
 	}
 	return req, nil
 }
@@ -545,15 +539,15 @@ func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (Table
 
 // mergeEntityHandleError handles the MergeEntity error response.
 func (client *TableClient) mergeEntityHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Query - Queries tables under the given account.
@@ -567,21 +561,20 @@ func (client *TableClient) Query(ctx context.Context, tableQueryOptions *TableQu
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TableQueryResponseEnvelope{}, client.queryHandleError(resp)
 	}
 	return client.queryHandleResponse(resp)
 }
 
 // queryCreateRequest creates the Query request.
-func (client *TableClient) queryCreateRequest(ctx context.Context, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) queryCreateRequest(ctx context.Context, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
@@ -597,13 +590,13 @@ func (client *TableClient) queryCreateRequest(ctx context.Context, tableQueryOpt
 	if tableQueryOptions != nil && tableQueryOptions.NextTableName != nil {
 		reqQP.Set("NextTableName", *tableQueryOptions.NextTableName)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableQueryOptions != nil && tableQueryOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableQueryOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableQueryOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
 
@@ -629,7 +622,7 @@ func (client *TableClient) queryHandleResponse(resp *http.Response) (TableQueryR
 	if val := resp.Header.Get("x-ms-continuation-NextTableName"); val != "" {
 		result.XMSContinuationNextTableName = &val
 	}
-	if err := azcore.UnmarshalAsJSON(resp, &result.TableQueryResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TableQueryResponse); err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
 	return result, nil
@@ -637,14 +630,14 @@ func (client *TableClient) queryHandleResponse(resp *http.Response) (TableQueryR
 
 // queryHandleError handles the Query error response.
 func (client *TableClient) queryHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // QueryEntities - Queries entities in a table.
@@ -658,25 +651,24 @@ func (client *TableClient) QueryEntities(ctx context.Context, table string, tabl
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TableQueryEntitiesResponse{}, client.queryEntitiesHandleError(resp)
 	}
 	return client.queryEntitiesHandleResponse(resp)
 }
 
 // queryEntitiesCreateRequest creates the QueryEntities request.
-func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table string, tableQueryEntitiesOptions *TableQueryEntitiesOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table string, tableQueryEntitiesOptions *TableQueryEntitiesOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}()"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if tableQueryEntitiesOptions != nil && tableQueryEntitiesOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*tableQueryEntitiesOptions.Timeout), 10))
 	}
@@ -698,13 +690,13 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 	if tableQueryEntitiesOptions != nil && tableQueryEntitiesOptions.NextRowKey != nil {
 		reqQP.Set("NextRowKey", *tableQueryEntitiesOptions.NextRowKey)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableQueryEntitiesOptions != nil && tableQueryEntitiesOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableQueryEntitiesOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableQueryEntitiesOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
 
@@ -733,7 +725,7 @@ func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (Tab
 	if val := resp.Header.Get("x-ms-continuation-NextRowKey"); val != "" {
 		result.XMSContinuationNextRowKey = &val
 	}
-	if err := azcore.UnmarshalAsJSON(resp, &result.TableEntityQueryResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TableEntityQueryResponse); err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
 	return result, nil
@@ -741,15 +733,15 @@ func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (Tab
 
 // queryEntitiesHandleError handles the QueryEntities error response.
 func (client *TableClient) queryEntitiesHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // QueryEntityWithPartitionAndRowKey - Queries a single entity in a table.
@@ -763,14 +755,14 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, client.queryEntityWithPartitionAndRowKeyHandleError(resp)
 	}
 	return client.queryEntityWithPartitionAndRowKeyHandleResponse(resp)
 }
 
 // queryEntityWithPartitionAndRowKeyCreateRequest creates the QueryEntityWithPartitionAndRowKey request.
-func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableQueryEntityWithPartitionAndRowKeyOptions *TableQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableQueryEntityWithPartitionAndRowKeyOptions *TableQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -784,12 +776,11 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if tableQueryEntityWithPartitionAndRowKeyOptions != nil && tableQueryEntityWithPartitionAndRowKeyOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*tableQueryEntityWithPartitionAndRowKeyOptions.Timeout), 10))
 	}
@@ -802,13 +793,13 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 	if queryOptions != nil && queryOptions.Filter != nil {
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableQueryEntityWithPartitionAndRowKeyOptions != nil && tableQueryEntityWithPartitionAndRowKeyOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableQueryEntityWithPartitionAndRowKeyOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableQueryEntityWithPartitionAndRowKeyOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
 
@@ -840,7 +831,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp 
 	if val := resp.Header.Get("x-ms-continuation-NextRowKey"); val != "" {
 		result.XMSContinuationNextRowKey = &val
 	}
-	if err := azcore.UnmarshalAsJSON(resp, &result.Value); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
 	return result, nil
@@ -848,15 +839,15 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp 
 
 // queryEntityWithPartitionAndRowKeyHandleError handles the QueryEntityWithPartitionAndRowKey error response.
 func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // SetAccessPolicy - Sets stored access policies for the table that may be used with Shared Access Signatures.
@@ -870,41 +861,40 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, op
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableSetAccessPolicyResponse{}, client.setAccessPolicyHandleError(resp)
 	}
 	return client.setAccessPolicyHandleResponse(resp)
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, table string, options *TableSetAccessPolicyOptions) (*azcore.Request, error) {
+func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, table string, options *TableSetAccessPolicyOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	reqQP.Set("comp", "acl")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if options != nil && options.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *options.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
-	req.Header.Set("Accept", "application/xml")
+	req.Raw().Header.Set("Accept", "application/xml")
 	type wrapper struct {
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		TableACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if options != nil && options.TableACL != nil {
-		return req, req.MarshalAsXML(wrapper{TableACL: &options.TableACL})
+		return req, runtime.MarshalAsXML(req, wrapper{TableACL: &options.TableACL})
 	}
 	return req, nil
 }
@@ -933,15 +923,15 @@ func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (T
 
 // setAccessPolicyHandleError handles the SetAccessPolicy error response.
 func (client *TableClient) setAccessPolicyHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateEntity - Update entity in a table.
@@ -955,14 +945,14 @@ func (client *TableClient) UpdateEntity(ctx context.Context, table string, parti
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
-	if !azcore.HasStatusCode(resp, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TableUpdateEntityResponse{}, client.updateEntityHandleError(resp)
 	}
 	return client.updateEntityHandleResponse(resp)
 }
 
 // UpdateEntityCreateRequest creates the UpdateEntity request.
-func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (*azcore.Request, error) {
+func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -976,30 +966,29 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table 
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if tableUpdateEntityOptions != nil && tableUpdateEntityOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*tableUpdateEntityOptions.Timeout), 10))
 	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("x-ms-version", "2019-02-02")
 	if tableUpdateEntityOptions != nil && tableUpdateEntityOptions.RequestID != nil {
-		req.Header.Set("x-ms-client-request-id", *tableUpdateEntityOptions.RequestID)
+		req.Raw().Header.Set("x-ms-client-request-id", *tableUpdateEntityOptions.RequestID)
 	}
-	req.Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", "3.0")
 	if tableUpdateEntityOptions != nil && tableUpdateEntityOptions.IfMatch != nil {
-		req.Header.Set("If-Match", *tableUpdateEntityOptions.IfMatch)
+		req.Raw().Header.Set("If-Match", *tableUpdateEntityOptions.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	if tableUpdateEntityOptions != nil && tableUpdateEntityOptions.TableEntityProperties != nil {
-		return req, req.MarshalAsJSON(tableUpdateEntityOptions.TableEntityProperties)
+		return req, runtime.MarshalAsJSON(req, tableUpdateEntityOptions.TableEntityProperties)
 	}
 	return req, nil
 }
@@ -1031,13 +1020,13 @@ func (client *TableClient) updateEntityHandleResponse(resp *http.Response) (Tabl
 
 // updateEntityHandleError handles the UpdateEntity error response.
 func (client *TableClient) updateEntityHandleError(resp *http.Response) error {
-	body, err := azcore.Payload(resp)
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := TableServiceError{raw: string(body)}
-	if err := azcore.UnmarshalAsJSON(resp, &errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp)
+	return runtime.NewResponseError(&errType, resp)
 }

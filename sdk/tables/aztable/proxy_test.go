@@ -12,6 +12,8 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -23,7 +25,7 @@ type recordingPolicy struct {
 	options recording.RecordingOptions
 }
 
-func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
+func NewRecordingPolicy(o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
 		o = &recording.RecordingOptions{}
 	}
@@ -32,15 +34,15 @@ func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
 	return p
 }
 
-func (p *recordingPolicy) Do(req *azcore.Request) (resp *http.Response, err error) {
-	originalURLHost := req.URL.Host
-	req.URL.Scheme = "https"
-	req.URL.Host = p.options.Host
-	req.Host = p.options.Host
+func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	originalURLHost := req.Raw().URL.Host
+	req.Raw().URL.Scheme = "https"
+	req.Raw().URL.Host = p.options.Host
+	req.Raw().Host = p.options.Host
 
-	req.Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
-	req.Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	req.Header.Set(recording.IdHeader, recording.GetRecordingId())
+	req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+	req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+	req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId())
 
 	return req.Next()
 }
@@ -61,26 +63,26 @@ type fakeCredPolicy struct {
 	cred *FakeCredential
 }
 
-func newFakeCredPolicy(cred *FakeCredential, opts azcore.AuthenticationOptions) *fakeCredPolicy {
+func newFakeCredPolicy(cred *FakeCredential, opts runtime.AuthenticationOptions) *fakeCredPolicy {
 	return &fakeCredPolicy{cred: cred}
 }
 
-func (f *fakeCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
+func (f *fakeCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
-	req.Request.Header.Set(headerAuthorization, authHeader)
+	req.Raw().Header.Set(headerAuthorization, authHeader)
 	return req.Next()
 }
 
-func (f *FakeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (f *FakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newFakeCredPolicy(f, options)
 }
 
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*Client, error) {
-	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
 	options := &ClientOptions{
-		PerCallOptions: []azcore.Policy{policy},
+		PerCallOptions: []policy.Policy{p},
 		Transporter:    client,
 	}
 	if !strings.HasSuffix(serviceURL, "/") {
@@ -91,11 +93,11 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 }
 
 func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*ServiceClient, error) {
-	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
 	options := &ClientOptions{
-		PerCallOptions: []azcore.Policy{policy},
+		PerCallOptions: []policy.Policy{p},
 		Transporter:    client,
 	}
 	return NewServiceClient(serviceURL, cred, options)

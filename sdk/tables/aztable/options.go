@@ -177,7 +177,8 @@ func (d *DeleteEntityOptions) toGenerated() *generated.TableDeleteEntityOptions 
 }
 
 type UpdateEntityOptions struct {
-	ETag *azcore.ETag
+	ETag       *azcore.ETag
+	UpdateMode EntityUpdateMode
 }
 
 func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableMergeEntityOptions {
@@ -201,7 +202,8 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 }
 
 type InsertEntityOptions struct {
-	IfMatch *string
+	IfMatch    *string
+	UpdateMode EntityUpdateMode
 }
 
 type GetAccessPolicyOptions struct {

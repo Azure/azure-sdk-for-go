@@ -36,7 +36,7 @@ func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions
 	}
 	parts := strings.Split(serviceURL, "/")
 	tableName := parts[len(parts)-1]
-	rawServiceURL := strings.Join(parts[:len(parts) - 1], "/")
+	rawServiceURL := strings.Join(parts[:len(parts)-1], "/")
 	s, err := NewServiceClient(rawServiceURL, cred, options)
 	if err != nil {
 		return &Client{}, err
@@ -132,9 +132,11 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 // If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity. Properties not specified in the merge will be unaffected.
 // The specified etag value will be used for optimistic concurrency. If the etag does not match the value of the entity in the table, the operation will fail.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *Client) UpdateEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
+func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
 	if options == nil {
-		options = &UpdateEntityOptions{}
+		options = &UpdateEntityOptions{
+			UpdateMode: MergeEntity,
+		}
 	}
 
 	if options.ETag == nil {
@@ -154,7 +156,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, updateMode Ent
 	rk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
-	switch updateMode {
+	switch options.UpdateMode {
 	case MergeEntity:
 		resp, err := t.client.MergeEntity(ctx, t.name, partKey, rowkey, options.toGeneratedMergeEntity(mapEntity), &generated.QueryOptions{})
 		return updateEntityResponseFromMergeGenerated(&resp), err
@@ -172,7 +174,12 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, updateMode Ent
 // replaced or merged as specified the updateMode parameter. If the entity exists and updateMode is Merge, the property
 // values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
-func (t *Client) InsertEntity(ctx context.Context, entity []byte, updateMode EntityUpdateMode, options *InsertEntityOptions) (InsertEntityResponse, error) {
+func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *InsertEntityOptions) (InsertEntityResponse, error) {
+	if options == nil {
+		options = &InsertEntityOptions{
+			UpdateMode: MergeEntity,
+		}
+	}
 	var mapEntity map[string]interface{}
 	err := json.Unmarshal(entity, &mapEntity)
 	if err != nil {
@@ -185,8 +192,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, updateMode Ent
 	rk := mapEntity[rowKey]
 	rowkey := rk.(string)
 
-	// TODO: Fix the options on merge/update
-	switch updateMode {
+	switch options.UpdateMode {
 	case MergeEntity:
 		resp, err := t.client.MergeEntity(ctx, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 		return insertEntityFromGeneratedMerge(&resp), err

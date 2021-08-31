@@ -124,7 +124,7 @@ func TestMergeEntity(t *testing.T) {
 			reMarshalled, err := json.Marshal(mapEntity)
 			require.NoError(err)
 
-			_, updateErr := client.UpdateEntity(ctx, reMarshalled, MergeEntity, nil)
+			_, updateErr := client.UpdateEntity(ctx, reMarshalled, &UpdateEntityOptions{UpdateMode: MergeEntity})
 			require.Nil(updateErr)
 
 			var qResp ListEntitiesResponseEnvelope
@@ -158,7 +158,7 @@ func TestInsertEntity(t *testing.T) {
 			entityToCreate := createSimpleEntity(1, "partition")
 			marshalled := marshalBasicEntity(entityToCreate, require)
 
-			_, err := client.InsertEntity(ctx, *marshalled, ReplaceEntity, nil)
+			_, err := client.InsertEntity(ctx, *marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
 			require.NoError(err)
 
 			filter := "RowKey eq '1'"
@@ -180,7 +180,7 @@ func TestInsertEntity(t *testing.T) {
 			require.NoError(err)
 
 			// 4. Replace Entity with "bool"-less entity
-			_, err = client.InsertEntity(ctx, reMarshalled, (ReplaceEntity), nil)
+			_, err = client.InsertEntity(ctx, reMarshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
 			require.Nil(err)
 
 			// 5. Query for new entity

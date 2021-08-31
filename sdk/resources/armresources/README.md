@@ -23,7 +23,7 @@ Install the Azure Resources module:
 go get github.com/Azure/azure-sdk-for-go/sdk/resources/armresources
 ```
 
-Documentation and examples are available at [pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)
+Documentation and examples are available at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)
 
 ## Authorization
 

@@ -36,7 +36,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceGetPropertiesResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.Con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceGetPropertiesResponse{}, err
 	}
@@ -91,7 +91,7 @@ func (client *ServiceClient) getPropertiesHandleError(resp *http.Response) error
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := TableServiceError{raw: string(body)}
+		errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -106,7 +106,7 @@ func (client *ServiceClient) GetStatistics(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceGetStatisticsResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.Con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceGetStatisticsResponse{}, err
 	}
@@ -168,7 +168,7 @@ func (client *ServiceClient) getStatisticsHandleError(resp *http.Response) error
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := TableServiceError{raw: string(body)}
+		errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -183,7 +183,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, tableServiceProp
 	if err != nil {
 		return ServiceSetPropertiesResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.Con.Pipeline().Do(req)
 	if err != nil {
 		return ServiceSetPropertiesResponse{}, err
 	}
@@ -235,9 +235,10 @@ func (client *ServiceClient) setPropertiesHandleError(resp *http.Response) error
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := TableServiceError{raw: string(body)}
+		errType := TableServiceError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
 	return runtime.NewResponseError(&errType, resp)
 }
+

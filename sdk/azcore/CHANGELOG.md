@@ -1,6 +1,17 @@
 # Release History
 
-## v0.19.0
+## v0.20.0 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bug Fixes
+
+### Other Changes
+
+
+## v0.19.0 (2021-08-25)
 
 ### Breaking Changes
 * Split content out of `azcore` into various packages.  The intent is to separate content based on its usage (common, uncommon, SDK authors).
@@ -25,7 +36,7 @@
   * This required some changes to the internal interfaces for core pollers.
 * The core poller types have been improved, including more logging and test coverage.
 
-## v0.18.1
+## v0.18.1 (2021-08-20)
 
 ### Features Added
 * Adds an `ETag` type for comparing etags and handling etags on requests

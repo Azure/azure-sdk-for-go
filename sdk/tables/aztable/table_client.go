@@ -125,11 +125,11 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 	if options == nil {
 		options = &DeleteEntityOptions{}
 	}
-	if options.ETag == nil {
+	if options.IfMatch == nil {
 		nilEtag := azcore.ETag("*")
-		options.ETag = &nilEtag
+		options.IfMatch = &nilEtag
 	}
-	resp, err := t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, string(*options.ETag), options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
 	return deleteEntityResponseFromGenerated(&resp), err
 }
 
@@ -145,9 +145,9 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		}
 	}
 
-	if options.ETag == nil {
+	if options.IfMatch == nil {
 		star := azcore.ETag("*")
-		options.ETag = &star
+		options.IfMatch = &star
 	}
 
 	var mapEntity map[string]interface{}

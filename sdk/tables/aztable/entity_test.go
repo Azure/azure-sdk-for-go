@@ -55,7 +55,6 @@ func TestAddBasicEntity(t *testing.T) {
 					count += 1
 				}
 			}
-
 			require.Equal(t, count, 1)
 		})
 	}

@@ -106,7 +106,7 @@ type AddEntityOptions struct {
 }
 
 type DeleteEntityOptions struct {
-	ETag *azcore.ETag
+	IfMatch *azcore.ETag
 }
 
 func (d *DeleteEntityOptions) toGenerated() *generated.TableDeleteEntityOptions {
@@ -114,7 +114,7 @@ func (d *DeleteEntityOptions) toGenerated() *generated.TableDeleteEntityOptions 
 }
 
 type UpdateEntityOptions struct {
-	ETag       *azcore.ETag
+	IfMatch    *azcore.ETag
 	UpdateMode EntityUpdateMode
 }
 
@@ -123,7 +123,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 		return &generated.TableMergeEntityOptions{}
 	}
 	return &generated.TableMergeEntityOptions{
-		IfMatch:               to.StringPtr(string(*u.ETag)),
+		IfMatch:               to.StringPtr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }
@@ -133,7 +133,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 		return &generated.TableUpdateEntityOptions{}
 	}
 	return &generated.TableUpdateEntityOptions{
-		IfMatch:               to.StringPtr(string(*u.ETag)),
+		IfMatch:               to.StringPtr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }

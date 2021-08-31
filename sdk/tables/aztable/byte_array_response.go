@@ -75,11 +75,11 @@ func newListEntitiesPage(resp *generated.TableQueryEntitiesResponse) (ListEntiti
 	}
 
 	return ListEntitiesPage{
-		RawResponse:                     resp.RawResponse,
+		RawResponse:                  resp.RawResponse,
 		ContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		ContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
-		ODataMetadata:                   t.ODataMetadata,
-		Entities:                        t.Entities,
+		ODataMetadata:                t.ODataMetadata,
+		Entities:                     t.Entities,
 	}, nil
 }
 

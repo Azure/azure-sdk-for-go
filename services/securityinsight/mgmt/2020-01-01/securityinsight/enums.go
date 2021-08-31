@@ -77,27 +77,6 @@ func PossibleAttackTacticValues() []AttackTactic {
 	return []AttackTactic{AttackTacticCollection, AttackTacticCommandAndControl, AttackTacticCredentialAccess, AttackTacticDefenseEvasion, AttackTacticDiscovery, AttackTacticExecution, AttackTacticExfiltration, AttackTacticImpact, AttackTacticInitialAccess, AttackTacticLateralMovement, AttackTacticPersistence, AttackTacticPrivilegeEscalation}
 }
 
-// CaseSeverity enumerates the values for case severity.
-type CaseSeverity string
-
-const (
-	// CaseSeverityCritical Critical severity
-	CaseSeverityCritical CaseSeverity = "Critical"
-	// CaseSeverityHigh High severity
-	CaseSeverityHigh CaseSeverity = "High"
-	// CaseSeverityInformational Informational severity
-	CaseSeverityInformational CaseSeverity = "Informational"
-	// CaseSeverityLow Low severity
-	CaseSeverityLow CaseSeverity = "Low"
-	// CaseSeverityMedium Medium severity
-	CaseSeverityMedium CaseSeverity = "Medium"
-)
-
-// PossibleCaseSeverityValues returns an array of possible values for the CaseSeverity const type.
-func PossibleCaseSeverityValues() []CaseSeverity {
-	return []CaseSeverity{CaseSeverityCritical, CaseSeverityHigh, CaseSeverityInformational, CaseSeverityLow, CaseSeverityMedium}
-}
-
 // DataConnectorKind enumerates the values for data connector kind.
 type DataConnectorKind string
 
@@ -296,38 +275,6 @@ func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return []KindBasicDataConnector{KindBasicDataConnectorKindAmazonWebServicesCloudTrail, KindBasicDataConnectorKindAzureActiveDirectory, KindBasicDataConnectorKindAzureAdvancedThreatProtection, KindBasicDataConnectorKindAzureSecurityCenter, KindBasicDataConnectorKindDataConnector, KindBasicDataConnectorKindMicrosoftCloudAppSecurity, KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection, KindBasicDataConnectorKindOffice365, KindBasicDataConnectorKindThreatIntelligence}
 }
 
-// KindBasicSettings enumerates the values for kind basic settings.
-type KindBasicSettings string
-
-const (
-	// KindBasicSettingsKindSettings ...
-	KindBasicSettingsKindSettings KindBasicSettings = "Settings"
-	// KindBasicSettingsKindToggleSettings ...
-	KindBasicSettingsKindToggleSettings KindBasicSettings = "ToggleSettings"
-	// KindBasicSettingsKindUebaSettings ...
-	KindBasicSettingsKindUebaSettings KindBasicSettings = "UebaSettings"
-)
-
-// PossibleKindBasicSettingsValues returns an array of possible values for the KindBasicSettings const type.
-func PossibleKindBasicSettingsValues() []KindBasicSettings {
-	return []KindBasicSettings{KindBasicSettingsKindSettings, KindBasicSettingsKindToggleSettings, KindBasicSettingsKindUebaSettings}
-}
-
-// LicenseStatus enumerates the values for license status.
-type LicenseStatus string
-
-const (
-	// LicenseStatusDisabled ...
-	LicenseStatusDisabled LicenseStatus = "Disabled"
-	// LicenseStatusEnabled ...
-	LicenseStatusEnabled LicenseStatus = "Enabled"
-)
-
-// PossibleLicenseStatusValues returns an array of possible values for the LicenseStatus const type.
-func PossibleLicenseStatusValues() []LicenseStatus {
-	return []LicenseStatus{LicenseStatusDisabled, LicenseStatusEnabled}
-}
-
 // MicrosoftSecurityProductName enumerates the values for microsoft security product name.
 type MicrosoftSecurityProductName string
 
@@ -347,36 +294,6 @@ const (
 // PossibleMicrosoftSecurityProductNameValues returns an array of possible values for the MicrosoftSecurityProductName const type.
 func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
 	return []MicrosoftSecurityProductName{MicrosoftSecurityProductNameAzureActiveDirectoryIdentityProtection, MicrosoftSecurityProductNameAzureAdvancedThreatProtection, MicrosoftSecurityProductNameAzureSecurityCenter, MicrosoftSecurityProductNameAzureSecurityCenterforIoT, MicrosoftSecurityProductNameMicrosoftCloudAppSecurity}
-}
-
-// SettingKind enumerates the values for setting kind.
-type SettingKind string
-
-const (
-	// SettingKindToggleSettings ...
-	SettingKindToggleSettings SettingKind = "ToggleSettings"
-	// SettingKindUebaSettings ...
-	SettingKindUebaSettings SettingKind = "UebaSettings"
-)
-
-// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
-func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{SettingKindToggleSettings, SettingKindUebaSettings}
-}
-
-// StatusInMcas enumerates the values for status in mcas.
-type StatusInMcas string
-
-const (
-	// StatusInMcasDisabled ...
-	StatusInMcasDisabled StatusInMcas = "Disabled"
-	// StatusInMcasEnabled ...
-	StatusInMcasEnabled StatusInMcas = "Enabled"
-)
-
-// PossibleStatusInMcasValues returns an array of possible values for the StatusInMcas const type.
-func PossibleStatusInMcasValues() []StatusInMcas {
-	return []StatusInMcas{StatusInMcasDisabled, StatusInMcasEnabled}
 }
 
 // TemplateStatus enumerates the values for template status.

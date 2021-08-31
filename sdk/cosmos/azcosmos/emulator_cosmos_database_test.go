@@ -33,6 +33,11 @@ func TestDatabaseCRUD(t *testing.T) {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
+	throughputResponse, err := resp.DatabaseProperties.Database.ReadThroughput(context.TODO(), nil)
+	if err == nil {
+		t.Fatalf("Expected not finding throughput but instead got : %v", throughputResponse)
+	}
+
 	resp, err = resp.DatabaseProperties.Database.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)

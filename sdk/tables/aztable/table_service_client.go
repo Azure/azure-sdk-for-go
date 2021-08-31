@@ -54,12 +54,12 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 }
 
 // Create creates a table with the specified name.
-func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
+func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
-	return createTableResponseFromGen(&resp), err
+	_, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	return t.NewClient(name), err
 }
 
 // Delete deletes a table by name.

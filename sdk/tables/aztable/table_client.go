@@ -46,7 +46,12 @@ func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions
 
 // Create creates the table with the tableName specified when NewClient was called.
 func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
-	return t.service.CreateTable(ctx, t.name, options)
+	if options == nil {
+		options = &CreateTableOptions{}
+	}
+	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
+	return createTableResponseFromGen(&resp), err
+	// t.service.CreateTable(ctx, t.name, options)
 }
 
 // Delete deletes the table with the tableName specified when NewClient was called.

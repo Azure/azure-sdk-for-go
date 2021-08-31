@@ -4,7 +4,10 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
+	"errors"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -29,6 +32,26 @@ func clearEnvVars(envVars ...string) {
 		_ = os.Setenv(ev, "")
 	}
 }
+
+// A simple fake IMDS. Similar to mock.Server but doesn't wrap httptest.Server. That's
+// important because IMDS is at 169.254.169.254, not httptest.Server's default 127.0.0.1.
+type mockIMDS struct {
+	resp []http.Response
+}
+
+func newMockImds(responses ...http.Response) (m *mockIMDS) {
+	return &mockIMDS{resp: responses}
+}
+
+func (m *mockIMDS) Do(req *http.Request) (*http.Response, error) {
+	if len(m.resp) > 0 {
+		resp := m.resp[0]
+		m.resp = m.resp[1:]
+		return &resp, nil
+	}
+	panic("no more responses")
+}
+
 func TestManagedIdentityCredential_GetTokenInAzureArcLive(t *testing.T) {
 	if len(os.Getenv(arcIMDSEndpoint)) == 0 {
 		t.Skip()
@@ -336,34 +359,30 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	}
 }
 
-// func TestManagedIdentityCredential_GetTokenIMDSMock(t *testing.T) {
-// 	timeout := time.After(5 * time.Second)
-// 	done := make(chan bool)
-// 	go func() {
-// 		err := resetEnvironmentVarsForTest()
-// 		if err != nil {
-// 			t.Fatalf("Unable to set environment variables")
-// 		}
-// 		srv, close := mock.NewServer()
-// 		defer close()
-// 		srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-//		options := DefaultManagedIdentityCredentialOptions()
-//		options.HTTPClient = srv
-// 		msiCred := NewManagedIdentityCredential("", &options)
-// 		_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
-// 		if err == nil {
-// 			t.Fatalf("Cannot run IMDS test in this environment")
-// 		}
-// 		time.Sleep(550 * time.Millisecond)
-// 		done <- true
-// 	}()
-
-// 	select {
-// 	case <-timeout:
-// 		t.Fatal("Test didn't finish in time")
-// 	case <-done:
-// 	}
-// }
+func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	options := ManagedIdentityCredentialOptions{}
+	res1 := http.Response{
+		StatusCode: http.StatusBadRequest,
+		Header:     http.Header{},
+		Body:       io.NopCloser(bytes.NewBufferString("")),
+	}
+	res2 := res1
+	options.HTTPClient = newMockImds(res1, res2)
+	cred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	// cred should return CredentialUnavailableError when IMDS responds 400 to a token request.
+	// Also, it shouldn't send another token request (mockIMDS will appropriately panic if it does).
+	var expected *CredentialUnavailableError
+	for i := 0; i < 3; i++ {
+		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
+		if !errors.As(err, &expected) {
+			t.Fatalf("Expected %T, got %T", expected, err)
+		}
+	}
+}
 
 func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T) {
 	resetEnvironmentVarsForTest()

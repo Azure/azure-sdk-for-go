@@ -60,6 +60,7 @@ type managedIdentityClient struct {
 	msiType              msiType
 	endpoint             string
 	id                   ManagedIdentityIDKind
+	unavailableMessage   string
 }
 
 type wrappedNumber json.Number
@@ -92,6 +93,10 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
+	if len(c.unavailableMessage) > 0 {
+		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
+	}
+
 	msg, err := c.createAuthRequest(ctx, clientID, scopes)
 	if err != nil {
 		return nil, err
@@ -104,6 +109,14 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 
 	if runtime.HasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
+	}
+
+	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
+		if len(clientID) > 0 {
+			return nil, &AuthenticationFailedError{msg: "The requested identity isn't assigned to this resource."}
+		}
+		c.unavailableMessage = "No default identity is assigned to this resource."
+		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
@@ -175,7 +188,8 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 		default:
 			errorMsg = "unknown"
 		}
-		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Make sure you are running in a valid Managed Identity Environment. Status: " + errorMsg}
+		c.unavailableMessage = "Make sure you are running in a valid Managed Identity environment. Status: " + errorMsg
+		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
 	}
 }
 

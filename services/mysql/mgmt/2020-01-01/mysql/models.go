@@ -3503,7 +3503,7 @@ func (spfc ServerPropertiesForCreate) AsBasicServerPropertiesForCreate() (BasicS
 
 // ServerPropertiesForDefaultCreate the properties used to create a new server.
 type ServerPropertiesForDefaultCreate struct {
-	// AdministratorLogin - The administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
+	// AdministratorLogin - The administrator's login name of a server. Can only be specified when the server is being created (and is required for creation). The login name is required when updating password.
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
 	// AdministratorLoginPassword - The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`

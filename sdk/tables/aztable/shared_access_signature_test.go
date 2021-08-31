@@ -105,10 +105,6 @@ func TestSASClient(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	// queryParams := accountSAS.Encode()
-
-	// sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
-
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
 	client, err := createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
@@ -162,10 +158,6 @@ func TestSASClientReadOnly(t *testing.T) {
 	c := serviceClient.NewClient(tableName)
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
-
-	// queryParams := accountSAS.Encode()
-
-	// sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
@@ -230,10 +222,6 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	c := serviceClient.NewClient(tableName)
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
-
-	// queryParams := accountSAS.Encode()
-
-	// sasUrl := fmt.Sprintf("https://%s.table.cosmos.azure.com/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)

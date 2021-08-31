@@ -74,8 +74,7 @@ func TestEdmMarshalling(t *testing.T) {
 			_, err = client.AddEntity(ctx, marshalled, nil)
 			require.Nil(t, err)
 
-			options := &GetEntityOptions{Format: FullODataMetadata}
-			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), options)
+			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), nil)
 			require.Nil(t, err)
 			var receivedEntity EDMEntity
 			err = json.Unmarshal(resp.Value, &receivedEntity)

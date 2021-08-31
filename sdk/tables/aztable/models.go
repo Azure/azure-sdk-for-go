@@ -13,8 +13,6 @@ import (
 type ListOptions struct {
 	// OData filter expression.
 	Filter *string
-	// Specifies the media type for the response.
-	Format *ODataMetadataFormat
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
 	// Maximum number of records to return.

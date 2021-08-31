@@ -29,8 +29,6 @@ func (c *DeleteTableOptions) toGenerated() *generated.TableDeleteOptions {
 type ListEntitiesOptions struct {
 	// OData filter expression.
 	Filter *string
-	// Specifies the media type for the response.
-	Format *ODataMetadataFormat
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
 	// Maximum number of records to return.
@@ -44,7 +42,7 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: toGeneratedODataMetadata(l.Format),
+		Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr(),
 		Select: l.Select,
 		Top:    l.Top,
 	}
@@ -54,8 +52,6 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 type ListTablesOptions struct {
 	// OData filter expression.
 	Filter *string
-	// Specifies the media type for the response.
-	Format *ODataMetadataFormat
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
 	Select *string
 	// Maximum number of records to return.
@@ -69,49 +65,10 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: toGeneratedODataMetadata(l.Format),
+		Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr(),
 		Select: l.Select,
 		Top:    l.Top,
 	}
-}
-
-type ODataMetadataFormat string
-
-func toGeneratedODataMetadata(o *ODataMetadataFormat) *generated.ODataMetadataFormat {
-	if o == nil {
-		return nil
-	}
-
-	if *o == FullODataMetadata {
-		return generated.ODataMetadataFormatApplicationJSONODataFullmetadata.ToPtr()
-	}
-	if *o == MinimalODataMetadata {
-		return generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()
-	}
-	if *o == NoOdataMetadata {
-		return generated.ODataMetadataFormatApplicationJSONODataNometadata.ToPtr()
-	}
-	return nil
-}
-
-const (
-	FullODataMetadata    ODataMetadataFormat = "application/json;odata=fullmetadata"
-	MinimalODataMetadata ODataMetadataFormat = "application/json;odata=minimalmetadata"
-	NoOdataMetadata      ODataMetadataFormat = "application/json;odata=nometadata"
-)
-
-// PossibleODataMetadataFormatValues returns the possible values for the ODataMetadataFormat const type.
-func PossibleODataMetadataFormatValues() []ODataMetadataFormat {
-	return []ODataMetadataFormat{
-		FullODataMetadata,
-		MinimalODataMetadata,
-		NoOdataMetadata,
-	}
-}
-
-// ToPtr returns a *ODataMetadataFormat pointing to the current value.
-func (c ODataMetadataFormat) ToPtr() *ODataMetadataFormat {
-	return &c
 }
 
 type ResponseFormat string
@@ -136,28 +93,10 @@ func (c ResponseFormat) ToPtr() *ResponseFormat {
 
 // Options for Client.GetEntity method
 type GetEntityOptions struct {
-	Format ODataMetadataFormat
 }
 
 func (g *GetEntityOptions) toGenerated() (*generated.TableQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
-	if g.Format == FullODataMetadata {
-		return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{
-			Format: generated.ODataMetadataFormatApplicationJSONODataFullmetadata.ToPtr(),
-		}
-	}
-
-	if g.Format == MinimalODataMetadata {
-		return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{
-			Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr(),
-		}
-	}
-
-	if g.Format == MinimalODataMetadata {
-		return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{
-			Format: generated.ODataMetadataFormatApplicationJSONODataNometadata.ToPtr(),
-		}
-	}
-	return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{}
+	return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
 }
 
 // Options for the Client.AddEntity operation

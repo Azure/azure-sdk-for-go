@@ -9,16 +9,14 @@ import (
 )
 
 type ClientOptions struct {
-	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient azcore.Transporter
+	// Transporter sets the transport for making HTTP requests.
+	Transporter azcore.Transporter
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
 	// PerCallOptions are options to run on every request
 	PerCallOptions []azcore.Policy
-	// Scopes are the authentication scopes for AAD Authentication
-	Scopes []string
 }
 
 func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
@@ -27,7 +25,7 @@ func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
 	}
 
 	return &generated.ConnectionOptions{
-		HTTPClient: o.HTTPClient,
+		HTTPClient: o.Transporter,
 		Retry:      o.Retry,
 		Telemetry:  o.Telemetry,
 	}

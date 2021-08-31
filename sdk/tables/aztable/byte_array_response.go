@@ -47,7 +47,7 @@ type ListEntitiesResponseEnvelope struct {
 	// The metadata response of the table.
 	ODataMetadata *string
 	// List of table entities.
-	Value [][]byte
+	Entities [][]byte
 }
 
 // ListEntitiesResponse - The properties for the table entity query response.
@@ -55,7 +55,7 @@ type ListEntitiesResponse struct {
 	// The metadata response of the table.
 	ODataMetadata *string
 	// List of table entities stored as byte slices.
-	Value [][]byte
+	Entities [][]byte
 }
 
 // transforms a generated query response into the ListEntitiesResponseEnveloped
@@ -71,7 +71,7 @@ func newListEntitiesResponseEnvelope(resp *generated.TableQueryEntitiesResponse)
 
 	t := ListEntitiesResponse{
 		ODataMetadata: resp.TableEntityQueryResponse.ODataMetadata,
-		Value:         marshalledValue,
+		Entities:      marshalledValue,
 	}
 
 	return ListEntitiesResponseEnvelope{
@@ -79,7 +79,7 @@ func newListEntitiesResponseEnvelope(resp *generated.TableQueryEntitiesResponse)
 		XMSContinuationNextPartitionKey: resp.XMSContinuationNextPartitionKey,
 		XMSContinuationNextRowKey:       resp.XMSContinuationNextRowKey,
 		ODataMetadata:                   t.ODataMetadata,
-		Value:                           t.Value,
+		Entities:                           t.Entities,
 	}, nil
 }
 
@@ -89,7 +89,7 @@ type ListTablesResponse struct {
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Value []*ResponseProperties `json:"value,omitempty"`
+	Tables []*ResponseProperties `json:"value,omitempty"`
 }
 
 // ResponseProperties contains the properties for a single Table

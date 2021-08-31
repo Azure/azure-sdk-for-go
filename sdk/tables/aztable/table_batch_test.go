@@ -46,7 +46,7 @@ func TestBatchAdd(t *testing.T) {
 			count := 0
 			for pager.NextPage(ctx) {
 				response := pager.PageResponse()
-				count += len(response.Value)
+				count += len(response.Entities)
 			}
 
 			require.Equal(t, count, 10)
@@ -92,7 +92,7 @@ func TestBatchMixed(t *testing.T) {
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
 			}
-			preMerge := qResp.Value[0]
+			preMerge := qResp.Entities[0]
 			var unMarshalledPreMerge map[string]interface{}
 			err = json.Unmarshal(preMerge, &unMarshalledPreMerge)
 			require.NoError(t, err)
@@ -158,7 +158,7 @@ func TestBatchMixed(t *testing.T) {
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
 			}
-			postMerge := qResp.Value[0]
+			postMerge := qResp.Entities[0]
 			var unMarshaledPostMerge map[string]interface{}
 			err = json.Unmarshal(postMerge, &unMarshaledPostMerge)
 			require.NoError(t, err)

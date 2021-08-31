@@ -51,7 +51,6 @@ func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (Creat
 	}
 	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
 	return createTableResponseFromGen(&resp), err
-	// t.service.CreateTable(ctx, t.name, options)
 }
 
 // Delete deletes the table with the tableName specified when NewClient was called.

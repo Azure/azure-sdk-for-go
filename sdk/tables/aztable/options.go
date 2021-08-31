@@ -164,8 +164,6 @@ func (g *GetEntityOptions) toGenerated() (*generated.TableQueryEntityWithPartiti
 type AddEntityOptions struct {
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
 	ResponsePreference *ResponseFormat
-	// The properties for the table entity.
-	TableEntityProperties map[string]interface{}
 }
 
 type DeleteEntityOptions struct {
@@ -202,7 +200,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 }
 
 type InsertEntityOptions struct {
-	IfMatch    *string
+	ETag       azcore.ETag
 	UpdateMode EntityUpdateMode
 }
 

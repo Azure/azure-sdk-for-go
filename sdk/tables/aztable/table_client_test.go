@@ -132,7 +132,7 @@ func TestMergeEntity(t *testing.T) {
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
 			}
-			postMerge := qResp.Value[0]
+			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 			require.NoError(err)
@@ -189,7 +189,7 @@ func TestInsertEntity(t *testing.T) {
 			for pager.NextPage(ctx) {
 				qResp = pager.PageResponse()
 			}
-			postMerge := qResp.Value[0]
+			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 			require.NoError(err)
@@ -228,10 +228,10 @@ func TestQuerySimpleEntity(t *testing.T) {
 			pager := client.List(list)
 			for pager.NextPage(ctx) {
 				resp = pager.PageResponse()
-				require.Equal(len(resp.Value), expectedCount)
+				require.Equal(len(resp.Entities), expectedCount)
 			}
 
-			for i, e := range resp.Value {
+			for i, e := range resp.Entities {
 				var mapModel map[string]interface{}
 				err := json.Unmarshal(e, &mapModel)
 				require.NoError(err)
@@ -281,9 +281,9 @@ func TestQueryComplexEntity(t *testing.T) {
 			pager := client.List(options)
 			for pager.NextPage(ctx) {
 				resp = pager.PageResponse()
-				require.Equal(expectedCount, len(resp.Value))
+				require.Equal(expectedCount, len(resp.Entities))
 
-				for idx, entity := range resp.Value {
+				for idx, entity := range resp.Entities {
 					model := complexTestEntity{}
 					err := json.Unmarshal(entity, &model)
 					require.NoError(err)

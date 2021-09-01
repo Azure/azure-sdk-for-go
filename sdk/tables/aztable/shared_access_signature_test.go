@@ -65,7 +65,7 @@ func TestSASServiceClient(t *testing.T) {
 	_, err = svcClient.CreateTable(context.Background(), "sasTable001", nil)
 	require.NoError(t, err)
 
-	svcClient.DeleteTable(context.Background(), "sasTable001", nil)
+	_, err = svcClient.DeleteTable(context.Background(), "sasTable001", nil)
 	require.NoError(t, err)
 }
 

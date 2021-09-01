@@ -1,6 +1,19 @@
 # Release History
 
-## v0.9.3 (Unreleased)
+## v0.11.0 (Unreleased)
+### Features Added
+
+### Breaking Changes
+
+### Bug Fixes
+
+### Other Changes
+
+## v0.10.0 (2021-08-30)
+### Breaking Changes
+* Update based on `azcore` refactor [#15383](https://github.com/Azure/azure-sdk-for-go/pull/15383)
+
+## v0.9.3 (2021-08-20)
 
 ### Bugs Fixed
 * `ManagedIdentityCredential.GetToken` no longer mutates its `opts.Scopes`

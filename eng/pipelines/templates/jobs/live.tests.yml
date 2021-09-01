@@ -29,7 +29,7 @@ parameters:
     type: boolean
     default: false
 
-stages:
+jobs:
   - job:
     displayName: Live Test on
     dependsOn: ${{ parameters.DependsOn }}

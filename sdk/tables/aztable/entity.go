@@ -209,8 +209,6 @@ func (e *EDMGUID) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMDateTime time.Time
 
-const rfc3339 = "2006-01-02T15:04:05.9999999Z"
-
 func (e EDMDateTime) MarshalText() ([]byte, error) {
 	return ([]byte)(time.Time(e).Format(rfc3339)), nil
 }

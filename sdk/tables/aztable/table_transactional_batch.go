@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -26,6 +25,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
+// TransactionType is the type for a specific transaction operation.
 type TransactionType string
 
 const (
@@ -35,12 +35,6 @@ const (
 	Delete        TransactionType = "delete"
 	InsertMerge   TransactionType = "insertmerge"
 	InsertReplace TransactionType = "insertreplace"
-)
-
-const (
-	headerContentType             = "Content-Type"
-	headerContentTransferEncoding = "Content-Transfer-Encoding"
-	error_empty_transaction       = "transaction cannot be empty"
 )
 
 // Use azcore.ResponseError type, pass RawResponse, might have to create manually depending on constructor
@@ -133,7 +127,7 @@ func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []Tra
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
 func (t *Client) submitTransactionInternal(ctx context.Context, transactionActions *[]TransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
 	if len(*transactionActions) == 0 {
-		return TransactionResponse{}, errors.New(error_empty_transaction)
+		return TransactionResponse{}, errEmptyTransaction
 	}
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)

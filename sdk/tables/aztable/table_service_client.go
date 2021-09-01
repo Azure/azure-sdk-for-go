@@ -13,11 +13,6 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-const (
-	legacyCosmosTableDomain = ".table.cosmosdb."
-	cosmosTableDomain       = ".table.cosmos."
-)
-
 // A ServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
 type ServiceClient struct {
 	client  *generated.TableClient

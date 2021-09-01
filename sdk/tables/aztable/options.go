@@ -5,8 +5,8 @@ package aztable
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 // Options for Client.Create and ServiceClient.CreateTable method
@@ -182,4 +182,14 @@ type SetPropertiesOptions struct{}
 
 func (s *SetPropertiesOptions) toGenerated() *generated.ServiceSetPropertiesOptions {
 	return &generated.ServiceSetPropertiesOptions{}
+}
+
+// ListOptions contains a group of parameters for the ServiceClient.Query method.
+type ListOptions struct {
+	// OData filter expression.
+	Filter *string
+	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+	Select *string
+	// Maximum number of records to return.
+	Top *int32
 }

@@ -40,12 +40,16 @@ func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResp
 type ListEntitiesPage struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+
 	// ContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
 	ContinuationNextPartitionKey *string
+
 	// ContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
 	ContinuationNextRowKey *string
+
 	// The metadata response of the table.
 	ODataMetadata *string
+
 	// List of table entities.
 	Entities [][]byte
 }
@@ -54,6 +58,7 @@ type ListEntitiesPage struct {
 type ListEntitiesResponse struct {
 	// The metadata response of the table.
 	ODataMetadata *string
+
 	// List of table entities stored as byte slices.
 	Entities [][]byte
 }

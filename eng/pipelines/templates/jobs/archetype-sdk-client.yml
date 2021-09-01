@@ -59,6 +59,8 @@ stages:
           Image: $(vm.image)
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
+          EnvVars:
+            AZURE_RECORD_MODE: 'playback'
 
     - job: Analyze
       displayName: Analyze

@@ -14,3 +14,7 @@ stages:
   parameters:
     ServiceDirectory: 'tables'
     RunTests: true
+
+- template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: 'tables'

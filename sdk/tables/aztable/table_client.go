@@ -7,6 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -36,9 +38,21 @@ func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	parts := strings.Split(serviceURL, "/")
-	tableName := parts[len(parts)-1]
-	rawServiceURL := strings.Join(parts[:len(parts)-1], "/")
+
+	parsedUrl, err := url.Parse(serviceURL)
+	if err != nil {
+		return &Client{}, err
+	}
+
+	tableName := parsedUrl.Path[1:]
+	rawServiceURL := parsedUrl.Scheme + "://" + parsedUrl.Host
+	sas := parsedUrl.Query()
+	if len(sas) > 0 {
+		rawServiceURL += "/?" + sas.Encode()
+	}
+
+	fmt.Println(rawServiceURL)
+	fmt.Println(tableName)
 	s, err := NewServiceClient(rawServiceURL, cred, options)
 	if err != nil {
 		return &Client{}, err
@@ -252,7 +266,6 @@ func (t Client) GetTableSASToken(permissions SASPermissions, start time.Time, ex
 	if !strings.Contains(serviceURL, "/") {
 		serviceURL += "/"
 	}
-	serviceURL += t.name
-	serviceURL += qps.Encode()
+	serviceURL += t.name + "?" + qps.Encode()
 	return serviceURL, nil
 }

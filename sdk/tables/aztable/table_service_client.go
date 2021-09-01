@@ -182,7 +182,7 @@ func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, per
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}
-	endpoint += qps.Encode()
+	endpoint += "?" + qps.Encode()
 	return endpoint, nil
 }
 

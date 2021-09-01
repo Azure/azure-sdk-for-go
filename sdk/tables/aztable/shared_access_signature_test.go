@@ -47,6 +47,8 @@ func TestSASServiceClient(t *testing.T) {
 		Read:  true,
 		Add:   true,
 		Write: true,
+		Create: true,
+		Update: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
@@ -56,19 +58,14 @@ func TestSASServiceClient(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	svcClient, err := createServiceClientForRecording(t, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
-	entity := map[string]string{
-		"PartitionKey": "pk001",
-		"RowKey":       "rk001",
-		"Value":        "5",
-	}
-	marshalled, err := json.Marshal(entity)
+	_, err = svcClient.CreateTable(context.Background(), "sasTable001", nil)
 	require.NoError(t, err)
 
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	svcClient.DeleteTable(context.Background(), "sasTable001", nil)
 	require.NoError(t, err)
 }
 
@@ -107,7 +104,7 @@ func TestSASClient(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err := createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -161,7 +158,7 @@ func TestSASClientReadOnly(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -184,6 +181,7 @@ func TestSASClientReadOnly(t *testing.T) {
 		count += len(pager.PageResponse().Entities)
 	}
 
+	require.NoError(t, pager.Err())
 	require.Equal(t, 4, count)
 }
 
@@ -225,7 +223,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -248,5 +246,6 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 		count += len(pager.PageResponse().Entities)
 	}
 
+	require.NoError(t, pager.Err())
 	require.Equal(t, 4, count)
 }

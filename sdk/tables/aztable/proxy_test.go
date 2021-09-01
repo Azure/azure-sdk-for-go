@@ -81,14 +81,16 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
+
 	options := &ClientOptions{
 		PerCallOptions: []policy.Policy{p},
 		Transporter:    client,
 	}
-	if !strings.HasSuffix(serviceURL, "/") {
+	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
 	serviceURL += tableName
+
 	return NewClient(serviceURL, cred, options)
 }
 
@@ -96,6 +98,7 @@ func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcor
 	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
+
 	options := &ClientOptions{
 		PerCallOptions: []policy.Policy{p},
 		Transporter:    client,

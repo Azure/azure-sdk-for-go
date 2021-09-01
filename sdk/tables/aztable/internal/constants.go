@@ -9,7 +9,7 @@
 package internal
 
 const (
-	module  = "internal"
+	module  = "aztable"
 	version = "v0.1.0"
 )
 

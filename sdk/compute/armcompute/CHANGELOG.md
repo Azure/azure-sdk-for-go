@@ -1,7 +1,6 @@
 # Release History
 
-## v0.2.1 (released)
-No exported changes
+## v0.3.0 (released)
 
 ## v0.2.0 (released)
 Updated with the latest track 2 code generator.

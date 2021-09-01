@@ -285,11 +285,11 @@ func (c *CommandContext) buildOptions(metadata autorest.GenerationMetadata) (mod
 		return nil, err
 	}
 	// the raw options do not contain `go-sdk-folder` or `use`, add them
-	//options := additionalOptions.MergeOptions(
-	//	model.NewKeyValueOption("go-sdk-folder", c.SDK().Root()),
-	//	model.NewKeyValueOption("use", metadata.CodeGenVersion),
-	//)
-	return additionalOptions, nil
+	options := additionalOptions.MergeOptions(
+		model.NewKeyValueOption("go-sdk-folder", c.SDK().Root()),
+		model.NewKeyValueOption("use", metadata.CodeGenVersion),
+	)
+	return options, nil
 }
 
 func (c *CommandContext) regenerateProfiles() error {

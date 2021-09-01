@@ -21,9 +21,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 type TransactionType string

@@ -33,6 +33,8 @@ const (
 )
 
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, credential, and options.
+// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
+// If the serviceURL contains a Shared Access Signature, use azcore.NewAnonymousCredential() as the credential.
 func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}

@@ -6,7 +6,7 @@ package aztable
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 // Options for Client.Create and ServiceClient.CreateTable method

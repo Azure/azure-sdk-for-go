@@ -44,9 +44,9 @@ func TestSASServiceClient(t *testing.T) {
 		Container: true,
 	}
 	permissions := AccountSASPermissions{
-		Read:  true,
-		Add:   true,
-		Write: true,
+		Read:   true,
+		Add:    true,
+		Write:  true,
 		Create: true,
 		Update: true,
 	}

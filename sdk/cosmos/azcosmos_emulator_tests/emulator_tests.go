@@ -1,12 +1,13 @@
-// +build emulator
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcosmos
+package azcosmos_emulator_tests
 
 import (
 	"context"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/cosmos/azcosmos"
 )
 
 type emulatorTests struct {
@@ -21,9 +22,9 @@ func newEmulatorTests() *emulatorTests {
 	}
 }
 
-func (e *emulatorTests) getClient(t *testing.T) *CosmosClient {
-	cred, _ := NewSharedKeyCredential(e.key)
-	client, err := NewCosmosClient(e.host, cred, nil)
+func (e *emulatorTests) getClient(t *testing.T) *azcosmos.CosmosClient {
+	cred, _ := azcosmos.NewSharedKeyCredential(e.key)
+	client, err := azcosmos.NewCosmosClient(e.host, cred, nil)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -34,9 +35,9 @@ func (e *emulatorTests) getClient(t *testing.T) *CosmosClient {
 func (e *emulatorTests) createDatabase(
 	t *testing.T,
 	ctx context.Context,
-	client *CosmosClient,
-	dbName string) *CosmosDatabase {
-	database := CosmosDatabaseProperties{Id: dbName}
+	client *azcosmos.CosmosClient,
+	dbName string) *azcosmos.CosmosDatabase {
+	database := azcosmos.CosmosDatabaseProperties{Id: dbName}
 	resp, err := client.CreateDatabase(ctx, database, nil, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
@@ -52,7 +53,7 @@ func (e *emulatorTests) createDatabase(
 func (e *emulatorTests) deleteDatabase(
 	t *testing.T,
 	ctx context.Context,
-	database *CosmosDatabase) {
+	database *azcosmos.CosmosDatabase) {
 	_, err := database.Delete(ctx, nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)

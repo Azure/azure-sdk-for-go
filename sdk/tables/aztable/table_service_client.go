@@ -5,66 +5,76 @@ package aztable
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
 const (
-	LegacyCosmosTableDomain = ".table.cosmosdb."
-	CosmosTableDomain       = ".table.cosmos."
+	legacyCosmosTableDomain = ".table.cosmosdb."
+	cosmosTableDomain       = ".table.cosmos."
 )
 
-// A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
-type TableServiceClient struct {
-	client  *tableClient
-	service *serviceClient
+// A ServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
+type ServiceClient struct {
+	client  *generated.TableClient
+	service *generated.ServiceClient
 	cred    azcore.Credential
 }
 
-// NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
-func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
+// NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
+func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*ServiceClient, error) {
 	if options == nil {
-		options = &TableClientOptions{}
+		options = &ClientOptions{}
 	}
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = []azcore.Policy{cosmosPatchTransformPolicy{}}
+		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cred.NewAuthenticationPolicy(azcore.AuthenticationOptions{TokenRequest: azcore.TokenRequestOptions{Scopes: options.Scopes}}))
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
-	con := newConnection(serviceURL, conOptions)
-	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: cred}, nil
+	con := generated.NewConnection(serviceURL, cred, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(con),
+		service: generated.NewServiceClient(con),
+		cred:    cred,
+	}, nil
 }
 
-// NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
-func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
-	return &TableClient{client: t.client, cred: t.cred, Name: tableName, service: t}
+// NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
+func (t *ServiceClient) NewClient(tableName string) *Client {
+	return &Client{
+		client:  t.client,
+		cred:    t.cred,
+		name:    tableName,
+		service: t,
+	}
 }
 
 // Create creates a table with the specified name.
-func (t *TableServiceClient) CreateTable(ctx context.Context, name string) (TableResponseResponse, error) {
-	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
-	if err == nil {
-		tableResp := resp.(TableResponseResponse)
-		return tableResp, nil
+func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (*Client, error) {
+	if options == nil {
+		options = &CreateTableOptions{}
 	}
-	return TableResponseResponse{}, err
+	_, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	return t.NewClient(name), err
 }
 
 // Delete deletes a table by name.
-func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, options *TableDeleteOptions) (TableDeleteResponse, error) {
+func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
 	if options == nil {
-		options = &TableDeleteOptions{}
+		options = &DeleteTableOptions{}
 	}
-	return t.client.Delete(ctx, name, options)
+	resp, err := t.client.Delete(ctx, name, options.toGenerated())
+	return deleteTableResponseFromGen(&resp), err
 }
 
-// List queries the existing tables using the specified ListOptions.
+// List queries the existing tables using the specified ListTablesOptions.
 // ListOptions can specify the following properties to affect the query results returned:
 //
-// Filter: An Odata filter expression that limits results to those tables that satisfy the filter expression.
+// Filter: An OData filter expression that limits results to those tables that satisfy the filter expression.
 // For example, the following expression would return only tables with a TableName of 'foo': "TableName eq 'foo'"
 //
 // Top: The maximum number of tables that will be returned per page of results.
@@ -72,18 +82,18 @@ func (t *TableServiceClient) DeleteTable(ctx context.Context, name string, optio
 //
 // List returns a Pager, which allows iteration through each page of results. Example:
 //
-// options := &ListOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
+// options := &ListTablesOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
 // pager := client.List(options) // Pass in 'nil' if you want to return all Tables for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableListResponsePager {
+func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return &tableQueryResponsePager{
 		client:            t.client,
-		queryOptions:      listOptions,
-		tableQueryOptions: new(TableQueryOptions),
+		listOptions:       listOptions,
+		tableQueryOptions: new(generated.TableQueryOptions),
 	}
 }
 
@@ -93,11 +103,12 @@ func (t *TableServiceClient) ListTables(listOptions *ListOptions) TableListRespo
 // handle(err)
 // fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
 // fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
-func (t *TableServiceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (TableServiceStatsResponse, error) {
+func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
-		options = &ServiceGetStatisticsOptions{}
+		options = &GetStatisticsOptions{}
 	}
-	return t.service.GetStatistics(ctx, options)
+	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
+	return getStatisticsResponseFromGenerated(&resp), err
 }
 
 // GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
@@ -108,11 +119,12 @@ func (t *TableServiceClient) GetStatistics(ctx context.Context, options *Service
 // fmt.Println(resopnse.StorageServiceStats.HourMetrics)
 // fmt.Println(resopnse.StorageServiceStats.Logging)
 // fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
-func (t *TableServiceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (TableServicePropertiesResponse, error) {
+func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
-		options = &ServiceGetPropertiesOptions{}
+		options = &GetPropertiesOptions{}
 	}
-	return t.service.GetProperties(ctx, options)
+	resp, err := t.service.GetProperties(ctx, options.toGenerated())
+	return getPropertiesResponseFromGenerated(&resp), err
 }
 
 // SetProperties allows the user to set cors , metrics, and logging rules for the account.
@@ -139,22 +151,22 @@ func (t *TableServiceClient) GetProperties(ctx context.Context, options *Service
 // props := TableServiceProperties{Logging: &logging}
 // resp, err := context.client.SetProperties(ctx, props, nil)
 // handle(err)
-func (t *TableServiceClient) SetProperties(ctx context.Context, properties TableServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
+func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
-		options = &ServiceSetPropertiesOptions{}
+		options = &SetPropertiesOptions{}
 	}
-	return t.service.SetProperties(ctx, properties, options)
+	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
+	return setPropertiesResponseFromGenerated(&resp), err
 }
 
-func (s TableServiceClient) CanGetAccountSASToken() bool {
-	return s.cred != nil
-}
-
-// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetAccountSASToken().
-func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
-	return AccountSASSignatureValues{
+// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
+// if there was an error during creation. This method can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
+	cred, ok := t.cred.(*SharedKeyCredential)
+	if !ok {
+		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
+	qps, err := AccountSASSignatureValues{
 		Version:       SASVersion,
 		Protocol:      SASProtocolHTTPS,
 		Permissions:   permissions.String(),
@@ -162,33 +174,19 @@ func (t TableServiceClient) GetAccountSASToken(resources AccountSASResourceTypes
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
-}
-
-// GetTableSASToken is a convenience method for generating a SAS token for a specific table.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetAccountSASToken().
-func (t TableServiceClient) GetTableSASToken(tableName string, permissions TableSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
-	return TableSASSignatureValues{
-		TableName:         tableName,
-		Permissions:       permissions.String(),
-		StartTime:         start,
-		ExpiryTime:        expiry,
-		StartPartitionKey: permissions.StartPartitionKey,
-		StartRowKey:       permissions.StartRowKey,
-		EndPartitionKey:   permissions.EndPartitionKey,
-		EndRowKey:         permissions.EndRowKey,
-	}.NewSASQueryParameters(t.cred.(*SharedKeyCredential))
-}
-
-// CanGetSASToken returns true if the TableServiceClient was created with a SharedKeyCredential.
-// This method can be used to determine if a TableServiceClient is capable of creating a Table SAS or Account SAS
-func (t TableServiceClient) CanGetSASToken() bool {
-	_, ok := t.cred.(*SharedKeyCredential)
-	return ok
+	}.Sign(cred)
+	if err != nil {
+		return "", err
+	}
+	endpoint := t.client.Con.Endpoint()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+	return endpoint, nil
 }
 
 func isCosmosEndpoint(url string) bool {
 	isCosmosEmulator := strings.Contains(url, "localhost") && strings.Contains(url, "8902")
-	return isCosmosEmulator || strings.Contains(url, CosmosTableDomain) || strings.Contains(url, LegacyCosmosTableDomain)
+	return isCosmosEmulator || strings.Contains(url, cosmosTableDomain) || strings.Contains(url, legacyCosmosTableDomain)
 }

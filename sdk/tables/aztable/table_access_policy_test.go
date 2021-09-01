@@ -15,7 +15,7 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 	client, delete := initClientTest(t, "storage", true)
 	defer delete()
 
-	_, err := client.SetAccessPolicy(ctx, &TableSetAccessPolicyOptions{})
+	_, err := client.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
 	require.NoError(t, err)
 }
 
@@ -39,7 +39,7 @@ func TestSetAccessPolicy(t *testing.T) {
 		ID: &id,
 	})
 
-	param := TableSetAccessPolicyOptions{
+	param := SetAccessPolicyOptions{
 		TableACL: signedIdentifiers,
 	}
 
@@ -82,7 +82,7 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 		},
 	})
 
-	param := TableSetAccessPolicyOptions{
+	param := SetAccessPolicyOptions{
 		TableACL: signedIdentifiers,
 	}
 
@@ -90,7 +90,7 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make a Get to assert two access policies
-	resp, err := client.GetAccessPolicy(ctx)
+	resp, err := client.GetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, len(resp.SignedIdentifiers), 3)
 }
@@ -120,7 +120,7 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 
 	}
 
-	param := TableSetAccessPolicyOptions{TableACL: signedIdentifiers}
+	param := SetAccessPolicyOptions{TableACL: signedIdentifiers}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NotNil(t, err, "Set access policy succeeded but should have failed")
@@ -138,14 +138,14 @@ func TestSetNullAccessPolicy(t *testing.T) {
 		ID: &id,
 	})
 
-	param := TableSetAccessPolicyOptions{
+	param := SetAccessPolicyOptions{
 		TableACL: signedIdentifiers,
 	}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	require.NoError(t, err)
 
-	resp, err := client.GetAccessPolicy(ctx)
+	resp, err := client.GetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, len(resp.SignedIdentifiers), 1)
 }

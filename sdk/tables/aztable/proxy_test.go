@@ -12,12 +12,12 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
-
-var AADAuthenticationScope = "https://storage.azure.com/.default"
 
 var pathToPackage = "sdk/tables/aztable"
 
@@ -25,7 +25,7 @@ type recordingPolicy struct {
 	options recording.RecordingOptions
 }
 
-func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
+func NewRecordingPolicy(o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
 		o = &recording.RecordingOptions{}
 	}
@@ -34,15 +34,15 @@ func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
 	return p
 }
 
-func (p *recordingPolicy) Do(req *azcore.Request) (resp *http.Response, err error) {
-	originalURLHost := req.URL.Host
-	req.URL.Scheme = "https"
-	req.URL.Host = p.options.Host
-	req.Host = p.options.Host
+func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	originalURLHost := req.Raw().URL.Host
+	req.Raw().URL.Scheme = "https"
+	req.Raw().URL.Host = p.options.Host
+	req.Raw().Host = p.options.Host
 
-	req.Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
-	req.Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	req.Header.Set(recording.IdHeader, recording.GetRecordingId())
+	req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+	req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+	req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId())
 
 	return req.Next()
 }
@@ -63,52 +63,57 @@ type fakeCredPolicy struct {
 	cred *FakeCredential
 }
 
-func newFakeCredPolicy(cred *FakeCredential, opts azcore.AuthenticationOptions) *fakeCredPolicy {
+func newFakeCredPolicy(cred *FakeCredential, opts runtime.AuthenticationOptions) *fakeCredPolicy {
 	return &fakeCredPolicy{cred: cred}
 }
 
-func (f *fakeCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
+func (f *fakeCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
-	req.Request.Header.Set(headerAuthorization, authHeader)
+	req.Raw().Header.Set(headerAuthorization, authHeader)
 	return req.Next()
 }
 
-func (f *FakeCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (f *FakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newFakeCredPolicy(f, options)
 }
 
-func createTableClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*TableClient, error) {
-	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*Client, error) {
+	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
-	options := &TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
-		PerCallOptions: []azcore.Policy{policy},
-		HTTPClient:     client,
+
+	options := &ClientOptions{
+		PerCallOptions: []policy.Policy{p},
+		Transporter:    client,
 	}
-	return NewTableClient(tableName, serviceURL, cred, options)
+	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
+		serviceURL += "/"
+	}
+	serviceURL += tableName
+
+	return NewClient(serviceURL, cred, options)
 }
 
-func createTableServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*TableServiceClient, error) {
-	policy := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
+func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*ServiceClient, error) {
+	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient()
 	require.NoError(t, err)
-	options := &TableClientOptions{
-		Scopes:         []string{AADAuthenticationScope},
-		PerCallOptions: []azcore.Policy{policy},
-		HTTPClient:     client,
+
+	options := &ClientOptions{
+		PerCallOptions: []policy.Policy{p},
+		Transporter:    client,
 	}
-	return NewTableServiceClient(serviceURL, cred, options)
+	return NewServiceClient(serviceURL, cred, options)
 }
 
-func initClientTest(t *testing.T, service string, createTable bool) (*TableClient, func()) {
-	var client *TableClient
+func initClientTest(t *testing.T, service string, createTable bool) (*Client, func()) {
+	var client *Client
 	var err error
 	if service == string(storageEndpoint) {
-		client, err = createStorageTableClient(t)
+		client, err = createStorageClient(t)
 		require.NoError(t, err)
 	} else if service == string(cosmosEndpoint) {
-		client, err = createCosmosTableClient(t)
+		client, err = createCosmosClient(t)
 		require.NoError(t, err)
 	}
 
@@ -116,7 +121,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 	require.NoError(t, err)
 
 	if createTable {
-		_, err = client.Create(context.Background())
+		_, err = client.Create(context.Background(), nil)
 		require.NoError(t, err)
 	}
 
@@ -128,8 +133,8 @@ func initClientTest(t *testing.T, service string, createTable bool) (*TableClien
 	}
 }
 
-func initServiceTest(t *testing.T, service string) (*TableServiceClient, func()) {
-	var client *TableServiceClient
+func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
+	var client *ServiceClient
 	var err error
 	if service == string(storageEndpoint) {
 		client, err = createStorageServiceClient(t)
@@ -175,25 +180,29 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func createStorageTableClient(t *testing.T) (*TableClient, error) {
+func createStorageClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
+	var err error
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-	if recording.InPlayback() {
-		accountName = "fakestorageaccount"
-	}
+	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
-	cred, err := getAADCredential(t)
-	require.NoError(t, err)
+	if recording.InPlayback() {
+		cred, err = getSharedKeyCredential(t)
+		require.NoError(t, err)
+	} else {
+		cred, err = NewSharedKeyCredential(accountName, accountKey)
+		require.NoError(t, err)
+	}
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
-	return createTableClientForRecording(t, tableName, serviceURL, cred)
+	return createClientForRecording(t, tableName, serviceURL, cred)
 }
 
-func createCosmosTableClient(t *testing.T) (*TableClient, error) {
+func createCosmosClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -205,13 +214,13 @@ func createCosmosTableClient(t *testing.T) (*TableClient, error) {
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
-	return createTableClientForRecording(t, tableName, serviceURL, cred)
+	return createClientForRecording(t, tableName, serviceURL, cred)
 }
 
-func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
+func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -223,10 +232,10 @@ func createStorageServiceClient(t *testing.T) (*TableServiceClient, error) {
 
 	serviceURL := storageURI(accountName, "core.windows.net")
 
-	return createTableServiceClientForRecording(t, serviceURL, cred)
+	return createServiceClientForRecording(t, serviceURL, cred)
 }
 
-func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
+func createCosmosServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.InPlayback() {
@@ -238,7 +247,7 @@ func createCosmosServiceClient(t *testing.T) (*TableServiceClient, error) {
 
 	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
 
-	return createTableServiceClientForRecording(t, serviceURL, cred)
+	return createServiceClientForRecording(t, serviceURL, cred)
 }
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
@@ -247,11 +256,11 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-func clearAllTables(service *TableServiceClient) error {
+func clearAllTables(service *ServiceClient) error {
 	pager := service.ListTables(nil)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		for _, v := range resp.TableListResponse.Value {
+		for _, v := range resp.Tables {
 			_, err := service.DeleteTable(ctx, *v.TableName, nil)
 			if err != nil {
 				return err

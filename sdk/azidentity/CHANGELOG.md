@@ -1,14 +1,25 @@
 # Release History
 
-## v0.10.0-beta.1 (Unreleased)
-
+## v0.11.0 (Unreleased)
 ### Features Added
 
 ### Breaking Changes
 
-### Bugs Fixed
+### Bug Fixes
 
 ### Other Changes
+
+## v0.10.0 (2021-08-30)
+### Breaking Changes
+* Update based on `azcore` refactor [#15383](https://github.com/Azure/azure-sdk-for-go/pull/15383)
+
+## v0.9.3 (2021-08-20)
+
+### Bugs Fixed
+* `ManagedIdentityCredential.GetToken` no longer mutates its `opts.Scopes`
+
+### Other Changes
+* Bumps version of `azcore` to `v0.18.1`
 
 
 ## v0.9.2 (2021-07-23)
@@ -97,7 +108,7 @@
 ## v0.2.0 (2020-09-11)
 ### Features Added
 * Refactor `azidentity` on top of `azcore` refactor
-* Updated policies to conform to `azcore.Policy` interface changes.
+* Updated policies to conform to `policy.Policy` interface changes.
 * Updated non-retriable errors to conform to `azcore.NonRetriableError`.
 * Fixed calls to `Request.SetBody()` to include content type.
 * Switched endpoints to string types and removed extra parsing code.

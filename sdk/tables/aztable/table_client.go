@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -46,13 +45,19 @@ func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions
 
 	tableName := parsedUrl.Path[1:]
 	rawServiceURL := parsedUrl.Scheme + "://" + parsedUrl.Host
+	if parsedUrl.Scheme == "" {
+		rawServiceURL = parsedUrl.Host
+	}
+	if strings.Contains(tableName, "/") {
+		splits := strings.Split(parsedUrl.Path, "/")
+		tableName = splits[len(splits)-1]
+		rawServiceURL += strings.Join(splits[:len(splits)-1], "/")
+	}
 	sas := parsedUrl.Query()
 	if len(sas) > 0 {
 		rawServiceURL += "/?" + sas.Encode()
 	}
 
-	fmt.Println(rawServiceURL)
-	fmt.Println(tableName)
 	s, err := NewServiceClient(rawServiceURL, cred, options)
 	if err != nil {
 		return &Client{}, err

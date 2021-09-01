@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"sort"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -75,36 +74,6 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 		canonicalizedResource,
 	}, "\n")
 	return stringToSign, nil
-}
-
-//nolint
-func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
-	cm := map[string][]string{}
-	for k, v := range headers {
-		headerName := strings.TrimSpace(strings.ToLower(k))
-		if strings.HasPrefix(headerName, "x-ms-") {
-			cm[headerName] = v // NOTE: the value must not have any whitespace around it.
-		}
-	}
-	if len(cm) == 0 {
-		return ""
-	}
-
-	keys := make([]string, 0, len(cm))
-	for key := range cm {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
-	ch := bytes.NewBufferString("")
-	for i, key := range keys {
-		if i > 0 {
-			ch.WriteRune('\n')
-		}
-		ch.WriteString(key)
-		ch.WriteRune(':')
-		ch.WriteString(strings.Join(cm[key], ","))
-	}
-	return ch.String()
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {

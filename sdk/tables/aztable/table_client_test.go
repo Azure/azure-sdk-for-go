@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -62,24 +61,7 @@ func TestAddEntity(t *testing.T) {
 func TestAddComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			err := recording.StartRecording(t, pathToPackage, nil)
-			require.NoError(t, err)
-
-			cred, err := NewSharedKeyCredential("accountName", "accountKey")
-			require.NoError(t, err)
-
-			tableName, err := createRandomName(t, "tablename")
-			require.NoError(t, err)
-
-			client, err := createClientForRecording(t, tableName, "https://fakeseanaccount.table.core.windows.net/", cred)
-			require.NoError(t, err)
-
-			delete := func() {
-				_, err := client.Delete(context.Background(), nil)
-				require.NoError(t, err)
-				err = recording.StopRecording(t, nil)
-				require.NoError(t, err)
-			}
+			client, delete := initClientTest(t, service, true)
 			defer delete()
 
 			entity := createComplexEntity(1, "partition")

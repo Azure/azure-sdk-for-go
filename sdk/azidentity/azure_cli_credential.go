@@ -16,6 +16,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AzureCLITokenProvider can be used to supply the AzureCLICredential with an alternate token provider
@@ -56,7 +58,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // ctx: Context used to control the request lifetime.
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	// The following code will remove the /.default suffix from the scope passed into the method since AzureCLI expect a resource string instead of a scope string
 	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, opts.Scopes[0])
@@ -69,7 +71,7 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 }
 
 // NewAuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
-func (c *AzureCLICredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *AzureCLICredential) NewAuthenticationPolicy(options azruntime.AuthenticationOptions) policy.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 
@@ -100,7 +102,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, 
 		const azureCLIDefaultPath = "/bin:/sbin:/usr/bin:/usr/local/bin"
 
 		// Validate resource, since it gets sent as a command line argument to Azure CLI
-		const invalidResourceErrorTemplate = "Resource %s is not in expected format. Only alphanumeric characters, [dot], [colon], [hyphen], and [forward slash] are allowed."
+		const invalidResourceErrorTemplate = "resource %s is not in expected format. Only alphanumeric characters, [dot], [colon], [hyphen], and [forward slash] are allowed"
 		match, err := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
 		if err != nil {
 			return nil, err

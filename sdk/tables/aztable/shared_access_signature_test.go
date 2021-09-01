@@ -18,15 +18,15 @@ import (
 
 func TestSASServiceClient(t *testing.T) {
 	recording.LiveOnly(t)
-	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountName := os.Getenv("TABLES_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
@@ -35,7 +35,7 @@ func TestSASServiceClient(t *testing.T) {
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName)
+	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
 	resources := AccountSASResourceTypes{
@@ -44,51 +44,43 @@ func TestSASServiceClient(t *testing.T) {
 		Container: true,
 	}
 	permissions := AccountSASPermissions{
-		Read:  true,
-		Add:   true,
-		Write: true,
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	accountSAS, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
+	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
 	require.NoError(t, err)
-
-	queryParams := accountSAS.Encode()
-
-	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	svcClient, err := createServiceClientForRecording(t, sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
-	entity := map[string]string{
-		"PartitionKey": "pk001",
-		"RowKey":       "rk001",
-		"Value":        "5",
-	}
-	marshalled, err := json.Marshal(entity)
+	_, err = svcClient.CreateTable(context.Background(), "sasTable001", nil)
 	require.NoError(t, err)
 
-	_, err = client.AddEntity(context.Background(), marshalled)
+	_, err = svcClient.DeleteTable(context.Background(), "sasTable001", nil)
 	require.NoError(t, err)
 }
 
-func TestSASTableClient(t *testing.T) {
+func TestSASClient(t *testing.T) {
 	recording.LiveOnly(t)
-	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountName := os.Getenv("TABLES_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
-	tableName = "tablename"
 
 	delete := func() {
 		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
@@ -96,26 +88,23 @@ func TestSASTableClient(t *testing.T) {
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName)
+	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
-	permissions := TableSASPermissions{
+	permissions := SASPermissions{
 		Read: true,
 		Add:  true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
+	c := serviceClient.NewClient(tableName)
+	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
-
-	queryParams := accountSAS.Encode()
-
-	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err := createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -127,21 +116,21 @@ func TestSASTableClient(t *testing.T) {
 	marshalled, err := json.Marshal(entity)
 	require.NoError(t, err)
 
-	_, err = client.AddEntity(context.Background(), marshalled)
+	_, err = client.AddEntity(context.Background(), marshalled, nil)
 	require.NoError(t, err)
 }
 
-func TestSASTableClientReadOnly(t *testing.T) {
+func TestSASClientReadOnly(t *testing.T) {
 	recording.LiveOnly(t)
-	accountName := os.Getenv("TABLES_PRIMARY_ACCOUNT_NAME")
+	accountName := os.Getenv("TABLES_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
@@ -150,29 +139,26 @@ func TestSASTableClientReadOnly(t *testing.T) {
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName)
+	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
-	client := serviceClient.NewTableClient(tableName)
+	client := serviceClient.NewClient(tableName)
 	err = insertNEntities("pk001", 4, client)
 	require.NoError(t, err)
 
-	permissions := TableSASPermissions{
+	permissions := SASPermissions{
 		Read: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 
-	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
+	c := serviceClient.NewClient(tableName)
+	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
-
-	queryParams := accountSAS.Encode()
-
-	sasUrl := fmt.Sprintf("https://%s.table.core.windows.net/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -185,30 +171,31 @@ func TestSASTableClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	// Failure on a read
-	_, err = client.AddEntity(context.Background(), marshalled)
+	_, err = client.AddEntity(context.Background(), marshalled, nil)
 	require.Error(t, err)
 
 	// Success on a list
 	pager := client.List(nil)
 	count := 0
 	for pager.NextPage(context.Background()) {
-		count += len(pager.PageResponse().TableEntityQueryResponse.Value)
+		count += len(pager.PageResponse().Entities)
 	}
 
+	require.NoError(t, pager.Err())
 	require.Equal(t, 4, count)
 }
 
-func TestSASCosmosTableClientReadOnly(t *testing.T) {
+func TestSASCosmosClientReadOnly(t *testing.T) {
 	recording.LiveOnly(t)
 	accountName := os.Getenv("TABLES_COSMOS_ACCOUNT_NAME")
 	accountKey := os.Getenv("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewTableServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
 	require.NoError(t, err)
 
-	tableName, err := createRandomName(t, "tableName")
+	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
 	delete := func() {
@@ -217,28 +204,26 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName)
+	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
 	require.NoError(t, err)
 
-	client := serviceClient.NewTableClient(tableName)
+	client := serviceClient.NewClient(tableName)
 	err = insertNEntities("pk001", 4, client)
 	require.NoError(t, err)
 
-	permissions := TableSASPermissions{
+	permissions := SASPermissions{
 		Read: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
-	accountSAS, err := serviceClient.GetTableSASToken(tableName, permissions, start, expiry)
+
+	c := serviceClient.NewClient(tableName)
+	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
-
-	queryParams := accountSAS.Encode()
-
-	sasUrl := fmt.Sprintf("https://%s.table.cosmos.azure.com/?%s", accountName, queryParams)
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createTableClientForRecording(t, tableName, sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -251,15 +236,16 @@ func TestSASCosmosTableClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	// Failure on a read
-	_, err = client.AddEntity(context.Background(), marshalled)
+	_, err = client.AddEntity(context.Background(), marshalled, nil)
 	require.Error(t, err)
 
 	// Success on a list
 	pager := client.List(nil)
 	count := 0
 	for pager.NextPage(context.Background()) {
-		count += len(pager.PageResponse().TableEntityQueryResponse.Value)
+		count += len(pager.PageResponse().Entities)
 	}
 
+	require.NoError(t, pager.Err())
 	require.Equal(t, 4, count)
 }

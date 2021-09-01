@@ -10,9 +10,9 @@ import (
 	"time"
 )
 
-// TableSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Table instance.
+// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Table instance.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
-type TableSASSignatureValues struct {
+type SASSignatureValues struct {
 	Version           string      // If not specified, this defaults to SASVersion
 	Protocol          SASProtocol // See the SASProtocol* constants
 	StartTime         time.Time   // Not specified if IsZero
@@ -29,26 +29,26 @@ type TableSASSignatureValues struct {
 
 // NewSASQueryParameters uses an account's SharedKeyCredential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredential) (SASQueryParameters, error) {
+func (v SASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredential) (SASQueryParameters, error) {
 	resource := ""
 
 	if v.Version != "" {
 		//Make sure the permission characters are in the correct order
-		perms := &TableSASPermissions{}
+		perms := &SASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
 			return SASQueryParameters{}, err
 		}
 		v.Permissions = perms.String()
 	} else if v.TableName == "" {
 		// Make sure the permission characters are in the correct order
-		perms := &TableSASPermissions{}
+		perms := &SASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
 			return SASQueryParameters{}, err
 		}
 		v.Permissions = perms.String()
 	} else {
 		// Make sure the permission characters are in the correct order
-		perms := &TableSASPermissions{}
+		perms := &SASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
 			return SASQueryParameters{}, err
 		}
@@ -103,9 +103,9 @@ func (v TableSASSignatureValues) NewSASQueryParameters(credential *SharedKeyCred
 	return p, err
 }
 
-// The TableSASPermissions type simplifies creating the permissions string for an Azure Table.
+// The SASPermissions type simplifies creating the permissions string for an Azure Table.
 // Initialize an instance of this type and then call its String method to set TableSASSignatureValues's Permissions field.
-type TableSASPermissions struct {
+type SASPermissions struct {
 	Read              bool
 	Add               bool
 	Update            bool
@@ -118,7 +118,7 @@ type TableSASPermissions struct {
 
 // String produces the SAS permissions string for an Azure Storage blob.
 // Call this method to set TableSASSignatureValues's Permissions field.
-func (p TableSASPermissions) String() string {
+func (p SASPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
 		b.WriteRune('r')
@@ -136,8 +136,8 @@ func (p TableSASPermissions) String() string {
 }
 
 // Parse initializes the TableSASPermissions's fields from a string.
-func (p *TableSASPermissions) Parse(s string) error {
-	*p = TableSASPermissions{} // Clear the flags
+func (p *SASPermissions) Parse(s string) error {
+	*p = SASPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':

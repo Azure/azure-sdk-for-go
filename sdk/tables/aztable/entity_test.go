@@ -29,7 +29,7 @@ func TestAddBasicEntity(t *testing.T) {
 
 			marshalled, err := json.Marshal(basicEntity)
 			require.Nil(t, err)
-			_, err = client.AddEntity(ctx, marshalled)
+			_, err = client.AddEntity(ctx, marshalled, nil)
 			require.Nil(t, err)
 
 			resp, err := client.GetEntity(ctx, "pk001", "rk001", nil)
@@ -42,12 +42,12 @@ func TestAddBasicEntity(t *testing.T) {
 			require.Equal(t, receivedEntity.RowKey, "rk001")
 
 			queryString := "PartitionKey eq 'pk001'"
-			listOptions := ListOptions{Filter: &queryString}
+			listOptions := ListEntitiesOptions{Filter: &queryString}
 			pager := client.List(&listOptions)
 			count := 0
 			for pager.NextPage(ctx) {
 				resp := pager.PageResponse()
-				for _, e := range resp.TableEntityQueryResponse.Value {
+				for _, e := range resp.Entities {
 					err = json.Unmarshal(e, &receivedEntity)
 					require.NoError(t, err)
 					require.Equal(t, receivedEntity.PartitionKey, "pk001")
@@ -55,7 +55,6 @@ func TestAddBasicEntity(t *testing.T) {
 					count += 1
 				}
 			}
-
 			require.Equal(t, count, 1)
 		})
 	}
@@ -71,16 +70,12 @@ func TestEdmMarshalling(t *testing.T) {
 
 			marshalled, err := json.Marshal(edmEntity)
 			require.Nil(t, err)
-			_, err = client.AddEntity(ctx, marshalled)
+			_, err = client.AddEntity(ctx, marshalled, nil)
 			require.Nil(t, err)
 
-			fullMetadata := &QueryOptions{
-				Format: OdataMetadataFormatApplicationJSONOdataFullmetadata.ToPtr(),
-			}
-
-			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), fullMetadata)
+			resp, err := client.GetEntity(ctx, "partition", fmt.Sprint(1), nil)
 			require.Nil(t, err)
-			var receivedEntity EdmEntity
+			var receivedEntity EDMEntity
 			err = json.Unmarshal(resp.Value, &receivedEntity)
 			require.Nil(t, err)
 

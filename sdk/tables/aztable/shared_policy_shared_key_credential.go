@@ -11,18 +11,18 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"sort"
 	"strings"
 	"sync/atomic"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
-func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCredential, error) {
 	c := SharedKeyCredential{accountName: accountName}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err
@@ -76,36 +76,6 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	return stringToSign, nil
 }
 
-//nolint
-func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
-	cm := map[string][]string{}
-	for k, v := range headers {
-		headerName := strings.TrimSpace(strings.ToLower(k))
-		if strings.HasPrefix(headerName, "x-ms-") {
-			cm[headerName] = v // NOTE: the value must not have any whitespace around it.
-		}
-	}
-	if len(cm) == 0 {
-		return ""
-	}
-
-	keys := make([]string, 0, len(cm))
-	for key := range cm {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
-	ch := bytes.NewBufferString("")
-	for i, key := range keys {
-		if i > 0 {
-			ch.WriteRune('\n')
-		}
-		ch.WriteString(key)
-		ch.WriteRune(':')
-		ch.WriteString(strings.Join(cm[key], ","))
-	}
-	return ch.String()
-}
-
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	cr := bytes.NewBufferString("/")
@@ -138,7 +108,7 @@ type sharedKeyCredPolicy struct {
 	cred *SharedKeyCredential
 }
 
-func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts azcore.AuthenticationOptions) *sharedKeyCredPolicy {
+func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts runtime.AuthenticationOptions) *sharedKeyCredPolicy {
 	s := &sharedKeyCredPolicy{
 		cred: cred,
 	}
@@ -146,11 +116,11 @@ func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts azcore.Authenticatio
 	return s
 }
 
-func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
-	if d := req.Request.Header.Get(headerXmsDate); d == "" {
-		req.Request.Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if d := req.Raw().Header.Get(headerXmsDate); d == "" {
+		req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	}
-	stringToSign, err := s.cred.buildStringToSign(req.Request)
+	stringToSign, err := s.cred.buildStringToSign(req.Raw())
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +129,7 @@ func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
 		return nil, err
 	}
 	authHeader := strings.Join([]string{"SharedKeyLite ", s.cred.AccountName(), ":", signature}, "")
-	req.Request.Header.Set(headerAuthorization, authHeader)
+	req.Raw().Header.Set(headerAuthorization, authHeader)
 
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
@@ -170,6 +140,6 @@ func (s *sharedKeyCredPolicy) Do(req *azcore.Request) (*http.Response, error) {
 }
 
 // NewAuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newSharedKeyCredPolicy(c, options)
 }

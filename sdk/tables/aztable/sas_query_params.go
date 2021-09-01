@@ -4,10 +4,8 @@
 package aztable
 
 import (
-	"errors"
 	"net"
 	"net/url"
-	"strings"
 	"time"
 )
 
@@ -21,8 +19,6 @@ const (
 	// SASProtocolHTTPSandHTTP can be specified for a SAS protocol
 	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
 )
-
-const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 
 // FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a
 // SASField's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
@@ -38,13 +34,12 @@ func FormatTimesForSASSigning(startTime, expiryTime time.Time) (string, string) 
 	return ss, se
 }
 
-// SASTimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
-const SASTimeFormat = "2006-01-02T15:04:05Z"                                                                    //"2017-07-27T00:00:00Z" // ISO 8601
-var SASTimeFormats = []string{"2006-01-02T15:04:05.0000000Z", SASTimeFormat, "2006-01-02T15:04Z", "2006-01-02"} // ISO 8601 formats, please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
+// sasTimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
+const sasTimeFormat = "2006-01-02T15:04:05Z" //"2017-07-27T00:00:00Z" // ISO 8601
 
 // formatSASTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
 func formatSASTimeWithDefaultFormat(t *time.Time) string {
-	return formatSASTime(t, SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return formatSASTime(t, sasTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // formatSASTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
@@ -52,24 +47,7 @@ func formatSASTime(t *time.Time, format string) string {
 	if format != "" {
 		return t.Format(format)
 	}
-	return t.Format(SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
-}
-
-// parseSASTimeString try to parse sas time string.
-func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) { //nolint
-	for _, sasTimeFormat := range SASTimeFormats {
-		t, err = time.Parse(sasTimeFormat, val)
-		if err == nil {
-			timeFormat = sasTimeFormat
-			break
-		}
-	}
-
-	if err != nil {
-		err = errors.New("fail to parse time with IOS 8601 formats, please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details")
-	}
-
-	return
+	return t.Format(sasTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
@@ -178,64 +156,6 @@ func (ipr *IPRange) String() string {
 		return start
 	}
 	return start + "-" + ipr.End.String()
-}
-
-// NewSASQueryParameters creates and initializes a SASQueryParameters object based on the
-// query parameter map's passed-in values. If deleteSASParametersFromValues is true,
-// all SAS-related query parameters are removed from the passed-in map. If
-// deleteSASParametersFromValues is false, the map passed-in map is unaltered.
-func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool) SASQueryParameters { //nolint
-	p := SASQueryParameters{}
-	for k, v := range values {
-		val := v[0]
-		isSASKey := true
-		switch strings.ToLower(k) {
-		case "sv":
-			p.version = val
-		case "ss":
-			p.services = val
-		case "srt":
-			p.resourceTypes = val
-		case "spr":
-			p.protocol = SASProtocol(val)
-		case "st":
-			p.startTime, p.stTimeFormat, _ = parseSASTimeString(val)
-		case "se":
-			p.expiryTime, p.seTimeFormat, _ = parseSASTimeString(val)
-		case "sip":
-			dashIndex := strings.Index(val, "-")
-			if dashIndex == -1 {
-				p.ipRange.Start = net.ParseIP(val)
-			} else {
-				p.ipRange.Start = net.ParseIP(val[:dashIndex])
-				p.ipRange.End = net.ParseIP(val[dashIndex+1:])
-			}
-		case "si":
-			p.identifier = val
-		case "sr":
-			p.resource = val
-		case "sp":
-			p.permissions = val
-		case "sig":
-			p.signature = val
-		case "skv":
-			p.signedVersion = val
-		case "spk":
-			p.startPk = val
-		case "epk":
-			p.endPk = val
-		case "srk":
-			p.startRk = val
-		case "erk":
-			p.endRk = val
-		default:
-			isSASKey = false // We didn't recognize the query parameter
-		}
-		if isSASKey && deleteSASParametersFromValues {
-			delete(values, k)
-		}
-	}
-	return p
 }
 
 // addToValues adds the SAS components to the specified query parameters map.

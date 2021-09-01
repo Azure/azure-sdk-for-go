@@ -6,4 +6,5 @@ package aztable
 const (
 	headerXmsDate       = "x-ms-date"
 	headerAuthorization = "Authorization"
+	etagOData           = "odata.etag"
 )

@@ -4,6 +4,8 @@
 ### Features Added
 
 ### Breaking Changes
+* Unexported `AzureCLICredentialOptions.TokenProvider` and its type,
+  `AzureCLITokenProvider`
 
 ### Bug Fixes
 

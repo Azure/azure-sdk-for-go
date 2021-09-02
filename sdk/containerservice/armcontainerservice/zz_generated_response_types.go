@@ -10,9 +10,10 @@ package armcontainerservice
 
 import (
 	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AgentPoolsCreateOrUpdatePollerResponse contains the response from method AgentPools.CreateOrUpdate.

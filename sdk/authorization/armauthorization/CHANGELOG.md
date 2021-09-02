@@ -1,6 +1,6 @@
 # Release History
 
-## v0.2.0 (released)
+## v0.2.0 (2021-09-03)
 ### Breaking Changes
 
 - Function `*RoleEligibilityScheduleRequestsClient.Create` return value(s) have been changed from `(RoleEligibilityScheduleRequestResponse, error)` to `(RoleEligibilityScheduleRequestsCreateResponse, error)`
@@ -618,4 +618,4 @@
 Total 133 breaking change(s), 766 additive change(s).
 
 
-## v0.1.0 (released)
+## v0.1.0 (2021-06-24)

@@ -20,25 +20,25 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// AzureCLITokenProvider can be used to supply the AzureCLICredential with an alternate token provider
-type AzureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
+// used by tests to fake invoking the CLI
+type azureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
 
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
 // All zero-value fields will be initialized with their default values.
 type AzureCLICredentialOptions struct {
-	TokenProvider AzureCLITokenProvider
+	tokenProvider azureCLITokenProvider
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
 func (o *AzureCLICredentialOptions) init() {
-	if o.TokenProvider == nil {
-		o.TokenProvider = defaultTokenProvider()
+	if o.tokenProvider == nil {
+		o.tokenProvider = defaultTokenProvider()
 	}
 }
 
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
 type AzureCLICredential struct {
-	tokenProvider AzureCLITokenProvider
+	tokenProvider azureCLITokenProvider
 }
 
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
@@ -50,7 +50,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	}
 	cp.init()
 	return &AzureCLICredential{
-		tokenProvider: cp.TokenProvider,
+		tokenProvider: cp.tokenProvider,
 	}, nil
 }
 

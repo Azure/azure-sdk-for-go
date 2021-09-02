@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,71 +11,73 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
-func NewOperationsClient(con *armcore.Connection) *OperationsClient {
-	return &OperationsClient{con: con}
+func NewOperationsClient(con *arm.Connection) *OperationsClient {
+	return &OperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // List - Gets a list of compute operations.
 // If the operation fails it returns a generic error.
-func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (ComputeOperationListResultResponse, error) {
+func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (OperationsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return ComputeOperationListResultResponse{}, err
+		return OperationsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComputeOperationListResultResponse{}, err
+		return OperationsListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return ComputeOperationListResultResponse{}, client.listHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return OperationsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
+func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/operations"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (ComputeOperationListResultResponse, error) {
-	var val *ComputeOperationListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ComputeOperationListResultResponse{}, err
+func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsListResponse, error) {
+	result := OperationsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeOperationListResult); err != nil {
+		return OperationsListResponse{}, err
 	}
-	return ComputeOperationListResultResponse{RawResponse: resp.Response, ComputeOperationListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *OperationsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *OperationsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

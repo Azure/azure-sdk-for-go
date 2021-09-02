@@ -1,3 +1,876 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `*TokensClient.List` return value(s) have been changed from `(TokenListResultPager)` to `(*TokensListPager)`
+- Function `NewReplicationsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionPollerResponse, error)` to `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)`
+- Function `*TaskRunsClient.BeginUpdate` return value(s) have been changed from `(TaskRunPollerResponse, error)` to `(TaskRunsUpdatePollerResponse, error)`
+- Function `*RegistriesClient.RegenerateCredential` return value(s) have been changed from `(RegistryListCredentialsResultResponse, error)` to `(RegistriesRegenerateCredentialResponse, error)`
+- Function `*AgentPoolsClient.GetQueueStatus` return value(s) have been changed from `(AgentPoolQueueStatusResponse, error)` to `(AgentPoolsGetQueueStatusResponse, error)`
+- Function `*TaskRunsClient.List` return value(s) have been changed from `(TaskRunListResultPager)` to `(*TaskRunsListPager)`
+- Function `*ScopeMapsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ScopeMapsDeletePollerResponse, error)`
+- Function `*ReplicationsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ReplicationsDeletePollerResponse, error)`
+- Function `*ReplicationsClient.List` return value(s) have been changed from `(ReplicationListResultPager)` to `(*ReplicationsListPager)`
+- Function `*RegistriesClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(RegistriesDeletePollerResponse, error)`
+- Function `*RegistriesClient.List` return value(s) have been changed from `(RegistryListResultPager)` to `(*RegistriesListPager)`
+- Function `NewTokensClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*RegistriesClient.BeginGenerateCredentials` return value(s) have been changed from `(GenerateCredentialsResultPollerResponse, error)` to `(RegistriesGenerateCredentialsPollerResponse, error)`
+- Function `*ScopeMapsClient.Get` return value(s) have been changed from `(ScopeMapResponse, error)` to `(ScopeMapsGetResponse, error)`
+- Function `*ImportPipelinesClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ImportPipelinesDeletePollerResponse, error)`
+- Function `*WebhooksClient.ListEvents` return value(s) have been changed from `(EventListResultPager)` to `(*WebhooksListEventsPager)`
+- Function `*TokensClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(TokensDeletePollerResponse, error)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*ExportPipelinesClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ExportPipelinesDeletePollerResponse, error)`
+- Function `*RegistriesClient.BeginCreate` return value(s) have been changed from `(RegistryPollerResponse, error)` to `(RegistriesCreatePollerResponse, error)`
+- Function `*ReplicationsClient.BeginUpdate` return value(s) have been changed from `(ReplicationPollerResponse, error)` to `(ReplicationsUpdatePollerResponse, error)`
+- Function `*ScopeMapsClient.List` return value(s) have been changed from `(ScopeMapListResultPager)` to `(*ScopeMapsListPager)`
+- Function `*RegistriesClient.BeginUpdate` return value(s) have been changed from `(RegistryPollerResponse, error)` to `(RegistriesUpdatePollerResponse, error)`
+- Function `NewTasksClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*PipelineRunsClient.BeginCreate` return value(s) have been changed from `(PipelineRunPollerResponse, error)` to `(PipelineRunsCreatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionResponse, error)` to `(PrivateEndpointConnectionsGetResponse, error)`
+- Function `*ExportPipelinesClient.Get` return value(s) have been changed from `(ExportPipelineResponse, error)` to `(ExportPipelinesGetResponse, error)`
+- Function `*RegistriesClient.ListByResourceGroup` return value(s) have been changed from `(RegistryListResultPager)` to `(*RegistriesListByResourceGroupPager)`
+- Function `*TaskRunsClient.GetDetails` return value(s) have been changed from `(TaskRunResponse, error)` to `(TaskRunsGetDetailsResponse, error)`
+- Function `*TokensClient.Get` return value(s) have been changed from `(TokenResponse, error)` to `(TokensGetResponse, error)`
+- Function `*TasksClient.List` return value(s) have been changed from `(TaskListResultPager)` to `(*TasksListPager)`
+- Function `NewRunsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewWebhooksClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TaskRunsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(TaskRunsDeletePollerResponse, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationListResultPager)` to `(*OperationsListPager)`
+- Function `*WebhooksClient.Ping` return value(s) have been changed from `(EventInfoResponse, error)` to `(WebhooksPingResponse, error)`
+- Function `*RunsClient.Get` return value(s) have been changed from `(RunResponse, error)` to `(RunsGetResponse, error)`
+- Function `NewImportPipelinesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAgentPoolsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TasksClient.Get` return value(s) have been changed from `(TaskResponse, error)` to `(TasksGetResponse, error)`
+- Function `*ConnectedRegistriesClient.BeginCreate` return value(s) have been changed from `(ConnectedRegistryPollerResponse, error)` to `(ConnectedRegistriesCreatePollerResponse, error)`
+- Function `*RegistriesClient.ListPrivateLinkResources` return value(s) have been changed from `(PrivateLinkResourceListResultPager)` to `(*RegistriesListPrivateLinkResourcesPager)`
+- Function `*ReplicationsClient.Get` return value(s) have been changed from `(ReplicationResponse, error)` to `(ReplicationsGetResponse, error)`
+- Function `*RegistriesClient.BeginImportImage` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(RegistriesImportImagePollerResponse, error)`
+- Function `*RegistriesClient.BeginScheduleRun` return value(s) have been changed from `(RunPollerResponse, error)` to `(RegistriesScheduleRunPollerResponse, error)`
+- Function `*PipelineRunsClient.Get` return value(s) have been changed from `(PipelineRunResponseType, error)` to `(PipelineRunsGetResponse, error)`
+- Function `*ImportPipelinesClient.List` return value(s) have been changed from `(ImportPipelineListResultPager)` to `(*ImportPipelinesListPager)`
+- Function `*ConnectedRegistriesClient.List` return value(s) have been changed from `(ConnectedRegistryListResultPager)` to `(*ConnectedRegistriesListPager)`
+- Function `*RunsClient.BeginCancel` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(RunsCancelPollerResponse, error)`
+- Function `*TaskRunsClient.Get` return value(s) have been changed from `(TaskRunResponse, error)` to `(TaskRunsGetResponse, error)`
+- Function `*WebhooksClient.GetCallbackConfig` return value(s) have been changed from `(CallbackConfigResponse, error)` to `(WebhooksGetCallbackConfigResponse, error)`
+- Function `NewRegistriesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewTaskRunsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewConnectedRegistriesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TasksClient.BeginCreate` return value(s) have been changed from `(TaskPollerResponse, error)` to `(TasksCreatePollerResponse, error)`
+- Function `*RegistriesClient.CheckNameAvailability` return value(s) have been changed from `(RegistryNameStatusResponse, error)` to `(RegistriesCheckNameAvailabilityResponse, error)`
+- Function `*ExportPipelinesClient.List` return value(s) have been changed from `(ExportPipelineListResultPager)` to `(*ExportPipelinesListPager)`
+- Function `*ReplicationsClient.BeginCreate` return value(s) have been changed from `(ReplicationPollerResponse, error)` to `(ReplicationsCreatePollerResponse, error)`
+- Function `*ScopeMapsClient.BeginUpdate` return value(s) have been changed from `(ScopeMapPollerResponse, error)` to `(ScopeMapsUpdatePollerResponse, error)`
+- Function `*TasksClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(TasksDeletePollerResponse, error)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*WebhooksClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(WebhooksDeletePollerResponse, error)`
+- Function `*RegistriesClient.ListUsages` return value(s) have been changed from `(RegistryUsageListResultResponse, error)` to `(RegistriesListUsagesResponse, error)`
+- Function `*PipelineRunsClient.List` return value(s) have been changed from `(PipelineRunListResultPager)` to `(*PipelineRunsListPager)`
+- Function `*AgentPoolsClient.Get` return value(s) have been changed from `(AgentPoolResponse, error)` to `(AgentPoolsGetResponse, error)`
+- Function `*TokensClient.BeginCreate` return value(s) have been changed from `(TokenPollerResponse, error)` to `(TokensCreatePollerResponse, error)`
+- Function `*AgentPoolsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(AgentPoolsDeletePollerResponse, error)`
+- Function `*ScopeMapsClient.BeginCreate` return value(s) have been changed from `(ScopeMapPollerResponse, error)` to `(ScopeMapsCreatePollerResponse, error)`
+- Function `NewExportPipelinesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ImportPipelinesClient.Get` return value(s) have been changed from `(ImportPipelineResponse, error)` to `(ImportPipelinesGetResponse, error)`
+- Function `*ConnectedRegistriesClient.BeginDeactivate` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ConnectedRegistriesDeactivatePollerResponse, error)`
+- Function `*AgentPoolsClient.BeginCreate` return value(s) have been changed from `(AgentPoolPollerResponse, error)` to `(AgentPoolsCreatePollerResponse, error)`
+- Function `*RunsClient.BeginUpdate` return value(s) have been changed from `(RunPollerResponse, error)` to `(RunsUpdatePollerResponse, error)`
+- Function `*TaskRunsClient.BeginCreate` return value(s) have been changed from `(TaskRunPollerResponse, error)` to `(TaskRunsCreatePollerResponse, error)`
+- Function `*RegistriesClient.ListCredentials` return value(s) have been changed from `(RegistryListCredentialsResultResponse, error)` to `(RegistriesListCredentialsResponse, error)`
+- Function `*AgentPoolsClient.BeginUpdate` return value(s) have been changed from `(AgentPoolPollerResponse, error)` to `(AgentPoolsUpdatePollerResponse, error)`
+- Function `*TokensClient.BeginUpdate` return value(s) have been changed from `(TokenPollerResponse, error)` to `(TokensUpdatePollerResponse, error)`
+- Function `*TasksClient.BeginUpdate` return value(s) have been changed from `(TaskPollerResponse, error)` to `(TasksUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionListResultPager)` to `(*PrivateEndpointConnectionsListPager)`
+- Function `*ConnectedRegistriesClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ConnectedRegistriesDeletePollerResponse, error)`
+- Function `*PipelineRunsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(PipelineRunsDeletePollerResponse, error)`
+- Function `*AgentPoolsClient.List` return value(s) have been changed from `(AgentPoolListResultPager)` to `(*AgentPoolsListPager)`
+- Function `NewPipelineRunsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*WebhooksClient.BeginUpdate` return value(s) have been changed from `(WebhookPollerResponse, error)` to `(WebhooksUpdatePollerResponse, error)`
+- Function `*ConnectedRegistriesClient.BeginUpdate` return value(s) have been changed from `(ConnectedRegistryPollerResponse, error)` to `(ConnectedRegistriesUpdatePollerResponse, error)`
+- Function `*RegistriesClient.Get` return value(s) have been changed from `(RegistryResponse, error)` to `(RegistriesGetResponse, error)`
+- Function `*RegistriesClient.GetBuildSourceUploadURL` return value(s) have been changed from `(SourceUploadDefinitionResponse, error)` to `(RegistriesGetBuildSourceUploadURLResponse, error)`
+- Function `*ConnectedRegistriesClient.Get` return value(s) have been changed from `(ConnectedRegistryResponse, error)` to `(ConnectedRegistriesGetResponse, error)`
+- Function `*RunsClient.List` return value(s) have been changed from `(RunListResultPager)` to `(*RunsListPager)`
+- Function `*TasksClient.GetDetails` return value(s) have been changed from `(TaskResponse, error)` to `(TasksGetDetailsResponse, error)`
+- Function `*ExportPipelinesClient.BeginCreate` return value(s) have been changed from `(ExportPipelinePollerResponse, error)` to `(ExportPipelinesCreatePollerResponse, error)`
+- Function `*ImportPipelinesClient.BeginCreate` return value(s) have been changed from `(ImportPipelinePollerResponse, error)` to `(ImportPipelinesCreatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(PrivateEndpointConnectionsDeletePollerResponse, error)`
+- Function `*WebhooksClient.List` return value(s) have been changed from `(WebhookListResultPager)` to `(*WebhooksListPager)`
+- Function `NewScopeMapsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*WebhooksClient.Get` return value(s) have been changed from `(WebhookResponse, error)` to `(WebhooksGetResponse, error)`
+- Function `*RunsClient.GetLogSasURL` return value(s) have been changed from `(RunGetLogResultResponse, error)` to `(RunsGetLogSasURLResponse, error)`
+- Function `*WebhooksClient.BeginCreate` return value(s) have been changed from `(WebhookPollerResponse, error)` to `(WebhooksCreatePollerResponse, error)`
+- Function `*RegistriesClient.ResumeCreate` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumeDelete` has been removed
+- Function `*runListResultPager.NextPage` has been removed
+- Function `*TasksClient.ResumeDelete` has been removed
+- Function `*scopeMapPoller.FinalResponse` has been removed
+- Function `*pipelineRunPoller.FinalResponse` has been removed
+- Function `*ImportPipelinesClient.ResumeDelete` has been removed
+- Function `*generateCredentialsResultPoller.Poll` has been removed
+- Function `*taskListResultPager.NextPage` has been removed
+- Function `*registryPoller.Poll` has been removed
+- Function `*connectedRegistryListResultPager.Err` has been removed
+- Function `*exportPipelinePoller.Poll` has been removed
+- Function `*scopeMapPoller.Poll` has been removed
+- Function `*scopeMapPoller.ResumeToken` has been removed
+- Function `*runListResultPager.Err` has been removed
+- Function `*scopeMapListResultPager.Err` has been removed
+- Function `*connectedRegistryListResultPager.NextPage` has been removed
+- Function `*taskRunPoller.Done` has been removed
+- Function `*replicationPoller.Poll` has been removed
+- Function `*taskPoller.Done` has been removed
+- Function `*importPipelineListResultPager.PageResponse` has been removed
+- Function `*AgentPoolsClient.ResumeDelete` has been removed
+- Function `*agentPoolListResultPager.PageResponse` has been removed
+- Function `*pipelineRunPoller.Poll` has been removed
+- Function `*ConnectedRegistriesClient.ResumeDeactivate` has been removed
+- Function `*TokensClient.ResumeUpdate` has been removed
+- Function `*TasksClient.ResumeCreate` has been removed
+- Function `*tokenListResultPager.Err` has been removed
+- Function `*operationListResultPager.Err` has been removed
+- Function `*taskPoller.Poll` has been removed
+- Function `*taskRunPoller.FinalResponse` has been removed
+- Function `*webhookPoller.Done` has been removed
+- Function `*privateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*eventListResultPager.NextPage` has been removed
+- Function `*runPoller.Poll` has been removed
+- Function `*RegistriesClient.ResumeScheduleRun` has been removed
+- Function `*taskRunPoller.ResumeToken` has been removed
+- Function `*AgentPoolsClient.ResumeCreate` has been removed
+- Function `*ReplicationsClient.ResumeDelete` has been removed
+- Function `*RunsClient.ResumeCancel` has been removed
+- Function `*TaskRunsClient.ResumeDelete` has been removed
+- Function `*privateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*httpPoller.FinalResponse` has been removed
+- Function `*agentPoolPoller.ResumeToken` has been removed
+- Function `*registryPoller.FinalResponse` has been removed
+- Function `*webhookListResultPager.NextPage` has been removed
+- Function `*taskRunPoller.Poll` has been removed
+- Function `*ImportPipelinesClient.ResumeCreate` has been removed
+- Function `*privateEndpointConnectionListResultPager.NextPage` has been removed
+- Function `*connectedRegistryPoller.ResumeToken` has been removed
+- Function `*taskRunListResultPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumeCreateOrUpdate` has been removed
+- Function `*TokensClient.ResumeCreate` has been removed
+- Function `*agentPoolListResultPager.Err` has been removed
+- Function `*registryPoller.ResumeToken` has been removed
+- Function `*WebhooksClient.ResumeUpdate` has been removed
+- Function `*pipelineRunListResultPager.Err` has been removed
+- Function `*privateEndpointConnectionPoller.Poll` has been removed
+- Function `*runListResultPager.PageResponse` has been removed
+- Function `*tokenPoller.Poll` has been removed
+- Function `*ScopeMapsClient.ResumeDelete` has been removed
+- Function `*pipelineRunListResultPager.PageResponse` has been removed
+- Function `*AgentPoolsClient.ResumeUpdate` has been removed
+- Function `*RunsClient.ResumeUpdate` has been removed
+- Function `*ScopeMapsClient.ResumeCreate` has been removed
+- Function `*privateLinkResourceListResultPager.Err` has been removed
+- Function `*exportPipelinePoller.Done` has been removed
+- Function `*tokenListResultPager.NextPage` has been removed
+- Function `*ReplicationsClient.ResumeCreate` has been removed
+- Function `*exportPipelineListResultPager.NextPage` has been removed
+- Function `*WebhooksClient.ResumeCreate` has been removed
+- Function `*replicationPoller.FinalResponse` has been removed
+- Function `*importPipelinePoller.ResumeToken` has been removed
+- Function `*TasksClient.ResumeUpdate` has been removed
+- Function `*RegistriesClient.ResumeGenerateCredentials` has been removed
+- Function `*replicationPoller.ResumeToken` has been removed
+- Function `*ConnectedRegistriesClient.ResumeDelete` has been removed
+- Function `*exportPipelinePoller.FinalResponse` has been removed
+- Function `*httpPoller.Poll` has been removed
+- Function `*registryListResultPager.NextPage` has been removed
+- Function `*runPoller.ResumeToken` has been removed
+- Function `*replicationListResultPager.Err` has been removed
+- Function `*tokenPoller.Done` has been removed
+- Function `*privateLinkResourceListResultPager.NextPage` has been removed
+- Function `*privateEndpointConnectionListResultPager.PageResponse` has been removed
+- Function `*TaskRunsClient.ResumeCreate` has been removed
+- Function `*webhookListResultPager.PageResponse` has been removed
+- Function `*ExportPipelinesClient.ResumeDelete` has been removed
+- Function `*agentPoolPoller.Done` has been removed
+- Function `*httpPoller.ResumeToken` has been removed
+- Function `*webhookPoller.FinalResponse` has been removed
+- Function `*webhookListResultPager.Err` has been removed
+- Function `*RegistriesClient.ResumeUpdate` has been removed
+- Function `*agentPoolListResultPager.NextPage` has been removed
+- Function `*webhookPoller.Poll` has been removed
+- Function `*RegistriesClient.ResumeImportImage` has been removed
+- Function `*agentPoolPoller.Poll` has been removed
+- Function `*registryPoller.Done` has been removed
+- Function `*PipelineRunsClient.ResumeDelete` has been removed
+- Function `*tokenPoller.FinalResponse` has been removed
+- Function `*replicationListResultPager.NextPage` has been removed
+- Function `*runPoller.FinalResponse` has been removed
+- Function `*scopeMapListResultPager.PageResponse` has been removed
+- Function `*exportPipelineListResultPager.Err` has been removed
+- Function `*taskPoller.ResumeToken` has been removed
+- Function `*taskRunListResultPager.Err` has been removed
+- Function `*importPipelinePoller.FinalResponse` has been removed
+- Function `*tokenListResultPager.PageResponse` has been removed
+- Function `*TaskRunsClient.ResumeUpdate` has been removed
+- Function `*connectedRegistryListResultPager.PageResponse` has been removed
+- Function `*connectedRegistryPoller.FinalResponse` has been removed
+- Function `*exportPipelinePoller.ResumeToken` has been removed
+- Function `*taskListResultPager.Err` has been removed
+- Function `*importPipelineListResultPager.NextPage` has been removed
+- Function `*importPipelinePoller.Done` has been removed
+- Function `*registryListResultPager.PageResponse` has been removed
+- Function `*connectedRegistryPoller.Poll` has been removed
+- Function `*exportPipelineListResultPager.PageResponse` has been removed
+- Function `*WebhooksClient.ResumeDelete` has been removed
+- Function `*ConnectedRegistriesClient.ResumeCreate` has been removed
+- Function `*taskRunListResultPager.NextPage` has been removed
+- Function `*pipelineRunPoller.Done` has been removed
+- Function `*connectedRegistryPoller.Done` has been removed
+- Function `*taskListResultPager.PageResponse` has been removed
+- Function `*scopeMapListResultPager.NextPage` has been removed
+- Function `*ConnectedRegistriesClient.ResumeUpdate` has been removed
+- Function `*replicationListResultPager.PageResponse` has been removed
+- Function `*ScopeMapsClient.ResumeUpdate` has been removed
+- Function `*importPipelinePoller.Poll` has been removed
+- Function `*generateCredentialsResultPoller.FinalResponse` has been removed
+- Function `*replicationPoller.Done` has been removed
+- Function `*httpPoller.Done` has been removed
+- Function `*operationListResultPager.NextPage` has been removed
+- Function `*agentPoolPoller.FinalResponse` has been removed
+- Function `*operationListResultPager.PageResponse` has been removed
+- Function `*ExportPipelinesClient.ResumeCreate` has been removed
+- Function `*RegistriesClient.ResumeDelete` has been removed
+- Function `*privateLinkResourceListResultPager.PageResponse` has been removed
+- Function `*ReplicationsClient.ResumeUpdate` has been removed
+- Function `*scopeMapPoller.Done` has been removed
+- Function `*eventListResultPager.Err` has been removed
+- Function `*privateEndpointConnectionListResultPager.Err` has been removed
+- Function `*TokensClient.ResumeDelete` has been removed
+- Function `*pipelineRunListResultPager.NextPage` has been removed
+- Function `*webhookPoller.ResumeToken` has been removed
+- Function `*taskPoller.FinalResponse` has been removed
+- Function `*generateCredentialsResultPoller.Done` has been removed
+- Function `*eventListResultPager.PageResponse` has been removed
+- Function `*runPoller.Done` has been removed
+- Function `*importPipelineListResultPager.Err` has been removed
+- Function `*registryListResultPager.Err` has been removed
+- Function `*generateCredentialsResultPoller.ResumeToken` has been removed
+- Function `*PipelineRunsClient.ResumeCreate` has been removed
+- Function `*tokenPoller.ResumeToken` has been removed
+- Function `*privateEndpointConnectionPoller.Done` has been removed
+- Function `*pipelineRunPoller.ResumeToken` has been removed
+- Struct `AgentPoolListResultResponse` has been removed
+- Struct `AgentPoolPollerResponse` has been removed
+- Struct `AgentPoolQueueStatusResponse` has been removed
+- Struct `AgentPoolResponse` has been removed
+- Struct `CallbackConfigResponse` has been removed
+- Struct `ConnectedRegistryListResultResponse` has been removed
+- Struct `ConnectedRegistryPollerResponse` has been removed
+- Struct `ConnectedRegistryResponse` has been removed
+- Struct `EventInfoResponse` has been removed
+- Struct `EventListResultResponse` has been removed
+- Struct `ExportPipelineListResultResponse` has been removed
+- Struct `ExportPipelinePollerResponse` has been removed
+- Struct `ExportPipelineResponse` has been removed
+- Struct `GenerateCredentialsResultPollerResponse` has been removed
+- Struct `GenerateCredentialsResultResponse` has been removed
+- Struct `HTTPPollerResponse` has been removed
+- Struct `ImportPipelineListResultResponse` has been removed
+- Struct `ImportPipelinePollerResponse` has been removed
+- Struct `ImportPipelineResponse` has been removed
+- Struct `OperationListResultResponse` has been removed
+- Struct `PipelineRunListResultResponse` has been removed
+- Struct `PipelineRunPollerResponse` has been removed
+- Struct `PipelineRunResponseType` has been removed
+- Struct `PrivateEndpointConnectionListResultResponse` has been removed
+- Struct `PrivateEndpointConnectionPollerResponse` has been removed
+- Struct `PrivateEndpointConnectionResponse` has been removed
+- Struct `PrivateLinkResourceListResultResponse` has been removed
+- Struct `RegistryListCredentialsResultResponse` has been removed
+- Struct `RegistryListResultResponse` has been removed
+- Struct `RegistryNameStatusResponse` has been removed
+- Struct `RegistryPollerResponse` has been removed
+- Struct `RegistryResponse` has been removed
+- Struct `RegistryUsageListResultResponse` has been removed
+- Struct `ReplicationListResultResponse` has been removed
+- Struct `ReplicationPollerResponse` has been removed
+- Struct `ReplicationResponse` has been removed
+- Struct `RunGetLogResultResponse` has been removed
+- Struct `RunListResultResponse` has been removed
+- Struct `RunPollerResponse` has been removed
+- Struct `RunResponse` has been removed
+- Struct `ScopeMapListResultResponse` has been removed
+- Struct `ScopeMapPollerResponse` has been removed
+- Struct `ScopeMapResponse` has been removed
+- Struct `SourceUploadDefinitionResponse` has been removed
+- Struct `TaskListResultResponse` has been removed
+- Struct `TaskPollerResponse` has been removed
+- Struct `TaskResponse` has been removed
+- Struct `TaskRunListResultResponse` has been removed
+- Struct `TaskRunPollerResponse` has been removed
+- Struct `TaskRunResponse` has been removed
+- Struct `TokenListResultResponse` has been removed
+- Struct `TokenPollerResponse` has been removed
+- Struct `TokenResponse` has been removed
+- Struct `WebhookListResultResponse` has been removed
+- Struct `WebhookPollerResponse` has been removed
+- Struct `WebhookResponse` has been removed
+
+### New Content
+
+- New function `*RegistriesScheduleRunPollerResponse.Resume(context.Context, *RegistriesClient, string) error`
+- New function `*RunsCancelPollerResponse.Resume(context.Context, *RunsClient, string) error`
+- New function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `ReplicationsCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationsCreateResponse, error)`
+- New function `*AgentPoolsUpdatePoller.FinalResponse(context.Context) (AgentPoolsUpdateResponse, error)`
+- New function `*PipelineRunsCreatePoller.ResumeToken() (string, error)`
+- New function `*OperationsListPager.Err() error`
+- New function `*RegistriesScheduleRunPoller.FinalResponse(context.Context) (RegistriesScheduleRunResponse, error)`
+- New function `*ConnectedRegistriesDeletePoller.ResumeToken() (string, error)`
+- New function `*TaskRunsUpdatePoller.Done() bool`
+- New function `*TasksListPager.NextPage(context.Context) bool`
+- New function `*TokensCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TaskRunsDeletePollerResponse.Resume(context.Context, *TaskRunsClient, string) error`
+- New function `*AgentPoolsCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistriesCreatePoller.Done() bool`
+- New function `*TaskRunsCreatePoller.ResumeToken() (string, error)`
+- New function `*WebhooksListPager.NextPage(context.Context) bool`
+- New function `*TokensCreatePoller.FinalResponse(context.Context) (TokensCreateResponse, error)`
+- New function `*RunsCancelPoller.Poll(context.Context) (*http.Response, error)`
+- New function `RegistriesUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistriesUpdateResponse, error)`
+- New function `TasksDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TasksDeleteResponse, error)`
+- New function `ImportPipelinesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ImportPipelinesDeleteResponse, error)`
+- New function `*AgentPoolsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistriesListPrivateLinkResourcesPager.Err() error`
+- New function `*TasksUpdatePoller.ResumeToken() (string, error)`
+- New function `*TasksCreatePollerResponse.Resume(context.Context, *TasksClient, string) error`
+- New function `TaskRunsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TaskRunsDeleteResponse, error)`
+- New function `*TokensDeletePoller.Done() bool`
+- New function `*TasksUpdatePollerResponse.Resume(context.Context, *TasksClient, string) error`
+- New function `*TaskRunsCreatePollerResponse.Resume(context.Context, *TaskRunsClient, string) error`
+- New function `*RegistriesGenerateCredentialsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TasksDeletePoller.ResumeToken() (string, error)`
+- New function `*ExportPipelinesCreatePoller.Done() bool`
+- New function `ScopeMapsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ScopeMapsUpdateResponse, error)`
+- New function `*WebhooksCreatePoller.ResumeToken() (string, error)`
+- New function `*WebhooksListPager.Err() error`
+- New function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error)`
+- New function `*ReplicationsCreatePoller.FinalResponse(context.Context) (ReplicationsCreateResponse, error)`
+- New function `*RegistriesGenerateCredentialsPoller.FinalResponse(context.Context) (RegistriesGenerateCredentialsResponse, error)`
+- New function `*ReplicationsListPager.Err() error`
+- New function `RegistriesGenerateCredentialsPollerResponse.PollUntilDone(context.Context, time.Duration) (RegistriesGenerateCredentialsResponse, error)`
+- New function `*PrivateEndpointConnectionsListPager.Err() error`
+- New function `*TasksDeletePollerResponse.Resume(context.Context, *TasksClient, string) error`
+- New function `*TasksDeletePoller.FinalResponse(context.Context) (TasksDeleteResponse, error)`
+- New function `*TasksCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RunsListPager.NextPage(context.Context) bool`
+- New function `*ConnectedRegistriesDeletePoller.Done() bool`
+- New function `*ReplicationsCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistriesListPager.PageResponse() RegistriesListResponse`
+- New function `*RegistriesListPrivateLinkResourcesPager.PageResponse() RegistriesListPrivateLinkResourcesResponse`
+- New function `TokensDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TokensDeleteResponse, error)`
+- New function `*ReplicationsCreatePoller.Done() bool`
+- New function `*AgentPoolsCreatePoller.FinalResponse(context.Context) (AgentPoolsCreateResponse, error)`
+- New function `*WebhooksCreatePollerResponse.Resume(context.Context, *WebhooksClient, string) error`
+- New function `*TokensListPager.Err() error`
+- New function `*TaskRunsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistriesListPager.Err() error`
+- New function `*ConnectedRegistriesDeactivatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationsDeletePollerResponse.Resume(context.Context, *ReplicationsClient, string) error`
+- New function `*RegistriesGenerateCredentialsPollerResponse.Resume(context.Context, *RegistriesClient, string) error`
+- New function `*ConnectedRegistriesUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsCreatePoller.ResumeToken() (string, error)`
+- New function `RegistriesCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistriesCreateResponse, error)`
+- New function `RegistriesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistriesDeleteResponse, error)`
+- New function `ConnectedRegistriesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ConnectedRegistriesDeleteResponse, error)`
+- New function `*ImportPipelinesListPager.NextPage(context.Context) bool`
+- New function `*ConnectedRegistriesListPager.Err() error`
+- New function `*TasksListPager.PageResponse() TasksListResponse`
+- New function `*RegistriesUpdatePoller.FinalResponse(context.Context) (RegistriesUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*RegistriesCreatePollerResponse.Resume(context.Context, *RegistriesClient, string) error`
+- New function `*RegistriesImportImagePollerResponse.Resume(context.Context, *RegistriesClient, string) error`
+- New function `*RegistriesScheduleRunPoller.Poll(context.Context) (*http.Response, error)`
+- New function `TaskRunsCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (TaskRunsCreateResponse, error)`
+- New function `PipelineRunsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PipelineRunsDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsListPager.NextPage(context.Context) bool`
+- New function `TokensUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TokensUpdateResponse, error)`
+- New function `*AgentPoolsUpdatePoller.Done() bool`
+- New function `*PipelineRunsCreatePoller.FinalResponse(context.Context) (PipelineRunsCreateResponse, error)`
+- New function `*AgentPoolsCreatePoller.Done() bool`
+- New function `*RegistriesImportImagePoller.FinalResponse(context.Context) (RegistriesImportImageResponse, error)`
+- New function `*ScopeMapsDeletePoller.FinalResponse(context.Context) (ScopeMapsDeleteResponse, error)`
+- New function `ReplicationsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationsDeleteResponse, error)`
+- New function `*PipelineRunsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TasksCreatePoller.ResumeToken() (string, error)`
+- New function `*ScopeMapsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TasksUpdatePoller.FinalResponse(context.Context) (TasksUpdateResponse, error)`
+- New function `*WebhooksListEventsPager.Err() error`
+- New function `*ScopeMapsUpdatePollerResponse.Resume(context.Context, *ScopeMapsClient, string) error`
+- New function `*RegistriesListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*RunsListPager.PageResponse() RunsListResponse`
+- New function `*RegistriesDeletePollerResponse.Resume(context.Context, *RegistriesClient, string) error`
+- New function `*ConnectedRegistriesDeactivatePollerResponse.Resume(context.Context, *ConnectedRegistriesClient, string) error`
+- New function `WebhooksUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WebhooksUpdateResponse, error)`
+- New function `*ImportPipelinesCreatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsDeletePoller.ResumeToken() (string, error)`
+- New function `*RegistriesDeletePoller.ResumeToken() (string, error)`
+- New function `*WebhooksDeletePollerResponse.Resume(context.Context, *WebhooksClient, string) error`
+- New function `WebhooksCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (WebhooksCreateResponse, error)`
+- New function `ExportPipelinesCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ExportPipelinesCreateResponse, error)`
+- New function `*TaskRunsCreatePoller.FinalResponse(context.Context) (TaskRunsCreateResponse, error)`
+- New function `*WebhooksDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsDeletePoller.Done() bool`
+- New function `*RegistriesCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistriesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ScopeMapsCreatePoller.FinalResponse(context.Context) (ScopeMapsCreateResponse, error)`
+- New function `*ImportPipelinesCreatePollerResponse.Resume(context.Context, *ImportPipelinesClient, string) error`
+- New function `*WebhooksUpdatePoller.ResumeToken() (string, error)`
+- New function `*PipelineRunsCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PipelineRunsDeletePoller.FinalResponse(context.Context) (PipelineRunsDeleteResponse, error)`
+- New function `*PipelineRunsCreatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*WebhooksDeletePoller.Done() bool`
+- New function `AgentPoolsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AgentPoolsUpdateResponse, error)`
+- New function `*WebhooksListEventsPager.NextPage(context.Context) bool`
+- New function `ImportPipelinesCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ImportPipelinesCreateResponse, error)`
+- New function `*RegistriesUpdatePollerResponse.Resume(context.Context, *RegistriesClient, string) error`
+- New function `*TasksDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AgentPoolsCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AgentPoolsCreateResponse, error)`
+- New function `*PipelineRunsDeletePoller.Done() bool`
+- New function `*WebhooksDeletePoller.ResumeToken() (string, error)`
+- New function `*TokensUpdatePoller.ResumeToken() (string, error)`
+- New function `RegistriesScheduleRunPollerResponse.PollUntilDone(context.Context, time.Duration) (RegistriesScheduleRunResponse, error)`
+- New function `*RegistriesListByResourceGroupPager.PageResponse() RegistriesListByResourceGroupResponse`
+- New function `ScopeMapsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ScopeMapsDeleteResponse, error)`
+- New function `*RegistriesListPrivateLinkResourcesPager.NextPage(context.Context) bool`
+- New function `*ImportPipelinesDeletePoller.ResumeToken() (string, error)`
+- New function `*ScopeMapsDeletePoller.ResumeToken() (string, error)`
+- New function `*ImportPipelinesCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TaskRunsCreatePoller.Done() bool`
+- New function `*ExportPipelinesCreatePoller.ResumeToken() (string, error)`
+- New function `WebhooksDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (WebhooksDeleteResponse, error)`
+- New function `*RegistriesGenerateCredentialsPoller.ResumeToken() (string, error)`
+- New function `*WebhooksCreatePoller.Done() bool`
+- New function `TasksUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TasksUpdateResponse, error)`
+- New function `*RunsUpdatePoller.FinalResponse(context.Context) (RunsUpdateResponse, error)`
+- New function `*ExportPipelinesListPager.Err() error`
+- New function `*TaskRunsListPager.PageResponse() TaskRunsListResponse`
+- New function `*ConnectedRegistriesCreatePoller.Done() bool`
+- New function `*ConnectedRegistriesCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RunsUpdatePoller.ResumeToken() (string, error)`
+- New function `*RegistriesScheduleRunPoller.Done() bool`
+- New function `*ExportPipelinesDeletePollerResponse.Resume(context.Context, *ExportPipelinesClient, string) error`
+- New function `*ScopeMapsCreatePoller.ResumeToken() (string, error)`
+- New function `*ScopeMapsListPager.Err() error`
+- New function `*AgentPoolsDeletePoller.ResumeToken() (string, error)`
+- New function `*WebhooksCreatePoller.FinalResponse(context.Context) (WebhooksCreateResponse, error)`
+- New function `*TaskRunsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReplicationsUpdatePoller.FinalResponse(context.Context) (ReplicationsUpdateResponse, error)`
+- New function `*WebhooksListPager.PageResponse() WebhooksListResponse`
+- New function `*TokensCreatePoller.ResumeToken() (string, error)`
+- New function `*RegistriesDeletePoller.Done() bool`
+- New function `*ImportPipelinesDeletePoller.FinalResponse(context.Context) (ImportPipelinesDeleteResponse, error)`
+- New function `*RegistriesImportImagePoller.ResumeToken() (string, error)`
+- New function `*AgentPoolsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PipelineRunsDeletePoller.ResumeToken() (string, error)`
+- New function `TokensCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (TokensCreateResponse, error)`
+- New function `*TasksCreatePoller.Done() bool`
+- New function `*TaskRunsUpdatePoller.ResumeToken() (string, error)`
+- New function `*PipelineRunsListPager.NextPage(context.Context) bool`
+- New function `*RegistriesImportImagePoller.Done() bool`
+- New function `*ImportPipelinesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsCreatePollerResponse.Resume(context.Context, *AgentPoolsClient, string) error`
+- New function `TaskRunsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TaskRunsUpdateResponse, error)`
+- New function `*WebhooksUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ScopeMapsListPager.PageResponse() ScopeMapsListResponse`
+- New function `*TokensUpdatePoller.FinalResponse(context.Context) (TokensUpdateResponse, error)`
+- New function `RunsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (RunsUpdateResponse, error)`
+- New function `*ConnectedRegistriesUpdatePoller.ResumeToken() (string, error)`
+- New function `*ExportPipelinesDeletePoller.Done() bool`
+- New function `*ReplicationsUpdatePoller.Done() bool`
+- New function `*ScopeMapsListPager.NextPage(context.Context) bool`
+- New function `*TokensCreatePollerResponse.Resume(context.Context, *TokensClient, string) error`
+- New function `*ConnectedRegistriesDeactivatePoller.Done() bool`
+- New function `*TokensUpdatePollerResponse.Resume(context.Context, *TokensClient, string) error`
+- New function `*ReplicationsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TasksUpdatePoller.Done() bool`
+- New function `*ScopeMapsUpdatePoller.Done() bool`
+- New function `*ImportPipelinesCreatePoller.ResumeToken() (string, error)`
+- New function `*RunsUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsListPager.PageResponse() PrivateEndpointConnectionsListResponse`
+- New function `*TaskRunsDeletePoller.FinalResponse(context.Context) (TaskRunsDeleteResponse, error)`
+- New function `*TaskRunsListPager.Err() error`
+- New function `*TasksDeletePoller.Done() bool`
+- New function `*ConnectedRegistriesDeactivatePoller.ResumeToken() (string, error)`
+- New function `*ConnectedRegistriesListPager.NextPage(context.Context) bool`
+- New function `*RunsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExportPipelinesDeletePoller.ResumeToken() (string, error)`
+- New function `*RegistriesDeletePoller.FinalResponse(context.Context) (RegistriesDeleteResponse, error)`
+- New function `*PipelineRunsCreatePollerResponse.Resume(context.Context, *PipelineRunsClient, string) error`
+- New function `*AgentPoolsListPager.PageResponse() AgentPoolsListResponse`
+- New function `TasksCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (TasksCreateResponse, error)`
+- New function `*ReplicationsUpdatePollerResponse.Resume(context.Context, *ReplicationsClient, string) error`
+- New function `*ImportPipelinesCreatePoller.FinalResponse(context.Context) (ImportPipelinesCreateResponse, error)`
+- New function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TokensListPager.PageResponse() TokensListResponse`
+- New function `*ReplicationsCreatePoller.ResumeToken() (string, error)`
+- New function `*ImportPipelinesListPager.PageResponse() ImportPipelinesListResponse`
+- New function `*TokensDeletePoller.ResumeToken() (string, error)`
+- New function `*ExportPipelinesListPager.NextPage(context.Context) bool`
+- New function `*ScopeMapsDeletePollerResponse.Resume(context.Context, *ScopeMapsClient, string) error`
+- New function `*WebhooksUpdatePoller.Done() bool`
+- New function `*ConnectedRegistriesUpdatePoller.Done() bool`
+- New function `*AgentPoolsDeletePoller.FinalResponse(context.Context) (AgentPoolsDeleteResponse, error)`
+- New function `*TokensDeletePoller.FinalResponse(context.Context) (TokensDeleteResponse, error)`
+- New function `RegistriesImportImagePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistriesImportImageResponse, error)`
+- New function `*ConnectedRegistriesCreatePoller.FinalResponse(context.Context) (ConnectedRegistriesCreateResponse, error)`
+- New function `*WebhooksUpdatePollerResponse.Resume(context.Context, *WebhooksClient, string) error`
+- New function `*ScopeMapsCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConnectedRegistriesCreatePollerResponse.Resume(context.Context, *ConnectedRegistriesClient, string) error`
+- New function `*ReplicationsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PipelineRunsCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (PipelineRunsCreateResponse, error)`
+- New function `*ScopeMapsCreatePollerResponse.Resume(context.Context, *ScopeMapsClient, string) error`
+- New function `*WebhooksCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TaskRunsDeletePoller.Done() bool`
+- New function `*ReplicationsDeletePoller.Done() bool`
+- New function `*TaskRunsCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistriesUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PipelineRunsListPager.PageResponse() PipelineRunsListResponse`
+- New function `AgentPoolsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AgentPoolsDeleteResponse, error)`
+- New function `*WebhooksListEventsPager.PageResponse() WebhooksListEventsResponse`
+- New function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReplicationsDeletePoller.FinalResponse(context.Context) (ReplicationsDeleteResponse, error)`
+- New function `*ConnectedRegistriesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TaskRunsDeletePoller.ResumeToken() (string, error)`
+- New function `*ScopeMapsDeletePoller.Done() bool`
+- New function `*TokensDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ExportPipelinesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ExportPipelinesDeleteResponse, error)`
+- New function `ConnectedRegistriesCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConnectedRegistriesCreateResponse, error)`
+- New function `*RegistriesCreatePoller.ResumeToken() (string, error)`
+- New function `*AgentPoolsUpdatePollerResponse.Resume(context.Context, *AgentPoolsClient, string) error`
+- New function `*WebhooksUpdatePoller.FinalResponse(context.Context) (WebhooksUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConnectedRegistriesUpdatePoller.FinalResponse(context.Context) (ConnectedRegistriesUpdateResponse, error)`
+- New function `*TasksCreatePoller.FinalResponse(context.Context) (TasksCreateResponse, error)`
+- New function `*ExportPipelinesCreatePollerResponse.Resume(context.Context, *ExportPipelinesClient, string) error`
+- New function `*ExportPipelinesListPager.PageResponse() ExportPipelinesListResponse`
+- New function `*RunsCancelPoller.FinalResponse(context.Context) (RunsCancelResponse, error)`
+- New function `*PipelineRunsListPager.Err() error`
+- New function `*TasksListPager.Err() error`
+- New function `*RegistriesListByResourceGroupPager.Err() error`
+- New function `*OperationsListPager.PageResponse() OperationsListResponse`
+- New function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsCreateOrUpdateResponse, error)`
+- New function `*TasksUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ReplicationsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ReplicationsUpdateResponse, error)`
+- New function `*TokensDeletePollerResponse.Resume(context.Context, *TokensClient, string) error`
+- New function `*ScopeMapsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ScopeMapsCreatePoller.Done() bool`
+- New function `ConnectedRegistriesDeactivatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConnectedRegistriesDeactivateResponse, error)`
+- New function `*TokensListPager.NextPage(context.Context) bool`
+- New function `*RegistriesUpdatePoller.ResumeToken() (string, error)`
+- New function `*ExportPipelinesCreatePoller.FinalResponse(context.Context) (ExportPipelinesCreateResponse, error)`
+- New function `*AgentPoolsListPager.Err() error`
+- New function `*TaskRunsListPager.NextPage(context.Context) bool`
+- New function `*ReplicationsDeletePoller.ResumeToken() (string, error)`
+- New function `*RegistriesListPager.NextPage(context.Context) bool`
+- New function `*WebhooksDeletePoller.FinalResponse(context.Context) (WebhooksDeleteResponse, error)`
+- New function `*RegistriesCreatePoller.FinalResponse(context.Context) (RegistriesCreateResponse, error)`
+- New function `*ReplicationsListPager.PageResponse() ReplicationsListResponse`
+- New function `*ExportPipelinesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConnectedRegistriesDeletePoller.FinalResponse(context.Context) (ConnectedRegistriesDeleteResponse, error)`
+- New function `*RunsCancelPoller.Done() bool`
+- New function `ConnectedRegistriesUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConnectedRegistriesUpdateResponse, error)`
+- New function `*PipelineRunsDeletePollerResponse.Resume(context.Context, *PipelineRunsClient, string) error`
+- New function `*ScopeMapsUpdatePoller.FinalResponse(context.Context) (ScopeMapsUpdateResponse, error)`
+- New function `*AgentPoolsListPager.NextPage(context.Context) bool`
+- New function `*ConnectedRegistriesCreatePoller.ResumeToken() (string, error)`
+- New function `*RegistriesImportImagePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConnectedRegistriesUpdatePollerResponse.Resume(context.Context, *ConnectedRegistriesClient, string) error`
+- New function `*RunsListPager.Err() error`
+- New function `*PrivateEndpointConnectionsDeletePoller.Done() bool`
+- New function `*ImportPipelinesListPager.Err() error`
+- New function `*RegistriesUpdatePoller.Done() bool`
+- New function `*ReplicationsUpdatePoller.ResumeToken() (string, error)`
+- New function `*RunsUpdatePollerResponse.Resume(context.Context, *RunsClient, string) error`
+- New function `*ReplicationsCreatePollerResponse.Resume(context.Context, *ReplicationsClient, string) error`
+- New function `*AgentPoolsDeletePollerResponse.Resume(context.Context, *AgentPoolsClient, string) error`
+- New function `*OperationsListPager.NextPage(context.Context) bool`
+- New function `*ConnectedRegistriesListPager.PageResponse() ConnectedRegistriesListResponse`
+- New function `*ScopeMapsUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done() bool`
+- New function `*TokensUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `RunsCancelPollerResponse.PollUntilDone(context.Context, time.Duration) (RunsCancelResponse, error)`
+- New function `*ConnectedRegistriesDeletePollerResponse.Resume(context.Context, *ConnectedRegistriesClient, string) error`
+- New function `*ImportPipelinesDeletePollerResponse.Resume(context.Context, *ImportPipelinesClient, string) error`
+- New function `*ExportPipelinesDeletePoller.FinalResponse(context.Context) (ExportPipelinesDeleteResponse, error)`
+- New function `*RunsCancelPoller.ResumeToken() (string, error)`
+- New function `*TokensUpdatePoller.Done() bool`
+- New function `*ImportPipelinesDeletePoller.Done() bool`
+- New function `*ConnectedRegistriesDeactivatePoller.FinalResponse(context.Context) (ConnectedRegistriesDeactivateResponse, error)`
+- New function `*AgentPoolsUpdatePoller.ResumeToken() (string, error)`
+- New function `*RegistriesGenerateCredentialsPoller.Done() bool`
+- New function `*ReplicationsListPager.NextPage(context.Context) bool`
+- New function `*TaskRunsUpdatePoller.FinalResponse(context.Context) (TaskRunsUpdateResponse, error)`
+- New function `*ExportPipelinesCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TaskRunsUpdatePollerResponse.Resume(context.Context, *TaskRunsClient, string) error`
+- New function `*RegistriesScheduleRunPoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `ScopeMapsCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ScopeMapsCreateResponse, error)`
+- New function `*TokensCreatePoller.Done() bool`
+- New struct `AgentPoolsCreatePoller`
+- New struct `AgentPoolsCreatePollerResponse`
+- New struct `AgentPoolsCreateResponse`
+- New struct `AgentPoolsCreateResult`
+- New struct `AgentPoolsDeletePoller`
+- New struct `AgentPoolsDeletePollerResponse`
+- New struct `AgentPoolsDeleteResponse`
+- New struct `AgentPoolsGetQueueStatusResponse`
+- New struct `AgentPoolsGetQueueStatusResult`
+- New struct `AgentPoolsGetResponse`
+- New struct `AgentPoolsGetResult`
+- New struct `AgentPoolsListPager`
+- New struct `AgentPoolsListResponse`
+- New struct `AgentPoolsListResult`
+- New struct `AgentPoolsUpdatePoller`
+- New struct `AgentPoolsUpdatePollerResponse`
+- New struct `AgentPoolsUpdateResponse`
+- New struct `AgentPoolsUpdateResult`
+- New struct `ConnectedRegistriesCreatePoller`
+- New struct `ConnectedRegistriesCreatePollerResponse`
+- New struct `ConnectedRegistriesCreateResponse`
+- New struct `ConnectedRegistriesCreateResult`
+- New struct `ConnectedRegistriesDeactivatePoller`
+- New struct `ConnectedRegistriesDeactivatePollerResponse`
+- New struct `ConnectedRegistriesDeactivateResponse`
+- New struct `ConnectedRegistriesDeletePoller`
+- New struct `ConnectedRegistriesDeletePollerResponse`
+- New struct `ConnectedRegistriesDeleteResponse`
+- New struct `ConnectedRegistriesGetResponse`
+- New struct `ConnectedRegistriesGetResult`
+- New struct `ConnectedRegistriesListPager`
+- New struct `ConnectedRegistriesListResponse`
+- New struct `ConnectedRegistriesListResult`
+- New struct `ConnectedRegistriesUpdatePoller`
+- New struct `ConnectedRegistriesUpdatePollerResponse`
+- New struct `ConnectedRegistriesUpdateResponse`
+- New struct `ConnectedRegistriesUpdateResult`
+- New struct `ExportPipelinesCreatePoller`
+- New struct `ExportPipelinesCreatePollerResponse`
+- New struct `ExportPipelinesCreateResponse`
+- New struct `ExportPipelinesCreateResult`
+- New struct `ExportPipelinesDeletePoller`
+- New struct `ExportPipelinesDeletePollerResponse`
+- New struct `ExportPipelinesDeleteResponse`
+- New struct `ExportPipelinesGetResponse`
+- New struct `ExportPipelinesGetResult`
+- New struct `ExportPipelinesListPager`
+- New struct `ExportPipelinesListResponse`
+- New struct `ExportPipelinesListResult`
+- New struct `ImportPipelinesCreatePoller`
+- New struct `ImportPipelinesCreatePollerResponse`
+- New struct `ImportPipelinesCreateResponse`
+- New struct `ImportPipelinesCreateResult`
+- New struct `ImportPipelinesDeletePoller`
+- New struct `ImportPipelinesDeletePollerResponse`
+- New struct `ImportPipelinesDeleteResponse`
+- New struct `ImportPipelinesGetResponse`
+- New struct `ImportPipelinesGetResult`
+- New struct `ImportPipelinesListPager`
+- New struct `ImportPipelinesListResponse`
+- New struct `ImportPipelinesListResult`
+- New struct `OperationsListPager`
+- New struct `OperationsListResponse`
+- New struct `OperationsListResult`
+- New struct `PipelineRunsCreatePoller`
+- New struct `PipelineRunsCreatePollerResponse`
+- New struct `PipelineRunsCreateResponse`
+- New struct `PipelineRunsCreateResult`
+- New struct `PipelineRunsDeletePoller`
+- New struct `PipelineRunsDeletePollerResponse`
+- New struct `PipelineRunsDeleteResponse`
+- New struct `PipelineRunsGetResponse`
+- New struct `PipelineRunsGetResult`
+- New struct `PipelineRunsListPager`
+- New struct `PipelineRunsListResponse`
+- New struct `PipelineRunsListResult`
+- New struct `PrivateEndpointConnectionsCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsDeletePoller`
+- New struct `PrivateEndpointConnectionsDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsDeleteResponse`
+- New struct `PrivateEndpointConnectionsGetResponse`
+- New struct `PrivateEndpointConnectionsGetResult`
+- New struct `PrivateEndpointConnectionsListPager`
+- New struct `PrivateEndpointConnectionsListResponse`
+- New struct `PrivateEndpointConnectionsListResult`
+- New struct `RegistriesCheckNameAvailabilityResponse`
+- New struct `RegistriesCheckNameAvailabilityResult`
+- New struct `RegistriesCreatePoller`
+- New struct `RegistriesCreatePollerResponse`
+- New struct `RegistriesCreateResponse`
+- New struct `RegistriesCreateResult`
+- New struct `RegistriesDeletePoller`
+- New struct `RegistriesDeletePollerResponse`
+- New struct `RegistriesDeleteResponse`
+- New struct `RegistriesGenerateCredentialsPoller`
+- New struct `RegistriesGenerateCredentialsPollerResponse`
+- New struct `RegistriesGenerateCredentialsResponse`
+- New struct `RegistriesGenerateCredentialsResult`
+- New struct `RegistriesGetBuildSourceUploadURLResponse`
+- New struct `RegistriesGetBuildSourceUploadURLResult`
+- New struct `RegistriesGetResponse`
+- New struct `RegistriesGetResult`
+- New struct `RegistriesImportImagePoller`
+- New struct `RegistriesImportImagePollerResponse`
+- New struct `RegistriesImportImageResponse`
+- New struct `RegistriesListByResourceGroupPager`
+- New struct `RegistriesListByResourceGroupResponse`
+- New struct `RegistriesListByResourceGroupResult`
+- New struct `RegistriesListCredentialsResponse`
+- New struct `RegistriesListCredentialsResult`
+- New struct `RegistriesListPager`
+- New struct `RegistriesListPrivateLinkResourcesPager`
+- New struct `RegistriesListPrivateLinkResourcesResponse`
+- New struct `RegistriesListPrivateLinkResourcesResult`
+- New struct `RegistriesListResponse`
+- New struct `RegistriesListResult`
+- New struct `RegistriesListUsagesResponse`
+- New struct `RegistriesListUsagesResult`
+- New struct `RegistriesRegenerateCredentialResponse`
+- New struct `RegistriesRegenerateCredentialResult`
+- New struct `RegistriesScheduleRunPoller`
+- New struct `RegistriesScheduleRunPollerResponse`
+- New struct `RegistriesScheduleRunResponse`
+- New struct `RegistriesScheduleRunResult`
+- New struct `RegistriesUpdatePoller`
+- New struct `RegistriesUpdatePollerResponse`
+- New struct `RegistriesUpdateResponse`
+- New struct `RegistriesUpdateResult`
+- New struct `ReplicationsCreatePoller`
+- New struct `ReplicationsCreatePollerResponse`
+- New struct `ReplicationsCreateResponse`
+- New struct `ReplicationsCreateResult`
+- New struct `ReplicationsDeletePoller`
+- New struct `ReplicationsDeletePollerResponse`
+- New struct `ReplicationsDeleteResponse`
+- New struct `ReplicationsGetResponse`
+- New struct `ReplicationsGetResult`
+- New struct `ReplicationsListPager`
+- New struct `ReplicationsListResponse`
+- New struct `ReplicationsListResult`
+- New struct `ReplicationsUpdatePoller`
+- New struct `ReplicationsUpdatePollerResponse`
+- New struct `ReplicationsUpdateResponse`
+- New struct `ReplicationsUpdateResult`
+- New struct `RunsCancelPoller`
+- New struct `RunsCancelPollerResponse`
+- New struct `RunsCancelResponse`
+- New struct `RunsGetLogSasURLResponse`
+- New struct `RunsGetLogSasURLResult`
+- New struct `RunsGetResponse`
+- New struct `RunsGetResult`
+- New struct `RunsListPager`
+- New struct `RunsListResponse`
+- New struct `RunsListResult`
+- New struct `RunsUpdatePoller`
+- New struct `RunsUpdatePollerResponse`
+- New struct `RunsUpdateResponse`
+- New struct `RunsUpdateResult`
+- New struct `ScopeMapsCreatePoller`
+- New struct `ScopeMapsCreatePollerResponse`
+- New struct `ScopeMapsCreateResponse`
+- New struct `ScopeMapsCreateResult`
+- New struct `ScopeMapsDeletePoller`
+- New struct `ScopeMapsDeletePollerResponse`
+- New struct `ScopeMapsDeleteResponse`
+- New struct `ScopeMapsGetResponse`
+- New struct `ScopeMapsGetResult`
+- New struct `ScopeMapsListPager`
+- New struct `ScopeMapsListResponse`
+- New struct `ScopeMapsListResult`
+- New struct `ScopeMapsUpdatePoller`
+- New struct `ScopeMapsUpdatePollerResponse`
+- New struct `ScopeMapsUpdateResponse`
+- New struct `ScopeMapsUpdateResult`
+- New struct `TaskRunsCreatePoller`
+- New struct `TaskRunsCreatePollerResponse`
+- New struct `TaskRunsCreateResponse`
+- New struct `TaskRunsCreateResult`
+- New struct `TaskRunsDeletePoller`
+- New struct `TaskRunsDeletePollerResponse`
+- New struct `TaskRunsDeleteResponse`
+- New struct `TaskRunsGetDetailsResponse`
+- New struct `TaskRunsGetDetailsResult`
+- New struct `TaskRunsGetResponse`
+- New struct `TaskRunsGetResult`
+- New struct `TaskRunsListPager`
+- New struct `TaskRunsListResponse`
+- New struct `TaskRunsListResult`
+- New struct `TaskRunsUpdatePoller`
+- New struct `TaskRunsUpdatePollerResponse`
+- New struct `TaskRunsUpdateResponse`
+- New struct `TaskRunsUpdateResult`
+- New struct `TasksCreatePoller`
+- New struct `TasksCreatePollerResponse`
+- New struct `TasksCreateResponse`
+- New struct `TasksCreateResult`
+- New struct `TasksDeletePoller`
+- New struct `TasksDeletePollerResponse`
+- New struct `TasksDeleteResponse`
+- New struct `TasksGetDetailsResponse`
+- New struct `TasksGetDetailsResult`
+- New struct `TasksGetResponse`
+- New struct `TasksGetResult`
+- New struct `TasksListPager`
+- New struct `TasksListResponse`
+- New struct `TasksListResult`
+- New struct `TasksUpdatePoller`
+- New struct `TasksUpdatePollerResponse`
+- New struct `TasksUpdateResponse`
+- New struct `TasksUpdateResult`
+- New struct `TokensCreatePoller`
+- New struct `TokensCreatePollerResponse`
+- New struct `TokensCreateResponse`
+- New struct `TokensCreateResult`
+- New struct `TokensDeletePoller`
+- New struct `TokensDeletePollerResponse`
+- New struct `TokensDeleteResponse`
+- New struct `TokensGetResponse`
+- New struct `TokensGetResult`
+- New struct `TokensListPager`
+- New struct `TokensListResponse`
+- New struct `TokensListResult`
+- New struct `TokensUpdatePoller`
+- New struct `TokensUpdatePollerResponse`
+- New struct `TokensUpdateResponse`
+- New struct `TokensUpdateResult`
+- New struct `WebhooksCreatePoller`
+- New struct `WebhooksCreatePollerResponse`
+- New struct `WebhooksCreateResponse`
+- New struct `WebhooksCreateResult`
+- New struct `WebhooksDeletePoller`
+- New struct `WebhooksDeletePollerResponse`
+- New struct `WebhooksDeleteResponse`
+- New struct `WebhooksGetCallbackConfigResponse`
+- New struct `WebhooksGetCallbackConfigResult`
+- New struct `WebhooksGetResponse`
+- New struct `WebhooksGetResult`
+- New struct `WebhooksListEventsPager`
+- New struct `WebhooksListEventsResponse`
+- New struct `WebhooksListEventsResult`
+- New struct `WebhooksListPager`
+- New struct `WebhooksListResponse`
+- New struct `WebhooksListResult`
+- New struct `WebhooksPingResponse`
+- New struct `WebhooksPingResult`
+- New struct `WebhooksUpdatePoller`
+- New struct `WebhooksUpdatePollerResponse`
+- New struct `WebhooksUpdateResponse`
+- New struct `WebhooksUpdateResult`
+
+Total 400 breaking change(s), 804 additive change(s).
+
+
 ## v0.1.0 (released)

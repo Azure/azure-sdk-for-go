@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/network/armnetwork
 
-go 1.13
+go 1.16
 
 require (
 	github.com/Azure/azure-sdk-for-go v57.0.0+incompatible

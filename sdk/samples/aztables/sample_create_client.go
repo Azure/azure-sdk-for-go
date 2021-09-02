@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
-func CreateServiceClient() *aztable.NewServiceClient {
+func CreateServiceClient() *aztables.ServiceClient {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -15,11 +18,14 @@ func CreateServiceClient() *aztable.NewServiceClient {
 	}
 	serviceURL := accountName + ".table.core.windows.net"
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	return &aztable.NewServiceClient(serviceURL, cred, nil)
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	client, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	check(err)
+	return client
 }
 
-func CreateTableClient() *aztable.TableClient {
+func CreateTableClient() *aztables.Client {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -28,8 +34,11 @@ func CreateTableClient() *aztable.TableClient {
 	if !ok {
 		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	serviceURL := accountName + ".table.core.windows.net"
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTableName")
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	return &aztable.NewTableClient("tableName", serviceURL, cred, nil)
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	client, err := aztables.NewClient(serviceURL, cred, nil)
+	check(err)
+	return client
 }

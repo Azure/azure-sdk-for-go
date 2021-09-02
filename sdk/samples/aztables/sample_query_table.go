@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func Sample_QueryTable() {
@@ -19,11 +19,11 @@ func Sample_QueryTable() {
 	}
 	serviceURL := accountName + ".table.core.windows.net"
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	client := aztable.NewTableClient("myTable", serviceURL, cred, nil)
+	cred := aztables.SharedKeyCredential(accountName, accountKey)
+	client := aztables.NewTableClient("myTable", serviceURL, cred, nil)
 
 	filter := fmt.Sprintf("PartitionKey eq '%v' or PartitionKey eq '%v'", "pk001", "pk002")
-	pager := client.Query(&aztable.QueryOptions{Filter: &filter})
+	pager := client.Query(&aztables.QueryOptions{Filter: &filter})
 
 	pageCount := 1
 	for pager.NextPage(context.Background()) {

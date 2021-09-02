@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 type InventoryEntity struct {
-	aztable.Entity
+	aztables.Entity
 	Price       float32
 	Inventory   int32
 	ProductName string
@@ -28,11 +28,11 @@ func InsertEntity() {
 	}
 	serviceURL := accountName + ".table.core.windows.net"
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	client := aztable.NewTableClient("myTable", serviceURL, cred, nil)
+	cred := aztables.SharedKeyCredential(accountName, accountKey)
+	client := aztables.NewTableClient("myTable", serviceURL, cred, nil)
 
 	myEntity := InventoryEntity{
-		Entity: aztable.Entity{
+		Entity: aztables.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk001",
 		},
@@ -48,20 +48,20 @@ func InsertEntity() {
 	check(err)
 
 	// Inserting an entity with int64s, binary, datetime, or guid types
-	myAdvancedEntity := aztable.EdmEntity{
-		Entity: aztable.Entity{
+	myAdvancedEntity := aztables.EdmEntity{
+		Entity: aztables.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk002",
 		},
 		Properties: map[string]interface{}{
 			"Bool":     false,
 			"Int32":    int32(1234),
-			"Int64":    aztable.EdmInt64(123456789012),
+			"Int64":    aztables.EdmInt64(123456789012),
 			"Double":   1234.1234,
 			"String":   "test",
-			"Guid":     aztable.EdmGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
-			"DateTime": aztable.EdmDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
-			"Binary":   aztable.EdmBinary("SomeBinary"),
+			"Guid":     aztables.EdmGuid("4185404a-5818-48c3-b9be-f217df0dba6f"),
+			"DateTime": aztables.EdmDateTime(time.Date(2013, time.August, 02, 17, 37, 43, 9004348, time.UTC)),
+			"Binary":   aztables.EdmBinary("SomeBinary"),
 		},
 	}
 
@@ -81,8 +81,8 @@ func DeleteEntity() {
 	}
 	serviceURL := accountName + ".table.core.windows.net"
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	client := aztable.NewTableClient("myTable", serviceURL, cred, nil)
+	cred := aztables.SharedKeyCredential(accountName, accountKey)
+	client := aztables.NewTableClient("myTable", serviceURL, cred, nil)
 
 	_, err := client.DeleteEntity(context.Background(), "pk001", "rk001", "*")
 	check(err)

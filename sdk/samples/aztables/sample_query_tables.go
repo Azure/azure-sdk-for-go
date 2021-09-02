@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func Sample_QueryTables() {
@@ -19,19 +19,24 @@ func Sample_QueryTables() {
 	}
 	serviceURL := accountName + ".table.core.windows.net"
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	service := aztable.NewServiceClient(serviceURL, cred, nil)
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	check(err)
 
 	myTable := "myTableName"
 	filter := fmt.Sprintf("TableName ge '%v'", myTable)
-	pager := service.Query(&aztable.QueryOptions{Filter: &filter})
+	pager := service.ListTables(&aztables.ListTablesOptions{Filter: &filter})
 
 	pageCount := 1
 	for pager.NextPage(context.Background()) {
 		response := pager.PageResponse()
-		fmt.Println("There are %d tables in page #%d", len(response.TableQueryResponse.Value), pageCount)
+		fmt.Println("There are %d tables in page #%d", len(response.Tables), pageCount)
+		for _, table := range response.Tables {
+			fmt.Printf("\tTableName: %s\n", table)
+		}
 		pageCount += 1
 	}
 
-	check(pager.Error())
+	check(pager.Err())
 }

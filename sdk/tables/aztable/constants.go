@@ -17,3 +17,32 @@ const (
 	rowKey                        = "RowKey"
 	etag                          = "ETag"
 )
+
+type ResponseFormat string
+
+const (
+	ResponseFormatReturnContent   ResponseFormat = "return-content"
+	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
+)
+
+// PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
+func PossibleResponseFormatValues() []ResponseFormat {
+	return []ResponseFormat{
+		ResponseFormatReturnContent,
+		ResponseFormatReturnNoContent,
+	}
+}
+
+// ToPtr returns a *ResponseFormat pointing to the current value.
+func (c ResponseFormat) ToPtr() *ResponseFormat {
+	return &c
+}
+
+// EntityUpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
+// will replace an existing entity, MergeEntity will merge properties of the entities.
+type EntityUpdateMode string
+
+const (
+	ReplaceEntity EntityUpdateMode = "replace"
+	MergeEntity   EntityUpdateMode = "merge"
+)

@@ -227,7 +227,8 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 		accountName = "fakestorageaccount"
 	}
 
-	cred, err := getAADCredential(t)
+	// cred, err := getAADCredential(t)
+	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)
 
 	serviceURL := storageURI(accountName, "core.windows.net")

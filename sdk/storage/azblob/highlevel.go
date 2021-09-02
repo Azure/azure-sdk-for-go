@@ -428,7 +428,7 @@ type TransferManager interface {
 	Get() []byte
 	// Put may or may not put the buffer into underlying storage, depending on settings.
 	// The buffer must not be touched after this has been called.
-	Put(b []byte)
+	Put(b []byte) // nolint
 	// Run will use a goroutine pool entry to run a function. This blocks until a pool
 	// goroutine becomes available.
 	Run(func())
@@ -480,7 +480,7 @@ func (s staticBuffer) Get() []byte {
 }
 
 // Put implements TransferManager.Put().
-func (s staticBuffer) Put(b []byte) {
+func (s staticBuffer) Put(b []byte) { // nolint
 	select {
 	case s.buffers <- b:
 	default: // This shouldn't happen, but just in case they call Put() with there own buffer.
@@ -540,6 +540,7 @@ func (s *syncPool) Get() []byte {
 }
 
 // Put implements TransferManager.Put().
+// nolint
 func (s *syncPool) Put(b []byte) {
 	s.pool.Put(b)
 }

@@ -334,6 +334,7 @@ func (s *azblobTestSuite) TestContainerCreateIfExists() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -418,6 +419,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfExists() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	_, err = containerClient.DeleteIfExists(ctx, nil)
 	_assert.Nil(err)
@@ -1330,6 +1332,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
+	_assert.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
 	_assert.Nil(err)
@@ -1679,8 +1682,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 		Access:   &access,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: map[string]string{},
@@ -1709,7 +1712,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 		Metadata: basicMetadata,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-
+	_assert.Nil(err)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)

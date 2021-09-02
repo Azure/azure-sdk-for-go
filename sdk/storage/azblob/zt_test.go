@@ -68,7 +68,13 @@ func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
 	_assert.Nil(err)
 
 	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
+	if err != nil {
+		log.Fatal(err)
+	}
 	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
+	if err != nil {
+		log.Fatal(err)
+	}
 	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
 
 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}

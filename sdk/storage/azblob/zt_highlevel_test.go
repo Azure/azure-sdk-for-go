@@ -122,10 +122,7 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 		_ = file.Close()
 	}(file)
 	defer func(name string) {
-		err := os.Remove(name)
-		if err != nil {
-
-		}
+		_ = os.Remove(name)
 	}(fileName)
 
 	_context := getTestContext(testName)
@@ -162,16 +159,12 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	destFile, err := os.Create(destFileName)
 	_assert.Equal(err, nil)
 	defer func(destFile *os.File) {
-		err := destFile.Close()
-		if err != nil {
+		_ = destFile.Close()
 
-		}
 	}(destFile)
 	defer func(name string) {
-		err := os.Remove(name)
-		if err != nil {
+		_ = os.Remove(name)
 
-		}
 	}(destFileName)
 
 	// Perform download

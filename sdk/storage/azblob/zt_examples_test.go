@@ -1196,7 +1196,9 @@ func ExampleUploadStreamToBlockBlob() {
 		log.Fatal(err)
 	}
 	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create some data to test the upload stream

@@ -569,6 +569,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 		Metadata:           map[string]string{},
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
+	_assert.Nil(err)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)

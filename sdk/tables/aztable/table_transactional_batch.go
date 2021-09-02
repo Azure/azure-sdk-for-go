@@ -369,7 +369,9 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	if err != nil {
 		return err
 	}
-	_, err = io.Copy(operationWriter, req.Body())
+	if req.Raw().Body != nil {
+		_, err = io.Copy(operationWriter, req.Body())
+	}
 
 	return err
 }

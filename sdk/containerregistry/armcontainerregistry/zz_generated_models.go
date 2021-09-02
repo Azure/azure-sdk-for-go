@@ -10,9 +10,10 @@ package armcontainerregistry
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ActivationProperties - The activation properties of the connected registry.

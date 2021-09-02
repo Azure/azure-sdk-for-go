@@ -1,6 +1,6 @@
 # Release History
 
-## v0.2.0 (released)
+## v0.2.0 (2021-09-03)
 ### Breaking Changes
 
 - Function `*TokensClient.List` return value(s) have been changed from `(TokenListResultPager)` to `(*TokensListPager)`
@@ -873,4 +873,4 @@
 Total 400 breaking change(s), 804 additive change(s).
 
 
-## v0.1.0 (released)
+## v0.1.0 (2021-07-14)

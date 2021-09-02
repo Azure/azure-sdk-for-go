@@ -15,6 +15,7 @@ stages:
     ServiceDirectory: 'data'
     RunTests: true
 
-- template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  parameters:
-    ServiceDirectory: 'data'
+- ${{if eq(variables['System.TeamProject'], 'internal')}}:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+    ServiceDirectory: 'tables'

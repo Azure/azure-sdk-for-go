@@ -12,7 +12,7 @@ package servicefabric
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric"
+	original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2021-06-01/servicefabric"
 )
 
 const (
@@ -22,81 +22,112 @@ const (
 type ArmServicePackageActivationMode = original.ArmServicePackageActivationMode
 
 const (
-	ExclusiveProcess ArmServicePackageActivationMode = original.ExclusiveProcess
-	SharedProcess    ArmServicePackageActivationMode = original.SharedProcess
+	ArmServicePackageActivationModeExclusiveProcess ArmServicePackageActivationMode = original.ArmServicePackageActivationModeExclusiveProcess
+	ArmServicePackageActivationModeSharedProcess    ArmServicePackageActivationMode = original.ArmServicePackageActivationModeSharedProcess
 )
 
 type ArmUpgradeFailureAction = original.ArmUpgradeFailureAction
 
 const (
-	Manual   ArmUpgradeFailureAction = original.Manual
-	Rollback ArmUpgradeFailureAction = original.Rollback
+	ArmUpgradeFailureActionManual   ArmUpgradeFailureAction = original.ArmUpgradeFailureActionManual
+	ArmUpgradeFailureActionRollback ArmUpgradeFailureAction = original.ArmUpgradeFailureActionRollback
 )
 
 type ClusterState = original.ClusterState
 
 const (
-	AutoScale                 ClusterState = original.AutoScale
-	BaselineUpgrade           ClusterState = original.BaselineUpgrade
-	Deploying                 ClusterState = original.Deploying
-	EnforcingClusterVersion   ClusterState = original.EnforcingClusterVersion
-	Ready                     ClusterState = original.Ready
-	UpdatingInfrastructure    ClusterState = original.UpdatingInfrastructure
-	UpdatingUserCertificate   ClusterState = original.UpdatingUserCertificate
-	UpdatingUserConfiguration ClusterState = original.UpdatingUserConfiguration
-	UpgradeServiceUnreachable ClusterState = original.UpgradeServiceUnreachable
-	WaitingForNodes           ClusterState = original.WaitingForNodes
+	ClusterStateAutoScale                 ClusterState = original.ClusterStateAutoScale
+	ClusterStateBaselineUpgrade           ClusterState = original.ClusterStateBaselineUpgrade
+	ClusterStateDeploying                 ClusterState = original.ClusterStateDeploying
+	ClusterStateEnforcingClusterVersion   ClusterState = original.ClusterStateEnforcingClusterVersion
+	ClusterStateReady                     ClusterState = original.ClusterStateReady
+	ClusterStateUpdatingInfrastructure    ClusterState = original.ClusterStateUpdatingInfrastructure
+	ClusterStateUpdatingUserCertificate   ClusterState = original.ClusterStateUpdatingUserCertificate
+	ClusterStateUpdatingUserConfiguration ClusterState = original.ClusterStateUpdatingUserConfiguration
+	ClusterStateUpgradeServiceUnreachable ClusterState = original.ClusterStateUpgradeServiceUnreachable
+	ClusterStateWaitingForNodes           ClusterState = original.ClusterStateWaitingForNodes
+)
+
+type ClusterUpgradeCadence = original.ClusterUpgradeCadence
+
+const (
+	ClusterUpgradeCadenceWave0 ClusterUpgradeCadence = original.ClusterUpgradeCadenceWave0
+	ClusterUpgradeCadenceWave1 ClusterUpgradeCadence = original.ClusterUpgradeCadenceWave1
+	ClusterUpgradeCadenceWave2 ClusterUpgradeCadence = original.ClusterUpgradeCadenceWave2
 )
 
 type DurabilityLevel = original.DurabilityLevel
 
 const (
-	Bronze DurabilityLevel = original.Bronze
-	Gold   DurabilityLevel = original.Gold
-	Silver DurabilityLevel = original.Silver
+	DurabilityLevelBronze DurabilityLevel = original.DurabilityLevelBronze
+	DurabilityLevelGold   DurabilityLevel = original.DurabilityLevelGold
+	DurabilityLevelSilver DurabilityLevel = original.DurabilityLevelSilver
 )
 
 type Environment = original.Environment
 
 const (
-	Linux   Environment = original.Linux
-	Windows Environment = original.Windows
+	EnvironmentLinux   Environment = original.EnvironmentLinux
+	EnvironmentWindows Environment = original.EnvironmentWindows
+)
+
+type ManagedIdentityType = original.ManagedIdentityType
+
+const (
+	ManagedIdentityTypeNone                       ManagedIdentityType = original.ManagedIdentityTypeNone
+	ManagedIdentityTypeSystemAssigned             ManagedIdentityType = original.ManagedIdentityTypeSystemAssigned
+	ManagedIdentityTypeSystemAssignedUserAssigned ManagedIdentityType = original.ManagedIdentityTypeSystemAssignedUserAssigned
+	ManagedIdentityTypeUserAssigned               ManagedIdentityType = original.ManagedIdentityTypeUserAssigned
 )
 
 type MoveCost = original.MoveCost
 
 const (
-	High   MoveCost = original.High
-	Low    MoveCost = original.Low
-	Medium MoveCost = original.Medium
-	Zero   MoveCost = original.Zero
+	MoveCostHigh   MoveCost = original.MoveCostHigh
+	MoveCostLow    MoveCost = original.MoveCostLow
+	MoveCostMedium MoveCost = original.MoveCostMedium
+	MoveCostZero   MoveCost = original.MoveCostZero
+)
+
+type NotificationChannel = original.NotificationChannel
+
+const (
+	NotificationChannelEmailSubscription NotificationChannel = original.NotificationChannelEmailSubscription
+	NotificationChannelEmailUser         NotificationChannel = original.NotificationChannelEmailUser
+)
+
+type NotificationLevel = original.NotificationLevel
+
+const (
+	NotificationLevelAll      NotificationLevel = original.NotificationLevelAll
+	NotificationLevelCritical NotificationLevel = original.NotificationLevelCritical
 )
 
 type PartitionScheme = original.PartitionScheme
 
 const (
-	Invalid           PartitionScheme = original.Invalid
-	Named             PartitionScheme = original.Named
-	Singleton         PartitionScheme = original.Singleton
-	UniformInt64Range PartitionScheme = original.UniformInt64Range
+	PartitionSchemeInvalid           PartitionScheme = original.PartitionSchemeInvalid
+	PartitionSchemeNamed             PartitionScheme = original.PartitionSchemeNamed
+	PartitionSchemeSingleton         PartitionScheme = original.PartitionSchemeSingleton
+	PartitionSchemeUniformInt64Range PartitionScheme = original.PartitionSchemeUniformInt64Range
 )
 
 type PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescription
 
 const (
-	PartitionSchemeNamed                      PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeNamed
-	PartitionSchemePartitionSchemeDescription PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemePartitionSchemeDescription
-	PartitionSchemeSingleton                  PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeSingleton
-	PartitionSchemeUniformInt64Range          PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeUniformInt64Range
+	PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemeNamed                      PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemeNamed
+	PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemePartitionSchemeDescription PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemePartitionSchemeDescription
+	PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemeSingleton                  PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemeSingleton
+	PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemeUniformInt64Range          PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescriptionPartitionSchemeUniformInt64Range
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type ReliabilityLevel = original.ReliabilityLevel
@@ -119,6 +150,15 @@ const (
 	ReliabilityLevel1Silver   ReliabilityLevel1 = original.ReliabilityLevel1Silver
 )
 
+type RollingUpgradeMode = original.RollingUpgradeMode
+
+const (
+	RollingUpgradeModeInvalid           RollingUpgradeMode = original.RollingUpgradeModeInvalid
+	RollingUpgradeModeMonitored         RollingUpgradeMode = original.RollingUpgradeModeMonitored
+	RollingUpgradeModeUnmonitoredAuto   RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredAuto
+	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredManual
+)
+
 type ServiceCorrelationScheme = original.ServiceCorrelationScheme
 
 const (
@@ -139,9 +179,9 @@ const (
 type ServiceKindBasicServiceResourceProperties = original.ServiceKindBasicServiceResourceProperties
 
 const (
-	ServiceKindServiceResourceProperties ServiceKindBasicServiceResourceProperties = original.ServiceKindServiceResourceProperties
-	ServiceKindStateful1                 ServiceKindBasicServiceResourceProperties = original.ServiceKindStateful1
-	ServiceKindStateless1                ServiceKindBasicServiceResourceProperties = original.ServiceKindStateless1
+	ServiceKindBasicServiceResourcePropertiesServiceKindServiceResourceProperties ServiceKindBasicServiceResourceProperties = original.ServiceKindBasicServiceResourcePropertiesServiceKindServiceResourceProperties
+	ServiceKindBasicServiceResourcePropertiesServiceKindStateful                  ServiceKindBasicServiceResourceProperties = original.ServiceKindBasicServiceResourcePropertiesServiceKindStateful
+	ServiceKindBasicServiceResourcePropertiesServiceKindStateless                 ServiceKindBasicServiceResourceProperties = original.ServiceKindBasicServiceResourcePropertiesServiceKindStateless
 )
 
 type ServiceKindBasicServiceResourceUpdateProperties = original.ServiceKindBasicServiceResourceUpdateProperties
@@ -172,6 +212,13 @@ const (
 	ServicePlacementPolicyTypeRequiredDomainDistribution ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequiredDomainDistribution
 )
 
+type SfZonalUpgradeMode = original.SfZonalUpgradeMode
+
+const (
+	SfZonalUpgradeModeHierarchical SfZonalUpgradeMode = original.SfZonalUpgradeModeHierarchical
+	SfZonalUpgradeModeParallel     SfZonalUpgradeMode = original.SfZonalUpgradeModeParallel
+)
+
 type Type = original.Type
 
 const (
@@ -185,24 +232,24 @@ const (
 	UpgradeModeManual    UpgradeMode = original.UpgradeModeManual
 )
 
-type UpgradeMode1 = original.UpgradeMode1
+type VmssZonalUpgradeMode = original.VmssZonalUpgradeMode
 
 const (
-	UpgradeMode1Automatic UpgradeMode1 = original.UpgradeMode1Automatic
-	UpgradeMode1Manual    UpgradeMode1 = original.UpgradeMode1Manual
+	VmssZonalUpgradeModeHierarchical VmssZonalUpgradeMode = original.VmssZonalUpgradeModeHierarchical
+	VmssZonalUpgradeModeParallel     VmssZonalUpgradeMode = original.VmssZonalUpgradeModeParallel
 )
 
 type X509StoreName = original.X509StoreName
 
 const (
-	AddressBook          X509StoreName = original.AddressBook
-	AuthRoot             X509StoreName = original.AuthRoot
-	CertificateAuthority X509StoreName = original.CertificateAuthority
-	Disallowed           X509StoreName = original.Disallowed
-	My                   X509StoreName = original.My
-	Root                 X509StoreName = original.Root
-	TrustedPeople        X509StoreName = original.TrustedPeople
-	TrustedPublisher     X509StoreName = original.TrustedPublisher
+	X509StoreNameAddressBook          X509StoreName = original.X509StoreNameAddressBook
+	X509StoreNameAuthRoot             X509StoreName = original.X509StoreNameAuthRoot
+	X509StoreNameCertificateAuthority X509StoreName = original.X509StoreNameCertificateAuthority
+	X509StoreNameDisallowed           X509StoreName = original.X509StoreNameDisallowed
+	X509StoreNameMy                   X509StoreName = original.X509StoreNameMy
+	X509StoreNameRoot                 X509StoreName = original.X509StoreNameRoot
+	X509StoreNameTrustedPeople        X509StoreName = original.X509StoreNameTrustedPeople
+	X509StoreNameTrustedPublisher     X509StoreName = original.X509StoreNameTrustedPublisher
 )
 
 type X509StoreName1 = original.X509StoreName1
@@ -232,12 +279,14 @@ type ApplicationTypeResourceProperties = original.ApplicationTypeResourcePropert
 type ApplicationTypeVersionResource = original.ApplicationTypeVersionResource
 type ApplicationTypeVersionResourceList = original.ApplicationTypeVersionResourceList
 type ApplicationTypeVersionResourceProperties = original.ApplicationTypeVersionResourceProperties
+type ApplicationTypeVersionsCleanupPolicy = original.ApplicationTypeVersionsCleanupPolicy
 type ApplicationTypeVersionsClient = original.ApplicationTypeVersionsClient
 type ApplicationTypeVersionsCreateOrUpdateFuture = original.ApplicationTypeVersionsCreateOrUpdateFuture
 type ApplicationTypeVersionsDeleteFuture = original.ApplicationTypeVersionsDeleteFuture
 type ApplicationTypesClient = original.ApplicationTypesClient
 type ApplicationTypesDeleteFuture = original.ApplicationTypesDeleteFuture
 type ApplicationUpgradePolicy = original.ApplicationUpgradePolicy
+type ApplicationUserAssignedIdentity = original.ApplicationUserAssignedIdentity
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
@@ -274,8 +323,11 @@ type DiagnosticsStorageAccountConfig = original.DiagnosticsStorageAccountConfig
 type EndpointRangeDescription = original.EndpointRangeDescription
 type ErrorModel = original.ErrorModel
 type ErrorModelError = original.ErrorModelError
+type ManagedIdentity = original.ManagedIdentity
 type NamedPartitionSchemeDescription = original.NamedPartitionSchemeDescription
 type NodeTypeDescription = original.NodeTypeDescription
+type Notification = original.Notification
+type NotificationTarget = original.NotificationTarget
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
@@ -308,7 +360,11 @@ type StatefulServiceProperties = original.StatefulServiceProperties
 type StatefulServiceUpdateProperties = original.StatefulServiceUpdateProperties
 type StatelessServiceProperties = original.StatelessServiceProperties
 type StatelessServiceUpdateProperties = original.StatelessServiceUpdateProperties
+type SystemData = original.SystemData
 type UniformInt64RangePartitionSchemeDescription = original.UniformInt64RangePartitionSchemeDescription
+type UpgradableVersionPathResult = original.UpgradableVersionPathResult
+type UpgradableVersionsDescription = original.UpgradableVersionsDescription
+type UserAssignedIdentity = original.UserAssignedIdentity
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -373,14 +429,26 @@ func PossibleArmUpgradeFailureActionValues() []ArmUpgradeFailureAction {
 func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()
 }
+func PossibleClusterUpgradeCadenceValues() []ClusterUpgradeCadence {
+	return original.PossibleClusterUpgradeCadenceValues()
+}
 func PossibleDurabilityLevelValues() []DurabilityLevel {
 	return original.PossibleDurabilityLevelValues()
 }
 func PossibleEnvironmentValues() []Environment {
 	return original.PossibleEnvironmentValues()
 }
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return original.PossibleManagedIdentityTypeValues()
+}
 func PossibleMoveCostValues() []MoveCost {
 	return original.PossibleMoveCostValues()
+}
+func PossibleNotificationChannelValues() []NotificationChannel {
+	return original.PossibleNotificationChannelValues()
+}
+func PossibleNotificationLevelValues() []NotificationLevel {
+	return original.PossibleNotificationLevelValues()
 }
 func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() []PartitionSchemeBasicPartitionSchemeDescription {
 	return original.PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues()
@@ -396,6 +464,9 @@ func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
 }
 func PossibleReliabilityLevelValues() []ReliabilityLevel {
 	return original.PossibleReliabilityLevelValues()
+}
+func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
+	return original.PossibleRollingUpgradeModeValues()
 }
 func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
 	return original.PossibleServiceCorrelationSchemeValues()
@@ -415,14 +486,17 @@ func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
 func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
 	return original.PossibleServicePlacementPolicyTypeValues()
 }
+func PossibleSfZonalUpgradeModeValues() []SfZonalUpgradeMode {
+	return original.PossibleSfZonalUpgradeModeValues()
+}
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
-func PossibleUpgradeMode1Values() []UpgradeMode1 {
-	return original.PossibleUpgradeMode1Values()
-}
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
+}
+func PossibleVmssZonalUpgradeModeValues() []VmssZonalUpgradeMode {
+	return original.PossibleVmssZonalUpgradeModeValues()
 }
 func PossibleX509StoreName1Values() []X509StoreName1 {
 	return original.PossibleX509StoreName1Values()

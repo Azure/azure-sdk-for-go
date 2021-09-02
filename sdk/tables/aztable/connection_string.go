@@ -10,23 +10,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// NewClientFromConnectionString creates a new Client struct from a connection string. The connection
-// string must contain either an account name and account key or an account name and a shared access signature.
-func NewClientFromConnectionString(connectionString string, tableName string, options *ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-	endpoint, credential, err := parseConnectionString(connectionString)
-	if err != nil {
-		return nil, err
-	}
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint = endpoint + "/"
-	}
-	endpoint = endpoint + tableName
-	return NewClient(endpoint, credential, options)
-}
-
 // NewServiceClientFromConnectionString creates a new ServiceClient struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.
 func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {

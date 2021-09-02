@@ -27,7 +27,7 @@ func TestConnectionStringParser(t *testing.T) {
 	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
 	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
@@ -50,7 +50,7 @@ func TestConnectionStringParserHTTP(t *testing.T) {
 	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
 	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
@@ -73,7 +73,7 @@ func TestConnectionStringParserBasic(t *testing.T) {
 	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
 	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
@@ -96,7 +96,7 @@ func TestConnectionStringParserCustomDomain(t *testing.T) {
 	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
 	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
@@ -133,7 +133,7 @@ func TestConnectionStringSAS(t *testing.T) {
 	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net/?fakesharedaccesssignature")
 	require.NotNil(t, cred)
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "https://"))
@@ -147,7 +147,7 @@ func TestConnectionStringCosmos(t *testing.T) {
 	require.Equal(t, serviceURL, "https://dummyaccountname.table.cosmos.azure.com:443/")
 	require.NotNil(t, cred)
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "https://"))
@@ -166,7 +166,7 @@ func TestConnectionStringChinaCloud(t *testing.T) {
 	require.Equal(t, serviceURL, "http://dummyaccountname.table.core.chinacloudapi.cn")
 	require.NotNil(t, cred)
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "http://"))
@@ -185,7 +185,7 @@ func TestConnectionStringAzurite(t *testing.T) {
 	require.Equal(t, serviceURL, "http://local-machine:11002/custom/account/path/faketokensignature")
 	require.NotNil(t, cred)
 
-	client, err := NewClientFromConnectionString(connStr, "tableName", nil)
+	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "http://"))

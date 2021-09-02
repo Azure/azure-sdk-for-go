@@ -41,13 +41,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginCreateOrUpdate(ctx contex
 	result := ExpressRouteCrossConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCrossConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteCrossConnectionPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionResponse, error) {
@@ -59,13 +58,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginCreateOrUpdate(ctx contex
 // ResumeCreateOrUpdate creates a new ExpressRouteCrossConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCrossConnectionPoller.ResumeToken().
 func (client *ExpressRouteCrossConnectionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ExpressRouteCrossConnectionPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCrossConnectionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteCrossConnectionPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -272,13 +270,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListArpTable(ctx context.
 	result := ExpressRouteCircuitsArpTableListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.ListArpTable", "location", resp, client.listArpTableHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCrossConnectionsClient.ListArpTable", "location", resp, client.con.Pipeline(), client.listArpTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsArpTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error) {
@@ -290,13 +287,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListArpTable(ctx context.
 // ResumeListArpTable creates a new ExpressRouteCircuitsArpTableListResultPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitsArpTableListResultPoller.ResumeToken().
 func (client *ExpressRouteCrossConnectionsClient) ResumeListArpTable(ctx context.Context, token string) (ExpressRouteCircuitsArpTableListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionsClient.ListArpTable", token, client.listArpTableHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCrossConnectionsClient.ListArpTable", token, client.con.Pipeline(), client.listArpTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsArpTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -449,13 +445,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListRoutesTable(ctx conte
 	result := ExpressRouteCircuitsRoutesTableListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.ListRoutesTable", "location", resp, client.listRoutesTableHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCrossConnectionsClient.ListRoutesTable", "location", resp, client.con.Pipeline(), client.listRoutesTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
@@ -467,13 +462,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListRoutesTable(ctx conte
 // ResumeListRoutesTable creates a new ExpressRouteCircuitsRoutesTableListResultPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCircuitsRoutesTableListResultPoller.ResumeToken().
 func (client *ExpressRouteCrossConnectionsClient) ResumeListRoutesTable(ctx context.Context, token string) (ExpressRouteCircuitsRoutesTableListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionsClient.ListRoutesTable", token, client.listRoutesTableHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCrossConnectionsClient.ListRoutesTable", token, client.con.Pipeline(), client.listRoutesTableHandleError)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCircuitsRoutesTableListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -564,13 +558,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListRoutesTableSummary(ct
 	result := ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionsClient.ListRoutesTableSummary", "location", resp, client.listRoutesTableSummaryHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteCrossConnectionsClient.ListRoutesTableSummary", "location", resp, client.con.Pipeline(), client.listRoutesTableSummaryHandleError)
 	if err != nil {
 		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionsRoutesTableSummaryListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
@@ -582,13 +575,12 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListRoutesTableSummary(ct
 // ResumeListRoutesTableSummary creates a new ExpressRouteCrossConnectionsRoutesTableSummaryListResultPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteCrossConnectionsRoutesTableSummaryListResultPoller.ResumeToken().
 func (client *ExpressRouteCrossConnectionsClient) ResumeListRoutesTableSummary(ctx context.Context, token string) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionsClient.ListRoutesTableSummary", token, client.listRoutesTableSummaryHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteCrossConnectionsClient.ListRoutesTableSummary", token, client.con.Pipeline(), client.listRoutesTableSummaryHandleError)
 	if err != nil {
 		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionsRoutesTableSummaryListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

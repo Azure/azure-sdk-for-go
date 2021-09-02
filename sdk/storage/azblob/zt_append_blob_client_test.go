@@ -7,125 +7,146 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
 	"time"
 )
 
-func (s *aztestsSuite) TestAppendBlock(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
+func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	abClient := containerClient.NewAppendBlobURL(generateBlobName())
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
 
 	resp, err := abClient.Create(context.Background(), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 201)
 
-	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
-	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(1))
-	c.Assert(appendResp.ETag, chk.NotNil)
-	c.Assert(appendResp.LastModified, chk.NotNil)
-	c.Assert((*appendResp.LastModified).IsZero(), chk.Equals, false)
-	c.Assert(appendResp.ContentMD5, chk.IsNil)
-	c.Assert(appendResp.RequestID, chk.NotNil)
-	c.Assert(appendResp.Version, chk.NotNil)
-	c.Assert(appendResp.Date, chk.NotNil)
-	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
+	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.Nil(err)
+	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+	_assert.NotNil(appendResp.ETag)
+	_assert.NotNil(appendResp.LastModified)
+	_assert.Equal((*appendResp.LastModified).IsZero(), false)
+	_assert.Nil(appendResp.ContentMD5)
+	_assert.NotNil(appendResp.RequestID)
+	_assert.NotNil(appendResp.Version)
+	_assert.NotNil(appendResp.Date)
+	_assert.Equal((*appendResp.Date).IsZero(), false)
 
-	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "1024")
-	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(2))
+	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.Nil(err)
+	_assert.Equal(*appendResp.BlobAppendOffset, "1024")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
+func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	// set up abClient to test
-	abClient := containerClient.NewAppendBlobURL(generateBlobName())
+	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
 	resp, err := abClient.Create(context.Background(), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 201)
 
 	// test append block with valid MD5 value
 	readerToBody, body := getRandomDataAndReader(1024)
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	appendBlockOptions := AppendBlockOptions{
-		TransactionalContentMD5: &contentMD5,
+		TransactionalContentMD5: contentMD5,
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
-	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
-	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(1))
-	c.Assert(appendResp.ETag, chk.NotNil)
-	c.Assert(appendResp.LastModified, chk.NotNil)
-	c.Assert((*appendResp.LastModified).IsZero(), chk.Equals, false)
-	c.Assert(appendResp.ContentMD5, chk.NotNil)
-	c.Assert(*appendResp.ContentMD5, chk.DeepEquals, contentMD5)
-	c.Assert(appendResp.RequestID, chk.NotNil)
-	c.Assert(appendResp.Version, chk.NotNil)
-	c.Assert(appendResp.Date, chk.NotNil)
-	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
+	_assert.Nil(err)
+	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+	_assert.NotNil(appendResp.ETag)
+	_assert.NotNil(appendResp.LastModified)
+	_assert.Equal((*appendResp.LastModified).IsZero(), false)
+	_assert.EqualValues(appendResp.ContentMD5, contentMD5)
+	_assert.NotNil(appendResp.RequestID)
+	_assert.NotNil(appendResp.Version)
+	_assert.NotNil(appendResp.Date)
+	_assert.Equal((*appendResp.Date).IsZero(), false)
 
 	// test append block with bad MD5 value
 	readerToBody, body = getRandomDataAndReader(1024)
 	_, badMD5 := getRandomDataAndReader(16)
 	appendBlockOptions = AppendBlockOptions{
-		TransactionalContentMD5: &badMD5,
+		TransactionalContentMD5: badMD5,
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
 }
 
-func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
-	bsu := getBSU()
-	credential, err := getGenericCredential("")
+func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		c.Fatal("Invalid credential")
+		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	//ctx := context.Background()
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), r, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
-	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(1))
-	c.Assert(appendResp.ETag, chk.NotNil)
-	c.Assert(appendResp.LastModified, chk.NotNil)
-	c.Assert((*appendResp.LastModified).IsZero(), chk.Equals, false)
-	c.Assert(appendResp.ContentMD5, chk.IsNil)
-	c.Assert(appendResp.RequestID, chk.NotNil)
-	c.Assert(appendResp.Version, chk.NotNil)
-	c.Assert(appendResp.Date, chk.NotNil)
-	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
+	_assert.Nil(err)
+	_assert.Nil(err)
+	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+	_assert.NotNil(appendResp.ETag)
+	_assert.NotNil(appendResp.LastModified)
+	_assert.Equal((*appendResp.LastModified).IsZero(), false)
+	_assert.Nil(appendResp.ContentMD5)
+	_assert.NotNil(appendResp.RequestID)
+	_assert.NotNil(appendResp.Version)
+	_assert.NotNil(appendResp.Date)
+	_assert.Equal((*appendResp.Date).IsZero(), false)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -135,15 +156,15 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		c.Fatal(err)
+		s.T().Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Append block from URL.
 	cResp2, err := destBlob.Create(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp2.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	//ctx context.Context, source url.URL, contentLength int64, options *AppendBlockURLOptions)
 	offset := int64(0)
@@ -153,67 +174,73 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 		Count:  &count,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-	c.Assert(err, chk.IsNil)
-	c.Assert(appendFromURLResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(*appendFromURLResp.BlobAppendOffset, chk.Equals, "0")
-	c.Assert(*appendFromURLResp.BlobCommittedBlockCount, chk.Equals, int32(1))
-	c.Assert(appendFromURLResp.ETag, chk.NotNil)
-	c.Assert(appendFromURLResp.LastModified, chk.NotNil)
-	c.Assert((*appendFromURLResp.LastModified).IsZero(), chk.Equals, false)
-	c.Assert(appendFromURLResp.ContentMD5, chk.NotNil)
-	c.Assert(*appendFromURLResp.ContentMD5, chk.DeepEquals, contentMD5[:])
-	c.Assert(appendFromURLResp.RequestID, chk.NotNil)
-	c.Assert(appendFromURLResp.Version, chk.NotNil)
-	c.Assert(appendFromURLResp.Date, chk.NotNil)
-	c.Assert((*appendFromURLResp.Date).IsZero(), chk.Equals, false)
+	_assert.Nil(err)
+	_assert.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendFromURLResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
+	_assert.NotNil(appendFromURLResp.ETag)
+	_assert.NotNil(appendFromURLResp.LastModified)
+	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
+	_assert.NotNil(appendFromURLResp.ContentMD5)
+	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5[:])
+	_assert.NotNil(appendFromURLResp.RequestID)
+	_assert.NotNil(appendFromURLResp.Version)
+	_assert.NotNil(appendFromURLResp.Date)
+	_assert.Equal((*appendFromURLResp.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
-	c.Assert(err, chk.IsNil)
+	_assert.Nil(err)
 
 	destData, err := ioutil.ReadAll(downloadResp.RawResponse.Body)
-	c.Assert(err, chk.IsNil)
-	c.Assert(destData, chk.DeepEquals, sourceData)
+	_assert.Nil(err)
+	_assert.Equal(destData, sourceData)
 	_ = downloadResp.Body(RetryReaderOptions{}).Close()
 }
 
-func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
-	bsu := getBSU()
-	credential, err := getGenericCredential("")
+func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
-		c.Fatal("Invalid credential")
+		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), r, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
-	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(1))
-	c.Assert(appendResp.ETag, chk.NotNil)
-	c.Assert(appendResp.LastModified, chk.NotNil)
-	c.Assert((*appendResp.LastModified).IsZero(), chk.Equals, false)
-	c.Assert(appendResp.ContentMD5, chk.IsNil)
-	c.Assert(appendResp.RequestID, chk.NotNil)
-	c.Assert(appendResp.Version, chk.NotNil)
-	c.Assert(appendResp.Date, chk.NotNil)
-	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
+	_assert.Nil(err)
+	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+	_assert.NotNil(appendResp.ETag)
+	_assert.NotNil(appendResp.LastModified)
+	_assert.Equal((*appendResp.LastModified).IsZero(), false)
+	_assert.Nil(appendResp.ContentMD5)
+	_assert.NotNil(appendResp.RequestID)
+	_assert.NotNil(appendResp.Version)
+	_assert.NotNil(appendResp.Date)
+	_assert.Equal((*appendResp.Date).IsZero(), false)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -223,15 +250,15 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		c.Fatal(err)
+		s.T().Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Append block from URL.
 	cResp2, err := destBlob.Create(context.Background(), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp2.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	offset := int64(0)
 	count := int64(contentSize)
@@ -239,640 +266,1098 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Offset:           &offset,
 		Count:            &count,
-		SourceContentMD5: &contentMD5,
+		SourceContentMD5: contentMD5,
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-	c.Assert(err, chk.IsNil)
-	c.Assert(appendFromURLResp.RawResponse.StatusCode, chk.Equals, 201)
-	c.Assert(*appendFromURLResp.BlobAppendOffset, chk.Equals, "0")
-	c.Assert(*appendFromURLResp.BlobCommittedBlockCount, chk.Equals, int32(1))
-	c.Assert(appendFromURLResp.ETag, chk.NotNil)
-	c.Assert(appendFromURLResp.LastModified, chk.NotNil)
-	c.Assert((*appendFromURLResp.LastModified).IsZero(), chk.Equals, false)
-	c.Assert(appendFromURLResp.ContentMD5, chk.NotNil)
-	c.Assert(*appendFromURLResp.ContentMD5, chk.DeepEquals, contentMD5)
-	c.Assert(appendFromURLResp.RequestID, chk.NotNil)
-	c.Assert(appendFromURLResp.Version, chk.NotNil)
-	c.Assert(appendFromURLResp.Date, chk.NotNil)
-	c.Assert((*appendFromURLResp.Date).IsZero(), chk.Equals, false)
+	_assert.Nil(err)
+	_assert.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendFromURLResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
+	_assert.NotNil(appendFromURLResp.ETag)
+	_assert.NotNil(appendFromURLResp.LastModified)
+	_assert.Equal((*appendFromURLResp.LastModified).IsZero(), false)
+	_assert.NotNil(appendFromURLResp.ContentMD5)
+	_assert.EqualValues(appendFromURLResp.ContentMD5, contentMD5)
+	_assert.NotNil(appendFromURLResp.RequestID)
+	_assert.NotNil(appendFromURLResp.Version)
+	_assert.NotNil(appendFromURLResp.Date)
+	_assert.Equal((*appendFromURLResp.Date).IsZero(), false)
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-	c.Assert(err, chk.IsNil)
+	_assert.Nil(err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-	c.Assert(err, chk.IsNil)
-	c.Assert(destData, chk.DeepEquals, sourceData)
+	_assert.Nil(err)
+	_assert.EqualValues(destData, sourceData)
 
 	// Test append block from URL with bad MD5 value
 	_, badMD5 := getRandomDataAndReader(16)
 	appendBlockURLOptions = AppendBlockURLOptions{
 		Offset:           &offset,
 		Count:            &count,
-		SourceContentMD5: &badMD5,
+		SourceContentMD5: badMD5,
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-	c.Assert(err, chk.NotNil)
-
-	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendMetadataNonEmpty(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := getAppendBlobClient(c, containerClient)
-
-	createAppendBlobOptions := CreateAppendBlobOptions{
-		Metadata: &basicMetadata,
+func (s *azblobTestSuite) TestBlobCreateAppendMetadataNonEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	_, err = abClient.Create(ctx, &CreateAppendBlobOptions{
+		Metadata: basicMetadata,
+	})
+	_assert.Nil(err)
 
 	resp, err := abClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
+	_assert.Nil(err)
+	_assert.NotNil(resp.Metadata)
+	_assert.EqualValues(resp.Metadata, basicMetadata)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendMetadataEmpty(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := getAppendBlobClient(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendMetadataEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		Metadata: &map[string]string{},
+		Metadata: map[string]string{},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.Nil(err)
 
 	resp, err := abClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.Metadata, chk.IsNil)
+	_assert.Nil(err)
+	_assert.Nil(resp.Metadata)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendMetadataInvalid(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := getAppendBlobClient(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendMetadataInvalid() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		Metadata: &map[string]string{"In valid!": "bar"},
+		Metadata: map[string]string{"In valid!": "bar"},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.NotNil)
-	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.NotNil(err)
+	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendHTTPHeaders(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := getAppendBlobClient(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendHTTPHeaders() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.Nil(err)
 
 	resp, err := abClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	h := resp.NewHTTPHeaders()
-	c.Assert(h, chk.DeepEquals, basicHeaders)
+	_assert.Nil(err)
+	h := resp.GetHTTPHeaders()
+	_assert.EqualValues(h, basicHeaders)
 }
 
-func validateAppendBlobPut(c *chk.C, abClient AppendBlobClient) {
+func validateAppendBlobPut(_assert *assert.Assertions, abClient AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
-	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
+	_assert.Nil(err)
+	_assert.NotNil(resp.Metadata)
+	_assert.EqualValues(resp.Metadata, basicMetadata)
+	_assert.EqualValues(resp.GetHTTPHeaders(), basicHeaders)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(-10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.Nil(err)
 
-	validateAppendBlobPut(c, abClient)
+	validateAppendBlobPut(_assert, abClient)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.NotNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.Nil(err)
 
-	validateAppendBlobPut(c, abClient)
+	validateAppendBlobPut(_assert, abClient)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(-10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.NotNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfMatchTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.Nil(err)
 
-	validateAppendBlobPut(c, abClient)
+	validateAppendBlobPut(_assert, abClient)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfMatchFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	eTag := "garbage"
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
-				IfMatch: &eTag,
+				IfMatch: to.StringPtr("garbage"),
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.NotNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.Nil(err)
 
-	validateAppendBlobPut(c, abClient)
+	validateAppendBlobPut(_assert, abClient)
 }
 
-func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        &basicMetadata,
-		BlobAccessConditions: BlobAccessConditions{
+		Metadata:        basicMetadata,
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
 		},
 	}
-	_, err := abClient.Create(ctx, &createAppendBlobOptions)
-	c.Assert(err, chk.NotNil)
+	_, err = abClient.Create(ctx, &createAppendBlobOptions)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockNilBody(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockNilBody() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	_, err := abClient.AppendBlock(ctx, bytes.NewReader(nil), nil)
-	c.Assert(err, chk.NotNil)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
-	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, bytes.NewReader(nil), nil)
+	_assert.NotNil(err)
+
+	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockEmptyBody(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockEmptyBody() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(""), nil)
-	c.Assert(err, chk.NotNil)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
-	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(""), nil)
+	_assert.NotNil(err)
+
+	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockNonExistentBlob(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := getAppendBlobClient(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
-	c.Assert(err, chk.NotNil)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
-	validateStorageError(c, err, StorageErrorCodeBlobNotFound)
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_assert.NotNil(err)
+
+	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateBlockAppended(c *chk.C, abClient AppendBlobClient, expectedSize int) {
+func validateBlockAppended(_assert *assert.Assertions, abClient AppendBlobClient, expectedSize int) {
 	resp, err := abClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.ContentLength, chk.Equals, int64(expectedSize))
+	_assert.Nil(err)
+	_assert.Equal(*resp.ContentLength, int64(expectedSize))
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(-10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_assert.Nil(err)
 
-	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
+
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-// Ping Pong
-func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_assert.Nil(err)
 
-	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	currentTime := getRelativeTimeGMT(-10)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := getAppendBlobClient(abName, containerClient)
+
+	appendBlobCreateResp, err := abClient.Create(ctx, nil)
+
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(appendBlobCreateResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_assert.NotNil(err)
 
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfMatchTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
 			},
 		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
+	})
+	_assert.Nil(err)
 
-	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfMatchFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	eTag := "garbage"
-	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
-				IfMatch: &eTag,
+				IfMatch: to.StringPtr("garbage"),
 			},
 		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
-
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	eTag := "garbage"
-	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
-				IfNoneMatch: &eTag,
+				IfNoneMatch: to.StringPtr("garbage"),
 			},
 		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
-
-	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+	})
+	_assert.Nil(err)
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	appendBlockOptions := AppendBlockOptions{
-		BlobAccessConditions: BlobAccessConditions{
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
 			},
 		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
-
-	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-// TODO: Fix this
-//func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNegOne(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
+//// TODO: Fix this
+////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNegOne() {
+////	bsu := getServiceClient()
+////	containerClient, _ := createNewContainer(c, bsu)
+////	defer deleteContainer(_assert, containerClient)
+////	abClient, _ := createNewAppendBlob(c, containerClient)
+////
+////	appendPosition := int64(-1)
+////	appendBlockOptions := AppendBlockOptions{
+////		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+////			AppendPosition: &appendPosition,
+////		},
+////	}
+////	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
+////	_assert.NotNil(err)
+////
+////	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+////}
 //
-//	appendPosition := int64(-1)
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: &appendPosition,
-//		},
+////func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchZero() {
+////	bsu := getServiceClient()
+////	containerClient, _ := createNewContainer(c, bsu)
+////	defer deleteContainer(_assert, containerClient)
+////	abClient, _ := createNewAppendBlob(c, containerClient)
+////
+////	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
+////	_assert.Nil(err)
+////
+////	appendPosition := int64(0)
+////	appendBlockOptions := AppendBlockOptions{
+////		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+////			AppendPosition: &appendPosition,
+////		},
+////	}
+////	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+////	_assert.Nil(err)
+////
+////	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
+////}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_assert.Nil(err)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			AppendPosition: to.Int64Ptr(int64(len(blockBlobDefaultData))),
+		},
+	})
+	_assert.Nil(err)
+
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData)*2)
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_assert.Nil(err)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			AppendPosition: to.Int64Ptr(-1),
+		},
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			AppendPosition: to.Int64Ptr(12),
+		},
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeAppendPositionConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) + 1)),
+		},
+	})
+	_assert.Nil(err)
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) - 1)),
+		},
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestSealAppendBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.Nil(err)
+	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
+
+	sealResp, err := abClient.SealAppendBlob(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*sealResp.IsSealed, true)
+
+	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+
+	getPropResp, err := abClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getPropResp.IsSealed, true)
+}
+
+// TODO: Learn about the behaviour of AppendPosition
+//func (s *azblobUnrecordedTestSuite) TestSealAppendBlobWithAppendConditions() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.NotNil)
 //
-//	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, svcClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	abName := generateBlobName(testName)
+//	abClient := createNewAppendBlob(_assert, abName, containerClient)
+//
+//	sealResp, err := abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
+//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+//			AppendPosition: to.Int64Ptr(1),
+//		},
+//	})
+//	_assert.NotNil(err)
+//	_ = sealResp
+//
+//	sealResp, err = abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
+//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+//			AppendPosition: to.Int64Ptr(0),
+//		},
+//	})
 //}
 
-//func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchZero(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
-//
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
-//	c.Assert(err, chk.IsNil)
-//
-//	appendPosition := int64(0)
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: &appendPosition,
-//		},
-//	}
-//	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
-//}
-
-func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
-
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
-	c.Assert(err, chk.IsNil)
-
-	appendPosition := int64(len(blockBlobDefaultData))
-	appendBlockOptions := AppendBlockOptions{
-		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			AppendPosition: &appendPosition,
-		},
+func (s *azblobTestSuite) TestCopySealedBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
 
-	validateBlockAppended(c, abClient, len(blockBlobDefaultData)*2)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
+
+	_, err = abClient.SealAppendBlob(ctx, nil)
+	_assert.Nil(err)
+
+	copiedBlob1 := getAppendBlobClient("copy1"+abName, containerClient)
+	// copy sealed blob will get a sealed blob
+	_, err = copiedBlob1.StartCopyFromURL(ctx, abClient.URL(), nil)
+	_assert.Nil(err)
+
+	getResp1, err := copiedBlob1.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp1.IsSealed, true)
+
+	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+
+	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
+	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+		SealBlob: to.BoolPtr(true),
+	})
+	_assert.Nil(err)
+
+	getResp2, err := copiedBlob2.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp2.IsSealed, true)
+
+	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+
+	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
+	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+		SealBlob: to.BoolPtr(false),
+	})
+	_assert.Nil(err)
+
+	getResp3, err := copiedBlob3.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Nil(getResp3.IsSealed)
+
+	appendResp3, err := copiedBlob3.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
+	_assert.Nil(err)
+	_assert.Equal(appendResp3.RawResponse.StatusCode, 201)
+	_assert.Equal(*appendResp3.BlobAppendOffset, "0")
+	_assert.Equal(*appendResp3.BlobCommittedBlockCount, int32(1))
 }
 
-func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
-
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
-	c.Assert(err, chk.IsNil)
-
-	appendPosition := int64(-1)
-	appendBlockOptions := AppendBlockOptions{
-		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			AppendPosition: &appendPosition,
-		},
+func (s *azblobTestSuite) TestCopyUnsealedBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
 	}
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
-}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
-func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
+	abName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	appendPosition := int64(12)
-	appendBlockOptions := AppendBlockOptions{
-		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			AppendPosition: &appendPosition,
-		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
+	copiedBlob := getAppendBlobClient("copy"+abName, containerClient)
+	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
+		SealBlob: to.BoolPtr(true),
+	})
+	_assert.Nil(err)
 
-	// validateStorageError(c, err, StorageErrorCodeAppendPositionConditionNotMet)
-}
-
-func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeTrue(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
-
-	maxSize := int64(len(blockBlobDefaultData) + 1)
-	appendBlockOptions := AppendBlockOptions{
-		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			MaxSize: &maxSize,
-		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.IsNil)
-
-	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
-}
-
-func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeFalse(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	abClient, _ := createNewAppendBlob(c, containerClient)
-
-	maxSize := int64(len(blockBlobDefaultData) - 1)
-	appendBlockOptions := AppendBlockOptions{
-		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-			MaxSize: &maxSize,
-		},
-	}
-	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-	c.Assert(err, chk.NotNil)
-
-	validateStorageError(c, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
+	getResp, err := copiedBlob.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*getResp.IsSealed, true)
 }

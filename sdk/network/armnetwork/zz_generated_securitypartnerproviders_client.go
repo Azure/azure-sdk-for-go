@@ -41,13 +41,12 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 	result := SecurityPartnerProviderPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SecurityPartnerProvidersClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("SecurityPartnerProvidersClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SecurityPartnerProviderPollerResponse{}, err
 	}
 	poller := &securityPartnerProviderPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPartnerProviderResponse, error) {
@@ -59,13 +58,12 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 // ResumeCreateOrUpdate creates a new SecurityPartnerProviderPoller from the specified resume token.
 // token - The value must come from a previous call to SecurityPartnerProviderPoller.ResumeToken().
 func (client *SecurityPartnerProvidersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SecurityPartnerProviderPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SecurityPartnerProvidersClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SecurityPartnerProvidersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return SecurityPartnerProviderPollerResponse{}, err
 	}
 	poller := &securityPartnerProviderPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("SecurityPartnerProvidersClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("SecurityPartnerProvidersClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *SecurityPartnerProvidersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("SecurityPartnerProvidersClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("SecurityPartnerProvidersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

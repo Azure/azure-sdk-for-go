@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -10,5 +11,5 @@ const (
 	UserAgent = "azidentity/" + Version
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v0.9.1"
+	Version = "v0.9.2"
 )

@@ -8,13 +8,13 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync/atomic"
-	"testing"
 	"time"
 )
 
@@ -28,7 +28,7 @@ type fakeBlockWriter struct {
 
 func newFakeBlockWriter() *fakeBlockWriter {
 	f := &fakeBlockWriter{
-		path:       filepath.Join(os.TempDir(), newUUID().String()),
+		path:       filepath.Join(os.TempDir(), uuid.New().String()),
 		block:      -1,
 		errOnBlock: -1,
 	}
@@ -92,7 +92,7 @@ func (f *fakeBlockWriter) final() string {
 }
 
 func createSrcFile(size int) (string, error) {
-	p := filepath.Join(os.TempDir(), newUUID().String())
+	p := filepath.Join(os.TempDir(), uuid.New().String())
 	fp, err := os.OpenFile(p, os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
 		return "", fmt.Errorf("could not create source file: %s", err)
@@ -125,8 +125,8 @@ func fileMD5(p string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-func TestGetErr(t *testing.T) {
-	t.Parallel()
+func (s *azblobUnrecordedTestSuite) TestGetErr() {
+	s.T().Parallel()
 
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -161,13 +161,13 @@ func TestGetErr(t *testing.T) {
 
 		got := c.getErr()
 		if test.want != got {
-			t.Errorf("TestGetErr(%s): got %v, want %v", test.desc, got, test.want)
+			s.T().Errorf("TestGetErr(%s): got %v, want %v", test.desc, got, test.want)
 		}
 	}
 }
 
-func TestCopyFromReader(t *testing.T) {
-	t.Parallel()
+func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
+	s.T().Parallel()
 
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -280,10 +280,10 @@ func TestCopyFromReader(t *testing.T) {
 		_, err = copyFromReader(test.ctx, from, br, test.o)
 		switch {
 		case err == nil && test.err:
-			t.Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
+			s.T().Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
 			continue
 		case err != nil && !test.err:
-			t.Errorf("TestCopyFromReader(%s): got err == %s, want err == nil", test.desc, err)
+			s.T().Errorf("TestCopyFromReader(%s): got err == %s, want err == nil", test.desc, err)
 			continue
 		case err != nil:
 			continue
@@ -293,7 +293,7 @@ func TestCopyFromReader(t *testing.T) {
 		got := fileMD5(br.final())
 
 		if got != want {
-			t.Errorf("TestCopyFromReader(%s): MD5 not the same: got %s, want %s", test.desc, got, want)
+			s.T().Errorf("TestCopyFromReader(%s): MD5 not the same: got %s, want %s", test.desc, got, want)
 		}
 	}
 }

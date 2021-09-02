@@ -4,7 +4,7 @@
 
 The `armkeyvault` module provides operations for working with Azure Keyvault resources.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/keyvault/armkeyvault)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/armkeyvault)
 
 # Getting started
 

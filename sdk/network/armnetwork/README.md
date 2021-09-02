@@ -4,7 +4,7 @@
 
 The `armnetwork` module provides operations for working with Azure Network resources.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/network/armnetwork)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/network/armnetwork)
 
 # Getting started
 

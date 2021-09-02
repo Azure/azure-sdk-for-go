@@ -3576,6 +3576,96 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotResponder(resp *http.Res
 	return
 }
 
+// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck description for Integrates this Web App with a Virtual Network.
+// This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet
+// has already been delegated, and is not
+// in use by another App Service Plan other than the one this App is in.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// connectionEnvelope - properties of the Virtual Network connection. See example.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckPreparer(ctx, resourceGroupName, name, connectionEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckPreparer prepares the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck request.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckPreparer(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithJSON(connectionEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSender sends the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponder handles the response to the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdateVnetConnection description for Adds a Virtual Network connection to an app or slot (PUT) or updates
 // the connection properties (PATCH).
 // Parameters:

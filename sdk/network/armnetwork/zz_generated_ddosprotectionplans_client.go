@@ -41,13 +41,12 @@ func (client *DdosProtectionPlansClient) BeginCreateOrUpdate(ctx context.Context
 	result := DdosProtectionPlanPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DdosProtectionPlansClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("DdosProtectionPlansClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DdosProtectionPlanPollerResponse{}, err
 	}
 	poller := &ddosProtectionPlanPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DdosProtectionPlanResponse, error) {
@@ -59,13 +58,12 @@ func (client *DdosProtectionPlansClient) BeginCreateOrUpdate(ctx context.Context
 // ResumeCreateOrUpdate creates a new DdosProtectionPlanPoller from the specified resume token.
 // token - The value must come from a previous call to DdosProtectionPlanPoller.ResumeToken().
 func (client *DdosProtectionPlansClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DdosProtectionPlanPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DdosProtectionPlansClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DdosProtectionPlansClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DdosProtectionPlanPollerResponse{}, err
 	}
 	poller := &ddosProtectionPlanPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resour
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DdosProtectionPlansClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("DdosProtectionPlansClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resour
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DdosProtectionPlansClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DdosProtectionPlansClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DdosProtectionPlansClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

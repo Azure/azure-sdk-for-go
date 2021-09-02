@@ -42,13 +42,12 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	result := PrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PrivateEndpointConnectionsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("PrivateEndpointConnectionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return PrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &privateEndpointConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
@@ -60,13 +59,12 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // ResumeDelete creates a new PrivateEndpointConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to PrivateEndpointConnectionPoller.ResumeToken().
 func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (PrivateEndpointConnectionPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return PrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &privateEndpointConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

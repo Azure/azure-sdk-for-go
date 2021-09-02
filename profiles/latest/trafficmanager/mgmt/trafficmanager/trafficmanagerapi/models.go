@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,7 +9,7 @@
 
 package trafficmanagerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-04-01/trafficmanager/trafficmanagerapi"
+import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-08-01/trafficmanager/trafficmanagerapi"
 
 type EndpointsClientAPI = original.EndpointsClientAPI
 type GeographicHierarchiesClientAPI = original.GeographicHierarchiesClientAPI

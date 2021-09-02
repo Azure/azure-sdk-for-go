@@ -104,13 +104,12 @@ func (client *NetworkManagementClient) BeginDeleteBastionShareableLink(ctx conte
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkManagementClient.DeleteBastionShareableLink", "location", resp, client.deleteBastionShareableLinkHandleError)
+	pt, err := armcore.NewLROPoller("NetworkManagementClient.DeleteBastionShareableLink", "location", resp, client.con.Pipeline(), client.deleteBastionShareableLinkHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -122,13 +121,12 @@ func (client *NetworkManagementClient) BeginDeleteBastionShareableLink(ctx conte
 // ResumeDeleteBastionShareableLink creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *NetworkManagementClient) ResumeDeleteBastionShareableLink(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkManagementClient.DeleteBastionShareableLink", token, client.deleteBastionShareableLinkHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkManagementClient.DeleteBastionShareableLink", token, client.con.Pipeline(), client.deleteBastionShareableLinkHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -278,13 +276,12 @@ func (client *NetworkManagementClient) BeginGeneratevirtualwanvpnserverconfigura
 	result := VPNProfileResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkManagementClient.Generatevirtualwanvpnserverconfigurationvpnprofile", "location", resp, client.generatevirtualwanvpnserverconfigurationvpnprofileHandleError)
+	pt, err := armcore.NewLROPoller("NetworkManagementClient.Generatevirtualwanvpnserverconfigurationvpnprofile", "location", resp, client.con.Pipeline(), client.generatevirtualwanvpnserverconfigurationvpnprofileHandleError)
 	if err != nil {
 		return VPNProfileResponsePollerResponse{}, err
 	}
 	poller := &vpnProfileResponsePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNProfileResponseResponse, error) {
@@ -296,13 +293,12 @@ func (client *NetworkManagementClient) BeginGeneratevirtualwanvpnserverconfigura
 // ResumeGeneratevirtualwanvpnserverconfigurationvpnprofile creates a new VPNProfileResponsePoller from the specified resume token.
 // token - The value must come from a previous call to VPNProfileResponsePoller.ResumeToken().
 func (client *NetworkManagementClient) ResumeGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, token string) (VPNProfileResponsePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkManagementClient.Generatevirtualwanvpnserverconfigurationvpnprofile", token, client.generatevirtualwanvpnserverconfigurationvpnprofileHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkManagementClient.Generatevirtualwanvpnserverconfigurationvpnprofile", token, client.con.Pipeline(), client.generatevirtualwanvpnserverconfigurationvpnprofileHandleError)
 	if err != nil {
 		return VPNProfileResponsePollerResponse{}, err
 	}
 	poller := &vpnProfileResponsePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -386,13 +382,12 @@ func (client *NetworkManagementClient) BeginGetActiveSessions(ctx context.Contex
 	result := BastionActiveSessionListResultPagerPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkManagementClient.GetActiveSessions", "location", resp, client.getActiveSessionsHandleError)
+	pt, err := armcore.NewLROPoller("NetworkManagementClient.GetActiveSessions", "location", resp, client.con.Pipeline(), client.getActiveSessionsHandleError)
 	if err != nil {
 		return BastionActiveSessionListResultPagerPollerResponse{}, err
 	}
 	poller := &bastionActiveSessionListResultPagerPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -418,13 +413,12 @@ func (client *NetworkManagementClient) BeginGetActiveSessions(ctx context.Contex
 // ResumeGetActiveSessions creates a new BastionActiveSessionListResultPagerPoller from the specified resume token.
 // token - The value must come from a previous call to BastionActiveSessionListResultPagerPoller.ResumeToken().
 func (client *NetworkManagementClient) ResumeGetActiveSessions(ctx context.Context, token string) (BastionActiveSessionListResultPagerPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkManagementClient.GetActiveSessions", token, client.getActiveSessionsHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkManagementClient.GetActiveSessions", token, client.con.Pipeline(), client.getActiveSessionsHandleError)
 	if err != nil {
 		return BastionActiveSessionListResultPagerPollerResponse{}, err
 	}
 	poller := &bastionActiveSessionListResultPagerPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -587,13 +581,12 @@ func (client *NetworkManagementClient) BeginPutBastionShareableLink(ctx context.
 	result := BastionShareableLinkListResultPagerPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkManagementClient.PutBastionShareableLink", "location", resp, client.putBastionShareableLinkHandleError)
+	pt, err := armcore.NewLROPoller("NetworkManagementClient.PutBastionShareableLink", "location", resp, client.con.Pipeline(), client.putBastionShareableLinkHandleError)
 	if err != nil {
 		return BastionShareableLinkListResultPagerPollerResponse{}, err
 	}
 	poller := &bastionShareableLinkListResultPagerPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -619,13 +612,12 @@ func (client *NetworkManagementClient) BeginPutBastionShareableLink(ctx context.
 // ResumePutBastionShareableLink creates a new BastionShareableLinkListResultPagerPoller from the specified resume token.
 // token - The value must come from a previous call to BastionShareableLinkListResultPagerPoller.ResumeToken().
 func (client *NetworkManagementClient) ResumePutBastionShareableLink(ctx context.Context, token string) (BastionShareableLinkListResultPagerPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkManagementClient.PutBastionShareableLink", token, client.putBastionShareableLinkHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkManagementClient.PutBastionShareableLink", token, client.con.Pipeline(), client.putBastionShareableLinkHandleError)
 	if err != nil {
 		return BastionShareableLinkListResultPagerPollerResponse{}, err
 	}
 	poller := &bastionShareableLinkListResultPagerPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil

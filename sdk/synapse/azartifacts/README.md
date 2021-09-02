@@ -4,7 +4,7 @@
 
 The `azartifacts` module provides operations for working with Azure synapse.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/synapse/azartifacts)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/synapse/azartifacts)
 
 # Getting started
 

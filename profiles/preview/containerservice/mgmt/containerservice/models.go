@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-07-01/containerservice"
 )
 
 const (
@@ -170,8 +171,10 @@ const (
 type OutboundType = original.OutboundType
 
 const (
-	OutboundTypeLoadBalancer       OutboundType = original.OutboundTypeLoadBalancer
-	OutboundTypeUserDefinedRouting OutboundType = original.OutboundTypeUserDefinedRouting
+	OutboundTypeLoadBalancer           OutboundType = original.OutboundTypeLoadBalancer
+	OutboundTypeManagedNATGateway      OutboundType = original.OutboundTypeManagedNATGateway
+	OutboundTypeUserAssignedNATGateway OutboundType = original.OutboundTypeUserAssignedNATGateway
+	OutboundTypeUserDefinedRouting     OutboundType = original.OutboundTypeUserDefinedRouting
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -189,6 +192,13 @@ const (
 	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 	ResourceIdentityTypeUserAssigned   ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type ScaleDownMode = original.ScaleDownMode
+
+const (
+	ScaleDownModeDeallocate ScaleDownMode = original.ScaleDownModeDeallocate
+	ScaleDownModeDelete     ScaleDownMode = original.ScaleDownModeDelete
 )
 
 type ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicy
@@ -436,6 +446,8 @@ type CommandResultProperties = original.CommandResultProperties
 type CredentialResult = original.CredentialResult
 type CredentialResults = original.CredentialResults
 type DiagnosticsProfile = original.DiagnosticsProfile
+type EndpointDependency = original.EndpointDependency
+type EndpointDetail = original.EndpointDetail
 type ExtendedLocation = original.ExtendedLocation
 type KubeletConfig = original.KubeletConfig
 type LinuxOSConfig = original.LinuxOSConfig
@@ -465,16 +477,21 @@ type ManagedClusterLoadBalancerProfile = original.ManagedClusterLoadBalancerProf
 type ManagedClusterLoadBalancerProfileManagedOutboundIPs = original.ManagedClusterLoadBalancerProfileManagedOutboundIPs
 type ManagedClusterLoadBalancerProfileOutboundIPPrefixes = original.ManagedClusterLoadBalancerProfileOutboundIPPrefixes
 type ManagedClusterLoadBalancerProfileOutboundIPs = original.ManagedClusterLoadBalancerProfileOutboundIPs
+type ManagedClusterManagedOutboundIPProfile = original.ManagedClusterManagedOutboundIPProfile
+type ManagedClusterNATGatewayProfile = original.ManagedClusterNATGatewayProfile
 type ManagedClusterPodIdentity = original.ManagedClusterPodIdentity
 type ManagedClusterPodIdentityException = original.ManagedClusterPodIdentityException
 type ManagedClusterPodIdentityProfile = original.ManagedClusterPodIdentityProfile
+type ManagedClusterPodIdentityProvisioningError = original.ManagedClusterPodIdentityProvisioningError
+type ManagedClusterPodIdentityProvisioningErrorBody = original.ManagedClusterPodIdentityProvisioningErrorBody
 type ManagedClusterPodIdentityProvisioningInfo = original.ManagedClusterPodIdentityProvisioningInfo
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
-type ManagedClusterPropertiesIdentityProfileValue = original.ManagedClusterPropertiesIdentityProfileValue
 type ManagedClusterSKU = original.ManagedClusterSKU
+type ManagedClusterSecurityProfile = original.ManagedClusterSecurityProfile
+type ManagedClusterSecurityProfileAzureDefender = original.ManagedClusterSecurityProfileAzureDefender
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
@@ -498,6 +515,10 @@ type OperationListResult = original.OperationListResult
 type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
 type OperationsClient = original.OperationsClient
+type OutboundEnvironmentEndpoint = original.OutboundEnvironmentEndpoint
+type OutboundEnvironmentEndpointCollection = original.OutboundEnvironmentEndpointCollection
+type OutboundEnvironmentEndpointCollectionIterator = original.OutboundEnvironmentEndpointCollectionIterator
+type OutboundEnvironmentEndpointCollectionPage = original.OutboundEnvironmentEndpointCollectionPage
 type PowerState = original.PowerState
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
@@ -569,6 +590,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
+	return original.NewOutboundEnvironmentEndpointCollectionIterator(page)
+}
+func NewOutboundEnvironmentEndpointCollectionPage(cur OutboundEnvironmentEndpointCollection, getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return original.NewOutboundEnvironmentEndpointCollectionPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -659,6 +686,9 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleScaleDownModeValues() []ScaleDownMode {
+	return original.PossibleScaleDownModeValues()
 }
 func PossibleScaleSetEvictionPolicyValues() []ScaleSetEvictionPolicy {
 	return original.PossibleScaleSetEvictionPolicyValues()

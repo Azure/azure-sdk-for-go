@@ -60,6 +60,7 @@ func (e *InternalError) As(target interface{}) bool {
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
 type StorageError struct {
+	raw         string
 	response    *http.Response
 	description string
 
@@ -101,7 +102,7 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 	}
 }
 
-// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
+// StatusCode returns service-error information. The caller may examine these values but should not modify any of them.
 func (e *StorageError) StatusCode() int {
 	return e.response.StatusCode
 }

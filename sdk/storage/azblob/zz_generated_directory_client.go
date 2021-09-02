@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9,6 +10,7 @@ package azblob
 
 import (
 	"context"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"strconv"
@@ -25,6 +27,7 @@ type directoryClient struct {
 // information, see Specifying Conditional Headers for Blob Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // To
 // fail if the destination already exists, use a conditional request with If-None-Match: "*".
+// If the operation fails it returns the *DataLakeStorageError error type.
 func (client *directoryClient) Create(ctx context.Context, directoryCreateOptions *DirectoryCreateOptions, directoryHTTPHeaders *DirectoryHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (DirectoryCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, directoryCreateOptions, directoryHTTPHeaders, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
@@ -141,14 +144,19 @@ func (client *directoryClient) createHandleResponse(resp *azcore.Response) (Dire
 
 // createHandleError handles the Create error response.
 func (client *directoryClient) createHandleError(resp *azcore.Response) error {
-	var err DataLakeStorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := DataLakeStorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Delete - Deletes the directory
+// If the operation fails it returns the *DataLakeStorageError error type.
 func (client *directoryClient) Delete(ctx context.Context, recursiveDirectoryDelete bool, directoryDeleteOptions *DirectoryDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (DirectoryDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, recursiveDirectoryDelete, directoryDeleteOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
@@ -230,14 +238,19 @@ func (client *directoryClient) deleteHandleResponse(resp *azcore.Response) (Dire
 
 // deleteHandleError handles the Delete error response.
 func (client *directoryClient) deleteHandleError(resp *azcore.Response) error {
-	var err DataLakeStorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := DataLakeStorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetAccessControl - Get the owner, group, permissions, or access control list for a directory.
+// If the operation fails it returns the *DataLakeStorageError error type.
 func (client *directoryClient) GetAccessControl(ctx context.Context, directoryGetAccessControlOptions *DirectoryGetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (DirectoryGetAccessControlResponse, error) {
 	req, err := client.getAccessControlCreateRequest(ctx, directoryGetAccessControlOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
@@ -335,11 +348,15 @@ func (client *directoryClient) getAccessControlHandleResponse(resp *azcore.Respo
 
 // getAccessControlHandleError handles the GetAccessControl error response.
 func (client *directoryClient) getAccessControlHandleError(resp *azcore.Response) error {
-	var err DataLakeStorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := DataLakeStorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Rename - Rename a directory. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This
@@ -347,6 +364,7 @@ func (client *directoryClient) getAccessControlHandleError(resp *azcore.Response
 // information, see Specifying Conditional Headers for Blob Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // To
 // fail if the destination already exists, use a conditional request with If-None-Match: "*".
+// If the operation fails it returns the *DataLakeStorageError error type.
 func (client *directoryClient) Rename(ctx context.Context, renameSource string, directoryRenameOptions *DirectoryRenameOptions, directoryHTTPHeaders *DirectoryHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (DirectoryRenameResponse, error) {
 	req, err := client.renameCreateRequest(ctx, renameSource, directoryRenameOptions, directoryHTTPHeaders, leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
 	if err != nil {
@@ -487,14 +505,19 @@ func (client *directoryClient) renameHandleResponse(resp *azcore.Response) (Dire
 
 // renameHandleError handles the Rename error response.
 func (client *directoryClient) renameHandleError(resp *azcore.Response) error {
-	var err DataLakeStorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := DataLakeStorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // SetAccessControl - Set the owner, group, permissions, or access control list for a directory.
+// If the operation fails it returns the *DataLakeStorageError error type.
 func (client *directoryClient) SetAccessControl(ctx context.Context, directorySetAccessControlOptions *DirectorySetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (DirectorySetAccessControlResponse, error) {
 	req, err := client.setAccessControlCreateRequest(ctx, directorySetAccessControlOptions, leaseAccessConditions, modifiedAccessConditions)
 	if err != nil {
@@ -589,9 +612,13 @@ func (client *directoryClient) setAccessControlHandleResponse(resp *azcore.Respo
 
 // setAccessControlHandleError handles the SetAccessControl error response.
 func (client *directoryClient) setAccessControlHandleError(resp *azcore.Response) error {
-	var err DataLakeStorageError
-	if err := resp.UnmarshalAsXML(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := DataLakeStorageError{raw: string(body)}
+	if err := resp.UnmarshalAsXML(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

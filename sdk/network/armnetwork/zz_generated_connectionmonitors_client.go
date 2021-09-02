@@ -41,13 +41,12 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 	result := ConnectionMonitorResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ConnectionMonitorsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ConnectionMonitorsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ConnectionMonitorResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorResultResponse, error) {
@@ -59,13 +58,12 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 // ResumeCreateOrUpdate creates a new ConnectionMonitorResultPoller from the specified resume token.
 // token - The value must come from a previous call to ConnectionMonitorResultPoller.ResumeToken().
 func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ConnectionMonitorResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ConnectionMonitorsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ConnectionMonitorResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -155,13 +153,12 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ConnectionMonitorsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -173,13 +170,12 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ConnectionMonitorsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ConnectionMonitorsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -402,13 +398,12 @@ func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resource
 	result := ConnectionMonitorQueryResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Query", "location", resp, client.queryHandleError)
+	pt, err := armcore.NewLROPoller("ConnectionMonitorsClient.Query", "location", resp, client.con.Pipeline(), client.queryHandleError)
 	if err != nil {
 		return ConnectionMonitorQueryResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorQueryResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorQueryResultResponse, error) {
@@ -420,13 +415,12 @@ func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resource
 // ResumeQuery creates a new ConnectionMonitorQueryResultPoller from the specified resume token.
 // token - The value must come from a previous call to ConnectionMonitorQueryResultPoller.ResumeToken().
 func (client *ConnectionMonitorsClient) ResumeQuery(ctx context.Context, token string) (ConnectionMonitorQueryResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Query", token, client.queryHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ConnectionMonitorsClient.Query", token, client.con.Pipeline(), client.queryHandleError)
 	if err != nil {
 		return ConnectionMonitorQueryResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorQueryResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -513,13 +507,12 @@ func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resource
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Start", "location", resp, client.startHandleError)
+	pt, err := armcore.NewLROPoller("ConnectionMonitorsClient.Start", "location", resp, client.con.Pipeline(), client.startHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -531,13 +524,12 @@ func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resource
 // ResumeStart creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ConnectionMonitorsClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Start", token, client.startHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ConnectionMonitorsClient.Start", token, client.con.Pipeline(), client.startHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -624,13 +616,12 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Stop", "location", resp, client.stopHandleError)
+	pt, err := armcore.NewLROPoller("ConnectionMonitorsClient.Stop", "location", resp, client.con.Pipeline(), client.stopHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -642,13 +633,12 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 // ResumeStop creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ConnectionMonitorsClient) ResumeStop(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Stop", token, client.stopHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ConnectionMonitorsClient.Stop", token, client.con.Pipeline(), client.stopHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

@@ -41,13 +41,12 @@ func (client *ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 	result := ExpressRouteGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteGatewaysClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteGatewaysClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteGatewayPollerResponse{}, err
 	}
 	poller := &expressRouteGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
@@ -59,13 +58,12 @@ func (client *ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 // ResumeCreateOrUpdate creates a new ExpressRouteGatewayPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteGatewayPoller.ResumeToken().
 func (client *ExpressRouteGatewaysClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ExpressRouteGatewayPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteGatewaysClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteGatewaysClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ExpressRouteGatewayPollerResponse{}, err
 	}
 	poller := &expressRouteGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -149,13 +147,12 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteGatewaysClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteGatewaysClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -167,13 +164,12 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ExpressRouteGatewaysClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteGatewaysClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteGatewaysClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -443,13 +439,12 @@ func (client *ExpressRouteGatewaysClient) BeginUpdateTags(ctx context.Context, r
 	result := ExpressRouteGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteGatewaysClient.UpdateTags", "azure-async-operation", resp, client.updateTagsHandleError)
+	pt, err := armcore.NewLROPoller("ExpressRouteGatewaysClient.UpdateTags", "azure-async-operation", resp, client.con.Pipeline(), client.updateTagsHandleError)
 	if err != nil {
 		return ExpressRouteGatewayPollerResponse{}, err
 	}
 	poller := &expressRouteGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
@@ -461,13 +456,12 @@ func (client *ExpressRouteGatewaysClient) BeginUpdateTags(ctx context.Context, r
 // ResumeUpdateTags creates a new ExpressRouteGatewayPoller from the specified resume token.
 // token - The value must come from a previous call to ExpressRouteGatewayPoller.ResumeToken().
 func (client *ExpressRouteGatewaysClient) ResumeUpdateTags(ctx context.Context, token string) (ExpressRouteGatewayPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteGatewaysClient.UpdateTags", token, client.updateTagsHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ExpressRouteGatewaysClient.UpdateTags", token, client.con.Pipeline(), client.updateTagsHandleError)
 	if err != nil {
 		return ExpressRouteGatewayPollerResponse{}, err
 	}
 	poller := &expressRouteGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

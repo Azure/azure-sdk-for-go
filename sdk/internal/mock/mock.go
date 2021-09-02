@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -151,7 +152,10 @@ func (s *Server) serveHTTP(w http.ResponseWriter, req *http.Request) {
 	if resp.delay > 0 {
 		time.Sleep(resp.delay)
 	}
-	resp.write(w)
+	err := resp.write(w)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Requests returns the number of times an HTTP request was made.
@@ -259,7 +263,7 @@ type mockResponse struct {
 	pred    ResponsePredicate
 }
 
-func (mr mockResponse) write(w http.ResponseWriter) {
+func (mr mockResponse) write(w http.ResponseWriter) error {
 	if len(mr.headers) > 0 {
 		for k, v := range mr.headers {
 			for _, vv := range v {
@@ -272,8 +276,12 @@ func (mr mockResponse) write(w http.ResponseWriter) {
 	}
 	w.WriteHeader(mr.code)
 	if mr.body != nil {
-		w.Write(mr.body)
+		_, err := w.Write(mr.body)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 // WithStatusCode sets the HTTP response's status code to the specified value.

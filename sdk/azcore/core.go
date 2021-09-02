@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -6,11 +7,19 @@
 package azcore
 
 import (
-	"context"
 	"errors"
 	"io"
 	"net/http"
 	"reflect"
+)
+
+const (
+	headerContentLength     = "Content-Length"
+	headerContentType       = "Content-Type"
+	headerOperationLocation = "Operation-Location"
+	headerLocation          = "Location"
+	headerRetryAfter        = "Retry-After"
+	headerUserAgent         = "User-Agent"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -19,39 +28,30 @@ type Policy interface {
 	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
 	// request before calling req.Next() to move on to the next policy, and respond to the result
 	// before returning to the caller.
-	Do(req *Request) (*Response, error)
+	Do(req *Request) (*http.Response, error)
 }
 
-// PolicyFunc is a type that implements the Policy interface.
+// policyFunc is a type that implements the Policy interface.
 // Use this type when implementing a stateless policy as a first-class function.
-type PolicyFunc func(*Request) (*Response, error)
+type policyFunc func(*Request) (*http.Response, error)
 
 // Do implements the Policy interface on PolicyFunc.
-func (pf PolicyFunc) Do(req *Request) (*Response, error) {
+func (pf policyFunc) Do(req *Request) (*http.Response, error) {
 	return pf(req)
 }
 
-// Transport represents an HTTP pipeline transport used to send HTTP requests and receive responses.
-type Transport interface {
+// Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
+type Transporter interface {
 	// Do sends the HTTP request and returns the HTTP response or error.
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// TransportFunc is a type that implements the Transport interface.
-// Use this type when implementing a stateless transport as a first-class function.
-type TransportFunc func(*http.Request) (*http.Response, error)
-
-// Do implements the Transport interface on TransportFunc.
-func (tf TransportFunc) Do(req *http.Request) (*http.Response, error) {
-	return tf(req)
-}
-
 // used to adapt a TransportPolicy to a Policy
 type transportPolicy struct {
-	trans Transport
+	trans Transporter
 }
 
-func (tp transportPolicy) Do(req *Request) (*Response, error) {
+func (tp transportPolicy) Do(req *Request) (*http.Response, error) {
 	resp, err := tp.trans.Do(req.Request)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (tp transportPolicy) Do(req *Request) (*Response, error) {
 		// this ensures the retry policy will retry the request
 		return nil, errors.New("received nil response")
 	}
-	return &Response{Response: resp}, nil
+	return resp, nil
 }
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
@@ -71,12 +71,12 @@ type Pipeline struct {
 
 // NewPipeline creates a new Pipeline object from the specified Transport and Policies.
 // If no transport is provided then the default *http.Client transport will be used.
-func NewPipeline(transport Transport, policies ...Policy) Pipeline {
+func NewPipeline(transport Transporter, policies ...Policy) Pipeline {
 	if transport == nil {
 		transport = defaultHTTPClient
 	}
 	// transport policy must always be the last in the slice
-	policies = append(policies, PolicyFunc(httpHeaderPolicy), PolicyFunc(bodyDownloadPolicy), transportPolicy{trans: transport})
+	policies = append(policies, policyFunc(httpHeaderPolicy), policyFunc(bodyDownloadPolicy), transportPolicy{trans: transport})
 	return Pipeline{
 		policies: policies,
 	}
@@ -85,7 +85,7 @@ func NewPipeline(transport Transport, policies ...Policy) Pipeline {
 // Do is called for each and every HTTP request. It passes the request through all
 // the Policy objects (which can transform the Request's URL/query parameters/headers)
 // and ultimately sends the transformed HTTP request over the network.
-func (p Pipeline) Do(req *Request) (*Response, error) {
+func (p Pipeline) Do(req *Request) (*http.Response, error) {
 	if err := req.valid(); err != nil {
 		return nil, err
 	}
@@ -110,41 +110,6 @@ func (n nopCloser) Close() error {
 // NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
 func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 	return nopCloser{rs}
-}
-
-// Poller provides operations for checking the state of a long-running operation.
-// An LRO can be in either a non-terminal or terminal state.  A non-terminal state
-// indicates the LRO is still in progress.  A terminal state indicates the LRO has
-// completed successfully, failed, or was cancelled.
-type Poller interface {
-	// Done returns true if the LRO has reached a terminal state.
-	Done() bool
-
-	// Poll fetches the latest state of the LRO.  It returns an HTTP response or error.
-	// If the LRO has completed successfully, the poller's state is update and the HTTP
-	// response is returned.
-	// If the LRO has completed with failure or was cancelled, the poller's state is
-	// updated and the error is returned.
-	// If the LRO has not reached a terminal state, the poller's state is updated and
-	// the latest HTTP response is returned.
-	// If Poll fails, the poller's state is unmodified and the error is returned.
-	// Calling Poll on an LRO that has reached a terminal state will return the final
-	// HTTP response or error.
-	Poll(context.Context) (*http.Response, error)
-
-	// ResumeToken returns a value representing the poller that can be used to resume
-	// the LRO at a later time. ResumeTokens are unique per service operation.
-	ResumeToken() (string, error)
-}
-
-// Pager provides operations for iterating over paged responses.
-type Pager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 // holds sentinel values used to send nulls

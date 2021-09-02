@@ -17,7 +17,7 @@ type ClientSecretCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient azcore.Transporter
 	// Retry configures the built-in retry policy behavior
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
@@ -73,9 +73,9 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 	return tk, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
+// NewAuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
 // to get the bearer token.
-func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+func (c *ClientSecretCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

@@ -37,11 +37,6 @@ const (
 	InsertReplace TransactionType = "insertreplace"
 )
 
-// Use azcore.ResponseError type, pass RawResponse, might have to create manually depending on constructor
-// Int statuscode, Return the inner status code
-// ErrorCode string set equal to OdataErrorMessage ("DuplicateRowKey")
-// Lang/Value are useless at runtime, failedentity index as well
-
 type oDataErrorMessage struct {
 	Lang  string `json:"lang"`
 	Value string `json:"value"`

@@ -18,6 +18,7 @@ const (
 	etag                          = "ETag"
 )
 
+// ResponseFormat determines what is returned from a service request
 type ResponseFormat string
 
 const (

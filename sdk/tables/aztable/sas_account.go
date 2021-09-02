@@ -26,8 +26,7 @@ type AccountSASSignatureValues struct {
 	ResourceTypes string      `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
-// Sign uses an account's SharedKeyCredential to sign this signature values to produce
-// the proper SAS query parameters.
+// Sign uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {

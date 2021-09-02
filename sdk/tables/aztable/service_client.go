@@ -14,7 +14,7 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// A ServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
+// A ServiceClient represents a client to the table service. It can be used to query the available tables, create/delete tables, and various other service level operations.
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
@@ -74,6 +74,7 @@ func (c *DeleteTableOptions) toGenerated() *generated.TableDeleteOptions {
 	return &generated.TableDeleteOptions{}
 }
 
+// Response object from a ServiceClient.DeleteTable or Client.Delete operation
 type DeleteTableResponse struct {
 	RawResponse *http.Response
 }
@@ -143,6 +144,7 @@ type ListTablesPager interface {
 	Err() error
 }
 
+// ListTablesPage contains the properties of a single page response from a ListTables operation
 type ListTablesPage struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -269,16 +271,19 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 	}
 }
 
+// GetStatisticsOptions are the options for a ServiceClient.GetStatistics call
 type GetStatisticsOptions struct {
 }
 
 type GetStatisticsResponse struct {
-	RawResponse *http.Response
+	RawResponse    *http.Response
+	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
 
 func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsResponse) GetStatisticsResponse {
 	return GetStatisticsResponse{
-		RawResponse: g.RawResponse,
+		RawResponse:    g.RawResponse,
+		GeoReplication: fromGeneratedGeoReplication(g.GeoReplication),
 	}
 }
 
@@ -290,8 +295,8 @@ func (g *GetStatisticsOptions) toGenerated() *generated.ServiceGetStatisticsOpti
 //
 // response, err := client.GetStatistics(context.Background, nil)
 // handle(err)
-// fmt.Println("Status: ", response.StorageServiceStats.GeoReplication.Status)
-// fmt.Println(Last Sync Time: ", response.StorageServiceStats.GeoReplication.LastSyncTime)
+// fmt.Println("Status: ", response.GeoReplication.Status)
+// fmt.Println(Last Sync Time: ", response.GeoReplication.LastSyncTime)
 func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
@@ -340,10 +345,10 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesRespons
 //
 // response, err := client.GetProperties(context.Background, nil)
 // handle(err)
-// fmt.Println(resopnse.StorageServiceStats.Cors)
-// fmt.Println(resopnse.StorageServiceStats.HourMetrics)
-// fmt.Println(resopnse.StorageServiceStats.Logging)
-// fmt.Println(resopnse.StorageServiceStats.MinuteMetrics)
+// fmt.Println(response.Cors)
+// fmt.Println(response.HourMetrics)
+// fmt.Println(response.Logging)
+// fmt.Println(response.MinuteMetrics)
 func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
@@ -379,18 +384,18 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesRespons
 // Logging: Azure Analytics logging settings
 //
 //
-// logging := Logging{
+// logging := aztable.Logging{
 // 		Read:    to.BoolPtr(true),
 // 		Write:   to.BoolPtr(true),
 // 		Delete:  to.BoolPtr(true),
 // 		Version: to.StringPtr("1.0"),
-// 		RetentionPolicy: &RetentionPolicy{
+// 		RetentionPolicy: &aztable.RetentionPolicy{
 // 			Enabled: to.BoolPtr(true),
 // 		Days:    to.Int32Ptr(5),
 // 		},
 // }
-// props := TableServiceProperties{Logging: &logging}
-// resp, err := context.client.SetProperties(ctx, props, nil)
+// props := aztable.ServiceProperties{Logging: &logging}
+// resp, err := client.SetProperties(ctx, props, nil)
 // handle(err)
 func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {

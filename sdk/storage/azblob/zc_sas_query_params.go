@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// SASVersion indicates the SAS version.
+// SASProtocol indicates the http/https.
 type SASProtocol string
 
 const (
@@ -19,7 +19,7 @@ const (
 	SASProtocolHTTPS SASProtocol = "https"
 
 	// SASProtocolHTTPSandHTTP can be specified for a SAS protocol
-	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
+	//SASProtocolHTTPSandHTTP SASProtocol = "https,http"
 )
 
 // FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a

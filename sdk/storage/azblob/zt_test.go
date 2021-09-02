@@ -23,8 +23,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -70,7 +68,13 @@ func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
 	_assert.Nil(err)
 
 	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
+	if err != nil {
+		log.Fatal(err)
+	}
 	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
+	if err != nil {
+		log.Fatal(err)
+	}
 	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
 
 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
@@ -88,7 +92,7 @@ func recordedTestTeardown(key string) {
 }
 
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-	// setup the test environment
+	// set up the test environment
 	recordedTestSetup(s.T(), s.mode)
 }
 
@@ -105,16 +109,16 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
 
-// Note that this function is adding to the list of ignored headers not creating from scratch
-func ignoreHeaders(recording *testframework.Recording, headers []string) {
-	ignoredHeaders := recording.Matcher.IgnoredHeaders
-	for _, header := range headers {
-		// TODO: Mohit Come Here
-		//ignoredHeaders[header] = nil
-		_ = header
-	}
-	_ = ignoredHeaders
-}
+//// Note that this function is adding to the list of ignored headers not creating from scratch
+//func ignoreHeaders(recording *testframework.Recording, headers []string) {
+//	ignoredHeaders := recording.Matcher.IgnoredHeaders
+//	for _, header := range headers {
+//		// TODO: Mohit Come Here
+//		//ignoredHeaders[header] = nil
+//		_ = header
+//	}
+//	_ = ignoredHeaders
+//}
 
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
@@ -127,7 +131,6 @@ const (
 	containerPrefix             = "goc"
 	blobPrefix                  = "gotestblob"
 	blockBlobDefaultData        = "GoBlockBlobData"
-	validationErrorSubstring    = "validation failed"
 	invalidHeaderErrorSubstring = "invalid header field" // error thrown by the http client
 )
 
@@ -165,18 +168,6 @@ var specialCharBlobTagsMap = map[string]string{
 	"Microsoft Azure": "Azure Storage",
 	"Storage+SDK":     "SDK/GO",
 	"GO ":             ".Net",
-}
-
-const testPipelineMessage string = "test factory invoked"
-
-func newTestPipeline() azcore.Pipeline {
-	return azcore.NewPipeline(nil, newTestPolicy())
-}
-
-func newTestPolicy() azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		return nil, errors.New(testPipelineMessage)
-	})
 }
 
 // This function generates an entity name by concatenating the passed prefix,
@@ -238,7 +229,7 @@ func getReaderToGeneratedBytes(n int) *bytes.Reader {
 }
 
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
-	data := make([]byte, n, n)
+	data := make([]byte, n)
 	rand.Read(data)
 	return bytes.NewReader(data), data
 }
@@ -246,7 +237,7 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
 
 func generateData(sizeInBytes int) (*bytes.Reader, []byte) {
-	data := make([]byte, sizeInBytes, sizeInBytes)
+	data := make([]byte, sizeInBytes)
 	_len := len(random64BString)
 	if sizeInBytes > _len {
 		count := sizeInBytes / _len
@@ -359,8 +350,7 @@ func getRequiredEnv(name string) (string, error) {
 		return "", errors.New("Required environment variable not set: " + name)
 	}
 }
-
-func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
+func getAccountInfo(recording *testframework.Recording, accountType testAccountType) (string, string) {
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
 	var err error
@@ -384,42 +374,49 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 			log.Fatalln(err)
 		}
 	}
+	return accountName, accountKey
+}
+func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
+	accountName, accountKey := getAccountInfo(recording, accountType)
 	if accountName == "" || accountKey == "" {
-		return nil, errors.New(accountNameEnvVar + " and/or " + accountKeyEnvVar + " environment variables not specified.")
+		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
 	}
-
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func getOAuthCredential(_assert *assert.Assertions) azcore.Credential {
-	cred, err := azidentity.NewEnvironmentCredential(nil)
-	_assert.Nil(err)
-	return cred
+func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
+	accountName, accountKey := getAccountInfo(recording, accountType)
+	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
+		accountName, accountKey)
+	return connectionString
 }
 
-func getGenericServiceClientWithOAuth(_assert *assert.Assertions, accountType string) (ServiceClient, error) {
-	accountNameEnvVar := accountType + AccountNameEnvVar
-	accountName := os.Getenv(accountNameEnvVar)
-	if accountName == "" {
-		return ServiceClient{}, errors.New(accountNameEnvVar + " environment variables not specified.")
+func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
+	if recording != nil {
+		if options == nil {
+			options = &ClientOptions{
+				HTTPClient: recording,
+				Retry:      azcore.RetryOptions{MaxRetries: -1}}
+		}
 	}
 
-	blobPrimaryURL, _ := url.Parse("https://" + accountName + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), getOAuthCredential(_assert), nil)
-}
+	connectionString := getConnectionString(recording, accountType)
+	primaryURL, _, cred, err := ParseConnectionString(connectionString, "")
+	if err != nil {
+		return ServiceClient{}, nil
+	}
 
-func getGenericBSU(accountType testAccountType, credential *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
-	blobPrimaryURL, _ := url.Parse("https://" + credential.AccountName() + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), credential, options)
+	svcClient, err := NewServiceClient(primaryURL, cred, options)
+	return svcClient, err
 }
 
 type testAccountType string
 
 const (
-	testAccountDefault     testAccountType = ""
-	testAccountSecondary   testAccountType = "SECONDARY_"
-	testAccountPremium     testAccountType = "PREMIUM_"
-	testAccountBlobStorage testAccountType = "BLOB_"
+	testAccountDefault   testAccountType = ""
+	testAccountSecondary testAccountType = "SECONDARY_"
+	testAccountPremium   testAccountType = "PREMIUM_"
+	//testAccountBlobStorage testAccountType = "BLOB_"
 )
 
 func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
@@ -452,11 +449,11 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 	return anchorTime.Add(amount * time.Second)
 }
 
-func generateCurrentTimeWithModerateResolution() time.Time {
-	highResolutionTime := time.Now().UTC()
-	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
-		highResolutionTime.Second(), 0, highResolutionTime.Location())
-}
+//func generateCurrentTimeWithModerateResolution() time.Time {
+//	highResolutionTime := time.Now().UTC()
+//	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
+//		highResolutionTime.Second(), 0, highResolutionTime.Location())
+//}
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.
 // We will enable the necessary property and try to run the test implementation. If it fails with an error that should be due to
@@ -495,7 +492,8 @@ func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
 func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	_assert.Nil(err)
-	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Len(data, 0)
 }
 

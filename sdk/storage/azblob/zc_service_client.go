@@ -20,7 +20,7 @@ const (
 	ContainerNameRoot = "$root"
 
 	// ContainerNameLogs is the special Azure Storage name used to identify a storage account's logs container.
-	ContainerNameLogs = "$logs"
+	//ContainerNameLogs = "$logs"
 )
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
@@ -128,13 +128,13 @@ func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, startTim
 		return UserDelegationCredential{}, handleError(err)
 	}
 	urlParts := NewBlobURLParts(s.URL())
-	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
+	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], udk.UserDelegationKey), nil
 }
 
 // The ListContainersSegment operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) ListContainersSegmentResponsePager {
+func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) *ServiceListContainersSegmentPager {
 	listOptions := o.pointers()
 	pager := s.client.ListContainersSegment(listOptions)
 	// override the generated advancer, which is incorrect
@@ -142,9 +142,8 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) Li
 		return pager
 	}
 
-	p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
-	p.advancer = func(cxt context.Context, response ListContainersSegmentResponseResponse) (*azcore.Request, error) {
-		if response.EnumerationResults.NextMarker == nil {
+	pager.advancer = func(cxt context.Context, response ServiceListContainersSegmentResponse) (*azcore.Request, error) {
+		if response.ListContainersSegmentResponse.NextMarker == nil {
 			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}
 		req, err := s.client.listContainersSegmentCreateRequest(cxt, listOptions)
@@ -152,16 +151,16 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) Li
 			return nil, handleError(err)
 		}
 		queryValues, _ := url.ParseQuery(req.URL.RawQuery)
-		queryValues.Set("marker", *response.EnumerationResults.NextMarker)
+		queryValues.Set("marker", *response.ServiceListContainersSegmentResult.NextMarker)
 
 		req.URL.RawQuery = queryValues.Encode()
 		return req, nil
 	}
 
-	return p
+	return pager
 }
 
-func (s ServiceClient) GetProperties(ctx context.Context) (StorageServicePropertiesResponse, error) {
+func (s ServiceClient) GetProperties(ctx context.Context) (ServiceGetPropertiesResponse, error) {
 	resp, err := s.client.GetProperties(ctx, nil)
 
 	return resp, handleError(err)
@@ -173,7 +172,7 @@ func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServ
 	return resp, handleError(err)
 }
 
-func (s ServiceClient) GetStatistics(ctx context.Context) (StorageServiceStatsResponse, error) {
+func (s ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsResponse, error) {
 	resp, err := s.client.GetStatistics(ctx, nil)
 
 	return resp, handleError(err)
@@ -204,7 +203,7 @@ func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
-func (s ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (FilterBlobSegmentResponse, error) {
+func (s ServiceClient) FindBlobsByTags(ctx context.Context, options ServiceFilterBlobsByTagsOptions) (ServiceFilterBlobsResponse, error) {
 	// TODO: Use pager here? Missing support from zz_generated_pagera.go
 	serviceFilterBlobsOptions := options.pointer()
 	return s.client.FilterBlobs(ctx, serviceFilterBlobsOptions)

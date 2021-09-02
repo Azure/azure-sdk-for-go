@@ -4,24 +4,11 @@
 package azblob
 
 import (
-	"fmt"
 	"strconv"
 )
 
 func rangeToString(offset, count int64) string {
 	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
-}
-
-func rangeToStringPtr(offset, count int64) *string {
-	out := rangeToString(offset, count)
-	return &out
-}
-
-func (pr PageRange) pointers() *string {
-	startOffset := strconv.FormatInt(*pr.Start, 10)
-	endOffset := strconv.FormatInt(*pr.End, 10)
-	asString := fmt.Sprintf("bytes=%v-%s", startOffset, endOffset)
-	return &asString
 }
 
 type CreatePageBlobOptions struct {

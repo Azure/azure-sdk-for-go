@@ -8,7 +8,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/base64"
-	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/assert"
@@ -65,20 +64,6 @@ var testCPKByScope = CpkScopeInfo{
 var testInvalidEncryptedScope = "mumbojumbo"
 var testInvalidCPKByScope = CpkScopeInfo{
 	EncryptionScope: &testInvalidEncryptedScope,
-}
-
-func blockIDBinaryToBase64(blockID []byte) string {
-	return base64.StdEncoding.EncodeToString(blockID)
-}
-
-func blockIDBase64ToBinary(blockID string) []byte {
-	binaryStr, _ := base64.StdEncoding.DecodeString(blockID)
-	return binaryStr
-}
-
-func blockIDBase64ToInt(blockID string) int {
-	blockIDBase64ToBinary(blockID)
-	return int(binary.LittleEndian.Uint32(blockIDBase64ToBinary(blockID)))
 }
 
 func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
@@ -173,13 +158,13 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
+	_, err = bbClient.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	getResp, err = bbClient.Download(ctx, &downloadBlobOptions)
+	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	b := bytes.Buffer{}
 	reader := getResp.Body(RetryReaderOptions{})
@@ -217,6 +202,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -295,13 +281,13 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert.Len(blockList.BlockList.CommittedBlocks, 2)
 
 	// Check data integrity through downloading.
-	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
+	_, err = destBlob.BlobClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	_assert.Nil(err)
@@ -333,6 +319,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -447,20 +434,18 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_assert.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	// Get blob content without encryption key should fail the request.
-	downloadResp, err := bbClient.Download(ctx, nil)
+	_, err = bbClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
-	downloadBlobOptions := DownloadBlobOptions{
+	_, err = bbClient.Download(ctx, &DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
-	}
-	downloadResp, err = bbClient.Download(ctx, nil)
+	})
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
-	downloadBlobOptions = DownloadBlobOptions{
+	downloadResp, err := bbClient.BlobClient.Download(ctx, &DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
-	}
-	downloadResp, err = bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
+	})
 	_assert.Nil(err)
 	_assert.EqualValues(downloadResp.ContentMD5, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
@@ -705,21 +690,21 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert.Equal(*appendFromURLResp.IsServerEncrypted, true)
 
 	// Get blob content without encryption key should fail the request.
-	downloadResp, err := destBlob.Download(ctx, nil)
+	_, err = destBlob.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
+	_, err = destBlob.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 
 	_assert.Equal(*downloadResp.IsServerEncrypted, true)
@@ -860,20 +845,20 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_assert.Equal(rawEnd, end)
 
 	// Get blob content without encryption key should fail the request.
-	downloadResp, err := pbClient.Download(ctx, nil)
+	_, err = pbClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = pbClient.Download(ctx, &downloadBlobOptions)
+	_, err = pbClient.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = pbClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
@@ -991,20 +976,20 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	_assert.Equal(*resp.IsServerEncrypted, true)
 	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
-	downloadResp, err := destBlob.Download(ctx, nil)
+	_, err = destBlob.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
+	_, err = destBlob.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
@@ -1150,20 +1135,20 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_assert.Equal(*resp.IsServerEncrypted, true)
 	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
-	downloadResp, err := destPBClient.Download(ctx, nil)
+	_, err = destPBClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = destPBClient.Download(ctx, &downloadBlobOptions)
+	_, err = destPBClient.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destPBClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destPBClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 
@@ -1288,13 +1273,13 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	// Get blob properties without encryption key should fail the request.
-	getResp, err := bbClient.GetProperties(ctx, nil)
+	_, err = bbClient.GetProperties(ctx, nil)
 	_assert.NotNil(err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	getResp, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
+	getResp, err := bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.Nil(err)
 	_assert.NotNil(getResp.Metadata)
 	_assert.Len(getResp.Metadata, len(basicMetadata))
@@ -1362,19 +1347,19 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
-	resp, err := bbClient.CreateSnapshot(ctx, nil)
+	_, err = bbClient.CreateSnapshot(ctx, nil)
 	_assert.NotNil(err)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
+	_, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
 	_assert.NotNil(err)
 
 	createBlobSnapshotOptions1 := CreateBlobSnapshotOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
+	resp, err := bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
 	_assert.Nil(err)
 	_assert.Equal(*resp.IsServerEncrypted, false)
 
@@ -1411,19 +1396,19 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
-	resp, err := bbClient.CreateSnapshot(ctx, nil)
+	_, err = bbClient.CreateSnapshot(ctx, nil)
 	_assert.NotNil(err)
 
 	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 		CpkScopeInfo: &testInvalidCPKByScope,
 	}
-	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
+	_, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
 	_assert.NotNil(err)
 
 	createBlobSnapshotOptions1 := CreateBlobSnapshotOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
+	resp, err := bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
 	_assert.Nil(err)
 	_assert.Equal(*resp.IsServerEncrypted, false)
 

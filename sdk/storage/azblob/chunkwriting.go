@@ -89,10 +89,11 @@ type copier struct {
 	// id provides the ids for each chunk.
 	id *id
 
-	// num is the current chunk we are on.
-	num int32
-	// ch is used to pass the next chunk of data from our reader to one of the writers.
-	ch chan copierChunk
+	//// num is the current chunk we are on.
+	//num int32
+	//// ch is used to pass the next chunk of data from our reader to one of the writers.
+	//ch chan copierChunk
+
 	// errCh is used to hold the first error from our concurrent writers.
 	errCh chan error
 	// wg provides a count of how many writers we are waiting to finish.
@@ -178,7 +179,6 @@ func (c *copier) write(chunk copierChunk) {
 		c.errCh <- fmt.Errorf("write error: %w", err)
 		return
 	}
-	return
 }
 
 // close commits our blocks to blob storage and closes our writer.

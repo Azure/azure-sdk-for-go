@@ -52,7 +52,9 @@ func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body i
 	if err != nil {
 		return BlockBlobStageBlockResponse{}, fmt.Errorf("could not create a stage block file: %s", err)
 	}
-	defer fp.Close()
+	defer func(fp *os.File) {
+		_ = fp.Close()
+	}(fp)
 
 	if _, err := io.Copy(fp, body); err != nil {
 		return BlockBlobStageBlockResponse{}, err
@@ -66,7 +68,9 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
-	defer dst.Close()
+	defer func(dst *os.File) {
+		_ = dst.Close()
+	}(dst)
 
 	for _, id := range base64BlockIDs {
 		id = strings.Replace(id, "/", "slash", -1)
@@ -75,16 +79,22 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 			return BlockBlobCommitBlockListResponse{}, fmt.Errorf("could not combine chunk %s: %s", id, err)
 		}
 		_, err = io.Copy(dst, src)
-		src.Close()
 		if err != nil {
 			return BlockBlobCommitBlockListResponse{}, fmt.Errorf("problem writing final file from chunks: %s", err)
+		}
+		err = src.Close()
+		if err != nil {
+			return BlockBlobCommitBlockListResponse{}, fmt.Errorf("problem closing the source : %s", err)
 		}
 	}
 	return BlockBlobCommitBlockListResponse{}, nil
 }
 
 func (f *fakeBlockWriter) cleanup() {
-	os.RemoveAll(f.path)
+	err := os.RemoveAll(f.path)
+	if err != nil {
+		return
+	}
 }
 
 func (f *fakeBlockWriter) final() string {
@@ -97,7 +107,9 @@ func createSrcFile(size int) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("could not create source file: %s", err)
 	}
-	defer fp.Close()
+	defer func(fp *os.File) {
+		_ = fp.Close()
+	}(fp)
 
 	lr := &io.LimitedReader{R: rand.New(rand.NewSource(time.Now().UnixNano())), N: int64(size)}
 	copied, err := io.Copy(fp, lr)
@@ -115,7 +127,10 @@ func fileMD5(p string) string {
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		_ = f.Close()
+
+	}(f)
 
 	h := md5.New()
 	if _, err := io.Copy(h, f); err != nil {
@@ -264,7 +279,9 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 		if err != nil {
 			panic(err)
 		}
-		defer os.Remove(p)
+		defer func(name string) {
+			_ = os.Remove(name)
+		}(p)
 
 		from, err := os.Open(p)
 		if err != nil {

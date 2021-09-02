@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	AppendBlobMaxAppendBlockBytes = 4 * 1024 * 1024
-	AppendBlobMaxBlocks           = 50_000
+//AppendBlobMaxAppendBlockBytes = 4 * 1024 * 1024
+//AppendBlobMaxBlocks           = 50_000
 )
 
 type AppendBlobClient struct {

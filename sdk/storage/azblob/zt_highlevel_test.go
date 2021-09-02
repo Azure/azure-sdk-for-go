@@ -118,8 +118,12 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	// Open the file to upload
 	file, err := os.Open(fileName)
 	_assert.Equal(err, nil)
-	defer file.Close()
-	defer os.Remove(fileName)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(fileName)
 
 	_context := getTestContext(testName)
 	var recording *testframework.Recording
@@ -154,8 +158,14 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
 	_assert.Equal(err, nil)
-	defer destFile.Close()
-	defer os.Remove(destFileName)
+	defer func(destFile *os.File) {
+		_ = destFile.Close()
+
+	}(destFile)
+	defer func(name string) {
+		_ = os.Remove(name)
+
+	}(destFileName)
 
 	// Perform download
 	err = DownloadBlobToFile(context.Background(), bbClient.BlobClient, int64(downloadOffset), int64(downloadCount),

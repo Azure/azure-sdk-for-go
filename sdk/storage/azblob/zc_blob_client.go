@@ -191,7 +191,7 @@ func (b BlobClient) SetTags(ctx context.Context, options *SetTagsBlobOptions) (B
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
-func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobTagsResponse, error) {
+func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (BlobGetTagsResponse, error) {
 	blobGetTagsOptions, modifiedAccessConditions := options.pointers()
 	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
 

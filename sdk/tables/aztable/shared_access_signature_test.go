@@ -49,6 +49,7 @@ func TestSASServiceClient(t *testing.T) {
 		Write:  true,
 		Create: true,
 		Update: true,
+		Delete: true,
 	}
 	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
@@ -62,10 +63,10 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
-	_, err = svcClient.CreateTable(context.Background(), "sasTable001", nil)
+	_, err = svcClient.CreateTable(context.Background(), tableName+"002", nil)
 	require.NoError(t, err)
 
-	_, err = svcClient.DeleteTable(context.Background(), "sasTable001", nil)
+	_, err = svcClient.DeleteTable(context.Background(), tableName+"002", nil)
 	require.NoError(t, err)
 }
 

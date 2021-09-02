@@ -8,37 +8,36 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/assert"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func (s *azblobTestSuite) TestNewContainerClientValidName() {
+func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
 	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	testURL := svcClient.NewContainerClient(containerPrefix)
 
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerPrefix
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
-func (s *azblobTestSuite) TestCreateRootContainerURL() {
+func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
 	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	testURL := svcClient.NewContainerClient(ContainerNameRoot)
 
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + ".blob.core.windows.net/$root"
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
 	_assert.Equal(testURL.URL(), correctURL)
 }
 

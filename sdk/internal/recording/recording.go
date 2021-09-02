@@ -17,6 +17,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -482,10 +483,7 @@ func (r RecordingOptions) HostScheme() string {
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {
-	if strings.HasSuffix(pathToRecordings, "/") {
-		pathToRecordings = strings.TrimRight(pathToRecordings, "/")
-	}
-	return pathToRecordings + "/recordings/" + t.Name() + ".json"
+	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
 }
 
 func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
@@ -493,7 +491,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 		options = defaultOptions()
 	}
 	if !(recordMode == modeRecording || recordMode == modePlayback) {
-		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are \"record\" or \"playback\". Received: %v", recordMode)
+		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s or %s Received: %v", modeRecording, modePlayback, recordMode)
 	}
 	testId := getTestId(pathToRecordings, t)
 

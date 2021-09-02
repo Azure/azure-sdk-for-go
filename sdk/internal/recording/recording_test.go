@@ -529,11 +529,11 @@ func TestSleep(t *testing.T) {
 	Sleep(time.Second * 5)
 	duration := time.Since(start)
 	if GetRecordMode() == modePlayback {
-		if duration > (time.Second * 5) {
+		if duration > (time.Second * 1) {
 			t.Fatalf("Sleep took longer than five seconds")
 		}
 	} else {
-		if duration < (time.Second * 5) {
+		if duration < (time.Second * 1) {
 			t.Fatalf("Sleep took less than five seconds")
 		}
 	}

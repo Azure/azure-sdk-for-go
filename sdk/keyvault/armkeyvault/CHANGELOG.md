@@ -1,6 +1,6 @@
 # Release History
 
-## v0.2.0 (released)
+## v0.2.0 (2021-09-03)
 ### Breaking Changes
 
 - Function `*PrivateEndpointConnectionsClient.Put` return value(s) have been changed from `(PrivateEndpointConnectionResponse, error)` to `(PrivateEndpointConnectionsPutResponse, error)`
@@ -403,7 +403,7 @@
 Total 164 breaking change(s), 388 additive change(s).
 
 
-## v0.1.1 (released)
+## v0.1.1 (2021-06-16)
 Updated with the latest track 2 code generator.
 
-## v0.1.0 (released)
+## v0.1.0 (2021-05-25)

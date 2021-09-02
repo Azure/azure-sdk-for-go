@@ -13,8 +13,8 @@
             "CoverageGoal": 0.70
         },
         {
-            "Name": "tables",
-            "CoverageGoal": 0.01
+            "Name": "data",
+            "CoverageGoal": 0.40
         }
     ]
 }

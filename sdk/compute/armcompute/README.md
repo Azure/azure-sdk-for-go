@@ -2,7 +2,7 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute)
 
-The `armcompute` module provides operations for working with Azure compute.
+The `armcompute` module provides operations for working with Azure Compute.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/compute/armcompute)
 
@@ -35,17 +35,17 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Connecting to Azure Compute
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ## Clients
 
-Azure Compute modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure Compute modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
 
 ```go
 client := armcompute.NewVirtualMachinesClient(con, "<subscription ID>")

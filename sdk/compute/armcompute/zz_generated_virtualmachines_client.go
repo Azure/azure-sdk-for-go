@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,94 +12,69 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualMachinesClient contains the methods for the VirtualMachines group.
 // Don't use this type directly, use NewVirtualMachinesClient() instead.
 type VirtualMachinesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient with the specified values.
-func NewVirtualMachinesClient(con *armcore.Connection, subscriptionID string) *VirtualMachinesClient {
-	return &VirtualMachinesClient{con: con, subscriptionID: subscriptionID}
+func NewVirtualMachinesClient(con *arm.Connection, subscriptionID string) *VirtualMachinesClient {
+	return &VirtualMachinesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginAssessPatches - Assess patches on the VM.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) BeginAssessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (VirtualMachineAssessPatchesResultPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginAssessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (VirtualMachinesAssessPatchesPollerResponse, error) {
 	resp, err := client.assessPatches(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return VirtualMachineAssessPatchesResultPollerResponse{}, err
+		return VirtualMachinesAssessPatchesPollerResponse{}, err
 	}
-	result := VirtualMachineAssessPatchesResultPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.AssessPatches", "location", resp, client.con.Pipeline(), client.assessPatchesHandleError)
-	if err != nil {
-		return VirtualMachineAssessPatchesResultPollerResponse{}, err
-	}
-	poller := &virtualMachineAssessPatchesResultPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineAssessPatchesResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeAssessPatches creates a new VirtualMachineAssessPatchesResultPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineAssessPatchesResultPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeAssessPatches(ctx context.Context, token string) (VirtualMachineAssessPatchesResultPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.AssessPatches", token, client.con.Pipeline(), client.assessPatchesHandleError)
-	if err != nil {
-		return VirtualMachineAssessPatchesResultPollerResponse{}, err
-	}
-	poller := &virtualMachineAssessPatchesResultPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return VirtualMachineAssessPatchesResultPollerResponse{}, err
-	}
-	result := VirtualMachineAssessPatchesResultPollerResponse{
+	result := VirtualMachinesAssessPatchesPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineAssessPatchesResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.AssessPatches", "location", resp, client.pl, client.assessPatchesHandleError)
+	if err != nil {
+		return VirtualMachinesAssessPatchesPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesAssessPatchesPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // AssessPatches - Assess patches on the VM.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) assessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) assessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (*http.Response, error) {
 	req, err := client.assessPatchesCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.assessPatchesHandleError(resp)
 	}
 	return resp, nil
 }
 
 // assessPatchesCreateRequest creates the AssessPatches request.
-func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/assessPatches"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -112,98 +88,69 @@ func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // assessPatchesHandleError handles the AssessPatches error response.
-func (client *VirtualMachinesClient) assessPatchesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) assessPatchesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCapture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginCapture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (VirtualMachineCaptureResultPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginCapture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (VirtualMachinesCapturePollerResponse, error) {
 	resp, err := client.capture(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
-		return VirtualMachineCaptureResultPollerResponse{}, err
+		return VirtualMachinesCapturePollerResponse{}, err
 	}
-	result := VirtualMachineCaptureResultPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Capture", "location", resp, client.con.Pipeline(), client.captureHandleError)
-	if err != nil {
-		return VirtualMachineCaptureResultPollerResponse{}, err
-	}
-	poller := &virtualMachineCaptureResultPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineCaptureResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCapture creates a new VirtualMachineCaptureResultPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineCaptureResultPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeCapture(ctx context.Context, token string) (VirtualMachineCaptureResultPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Capture", token, client.con.Pipeline(), client.captureHandleError)
-	if err != nil {
-		return VirtualMachineCaptureResultPollerResponse{}, err
-	}
-	poller := &virtualMachineCaptureResultPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return VirtualMachineCaptureResultPollerResponse{}, err
-	}
-	result := VirtualMachineCaptureResultPollerResponse{
+	result := VirtualMachinesCapturePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineCaptureResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Capture", "location", resp, client.pl, client.captureHandleError)
+	if err != nil {
+		return VirtualMachinesCapturePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesCapturePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Capture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) capture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) capture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (*http.Response, error) {
 	req, err := client.captureCreateRequest(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.captureHandleError(resp)
 	}
 	return resp, nil
 }
 
 // captureCreateRequest creates the Capture request.
-func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/capture"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -217,75 +164,46 @@ func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // captureHandleError handles the Capture error response.
-func (client *VirtualMachinesClient) captureHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) captureHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking
 // this operation.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (VirtualMachinesConvertToManagedDisksPollerResponse, error) {
 	resp, err := client.convertToManagedDisks(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesConvertToManagedDisksPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.ConvertToManagedDisks", "", resp, client.con.Pipeline(), client.convertToManagedDisksHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeConvertToManagedDisks creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeConvertToManagedDisks(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.ConvertToManagedDisks", token, client.con.Pipeline(), client.convertToManagedDisksHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesConvertToManagedDisksPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.ConvertToManagedDisks", "", resp, client.pl, client.convertToManagedDisksHandleError)
+	if err != nil {
+		return VirtualMachinesConvertToManagedDisksPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesConvertToManagedDisksPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -293,23 +211,23 @@ func (client *VirtualMachinesClient) ResumeConvertToManagedDisks(ctx context.Con
 // ConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this
 // operation.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) convertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) convertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (*http.Response, error) {
 	req, err := client.convertToManagedDisksCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.convertToManagedDisksHandleError(resp)
 	}
 	return resp, nil
 }
 
 // convertToManagedDisksCreateRequest creates the ConvertToManagedDisks request.
-func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/convertToManagedDisks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -323,96 +241,67 @@ func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // convertToManagedDisksHandleError handles the ConvertToManagedDisks error response.
-func (client *VirtualMachinesClient) convertToManagedDisksHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) convertToManagedDisksHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginCreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (VirtualMachinePollerResponse, error) {
+func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (VirtualMachinesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
-		return VirtualMachinePollerResponse{}, err
+		return VirtualMachinesCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualMachinePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return VirtualMachinePollerResponse{}, err
-	}
-	poller := &virtualMachinePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new VirtualMachinePoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachinePoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachinePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return VirtualMachinePollerResponse{}, err
-	}
-	poller := &virtualMachinePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return VirtualMachinePollerResponse{}, err
-	}
-	result := VirtualMachinePollerResponse{
+	result := VirtualMachinesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return VirtualMachinesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -426,75 +315,46 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualMachinesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDeallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine
 // uses.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (VirtualMachinesDeallocatePollerResponse, error) {
 	resp, err := client.deallocate(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesDeallocatePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Deallocate", "", resp, client.con.Pipeline(), client.deallocateHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDeallocate creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeDeallocate(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Deallocate", token, client.con.Pipeline(), client.deallocateHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesDeallocatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Deallocate", "", resp, client.pl, client.deallocateHandleError)
+	if err != nil {
+		return VirtualMachinesDeallocatePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesDeallocatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -502,23 +362,23 @@ func (client *VirtualMachinesClient) ResumeDeallocate(ctx context.Context, token
 // Deallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine
 // uses.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) deallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) deallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (*http.Response, error) {
 	req, err := client.deallocateCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.deallocateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deallocateCreateRequest creates the Deallocate request.
-func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/deallocate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -532,96 +392,70 @@ func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Hibernate != nil {
+		reqQP.Set("hibernate", strconv.FormatBool(*options.Hibernate))
+	}
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deallocateHandleError handles the Deallocate error response.
-func (client *VirtualMachinesClient) deallocateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) deallocateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - The operation to delete a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (VirtualMachinesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return VirtualMachinesDeletePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -635,30 +469,29 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.ForceDeletion != nil {
 		reqQP.Set("forceDeletion", strconv.FormatBool(*options.ForceDeletion))
 	}
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *VirtualMachinesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Generalize - Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation.
@@ -667,23 +500,23 @@ func (client *VirtualMachinesClient) deleteHandleError(resp *azcore.Response) er
 // an image of a virtual machine or VHD
 // [https://docs.microsoft.com/azure/virtual-machines/linux/capture-image].
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) Generalize(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGeneralizeOptions) (*http.Response, error) {
+func (client *VirtualMachinesClient) Generalize(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGeneralizeOptions) (VirtualMachinesGeneralizeResponse, error) {
 	req, err := client.generalizeCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachinesGeneralizeResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachinesGeneralizeResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.generalizeHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualMachinesGeneralizeResponse{}, client.generalizeHandleError(resp)
 	}
-	return resp.Response, nil
+	return VirtualMachinesGeneralizeResponse{RawResponse: resp}, nil
 }
 
 // generalizeCreateRequest creates the Generalize request.
-func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGeneralizeOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGeneralizeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/generalize"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -697,48 +530,47 @@ func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // generalizeHandleError handles the Generalize error response.
-func (client *VirtualMachinesClient) generalizeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) generalizeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Retrieves information about the model view or the instance view of a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (VirtualMachineResponse, error) {
+func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (VirtualMachinesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return VirtualMachineResponse{}, err
+		return VirtualMachinesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineResponse{}, err
+		return VirtualMachinesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualMachinesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -752,109 +584,80 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachinesClient) getHandleResponse(resp *azcore.Response) (VirtualMachineResponse, error) {
-	var val *VirtualMachine
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineResponse{}, err
-	}
-	return VirtualMachineResponse{RawResponse: resp.Response, VirtualMachine: val}, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *VirtualMachinesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginInstallPatches - Installs patches on the VM.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) BeginInstallPatches(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (VirtualMachineInstallPatchesResultPollerResponse, error) {
-	resp, err := client.installPatches(ctx, resourceGroupName, vmName, installPatchesInput, options)
-	if err != nil {
-		return VirtualMachineInstallPatchesResultPollerResponse{}, err
-	}
-	result := VirtualMachineInstallPatchesResultPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.InstallPatches", "location", resp, client.con.Pipeline(), client.installPatchesHandleError)
-	if err != nil {
-		return VirtualMachineInstallPatchesResultPollerResponse{}, err
-	}
-	poller := &virtualMachineInstallPatchesResultPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineInstallPatchesResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (VirtualMachinesGetResponse, error) {
+	result := VirtualMachinesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachine); err != nil {
+		return VirtualMachinesGetResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeInstallPatches creates a new VirtualMachineInstallPatchesResultPoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachineInstallPatchesResultPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeInstallPatches(ctx context.Context, token string) (VirtualMachineInstallPatchesResultPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.InstallPatches", token, client.con.Pipeline(), client.installPatchesHandleError)
+// getHandleError handles the Get error response.
+func (client *VirtualMachinesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return VirtualMachineInstallPatchesResultPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &virtualMachineInstallPatchesResultPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginInstallPatches - Installs patches on the VM.
+// If the operation fails it returns the *CloudError error type.
+func (client *VirtualMachinesClient) BeginInstallPatches(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (VirtualMachinesInstallPatchesPollerResponse, error) {
+	resp, err := client.installPatches(ctx, resourceGroupName, vmName, installPatchesInput, options)
 	if err != nil {
-		return VirtualMachineInstallPatchesResultPollerResponse{}, err
+		return VirtualMachinesInstallPatchesPollerResponse{}, err
 	}
-	result := VirtualMachineInstallPatchesResultPollerResponse{
+	result := VirtualMachinesInstallPatchesPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineInstallPatchesResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.InstallPatches", "location", resp, client.pl, client.installPatchesHandleError)
+	if err != nil {
+		return VirtualMachinesInstallPatchesPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesInstallPatchesPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // InstallPatches - Installs patches on the VM.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) installPatches(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) installPatches(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (*http.Response, error) {
 	req, err := client.installPatchesCreateRequest(ctx, resourceGroupName, vmName, installPatchesInput, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.installPatchesHandleError(resp)
 	}
 	return resp, nil
 }
 
 // installPatchesCreateRequest creates the InstallPatches request.
-func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/installPatches"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -868,50 +671,49 @@ func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(installPatchesInput)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, installPatchesInput)
 }
 
 // installPatchesHandleError handles the InstallPatches error response.
-func (client *VirtualMachinesClient) installPatchesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) installPatchesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // InstanceView - Retrieves information about the run-time state of a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) InstanceView(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (VirtualMachineInstanceViewResponse, error) {
+func (client *VirtualMachinesClient) InstanceView(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (VirtualMachinesInstanceViewResponse, error) {
 	req, err := client.instanceViewCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return VirtualMachineInstanceViewResponse{}, err
+		return VirtualMachinesInstanceViewResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineInstanceViewResponse{}, err
+		return VirtualMachinesInstanceViewResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineInstanceViewResponse{}, client.instanceViewHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualMachinesInstanceViewResponse{}, client.instanceViewHandleError(resp)
 	}
 	return client.instanceViewHandleResponse(resp)
 }
 
 // instanceViewCreateRequest creates the InstanceView request.
-func (client *VirtualMachinesClient) instanceViewCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) instanceViewCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/instanceView"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -925,58 +727,54 @@ func (client *VirtualMachinesClient) instanceViewCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // instanceViewHandleResponse handles the InstanceView response.
-func (client *VirtualMachinesClient) instanceViewHandleResponse(resp *azcore.Response) (VirtualMachineInstanceViewResponse, error) {
-	var val *VirtualMachineInstanceView
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineInstanceViewResponse{}, err
+func (client *VirtualMachinesClient) instanceViewHandleResponse(resp *http.Response) (VirtualMachinesInstanceViewResponse, error) {
+	result := VirtualMachinesInstanceViewResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineInstanceView); err != nil {
+		return VirtualMachinesInstanceViewResponse{}, err
 	}
-	return VirtualMachineInstanceViewResponse{RawResponse: resp.Response, VirtualMachineInstanceView: val}, nil
+	return result, nil
 }
 
 // instanceViewHandleError handles the InstanceView error response.
-func (client *VirtualMachinesClient) instanceViewHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) instanceViewHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) List(resourceGroupName string, options *VirtualMachinesListOptions) VirtualMachineListResultPager {
-	return &virtualMachineListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) List(resourceGroupName string, options *VirtualMachinesListOptions) *VirtualMachinesListPager {
+	return &VirtualMachinesListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp VirtualMachineListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineListResult.NextLink)
+		advancer: func(ctx context.Context, resp VirtualMachinesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualMachinesListOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualMachinesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -986,119 +784,114 @@ func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachinesClient) listHandleResponse(resp *azcore.Response) (VirtualMachineListResultResponse, error) {
-	var val *VirtualMachineListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineListResultResponse{}, err
+func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (VirtualMachinesListResponse, error) {
+	result := VirtualMachinesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineListResult); err != nil {
+		return VirtualMachinesListResponse{}, err
 	}
-	return VirtualMachineListResultResponse{RawResponse: resp.Response, VirtualMachineListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *VirtualMachinesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual
 // machines.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) ListAll(options *VirtualMachinesListAllOptions) VirtualMachineListResultPager {
-	return &virtualMachineListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) ListAll(options *VirtualMachinesListAllOptions) *VirtualMachinesListAllPager {
+	return &VirtualMachinesListAllPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.listAllHandleResponse,
-		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp VirtualMachineListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineListResult.NextLink)
+		advancer: func(ctx context.Context, resp VirtualMachinesListAllResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *VirtualMachinesClient) listAllCreateRequest(ctx context.Context, options *VirtualMachinesListAllOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) listAllCreateRequest(ctx context.Context, options *VirtualMachinesListAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.StatusOnly != nil {
 		reqQP.Set("statusOnly", *options.StatusOnly)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *VirtualMachinesClient) listAllHandleResponse(resp *azcore.Response) (VirtualMachineListResultResponse, error) {
-	var val *VirtualMachineListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineListResultResponse{}, err
+func (client *VirtualMachinesClient) listAllHandleResponse(resp *http.Response) (VirtualMachinesListAllResponse, error) {
+	result := VirtualMachinesListAllResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineListResult); err != nil {
+		return VirtualMachinesListAllResponse{}, err
 	}
-	return VirtualMachineListResultResponse{RawResponse: resp.Response, VirtualMachineListResult: val}, nil
+	return result, nil
 }
 
 // listAllHandleError handles the ListAll error response.
-func (client *VirtualMachinesClient) listAllHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) listAllHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListAvailableSizes - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) ListAvailableSizes(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (VirtualMachineSizeListResultResponse, error) {
+func (client *VirtualMachinesClient) ListAvailableSizes(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (VirtualMachinesListAvailableSizesResponse, error) {
 	req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
+		return VirtualMachinesListAvailableSizesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
+		return VirtualMachinesListAvailableSizesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualMachineSizeListResultResponse{}, client.listAvailableSizesHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualMachinesListAvailableSizesResponse{}, client.listAvailableSizesHandleError(resp)
 	}
 	return client.listAvailableSizesHandleResponse(resp)
 }
 
 // listAvailableSizesCreateRequest creates the ListAvailableSizes request.
-func (client *VirtualMachinesClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1112,58 +905,54 @@ func (client *VirtualMachinesClient) listAvailableSizesCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAvailableSizesHandleResponse handles the ListAvailableSizes response.
-func (client *VirtualMachinesClient) listAvailableSizesHandleResponse(resp *azcore.Response) (VirtualMachineSizeListResultResponse, error) {
-	var val *VirtualMachineSizeListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineSizeListResultResponse{}, err
+func (client *VirtualMachinesClient) listAvailableSizesHandleResponse(resp *http.Response) (VirtualMachinesListAvailableSizesResponse, error) {
+	result := VirtualMachinesListAvailableSizesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineSizeListResult); err != nil {
+		return VirtualMachinesListAvailableSizesResponse{}, err
 	}
-	return VirtualMachineSizeListResultResponse{RawResponse: resp.Response, VirtualMachineSizeListResult: val}, nil
+	return result, nil
 }
 
 // listAvailableSizesHandleError handles the ListAvailableSizes error response.
-func (client *VirtualMachinesClient) listAvailableSizesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) listAvailableSizesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByLocation - Gets all the virtual machines under the specified subscription for the specified location.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) ListByLocation(location string, options *VirtualMachinesListByLocationOptions) VirtualMachineListResultPager {
-	return &virtualMachineListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) ListByLocation(location string, options *VirtualMachinesListByLocationOptions) *VirtualMachinesListByLocationPager {
+	return &VirtualMachinesListByLocationPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, location, options)
 		},
-		responder: client.listByLocationHandleResponse,
-		errorer:   client.listByLocationHandleError,
-		advancer: func(ctx context.Context, resp VirtualMachineListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineListResult.NextLink)
+		advancer: func(ctx context.Context, resp VirtualMachinesListByLocationResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *VirtualMachinesClient) listByLocationCreateRequest(ctx context.Context, location string, options *VirtualMachinesListByLocationOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) listByLocationCreateRequest(ctx context.Context, location string, options *VirtualMachinesListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -1173,106 +962,77 @@ func (client *VirtualMachinesClient) listByLocationCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *VirtualMachinesClient) listByLocationHandleResponse(resp *azcore.Response) (VirtualMachineListResultResponse, error) {
-	var val *VirtualMachineListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualMachineListResultResponse{}, err
-	}
-	return VirtualMachineListResultResponse{RawResponse: resp.Response, VirtualMachineListResult: val}, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *VirtualMachinesClient) listByLocationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginPerformMaintenance - The operation to perform maintenance on a virtual machine.
-// If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (HTTPPollerResponse, error) {
-	resp, err := client.performMaintenance(ctx, resourceGroupName, vmName, options)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.PerformMaintenance", "", resp, client.con.Pipeline(), client.performMaintenanceHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *VirtualMachinesClient) listByLocationHandleResponse(resp *http.Response) (VirtualMachinesListByLocationResponse, error) {
+	result := VirtualMachinesListByLocationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineListResult); err != nil {
+		return VirtualMachinesListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumePerformMaintenance creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumePerformMaintenance(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.PerformMaintenance", token, client.con.Pipeline(), client.performMaintenanceHandleError)
+// listByLocationHandleError handles the ListByLocation error response.
+func (client *VirtualMachinesClient) listByLocationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &httpPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginPerformMaintenance - The operation to perform maintenance on a virtual machine.
+// If the operation fails it returns a generic error.
+func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (VirtualMachinesPerformMaintenancePollerResponse, error) {
+	resp, err := client.performMaintenance(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesPerformMaintenancePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesPerformMaintenancePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.PerformMaintenance", "", resp, client.pl, client.performMaintenanceHandleError)
+	if err != nil {
+		return VirtualMachinesPerformMaintenancePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesPerformMaintenancePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // PerformMaintenance - The operation to perform maintenance on a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) performMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) performMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (*http.Response, error) {
 	req, err := client.performMaintenanceCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.performMaintenanceHandleError(resp)
 	}
 	return resp, nil
 }
 
 // performMaintenanceCreateRequest creates the PerformMaintenance request.
-func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/performMaintenance"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1286,74 +1046,45 @@ func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // performMaintenanceHandleError handles the PerformMaintenance error response.
-func (client *VirtualMachinesClient) performMaintenanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) performMaintenanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are
 // still charged for this virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (VirtualMachinesPowerOffPollerResponse, error) {
 	resp, err := client.powerOff(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesPowerOffPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.PowerOff", "", resp, client.con.Pipeline(), client.powerOffHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumePowerOff creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumePowerOff(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.PowerOff", token, client.con.Pipeline(), client.powerOffHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesPowerOffPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.PowerOff", "", resp, client.pl, client.powerOffHandleError)
+	if err != nil {
+		return VirtualMachinesPowerOffPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesPowerOffPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -1361,23 +1092,23 @@ func (client *VirtualMachinesClient) ResumePowerOff(ctx context.Context, token s
 // PowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still
 // charged for this virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (*http.Response, error) {
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.powerOffHandleError(resp)
 	}
 	return resp, nil
 }
 
 // powerOffCreateRequest creates the PowerOff request.
-func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/powerOff"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1391,99 +1122,70 @@ func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.SkipShutdown != nil {
 		reqQP.Set("skipShutdown", strconv.FormatBool(*options.SkipShutdown))
 	}
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // powerOffHandleError handles the PowerOff error response.
-func (client *VirtualMachinesClient) powerOffHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) powerOffHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginReapply - The operation to reapply a virtual machine's state.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (VirtualMachinesReapplyPollerResponse, error) {
 	resp, err := client.reapply(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesReapplyPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Reapply", "", resp, client.con.Pipeline(), client.reapplyHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeReapply creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeReapply(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Reapply", token, client.con.Pipeline(), client.reapplyHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesReapplyPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Reapply", "", resp, client.pl, client.reapplyHandleError)
+	if err != nil {
+		return VirtualMachinesReapplyPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesReapplyPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Reapply - The operation to reapply a virtual machine's state.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) reapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) reapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (*http.Response, error) {
 	req, err := client.reapplyCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.reapplyHandleError(resp)
 	}
 	return resp, nil
 }
 
 // reapplyCreateRequest creates the Reapply request.
-func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/reapply"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1497,98 +1199,69 @@ func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // reapplyHandleError handles the Reapply error response.
-func (client *VirtualMachinesClient) reapplyHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) reapplyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginRedeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (VirtualMachinesRedeployPollerResponse, error) {
 	resp, err := client.redeploy(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesRedeployPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Redeploy", "", resp, client.con.Pipeline(), client.redeployHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRedeploy creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeRedeploy(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Redeploy", token, client.con.Pipeline(), client.redeployHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesRedeployPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Redeploy", "", resp, client.pl, client.redeployHandleError)
+	if err != nil {
+		return VirtualMachinesRedeployPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesRedeployPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Redeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (*http.Response, error) {
 	req, err := client.redeployCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.redeployHandleError(resp)
 	}
 	return resp, nil
 }
 
 // redeployCreateRequest creates the Redeploy request.
-func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/redeploy"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1602,96 +1275,67 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // redeployHandleError handles the Redeploy error response.
-func (client *VirtualMachinesClient) redeployHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) redeployHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginReimage - Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (VirtualMachinesReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesReimagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Reimage", "", resp, client.con.Pipeline(), client.reimageHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeReimage creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeReimage(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Reimage", token, client.con.Pipeline(), client.reimageHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesReimagePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Reimage", "", resp, client.pl, client.reimageHandleError)
+	if err != nil {
+		return VirtualMachinesReimagePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesReimagePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Reimage - Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.reimageHandleError(resp)
 	}
 	return resp, nil
 }
 
 // reimageCreateRequest creates the Reimage request.
-func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/reimage"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1705,99 +1349,70 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // reimageHandleError handles the Reimage error response.
-func (client *VirtualMachinesClient) reimageHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) reimageHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRestart - The operation to restart a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (VirtualMachinesRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesRestartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Restart", "", resp, client.con.Pipeline(), client.restartHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRestart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeRestart(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Restart", token, client.con.Pipeline(), client.restartHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesRestartPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Restart", "", resp, client.pl, client.restartHandleError)
+	if err != nil {
+		return VirtualMachinesRestartPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesRestartPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - The operation to restart a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.restartHandleError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/restart"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1811,48 +1426,47 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // restartHandleError handles the Restart error response.
-func (client *VirtualMachinesClient) restartHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) restartHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualMachinesClient) RetrieveBootDiagnosticsData(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (RetrieveBootDiagnosticsDataResultResponse, error) {
+func (client *VirtualMachinesClient) RetrieveBootDiagnosticsData(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (VirtualMachinesRetrieveBootDiagnosticsDataResponse, error) {
 	req, err := client.retrieveBootDiagnosticsDataCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return RetrieveBootDiagnosticsDataResultResponse{}, err
+		return VirtualMachinesRetrieveBootDiagnosticsDataResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RetrieveBootDiagnosticsDataResultResponse{}, err
+		return VirtualMachinesRetrieveBootDiagnosticsDataResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RetrieveBootDiagnosticsDataResultResponse{}, client.retrieveBootDiagnosticsDataHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualMachinesRetrieveBootDiagnosticsDataResponse{}, client.retrieveBootDiagnosticsDataHandleError(resp)
 	}
 	return client.retrieveBootDiagnosticsDataHandleResponse(resp)
 }
 
 // retrieveBootDiagnosticsDataCreateRequest creates the RetrieveBootDiagnosticsData request.
-func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/retrieveBootDiagnosticsData"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1866,110 +1480,81 @@ func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.SasURIExpirationTimeInMinutes != nil {
 		reqQP.Set("sasUriExpirationTimeInMinutes", strconv.FormatInt(int64(*options.SasURIExpirationTimeInMinutes), 10))
 	}
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // retrieveBootDiagnosticsDataHandleResponse handles the RetrieveBootDiagnosticsData response.
-func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataHandleResponse(resp *azcore.Response) (RetrieveBootDiagnosticsDataResultResponse, error) {
-	var val *RetrieveBootDiagnosticsDataResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RetrieveBootDiagnosticsDataResultResponse{}, err
-	}
-	return RetrieveBootDiagnosticsDataResultResponse{RawResponse: resp.Response, RetrieveBootDiagnosticsDataResult: val}, nil
-}
-
-// retrieveBootDiagnosticsDataHandleError handles the RetrieveBootDiagnosticsData error response.
-func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginRunCommand - Run command on the VM.
-// If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginRunCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (RunCommandResultPollerResponse, error) {
-	resp, err := client.runCommand(ctx, resourceGroupName, vmName, parameters, options)
-	if err != nil {
-		return RunCommandResultPollerResponse{}, err
-	}
-	result := RunCommandResultPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.RunCommand", "location", resp, client.con.Pipeline(), client.runCommandHandleError)
-	if err != nil {
-		return RunCommandResultPollerResponse{}, err
-	}
-	poller := &runCommandResultPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataHandleResponse(resp *http.Response) (VirtualMachinesRetrieveBootDiagnosticsDataResponse, error) {
+	result := VirtualMachinesRetrieveBootDiagnosticsDataResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RetrieveBootDiagnosticsDataResult); err != nil {
+		return VirtualMachinesRetrieveBootDiagnosticsDataResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeRunCommand creates a new RunCommandResultPoller from the specified resume token.
-// token - The value must come from a previous call to RunCommandResultPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeRunCommand(ctx context.Context, token string) (RunCommandResultPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.RunCommand", token, client.con.Pipeline(), client.runCommandHandleError)
+// retrieveBootDiagnosticsDataHandleError handles the RetrieveBootDiagnosticsData error response.
+func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return RunCommandResultPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &runCommandResultPoller{
-		pt: pt,
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginRunCommand - Run command on the VM.
+// If the operation fails it returns a generic error.
+func (client *VirtualMachinesClient) BeginRunCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (VirtualMachinesRunCommandPollerResponse, error) {
+	resp, err := client.runCommand(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
-		return RunCommandResultPollerResponse{}, err
+		return VirtualMachinesRunCommandPollerResponse{}, err
 	}
-	result := RunCommandResultPollerResponse{
+	result := VirtualMachinesRunCommandPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.RunCommand", "location", resp, client.pl, client.runCommandHandleError)
+	if err != nil {
+		return VirtualMachinesRunCommandPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesRunCommandPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // RunCommand - Run command on the VM.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) runCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) runCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (*http.Response, error) {
 	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.runCommandHandleError(resp)
 	}
 	return resp, nil
 }
 
 // runCommandCreateRequest creates the RunCommand request.
-func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommand"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1983,49 +1568,48 @@ func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json, text/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json, text/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // runCommandHandleError handles the RunCommand error response.
-func (client *VirtualMachinesClient) runCommandHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) runCommandHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // SimulateEviction - The operation to simulate the eviction of spot virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) SimulateEviction(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (*http.Response, error) {
+func (client *VirtualMachinesClient) SimulateEviction(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (VirtualMachinesSimulateEvictionResponse, error) {
 	req, err := client.simulateEvictionCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return nil, err
+		return VirtualMachinesSimulateEvictionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return VirtualMachinesSimulateEvictionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
-		return nil, client.simulateEvictionHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
+		return VirtualMachinesSimulateEvictionResponse{}, client.simulateEvictionHandleError(resp)
 	}
-	return resp.Response, nil
+	return VirtualMachinesSimulateEvictionResponse{RawResponse: resp}, nil
 }
 
 // simulateEvictionCreateRequest creates the SimulateEviction request.
-func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/simulateEviction"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2039,96 +1623,67 @@ func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // simulateEvictionHandleError handles the SimulateEviction error response.
-func (client *VirtualMachinesClient) simulateEvictionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) simulateEvictionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginStart - The operation to start a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (HTTPPollerResponse, error) {
+func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (VirtualMachinesStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, vmName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualMachinesStartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Start", "", resp, client.con.Pipeline(), client.startHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeStart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Start", token, client.con.Pipeline(), client.startHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualMachinesStartPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Start", "", resp, client.pl, client.startHandleError)
+	if err != nil {
+		return VirtualMachinesStartPollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesStartPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - The operation to start a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.startHandleError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/start"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2142,96 +1697,67 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // startHandleError handles the Start error response.
-func (client *VirtualMachinesClient) startHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) startHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - The operation to update a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (VirtualMachinePollerResponse, error) {
+func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (VirtualMachinesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
-		return VirtualMachinePollerResponse{}, err
+		return VirtualMachinesUpdatePollerResponse{}, err
 	}
-	result := VirtualMachinePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualMachinesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return VirtualMachinePollerResponse{}, err
-	}
-	poller := &virtualMachinePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new VirtualMachinePoller from the specified resume token.
-// token - The value must come from a previous call to VirtualMachinePoller.ResumeToken().
-func (client *VirtualMachinesClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachinePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualMachinesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return VirtualMachinePollerResponse{}, err
-	}
-	poller := &virtualMachinePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return VirtualMachinePollerResponse{}, err
-	}
-	result := VirtualMachinePollerResponse{
+	result := VirtualMachinesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualMachinesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return VirtualMachinesUpdatePollerResponse{}, err
+	}
+	result.Poller = &VirtualMachinesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - The operation to update a virtual machine.
 // If the operation fails it returns a generic error.
-func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2245,26 +1771,25 @@ func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *VirtualMachinesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualMachinesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

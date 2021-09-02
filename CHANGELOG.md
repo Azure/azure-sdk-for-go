@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## `v57.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection`
+- `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-03-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb/CHANGELOG.md) |
+
 ## `v56.3.0`
 
 ### New Packages

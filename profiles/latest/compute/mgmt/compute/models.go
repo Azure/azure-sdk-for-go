@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-04-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
 )
 
 const (
@@ -219,6 +219,12 @@ type ExpandTypesForGetVMScaleSets = original.ExpandTypesForGetVMScaleSets
 
 const (
 	ExpandTypesForGetVMScaleSetsUserData ExpandTypesForGetVMScaleSets = original.ExpandTypesForGetVMScaleSetsUserData
+)
+
+type ExtendedLocationType = original.ExtendedLocationType
+
+const (
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = original.ExtendedLocationTypeEdgeZone
 )
 
 type ExtendedLocationTypes = original.ExtendedLocationTypes
@@ -507,6 +513,13 @@ type PublicIPAllocationMethod = original.PublicIPAllocationMethod
 const (
 	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = original.PublicIPAllocationMethodDynamic
 	PublicIPAllocationMethodStatic  PublicIPAllocationMethod = original.PublicIPAllocationMethodStatic
+)
+
+type ReplicationMode = original.ReplicationMode
+
+const (
+	ReplicationModeFull    ReplicationMode = original.ReplicationModeFull
+	ReplicationModeShallow ReplicationMode = original.ReplicationModeShallow
 )
 
 type ReplicationState = original.ReplicationState
@@ -955,6 +968,7 @@ type APIErrorBase = original.APIErrorBase
 type AccessURI = original.AccessURI
 type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
+type ApplicationProfile = original.ApplicationProfile
 type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AutomaticOSUpgradeProperties = original.AutomaticOSUpgradeProperties
 type AutomaticRepairsPolicy = original.AutomaticRepairsPolicy
@@ -1403,6 +1417,7 @@ type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsGrantAccessFuture = original.SnapshotsGrantAccessFuture
 type SnapshotsRevokeAccessFuture = original.SnapshotsRevokeAccessFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type SoftDeletePolicy = original.SoftDeletePolicy
 type SourceVault = original.SourceVault
 type SpotRestorePolicy = original.SpotRestorePolicy
 type StatusCodeCount = original.StatusCodeCount
@@ -1429,7 +1444,9 @@ type UsageClient = original.UsageClient
 type UsageName = original.UsageName
 type UserArtifactManage = original.UserArtifactManage
 type UserArtifactSource = original.UserArtifactSource
+type VMGalleryApplication = original.VMGalleryApplication
 type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
+type VMSizeProperties = original.VMSizeProperties
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
 type VirtualHardDisk = original.VirtualHardDisk
@@ -2240,6 +2257,9 @@ func PossibleExpandTypesForGetCapacityReservationGroupsValues() []ExpandTypesFor
 func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets {
 	return original.PossibleExpandTypesForGetVMScaleSetsValues()
 }
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return original.PossibleExtendedLocationTypeValues()
+}
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
 }
@@ -2350,6 +2370,9 @@ func PossiblePublicIPAddressSkuTierValues() []PublicIPAddressSkuTier {
 }
 func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 	return original.PossiblePublicIPAllocationMethodValues()
+}
+func PossibleReplicationModeValues() []ReplicationMode {
+	return original.PossibleReplicationModeValues()
 }
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()

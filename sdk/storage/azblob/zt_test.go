@@ -341,11 +341,10 @@ func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, c
 	sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient PageBlobClient) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
-	createPageBlobOptions := CreatePageBlobOptions{
+	resp, err := pbClient.Create(ctx, sizeInBytes, &CreatePageBlobOptions{
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
-	}
-	resp, err := pbClient.Create(ctx, sizeInBytes, &createPageBlobOptions)
+	})
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	return

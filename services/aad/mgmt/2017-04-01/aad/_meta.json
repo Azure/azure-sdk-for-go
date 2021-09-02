@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "60a7ec1d20c5154223e423aa7ff208febeb9356d",
   "readme": "/_/azure-rest-api-specs/specification/azureactivedirectory/resource-manager/readme.md",
   "tag": "package-2017-04-01",
   "use": "@microsoft.azure/autorest.go@2.1.183",

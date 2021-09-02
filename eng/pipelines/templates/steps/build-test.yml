@@ -44,6 +44,8 @@ steps:
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 
+    - template: /eng/common/testproxy/test-proxy-docker.yml
+
     - pwsh: |
         $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
         foreach ($td in $testDirs) {
@@ -62,6 +64,8 @@ steps:
       workingDirectory: '${{parameters.GoWorkspace}}'
       env:
         GO111MODULE: 'on'
+        AZURE_RECORD_MODE: 'playback'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
         ${{ insert }}: ${{ parameters.EnvVars }}
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}

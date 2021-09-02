@@ -23,13 +23,14 @@ var pathToPackage = "sdk/data/aztables"
 
 type recordingPolicy struct {
 	options recording.RecordingOptions
+	t       *testing.T
 }
 
-func NewRecordingPolicy(o *recording.RecordingOptions) policy.Policy {
+func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
 		o = &recording.RecordingOptions{}
 	}
-	p := &recordingPolicy{options: *o}
+	p := &recordingPolicy{options: *o, t: t}
 	p.options.Init()
 	return p
 }
@@ -42,7 +43,7 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 	req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
 	req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId())
+	req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
 
 	return req.Next()
 }
@@ -78,8 +79,8 @@ func (f *FakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationO
 }
 
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*Client, error) {
-	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient()
+	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
+	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
 	options := &ClientOptions{
@@ -95,8 +96,8 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 }
 
 func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcore.Credential) (*ServiceClient, error) {
-	p := NewRecordingPolicy(&recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient()
+	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
+	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
 	options := &ClientOptions{
@@ -154,7 +155,7 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 }
 
 func getAADCredential(t *testing.T) (azcore.Credential, error) { //nolint
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == "playback" {
 		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}
 
@@ -167,7 +168,7 @@ func getAADCredential(t *testing.T) (azcore.Credential, error) { //nolint
 }
 
 func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == "playback" {
 		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}
 
@@ -186,7 +187,7 @@ func createStorageClient(t *testing.T) (*Client, error) {
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == "playback" {
 		cred, err = getSharedKeyCredential(t)
 		require.NoError(t, err)
 	} else {
@@ -205,7 +206,7 @@ func createStorageClient(t *testing.T) (*Client, error) {
 func createCosmosClient(t *testing.T) (*Client, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == "playback" {
 		accountName = "fakestorageaccount"
 	}
 
@@ -226,7 +227,7 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == "playback" {
 		cred, err = getSharedKeyCredential(t)
 		require.NoError(t, err)
 	} else {
@@ -242,7 +243,7 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 func createCosmosServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred azcore.Credential
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == "playback" {
 		accountName = "fakestorageaccount"
 	}
 

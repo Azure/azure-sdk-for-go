@@ -71,6 +71,8 @@ steps:
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'
       workingDirectory: '${{parameters.GoWorkspace}}sdk'
+      env:
+        GO111MODULE: 'off'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()

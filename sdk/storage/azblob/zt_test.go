@@ -33,6 +33,7 @@ type azblobTestSuite struct {
 	mode testframework.RecordMode
 }
 
+//nolint
 type azblobUnrecordedTestSuite struct {
 	suite.Suite
 }
@@ -40,7 +41,7 @@ type azblobUnrecordedTestSuite struct {
 // Hookup to the testing framework
 func Test(t *testing.T) {
 	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	suite.Run(t, &azblobUnrecordedTestSuite{})
+	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -101,10 +102,12 @@ func (s *azblobTestSuite) AfterTest(suite string, test string) {
 	recordedTestTeardown(s.T().Name())
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
 
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
@@ -155,12 +158,14 @@ var basicHeaders = BlobHTTPHeaders{
 
 var basicMetadata = map[string]string{"Foo": "bar"}
 
+//nolint
 var basicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
 }
 
+//nolint
 var specialCharBlobTagsMap = map[string]string{
 	"+-./:=_ ":        "firsttag",
 	"tag2":            "+-./:=_",
@@ -175,6 +180,7 @@ var specialCharBlobTagsMap = map[string]string{
 // This should make it easy to associate the entities with their test, uniquely identify
 // them, and determine the order in which they were created.
 // Note that this imposes a restriction on the length of test names
+//nolint
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
 	// trace to extract the test name, which is stored in name
@@ -384,6 +390,7 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
+//nolint
 func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
 	accountName, accountKey := getAccountInfo(recording, accountType)
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
@@ -391,6 +398,7 @@ func getConnectionString(recording *testframework.Recording, accountType testAcc
 	return connectionString
 }
 
+//nolint
 func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
 	if recording != nil {
 		if options == nil {
@@ -439,6 +447,7 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	return serviceClient, err
 }
 
+//nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)

@@ -18,6 +18,7 @@ import (
 	"time"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlobClient() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -42,6 +43,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClient() {
 	_assert.Equal(bbClient.URL(), correctURL)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -87,6 +89,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert.Equal(blobURLParts, correctURL)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingConnectionString() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -377,6 +380,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 	validateStorageError(_assert, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -452,6 +456,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_ = resp2.Body(RetryReaderOptions{}).Close()
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -1011,6 +1016,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeTargetConditionNotMet)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -3414,6 +3420,7 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

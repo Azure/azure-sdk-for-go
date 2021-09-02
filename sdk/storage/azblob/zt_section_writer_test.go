@@ -9,6 +9,7 @@ import (
 	"io"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	_assert := assert.New(s.T())
 	b := [10]byte{}
@@ -67,6 +68,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 	_assert.Equal(b, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
 	_assert := assert.New(s.T())
 	input := make([]byte, 0)
@@ -81,6 +83,7 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
 	_assert.Equal(count, int64(0))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSectionWriterCopyDestEmpty() {
 	_assert := assert.New(s.T())
 	input := make([]byte, 10)

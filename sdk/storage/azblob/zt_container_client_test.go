@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
 	_assert := assert.New(s.T())
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
@@ -27,6 +28,7 @@ func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
 	_assert := assert.New(s.T())
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)

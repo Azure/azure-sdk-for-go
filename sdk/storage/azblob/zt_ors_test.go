@@ -5,6 +5,7 @@ package azblob
 
 import "github.com/stretchr/testify/assert"
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
 	_assert := assert.New(s.T())
 

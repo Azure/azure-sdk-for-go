@@ -178,6 +178,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	_assert.EqualValues(*getResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -295,6 +296,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -408,6 +410,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -605,6 +608,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -714,6 +718,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert.EqualValues(destData, srcData)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -810,6 +815,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_assert.EqualValues(destData, srcData)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -866,6 +872,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -913,6 +920,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -997,6 +1005,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	_assert.EqualValues(destData, srcData)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

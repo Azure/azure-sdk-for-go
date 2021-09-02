@@ -65,6 +65,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 	_assert.Equal(rawEnd, count-1)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -136,6 +137,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 	_assert.EqualValues(destData, sourceData)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -217,6 +219,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -266,6 +269,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_assert.Nil(pageListResp.PageList.PageRange)
 }
 
+//nolint
 func waitForIncrementalCopy(_assert *assert.Assertions, copyBlobClient PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
 	status := *blobCopyResponse.CopyStatus
 	var getPropertiesAndMetadataResult GetBlobPropertiesResponse
@@ -282,6 +286,7 @@ func waitForIncrementalCopy(_assert *assert.Assertions, copyBlobClient PageBlobC
 	return getPropertiesAndMetadataResult.DestinationSnapshot
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -411,6 +416,7 @@ func (s *azblobTestSuite) TestPageSequenceNumbers() {
 	_assert.Equal(resp.RawResponse.StatusCode, 200)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -932,6 +938,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2366,6 +2373,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 	//_assert.(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
 }
 
+//nolint
 func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (containerClient ContainerClient,
 	pbClient PageBlobClient, snapshot string) {
 	_context := getTestContext(testName)
@@ -2406,6 +2414,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 	return
 }
 
+//nolint
 func validateDiffPageRanges(_assert *assert.Assertions, resp PageList, err error) {
 	_assert.Nil(err)
 	pageListResp := resp.PageRange
@@ -2417,6 +2426,7 @@ func validateDiffPageRanges(_assert *assert.Assertions, resp PageList, err error
 	_assert.EqualValues(rawEnd, end)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2431,6 +2441,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 	validateStorageError(_assert, err, StorageErrorCodePreviousSnapshotNotFound)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2440,6 +2451,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	_assert.Nil(err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2460,6 +2472,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	validateDiffPageRanges(_assert, resp.PageList, err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2482,6 +2495,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 	//_assert.(stgErr.Response().StatusCode, chk.Equals, 304)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2502,6 +2516,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 	validateDiffPageRanges(_assert, resp.PageList, err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2523,6 +2538,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2543,6 +2559,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	validateDiffPageRanges(_assert, resp2.PageList, err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2563,6 +2580,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -2582,6 +2600,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	validateDiffPageRanges(_assert, resp.PageList, err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -3437,6 +3456,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfMatchTrue() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -3455,6 +3475,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	defer deleteContainer(_assert, containerClient)
 //}
 //
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfMatchFalse() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -3474,6 +3496,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	validateStorageError(_assert, err, StorageErrorCodeTargetConditionNotMet)
 //}
 //
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -3492,6 +3516,8 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	validateIncrementalCopy(_assert, copyPBClient, &resp)
 //}
 //
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()

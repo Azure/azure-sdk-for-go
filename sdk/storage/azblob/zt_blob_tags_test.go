@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -57,6 +58,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -114,6 +116,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	_assert.Nil(blobGetTagsResponse.BlobTagSet)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -153,6 +156,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -219,6 +223,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -327,6 +332,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_assert.EqualValues(destData, sourceData)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -415,6 +421,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	_assert.Equal(resp.RawResponse.StatusCode, 202)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -449,6 +456,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	_assert.Equal(*downloadResp.TagCount, int64(3))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -484,6 +492,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
 }
 
 // TODO: Once new pacer is done.
+//nolint
 func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -531,6 +540,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	}
 }
 
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -603,6 +613,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //	}
 //}
 
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()
 //	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -659,6 +670,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 //	_assert.Nil(err)
 //}
 
+// nolint
 func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -734,6 +746,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -772,6 +785,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

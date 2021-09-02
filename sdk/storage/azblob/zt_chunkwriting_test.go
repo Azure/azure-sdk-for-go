@@ -20,12 +20,14 @@ import (
 
 const finalFileName = "final"
 
+//nolint
 type fakeBlockWriter struct {
 	path       string
 	block      int32
 	errOnBlock int32
 }
 
+//nolint
 func newFakeBlockWriter() *fakeBlockWriter {
 	f := &fakeBlockWriter{
 		path:       filepath.Join(os.TempDir(), uuid.New().String()),
@@ -40,6 +42,7 @@ func newFakeBlockWriter() *fakeBlockWriter {
 	return f
 }
 
+//nolint
 func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body io.ReadSeeker, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	n := atomic.AddInt32(&f.block, 1)
 	if n == f.errOnBlock {
@@ -63,6 +66,7 @@ func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body i
 	return BlockBlobStageBlockResponse{}, nil
 }
 
+//nolint
 func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []string, options *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	dst, err := os.OpenFile(filepath.Join(f.path, finalFileName), os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
@@ -90,6 +94,7 @@ func (f *fakeBlockWriter) CommitBlockList(ctx context.Context, base64BlockIDs []
 	return BlockBlobCommitBlockListResponse{}, nil
 }
 
+//nolint
 func (f *fakeBlockWriter) cleanup() {
 	err := os.RemoveAll(f.path)
 	if err != nil {
@@ -97,10 +102,12 @@ func (f *fakeBlockWriter) cleanup() {
 	}
 }
 
+//nolint
 func (f *fakeBlockWriter) final() string {
 	return filepath.Join(f.path, finalFileName)
 }
 
+//nolint
 func createSrcFile(size int) (string, error) {
 	p := filepath.Join(os.TempDir(), uuid.New().String())
 	fp, err := os.OpenFile(p, os.O_CREATE+os.O_WRONLY, 0600)
@@ -122,6 +129,7 @@ func createSrcFile(size int) (string, error) {
 	return p, nil
 }
 
+//nolint
 func fileMD5(p string) string {
 	f, err := os.Open(p)
 	if err != nil {
@@ -140,6 +148,7 @@ func fileMD5(p string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestGetErr() {
 	s.T().Parallel()
 
@@ -181,6 +190,7 @@ func (s *azblobUnrecordedTestSuite) TestGetErr() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 	s.T().Parallel()
 

@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -53,6 +54,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -106,6 +108,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -201,6 +204,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_ = downloadResp.Body(RetryReaderOptions{}).Close()
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -1245,6 +1249,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 }
 
 // TODO: Learn about the behaviour of AppendPosition
+// nolint
 //func (s *azblobUnrecordedTestSuite) TestSealAppendBlobWithAppendConditions() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()

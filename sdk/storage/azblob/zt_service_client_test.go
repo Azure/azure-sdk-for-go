@@ -48,6 +48,7 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 	_assert.NotEqualValues(bAccInfo, BlobGetAccountInfoResponse{})
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -65,6 +66,7 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	defer deleteContainer(_assert, containerClient)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -123,6 +125,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	_assert.GreaterOrEqual(count, 0)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -437,6 +440,7 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 	_assert.NotNil(err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_assert := assert.New(s.T())
 	var svcClient ServiceClient

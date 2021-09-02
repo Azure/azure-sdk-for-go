@@ -22,15 +22,15 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb/CHANGELOG.md) |
 
 ## `v56.3.0`
 
@@ -42,7 +42,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.3.0/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
 
 ## `v56.2.0`
 

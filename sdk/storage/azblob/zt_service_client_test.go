@@ -93,7 +93,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range resp.EnumerationResults.ContainerItems {
+		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
 			_assert.NotNil(container.Name)
 
 			if *container.Name == containerName {
@@ -151,7 +151,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range resp.EnumerationResults.ContainerItems {
+		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
 			_assert.NotNil(container.Name)
 
 			if *container.Name == containerName {
@@ -267,7 +267,7 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, container := range resp.EnumerationResults.ContainerItems {
+		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
 			count++
 			_assert.NotNil(container.Name)
 		}

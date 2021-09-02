@@ -8,37 +8,36 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/assert"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func (s *azblobTestSuite) TestNewContainerClientValidName() {
+func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
 	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	testURL := svcClient.NewContainerClient(containerPrefix)
 
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerPrefix
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
-func (s *azblobTestSuite) TestCreateRootContainerURL() {
+func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
 	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 	testURL := svcClient.NewContainerClient(ContainerNameRoot)
 
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + ".blob.core.windows.net/$root"
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
@@ -293,6 +292,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
@@ -334,6 +334,7 @@ func (s *azblobTestSuite) TestContainerCreateIfExists() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -418,6 +419,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfExists() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	_, err = containerClient.DeleteIfExists(ctx, nil)
 	_assert.Nil(err)
@@ -702,7 +704,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			if *blob.Name == snapBlobName && blob.Snapshot != nil {
 				wasFound = true
 				_assert.Equal(*blob.Snapshot, *snap.Snapshot)
@@ -734,7 +736,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 
 	pager.NextPage(ctx)
 	_assert.Nil(pager.Err())
-	_assert.Nil(pager.PageResponse().EnumerationResults.Segment.BlobPrefixes)
+	_assert.Nil(pager.PageResponse().ContainerListBlobHierarchySegmentResult.Segment.BlobPrefixes)
 }
 
 ////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeMetadata() {
@@ -947,7 +949,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			_assert.Equal(nameMap[*blob.Name], true)
 		}
 	}
@@ -985,7 +987,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			_assert.Equal(nameMap[*blob.Name], true)
 		}
 	}
@@ -1248,7 +1250,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
-	permissions := make([]*SignedIdentifier, 6, 6)
+	permissions := make([]*SignedIdentifier, 6)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 6; i++ {
 		id := "000" + strconv.Itoa(i)
@@ -1293,7 +1295,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
 	listOnly := AccessPolicyPermission{Read: true}.String()
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
 		permissions[i] = &SignedIdentifier{
@@ -1330,6 +1332,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
+	_assert.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
 	_assert.Nil(err)
@@ -1354,7 +1357,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	_assert.Nil(err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
@@ -1415,7 +1418,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	_assert.Nil(err)
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
@@ -1477,7 +1480,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err)
 	start := expiry.Add(5 * time.Minute).UTC()
-	permissions := make([]*SignedIdentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		permissions[i] = &SignedIdentifier{
@@ -1679,8 +1682,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 		Access:   &access,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: map[string]string{},
@@ -1709,7 +1712,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 		Metadata: basicMetadata,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-
+	_assert.Nil(err)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)

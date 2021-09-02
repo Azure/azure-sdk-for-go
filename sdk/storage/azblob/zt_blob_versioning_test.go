@@ -143,6 +143,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 		dResp, err := blobURL.WithVersionID(*resp.VersionID).Download(ctx, nil)
 		_assert.Nil(err)
 		d1, err := ioutil.ReadAll(dResp.Body(RetryReaderOptions{}))
+		_assert.Nil(err)
 		_assert.NotEqual(*dResp.Version, "")
 		_assert.EqualValues(string(d1), string(data[i]))
 		versionId := dResp.RawResponse.Header.Get("x-ms-version-id")
@@ -500,6 +501,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	contentResp, err := bbClient.Download(ctx, nil)
 	_assert.Nil(err)
 	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
+	_assert.Nil(err)
 	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 

@@ -1582,17 +1582,17 @@ func (client *blobClient) getPropertiesHandleError(resp *azcore.Response) error 
 
 // GetTags - The Get Tags operation enables users to get the tags associated with a blob.
 // If the operation fails it returns the *StorageError error type.
-func (client *blobClient) GetTags(ctx context.Context, blobGetTagsOptions *BlobGetTagsOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobTagsResponse, error) {
+func (client *blobClient) GetTags(ctx context.Context, blobGetTagsOptions *BlobGetTagsOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobGetTagsResponse, error) {
 	req, err := client.getTagsCreateRequest(ctx, blobGetTagsOptions, modifiedAccessConditions)
 	if err != nil {
-		return BlobTagsResponse{}, err
+		return BlobGetTagsResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return BlobTagsResponse{}, err
+		return BlobGetTagsResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return BlobTagsResponse{}, client.getTagsHandleError(resp)
+		return BlobGetTagsResponse{}, client.getTagsHandleError(resp)
 	}
 	return client.getTagsHandleResponse(resp)
 }
@@ -1628,12 +1628,8 @@ func (client *blobClient) getTagsCreateRequest(ctx context.Context, blobGetTagsO
 }
 
 // getTagsHandleResponse handles the GetTags response.
-func (client *blobClient) getTagsHandleResponse(resp *azcore.Response) (BlobTagsResponse, error) {
-	var val *BlobTags
-	if err := resp.UnmarshalAsXML(&val); err != nil {
-		return BlobTagsResponse{}, err
-	}
-	result := BlobTagsResponse{RawResponse: resp.Response, Tags: val}
+func (client *blobClient) getTagsHandleResponse(resp *azcore.Response) (BlobGetTagsResponse, error) {
+	result := BlobGetTagsResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -1646,9 +1642,12 @@ func (client *blobClient) getTagsHandleResponse(resp *azcore.Response) (BlobTags
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return BlobTagsResponse{}, err
+			return BlobGetTagsResponse{}, err
 		}
 		result.Date = &date
+	}
+	if err := resp.UnmarshalAsXML(&result.BlobTags); err != nil {
+		return BlobGetTagsResponse{}, err
 	}
 	return result, nil
 }

@@ -13,7 +13,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -38,7 +37,9 @@ func (s *azblobTestSuite) TestCreateBlobClient() {
 	_assert.Equal(blobURLParts.BlobName, blobName)
 	_assert.Equal(blobURLParts.ContainerName, containerName)
 
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName
 	_assert.Equal(bbClient.URL(), correctURL)
 }
 
@@ -47,6 +48,7 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	testName := s.T().Name()
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	_assert.Nil(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -79,7 +81,9 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
 	// it is copied here
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName +
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + DefaultBlobEndpointSuffix + containerName + "/" + blobName +
 		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
 	_assert.Equal(blobURLParts, correctURL)
 }
@@ -88,6 +92,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingC
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClientFromConnectionString(nil, testAccountDefault, nil)
+	_assert.Nil(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
@@ -120,7 +125,9 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingC
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
 	// it is copied here
-	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName +
+	accountName, err := getRequiredEnv(AccountNameEnvVar)
+	_assert.Nil(err)
+	correctURL := "https://" + accountName + DefaultBlobEndpointSuffix + containerName + "/" + blobName +
 		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
 	_assert.Equal(blobURLParts, correctURL)
 }
@@ -170,6 +177,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 
 	// Read the blob data to verify the copy
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
 	_ = resp.Body(RetryReaderOptions{}).Close()
@@ -439,6 +447,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_assert.Nil(err)
 
 	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+	_assert.Nil(err)
 	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
 	_ = resp2.Body(RetryReaderOptions{}).Close()

@@ -198,7 +198,7 @@ func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataCo
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-acl.
-func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (SignedIdentifierArrayResponse, error) {
+func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (ContainerGetAccessPolicyResponse, error) {
 	o, ac := options.pointers()
 
 	resp, err := c.client.GetAccessPolicy(ctx, o, ac)
@@ -230,19 +230,19 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 // ListBlobsFlatSegment returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
+func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlatSegmentOptions) *ContainerListBlobFlatSegmentPager {
 	pager := c.client.ListBlobFlatSegment(listOptions)
 	// override the generated pager to insert our handleError(error)
 	if pager.Err() != nil {
 		return pager
 	}
 
-	p := pager.(*listBlobsFlatSegmentResponsePager)
-	p.errorer = func(response *azcore.Response) error {
-		return handleError(c.client.listBlobFlatSegmentHandleError(response))
-	}
+	// TODO: Come Here
+	//pager.err = func(response *azcore.Response) error {
+	//	return handleError(c.client.listBlobFlatSegmentHandleError(response))
+	//}
 
-	return p
+	return pager
 }
 
 // ListBlobsHierarchySegment returns a channel of blobs starting from the specified Marker. Use an empty
@@ -253,19 +253,20 @@ func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlat
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
+func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) *ContainerListBlobHierarchySegmentPager {
 	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
 	// override the generated pager to insert our handleError(error)
 	if pager.Err() != nil {
 		return pager
 	}
 
-	p := pager.(*listBlobsHierarchySegmentResponsePager)
-	p.errorer = func(response *azcore.Response) error {
-		return handleError(c.client.listBlobHierarchySegmentHandleError(response))
-	}
+	// TODO: Come here
+	//p := pager.(*listBlobsHierarchySegmentResponsePager)
+	//p.errorer = func(response *azcore.Response) error {
+	//	return handleError(c.client.listBlobHierarchySegmentHandleError(response))
+	//}
 
-	return p
+	return pager
 }
 
 func (c ContainerClient) CanGetContainerSASToken() bool {

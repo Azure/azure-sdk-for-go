@@ -83,8 +83,14 @@ func Example() {
 	// Open a buffer, reader, and then download!
 	downloadedData := &bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
-	downloadedData.ReadFrom(reader)
-	reader.Close()
+	_, err = downloadedData.ReadFrom(reader)
+	if err != nil {
+		return
+	}
+	err = reader.Close()
+	if err != nil {
+		return
+	}
 	if data != downloadedData.String() {
 		log.Fatal("downloaded data doesn't match uploaded data")
 	}
@@ -98,7 +104,7 @@ func Example() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, v := range resp.EnumerationResults.Segment.BlobItems {
+		for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			fmt.Println(*v.Name)
 		}
 	}
@@ -147,7 +153,7 @@ func ExampleStorageError() {
 	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
 	*/
 
-	container, err := NewContainerClient("http://myaccount.blob.core.windows.net/mycontainer", azcore.AnonymousCredential(), nil)
+	container, err := NewContainerClient("https://myaccount.blob.core.windows.net/mycontainer", azcore.AnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -173,7 +179,7 @@ func ExampleStorageError() {
 	}
 }
 
-// This example demonstrates splitting a URL into its parts so you can examine and modify the URL in a Azure Storage fluent way.
+// This example demonstrates splitting a URL into its parts so you can examine and modify the URL in an Azure Storage fluent way.
 func ExampleBlobURLParts() {
 	// Let's begin with a snapshot SAS token.
 	u := "https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
@@ -299,6 +305,9 @@ func ExampleBlobSASSignatureValues() {
 		// and make sure the BlobName field is ""
 		Permissions: BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
 	}.NewSASQueryParameters(credential)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Create the URL of this resource you wish to access, and append the SAS query parameters.
 	// Since this is a blob SAS, the URL is to the Azure Storage blob.
@@ -368,9 +377,17 @@ func ExampleContainerClient_SetAccessPolicy() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer get.Body.Close()
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
+
+			}
+		}(get.Body)
 		var text bytes.Buffer
-		text.ReadFrom(get.Body)
+		_, err = text.ReadFrom(get.Body)
+		if err != nil {
+			return
+		}
 		fmt.Println(text.String())
 	}
 }
@@ -386,7 +403,9 @@ func ExampleBlobAccessConditions() {
 		log.Fatal(err)
 	}
 	blockBlob, err := NewBlockBlobClient(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// This helper function displays the results of an operation; it is called frequently below.
@@ -399,7 +418,10 @@ func ExampleBlobAccessConditions() {
 				fmt.Print("Failure: " + stgErr.Error() + "\n")
 			}
 		} else {
-			response.Body(RetryReaderOptions{}).Close() // The client must close the response body when finished with it
+			err := response.Body(RetryReaderOptions{}).Close()
+			if err != nil {
+				return
+			} // The client must close the response body when finished with it
 			fmt.Print("Success: " + response.RawResponse.Status + "\n")
 		}
 	}
@@ -638,7 +660,7 @@ func ExampleBlockBlobClient() {
 	// These helper functions convert a binary block ID to a base-64 string and vice versa
 	// NOTE: The blockID must be <= 64 bytes and ALL blockIDs for the block must be the same length
 	blockIDBinaryToBase64 := func(blockID []byte) string { return base64.StdEncoding.EncodeToString(blockID) }
-	blockIDBase64ToBinary := func(blockID string) []byte { binary, _ := base64.StdEncoding.DecodeString(blockID); return binary }
+	blockIDBase64ToBinary := func(blockID string) []byte { _binary, _ := base64.StdEncoding.DecodeString(blockID); return _binary }
 
 	// These helper functions convert an int block ID to a base-64 string and vice versa
 	blockIDIntToBase64 := func(blockID int) string {
@@ -691,8 +713,14 @@ func ExampleBlockBlobClient() {
 	}
 	blobData := &bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{})
-	blobData.ReadFrom(reader)
-	reader.Close() // The client must close the response body when finished with it
+	_, err = blobData.ReadFrom(reader)
+	if err != nil {
+		return
+	}
+	err = reader.Close()
+	if err != nil {
+		return
+	} // The client must close the response body when finished with it
 	fmt.Println(blobData)
 }
 
@@ -734,8 +762,14 @@ func ExampleAppendBlobClient() {
 	}
 	b := bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{})
-	b.ReadFrom(reader)
-	reader.Close() // The client must close the response body when finished with it
+	_, err = b.ReadFrom(reader)
+	if err != nil {
+		return
+	}
+	err = reader.Close()
+	if err != nil {
+		return
+	} // The client must close the response body when finished with it
 	fmt.Println(b.String())
 }
 
@@ -803,8 +837,14 @@ func ExamplePageBlobClient() {
 	}
 	blobData := &bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{})
-	blobData.ReadFrom(reader)
-	reader.Close() // The client must close the response body when finished with it
+	_, err = blobData.ReadFrom(reader)
+	if err != nil {
+		return
+	}
+	err = reader.Close()
+	if err != nil {
+		return
+	} // The client must close the response body when finished with it
 	fmt.Printf("%#v", blobData.Bytes())
 }
 
@@ -838,6 +878,9 @@ func Example_blobSnapshots() {
 
 	// Create a snapshot of the original blob & save its timestamp:
 	createSnapshot, err := baseBlobClient.CreateSnapshot(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	snapshot := *createSnapshot.Snapshot
 
 	// Modify the original blob & show it:
@@ -847,19 +890,37 @@ func Example_blobSnapshots() {
 	}
 
 	get, err := baseBlobClient.Download(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	b := bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{})
-	b.ReadFrom(reader)
-	reader.Close() // The client must close the response body when finished with it
+	_, err = b.ReadFrom(reader)
+	if err != nil {
+		return
+	}
+	err = reader.Close()
+	if err != nil {
+		return
+	} // The client must close the response body when finished with it
 	fmt.Println(b.String())
 
 	// Show snapshot blob via original blob URI & snapshot time:
 	snapshotBlobClient := baseBlobClient.WithSnapshot(snapshot)
 	get, err = snapshotBlobClient.Download(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	b.Reset()
 	reader = get.Body(RetryReaderOptions{})
-	b.ReadFrom(reader)
-	reader.Close() // The client must close the response body when finished with it
+	_, err = b.ReadFrom(reader)
+	if err != nil {
+		return
+	}
+	err = reader.Close()
+	if err != nil {
+		return
+	} // The client must close the response body when finished with it
 	fmt.Println(b.String())
 
 	// FYI: You can get the base blob URL from one of its snapshot by passing "" to WithSnapshot:
@@ -871,7 +932,7 @@ func Example_blobSnapshots() {
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			// Process the blobs returned
 			snapTime := "N/A"
 			if blob.Snapshot != nil {
@@ -914,6 +975,9 @@ func Example_progressUploadDownload() {
 
 	// Create an serviceClient object that wraps the service URL and a request pipeline to making requests.
 	containerClient, err := NewContainerClient(cURL, credential, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	ctx := context.Background() // This example uses a never-expiring context
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
@@ -946,8 +1010,14 @@ func Example_progressUploadDownload() {
 		})
 
 	downloadedData := &bytes.Buffer{}
-	downloadedData.ReadFrom(responseBody)
-	responseBody.Close() // The client must close the response body when finished with it
+	_, err = downloadedData.ReadFrom(responseBody)
+	if err != nil {
+		return
+	}
+	err = responseBody.Close()
+	if err != nil {
+		return
+	} // The client must close the response body when finished with it
 	// The downloaded blob data is in downloadData's buffer
 }
 
@@ -995,7 +1065,11 @@ func ExampleUploadFileToBlockBlob() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+		}
+	}(file)
 	fileSize, err := file.Stat() // Get the size of the file (stream)
 	if err != nil {
 		log.Fatal(err)
@@ -1033,7 +1107,13 @@ func ExampleUploadFileToBlockBlob() {
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
-	defer destFile.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func(destFile *os.File) {
+		_ = destFile.Close()
+
+	}(destFile)
 
 	// Perform download
 	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
@@ -1080,13 +1160,23 @@ func ExampleBlobClient_Download() {
 		func(bytesTransferred int64) {
 			fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, contentLength)
 		})
-	defer stream.Close() // The client must close the response body when finished with it
+	defer func(stream io.ReadCloser) {
+		err := stream.Close()
+		if err != nil {
+
+		}
+	}(stream) // The client must close the response body when finished with it
 
 	file, err := os.Create("BigFile.bin") // Create the file to hold the downloaded blob contents.
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	written, err := io.Copy(file, stream) // Write to the file by reading from the blob (with intelligent retries).
 	if err != nil {
@@ -1106,7 +1196,9 @@ func ExampleUploadStreamToBlockBlob() {
 		log.Fatal(err)
 	}
 	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create some data to test the upload stream

@@ -386,7 +386,10 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 		// set up timed cancellation from separate goroutine
 		go func() {
 			time.Sleep(sleepDuration * 5)
-			retryReader.Close()
+			err := retryReader.Close()
+			if err != nil {
+				return
+			}
 		}()
 
 		// do the read (should fail, due to forced cancellation, and succeed through retry)

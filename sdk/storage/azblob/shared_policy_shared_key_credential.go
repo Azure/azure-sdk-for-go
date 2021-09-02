@@ -48,18 +48,21 @@ func (c *SharedKeyCredential) AccountName() string {
 
 // SetAccountKey replaces the existing account key with the specified account key.
 func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
-	bytes, err := base64.StdEncoding.DecodeString(accountKey)
+	_bytes, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
 		return fmt.Errorf("decode account key: %w", err)
 	}
-	c.accountKey.Store(bytes)
+	c.accountKey.Store(_bytes)
 	return nil
 }
 
-// computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
+// ComputeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
 func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
-	h.Write([]byte(message))
+	_, err := h.Write([]byte(message))
+	if err != nil {
+		return ""
+	}
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
@@ -121,7 +124,7 @@ func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) stri
 		ch.WriteRune(':')
 		ch.WriteString(strings.Join(cm[key], ","))
 	}
-	return string(ch.Bytes())
+	return ch.String()
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
@@ -146,7 +149,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	}
 
 	if len(params) > 0 { // There is at least 1 query parameter
-		paramNames := []string{} // We use this to sort the parameter key names
+		var paramNames []string // We use this to sort the parameter key names
 		for paramName := range params {
 			paramNames = append(paramNames, paramName) // paramNames must be lowercase
 		}
@@ -161,7 +164,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 			cr.WriteString("\n" + paramName + ":" + strings.Join(paramValues, ","))
 		}
 	}
-	return string(cr.Bytes()), nil
+	return cr.String(), nil
 }
 
 // AuthenticationPolicy implements the Credential interface on SharedKeyCredential.

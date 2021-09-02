@@ -3,13 +3,9 @@
 
 package azblob
 
-import (
-	"time"
-)
-
-type GetUserDelegationKeyOptions struct {
-	startTime *time.Time
-}
+//type GetUserDelegationKeyOptions struct {
+//	startTime *time.Time
+//}
 
 type ListContainersSegmentOptions struct {
 	Include ListContainersDetail
@@ -43,7 +39,7 @@ func (o *ListContainersSegmentOptions) pointers() *ServiceListContainersSegmentO
 	}
 }
 
-// ListContainersFlatDetail indicates what additional information the service should return with each container.
+// ListContainersDetail indicates what additional information the service should return with each container.
 type ListContainersDetail struct {
 	// Tells the service whether to return metadata for each container.
 	Metadata bool
@@ -54,7 +50,7 @@ type ListContainersDetail struct {
 
 // string produces the Include query parameter's value.
 func (o *ListContainersDetail) pointers() []ListContainersIncludeType {
-	if o.Metadata == false && o.Deleted == false {
+	if !o.Metadata && !o.Deleted {
 		return nil
 	}
 

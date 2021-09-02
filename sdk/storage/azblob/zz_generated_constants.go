@@ -8,7 +8,7 @@
 
 package azblob
 
-const telemetryInfo = "azsdk-go-generated/<version>"
+const telemetryInfo = "azsdk-go-generated/v" + serviceLibVersion
 
 type AccessTier string
 

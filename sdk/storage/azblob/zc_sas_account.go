@@ -140,7 +140,7 @@ func (p *AccountSASPermissions) Parse(s string) error {
 		case 'x':
 			p.Process = true
 		default:
-			return fmt.Errorf("Invalid permission character: '%v'", r)
+			return fmt.Errorf("invalid permission character: '%v'", r)
 		}
 	}
 	return nil
@@ -169,18 +169,18 @@ func (s AccountSASServices) String() string {
 }
 
 // Parse initializes the AccountSASServices' fields from a string.
-func (a *AccountSASServices) Parse(s string) error {
-	*a = AccountSASServices{} // Clear out the flags
-	for _, r := range s {
+func (s *AccountSASServices) Parse(str string) error {
+	*s = AccountSASServices{} // Clear out the flags
+	for _, r := range str {
 		switch r {
 		case 'b':
-			a.Blob = true
+			s.Blob = true
 		case 'q':
-			a.Queue = true
+			s.Queue = true
 		case 'f':
-			a.File = true
+			s.File = true
 		default:
-			return fmt.Errorf("Invalid service character: '%v'", r)
+			return fmt.Errorf("invalid service character: '%v'", r)
 		}
 	}
 	return nil
@@ -220,7 +220,7 @@ func (rt *AccountSASResourceTypes) Parse(s string) error {
 		case 'o':
 			rt.Object = true
 		default:
-			return fmt.Errorf("Invalid resource type: '%v'", r)
+			return fmt.Errorf("invalid resource type: '%v'", r)
 		}
 	}
 	return nil

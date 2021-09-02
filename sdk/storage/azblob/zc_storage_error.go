@@ -13,17 +13,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
-
-// // StorageError identifies a responder-generated network or response parsing error.
-// type StorageError interface {
-// 	// ResponseError implements error's Error(), net.Error's Temporary() and Timeout() methods & Response().
-// 	// ResponseError
-//
-// 	// ErrorCode returns a service error code. Your code can use this to make error recovery decisions.
-// 	ErrorCode() ServiceCodeType
-// }
 
 // InternalError is an internal error type that all errors get wrapped in.
 type InternalError struct {
@@ -69,7 +59,7 @@ type StorageError struct {
 }
 
 func handleError(err error) error {
-	if err, ok := err.(*runtime.ResponseError); ok {
+	if err, ok := err.(ResponseError); ok {
 		return &InternalError{defunkifyStorageError(err)}
 	}
 
@@ -80,8 +70,8 @@ func handleError(err error) error {
 	return nil
 }
 
-// defunkifyStorageError is a function that takes the "funky" *runtime.ResponseError and reduces it to a storageError.
-func defunkifyStorageError(responseError *runtime.ResponseError) error {
+// defunkifyStorageError is a function that takes the "funky" ResponseError and reduces it to a storageError.
+func defunkifyStorageError(responseError ResponseError) error {
 	if err, ok := responseError.Unwrap().(*StorageError); ok {
 		// errors.Unwrap(responseError.Unwrap())
 
@@ -112,8 +102,8 @@ func (e StorageError) Error() string {
 	b := &bytes.Buffer{}
 
 	if e.response != nil {
-		fmt.Fprintf(b, "===== RESPONSE ERROR (ErrorCode=%s) =====\n", e.ErrorCode)
-		fmt.Fprintf(b, "Description=%s, Details: ", e.description)
+		_, _ = fmt.Fprintf(b, "===== RESPONSE ERROR (ErrorCode=%s) =====\n", e.ErrorCode)
+		_, _ = fmt.Fprintf(b, "Description=%s, Details: ", e.description)
 		if len(e.details) == 0 {
 			b.WriteString("(none)\n")
 		} else {
@@ -125,7 +115,7 @@ func (e StorageError) Error() string {
 			}
 			sort.Strings(keys)
 			for _, k := range keys {
-				fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
+				_, _ = fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
 			}
 		}
 		// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
@@ -150,11 +140,11 @@ func (e StorageError) Response() *http.Response {
 
 func writeRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {
 	// Write the request into the buffer.
-	fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
+	_, _ = fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
 	writeHeader(b, request.Header)
 	if response != nil {
-		fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
-		fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
+		_, _ = fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
+		_, _ = fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
 		writeHeader(b, response.Header)
 	}
 }
@@ -177,7 +167,7 @@ func writeHeader(b *bytes.Buffer, header map[string][]string) {
 		if !strings.EqualFold(k, "Authorization") {
 			value = header[k]
 		}
-		fmt.Fprintf(b, "   %s: %+v\n", k, value)
+		_, _ = fmt.Fprintf(b, "   %s: %+v\n", k, value)
 	}
 }
 
@@ -200,7 +190,6 @@ func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err
 		switch tt := t.(type) {
 		case xml.StartElement:
 			tokName = tt.Name.Local
-			break
 		case xml.CharData:
 			switch tokName {
 			case "Message":

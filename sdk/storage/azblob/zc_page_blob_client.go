@@ -16,7 +16,7 @@ const (
 	PageBlobPageBytes = 512
 
 	// PageBlobMaxUploadPagesBytes indicates the maximum number of bytes that can be sent in a call to PutPage.
-	PageBlobMaxUploadPagesBytes = 4 * 1024 * 1024 // 4MB
+	//PageBlobMaxUploadPagesBytes = 4 * 1024 * 1024 // 4MB
 )
 
 type PageBlobClient struct {
@@ -119,7 +119,7 @@ func (pb PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, op
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange, options *GetPageRangesOptions) (PageListResponse, error) {
+func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange, options *GetPageRangesOptions) (PageBlobGetPageRangesResponse, error) {
 	snapshot, lac, mac := options.pointers()
 
 	getRangesOptions := &PageBlobGetPageRangesOptions{
@@ -148,7 +148,7 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange,
 
 // GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRange, prevSnapshot string, options *GetPageRangesOptions) (PageListResponse, error) {
+func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRange, prevSnapshot string, options *GetPageRangesOptions) (PageBlobGetPageRangesDiffResponse, error) {
 	snapshot, lac, mac := options.pointers()
 
 	diffOptions := &PageBlobGetPageRangesDiffOptions{

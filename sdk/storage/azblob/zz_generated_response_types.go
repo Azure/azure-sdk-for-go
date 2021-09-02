@@ -15,6 +15,13 @@ import (
 
 // AppendBlobAppendBlockFromURLResponse contains the response from method AppendBlob.AppendBlockFromURL.
 type AppendBlobAppendBlockFromURLResponse struct {
+	AppendBlobAppendBlockFromURLResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AppendBlobAppendBlockFromURLResult contains the result from method AppendBlob.AppendBlockFromURL.
+type AppendBlobAppendBlockFromURLResult struct {
 	// BlobAppendOffset contains the information returned from the x-ms-blob-append-offset header response.
 	BlobAppendOffset *string
 
@@ -41,9 +48,6 @@ type AppendBlobAppendBlockFromURLResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -57,6 +61,13 @@ type AppendBlobAppendBlockFromURLResponse struct {
 
 // AppendBlobAppendBlockResponse contains the response from method AppendBlob.AppendBlock.
 type AppendBlobAppendBlockResponse struct {
+	AppendBlobAppendBlockResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AppendBlobAppendBlockResult contains the result from method AppendBlob.AppendBlock.
+type AppendBlobAppendBlockResult struct {
 	// BlobAppendOffset contains the information returned from the x-ms-blob-append-offset header response.
 	BlobAppendOffset *string
 
@@ -87,9 +98,6 @@ type AppendBlobAppendBlockResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -102,6 +110,13 @@ type AppendBlobAppendBlockResponse struct {
 
 // AppendBlobCreateResponse contains the response from method AppendBlob.Create.
 type AppendBlobCreateResponse struct {
+	AppendBlobCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AppendBlobCreateResult contains the result from method AppendBlob.Create.
+type AppendBlobCreateResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -126,9 +141,6 @@ type AppendBlobCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -141,6 +153,13 @@ type AppendBlobCreateResponse struct {
 
 // AppendBlobSealResponse contains the response from method AppendBlob.Seal.
 type AppendBlobSealResponse struct {
+	AppendBlobSealResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AppendBlobSealResult contains the result from method AppendBlob.Seal.
+type AppendBlobSealResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -156,9 +175,6 @@ type AppendBlobSealResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -168,14 +184,18 @@ type AppendBlobSealResponse struct {
 
 // BlobAbortCopyFromURLResponse contains the response from method Blob.AbortCopyFromURL.
 type BlobAbortCopyFromURLResponse struct {
+	BlobAbortCopyFromURLResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobAbortCopyFromURLResult contains the result from method Blob.AbortCopyFromURL.
+type BlobAbortCopyFromURLResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -186,6 +206,13 @@ type BlobAbortCopyFromURLResponse struct {
 
 // BlobAcquireLeaseResponse contains the response from method Blob.AcquireLease.
 type BlobAcquireLeaseResponse struct {
+	BlobAcquireLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobAcquireLeaseResult contains the result from method Blob.AcquireLease.
+type BlobAcquireLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -201,9 +228,6 @@ type BlobAcquireLeaseResponse struct {
 	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -213,6 +237,13 @@ type BlobAcquireLeaseResponse struct {
 
 // BlobBreakLeaseResponse contains the response from method Blob.BreakLease.
 type BlobBreakLeaseResponse struct {
+	BlobBreakLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobBreakLeaseResult contains the result from method Blob.BreakLease.
+type BlobBreakLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -228,9 +259,6 @@ type BlobBreakLeaseResponse struct {
 	// LeaseTime contains the information returned from the x-ms-lease-time header response.
 	LeaseTime *int32
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -240,6 +268,13 @@ type BlobBreakLeaseResponse struct {
 
 // BlobChangeLeaseResponse contains the response from method Blob.ChangeLease.
 type BlobChangeLeaseResponse struct {
+	BlobChangeLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobChangeLeaseResult contains the result from method Blob.ChangeLease.
+type BlobChangeLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -255,9 +290,6 @@ type BlobChangeLeaseResponse struct {
 	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -267,6 +299,13 @@ type BlobChangeLeaseResponse struct {
 
 // BlobCopyFromURLResponse contains the response from method Blob.CopyFromURL.
 type BlobCopyFromURLResponse struct {
+	BlobCopyFromURLResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobCopyFromURLResult contains the result from method Blob.CopyFromURL.
+type BlobCopyFromURLResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -288,9 +327,6 @@ type BlobCopyFromURLResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -306,6 +342,13 @@ type BlobCopyFromURLResponse struct {
 
 // BlobCreateSnapshotResponse contains the response from method Blob.CreateSnapshot.
 type BlobCreateSnapshotResponse struct {
+	BlobCreateSnapshotResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobCreateSnapshotResult contains the result from method Blob.CreateSnapshot.
+type BlobCreateSnapshotResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -320,9 +363,6 @@ type BlobCreateSnapshotResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -339,14 +379,18 @@ type BlobCreateSnapshotResponse struct {
 
 // BlobDeleteResponse contains the response from method Blob.Delete.
 type BlobDeleteResponse struct {
+	BlobDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobDeleteResult contains the result from method Blob.Delete.
+type BlobDeleteResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -357,6 +401,13 @@ type BlobDeleteResponse struct {
 
 // BlobDownloadResponse contains the response from method Blob.Download.
 type BlobDownloadResponse struct {
+	BlobDownloadResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobDownloadResult contains the result from method Blob.Download.
+type BlobDownloadResult struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
@@ -462,9 +513,6 @@ type BlobDownloadResponse struct {
 	// ObjectReplicationRules contains the information returned from the x-ms-or header response.
 	ObjectReplicationRules map[string]string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -480,6 +528,13 @@ type BlobDownloadResponse struct {
 
 // BlobGetAccessControlResponse contains the response from method Blob.GetAccessControl.
 type BlobGetAccessControlResponse struct {
+	BlobGetAccessControlResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobGetAccessControlResult contains the result from method Blob.GetAccessControl.
+type BlobGetAccessControlResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -488,9 +543,6 @@ type BlobGetAccessControlResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -513,6 +565,13 @@ type BlobGetAccessControlResponse struct {
 
 // BlobGetAccountInfoResponse contains the response from method Blob.GetAccountInfo.
 type BlobGetAccountInfoResponse struct {
+	BlobGetAccountInfoResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobGetAccountInfoResult contains the result from method Blob.GetAccountInfo.
+type BlobGetAccountInfoResult struct {
 	// AccountKind contains the information returned from the x-ms-account-kind header response.
 	AccountKind *AccountKind
 
@@ -521,9 +580,6 @@ type BlobGetAccountInfoResponse struct {
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -537,6 +593,13 @@ type BlobGetAccountInfoResponse struct {
 
 // BlobGetPropertiesResponse contains the response from method Blob.GetProperties.
 type BlobGetPropertiesResponse struct {
+	BlobGetPropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobGetPropertiesResult contains the result from method Blob.GetProperties.
+type BlobGetPropertiesResult struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
@@ -657,9 +720,6 @@ type BlobGetPropertiesResponse struct {
 	// ObjectReplicationRules contains the information returned from the x-ms-or header response.
 	ObjectReplicationRules map[string]string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RehydratePriority contains the information returned from the x-ms-rehydrate-priority header response.
 	RehydratePriority *string
 
@@ -676,8 +736,38 @@ type BlobGetPropertiesResponse struct {
 	VersionID *string
 }
 
+// BlobGetTagsResponse contains the response from method Blob.GetTags.
+type BlobGetTagsResponse struct {
+	BlobGetTagsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobGetTagsResult contains the result from method Blob.GetTags.
+type BlobGetTagsResult struct {
+	BlobTags
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
 // BlobQueryResponse contains the response from method Blob.Query.
 type BlobQueryResponse struct {
+	BlobQueryResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobQueryResult contains the result from method Blob.Query.
+type BlobQueryResult struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
@@ -771,9 +861,6 @@ type BlobQueryResponse struct {
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -783,6 +870,13 @@ type BlobQueryResponse struct {
 
 // BlobReleaseLeaseResponse contains the response from method Blob.ReleaseLease.
 type BlobReleaseLeaseResponse struct {
+	BlobReleaseLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobReleaseLeaseResult contains the result from method Blob.ReleaseLease.
+type BlobReleaseLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -795,9 +889,6 @@ type BlobReleaseLeaseResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -807,6 +898,13 @@ type BlobReleaseLeaseResponse struct {
 
 // BlobRenameResponse contains the response from method Blob.Rename.
 type BlobRenameResponse struct {
+	BlobRenameResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobRenameResult contains the result from method Blob.Rename.
+type BlobRenameResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -822,9 +920,6 @@ type BlobRenameResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -834,6 +929,13 @@ type BlobRenameResponse struct {
 
 // BlobRenewLeaseResponse contains the response from method Blob.RenewLease.
 type BlobRenewLeaseResponse struct {
+	BlobRenewLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobRenewLeaseResult contains the result from method Blob.RenewLease.
+type BlobRenewLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -849,9 +951,6 @@ type BlobRenewLeaseResponse struct {
 	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -861,6 +960,13 @@ type BlobRenewLeaseResponse struct {
 
 // BlobSetAccessControlResponse contains the response from method Blob.SetAccessControl.
 type BlobSetAccessControlResponse struct {
+	BlobSetAccessControlResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobSetAccessControlResult contains the result from method Blob.SetAccessControl.
+type BlobSetAccessControlResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -869,9 +975,6 @@ type BlobSetAccessControlResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -882,6 +985,13 @@ type BlobSetAccessControlResponse struct {
 
 // BlobSetExpiryResponse contains the response from method Blob.SetExpiry.
 type BlobSetExpiryResponse struct {
+	BlobSetExpiryResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobSetExpiryResult contains the result from method Blob.SetExpiry.
+type BlobSetExpiryResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -894,9 +1004,6 @@ type BlobSetExpiryResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -906,6 +1013,13 @@ type BlobSetExpiryResponse struct {
 
 // BlobSetHTTPHeadersResponse contains the response from method Blob.SetHTTPHeaders.
 type BlobSetHTTPHeadersResponse struct {
+	BlobSetHTTPHeadersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobSetHTTPHeadersResult contains the result from method Blob.SetHTTPHeaders.
+type BlobSetHTTPHeadersResult struct {
 	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
 	BlobSequenceNumber *int64
 
@@ -921,9 +1035,6 @@ type BlobSetHTTPHeadersResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -933,6 +1044,13 @@ type BlobSetHTTPHeadersResponse struct {
 
 // BlobSetMetadataResponse contains the response from method Blob.SetMetadata.
 type BlobSetMetadataResponse struct {
+	BlobSetMetadataResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobSetMetadataResult contains the result from method Blob.SetMetadata.
+type BlobSetMetadataResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -954,9 +1072,6 @@ type BlobSetMetadataResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -969,14 +1084,18 @@ type BlobSetMetadataResponse struct {
 
 // BlobSetTagsResponse contains the response from method Blob.SetTags.
 type BlobSetTagsResponse struct {
+	BlobSetTagsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobSetTagsResult contains the result from method Blob.SetTags.
+type BlobSetTagsResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -987,11 +1106,15 @@ type BlobSetTagsResponse struct {
 
 // BlobSetTierResponse contains the response from method Blob.SetTier.
 type BlobSetTierResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
+	BlobSetTierResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// BlobSetTierResult contains the result from method Blob.SetTier.
+type BlobSetTierResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1002,6 +1125,13 @@ type BlobSetTierResponse struct {
 
 // BlobStartCopyFromURLResponse contains the response from method Blob.StartCopyFromURL.
 type BlobStartCopyFromURLResponse struct {
+	BlobStartCopyFromURLResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobStartCopyFromURLResult contains the result from method Blob.StartCopyFromURL.
+type BlobStartCopyFromURLResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1020,9 +1150,6 @@ type BlobStartCopyFromURLResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1033,37 +1160,20 @@ type BlobStartCopyFromURLResponse struct {
 	VersionID *string
 }
 
-// BlobTagsResponse is the response envelope for operations that return a BlobTags type.
-type BlobTagsResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Blob tags
-	Tags *BlobTags `xml:"Tags"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
-}
-
 // BlobUndeleteResponse contains the response from method Blob.Undelete.
 type BlobUndeleteResponse struct {
+	BlobUndeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobUndeleteResult contains the result from method Blob.Undelete.
+type BlobUndeleteResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1074,6 +1184,13 @@ type BlobUndeleteResponse struct {
 
 // BlockBlobCommitBlockListResponse contains the response from method BlockBlob.CommitBlockList.
 type BlockBlobCommitBlockListResponse struct {
+	BlockBlobCommitBlockListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlockBlobCommitBlockListResult contains the result from method BlockBlob.CommitBlockList.
+type BlockBlobCommitBlockListResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1098,9 +1215,6 @@ type BlockBlobCommitBlockListResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1114,116 +1228,18 @@ type BlockBlobCommitBlockListResponse struct {
 	XMSContentCRC64 []byte
 }
 
-// BlockBlobStageBlockFromURLResponse contains the response from method BlockBlob.StageBlockFromURL.
-type BlockBlobStageBlockFromURLResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentMD5 contains the information returned from the Content-MD5 header response.
-	ContentMD5 []byte
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
-	EncryptionKeySHA256 *string
-
-	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
-	EncryptionScope *string
-
-	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
-	IsServerEncrypted *bool
-
+// BlockBlobGetBlockListResponse contains the response from method BlockBlob.GetBlockList.
+type BlockBlobGetBlockListResponse struct {
+	BlockBlobGetBlockListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
-	XMSContentCRC64 []byte
 }
 
-// BlockBlobStageBlockResponse contains the response from method BlockBlob.StageBlock.
-type BlockBlobStageBlockResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentMD5 contains the information returned from the Content-MD5 header response.
-	ContentMD5 []byte
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
-	EncryptionKeySHA256 *string
-
-	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
-	EncryptionScope *string
-
-	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
-	IsServerEncrypted *bool
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
-	XMSContentCRC64 []byte
-}
-
-// BlockBlobUploadResponse contains the response from method BlockBlob.Upload.
-type BlockBlobUploadResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentMD5 contains the information returned from the Content-MD5 header response.
-	ContentMD5 []byte
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
-	EncryptionKeySHA256 *string
-
-	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
-	EncryptionScope *string
-
-	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
-	IsServerEncrypted *bool
-
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// VersionID contains the information returned from the x-ms-version-id header response.
-	VersionID *string
-}
-
-// BlockListResponse is the response envelope for operations that return a BlockList type.
-type BlockListResponse struct {
+// BlockBlobGetBlockListResult contains the result from method BlockBlob.GetBlockList.
+type BlockBlobGetBlockListResult struct {
+	BlockList
 	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
-	BlobContentLength *int64     `xml:"BlobContentLength"`
-	BlockList         *BlockList `xml:"BlockList"`
+	BlobContentLength *int64 `xml:"BlobContentLength"`
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
@@ -1240,9 +1256,6 @@ type BlockListResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time `xml:"LastModified"`
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
 
@@ -1250,8 +1263,132 @@ type BlockListResponse struct {
 	Version *string `xml:"Version"`
 }
 
+// BlockBlobStageBlockFromURLResponse contains the response from method BlockBlob.StageBlockFromURL.
+type BlockBlobStageBlockFromURLResponse struct {
+	BlockBlobStageBlockFromURLResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlockBlobStageBlockFromURLResult contains the result from method BlockBlob.StageBlockFromURL.
+type BlockBlobStageBlockFromURLResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	XMSContentCRC64 []byte
+}
+
+// BlockBlobStageBlockResponse contains the response from method BlockBlob.StageBlock.
+type BlockBlobStageBlockResponse struct {
+	BlockBlobStageBlockResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlockBlobStageBlockResult contains the result from method BlockBlob.StageBlock.
+type BlockBlobStageBlockResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	XMSContentCRC64 []byte
+}
+
+// BlockBlobUploadResponse contains the response from method BlockBlob.Upload.
+type BlockBlobUploadResponse struct {
+	BlockBlobUploadResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlockBlobUploadResult contains the result from method BlockBlob.Upload.
+type BlockBlobUploadResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// VersionID contains the information returned from the x-ms-version-id header response.
+	VersionID *string
+}
+
 // ContainerAcquireLeaseResponse contains the response from method Container.AcquireLease.
 type ContainerAcquireLeaseResponse struct {
+	ContainerAcquireLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerAcquireLeaseResult contains the result from method Container.AcquireLease.
+type ContainerAcquireLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1267,9 +1404,6 @@ type ContainerAcquireLeaseResponse struct {
 	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1279,6 +1413,13 @@ type ContainerAcquireLeaseResponse struct {
 
 // ContainerBreakLeaseResponse contains the response from method Container.BreakLease.
 type ContainerBreakLeaseResponse struct {
+	ContainerBreakLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerBreakLeaseResult contains the result from method Container.BreakLease.
+type ContainerBreakLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1294,9 +1435,6 @@ type ContainerBreakLeaseResponse struct {
 	// LeaseTime contains the information returned from the x-ms-lease-time header response.
 	LeaseTime *int32
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1306,6 +1444,13 @@ type ContainerBreakLeaseResponse struct {
 
 // ContainerChangeLeaseResponse contains the response from method Container.ChangeLease.
 type ContainerChangeLeaseResponse struct {
+	ContainerChangeLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerChangeLeaseResult contains the result from method Container.ChangeLease.
+type ContainerChangeLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1321,9 +1466,6 @@ type ContainerChangeLeaseResponse struct {
 	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1333,6 +1475,13 @@ type ContainerChangeLeaseResponse struct {
 
 // ContainerCreateResponse contains the response from method Container.Create.
 type ContainerCreateResponse struct {
+	ContainerCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerCreateResult contains the result from method Container.Create.
+type ContainerCreateResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1345,9 +1494,6 @@ type ContainerCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1357,14 +1503,18 @@ type ContainerCreateResponse struct {
 
 // ContainerDeleteResponse contains the response from method Container.Delete.
 type ContainerDeleteResponse struct {
+	ContainerDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerDeleteResult contains the result from method Container.Delete.
+type ContainerDeleteResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1373,8 +1523,49 @@ type ContainerDeleteResponse struct {
 	Version *string
 }
 
+// ContainerGetAccessPolicyResponse contains the response from method Container.GetAccessPolicy.
+type ContainerGetAccessPolicyResponse struct {
+	ContainerGetAccessPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerGetAccessPolicyResult contains the result from method Container.GetAccessPolicy.
+type ContainerGetAccessPolicyResult struct {
+	// BlobPublicAccess contains the information returned from the x-ms-blob-public-access header response.
+	BlobPublicAccess *PublicAccessType `xml:"BlobPublicAccess"`
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string `xml:"ETag"`
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time `xml:"LastModified"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// a collection of signed identifiers
+	SignedIdentifiers []*SignedIdentifier `xml:"SignedIdentifier"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
 // ContainerGetAccountInfoResponse contains the response from method Container.GetAccountInfo.
 type ContainerGetAccountInfoResponse struct {
+	ContainerGetAccountInfoResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerGetAccountInfoResult contains the result from method Container.GetAccountInfo.
+type ContainerGetAccountInfoResult struct {
 	// AccountKind contains the information returned from the x-ms-account-kind header response.
 	AccountKind *AccountKind
 
@@ -1383,9 +1574,6 @@ type ContainerGetAccountInfoResponse struct {
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1399,6 +1587,13 @@ type ContainerGetAccountInfoResponse struct {
 
 // ContainerGetPropertiesResponse contains the response from method Container.GetProperties.
 type ContainerGetPropertiesResponse struct {
+	ContainerGetPropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerGetPropertiesResult contains the result from method Container.GetProperties.
+type ContainerGetPropertiesResult struct {
 	// BlobPublicAccess contains the information returned from the x-ms-blob-public-access header response.
 	BlobPublicAccess *PublicAccessType
 
@@ -1438,9 +1633,6 @@ type ContainerGetPropertiesResponse struct {
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1448,8 +1640,67 @@ type ContainerGetPropertiesResponse struct {
 	Version *string
 }
 
+// ContainerListBlobFlatSegmentResponse contains the response from method Container.ListBlobFlatSegment.
+type ContainerListBlobFlatSegmentResponse struct {
+	ContainerListBlobFlatSegmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerListBlobFlatSegmentResult contains the result from method Container.ListBlobFlatSegment.
+type ContainerListBlobFlatSegmentResult struct {
+	ListBlobsFlatSegmentResponse
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string `xml:"ContentType"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
+// ContainerListBlobHierarchySegmentResponse contains the response from method Container.ListBlobHierarchySegment.
+type ContainerListBlobHierarchySegmentResponse struct {
+	ContainerListBlobHierarchySegmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerListBlobHierarchySegmentResult contains the result from method Container.ListBlobHierarchySegment.
+type ContainerListBlobHierarchySegmentResult struct {
+	ListBlobsHierarchySegmentResponse
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string `xml:"ContentType"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
 // ContainerReleaseLeaseResponse contains the response from method Container.ReleaseLease.
 type ContainerReleaseLeaseResponse struct {
+	ContainerReleaseLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerReleaseLeaseResult contains the result from method Container.ReleaseLease.
+type ContainerReleaseLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1462,9 +1713,6 @@ type ContainerReleaseLeaseResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1474,6 +1722,13 @@ type ContainerReleaseLeaseResponse struct {
 
 // ContainerRenewLeaseResponse contains the response from method Container.RenewLease.
 type ContainerRenewLeaseResponse struct {
+	ContainerRenewLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerRenewLeaseResult contains the result from method Container.RenewLease.
+type ContainerRenewLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1489,9 +1744,6 @@ type ContainerRenewLeaseResponse struct {
 	// LeaseID contains the information returned from the x-ms-lease-id header response.
 	LeaseID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1501,14 +1753,18 @@ type ContainerRenewLeaseResponse struct {
 
 // ContainerRestoreResponse contains the response from method Container.Restore.
 type ContainerRestoreResponse struct {
+	ContainerRestoreResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerRestoreResult contains the result from method Container.Restore.
+type ContainerRestoreResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1519,6 +1775,13 @@ type ContainerRestoreResponse struct {
 
 // ContainerSetAccessPolicyResponse contains the response from method Container.SetAccessPolicy.
 type ContainerSetAccessPolicyResponse struct {
+	ContainerSetAccessPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerSetAccessPolicyResult contains the result from method Container.SetAccessPolicy.
+type ContainerSetAccessPolicyResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1530,9 +1793,6 @@ type ContainerSetAccessPolicyResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1543,6 +1803,13 @@ type ContainerSetAccessPolicyResponse struct {
 
 // ContainerSetMetadataResponse contains the response from method Container.SetMetadata.
 type ContainerSetMetadataResponse struct {
+	ContainerSetMetadataResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ContainerSetMetadataResult contains the result from method Container.SetMetadata.
+type ContainerSetMetadataResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1555,9 +1822,6 @@ type ContainerSetMetadataResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1567,6 +1831,13 @@ type ContainerSetMetadataResponse struct {
 
 // DirectoryCreateResponse contains the response from method Directory.Create.
 type DirectoryCreateResponse struct {
+	DirectoryCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DirectoryCreateResult contains the result from method Directory.Create.
+type DirectoryCreateResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1582,9 +1853,6 @@ type DirectoryCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1594,6 +1862,13 @@ type DirectoryCreateResponse struct {
 
 // DirectoryDeleteResponse contains the response from method Directory.Delete.
 type DirectoryDeleteResponse struct {
+	DirectoryDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DirectoryDeleteResult contains the result from method Directory.Delete.
+type DirectoryDeleteResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1602,9 +1877,6 @@ type DirectoryDeleteResponse struct {
 
 	// Marker contains the information returned from the x-ms-continuation header response.
 	Marker *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1615,6 +1887,13 @@ type DirectoryDeleteResponse struct {
 
 // DirectoryGetAccessControlResponse contains the response from method Directory.GetAccessControl.
 type DirectoryGetAccessControlResponse struct {
+	DirectoryGetAccessControlResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DirectoryGetAccessControlResult contains the result from method Directory.GetAccessControl.
+type DirectoryGetAccessControlResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1623,9 +1902,6 @@ type DirectoryGetAccessControlResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1648,6 +1924,13 @@ type DirectoryGetAccessControlResponse struct {
 
 // DirectoryRenameResponse contains the response from method Directory.Rename.
 type DirectoryRenameResponse struct {
+	DirectoryRenameResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DirectoryRenameResult contains the result from method Directory.Rename.
+type DirectoryRenameResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1666,9 +1949,6 @@ type DirectoryRenameResponse struct {
 	// Marker contains the information returned from the x-ms-continuation header response.
 	Marker *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1678,6 +1958,13 @@ type DirectoryRenameResponse struct {
 
 // DirectorySetAccessControlResponse contains the response from method Directory.SetAccessControl.
 type DirectorySetAccessControlResponse struct {
+	DirectorySetAccessControlResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DirectorySetAccessControlResult contains the result from method Directory.SetAccessControl.
+type DirectorySetAccessControlResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1687,9 +1974,6 @@ type DirectorySetAccessControlResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1697,95 +1981,15 @@ type DirectorySetAccessControlResponse struct {
 	Version *string
 }
 
-// FilterBlobSegmentResponse is the response envelope for operations that return a FilterBlobSegment type.
-type FilterBlobSegmentResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
-
-	// The result of a Filter Blobs API call
-	EnumerationResults *FilterBlobSegment `xml:"EnumerationResults"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
-}
-
-// ListBlobsFlatSegmentResponseResponse is the response envelope for operations that return a ListBlobsFlatSegmentResponse type.
-type ListBlobsFlatSegmentResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string `xml:"ContentType"`
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
-
-	// An enumeration of blobs
-	EnumerationResults *ListBlobsFlatSegmentResponse `xml:"EnumerationResults"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
-}
-
-// ListBlobsHierarchySegmentResponseResponse is the response envelope for operations that return a ListBlobsHierarchySegmentResponse type.
-type ListBlobsHierarchySegmentResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string `xml:"ContentType"`
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
-
-	// An enumeration of blobs
-	EnumerationResults *ListBlobsHierarchySegmentResponse `xml:"EnumerationResults"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
-}
-
-// ListContainersSegmentResponseResponse is the response envelope for operations that return a ListContainersSegmentResponse type.
-type ListContainersSegmentResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// An enumeration of containers
-	EnumerationResults *ListContainersSegmentResponse `xml:"EnumerationResults"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
-}
-
 // PageBlobClearPagesResponse contains the response from method PageBlob.ClearPages.
 type PageBlobClearPagesResponse struct {
+	PageBlobClearPagesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobClearPagesResult contains the result from method PageBlob.ClearPages.
+type PageBlobClearPagesResult struct {
 	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
 	BlobSequenceNumber *int64
 
@@ -1804,9 +2008,6 @@ type PageBlobClearPagesResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1819,6 +2020,13 @@ type PageBlobClearPagesResponse struct {
 
 // PageBlobCopyIncrementalResponse contains the response from method PageBlob.CopyIncremental.
 type PageBlobCopyIncrementalResponse struct {
+	PageBlobCopyIncrementalResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobCopyIncrementalResult contains the result from method PageBlob.CopyIncremental.
+type PageBlobCopyIncrementalResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1837,9 +2045,6 @@ type PageBlobCopyIncrementalResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1849,6 +2054,13 @@ type PageBlobCopyIncrementalResponse struct {
 
 // PageBlobCreateResponse contains the response from method PageBlob.Create.
 type PageBlobCreateResponse struct {
+	PageBlobCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobCreateResult contains the result from method PageBlob.Create.
+type PageBlobCreateResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1872,9 +2084,6 @@ type PageBlobCreateResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1886,143 +2095,16 @@ type PageBlobCreateResponse struct {
 	VersionID *string
 }
 
-// PageBlobResizeResponse contains the response from method PageBlob.Resize.
-type PageBlobResizeResponse struct {
-	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
-	BlobSequenceNumber *int64
-
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *time.Time
-
+// PageBlobGetPageRangesDiffResponse contains the response from method PageBlob.GetPageRangesDiff.
+type PageBlobGetPageRangesDiffResponse struct {
+	PageBlobGetPageRangesDiffResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
 }
 
-// PageBlobUpdateSequenceNumberResponse contains the response from method PageBlob.UpdateSequenceNumber.
-type PageBlobUpdateSequenceNumberResponse struct {
-	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
-	BlobSequenceNumber *int64
-
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// PageBlobUploadPagesFromURLResponse contains the response from method PageBlob.UploadPagesFromURL.
-type PageBlobUploadPagesFromURLResponse struct {
-	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
-	BlobSequenceNumber *int64
-
-	// ContentMD5 contains the information returned from the Content-MD5 header response.
-	ContentMD5 []byte
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
-	EncryptionKeySHA256 *string
-
-	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
-	EncryptionScope *string
-
-	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
-	IsServerEncrypted *bool
-
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
-	XMSContentCRC64 []byte
-}
-
-// PageBlobUploadPagesResponse contains the response from method PageBlob.UploadPages.
-type PageBlobUploadPagesResponse struct {
-	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
-	BlobSequenceNumber *int64
-
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentMD5 contains the information returned from the Content-MD5 header response.
-	ContentMD5 []byte
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
-	EncryptionKeySHA256 *string
-
-	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
-	EncryptionScope *string
-
-	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
-	IsServerEncrypted *bool
-
-	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
-	XMSContentCRC64 []byte
-}
-
-// PageListResponse is the response envelope for operations that return a PageList type.
-type PageListResponse struct {
+// PageBlobGetPageRangesDiffResult contains the result from method PageBlob.GetPageRangesDiff.
+type PageBlobGetPageRangesDiffResult struct {
+	PageList
 	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
 	BlobContentLength *int64 `xml:"BlobContentLength"`
 
@@ -2038,12 +2120,6 @@ type PageListResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time `xml:"LastModified"`
 
-	// the list of pages
-	PageList *PageList `xml:"PageList"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
 
@@ -2051,67 +2127,18 @@ type PageListResponse struct {
 	Version *string `xml:"Version"`
 }
 
-// ServiceGetAccountInfoResponse contains the response from method Service.GetAccountInfo.
-type ServiceGetAccountInfoResponse struct {
-	// AccountKind contains the information returned from the x-ms-account-kind header response.
-	AccountKind *AccountKind
-
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// IsHierarchicalNamespaceEnabled contains the information returned from the x-ms-is-hns-enabled header response.
-	IsHierarchicalNamespaceEnabled *bool
-
+// PageBlobGetPageRangesResponse contains the response from method PageBlob.GetPageRanges.
+type PageBlobGetPageRangesResponse struct {
+	PageBlobGetPageRangesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// SKUName contains the information returned from the x-ms-sku-name header response.
-	SKUName *SKUName
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
 }
 
-// ServiceSetPropertiesResponse contains the response from method Service.SetProperties.
-type ServiceSetPropertiesResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// ServiceSubmitBatchResponse contains the response from method Service.SubmitBatch.
-type ServiceSubmitBatchResponse struct {
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// SignedIdentifierArrayResponse is the response envelope for operations that return a []*SignedIdentifier type.
-type SignedIdentifierArrayResponse struct {
-	// BlobPublicAccess contains the information returned from the x-ms-blob-public-access header response.
-	BlobPublicAccess *PublicAccessType `xml:"BlobPublicAccess"`
+// PageBlobGetPageRangesResult contains the result from method PageBlob.GetPageRanges.
+type PageBlobGetPageRangesResult struct {
+	PageList
+	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
+	BlobContentLength *int64 `xml:"BlobContentLength"`
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
@@ -2125,75 +2152,338 @@ type SignedIdentifierArrayResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time `xml:"LastModified"`
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
-
-	// a collection of signed identifiers
-	SignedIdentifiers []*SignedIdentifier `xml:"SignedIdentifier"`
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string `xml:"Version"`
 }
 
-// StorageServicePropertiesResponse is the response envelope for operations that return a StorageServiceProperties type.
-type StorageServicePropertiesResponse struct {
+// PageBlobResizeResponse contains the response from method PageBlob.Resize.
+type PageBlobResizeResponse struct {
+	PageBlobResizeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobResizeResult contains the result from method PageBlob.Resize.
+type PageBlobResizeResult struct {
+	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
+	BlobSequenceNumber *int64
+
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
+	ClientRequestID *string
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Storage Service Properties.
-	StorageServiceProperties *StorageServiceProperties `xml:"StorageServiceProperties"`
+	RequestID *string
 
 	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
+	Version *string
 }
 
-// StorageServiceStatsResponse is the response envelope for operations that return a StorageServiceStats type.
-type StorageServiceStatsResponse struct {
+// PageBlobUpdateSequenceNumberResponse contains the response from method PageBlob.UpdateSequenceNumber.
+type PageBlobUpdateSequenceNumberResponse struct {
+	PageBlobUpdateSequenceNumberResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobUpdateSequenceNumberResult contains the result from method PageBlob.UpdateSequenceNumber.
+type PageBlobUpdateSequenceNumberResult struct {
+	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
+	BlobSequenceNumber *int64
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// PageBlobUploadPagesFromURLResponse contains the response from method PageBlob.UploadPagesFromURL.
+type PageBlobUploadPagesFromURLResponse struct {
+	PageBlobUploadPagesFromURLResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobUploadPagesFromURLResult contains the result from method PageBlob.UploadPagesFromURL.
+type PageBlobUploadPagesFromURLResult struct {
+	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
+	BlobSequenceNumber *int64
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	XMSContentCRC64 []byte
+}
+
+// PageBlobUploadPagesResponse contains the response from method PageBlob.UploadPages.
+type PageBlobUploadPagesResponse struct {
+	PageBlobUploadPagesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PageBlobUploadPagesResult contains the result from method PageBlob.UploadPages.
+type PageBlobUploadPagesResult struct {
+	// BlobSequenceNumber contains the information returned from the x-ms-blob-sequence-number header response.
+	BlobSequenceNumber *int64
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	XMSContentCRC64 []byte
+}
+
+// ServiceFilterBlobsResponse contains the response from method Service.FilterBlobs.
+type ServiceFilterBlobsResponse struct {
+	ServiceFilterBlobsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceFilterBlobsResult contains the result from method Service.FilterBlobs.
+type ServiceFilterBlobsResult struct {
+	FilterBlobSegment
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time `xml:"Date"`
 
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
-
-	// Stats for the storage service.
-	StorageServiceStats *StorageServiceStats `xml:"StorageServiceStats"`
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string `xml:"Version"`
 }
 
-// UserDelegationKeyResponse is the response envelope for operations that return a UserDelegationKey type.
-type UserDelegationKeyResponse struct {
+// ServiceGetAccountInfoResponse contains the response from method Service.GetAccountInfo.
+type ServiceGetAccountInfoResponse struct {
+	ServiceGetAccountInfoResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceGetAccountInfoResult contains the result from method Service.GetAccountInfo.
+type ServiceGetAccountInfoResult struct {
+	// AccountKind contains the information returned from the x-ms-account-kind header response.
+	AccountKind *AccountKind
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// IsHierarchicalNamespaceEnabled contains the information returned from the x-ms-is-hns-enabled header response.
+	IsHierarchicalNamespaceEnabled *bool
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// SKUName contains the information returned from the x-ms-sku-name header response.
+	SKUName *SKUName
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ServiceGetPropertiesResponse contains the response from method Service.GetProperties.
+type ServiceGetPropertiesResponse struct {
+	ServiceGetPropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceGetPropertiesResult contains the result from method Service.GetProperties.
+type ServiceGetPropertiesResult struct {
+	StorageServiceProperties
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
+// ServiceGetStatisticsResponse contains the response from method Service.GetStatistics.
+type ServiceGetStatisticsResponse struct {
+	ServiceGetStatisticsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceGetStatisticsResult contains the result from method Service.GetStatistics.
+type ServiceGetStatisticsResult struct {
+	StorageServiceStats
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time `xml:"Date"`
 
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
+// ServiceGetUserDelegationKeyResponse contains the response from method Service.GetUserDelegationKey.
+type ServiceGetUserDelegationKeyResponse struct {
+	ServiceGetUserDelegationKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// ServiceGetUserDelegationKeyResult contains the result from method Service.GetUserDelegationKey.
+type ServiceGetUserDelegationKeyResult struct {
+	UserDelegationKey
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
 
-	// A user delegation key
-	UserDelegationKey *UserDelegationKey `xml:"UserDelegationKey"`
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
+// ServiceListContainersSegmentResponse contains the response from method Service.ListContainersSegment.
+type ServiceListContainersSegmentResponse struct {
+	ServiceListContainersSegmentResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceListContainersSegmentResult contains the result from method Service.ListContainersSegment.
+type ServiceListContainersSegmentResult struct {
+	ListContainersSegmentResponse
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string `xml:"Version"`
+}
+
+// ServiceSetPropertiesResponse contains the response from method Service.SetProperties.
+type ServiceSetPropertiesResponse struct {
+	ServiceSetPropertiesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceSetPropertiesResult contains the result from method Service.SetProperties.
+type ServiceSetPropertiesResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ServiceSubmitBatchResponse contains the response from method Service.SubmitBatch.
+type ServiceSubmitBatchResponse struct {
+	ServiceSubmitBatchResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceSubmitBatchResult contains the result from method Service.SubmitBatch.
+type ServiceSubmitBatchResult struct {
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
 }

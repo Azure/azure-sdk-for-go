@@ -23,7 +23,7 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 
 	_, err = containerClient.Create(ctx, nil)
 	_assert.Nil(err)
-	defer containerClient.Delete(ctx, nil)
+	defer deleteContainer(_assert, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
@@ -36,7 +36,7 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			found = append(found, *blob.Name)
 		}
 	}
@@ -62,7 +62,7 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 
 	_, err = containerClient.Create(ctx, nil)
 	_assert.Nil(err)
-	defer containerClient.Delete(ctx, nil)
+	defer deleteContainer(_assert, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
@@ -75,7 +75,7 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			found = append(found, *blob.Name)
 		}
 	}

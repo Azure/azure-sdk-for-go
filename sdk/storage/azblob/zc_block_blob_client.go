@@ -60,10 +60,10 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
-func (ab BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
-	p := NewBlobURLParts(ab.URL())
+func (bb BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
+	p := NewBlobURLParts(bb.URL())
 	p.VersionID = versionID
-	con := &connection{u: p.URL(), p: ab.client.con.p}
+	con := &connection{u: p.URL(), p: bb.client.con.p}
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -140,7 +140,7 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 
 // GetBlockList returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-block-list.
-func (bb BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, options *GetBlockListOptions) (BlockListResponse, error) {
+func (bb BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, options *GetBlockListOptions) (BlockBlobGetBlockListResponse, error) {
 	o, mac, lac := options.pointers()
 
 	resp, err := bb.client.GetBlockList(ctx, listType, o, lac, mac)

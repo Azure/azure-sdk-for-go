@@ -5,7 +5,7 @@ package common
 
 const (
 	// DefaultOptionPath the default path of the option file
-	DefaultOptionPath = "generate_options.json"
+	DefaultOptionPath = "eng/generate_options.json"
 
 	Services          = "services"
 	ChangelogFilename = "CHANGELOG.md"

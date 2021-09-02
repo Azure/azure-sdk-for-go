@@ -1,3 +1,242 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `NewResolvePrivateLinkServiceIDClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(ManagedClustersListOutboundNetworkDependenciesEndpointsPager)` to `(*ManagedClustersListOutboundNetworkDependenciesEndpointsPager)`
+- Function `*ManagedClustersClient.ListByResourceGroup` return value(s) have been changed from `(ManagedClustersListByResourceGroupPager)` to `(*ManagedClustersListByResourceGroupPager)`
+- Function `NewManagedClustersClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*AgentPoolsClient.List` return value(s) have been changed from `(AgentPoolsListPager)` to `(*AgentPoolsListPager)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*MaintenanceConfigurationsClient.ListByManagedCluster` return value(s) have been changed from `(MaintenanceConfigurationsListByManagedClusterPager)` to `(*MaintenanceConfigurationsListByManagedClusterPager)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `NewAgentPoolsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ManagedClustersClient.List` return value(s) have been changed from `(ManagedClustersListPager)` to `(*ManagedClustersListPager)`
+- Function `NewPrivateLinkResourcesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewMaintenanceConfigurationsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Type of `ManagedClustersRotateClusterCertificatesPollerResponse.Poller` has been changed from `ManagedClustersRotateClusterCertificatesPoller` to `*ManagedClustersRotateClusterCertificatesPoller`
+- Type of `ManagedClustersStartPollerResponse.Poller` has been changed from `ManagedClustersStartPoller` to `*ManagedClustersStartPoller`
+- Type of `ManagedClustersUpdateTagsPollerResponse.Poller` has been changed from `ManagedClustersUpdateTagsPoller` to `*ManagedClustersUpdateTagsPoller`
+- Type of `ManagedClustersResetServicePrincipalProfilePollerResponse.Poller` has been changed from `ManagedClustersResetServicePrincipalProfilePoller` to `*ManagedClustersResetServicePrincipalProfilePoller`
+- Type of `AgentPoolsCreateOrUpdatePollerResponse.Poller` has been changed from `AgentPoolsCreateOrUpdatePoller` to `*AgentPoolsCreateOrUpdatePoller`
+- Type of `ManagedClustersDeletePollerResponse.Poller` has been changed from `ManagedClustersDeletePoller` to `*ManagedClustersDeletePoller`
+- Type of `AgentPoolsDeletePollerResponse.Poller` has been changed from `AgentPoolsDeletePoller` to `*AgentPoolsDeletePoller`
+- Type of `ManagedClustersRunCommandPollerResponse.Poller` has been changed from `ManagedClustersRunCommandPoller` to `*ManagedClustersRunCommandPoller`
+- Type of `ManagedClustersCreateOrUpdatePollerResponse.Poller` has been changed from `ManagedClustersCreateOrUpdatePoller` to `*ManagedClustersCreateOrUpdatePoller`
+- Type of `AgentPoolsUpgradeNodeImageVersionPollerResponse.Poller` has been changed from `AgentPoolsUpgradeNodeImageVersionPoller` to `*AgentPoolsUpgradeNodeImageVersionPoller`
+- Type of `ManagedClustersStopPollerResponse.Poller` has been changed from `ManagedClustersStopPoller` to `*ManagedClustersStopPoller`
+- Type of `ManagedClustersResetAADProfilePollerResponse.Poller` has been changed from `ManagedClustersResetAADProfilePoller` to `*ManagedClustersResetAADProfilePoller`
+- Type of `PrivateEndpointConnectionsDeletePollerResponse.Poller` has been changed from `PrivateEndpointConnectionsDeletePoller` to `*PrivateEndpointConnectionsDeletePoller`
+- Function `*managedClustersDeletePoller.Poll` has been removed
+- Function `*ManagedClustersClient.ResumeCreateOrUpdate` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*agentPoolsDeletePoller.Done` has been removed
+- Function `*maintenanceConfigurationsListByManagedClusterPager.Err` has been removed
+- Function `*managedClustersListPager.PageResponse` has been removed
+- Function `*agentPoolsListPager.PageResponse` has been removed
+- Function `*managedClustersDeletePoller.FinalResponse` has been removed
+- Function `*ManagedClustersClient.ResumeRunCommand` has been removed
+- Function `*managedClustersListOutboundNetworkDependenciesEndpointsPager.PageResponse` has been removed
+- Function `*ManagedClustersClient.ResumeResetServicePrincipalProfile` has been removed
+- Function `*maintenanceConfigurationsListByManagedClusterPager.PageResponse` has been removed
+- Function `*managedClustersListByResourceGroupPager.PageResponse` has been removed
+- Function `*managedClustersDeletePoller.ResumeToken` has been removed
+- Function `*ManagedClustersClient.ResumeStart` has been removed
+- Function `*agentPoolsUpgradeNodeImageVersionPoller.ResumeToken` has been removed
+- Function `*managedClustersUpdateTagsPoller.FinalResponse` has been removed
+- Function `*agentPoolsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*managedClustersUpdateTagsPoller.Done` has been removed
+- Function `*managedClustersRunCommandPoller.FinalResponse` has been removed
+- Function `*managedClustersRunCommandPoller.ResumeToken` has been removed
+- Function `*AgentPoolsClient.ResumeCreateOrUpdate` has been removed
+- Function `*managedClustersStartPoller.Poll` has been removed
+- Function `*managedClustersListByResourceGroupPager.Err` has been removed
+- Function `*managedClustersResetAADProfilePoller.Done` has been removed
+- Function `*agentPoolsUpgradeNodeImageVersionPoller.FinalResponse` has been removed
+- Function `*agentPoolsCreateOrUpdatePoller.Poll` has been removed
+- Function `*managedClustersRotateClusterCertificatesPoller.Poll` has been removed
+- Function `*managedClustersStartPoller.Done` has been removed
+- Function `*managedClustersStopPoller.FinalResponse` has been removed
+- Function `*managedClustersUpdateTagsPoller.Poll` has been removed
+- Function `*managedClustersCreateOrUpdatePoller.Done` has been removed
+- Function `*managedClustersCreateOrUpdatePoller.Poll` has been removed
+- Function `*managedClustersResetAADProfilePoller.FinalResponse` has been removed
+- Function `*AgentPoolsClient.ResumeDelete` has been removed
+- Function `*agentPoolsDeletePoller.Poll` has been removed
+- Function `*managedClustersStopPoller.ResumeToken` has been removed
+- Function `*managedClustersStopPoller.Done` has been removed
+- Function `*managedClustersResetServicePrincipalProfilePoller.ResumeToken` has been removed
+- Function `*managedClustersListPager.Err` has been removed
+- Function `*managedClustersRunCommandPoller.Poll` has been removed
+- Function `*managedClustersResetServicePrincipalProfilePoller.Poll` has been removed
+- Function `*ManagedClustersClient.ResumeStop` has been removed
+- Function `*managedClustersResetAADProfilePoller.ResumeToken` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*agentPoolsListPager.Err` has been removed
+- Function `*agentPoolsUpgradeNodeImageVersionPoller.Done` has been removed
+- Function `*managedClustersStartPoller.FinalResponse` has been removed
+- Function `*managedClustersListByResourceGroupPager.NextPage` has been removed
+- Function `*agentPoolsDeletePoller.ResumeToken` has been removed
+- Function `*managedClustersListOutboundNetworkDependenciesEndpointsPager.NextPage` has been removed
+- Function `*managedClustersResetServicePrincipalProfilePoller.Done` has been removed
+- Function `*managedClustersStopPoller.Poll` has been removed
+- Function `*maintenanceConfigurationsListByManagedClusterPager.NextPage` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*ManagedClustersClient.ResumeResetAADProfile` has been removed
+- Function `*agentPoolsListPager.NextPage` has been removed
+- Function `*agentPoolsUpgradeNodeImageVersionPoller.Poll` has been removed
+- Function `*managedClustersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*managedClustersRotateClusterCertificatesPoller.FinalResponse` has been removed
+- Function `*managedClustersListOutboundNetworkDependenciesEndpointsPager.Err` has been removed
+- Function `*managedClustersRotateClusterCertificatesPoller.Done` has been removed
+- Function `*ManagedClustersClient.ResumeUpdateTags` has been removed
+- Function `*managedClustersResetAADProfilePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumeDelete` has been removed
+- Function `*managedClustersStartPoller.ResumeToken` has been removed
+- Function `*AgentPoolsClient.ResumeUpgradeNodeImageVersion` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*managedClustersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*managedClustersRotateClusterCertificatesPoller.ResumeToken` has been removed
+- Function `*ManagedClustersClient.ResumeRotateClusterCertificates` has been removed
+- Function `*managedClustersRunCommandPoller.Done` has been removed
+- Function `*managedClustersListPager.NextPage` has been removed
+- Function `*ManagedClustersClient.ResumeDelete` has been removed
+- Function `*managedClustersUpdateTagsPoller.ResumeToken` has been removed
+- Function `*managedClustersDeletePoller.Done` has been removed
+- Function `*agentPoolsDeletePoller.FinalResponse` has been removed
+- Function `*agentPoolsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*managedClustersResetServicePrincipalProfilePoller.FinalResponse` has been removed
+- Function `*agentPoolsCreateOrUpdatePoller.Done` has been removed
+- Field `PollUntilDone` of struct `AgentPoolsUpgradeNodeImageVersionPollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersRotateClusterCertificatesPollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersRunCommandPollerResponse` has been removed
+- Field `PollUntilDone` of struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersResetServicePrincipalProfilePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersStopPollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersResetAADProfilePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersUpdateTagsPollerResponse` has been removed
+- Field `PollUntilDone` of struct `AgentPoolsDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `AgentPoolsCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ManagedClustersStartPollerResponse` has been removed
+
+### New Content
+
+- New function `*ManagedClustersCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsDeletePoller.Done() bool`
+- New function `*AgentPoolsDeletePollerResponse.Resume(context.Context, *AgentPoolsClient, string) error`
+- New function `*ManagedClustersStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*AgentPoolsUpgradeNodeImageVersionPoller.FinalResponse(context.Context) (AgentPoolsUpgradeNodeImageVersionResponse, error)`
+- New function `*ManagedClustersStartPoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersResetAADProfilePoller.Done() bool`
+- New function `*ManagedClustersCreateOrUpdatePollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*AgentPoolsCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersUpdateTagsPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersStartPoller.Done() bool`
+- New function `*ManagedClustersResetAADProfilePollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*ManagedClustersRunCommandPoller.FinalResponse(context.Context) (ManagedClustersRunCommandResponse, error)`
+- New function `*PrivateEndpointConnectionsDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ManagedClustersResetServicePrincipalProfilePollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*ManagedClustersStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsListPager.PageResponse() AgentPoolsListResponse`
+- New function `AgentPoolsCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AgentPoolsCreateOrUpdateResponse, error)`
+- New function `*ManagedClustersResetAADProfilePoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersListOutboundNetworkDependenciesEndpointsPager.PageResponse() ManagedClustersListOutboundNetworkDependenciesEndpointsResponse`
+- New function `*ManagedClustersListByResourceGroupPager.Err() error`
+- New function `*MaintenanceConfigurationsListByManagedClusterPager.Err() error`
+- New function `*AgentPoolsUpgradeNodeImageVersionPollerResponse.Resume(context.Context, *AgentPoolsClient, string) error`
+- New function `*ManagedClustersListByResourceGroupPager.PageResponse() ManagedClustersListByResourceGroupResponse`
+- New function `*ManagedClustersDeletePoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersListOutboundNetworkDependenciesEndpointsPager.Err() error`
+- New function `*PrivateEndpointConnectionsDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*MaintenanceConfigurationsListByManagedClusterPager.PageResponse() MaintenanceConfigurationsListByManagedClusterResponse`
+- New function `*ManagedClustersUpdateTagsPoller.Done() bool`
+- New function `*ManagedClustersRotateClusterCertificatesPoller.Done() bool`
+- New function `*ManagedClustersStopPoller.ResumeToken() (string, error)`
+- New function `ManagedClustersStartPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersStartResponse, error)`
+- New function `ManagedClustersRunCommandPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersRunCommandResponse, error)`
+- New function `*AgentPoolsListPager.Err() error`
+- New function `*ManagedClustersRunCommandPoller.Done() bool`
+- New function `*ManagedClustersResetAADProfilePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersResetServicePrincipalProfilePoller.FinalResponse(context.Context) (ManagedClustersResetServicePrincipalProfileResponse, error)`
+- New function `ManagedClustersStopPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersStopResponse, error)`
+- New function `*ManagedClustersDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersUpdateTagsPoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersListPager.Err() error`
+- New function `*ManagedClustersListPager.PageResponse() ManagedClustersListResponse`
+- New function `*ManagedClustersRotateClusterCertificatesPoller.ResumeToken() (string, error)`
+- New function `ManagedClustersUpdateTagsPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersUpdateTagsResponse, error)`
+- New function `*ManagedClustersCreateOrUpdatePoller.Done() bool`
+- New function `*ManagedClustersCreateOrUpdatePoller.FinalResponse(context.Context) (ManagedClustersCreateOrUpdateResponse, error)`
+- New function `*AgentPoolsCreateOrUpdatePollerResponse.Resume(context.Context, *AgentPoolsClient, string) error`
+- New function `*ManagedClustersResetAADProfilePoller.FinalResponse(context.Context) (ManagedClustersResetAADProfileResponse, error)`
+- New function `*ManagedClustersRotateClusterCertificatesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `ManagedClustersResetAADProfilePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersResetAADProfileResponse, error)`
+- New function `*ManagedClustersStopPollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*AgentPoolsDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.Done() bool`
+- New function `*ManagedClustersRotateClusterCertificatesPoller.FinalResponse(context.Context) (ManagedClustersRotateClusterCertificatesResponse, error)`
+- New function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*ManagedClustersStopPoller.Done() bool`
+- New function `*AgentPoolsUpgradeNodeImageVersionPoller.ResumeToken() (string, error)`
+- New function `*AgentPoolsDeletePoller.FinalResponse(context.Context) (AgentPoolsDeleteResponse, error)`
+- New function `*AgentPoolsListPager.NextPage(context.Context) bool`
+- New function `*ManagedClustersCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `ManagedClustersDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersDeleteResponse, error)`
+- New function `*ManagedClustersRunCommandPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersResetServicePrincipalProfilePoller.Done() bool`
+- New function `*AgentPoolsCreateOrUpdatePoller.FinalResponse(context.Context) (AgentPoolsCreateOrUpdateResponse, error)`
+- New function `*ManagedClustersRunCommandPollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `AgentPoolsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AgentPoolsDeleteResponse, error)`
+- New function `*ManagedClustersStartPollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*ManagedClustersListPager.NextPage(context.Context) bool`
+- New function `*AgentPoolsCreateOrUpdatePoller.Done() bool`
+- New function `*ManagedClustersResetServicePrincipalProfilePoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersUpdateTagsPollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*ManagedClustersUpdateTagsPoller.FinalResponse(context.Context) (ManagedClustersUpdateTagsResponse, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AgentPoolsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersDeletePoller.Done() bool`
+- New function `ManagedClustersResetServicePrincipalProfilePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersResetServicePrincipalProfileResponse, error)`
+- New function `ManagedClustersCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersCreateOrUpdateResponse, error)`
+- New function `ManagedClustersRotateClusterCertificatesPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedClustersRotateClusterCertificatesResponse, error)`
+- New function `*ManagedClustersDeletePollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*ManagedClustersResetServicePrincipalProfilePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedClustersDeletePoller.FinalResponse(context.Context) (ManagedClustersDeleteResponse, error)`
+- New function `AgentPoolsUpgradeNodeImageVersionPollerResponse.PollUntilDone(context.Context, time.Duration) (AgentPoolsUpgradeNodeImageVersionResponse, error)`
+- New function `*ManagedClustersRotateClusterCertificatesPollerResponse.Resume(context.Context, *ManagedClustersClient, string) error`
+- New function `*ManagedClustersRunCommandPoller.ResumeToken() (string, error)`
+- New function `*ManagedClustersListOutboundNetworkDependenciesEndpointsPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MaintenanceConfigurationsListByManagedClusterPager.NextPage(context.Context) bool`
+- New function `*ManagedClustersStartPoller.FinalResponse(context.Context) (ManagedClustersStartResponse, error)`
+- New function `*AgentPoolsUpgradeNodeImageVersionPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AgentPoolsUpgradeNodeImageVersionPoller.Done() bool`
+- New function `*ManagedClustersStopPoller.FinalResponse(context.Context) (ManagedClustersStopResponse, error)`
+- New struct `AgentPoolsCreateOrUpdatePoller`
+- New struct `AgentPoolsDeletePoller`
+- New struct `AgentPoolsListPager`
+- New struct `AgentPoolsUpgradeNodeImageVersionPoller`
+- New struct `MaintenanceConfigurationsListByManagedClusterPager`
+- New struct `ManagedClustersCreateOrUpdatePoller`
+- New struct `ManagedClustersDeletePoller`
+- New struct `ManagedClustersListByResourceGroupPager`
+- New struct `ManagedClustersListOutboundNetworkDependenciesEndpointsPager`
+- New struct `ManagedClustersListPager`
+- New struct `ManagedClustersResetAADProfilePoller`
+- New struct `ManagedClustersResetServicePrincipalProfilePoller`
+- New struct `ManagedClustersRotateClusterCertificatesPoller`
+- New struct `ManagedClustersRunCommandPoller`
+- New struct `ManagedClustersStartPoller`
+- New struct `ManagedClustersStopPoller`
+- New struct `ManagedClustersUpdateTagsPoller`
+- New struct `PrivateEndpointConnectionsDeletePoller`
+
+Total 136 breaking change(s), 129 additive change(s).
+
+
 ## v0.1.0 (released)

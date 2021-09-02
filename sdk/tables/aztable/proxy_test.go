@@ -153,7 +153,7 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 	}
 }
 
-func getAADCredential(t *testing.T) (azcore.Credential, error) {
+func getAADCredential(t *testing.T) (azcore.Credential, error) { //nolint
 	if recording.InPlayback() {
 		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}

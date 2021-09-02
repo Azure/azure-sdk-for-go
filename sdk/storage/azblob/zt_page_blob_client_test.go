@@ -268,7 +268,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 
 func waitForIncrementalCopy(_assert *assert.Assertions, copyBlobClient PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
 	status := *blobCopyResponse.CopyStatus
-	var getPropertiesAndMetadataResult BlobGetPropertiesResponse
+	var getPropertiesAndMetadataResult GetBlobPropertiesResponse
 	// Wait for the copy to finish
 	start := time.Now()
 	for status != CopyStatusTypeSuccess {

@@ -139,7 +139,8 @@ func (s *retryReader) Read(p []byte) (n int, err error) {
 			}
 			return n, err // Return the return to the caller
 		}
-		s.Close()          // Error, close stream
+		_ = s.Close()
+
 		s.setResponse(nil) // Our stream is no longer good
 
 		// Check the retry count and error code, and decide whether to retry.

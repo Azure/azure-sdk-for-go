@@ -40,9 +40,10 @@ func (dr BlobDownloadResponse) GetHTTPHeaders() BlobHTTPHeaders {
 // DownloadResponse wraps AutoRest generated DownloadResponse and helps to provide info for retry.
 type DownloadResponse struct {
 	BlobDownloadResponse
-	ctx     context.Context
-	b       BlobClient
-	getInfo HTTPGetterInfo
+	ctx                    context.Context
+	b                      BlobClient
+	getInfo                HTTPGetterInfo
+	ObjectReplicationRules []ObjectReplicationPolicy
 }
 
 // Body constructs new RetryReader stream for reading data. If a connection fails

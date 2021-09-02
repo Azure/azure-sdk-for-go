@@ -79,10 +79,11 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 		count = *options.Count
 	}
 	return &DownloadResponse{
-		b:                    b,
-		BlobDownloadResponse: dr,
-		ctx:                  ctx,
-		getInfo:              HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
+		b:                      b,
+		BlobDownloadResponse:   dr,
+		ctx:                    ctx,
+		getInfo:                HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
+		ObjectReplicationRules: deserializeORSPolicies(dr.ObjectReplicationRules),
 	}, err
 }
 
@@ -119,11 +120,11 @@ func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTi
 
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
-func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (BlobGetPropertiesResponse, error) {
+func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (GetBlobPropertiesResponse, error) {
 	basics, lease, cpk, access := options.pointers()
 	resp, err := b.client.GetProperties(ctx, basics, lease, cpk, access)
 
-	return resp, handleError(err)
+	return resp.deserializeAttributes(), handleError(err)
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.

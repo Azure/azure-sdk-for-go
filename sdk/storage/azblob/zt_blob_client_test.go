@@ -18,11 +18,10 @@ import (
 	"time"
 )
 
-func (s *azblobTestSuite) TestCreateBlobClient() {
+func (s *azblobUnrecordedTestSuite) TestCreateBlobClient() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -43,7 +42,7 @@ func (s *azblobTestSuite) TestCreateBlobClient() {
 	_assert.Equal(bbClient.URL(), correctURL)
 }
 
-func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
+func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	_context := getTestContext(testName)
@@ -59,7 +58,7 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
 
-	credential, err := getGenericCredential(_context.recording, testAccountDefault)
+	credential, err := getGenericCredential(nil, testAccountDefault)
 	if err != nil {
 		s.Fail(err.Error())
 	}

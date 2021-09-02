@@ -408,11 +408,10 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK() {
+func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -811,11 +810,10 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_assert.EqualValues(destData, srcData)
 }
 
-func (s *azblobTestSuite) TestPageBlockWithCPK() {
+func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -868,11 +866,10 @@ func (s *azblobTestSuite) TestPageBlockWithCPK() {
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
-func (s *azblobTestSuite) TestPageBlockWithCPKScope() {
+func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}

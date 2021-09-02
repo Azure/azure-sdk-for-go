@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -21,11 +20,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
+// TransactionType is the type for a specific transaction operation.
 type TransactionType string
 
 const (
@@ -36,17 +36,6 @@ const (
 	InsertMerge   TransactionType = "insertmerge"
 	InsertReplace TransactionType = "insertreplace"
 )
-
-const (
-	headerContentType             = "Content-Type"
-	headerContentTransferEncoding = "Content-Transfer-Encoding"
-	error_empty_transaction       = "transaction cannot be empty"
-)
-
-// Use azcore.ResponseError type, pass RawResponse, might have to create manually depending on constructor
-// Int statuscode, Return the inner status code
-// ErrorCode string set equal to OdataErrorMessage ("DuplicateRowKey")
-// Lang/Value are useless at runtime, failedentity index as well
 
 type oDataErrorMessage struct {
 	Lang  string `json:"lang"`
@@ -133,7 +122,7 @@ func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []Tra
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
 func (t *Client) submitTransactionInternal(ctx context.Context, transactionActions *[]TransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
 	if len(*transactionActions) == 0 {
-		return TransactionResponse{}, errors.New(error_empty_transaction)
+		return TransactionResponse{}, errEmptyTransaction
 	}
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
@@ -375,7 +364,9 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	if err != nil {
 		return err
 	}
-	_, err = io.Copy(operationWriter, req.Body())
+	if req.Raw().Body != nil {
+		_, err = io.Copy(operationWriter, req.Body())
+	}
 
 	return err
 }

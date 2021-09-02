@@ -189,7 +189,7 @@ func TestBatchError(t *testing.T) {
 			// Sending an empty batch throws.
 			_, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NotNil(t, err)
-			require.Equal(t, error_empty_transaction, err.Error())
+			require.Equal(t, errEmptyTransaction.Error(), err.Error())
 
 			// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
 			marshalledFinalEntity, err := json.Marshal((*entitiesToCreate)[2])

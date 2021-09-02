@@ -9,16 +9,6 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/tables/aztable/internal"
 )
 
-// ListOptions contains a group of parameters for the ServiceClient.Query method.
-type ListOptions struct {
-	// OData filter expression.
-	Filter *string
-	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
-	Select *string
-	// Maximum number of records to return.
-	Top *int32
-}
-
 // CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another domain. Web browsers implement
 // a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin domain) to call APIs in another
@@ -264,7 +254,7 @@ type AccessPolicy struct {
 	// REQUIRED; The permissions for the acl policy.
 	Permission *string `xml:"Permission"`
 
-	// REQUIRED; The start datetime from which the policy is active.
+	// REQUIRED; The datetime from which the policy is active.
 	Start *time.Time `xml:"Start"`
 }
 
@@ -290,4 +280,64 @@ func fromGeneratedAccessPolicy(g *generated.AccessPolicy) *AccessPolicy {
 		Permission: g.Permission,
 		Start:      g.Start,
 	}
+}
+
+type GeoReplication struct {
+	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary.
+	// Primary writes after this point in time may or may
+	// not be available for reads.
+	LastSyncTime *time.Time `xml:"LastSyncTime"`
+
+	// REQUIRED; The status of the secondary location.
+	Status *GeoReplicationStatusType `xml:"Status"`
+}
+
+func fromGeneratedGeoReplication(g *generated.GeoReplication) *GeoReplication {
+	if g == nil {
+		return nil
+	}
+
+	return &GeoReplication{
+		LastSyncTime: g.LastSyncTime,
+		Status:       toGeneratedStatusType(g.Status),
+	}
+}
+
+// GeoReplicationStatusType - The status of the secondary location.
+type GeoReplicationStatusType string
+
+const (
+	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
+	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
+	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
+)
+
+// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
+func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
+	return []GeoReplicationStatusType{
+		GeoReplicationStatusTypeBootstrap,
+		GeoReplicationStatusTypeLive,
+		GeoReplicationStatusTypeUnavailable,
+	}
+}
+
+// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
+func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
+	return &c
+}
+
+func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicationStatusType {
+	if g == nil {
+		return nil
+	}
+	if *g == generated.GeoReplicationStatusTypeBootstrap {
+		return GeoReplicationStatusTypeBootstrap.ToPtr()
+	}
+	if *g == generated.GeoReplicationStatusTypeLive {
+		return GeoReplicationStatusTypeLive.ToPtr()
+	}
+	if *g == generated.GeoReplicationStatusTypeUnavailable {
+		return GeoReplicationStatusTypeUnavailable.ToPtr()
+	}
+	return nil
 }

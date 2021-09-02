@@ -9,6 +9,12 @@ var errConnectionString = errors.New("connection string is either blank or malfo
 
 var errInvalidUpdateMode = errors.New("invalid EntityUpdateMode")
 
+var errEmptyTransaction = errors.New("transaction cannot be empty")
+
+var errPartitionKeyRowKeyError = errors.New("entity must have a PartitionKey and RowKey")
+
+var errTooManyAccessPoliciesError = errors.New("you cannot set more than five (5) access policies at a time")
+
 func checkEntityForPkRk(entity *map[string]interface{}, err error) error {
 	if _, ok := (*entity)[partitionKey]; !ok {
 		return errPartitionKeyRowKeyError

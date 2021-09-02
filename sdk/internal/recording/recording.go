@@ -477,7 +477,6 @@ func defaultOptions() *RecordingOptions {
 
 func (r RecordingOptions) HostScheme() string {
 	if r.UseHTTPS {
-
 		return "https://localhost:5001"
 	}
 	return "http://localhost:5000"
@@ -627,6 +626,7 @@ func getRootCas(t *testing.T) (*x509.CertPool, error) {
 
 	cert, err := ioutil.ReadFile(localFile)
 	if err != nil {
+
 		return nil, err
 	}
 

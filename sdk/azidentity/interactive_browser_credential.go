@@ -13,6 +13,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/pkg/browser"
 )
@@ -40,13 +42,13 @@ type InteractiveBrowserCredentialOptions struct {
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transporter
+	HTTPClient policy.Transporter
 	// Retry configures the built-in retry policy behavior
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 }
 
 // init returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
@@ -92,7 +94,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 // ctx: Context used to control the request lifetime.
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateInteractiveBrowser(ctx, &c.options, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Interactive Browser Credential", err, true)
@@ -103,7 +105,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore
 }
 
 // NewAuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
-func (c *InteractiveBrowserCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *InteractiveBrowserCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 
@@ -119,14 +121,13 @@ var authCodeReceiver = func(ctx context.Context, authorityHost string, opts *Int
 func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 	// start local redirect server so login can call us back
 	rs := newServer()
-	uuidRaw, err := uuid.New()
+	state, err := uuid.New()
 	if err != nil {
 		return nil, err
 	}
-	state := uuidRaw.String()
 	redirectURL := opts.RedirectURL
 	if redirectURL == "" {
-		redirectURL = rs.Start(state, opts.Port)
+		redirectURL = rs.Start(state.String(), opts.Port)
 	}
 	defer rs.Stop()
 	u, err := url.Parse(authorityHost)
@@ -138,13 +139,13 @@ func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *In
 	values.Add("response_mode", "query")
 	values.Add("client_id", opts.ClientID)
 	values.Add("redirect_uri", redirectURL)
-	values.Add("state", state)
+	values.Add("state", state.String())
 	values.Add("scope", strings.Join(scopes, " "))
 	values.Add("prompt", "select_account")
 	cv := ""
 	// the code verifier is a random 32-byte sequence that's been base-64 encoded without padding.
 	// it's used to prevent MitM attacks during auth code flow, see https://tools.ietf.org/html/rfc7636
-	b := make([]byte, 32, 32) // nolint:gosimple
+	b := make([]byte, 32) // nolint:gosimple
 	if _, err := rand.Read(b); err != nil {
 		return nil, err
 	}
@@ -153,7 +154,7 @@ func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *In
 	cvh := sha256.Sum256([]byte(cv))
 	values.Add("code_challenge", base64.RawURLEncoding.EncodeToString(cvh[:]))
 	values.Add("code_challenge_method", "S256")
-	u.Path = azcore.JoinPaths(u.Path, opts.TenantID, path.Join(oauthPath(opts.TenantID), "/authorize"))
+	u.Path = runtime.JoinPaths(u.Path, opts.TenantID, path.Join(oauthPath(opts.TenantID), "/authorize"))
 	u.RawQuery = values.Encode()
 	// open browser window so user can select credentials
 	if err = browser.OpenURL(u.String()); err != nil {

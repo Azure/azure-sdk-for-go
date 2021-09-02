@@ -1,5 +1,408 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.Put` return value(s) have been changed from `(PrivateEndpointConnectionResponse, error)` to `(PrivateEndpointConnectionsPutResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionPollerResponse, error)` to `(PrivateEndpointConnectionsDeletePollerResponse, error)`
+- Function `*SecretsClient.Update` return value(s) have been changed from `(SecretResponse, error)` to `(SecretsUpdateResponse, error)`
+- Function `*SecretsClient.CreateOrUpdate` return value(s) have been changed from `(SecretResponse, error)` to `(SecretsCreateOrUpdateResponse, error)`
+- Function `*MHSMPrivateEndpointConnectionsClient.ListByResource` return value(s) have been changed from `(MHSMPrivateEndpointConnectionsListResultPager)` to `(*MHSMPrivateEndpointConnectionsListByResourcePager)`
+- Function `*VaultsClient.UpdateAccessPolicy` return value(s) have been changed from `(VaultAccessPolicyParametersResponse, error)` to `(VaultsUpdateAccessPolicyResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByVault` return value(s) have been changed from `(PrivateLinkResourceListResultResponse, error)` to `(PrivateLinkResourcesListByVaultResponse, error)`
+- Function `*VaultsClient.Delete` return value(s) have been changed from `(*http.Response, error)` to `(VaultsDeleteResponse, error)`
+- Function `*ManagedHsmsClient.GetDeleted` return value(s) have been changed from `(DeletedManagedHsmResponse, error)` to `(ManagedHsmsGetDeletedResponse, error)`
+- Function `*ManagedHsmsClient.Get` return value(s) have been changed from `(ManagedHsmResponse, error)` to `(ManagedHsmsGetResponse, error)`
+- Function `*ManagedHsmsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ManagedHsmPollerResponse, error)` to `(ManagedHsmsCreateOrUpdatePollerResponse, error)`
+- Function `*ManagedHsmsClient.BeginPurgeDeleted` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ManagedHsmsPurgeDeletedPollerResponse, error)`
+- Function `*VaultsClient.CheckNameAvailability` return value(s) have been changed from `(CheckNameAvailabilityResultResponse, error)` to `(VaultsCheckNameAvailabilityResponse, error)`
+- Function `*VaultsClient.Get` return value(s) have been changed from `(VaultResponse, error)` to `(VaultsGetResponse, error)`
+- Function `*VaultsClient.ListBySubscription` return value(s) have been changed from `(VaultListResultPager)` to `(*VaultsListBySubscriptionPager)`
+- Function `*VaultsClient.List` return value(s) have been changed from `(ResourceListResultPager)` to `(*VaultsListPager)`
+- Function `*VaultsClient.BeginPurgeDeleted` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(VaultsPurgeDeletedPollerResponse, error)`
+- Function `*MHSMPrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(MHSMPrivateEndpointConnectionResponse, error)` to `(MHSMPrivateEndpointConnectionsGetResponse, error)`
+- Function `*ManagedHsmsClient.BeginDelete` return value(s) have been changed from `(HTTPPollerResponse, error)` to `(ManagedHsmsDeletePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByResource` return value(s) have been changed from `(PrivateEndpointConnectionListResultPager)` to `(*PrivateEndpointConnectionsListByResourcePager)`
+- Function `NewSecretsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*SecretsClient.Get` return value(s) have been changed from `(SecretResponse, error)` to `(SecretsGetResponse, error)`
+- Function `*VaultsClient.Update` return value(s) have been changed from `(VaultResponse, error)` to `(VaultsUpdateResponse, error)`
+- Function `NewVaultsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ManagedHsmsClient.BeginUpdate` return value(s) have been changed from `(ManagedHsmPollerResponse, error)` to `(ManagedHsmsUpdatePollerResponse, error)`
+- Function `*MHSMPrivateEndpointConnectionsClient.Put` return value(s) have been changed from `(MHSMPrivateEndpointConnectionResponse, error)` to `(MHSMPrivateEndpointConnectionsPutResponse, error)`
+- Function `*ManagedHsmsClient.ListBySubscription` return value(s) have been changed from `(ManagedHsmListResultPager)` to `(*ManagedHsmsListBySubscriptionPager)`
+- Function `NewPrivateLinkResourcesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*VaultsClient.BeginCreateOrUpdate` return value(s) have been changed from `(VaultPollerResponse, error)` to `(VaultsCreateOrUpdatePollerResponse, error)`
+- Function `*MHSMPrivateLinkResourcesClient.ListByMHSMResource` return value(s) have been changed from `(MHSMPrivateLinkResourceListResultResponse, error)` to `(MHSMPrivateLinkResourcesListByMHSMResourceResponse, error)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewMHSMPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewMHSMPrivateLinkResourcesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewManagedHsmsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*SecretsClient.List` return value(s) have been changed from `(SecretListResultPager)` to `(*SecretsListPager)`
+- Function `*MHSMPrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(MHSMPrivateEndpointConnectionPollerResponse, error)` to `(MHSMPrivateEndpointConnectionsDeletePollerResponse, error)`
+- Function `*ManagedHsmsClient.ListDeleted` return value(s) have been changed from `(DeletedManagedHsmListResultPager)` to `(*ManagedHsmsListDeletedPager)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionResponse, error)` to `(PrivateEndpointConnectionsGetResponse, error)`
+- Function `*ManagedHsmsClient.ListByResourceGroup` return value(s) have been changed from `(ManagedHsmListResultPager)` to `(*ManagedHsmsListByResourceGroupPager)`
+- Function `*VaultsClient.ListByResourceGroup` return value(s) have been changed from `(VaultListResultPager)` to `(*VaultsListByResourceGroupPager)`
+- Function `*VaultsClient.ListDeleted` return value(s) have been changed from `(DeletedVaultListResultPager)` to `(*VaultsListDeletedPager)`
+- Function `*VaultsClient.GetDeleted` return value(s) have been changed from `(DeletedVaultResponse, error)` to `(VaultsGetDeletedResponse, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationListResultPager)` to `(*OperationsListPager)`
+- Type of `Attributes.Created` has been changed from `*int64` to `*time.Time`
+- Type of `Attributes.Updated` has been changed from `*int64` to `*time.Time`
+- Type of `Attributes.Expires` has been changed from `*int64` to `*time.Time`
+- Type of `Attributes.NotBefore` has been changed from `*int64` to `*time.Time`
+- Function `*httpPoller.ResumeToken` has been removed
+- Function `*managedHsmPoller.FinalResponse` has been removed
+- Function `*ManagedHsmsClient.ResumeCreateOrUpdate` has been removed
+- Function `*httpPoller.FinalResponse` has been removed
+- Function `*mhsmPrivateEndpointConnectionsListResultPager.PageResponse` has been removed
+- Function `*mhsmPrivateEndpointConnectionPoller.Done` has been removed
+- Function `*privateEndpointConnectionListResultPager.NextPage` has been removed
+- Function `*vaultPoller.Poll` has been removed
+- Function `*deletedManagedHsmListResultPager.Err` has been removed
+- Function `*mhsmPrivateEndpointConnectionsListResultPager.Err` has been removed
+- Function `*resourceListResultPager.PageResponse` has been removed
+- Function `*MHSMPrivateEndpointConnectionsClient.ResumeDelete` has been removed
+- Function `*deletedManagedHsmListResultPager.PageResponse` has been removed
+- Function `*deletedVaultListResultPager.PageResponse` has been removed
+- Function `*deletedVaultListResultPager.Err` has been removed
+- Function `*operationListResultPager.PageResponse` has been removed
+- Function `*vaultPoller.Done` has been removed
+- Function `*mhsmPrivateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*privateEndpointConnectionListResultPager.PageResponse` has been removed
+- Function `*privateEndpointConnectionListResultPager.Err` has been removed
+- Function `*resourceListResultPager.NextPage` has been removed
+- Function `*managedHsmListResultPager.Err` has been removed
+- Function `*privateEndpointConnectionPoller.Done` has been removed
+- Function `*secretListResultPager.PageResponse` has been removed
+- Function `*VaultsClient.ResumePurgeDeleted` has been removed
+- Function `*vaultPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumeDelete` has been removed
+- Function `*resourceListResultPager.Err` has been removed
+- Function `*secretListResultPager.NextPage` has been removed
+- Function `*httpPoller.Poll` has been removed
+- Function `*VaultsClient.ResumeCreateOrUpdate` has been removed
+- Function `*vaultPoller.FinalResponse` has been removed
+- Function `*managedHsmListResultPager.PageResponse` has been removed
+- Function `*ManagedHsmsClient.ResumeDelete` has been removed
+- Function `*httpPoller.Done` has been removed
+- Function `*secretListResultPager.Err` has been removed
+- Function `*mhsmPrivateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*managedHsmPoller.ResumeToken` has been removed
+- Function `*vaultListResultPager.Err` has been removed
+- Function `*managedHsmPoller.Poll` has been removed
+- Function `*ManagedHsmsClient.ResumePurgeDeleted` has been removed
+- Function `*vaultListResultPager.NextPage` has been removed
+- Function `*deletedManagedHsmListResultPager.NextPage` has been removed
+- Function `*privateEndpointConnectionPoller.Poll` has been removed
+- Function `*vaultListResultPager.PageResponse` has been removed
+- Function `*operationListResultPager.Err` has been removed
+- Function `*privateEndpointConnectionPoller.FinalResponse` has been removed
+- Function `*managedHsmPoller.Done` has been removed
+- Function `*mhsmPrivateEndpointConnectionPoller.Poll` has been removed
+- Function `*ManagedHsmsClient.ResumeUpdate` has been removed
+- Function `*managedHsmListResultPager.NextPage` has been removed
+- Function `*mhsmPrivateEndpointConnectionsListResultPager.NextPage` has been removed
+- Function `*privateEndpointConnectionPoller.ResumeToken` has been removed
+- Function `*deletedVaultListResultPager.NextPage` has been removed
+- Function `*operationListResultPager.NextPage` has been removed
+- Struct `CheckNameAvailabilityResultResponse` has been removed
+- Struct `DeletedManagedHsmListResultResponse` has been removed
+- Struct `DeletedManagedHsmResponse` has been removed
+- Struct `DeletedVaultListResultResponse` has been removed
+- Struct `DeletedVaultResponse` has been removed
+- Struct `HTTPPollerResponse` has been removed
+- Struct `MHSMPrivateEndpointConnectionPollerResponse` has been removed
+- Struct `MHSMPrivateEndpointConnectionResponse` has been removed
+- Struct `MHSMPrivateEndpointConnectionsListResultResponse` has been removed
+- Struct `MHSMPrivateLinkResourceListResultResponse` has been removed
+- Struct `ManagedHsmListResultResponse` has been removed
+- Struct `ManagedHsmPollerResponse` has been removed
+- Struct `ManagedHsmResponse` has been removed
+- Struct `OperationListResultResponse` has been removed
+- Struct `PrivateEndpointConnectionListResultResponse` has been removed
+- Struct `PrivateEndpointConnectionPollerResponse` has been removed
+- Struct `PrivateEndpointConnectionResponse` has been removed
+- Struct `PrivateLinkResourceListResultResponse` has been removed
+- Struct `ResourceListResultResponse` has been removed
+- Struct `SecretListResultResponse` has been removed
+- Struct `SecretResponse` has been removed
+- Struct `VaultAccessPolicyParametersResponse` has been removed
+- Struct `VaultListResultResponse` has been removed
+- Struct `VaultPollerResponse` has been removed
+- Struct `VaultResponse` has been removed
+
+### New Content
+
+- New const `JSONWebKeyCurveNameP384`
+- New const `DeletionRecoveryLevelRecoverablePurgeable`
+- New const `SecretPermissionsAll`
+- New const `DeletionRecoveryLevelRecoverableProtectedSubscription`
+- New const `JSONWebKeyCurveNameP256`
+- New const `JSONWebKeyTypeRSA`
+- New const `DeletionRecoveryLevelPurgeable`
+- New const `KeyPermissionsRotate`
+- New const `JSONWebKeyCurveNameP256K`
+- New const `DeletionRecoveryLevelRecoverable`
+- New const `JSONWebKeyTypeRSAHSM`
+- New const `JSONWebKeyTypeECHSM`
+- New const `KeyPermissionsRelease`
+- New const `JSONWebKeyOperationWrapKey`
+- New const `JSONWebKeyOperationDecrypt`
+- New const `JSONWebKeyOperationVerify`
+- New const `KeyPermissionsAll`
+- New const `KeyRotationPolicyActionTypeRotate`
+- New const `JSONWebKeyOperationSign`
+- New const `JSONWebKeyOperationUnwrapKey`
+- New const `JSONWebKeyCurveNameP521`
+- New const `KeyRotationPolicyActionTypeNotify`
+- New const `StoragePermissionsAll`
+- New const `JSONWebKeyOperationEncrypt`
+- New const `JSONWebKeyOperationImport`
+- New const `CertificatePermissionsAll`
+- New const `JSONWebKeyTypeEC`
+- New function `*KeysListVersionsPager.Err() error`
+- New function `*SecretsListPager.PageResponse() SecretsListResponse`
+- New function `KeyRotationPolicyActionType.ToPtr() *KeyRotationPolicyActionType`
+- New function `*KeysListPager.NextPage(context.Context) bool`
+- New function `*VaultsCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `VaultsCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VaultsCreateOrUpdateResponse, error)`
+- New function `*ManagedHsmsPurgeDeletedPoller.FinalResponse(context.Context) (ManagedHsmsPurgeDeletedResponse, error)`
+- New function `*ManagedHsmsDeletePoller.ResumeToken() (string, error)`
+- New function `*ManagedHsmsUpdatePoller.ResumeToken() (string, error)`
+- New function `*ManagedHsmsUpdatePollerResponse.Resume(context.Context, *ManagedHsmsClient, string) error`
+- New function `*VaultsPurgeDeletedPoller.FinalResponse(context.Context) (VaultsPurgeDeletedResponse, error)`
+- New function `JSONWebKeyCurveName.ToPtr() *JSONWebKeyCurveName`
+- New function `*ManagedHsmsPurgeDeletedPoller.ResumeToken() (string, error)`
+- New function `*ManagedHsmsCreateOrUpdatePollerResponse.Resume(context.Context, *ManagedHsmsClient, string) error`
+- New function `*ManagedHsmsListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*VaultsListDeletedPager.NextPage(context.Context) bool`
+- New function `*VaultsPurgeDeletedPoller.ResumeToken() (string, error)`
+- New function `*MHSMPrivateEndpointConnectionsDeletePoller.Done() bool`
+- New function `VaultsPurgeDeletedPollerResponse.PollUntilDone(context.Context, time.Duration) (VaultsPurgeDeletedResponse, error)`
+- New function `RotationPolicy.MarshalJSON() ([]byte, error)`
+- New function `*VaultsListPager.NextPage(context.Context) bool`
+- New function `*OperationsListPager.PageResponse() OperationsListResponse`
+- New function `*PrivateEndpointConnectionsListByResourcePager.NextPage(context.Context) bool`
+- New function `*VaultsPurgeDeletedPollerResponse.Resume(context.Context, *VaultsClient, string) error`
+- New function `*MHSMPrivateEndpointConnectionsDeletePoller.ResumeToken() (string, error)`
+- New function `*KeysListVersionsPager.PageResponse() KeysListVersionsResponse`
+- New function `*PrivateEndpointConnectionsListByResourcePager.Err() error`
+- New function `*VaultsCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedHsmsListDeletedPager.PageResponse() ManagedHsmsListDeletedResponse`
+- New function `PossibleJSONWebKeyTypeValues() []JSONWebKeyType`
+- New function `*KeysClient.List(string, string, *KeysListOptions) *KeysListPager`
+- New function `PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel`
+- New function `*PrivateEndpointConnectionsDeletePoller.ResumeToken() (string, error)`
+- New function `*VaultsPurgeDeletedPoller.Done() bool`
+- New function `*VaultsListPager.Err() error`
+- New function `Attributes.MarshalJSON() ([]byte, error)`
+- New function `*ManagedHsmsPurgeDeletedPoller.Done() bool`
+- New function `*ManagedHsmsListDeletedPager.Err() error`
+- New function `*MHSMPrivateEndpointConnectionsListByResourcePager.Err() error`
+- New function `*ManagedHsmsListBySubscriptionPager.Err() error`
+- New function `*ManagedHsmsListBySubscriptionPager.PageResponse() ManagedHsmsListBySubscriptionResponse`
+- New function `*MHSMPrivateEndpointConnectionsDeletePoller.FinalResponse(context.Context) (MHSMPrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType`
+- New function `*VaultsListByResourceGroupPager.Err() error`
+- New function `*ManagedHsmsListByResourceGroupPager.Err() error`
+- New function `ManagedHsmsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedHsmsUpdateResponse, error)`
+- New function `MHSMPrivateEndpointConnectionsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (MHSMPrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*SecretsListPager.NextPage(context.Context) bool`
+- New function `*OperationsListPager.Err() error`
+- New function `*ManagedHsmsListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation`
+- New function `timeUnix.String() string`
+- New function `PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName`
+- New function `*KeysClient.CreateIfNotExist(context.Context, string, string, string, KeyCreateParameters, *KeysCreateIfNotExistOptions) (KeysCreateIfNotExistResponse, error)`
+- New function `*VaultsCreateOrUpdatePoller.FinalResponse(context.Context) (VaultsCreateOrUpdateResponse, error)`
+- New function `*MHSMPrivateEndpointConnectionsDeletePollerResponse.Resume(context.Context, *MHSMPrivateEndpointConnectionsClient, string) error`
+- New function `*KeysClient.GetVersion(context.Context, string, string, string, string, *KeysGetVersionOptions) (KeysGetVersionResponse, error)`
+- New function `*MHSMPrivateEndpointConnectionsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `NewKeysClient(*arm.Connection, string) *KeysClient`
+- New function `*VaultsListDeletedPager.Err() error`
+- New function `KeyListResult.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.Done() bool`
+- New function `*VaultsListPager.PageResponse() VaultsListResponse`
+- New function `*ManagedHsmsUpdatePoller.FinalResponse(context.Context) (ManagedHsmsUpdateResponse, error)`
+- New function `*VaultsPurgeDeletedPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*timeUnix.UnmarshalJSON([]byte) error`
+- New function `*KeysListVersionsPager.NextPage(context.Context) bool`
+- New function `*ManagedHsmsCreateOrUpdatePoller.FinalResponse(context.Context) (ManagedHsmsCreateOrUpdateResponse, error)`
+- New function `*MHSMPrivateEndpointConnectionsListByResourcePager.PageResponse() MHSMPrivateEndpointConnectionsListByResourceResponse`
+- New function `timeUnix.MarshalJSON() ([]byte, error)`
+- New function `Key.MarshalJSON() ([]byte, error)`
+- New function `*ManagedHsmsDeletePoller.Done() bool`
+- New function `*VaultsCreateOrUpdatePollerResponse.Resume(context.Context, *VaultsClient, string) error`
+- New function `*VaultsListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*ManagedHsmsCreateOrUpdatePoller.Done() bool`
+- New function `*ManagedHsmsUpdatePoller.Done() bool`
+- New function `*KeysListPager.PageResponse() KeysListResponse`
+- New function `KeyCreateParameters.MarshalJSON() ([]byte, error)`
+- New function `*VaultsCreateOrUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsListByResourcePager.PageResponse() PrivateEndpointConnectionsListByResourceResponse`
+- New function `ManagedHsmsPurgeDeletedPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedHsmsPurgeDeletedResponse, error)`
+- New function `JSONWebKeyType.ToPtr() *JSONWebKeyType`
+- New function `*MHSMPrivateEndpointConnectionsListByResourcePager.NextPage(context.Context) bool`
+- New function `*ManagedHsmsCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `DeletionRecoveryLevel.ToPtr() *DeletionRecoveryLevel`
+- New function `*ManagedHsmsPurgeDeletedPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedHsmsListDeletedPager.NextPage(context.Context) bool`
+- New function `*VaultsListBySubscriptionPager.PageResponse() VaultsListBySubscriptionResponse`
+- New function `*KeysClient.ListVersions(string, string, string, *KeysListVersionsOptions) *KeysListVersionsPager`
+- New function `*SecretsListPager.Err() error`
+- New function `*ManagedHsmsDeletePoller.FinalResponse(context.Context) (ManagedHsmsDeleteResponse, error)`
+- New function `*ManagedHsmsDeletePollerResponse.Resume(context.Context, *ManagedHsmsClient, string) error`
+- New function `*Attributes.UnmarshalJSON([]byte) error`
+- New function `ManagedHsmsCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedHsmsCreateOrUpdateResponse, error)`
+- New function `*KeysClient.Get(context.Context, string, string, string, *KeysGetOptions) (KeysGetResponse, error)`
+- New function `*ManagedHsmsListByResourceGroupPager.PageResponse() ManagedHsmsListByResourceGroupResponse`
+- New function `*KeysListPager.Err() error`
+- New function `*VaultsListBySubscriptionPager.Err() error`
+- New function `ManagedHsmsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagedHsmsDeleteResponse, error)`
+- New function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*ManagedHsmsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*ManagedHsmsCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsListPager.NextPage(context.Context) bool`
+- New function `*VaultsListByResourceGroupPager.PageResponse() VaultsListByResourceGroupResponse`
+- New function `JSONWebKeyOperation.ToPtr() *JSONWebKeyOperation`
+- New function `*VaultsListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*VaultsListDeletedPager.PageResponse() VaultsListDeletedResponse`
+- New function `KeyProperties.MarshalJSON() ([]byte, error)`
+- New function `*ManagedHsmsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagedHsmsPurgeDeletedPollerResponse.Resume(context.Context, *ManagedHsmsClient, string) error`
+- New struct `Action`
+- New struct `Key`
+- New struct `KeyAttributes`
+- New struct `KeyCreateParameters`
+- New struct `KeyListResult`
+- New struct `KeyProperties`
+- New struct `KeyRotationPolicyAttributes`
+- New struct `KeysClient`
+- New struct `KeysCreateIfNotExistOptions`
+- New struct `KeysCreateIfNotExistResponse`
+- New struct `KeysCreateIfNotExistResult`
+- New struct `KeysGetOptions`
+- New struct `KeysGetResponse`
+- New struct `KeysGetResult`
+- New struct `KeysGetVersionOptions`
+- New struct `KeysGetVersionResponse`
+- New struct `KeysGetVersionResult`
+- New struct `KeysListOptions`
+- New struct `KeysListPager`
+- New struct `KeysListResponse`
+- New struct `KeysListResult`
+- New struct `KeysListVersionsOptions`
+- New struct `KeysListVersionsPager`
+- New struct `KeysListVersionsResponse`
+- New struct `KeysListVersionsResult`
+- New struct `LifetimeAction`
+- New struct `MHSMPrivateEndpointConnectionsDeletePoller`
+- New struct `MHSMPrivateEndpointConnectionsDeletePollerResponse`
+- New struct `MHSMPrivateEndpointConnectionsDeleteResponse`
+- New struct `MHSMPrivateEndpointConnectionsDeleteResult`
+- New struct `MHSMPrivateEndpointConnectionsGetResponse`
+- New struct `MHSMPrivateEndpointConnectionsGetResult`
+- New struct `MHSMPrivateEndpointConnectionsListByResourcePager`
+- New struct `MHSMPrivateEndpointConnectionsListByResourceResponse`
+- New struct `MHSMPrivateEndpointConnectionsListByResourceResult`
+- New struct `MHSMPrivateEndpointConnectionsPutResponse`
+- New struct `MHSMPrivateEndpointConnectionsPutResult`
+- New struct `MHSMPrivateLinkResourcesListByMHSMResourceResponse`
+- New struct `MHSMPrivateLinkResourcesListByMHSMResourceResult`
+- New struct `ManagedHsmsCreateOrUpdatePoller`
+- New struct `ManagedHsmsCreateOrUpdatePollerResponse`
+- New struct `ManagedHsmsCreateOrUpdateResponse`
+- New struct `ManagedHsmsCreateOrUpdateResult`
+- New struct `ManagedHsmsDeletePoller`
+- New struct `ManagedHsmsDeletePollerResponse`
+- New struct `ManagedHsmsDeleteResponse`
+- New struct `ManagedHsmsGetDeletedResponse`
+- New struct `ManagedHsmsGetDeletedResult`
+- New struct `ManagedHsmsGetResponse`
+- New struct `ManagedHsmsGetResult`
+- New struct `ManagedHsmsListByResourceGroupPager`
+- New struct `ManagedHsmsListByResourceGroupResponse`
+- New struct `ManagedHsmsListByResourceGroupResult`
+- New struct `ManagedHsmsListBySubscriptionPager`
+- New struct `ManagedHsmsListBySubscriptionResponse`
+- New struct `ManagedHsmsListBySubscriptionResult`
+- New struct `ManagedHsmsListDeletedPager`
+- New struct `ManagedHsmsListDeletedResponse`
+- New struct `ManagedHsmsListDeletedResult`
+- New struct `ManagedHsmsPurgeDeletedPoller`
+- New struct `ManagedHsmsPurgeDeletedPollerResponse`
+- New struct `ManagedHsmsPurgeDeletedResponse`
+- New struct `ManagedHsmsUpdatePoller`
+- New struct `ManagedHsmsUpdatePollerResponse`
+- New struct `ManagedHsmsUpdateResponse`
+- New struct `ManagedHsmsUpdateResult`
+- New struct `OperationsListPager`
+- New struct `OperationsListResponse`
+- New struct `OperationsListResult`
+- New struct `PrivateEndpointConnectionsDeletePoller`
+- New struct `PrivateEndpointConnectionsDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsDeleteResponse`
+- New struct `PrivateEndpointConnectionsDeleteResult`
+- New struct `PrivateEndpointConnectionsGetResponse`
+- New struct `PrivateEndpointConnectionsGetResult`
+- New struct `PrivateEndpointConnectionsListByResourcePager`
+- New struct `PrivateEndpointConnectionsListByResourceResponse`
+- New struct `PrivateEndpointConnectionsListByResourceResult`
+- New struct `PrivateEndpointConnectionsPutResponse`
+- New struct `PrivateEndpointConnectionsPutResult`
+- New struct `PrivateLinkResourcesListByVaultResponse`
+- New struct `PrivateLinkResourcesListByVaultResult`
+- New struct `RotationPolicy`
+- New struct `SecretsCreateOrUpdateResponse`
+- New struct `SecretsCreateOrUpdateResult`
+- New struct `SecretsGetResponse`
+- New struct `SecretsGetResult`
+- New struct `SecretsListPager`
+- New struct `SecretsListResponse`
+- New struct `SecretsListResult`
+- New struct `SecretsUpdateResponse`
+- New struct `SecretsUpdateResult`
+- New struct `Trigger`
+- New struct `VaultsCheckNameAvailabilityResponse`
+- New struct `VaultsCheckNameAvailabilityResult`
+- New struct `VaultsCreateOrUpdatePoller`
+- New struct `VaultsCreateOrUpdatePollerResponse`
+- New struct `VaultsCreateOrUpdateResponse`
+- New struct `VaultsCreateOrUpdateResult`
+- New struct `VaultsDeleteResponse`
+- New struct `VaultsGetDeletedResponse`
+- New struct `VaultsGetDeletedResult`
+- New struct `VaultsGetResponse`
+- New struct `VaultsGetResult`
+- New struct `VaultsListByResourceGroupPager`
+- New struct `VaultsListByResourceGroupResponse`
+- New struct `VaultsListByResourceGroupResult`
+- New struct `VaultsListBySubscriptionPager`
+- New struct `VaultsListBySubscriptionResponse`
+- New struct `VaultsListBySubscriptionResult`
+- New struct `VaultsListDeletedPager`
+- New struct `VaultsListDeletedResponse`
+- New struct `VaultsListDeletedResult`
+- New struct `VaultsListPager`
+- New struct `VaultsListResponse`
+- New struct `VaultsListResult`
+- New struct `VaultsPurgeDeletedPoller`
+- New struct `VaultsPurgeDeletedPollerResponse`
+- New struct `VaultsPurgeDeletedResponse`
+- New struct `VaultsUpdateAccessPolicyResponse`
+- New struct `VaultsUpdateAccessPolicyResult`
+- New struct `VaultsUpdateResponse`
+- New struct `VaultsUpdateResult`
+- New field `PublicNetworkAccess` in struct `VaultProperties`
+- New field `PublicNetworkAccess` in struct `VaultPatchProperties`
+
+Total 164 breaking change(s), 388 additive change(s).
+
+
 ## v0.1.1 (released)
 Updated with the latest track 2 code generator.
 

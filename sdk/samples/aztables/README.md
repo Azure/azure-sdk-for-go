@@ -36,7 +36,7 @@ These sample programs show common scenarios for the Tables client's offerings.
 
 1. Install the Azure Data Tables client library for Go:
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/tables/aztable
+go get github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 ```
 2. Clone or download this sample repository
 3. Open the sample folder in Visual Studio Code or your IDE of choice.
@@ -142,4 +142,4 @@ what you can do with the Azure Data Tables client library.
 
 [sample_batch]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/aztable/sample_batching.go
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/tables/aztable/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

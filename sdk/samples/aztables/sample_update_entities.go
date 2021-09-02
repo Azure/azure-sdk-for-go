@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"os"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
 func UpdateEntities() {

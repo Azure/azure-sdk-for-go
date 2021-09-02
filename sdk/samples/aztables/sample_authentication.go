@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 func check(e error) {
@@ -13,7 +13,7 @@ func check(e error) {
 	}
 }
 
-func AuthenticateWithSharedKey() *aztable.TableServiceClient {
+func AuthenticateWithSharedKey() *aztables.ServiceClient {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -24,12 +24,14 @@ func AuthenticateWithSharedKey() *aztable.TableServiceClient {
 	}
 	serviceURL := accountName + ".table.core.windows.net"
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	client := aztable.NewTableServiceClient(serviceURL, cred, nil)
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	client, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	check(err)
 	return client
 }
 
-func AuthenticateWithTokenCredential() *aztable.TableServiceClient {
+func AuthenticateWithTokenCredential() *aztables.ServiceClient {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -38,7 +40,7 @@ func AuthenticateWithTokenCredential() *aztable.TableServiceClient {
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	check(err)
-	client := aztable.NewTableServiceClient(serviceURL, cred, nil)
+	client, err := aztables.NewServiceClient(serviceURL, cred, nil)
 	return client
 }
 
@@ -56,12 +58,12 @@ func main() {
 
 	// sample_authentication.go
 	CreateTableClient()
-	CreateTableServiceClient()
+	CreateServiceClient()
 
 	// sample_create_delete_table.go
-	CreateFromTableServiceClient()
+	CreateFromServiceClient()
 	CreateFromTableClient()
-	DeleteFromTableServiceClient()
+	DeleteFromServiceClient()
 	DeleteFromTableClient()
 
 	// sample_insert_delete_entities.go

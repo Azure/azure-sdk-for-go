@@ -2,11 +2,9 @@ package main
 
 import (
 	"os"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
-func CreateTableServiceClient() *aztable.NewTableServiceClient {
+func CreateServiceClient() *aztable.NewServiceClient {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
@@ -18,7 +16,7 @@ func CreateTableServiceClient() *aztable.NewTableServiceClient {
 	serviceURL := accountName + ".table.core.windows.net"
 
 	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	return &aztable.NewTableServiceClient(serviceURL, cred, nil)
+	return &aztable.NewServiceClient(serviceURL, cred, nil)
 }
 
 func CreateTableClient() *aztable.TableClient {

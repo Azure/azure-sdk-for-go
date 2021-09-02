@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
 )
 
-func CreateFromTableServiceClient() {
+func CreateFromServiceClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	check(err)
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
@@ -16,7 +16,7 @@ func CreateFromTableServiceClient() {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := accountName + ".table.core.windows.net"
-	service := aztable.NewTableServiceClient(serviceURL, cred, nil)
+	service := aztable.NewServiceClient(serviceURL, cred, nil)
 	_, err = service.Create(context.Background(), "fromServiceClient")
 	check(err)
 }
@@ -34,7 +34,7 @@ func CreateFromTableClient() {
 	check(err)
 }
 
-func DeleteFromTableServiceClient() {
+func DeleteFromServiceClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	check(err)
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
@@ -42,7 +42,7 @@ func DeleteFromTableServiceClient() {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := accountName + ".table.core.windows.net"
-	service := aztable.NewTableServiceClient(serviceURL, cred, nil)
+	service := aztable.NewServiceClient(serviceURL, cred, nil)
 	_, err = service.Delete(context.Background(), "fromServiceClient")
 	check(err)
 }

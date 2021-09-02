@@ -19,7 +19,7 @@ These sample programs show common scenarios for the Tables client's offerings.
 
 |**File Name**|**Description**|
 |-------------|---------------|
-|[sample_create_client.go][create_client]|Instantiate a table client|Authorizing a `TableServiceClient` object and `TableClient` object |
+|[sample_create_client.go][create_client]|Instantiate a table client|Authorizing a `ServiceClient` object and `TableClient` object |
 |[sample_create_delete_table.go][create_delete_table]|Creating and deleting a table in a storage account |
 |[sample_insert_delete_entities.go][insert_delete_entities]|Inserting and deleting individual entities in a table |
 |[sample_query_tables.go][query_tables]|Querying tables in a storage account |

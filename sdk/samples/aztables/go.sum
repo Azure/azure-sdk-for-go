@@ -8,6 +8,7 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.2 h1:3W8umQHRg0DXV5KvmbqU4
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.2/go.mod h1:acANgl9stsT5xflESXKjZx4rhZJSr0TGgTDYY0xJPIE=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.3 h1:xxhrKdJQHnbzyquwt4GJuK0xGYIchlxtrbOCy1RcXyg=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.9.3/go.mod h1:uuSIs9Jj5y1WfsKhk9xGaEzyu/5SEmdKwY3Oi0UK59M=
+github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.10.0 h1:jq5Urf8QJK6h0wr8CMiwggo4OSMkXwpArQlkSjSpaBk=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.10.0/go.mod h1:HcM1YX14R7CJcghJGOYCgdezslRSVzqwLf/q+4Y2r/0=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0 h1:HG1ggl8L3ZkV/Ydanf7lKr5kkhhPGCpWdnr1J6v7cO4=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0/go.mod h1:k4KbFSunV/+0hOHL1vyFaPsiYQ1Vmvy1TBpmtvCDLZM=

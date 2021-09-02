@@ -20,7 +20,7 @@ func Sample_QueryTables() {
 	serviceURL := accountName + ".table.core.windows.net"
 
 	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	service := aztable.NewTableServiceClient(serviceURL, cred, nil)
+	service := aztable.NewServiceClient(serviceURL, cred, nil)
 
 	myTable := "myTableName"
 	filter := fmt.Sprintf("TableName ge '%v'", myTable)

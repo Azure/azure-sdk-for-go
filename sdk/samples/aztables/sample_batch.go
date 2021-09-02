@@ -2,13 +2,15 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/tables/aztable"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
 type MyEntity struct {
-	aztable.Entity
+	aztables.Entity
 	Price       float32
 	Inventory   int32
 	ProductName string
@@ -24,13 +26,17 @@ func Sample_Batching() {
 	if !ok {
 		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	serviceURL := accountName + ".table.core.windows.net"
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "tableName")
 
-	cred := aztable.SharedKeyCredential(accountName, accountKey)
-	client := aztable.NewTableClient("tableName", serviceURL, cred, nil)
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	client, err := aztables.NewClient(serviceURL, cred, nil)
+	check(err)
+
+	batch := make([]aztables.TransactionAction, 4)
 
 	entity1 := MyEntity{
-		Entity: aztable.Entity{
+		Entity: aztables.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk001",
 		},
@@ -39,9 +45,15 @@ func Sample_Batching() {
 		ProductName: "Pens",
 		OnSale:      false,
 	}
+	marshalled, err := json.Marshal(entity1)
+	check(err)
+	batch[0] = aztables.TransactionAction{
+		ActionType: aztables.Add,
+		Entity:     marshalled,
+	}
 
 	entity2 := MyEntity{
-		Entity: aztable.Entity{
+		Entity: aztables.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk002",
 		},
@@ -50,9 +62,15 @@ func Sample_Batching() {
 		ProductName: "Calculators",
 		OnSale:      false,
 	}
+	marshalled, err = json.Marshal(entity2)
+	check(err)
+	batch[1] = aztables.TransactionAction{
+		ActionType: aztables.UpdateMerge,
+		Entity:     marshalled,
+	}
 
 	entity3 := MyEntity{
-		Entity: aztable.Entity{
+		Entity: aztables.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk003",
 		},
@@ -61,9 +79,15 @@ func Sample_Batching() {
 		ProductName: "Pens",
 		OnSale:      true,
 	}
+	marshalled, err = json.Marshal(entity3)
+	check(err)
+	batch[2] = aztables.TransactionAction{
+		ActionType: aztables.InsertReplace,
+		Entity:     marshalled,
+	}
 
 	entity4 := MyEntity{
-		Entity: aztable.Entity{
+		Entity: aztables.Entity{
 			PartitionKey: "pk001",
 			RowKey:       "rk004",
 		},
@@ -72,25 +96,13 @@ func Sample_Batching() {
 		ProductName: "100ct Paper Clips",
 		OnSale:      false,
 	}
-
-	batch := make([]aztable.TableTransactionAction, 4)
-	batch[0] = aztable.TableTransactionAction{
-		ActionType: aztable.Add,
-		Entity:     entity1,
-	}
-	batch[1] = aztable.TableTransactionAction{
-		ActionType: aztable.UpdateMerge,
-		Entity:     entity2,
-	}
-	batch[2] = aztable.TableTransactionAction{
-		ActionType: aztable.UpsertReplace,
-		Entity:     entity3,
-	}
-	batch[3] = aztable.TableTransactionAction{
-		ActionType: aztable.Delete,
-		Entity:     entity4,
+	marshalled, err = json.Marshal(entity4)
+	check(err)
+	batch[3] = aztables.TransactionAction{
+		ActionType: aztables.Delete,
+		Entity:     marshalled,
 	}
 
-	_, err := client.SubmitTransaction(context.Background(), batch, nil)
+	_, err = client.SubmitTransaction(context.Background(), batch, nil)
 	check(err)
 }

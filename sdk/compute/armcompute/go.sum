@@ -6,8 +6,6 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.10.0 h1:jq5Urf8QJK6h0wr8CMiw
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.10.0/go.mod h1:HcM1YX14R7CJcghJGOYCgdezslRSVzqwLf/q+4Y2r/0=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.7.0 h1:v9p9TfTbf7AwNb5NYQt7hI41IfPoLFiFkLtb+bmGjT0=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.7.0/go.mod h1:yqy467j36fJxcRV2TzfVZ1pCb5vxm4BtZPUdYWe/Xo8=
-github.com/Azure/azure-sdk-for-go/sdk/to v0.1.5 h1:kkt9E/xZARQITptiUe1ZwjvB3U1vdv4pIGzKnVLfa4E=
-github.com/Azure/azure-sdk-for-go/sdk/to v0.1.5/go.mod h1:QnvViu6oLUpHUZ5b0fwJdVxr3nXlMwvZGo2UdEqUd4g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

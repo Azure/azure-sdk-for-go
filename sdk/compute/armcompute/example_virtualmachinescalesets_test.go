@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {

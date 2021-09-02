@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.13
+// +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {

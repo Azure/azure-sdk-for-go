@@ -3454,6 +3454,7 @@ func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 	_assert.EqualValues(buf, []byte(blockBlobDefaultData))
 }
 
+//nolint
 func InjectErrorInRetryReaderOptions(err error) RetryReaderOptions {
 	return RetryReaderOptions{
 		MaxRetryRequests:       1,

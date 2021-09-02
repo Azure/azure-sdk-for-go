@@ -7,15 +7,21 @@
 package recording
 
 import (
+	"bytes"
+	"crypto/tls"
+	"crypto/x509"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -432,4 +438,218 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Record:   recorder.ModeRecording,
 	Live:     recorder.ModeDisabled,
 	Playback: recorder.ModeReplaying,
+}
+
+var recordMode = os.Getenv("AZURE_RECORD_MODE")
+
+const (
+	modeRecording      = "record"
+	modePlayback       = "playback"
+	baseProxyURLSecure = "localhost:5001"
+	baseProxyURL       = "localhost:5000"
+	IdHeader           = "x-recording-id"
+	ModeHeader         = "x-recording-mode"
+	UpstreamUriHeader  = "x-recording-upstream-base-uri"
+)
+
+var recordingIds = map[string]string{}
+
+var tr = &http.Transport{
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+}
+var client = http.Client{
+	Transport: tr,
+}
+
+type RecordingOptions struct {
+	UseHTTPS bool
+	Host     string
+	Scheme   string
+}
+
+func defaultOptions() *RecordingOptions {
+	return &RecordingOptions{
+		UseHTTPS: true,
+		Host:     "localhost:5001",
+		Scheme:   "https",
+	}
+}
+
+func (r RecordingOptions) HostScheme() string {
+	if r.UseHTTPS {
+		return "https://localhost:5001"
+	}
+	return "http://localhost:5000"
+}
+
+func getTestId(pathToRecordings string, t *testing.T) string {
+	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
+}
+
+func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	if !(recordMode == modeRecording || recordMode == modePlayback) {
+		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s or %s Received: %v", modeRecording, modePlayback, recordMode)
+	}
+	testId := getTestId(pathToRecordings, t)
+
+	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
+
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("x-recording-file", testId)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	recId := resp.Header.Get(IdHeader)
+	if recId == "" {
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
+	}
+	recordingIds[t.Name()] = recId
+	return nil
+}
+
+func StopRecording(t *testing.T, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+
+	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	var recId string
+	var ok bool
+	if recId, ok = recordingIds[t.Name()]; !ok {
+		return errors.New("Recording ID was never set. Did you call StartRecording?")
+	}
+	req.Header.Set("x-recording-id", recId)
+	_, err = client.Do(req)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	return nil
+}
+
+func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+	bodyContent := map[string]string{
+		"value": replacement,
+		"regex": regex,
+	}
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
+func (o *RecordingOptions) Init() {
+	if o.UseHTTPS {
+		o.Host = baseProxyURLSecure
+		o.Scheme = "https"
+	} else {
+		o.Host = baseProxyURL
+		o.Scheme = "http"
+	}
+}
+
+// This looks up an environment variable and if it is not found, returns the recordedValue
+func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
+	val, ok := os.LookupEnv(varName)
+	if !ok {
+		t.Logf("Could not find environment variable: %v", varName)
+		return recordedValue
+	}
+	return val
+}
+
+func LiveOnly(t *testing.T) {
+	if GetRecordMode() != modeRecording {
+		t.Skip("Live Test Only")
+	}
+}
+
+// Function for sleeping during a test for `duration` seconds. This method will only execute when
+// AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
+func Sleep(duration time.Duration) {
+	if GetRecordMode() == modeRecording {
+		time.Sleep(duration)
+	}
+}
+
+func GetRecordingId(t *testing.T) string {
+	return recordingIds[t.Name()]
+}
+
+func GetRecordMode() string {
+	return recordMode
+}
+
+func getRootCas(t *testing.T) (*x509.CertPool, error) {
+	localFile, ok := os.LookupEnv("PROXY_CERT")
+
+	rootCAs, err := x509.SystemCertPool()
+	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
+		rootCAs = x509.NewCertPool()
+	} else if err != nil {
+		return rootCAs, err
+	}
+
+	if !ok {
+		t.Log("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
+		return rootCAs, nil
+	}
+
+	cert, err := ioutil.ReadFile(localFile)
+	if err != nil {
+		return nil, err
+	}
+
+	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
+		t.Log("No certs appended, using system certs only")
+	}
+
+	return rootCAs, nil
+}
+
+func GetHTTPClient(t *testing.T) (*http.Client, error) {
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+
+	rootCAs, err := getRootCas(t)
+	if err != nil {
+		return nil, err
+	}
+
+	transport.TLSClientConfig.RootCAs = rootCAs
+	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
+	transport.TLSClientConfig.InsecureSkipVerify = true
+
+	defaultHttpClient := &http.Client{
+		Transport: transport,
+	}
+	return defaultHttpClient, nil
 }

@@ -111,6 +111,8 @@ stages:
           Image: $(vm.image)
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
+          EnvVars:
+            AZURE_RECORD_MODE: 'playback'
 
     - job: Analyze
       displayName: Analyze
@@ -186,7 +188,10 @@ stages:
       parameters:
         DependsOn:
           - Build
+          # Copy cloud conditional logic from live test stage
           - ${{if eq(variables['System.TeamProject'], 'internal')}}:
             - ${{ each cloud in parameters.CloudConfig }}:
-              - ${{ cloud.key }}
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
+              - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                  - ${{ cloud.key }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}

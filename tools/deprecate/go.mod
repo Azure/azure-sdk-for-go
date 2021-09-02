@@ -6,3 +6,5 @@ require (
 	github.com/Azure/azure-sdk-for-go v54.2.1+incompatible
 	github.com/spf13/cobra v1.1.3
 )
+
+replace github.com/Azure/azure-sdk-for-go/tools/internal => ../../eng/tools/internal

@@ -17,6 +17,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -439,17 +440,19 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Playback: recorder.ModeReplaying,
 }
 
-var recordMode, _ = os.LookupEnv("AZURE_RECORD_MODE")
-var ModeRecording = "record"
-var ModePlayback = "playback"
+var recordMode = os.Getenv("AZURE_RECORD_MODE")
 
-var baseProxyURLSecure = "localhost:5001"
-var baseProxyURL = "localhost:5000"
+const (
+	modeRecording      = "record"
+	modePlayback       = "playback"
+	baseProxyURLSecure = "localhost:5001"
+	baseProxyURL       = "localhost:5000"
+	IdHeader           = "x-recording-id"
+	ModeHeader         = "x-recording-mode"
+	UpstreamUriHeader  = "x-recording-upstream-base-uri"
+)
 
-var recordingId string
-var IdHeader = "x-recording-id"
-var ModeHeader = "x-recording-mode"
-var UpstreamUriHeader = "x-recording-upstream-base-uri"
+var recordingIds = map[string]string{}
 
 var tr = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -459,18 +462,16 @@ var client = http.Client{
 }
 
 type RecordingOptions struct {
-	MaxRetries int32
-	UseHTTPS   bool
-	Host       string
-	Scheme     string
+	UseHTTPS bool
+	Host     string
+	Scheme   string
 }
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
-		MaxRetries: 0,
-		UseHTTPS:   true,
-		Host:       "localhost:5001",
-		Scheme:     "https",
+		UseHTTPS: true,
+		Host:     "localhost:5001",
+		Scheme:   "https",
 	}
 }
 
@@ -482,22 +483,19 @@ func (r RecordingOptions) HostScheme() string {
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {
-	return pathToRecordings + "/recordings/" + t.Name() + ".json"
+	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
 }
 
 func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
-	if recordMode == "" {
-		t.Log("AZURE_RECORD_MODE was not set, options are \"record\" or \"playback\". \nDefaulting to playback")
-		recordMode = "playback"
-	} else {
-		t.Log("AZURE_RECORD_MODE: ", recordMode)
+	if !(recordMode == modeRecording || recordMode == modePlayback) {
+		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s or %s Received: %v", modeRecording, modePlayback, recordMode)
 	}
 	testId := getTestId(pathToRecordings, t)
 
-	url := fmt.Sprintf("%v/%v/start", options.HostScheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -510,7 +508,15 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if err != nil {
 		return err
 	}
-	recordingId = resp.Header.Get(IdHeader)
+	recId := resp.Header.Get(IdHeader)
+	if recId == "" {
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
+	}
+	recordingIds[t.Name()] = recId
 	return nil
 }
 
@@ -524,10 +530,12 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	if recordingId == "" {
+	var recId string
+	var ok bool
+	if recId, ok = recordingIds[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recordingId)
+	req.Header.Set("x-recording-id", recId)
 	_, err = client.Do(req)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -560,9 +568,6 @@ func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error
 }
 
 func (o *RecordingOptions) Init() {
-	if o.MaxRetries != 0 {
-		o.MaxRetries = 0
-	}
 	if o.UseHTTPS {
 		o.Host = baseProxyURLSecure
 		o.Scheme = "https"
@@ -571,32 +576,6 @@ func (o *RecordingOptions) Init() {
 		o.Scheme = "http"
 	}
 }
-
-// type recordingPolicy struct {
-// 	options RecordingOptions
-// }
-
-// func NewRecordingPolicy(o *RecordingOptions) azcore.Policy {
-// 	if o == nil {
-// 		o = &RecordingOptions{}
-// 	}
-// 	p := &recordingPolicy{options: *o}
-// 	p.options.init()
-// 	return p
-// }
-
-// func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
-// 	originalURLHost := req.URL.Host
-// 	req.URL.Scheme = "https"
-// 	req.URL.Host = p.options.host
-// 	req.Host = p.options.host
-
-// 	req.Header.Set(UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.scheme, originalURLHost))
-// 	req.Header.Set(ModeHeader, recordMode)
-// 	req.Header.Set(IdHeader, recordingId)
-
-// 	return req.Next()
-// }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
@@ -609,85 +588,58 @@ func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if GetRecordMode() != ModeRecording {
+	if GetRecordMode() != modeRecording {
 		t.Skip("Live Test Only")
 	}
 }
 
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
-func Sleep(duration int) {
-	if GetRecordMode() == ModeRecording {
-		time.Sleep(time.Duration(duration) * time.Second)
+func Sleep(duration time.Duration) {
+	if GetRecordMode() == modeRecording {
+		time.Sleep(duration)
 	}
 }
 
-func GetRecordingId() string {
-	return recordingId
+func GetRecordingId(t *testing.T) string {
+	return recordingIds[t.Name()]
 }
 
 func GetRecordMode() string {
 	return recordMode
 }
 
-func InPlayback() bool {
-	return GetRecordMode() == ModePlayback
-}
-
-func InRecord() bool {
-	return GetRecordMode() == ModeRecording
-}
-
-// type FakeCredential struct {
-// 	accountName string
-// 	accountKey  string
-// }
-
-// func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-// 	return &FakeCredential{
-// 		accountName: accountName,
-// 		accountKey:  accountKey,
-// 	}
-// }
-
-// func (f *FakeCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-// 	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-// 		authHeader := strings.Join([]string{"Authorization ", f.accountName, ":", f.accountKey}, "")
-// 		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
-// 		return req.Next()
-// 	})
-// }
-
-func getRootCas() (*x509.CertPool, error) {
+func getRootCas(t *testing.T) (*x509.CertPool, error) {
 	localFile, ok := os.LookupEnv("PROXY_CERT")
 
 	rootCAs, err := x509.SystemCertPool()
-	if err != nil {
+	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
 		rootCAs = x509.NewCertPool()
+	} else if err != nil {
+		return rootCAs, err
 	}
 
 	if !ok {
-		fmt.Println("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
+		t.Log("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
 		return rootCAs, nil
 	}
 
 	cert, err := ioutil.ReadFile(localFile)
 	if err != nil {
-		fmt.Println("error opening cert file")
 		return nil, err
 	}
 
 	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
-		fmt.Println("No certs appended, using system certs only")
+		t.Log("No certs appended, using system certs only")
 	}
 
 	return rootCAs, nil
 }
 
-func GetHTTPClient() (*http.Client, error) {
+func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 
-	rootCAs, err := getRootCas()
+	rootCAs, err := getRootCas(t)
 	if err != nil {
 		return nil, err
 	}

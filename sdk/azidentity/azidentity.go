@@ -13,6 +13,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 const (
@@ -96,11 +99,11 @@ func (e *AuthenticationFailedError) Error() string {
 	return e.msg + " details: " + e.inner.Error()
 }
 
-var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)
+var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
 func newAADAuthenticationFailedError(resp *http.Response) error {
 	authFailed := &AADAuthenticationFailedError{Response: resp}
-	err := azcore.UnmarshalAsJSON(resp, authFailed)
+	err := runtime.UnmarshalAsJSON(resp, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
 		authFailed.Description = "Failed to unmarshal response: " + err.Error()
@@ -126,22 +129,22 @@ func (e *CredentialUnavailableError) NonRetriable() {
 	// marker method
 }
 
-var _ azcore.NonRetriableError = (*CredentialUnavailableError)(nil)
+var _ errorinfo.NonRetriable = (*CredentialUnavailableError)(nil)
 
 // pipelineOptions are used to configure how requests are made to Azure Active Directory.
 type pipelineOptions struct {
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transporter
+	HTTPClient policy.Transporter
 
 	// Retry configures the built-in retry policy behavior
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 }
 
 // setAuthorityHost initializes the authority host for credentials.
@@ -164,20 +167,22 @@ func setAuthorityHost(authorityHost string) (string, error) {
 }
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.
-func newDefaultPipeline(o pipelineOptions) azcore.Pipeline {
-	return azcore.NewPipeline(
-		o.HTTPClient,
-		azcore.NewTelemetryPolicy(&o.Telemetry),
-		azcore.NewRetryPolicy(&o.Retry),
-		azcore.NewLogPolicy(&o.Logging))
+func newDefaultPipeline(o pipelineOptions) runtime.Pipeline {
+	policies := []policy.Policy{}
+	if !o.Telemetry.Disabled {
+		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
+	}
+	policies = append(policies, runtime.NewRetryPolicy(&o.Retry))
+	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
+	return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
 // for a Managed Identity, such as a MSI specific retry policy.
-func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
+func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
-	retryOpts := azcore.RetryOptions{
+	retryOpts := policy.RetryOptions{
 		MaxRetries:    5,
 		MaxRetryDelay: 1 * time.Minute,
 		RetryDelay:    2 * time.Second,
@@ -200,16 +205,13 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 			http.StatusNotExtended,                    // 510
 			http.StatusNetworkAuthenticationRequired), // 511
 	}
-	if o.Telemetry.Value == "" {
-		o.Telemetry.Value = UserAgent
-	} else {
-		o.Telemetry.Value += " " + UserAgent
+	policies := []policy.Policy{}
+	if !o.Telemetry.Disabled {
+		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
 	}
-	return azcore.NewPipeline(
-		o.HTTPClient,
-		azcore.NewTelemetryPolicy(&o.Telemetry),
-		azcore.NewRetryPolicy(&retryOpts),
-		azcore.NewLogPolicy(&o.Logging))
+	policies = append(policies, runtime.NewRetryPolicy(&retryOpts))
+	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
+	return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

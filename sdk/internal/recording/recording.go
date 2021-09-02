@@ -609,7 +609,6 @@ func GetRecordMode() string {
 	return recordMode
 }
 
-
 func getRootCas(t *testing.T) (*x509.CertPool, error) {
 	localFile, ok := os.LookupEnv("PROXY_CERT")
 

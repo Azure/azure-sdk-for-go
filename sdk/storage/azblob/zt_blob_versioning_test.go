@@ -76,6 +76,7 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_assert.Equal(*blobProp.IsCurrentVersion, true)
 }
 
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()

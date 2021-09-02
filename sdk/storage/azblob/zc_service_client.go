@@ -15,13 +15,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-const (
-	// ContainerNameRoot is the special Azure Storage name used to identify a storage account's root container.
-	ContainerNameRoot = "$root"
-
-	// ContainerNameLogs is the special Azure Storage name used to identify a storage account's logs container.
-	//ContainerNameLogs = "$logs"
-)
+//const (
+//	// ContainerNameRoot is the special Azure Storage name used to identify a storage account's root container.
+//	ContainerNameRoot = "$root"
+//
+//	// ContainerNameLogs is the special Azure Storage name used to identify a storage account's logs container.
+//	ContainerNameLogs = "$logs"
+//)
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
 type ServiceClient struct {

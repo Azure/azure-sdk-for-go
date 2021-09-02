@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBytesWriterWriteAt() {
 	_assert := assert.New(s.T())
 	b := make([]byte, 10)

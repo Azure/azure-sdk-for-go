@@ -1224,6 +1224,7 @@ func (client *blobClient) GetAccountInfo(ctx context.Context, options *BlobGetAc
 }
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
+//nolint
 func (client *blobClient) getAccountInfoCreateRequest(ctx context.Context, options *BlobGetAccountInfoOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
 	if err != nil {

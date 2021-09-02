@@ -183,6 +183,7 @@ func (e *StorageError) Temporary() bool {
 }
 
 // UnmarshalXML performs custom unmarshalling of XML-formatted Azure storage request errors.
+//nolint
 func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err error) {
 	tokName := ""
 	var t xml.Token

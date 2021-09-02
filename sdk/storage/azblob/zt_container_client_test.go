@@ -13,33 +13,35 @@ import (
 	"time"
 )
 
-func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
-	_assert := assert.New(s.T())
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	testURL := svcClient.NewContainerClient(containerPrefix)
+//nolint
+//func (s *azblobUnrecordedTestSuite) TestNewContainerClientValidName() {
+//	_assert := assert.New(s.T())
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	testURL := svcClient.NewContainerClient(containerPrefix)
+//
+//	accountName, err := getRequiredEnv(AccountNameEnvVar)
+//	_assert.Nil(err)
+//	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
+//	_assert.Equal(testURL.URL(), correctURL)
+//}
 
-	accountName, err := getRequiredEnv(AccountNameEnvVar)
-	_assert.Nil(err)
-	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
-	_assert.Equal(testURL.URL(), correctURL)
-}
-
-func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
-	_assert := assert.New(s.T())
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	testURL := svcClient.NewContainerClient(ContainerNameRoot)
-
-	accountName, err := getRequiredEnv(AccountNameEnvVar)
-	_assert.Nil(err)
-	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
-	_assert.Equal(testURL.URL(), correctURL)
-}
+//nolint
+//func (s *azblobUnrecordedTestSuite) TestCreateRootContainerURL() {
+//	_assert := assert.New(s.T())
+//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//	testURL := svcClient.NewContainerClient(ContainerNameRoot)
+//
+//	accountName, err := getRequiredEnv(AccountNameEnvVar)
+//	_assert.Nil(err)
+//	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
+//	_assert.Equal(testURL.URL(), correctURL)
+//}
 
 func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	_assert := assert.New(s.T())

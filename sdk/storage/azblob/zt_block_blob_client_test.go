@@ -94,6 +94,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 	_assert.Len(blockList.BlockList.CommittedBlocks, len(data))
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -192,6 +193,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	_assert.EqualValues(destData, content)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -287,6 +289,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	_assert.EqualValues(*resp.CopyStatus, "success")
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -354,6 +357,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	_assert.Equal(*gResp.ContentType, contentTypeVal)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -1140,6 +1144,7 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -1203,6 +1208,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

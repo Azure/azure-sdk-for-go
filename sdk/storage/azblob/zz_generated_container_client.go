@@ -611,6 +611,7 @@ func (client *containerClient) GetAccountInfo(ctx context.Context, options *Cont
 }
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
+//nolint
 func (client *containerClient) getAccountInfoCreateRequest(ctx context.Context, options *ContainerGetAccountInfoOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
 	if err != nil {

@@ -16,6 +16,7 @@ import (
 type additionalProperties map[string]*string
 
 // UnmarshalXML implements the xml.Unmarshaler interface for additionalProperties.
+//nolint
 func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	tokName := ""
 	for t, err := d.Token(); err == nil; t, err = d.Token() {

@@ -17,6 +17,7 @@ import (
 	"time"
 )
 
+//nolint
 type directoryClient struct {
 	con            *connection
 	pathRenameMode *PathRenameMode

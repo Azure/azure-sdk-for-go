@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v57.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2021-05-01/mysqlflexibleservers`
+- `github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2021-06-01/servicefabric`
+
 ## `v57.0.0`
 
 ### New Packages

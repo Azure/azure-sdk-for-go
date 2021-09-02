@@ -237,6 +237,7 @@ func getReaderToGeneratedBytes(n int) *bytes.Reader {
 	return r
 }
 
+//nolint
 func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	data := make([]byte, n)
 	rand.Read(data)

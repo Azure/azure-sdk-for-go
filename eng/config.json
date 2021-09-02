@@ -11,6 +11,10 @@
         {
             "Name": "internal",
             "CoverageGoal": 0.90
+        },
+        {
+            "Name": "azblob",
+            "CoverageGoal": 0.45
         }
     ]
 }

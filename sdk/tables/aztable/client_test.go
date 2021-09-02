@@ -37,7 +37,6 @@ func TestCreateTable(t *testing.T) {
 
 			require.NoError(t, err)
 			require.NotNil(t, resp.RawResponse)
-			// require.Equal(t, *resp.TableResponse.TableName, client.name)
 		})
 	}
 }

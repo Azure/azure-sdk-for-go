@@ -131,7 +131,7 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Tables))
 // }
 // err := pager.Err()
 type ListTablesPager interface {
@@ -176,6 +176,35 @@ func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnve
 	}
 }
 
+// ResponseProperties contains the properties for a single Table
+type ResponseProperties struct {
+	// The edit link of the table.
+	ODataEditLink *string `json:"odata.editLink,omitempty"`
+
+	// The id of the table.
+	ODataID *string `json:"odata.id,omitempty"`
+
+	// The odata type of the table.
+	ODataType *string `json:"odata.type,omitempty"`
+
+	// The name of the table.
+	TableName *string `json:"TableName,omitempty"`
+}
+
+// Convets a generated TableResponseProperties to a ResponseProperties
+func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) *ResponseProperties {
+	if g == nil {
+		return nil
+	}
+
+	return &ResponseProperties{
+		TableName:     g.TableName,
+		ODataEditLink: g.ODataEditLink,
+		ODataID:       g.ODataID,
+		ODataType:     g.ODataType,
+	}
+}
+
 type tableQueryResponsePager struct {
 	client            *generated.TableClient
 	current           *generated.TableQueryResponseEnvelope
@@ -203,7 +232,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 //
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableEntityQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Tables))
 // }
 func (p *tableQueryResponsePager) PageResponse() ListTablesPage {
 	return *fromGeneratedTableQueryResponseEnvelope(p.current)
@@ -229,7 +258,7 @@ func (p *tableQueryResponsePager) Err() error {
 // pager := client.List(options) // Pass in 'nil' if you want to return all Tables for an account.
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.TableQueryResponse.Value))
+//     fmt.Printf("The page contains %i results.\n", len(resp.Tables))
 // }
 // err := pager.Err()
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {

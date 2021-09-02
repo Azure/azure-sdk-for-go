@@ -1,6 +1,6 @@
 # Release History
 
-## v0.2.0 (released)
+## v0.2.0 (2021-09-03)
 ### Breaking Changes
 
 - Function `*RecordSetsClient.Delete` return value(s) have been changed from `(*http.Response, error)` to `(RecordSetsDeleteResponse, error)`
@@ -165,4 +165,4 @@
 Total 71 breaking change(s), 147 additive change(s).
 
 
-## v0.1.0 (released)
+## v0.1.0 (2021-06-22)

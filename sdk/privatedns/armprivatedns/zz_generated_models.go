@@ -10,8 +10,9 @@ package armprivatedns
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ARecord - An A record.

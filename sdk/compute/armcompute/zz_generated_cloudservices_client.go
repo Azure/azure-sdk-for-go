@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,93 +12,68 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CloudServicesClient contains the methods for the CloudServices group.
 // Don't use this type directly, use NewCloudServicesClient() instead.
 type CloudServicesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCloudServicesClient creates a new instance of CloudServicesClient with the specified values.
-func NewCloudServicesClient(con *armcore.Connection, subscriptionID string) *CloudServicesClient {
-	return &CloudServicesClient{con: con, subscriptionID: subscriptionID}
+func NewCloudServicesClient(con *arm.Connection, subscriptionID string) *CloudServicesClient {
+	return &CloudServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (CloudServicePollerResponse, error) {
+func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (CloudServicesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesCreateOrUpdatePollerResponse{}, err
 	}
-	result := CloudServicePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return CloudServicePollerResponse{}, err
-	}
-	poller := &cloudServicePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new CloudServicePoller from the specified resume token.
-// token - The value must come from a previous call to CloudServicePoller.ResumeToken().
-func (client *CloudServicesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (CloudServicePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return CloudServicePollerResponse{}, err
-	}
-	poller := &cloudServicePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CloudServicePollerResponse{}, err
-	}
-	result := CloudServicePollerResponse{
+	result := CloudServicesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return CloudServicesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &CloudServicesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,101 +87,72 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CloudServicesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (CloudServicesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := CloudServicesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return CloudServicesDeletePollerResponse{}, err
+	}
+	result.Poller = &CloudServicesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -219,98 +166,69 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *CloudServicesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (CloudServicesDeleteInstancesPollerResponse, error) {
 	resp, err := client.deleteInstances(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesDeleteInstancesPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.DeleteInstances", "", resp, client.con.Pipeline(), client.deleteInstancesHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDeleteInstances creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeDeleteInstances(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.DeleteInstances", token, client.con.Pipeline(), client.deleteInstancesHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := CloudServicesDeleteInstancesPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.DeleteInstances", "", resp, client.pl, client.deleteInstancesHandleError)
+	if err != nil {
+		return CloudServicesDeleteInstancesPollerResponse{}, err
+	}
+	result.Poller = &CloudServicesDeleteInstancesPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (*http.Response, error) {
 	req, err := client.deleteInstancesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.deleteInstancesHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteInstancesCreateRequest creates the DeleteInstances request.
-func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/delete"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -324,53 +242,52 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // deleteInstancesHandleError handles the DeleteInstances error response.
-func (client *CloudServicesClient) deleteInstancesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) deleteInstancesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Display information about a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (CloudServiceResponse, error) {
+func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (CloudServicesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceResponse{}, err
+		return CloudServicesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServiceResponse{}, err
+		return CloudServicesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return CloudServiceResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CloudServicesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -384,59 +301,58 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudServicesClient) getHandleResponse(resp *azcore.Response) (CloudServiceResponse, error) {
-	var val *CloudService
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceResponse{}, err
+func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (CloudServicesGetResponse, error) {
+	result := CloudServicesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CloudService); err != nil {
+		return CloudServicesGetResponse{}, err
 	}
-	return CloudServiceResponse{RawResponse: resp.Response, CloudService: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *CloudServicesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetInstanceView - Gets the status of a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (CloudServiceInstanceViewResponse, error) {
+func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (CloudServicesGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServiceInstanceViewResponse{}, err
+		return CloudServicesGetInstanceViewResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudServiceInstanceViewResponse{}, err
+		return CloudServicesGetInstanceViewResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return CloudServiceInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CloudServicesGetInstanceViewResponse{}, client.getInstanceViewHandleError(resp)
 	}
 	return client.getInstanceViewHandleResponse(resp)
 }
 
 // getInstanceViewCreateRequest creates the GetInstanceView request.
-func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/instanceView"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -450,60 +366,56 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getInstanceViewHandleResponse handles the GetInstanceView response.
-func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *azcore.Response) (CloudServiceInstanceViewResponse, error) {
-	var val *CloudServiceInstanceView
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceInstanceViewResponse{}, err
+func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Response) (CloudServicesGetInstanceViewResponse, error) {
+	result := CloudServicesGetInstanceViewResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceInstanceView); err != nil {
+		return CloudServicesGetInstanceViewResponse{}, err
 	}
-	return CloudServiceInstanceViewResponse{RawResponse: resp.Response, CloudServiceInstanceView: val}, nil
+	return result, nil
 }
 
 // getInstanceViewHandleError handles the GetInstanceView error response.
-func (client *CloudServicesClient) getInstanceViewHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) getInstanceViewHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next page of Cloud Services. Do this
 // till nextLink is null to fetch all the Cloud Services.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesListOptions) CloudServiceListResultPager {
-	return &cloudServiceListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesListOptions) *CloudServicesListPager {
+	return &CloudServicesListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp CloudServiceListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
+		advancer: func(ctx context.Context, resp CloudServicesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *CloudServicesListOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *CloudServicesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -513,167 +425,134 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CloudServicesClient) listHandleResponse(resp *azcore.Response) (CloudServiceListResultResponse, error) {
-	var val *CloudServiceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceListResultResponse{}, err
+func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (CloudServicesListResponse, error) {
+	result := CloudServicesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceListResult); err != nil {
+		return CloudServicesListResponse{}, err
 	}
-	return CloudServiceListResultResponse{RawResponse: resp.Response, CloudServiceListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *CloudServicesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListAll - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink property in the response to
 // get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) ListAll(options *CloudServicesListAllOptions) CloudServiceListResultPager {
-	return &cloudServiceListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *CloudServicesClient) ListAll(options *CloudServicesListAllOptions) *CloudServicesListAllPager {
+	return &CloudServicesListAllPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.listAllHandleResponse,
-		errorer:   client.listAllHandleError,
-		advancer: func(ctx context.Context, resp CloudServiceListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
+		advancer: func(ctx context.Context, resp CloudServicesListAllResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CloudServiceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, options *CloudServicesListAllOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, options *CloudServicesListAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/cloudServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *CloudServicesClient) listAllHandleResponse(resp *azcore.Response) (CloudServiceListResultResponse, error) {
-	var val *CloudServiceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CloudServiceListResultResponse{}, err
-	}
-	return CloudServiceListResultResponse{RawResponse: resp.Response, CloudServiceListResult: val}, nil
-}
-
-// listAllHandleError handles the ListAll error response.
-func (client *CloudServicesClient) listAllHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (HTTPPollerResponse, error) {
-	resp, err := client.powerOff(ctx, resourceGroupName, cloudServiceName, options)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.PowerOff", "", resp, client.con.Pipeline(), client.powerOffHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *CloudServicesClient) listAllHandleResponse(resp *http.Response) (CloudServicesListAllResponse, error) {
+	result := CloudServicesListAllResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceListResult); err != nil {
+		return CloudServicesListAllResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumePowerOff creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumePowerOff(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.PowerOff", token, client.con.Pipeline(), client.powerOffHandleError)
+// listAllHandleError handles the ListAll error response.
+func (client *CloudServicesClient) listAllHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &httpPoller{
-		pt: pt,
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
+// If the operation fails it returns the *CloudError error type.
+func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (CloudServicesPowerOffPollerResponse, error) {
+	resp, err := client.powerOff(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesPowerOffPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesPowerOffPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.PowerOff", "", resp, client.pl, client.powerOffHandleError)
+	if err != nil {
+		return CloudServicesPowerOffPollerResponse{}, err
+	}
+	result.Poller = &CloudServicesPowerOffPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // PowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (*http.Response, error) {
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.powerOffHandleError(resp)
 	}
 	return resp, nil
 }
 
 // powerOffCreateRequest creates the PowerOff request.
-func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/poweroff"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -687,77 +566,48 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // powerOffHandleError handles the PowerOff error response.
-func (client *CloudServicesClient) powerOffHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) powerOffHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginRebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes the storage resources
 // that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (CloudServicesRebuildPollerResponse, error) {
 	resp, err := client.rebuild(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRebuildPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.Rebuild", "", resp, client.con.Pipeline(), client.rebuildHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRebuild creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeRebuild(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Rebuild", token, client.con.Pipeline(), client.rebuildHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := CloudServicesRebuildPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Rebuild", "", resp, client.pl, client.rebuildHandleError)
+	if err != nil {
+		return CloudServicesRebuildPollerResponse{}, err
+	}
+	result.Poller = &CloudServicesRebuildPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -766,23 +616,23 @@ func (client *CloudServicesClient) ResumeRebuild(ctx context.Context, token stri
 // are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*http.Response, error) {
 	req, err := client.rebuildCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.rebuildHandleError(resp)
 	}
 	return resp, nil
 }
 
 // rebuildCreateRequest creates the Rebuild request.
-func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/rebuild"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -796,101 +646,72 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // rebuildHandleError handles the Rebuild error response.
-func (client *CloudServicesClient) rebuildHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) rebuildHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginReimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (CloudServicesReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesReimagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.Reimage", "", resp, client.con.Pipeline(), client.reimageHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeReimage creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeReimage(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Reimage", token, client.con.Pipeline(), client.reimageHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := CloudServicesReimagePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Reimage", "", resp, client.pl, client.reimageHandleError)
+	if err != nil {
+		return CloudServicesReimagePollerResponse{}, err
+	}
+	result.Poller = &CloudServicesReimagePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Reimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.reimageHandleError(resp)
 	}
 	return resp, nil
 }
 
 // reimageCreateRequest creates the Reimage request.
-func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/reimage"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -904,101 +725,72 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // reimageHandleError handles the Reimage error response.
-func (client *CloudServicesClient) reimageHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) reimageHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginRestart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (CloudServicesRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesRestartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.Restart", "", resp, client.con.Pipeline(), client.restartHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRestart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeRestart(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Restart", token, client.con.Pipeline(), client.restartHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := CloudServicesRestartPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Restart", "", resp, client.pl, client.restartHandleError)
+	if err != nil {
+		return CloudServicesRestartPollerResponse{}, err
+	}
+	result.Poller = &CloudServicesRestartPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.restartHandleError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/restart"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1012,101 +804,72 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // restartHandleError handles the Restart error response.
-func (client *CloudServicesClient) restartHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) restartHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginStart - Starts the cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (HTTPPollerResponse, error) {
+func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (CloudServicesStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesStartPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.Start", "", resp, client.con.Pipeline(), client.startHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeStart creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Start", token, client.con.Pipeline(), client.startHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := CloudServicesStartPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Start", "", resp, client.pl, client.startHandleError)
+	if err != nil {
+		return CloudServicesStartPollerResponse{}, err
+	}
+	result.Poller = &CloudServicesStartPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Starts the cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.startHandleError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/start"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1120,98 +883,69 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // startHandleError handles the Start error response.
-func (client *CloudServicesClient) startHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) startHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Update a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (CloudServicePollerResponse, error) {
+func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (CloudServicesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
-		return CloudServicePollerResponse{}, err
+		return CloudServicesUpdatePollerResponse{}, err
 	}
-	result := CloudServicePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return CloudServicePollerResponse{}, err
-	}
-	poller := &cloudServicePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new CloudServicePoller from the specified resume token.
-// token - The value must come from a previous call to CloudServicePoller.ResumeToken().
-func (client *CloudServicesClient) ResumeUpdate(ctx context.Context, token string) (CloudServicePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return CloudServicePollerResponse{}, err
-	}
-	poller := &cloudServicePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CloudServicePollerResponse{}, err
-	}
-	result := CloudServicePollerResponse{
+	result := CloudServicesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CloudServiceResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return CloudServicesUpdatePollerResponse{}, err
+	}
+	result.Poller = &CloudServicesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1225,30 +959,29 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *CloudServicesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

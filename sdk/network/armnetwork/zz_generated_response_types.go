@@ -10,9 +10,10 @@ package armnetwork
 
 import (
 	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // ApplicationGatewayPrivateEndpointConnectionsDeletePollerResponse contains the response from method ApplicationGatewayPrivateEndpointConnections.Delete.

@@ -626,6 +626,7 @@ func getRootCas(t *testing.T) (*x509.CertPool, error) {
 
 	cert, err := ioutil.ReadFile(localFile)
 	if err != nil {
+
 		return nil, err
 	}
 

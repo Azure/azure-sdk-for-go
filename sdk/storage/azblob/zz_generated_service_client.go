@@ -127,6 +127,7 @@ func (client *serviceClient) GetAccountInfo(ctx context.Context, options *Servic
 }
 
 // getAccountInfoCreateRequest creates the GetAccountInfo request.
+//nolint
 func (client *serviceClient) getAccountInfoCreateRequest(ctx context.Context, options *ServiceGetAccountInfoOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.con.Endpoint())
 	if err != nil {

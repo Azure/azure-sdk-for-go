@@ -92,11 +92,13 @@ func recordedTestTeardown(key string) {
 	}
 }
 
+//nolint
 func (s *azblobTestSuite) BeforeTest(suite string, test string) {
 	// set up the test environment
 	recordedTestSetup(s.T(), s.mode)
 }
 
+//nolint
 func (s *azblobTestSuite) AfterTest(suite string, test string) {
 	// teardown the test context
 	recordedTestTeardown(s.T().Name())
@@ -125,7 +127,8 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
-const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
+
+//const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
 const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
 const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"

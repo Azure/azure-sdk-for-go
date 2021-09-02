@@ -3195,6 +3195,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
+//nolint
 func testBlobServiceClientDeleteImpl(_assert *assert.Assertions, svcClient ServiceClient) error {
 	//containerClient := createNewContainer(_assert, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_assert, containerClient)

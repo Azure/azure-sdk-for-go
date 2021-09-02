@@ -1081,7 +1081,8 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	_assert.EqualValues(destData, srcData)
 }
 
-func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
+//nolint
+func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)

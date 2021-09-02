@@ -17,6 +17,7 @@ type BlobLeaseClient struct {
 }
 
 // NewBlobLeaseClient is used to create lease client
+//nolint
 func NewBlobLeaseClient(blobURL string, leaseID *string, cred azcore.Credential, options *connectionOptions) (BlobLeaseClient, error) {
 	con := newConnection(blobURL, cred, options)
 	c, _ := cred.(*SharedKeyCredential)

@@ -1,6 +1,6 @@
 # Release History
 
-## v0.2.0 (released)
+## v0.2.0 (2021-09-03)
 ### Breaking Changes
 
 - Function `NewPremiumMessagingRegionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
@@ -239,4 +239,4 @@
 Total 145 breaking change(s), 132 additive change(s).
 
 
-## v0.1.0 (released)
+## v0.1.0 (2021-08-10)

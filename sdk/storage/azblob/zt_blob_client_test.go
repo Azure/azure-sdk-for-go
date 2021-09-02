@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -57,6 +58,47 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert.Nil(err)
 
 	credential, err := getGenericCredential(_context.recording, testAccountDefault)
+	if err != nil {
+		s.Fail(err.Error())
+	}
+	sasQueryParams, err := AccountSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,
+		ExpiryTime:    currentTime,
+		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
+		Services:      AccountSASServices{Blob: true}.String(),
+		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
+	}.NewSASQueryParameters(credential)
+	if err != nil {
+		s.Fail(err.Error())
+	}
+
+	parts := NewBlobURLParts(bbClient.URL())
+	parts.SAS = sasQueryParams
+	parts.Snapshot = currentTime.Format(SnapshotTimeFormat)
+	blobURLParts := parts.URL()
+
+	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
+	// it is copied here
+	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName +
+		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
+	_assert.Equal(blobURLParts, correctURL)
+}
+
+func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingConnectionString() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClientFromConnectionString(nil, testAccountDefault, nil)
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, svcClient)
+
+	blobName := generateBlobName(testName)
+	bbClient := getBlockBlobClient(blobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_assert.Nil(err)
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -402,20 +444,30 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_ = resp2.Body(RetryReaderOptions{}).Close()
 }
 
-func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
+func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	var svcClient ServiceClient
+	var err error
 	for i := 1; i <= 2; i++ {
-		var bsu ServiceClient
 		if i == 1 {
-			bsu = getBSU()
+			svcClient, err = getServiceClient(nil, testAccountDefault, nil)
 		} else {
-			bsu = getBSUFromConnectionString()
+			svcClient, err = getServiceClientFromConnectionString(nil, testAccountDefault, nil)
 		}
-		containerClient, containerName := createNewContainer(c, bsu)
-		defer deleteContainer(c, containerClient)
+		_assert.Nil(err)
+
+		containerClient := createNewContainer(_assert, generateContainerName(testName)+strconv.Itoa(i), svcClient)
 		_, err := containerClient.SetAccessPolicy(ctx, nil)
-		c.Assert(err, chk.IsNil)
-		blobClient, blobName := createNewBlockBlob(c, containerClient)
-		_ = blobClient
+		_assert.Nil(err)
+
+		blobClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
+		_, err = blobClient.Delete(ctx, nil)
+		_assert.Nil(err)
+
+		deleteContainer(_assert, containerClient)
+	}
+}
 
 func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 	_assert := assert.New(s.T())
@@ -3130,23 +3182,23 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 }
 
 func testBlobServiceClientDeleteImpl(_assert *assert.Assertions, svcClient ServiceClient) error {
-	//containerURL, _ := createNewContainer(c, svcClient)
-	//defer deleteContainer(containerURL)
-	//blobURL, _ := createNewBlockBlob(c, containerURL)
+	//containerClient := createNewContainer(_assert, "gocblobserviceclientdeleteimpl", svcClient)
+	//defer deleteContainer(_assert, containerClient)
+	//bbClient := createNewBlockBlob(_assert, "goblobserviceclientdeleteimpl", containerClient)
 	//
-	//_, err := blobURL.Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
+	//_, err := bbClient.Delete(ctx, nil)
 	//_assert.Nil(err) // This call will not have errors related to slow update of service properties, so we assert.
 	//
-	//_, err = blobURL.Undelete(ctx)
+	//_, err = bbClient.Undelete(ctx)
 	//if err != nil { // We want to give the wrapper method a chance to check if it was an error related to the service properties update.
 	//	return err
 	//}
 	//
-	//resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{})
+	//resp, err := bbClient.GetProperties(ctx, nil)
 	//if err != nil {
-	//	return errors.New(string(err.(StorageError).ErrorCode()))
+	//	return errors.New(string(err.(*StorageError).ErrorCode))
 	//}
-	//_assert(resp.BlobType(), chk.Equals, BlobBlockBlob) // We could check any property. This is just to double check it was undeleted.
+	//_assert.Equal(resp.BlobType, BlobTypeBlockBlob) // We could check any property. This is just to double check it was undeleted.
 	return nil
 }
 

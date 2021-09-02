@@ -1,3 +1,242 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `NewPremiumMessagingRegionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*DisasterRecoveryConfigsClient.List` return value(s) have been changed from `(DisasterRecoveryConfigsListPager)` to `(*DisasterRecoveryConfigsListPager)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListPager)` to `(*PrivateEndpointConnectionsListPager)`
+- Function `*QueuesClient.ListByNamespace` return value(s) have been changed from `(QueuesListByNamespacePager)` to `(*QueuesListByNamespacePager)`
+- Function `NewRegionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*SubscriptionsClient.ListByTopic` return value(s) have been changed from `(SubscriptionsListByTopicPager)` to `(*SubscriptionsListByTopicPager)`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(NamespacesListPager)` to `(*NamespacesListPager)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*TopicsClient.ListAuthorizationRules` return value(s) have been changed from `(TopicsListAuthorizationRulesPager)` to `(*TopicsListAuthorizationRulesPager)`
+- Function `*NamespacesClient.ListVirtualNetworkRules` return value(s) have been changed from `(NamespacesListVirtualNetworkRulesPager)` to `(*NamespacesListVirtualNetworkRulesPager)`
+- Function `*NamespacesClient.ListIPFilterRules` return value(s) have been changed from `(NamespacesListIPFilterRulesPager)` to `(*NamespacesListIPFilterRulesPager)`
+- Function `NewSubscriptionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*NamespacesClient.ListByResourceGroup` return value(s) have been changed from `(NamespacesListByResourceGroupPager)` to `(*NamespacesListByResourceGroupPager)`
+- Function `*QueuesClient.ListAuthorizationRules` return value(s) have been changed from `(QueuesListAuthorizationRulesPager)` to `(*QueuesListAuthorizationRulesPager)`
+- Function `*EventHubsClient.ListByNamespace` return value(s) have been changed from `(EventHubsListByNamespacePager)` to `(*EventHubsListByNamespacePager)`
+- Function `NewDisasterRecoveryConfigsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewNamespacesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TopicsClient.ListByNamespace` return value(s) have been changed from `(TopicsListByNamespacePager)` to `(*TopicsListByNamespacePager)`
+- Function `*NamespacesClient.ListNetworkRuleSets` return value(s) have been changed from `(NamespacesListNetworkRuleSetsPager)` to `(*NamespacesListNetworkRuleSetsPager)`
+- Function `NewQueuesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(NamespacesListAuthorizationRulesPager)` to `(*NamespacesListAuthorizationRulesPager)`
+- Function `*PremiumMessagingRegionsClient.List` return value(s) have been changed from `(PremiumMessagingRegionsListPager)` to `(*PremiumMessagingRegionsListPager)`
+- Function `NewRulesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListPager)` to `(*OperationsListPager)`
+- Function `*RulesClient.ListBySubscriptions` return value(s) have been changed from `(RulesListBySubscriptionsPager)` to `(*RulesListBySubscriptionsPager)`
+- Function `NewEventHubsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewTopicsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*RegionsClient.ListBySKU` return value(s) have been changed from `(RegionsListBySKUPager)` to `(*RegionsListBySKUPager)`
+- Function `NewPrivateLinkResourcesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*MigrationConfigsClient.List` return value(s) have been changed from `(MigrationConfigsListPager)` to `(*MigrationConfigsListPager)`
+- Function `NewMigrationConfigsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` return value(s) have been changed from `(DisasterRecoveryConfigsListAuthorizationRulesPager)` to `(*DisasterRecoveryConfigsListAuthorizationRulesPager)`
+- Type of `PrivateEndpointConnectionsDeletePollerResponse.Poller` has been changed from `PrivateEndpointConnectionsDeletePoller` to `*PrivateEndpointConnectionsDeletePoller`
+- Type of `MigrationConfigsCreateAndStartMigrationPollerResponse.Poller` has been changed from `MigrationConfigsCreateAndStartMigrationPoller` to `*MigrationConfigsCreateAndStartMigrationPoller`
+- Type of `NamespacesCreateOrUpdatePollerResponse.Poller` has been changed from `NamespacesCreateOrUpdatePoller` to `*NamespacesCreateOrUpdatePoller`
+- Type of `NamespacesDeletePollerResponse.Poller` has been changed from `NamespacesDeletePoller` to `*NamespacesDeletePoller`
+- Function `*privateEndpointConnectionsListPager.PageResponse` has been removed
+- Function `*namespacesDeletePoller.Poll` has been removed
+- Function `*queuesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*operationsListPager.PageResponse` has been removed
+- Function `*premiumMessagingRegionsListPager.Err` has been removed
+- Function `*topicsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*disasterRecoveryConfigsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*eventHubsListByNamespacePager.NextPage` has been removed
+- Function `*rulesListBySubscriptionsPager.Err` has been removed
+- Function `*disasterRecoveryConfigsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*migrationConfigsListPager.NextPage` has been removed
+- Function `*namespacesListIPFilterRulesPager.PageResponse` has been removed
+- Function `*queuesListAuthorizationRulesPager.Err` has been removed
+- Function `*regionsListBySKUPager.NextPage` has been removed
+- Function `*namespacesListIPFilterRulesPager.Err` has been removed
+- Function `*topicsListByNamespacePager.Err` has been removed
+- Function `*queuesListByNamespacePager.PageResponse` has been removed
+- Function `*namespacesCreateOrUpdatePoller.Done` has been removed
+- Function `*eventHubsListByNamespacePager.PageResponse` has been removed
+- Function `*NamespacesClient.ResumeCreateOrUpdate` has been removed
+- Function `*rulesListBySubscriptionsPager.NextPage` has been removed
+- Function `*namespacesListVirtualNetworkRulesPager.Err` has been removed
+- Function `*premiumMessagingRegionsListPager.NextPage` has been removed
+- Function `*migrationConfigsListPager.Err` has been removed
+- Function `*rulesListBySubscriptionsPager.PageResponse` has been removed
+- Function `*migrationConfigsListPager.PageResponse` has been removed
+- Function `*namespacesListNetworkRuleSetsPager.PageResponse` has been removed
+- Function `*namespacesListByResourceGroupPager.NextPage` has been removed
+- Function `*MigrationConfigsClient.ResumeCreateAndStartMigration` has been removed
+- Function `*namespacesListByResourceGroupPager.Err` has been removed
+- Function `*regionsListBySKUPager.Err` has been removed
+- Function `*namespacesListVirtualNetworkRulesPager.NextPage` has been removed
+- Function `*eventHubsListByNamespacePager.Err` has been removed
+- Function `*migrationConfigsCreateAndStartMigrationPoller.Poll` has been removed
+- Function `*disasterRecoveryConfigsListAuthorizationRulesPager.Err` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*topicsListByNamespacePager.PageResponse` has been removed
+- Function `*topicsListByNamespacePager.NextPage` has been removed
+- Function `*namespacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*migrationConfigsCreateAndStartMigrationPoller.FinalResponse` has been removed
+- Function `*queuesListByNamespacePager.NextPage` has been removed
+- Function `*queuesListByNamespacePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumeDelete` has been removed
+- Function `*namespacesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*privateEndpointConnectionsListPager.Err` has been removed
+- Function `*namespacesListPager.NextPage` has been removed
+- Function `*namespacesDeletePoller.ResumeToken` has been removed
+- Function `*operationsListPager.Err` has been removed
+- Function `*disasterRecoveryConfigsListPager.Err` has been removed
+- Function `*namespacesListVirtualNetworkRulesPager.PageResponse` has been removed
+- Function `*queuesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*regionsListBySKUPager.PageResponse` has been removed
+- Function `*namespacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*namespacesListNetworkRuleSetsPager.Err` has been removed
+- Function `*namespacesListNetworkRuleSetsPager.NextPage` has been removed
+- Function `*subscriptionsListByTopicPager.NextPage` has been removed
+- Function `*namespacesListIPFilterRulesPager.NextPage` has been removed
+- Function `*subscriptionsListByTopicPager.Err` has been removed
+- Function `*topicsListAuthorizationRulesPager.Err` has been removed
+- Function `*subscriptionsListByTopicPager.PageResponse` has been removed
+- Function `*premiumMessagingRegionsListPager.PageResponse` has been removed
+- Function `*disasterRecoveryConfigsListPager.PageResponse` has been removed
+- Function `*namespacesDeletePoller.Done` has been removed
+- Function `*namespacesDeletePoller.FinalResponse` has been removed
+- Function `*namespacesListAuthorizationRulesPager.Err` has been removed
+- Function `*namespacesListPager.Err` has been removed
+- Function `*namespacesListPager.PageResponse` has been removed
+- Function `*namespacesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*migrationConfigsCreateAndStartMigrationPoller.Done` has been removed
+- Function `*migrationConfigsCreateAndStartMigrationPoller.ResumeToken` has been removed
+- Function `*privateEndpointConnectionsListPager.NextPage` has been removed
+- Function `*disasterRecoveryConfigsListPager.NextPage` has been removed
+- Function `*topicsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*namespacesCreateOrUpdatePoller.Poll` has been removed
+- Function `*namespacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*NamespacesClient.ResumeDelete` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*operationsListPager.NextPage` has been removed
+- Field `PollUntilDone` of struct `NamespacesCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `NamespacesDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `MigrationConfigsCreateAndStartMigrationPollerResponse` has been removed
+- Field `PollUntilDone` of struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+
+### New Content
+
+- New function `*NamespacesListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*NamespacesListAuthorizationRulesPager.PageResponse() NamespacesListAuthorizationRulesResponse`
+- New function `*PrivateEndpointConnectionsDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*RulesListBySubscriptionsPager.NextPage(context.Context) bool`
+- New function `*NamespacesListIPFilterRulesPager.NextPage(context.Context) bool`
+- New function `*OperationsListPager.PageResponse() OperationsListResponse`
+- New function `MigrationConfigsCreateAndStartMigrationPollerResponse.PollUntilDone(context.Context, time.Duration) (MigrationConfigsCreateAndStartMigrationResponse, error)`
+- New function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*NamespacesCreateOrUpdatePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*QueuesListByNamespacePager.PageResponse() QueuesListByNamespaceResponse`
+- New function `*SubscriptionsListByTopicPager.NextPage(context.Context) bool`
+- New function `*NamespacesListIPFilterRulesPager.Err() error`
+- New function `*TopicsListByNamespacePager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsDeletePoller.Done() bool`
+- New function `*NamespacesDeletePoller.FinalResponse(context.Context) (NamespacesDeleteResponse, error)`
+- New function `*DisasterRecoveryConfigsListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*PremiumMessagingRegionsListPager.NextPage(context.Context) bool`
+- New function `*NamespacesListNetworkRuleSetsPager.Err() error`
+- New function `*SubscriptionsListByTopicPager.PageResponse() SubscriptionsListByTopicResponse`
+- New function `*MigrationConfigsCreateAndStartMigrationPollerResponse.Resume(context.Context, *MigrationConfigsClient, string) error`
+- New function `*MigrationConfigsListPager.NextPage(context.Context) bool`
+- New function `*MigrationConfigsCreateAndStartMigrationPoller.ResumeToken() (string, error)`
+- New function `*NamespacesDeletePoller.Done() bool`
+- New function `*OperationsListPager.Err() error`
+- New function `*MigrationConfigsListPager.PageResponse() MigrationConfigsListResponse`
+- New function `*OperationsListPager.NextPage(context.Context) bool`
+- New function `*NamespacesDeletePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*TopicsListAuthorizationRulesPager.PageResponse() TopicsListAuthorizationRulesResponse`
+- New function `*RulesListBySubscriptionsPager.Err() error`
+- New function `*NamespacesCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*NamespacesCreateOrUpdatePoller.FinalResponse(context.Context) (NamespacesCreateOrUpdateResponse, error)`
+- New function `*RegionsListBySKUPager.Err() error`
+- New function `*SubscriptionsListByTopicPager.Err() error`
+- New function `*PrivateEndpointConnectionsListPager.NextPage(context.Context) bool`
+- New function `*QueuesListAuthorizationRulesPager.Err() error`
+- New function `*QueuesListAuthorizationRulesPager.PageResponse() QueuesListAuthorizationRulesResponse`
+- New function `*RegionsListBySKUPager.NextPage(context.Context) bool`
+- New function `*MigrationConfigsListPager.Err() error`
+- New function `*MigrationConfigsCreateAndStartMigrationPoller.FinalResponse(context.Context) (MigrationConfigsCreateAndStartMigrationResponse, error)`
+- New function `*DisasterRecoveryConfigsListPager.NextPage(context.Context) bool`
+- New function `*MigrationConfigsCreateAndStartMigrationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `NamespacesCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesCreateOrUpdateResponse, error)`
+- New function `*EventHubsListByNamespacePager.NextPage(context.Context) bool`
+- New function `*NamespacesCreateOrUpdatePoller.Done() bool`
+- New function `*TopicsListByNamespacePager.Err() error`
+- New function `*QueuesListByNamespacePager.NextPage(context.Context) bool`
+- New function `*QueuesListByNamespacePager.Err() error`
+- New function `*DisasterRecoveryConfigsListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesListByResourceGroupPager.PageResponse() NamespacesListByResourceGroupResponse`
+- New function `*PrivateEndpointConnectionsListPager.Err() error`
+- New function `*RulesListBySubscriptionsPager.PageResponse() RulesListBySubscriptionsResponse`
+- New function `*PremiumMessagingRegionsListPager.Err() error`
+- New function `*NamespacesListPager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsListPager.Err() error`
+- New function `NamespacesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesDeleteResponse, error)`
+- New function `*MigrationConfigsCreateAndStartMigrationPoller.Done() bool`
+- New function `*NamespacesListVirtualNetworkRulesPager.PageResponse() NamespacesListVirtualNetworkRulesResponse`
+- New function `*NamespacesListPager.PageResponse() NamespacesListResponse`
+- New function `*PrivateEndpointConnectionsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventHubsListByNamespacePager.Err() error`
+- New function `*PrivateEndpointConnectionsDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*RegionsListBySKUPager.PageResponse() RegionsListBySKUResponse`
+- New function `*TopicsListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsListPager.PageResponse() PrivateEndpointConnectionsListResponse`
+- New function `*NamespacesListIPFilterRulesPager.PageResponse() NamespacesListIPFilterRulesResponse`
+- New function `*NamespacesListVirtualNetworkRulesPager.Err() error`
+- New function `*NamespacesDeletePoller.ResumeToken() (string, error)`
+- New function `*PremiumMessagingRegionsListPager.PageResponse() PremiumMessagingRegionsListResponse`
+- New function `*DisasterRecoveryConfigsListPager.PageResponse() DisasterRecoveryConfigsListResponse`
+- New function `*NamespacesListPager.Err() error`
+- New function `*NamespacesListNetworkRuleSetsPager.PageResponse() NamespacesListNetworkRuleSetsResponse`
+- New function `*TopicsListByNamespacePager.PageResponse() TopicsListByNamespaceResponse`
+- New function `*NamespacesListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EventHubsListByNamespacePager.PageResponse() EventHubsListByNamespaceResponse`
+- New function `*NamespacesCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*QueuesListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*NamespacesListByResourceGroupPager.Err() error`
+- New function `*TopicsListAuthorizationRulesPager.Err() error`
+- New function `*PrivateEndpointConnectionsDeletePoller.ResumeToken() (string, error)`
+- New function `*NamespacesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamespacesListVirtualNetworkRulesPager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsListAuthorizationRulesPager.PageResponse() DisasterRecoveryConfigsListAuthorizationRulesResponse`
+- New function `*NamespacesListNetworkRuleSetsPager.NextPage(context.Context) bool`
+- New struct `DisasterRecoveryConfigsListAuthorizationRulesPager`
+- New struct `DisasterRecoveryConfigsListPager`
+- New struct `EventHubsListByNamespacePager`
+- New struct `MigrationConfigsCreateAndStartMigrationPoller`
+- New struct `MigrationConfigsListPager`
+- New struct `NamespacesCreateOrUpdatePoller`
+- New struct `NamespacesDeletePoller`
+- New struct `NamespacesListAuthorizationRulesPager`
+- New struct `NamespacesListByResourceGroupPager`
+- New struct `NamespacesListIPFilterRulesPager`
+- New struct `NamespacesListNetworkRuleSetsPager`
+- New struct `NamespacesListPager`
+- New struct `NamespacesListVirtualNetworkRulesPager`
+- New struct `OperationsListPager`
+- New struct `PremiumMessagingRegionsListPager`
+- New struct `PrivateEndpointConnectionsDeletePoller`
+- New struct `PrivateEndpointConnectionsListPager`
+- New struct `QueuesListAuthorizationRulesPager`
+- New struct `QueuesListByNamespacePager`
+- New struct `RegionsListBySKUPager`
+- New struct `RulesListBySubscriptionsPager`
+- New struct `SubscriptionsListByTopicPager`
+- New struct `TopicsListAuthorizationRulesPager`
+- New struct `TopicsListByNamespacePager`
+
+Total 145 breaking change(s), 132 additive change(s).
+
+
 ## v0.1.0 (released)

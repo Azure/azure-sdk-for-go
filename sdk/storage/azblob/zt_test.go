@@ -23,8 +23,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -124,10 +122,10 @@ const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
 
 const (
-	containerPrefix             = "goc"
-	blobPrefix                  = "gotestblob"
-	blockBlobDefaultData        = "GoBlockBlobData"
-	validationErrorSubstring    = "validation failed"
+	containerPrefix      = "goc"
+	blobPrefix           = "gotestblob"
+	blockBlobDefaultData = "GoBlockBlobData"
+	//validationErrorSubstring    = "validation failed"
 	invalidHeaderErrorSubstring = "invalid header field" // error thrown by the http client
 )
 
@@ -359,8 +357,7 @@ func getRequiredEnv(name string) (string, error) {
 		return "", errors.New("Required environment variable not set: " + name)
 	}
 }
-
-func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
+func getAccountInfo(recording *testframework.Recording, accountType testAccountType) (string, string) {
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
 	var err error
@@ -384,33 +381,40 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 			log.Fatalln(err)
 		}
 	}
+	return accountName, accountKey
+}
+func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
+	accountName, accountKey := getAccountInfo(recording, accountType)
 	if accountName == "" || accountKey == "" {
-		return nil, errors.New(accountNameEnvVar + " and/or " + accountKeyEnvVar + " environment variables not specified.")
+		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
 	}
-
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func getOAuthCredential(_assert *assert.Assertions) azcore.Credential {
-	cred, err := azidentity.NewEnvironmentCredential(nil)
-	_assert.Nil(err)
-	return cred
+func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
+	accountName, accountKey := getAccountInfo(recording, accountType)
+	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
+		accountName, accountKey)
+	return connectionString
 }
 
-func getGenericServiceClientWithOAuth(_assert *assert.Assertions, accountType string) (ServiceClient, error) {
-	accountNameEnvVar := accountType + AccountNameEnvVar
-	accountName := os.Getenv(accountNameEnvVar)
-	if accountName == "" {
-		return ServiceClient{}, errors.New(accountNameEnvVar + " environment variables not specified.")
+func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
+	if recording != nil {
+		if options == nil {
+			options = &ClientOptions{
+				HTTPClient: recording,
+				Retry:      azcore.RetryOptions{MaxRetries: -1}}
+		}
 	}
 
-	blobPrimaryURL, _ := url.Parse("https://" + accountName + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), getOAuthCredential(_assert), nil)
-}
+	connectionString := getConnectionString(recording, accountType)
+	primaryURL, _, cred, err := ParseConnectionString(connectionString, "")
+	if err != nil {
+		return ServiceClient{}, nil
+	}
 
-func getGenericBSU(accountType testAccountType, credential *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
-	blobPrimaryURL, _ := url.Parse("https://" + credential.AccountName() + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), credential, options)
+	svcClient, err := NewServiceClient(primaryURL, cred, options)
+	return svcClient, err
 }
 
 type testAccountType string

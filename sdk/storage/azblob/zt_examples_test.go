@@ -908,6 +908,9 @@ func Example_blobSnapshots() {
 	// Show snapshot blob via original blob URI & snapshot time:
 	snapshotBlobClient := baseBlobClient.WithSnapshot(snapshot)
 	get, err = snapshotBlobClient.Download(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	b.Reset()
 	reader = get.Body(RetryReaderOptions{})
 	_, err = b.ReadFrom(reader)
@@ -972,6 +975,9 @@ func Example_progressUploadDownload() {
 
 	// Create an serviceClient object that wraps the service URL and a request pipeline to making requests.
 	containerClient, err := NewContainerClient(cURL, credential, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	ctx := context.Background() // This example uses a never-expiring context
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
@@ -1101,11 +1107,12 @@ func ExampleUploadFileToBlockBlob() {
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer func(destFile *os.File) {
-		err := destFile.Close()
-		if err != nil {
+		_ = destFile.Close()
 
-		}
 	}(destFile)
 
 	// Perform download

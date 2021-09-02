@@ -319,6 +319,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -1138,20 +1139,20 @@ func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_assert.Equal(*resp.IsServerEncrypted, true)
 	_assert.EqualValues(resp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
-	downloadResp, err := destPBClient.Download(ctx, nil)
+	_, err = destPBClient.Download(ctx, nil)
 	_assert.NotNil(err)
 
 	downloadBlobOptions := DownloadBlobOptions{
 		CpkInfo: &testInvalidCPKByValue,
 	}
-	downloadResp, err = destPBClient.Download(ctx, &downloadBlobOptions)
+	_, err = destPBClient.Download(ctx, &downloadBlobOptions)
 	_assert.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	downloadResp, err = destPBClient.Download(ctx, &downloadBlobOptions)
+	downloadResp, err := destPBClient.Download(ctx, &downloadBlobOptions)
 	_assert.Nil(err)
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 

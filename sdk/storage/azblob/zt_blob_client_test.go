@@ -92,6 +92,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateBlobClientWithSnapshotAndSASUsingC
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClientFromConnectionString(nil, testAccountDefault, nil)
+	_assert.Nil(err)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)

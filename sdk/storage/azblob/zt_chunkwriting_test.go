@@ -128,9 +128,8 @@ func fileMD5(p string) string {
 		panic(err)
 	}
 	defer func(f *os.File) {
-		err := f.Close()
-		if err != nil {
-		}
+		_ = f.Close()
+
 	}(f)
 
 	h := md5.New()
@@ -281,9 +280,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 			panic(err)
 		}
 		defer func(name string) {
-			err := os.Remove(name)
-			if err != nil {
-			}
+			_ = os.Remove(name)
 		}(p)
 
 		from, err := os.Open(p)

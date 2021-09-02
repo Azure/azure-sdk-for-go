@@ -292,6 +292,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
+	_assert.Nil(err)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{

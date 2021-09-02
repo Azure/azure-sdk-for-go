@@ -23,8 +23,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	abName := generateBlobName(testName)

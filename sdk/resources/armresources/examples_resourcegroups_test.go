@@ -110,37 +110,3 @@ func ExampleResourceGroupsClient_Get() {
 	}
 	log.Printf("resource group name: %s\n", *rg.ResourceGroup.Name)
 }
-
-func ExampleResourceGroupsClient_ResumeDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
-	pollerResp, err := client.BeginDelete(context.Background(), "<resource group name>", nil)
-	if err != nil {
-		log.Fatalf("failed to get resource group: %v", err)
-	}
-	tk, err := pollerResp.Poller.ResumeToken()
-	if err != nil {
-		log.Fatalf("failed to get resource group poller resume token: %v", err)
-	}
-	rgPoller, err := client.ResumeDelete(context.Background(), tk)
-	if err != nil {
-		log.Fatalf("failed to get resource group: %v", err)
-	}
-	for {
-		_, err := rgPoller.Poller.Poll(context.Background())
-		if err != nil {
-			log.Fatalf("failed to poll for status: %v", err)
-		}
-		if rgPoller.Poller.Done() {
-			break
-		}
-		time.Sleep(5 * time.Second)
-	}
-	_, err = rgPoller.Poller.FinalResponse(context.Background())
-	if err != nil {
-		log.Fatalf("failed to get final poller response: %v", err)
-	}
-}

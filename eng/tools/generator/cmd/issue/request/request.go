@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue/link"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue/query"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/google/go-github/v32/github"
 )
 

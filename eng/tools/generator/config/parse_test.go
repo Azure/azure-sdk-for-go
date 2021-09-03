@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 )
 
 func TestParser_Parse(t *testing.T) {

@@ -10,9 +10,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 	"github.com/spf13/cobra"
 )
 

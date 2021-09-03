@@ -6,8 +6,8 @@ package autorest
 import (
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 )
 
 // MetadataValidateFunc is a function that validates a metadata is legal or not

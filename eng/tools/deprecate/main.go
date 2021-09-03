@@ -4,7 +4,7 @@
 package main
 
 import (
-	"github.com/Azure/azure-sdk-for-go/tools/deprecate/cmd"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/deprecate/cmd"
 )
 
 func main() {

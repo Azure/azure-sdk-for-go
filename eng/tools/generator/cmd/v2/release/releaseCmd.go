@@ -10,9 +10,9 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/common"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )

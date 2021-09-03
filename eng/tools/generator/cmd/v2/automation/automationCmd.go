@@ -9,10 +9,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/pipeline"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/common"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/automation/pipeline"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/spf13/cobra"
 )
 

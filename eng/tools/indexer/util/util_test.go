@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/tools/indexer/util"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/indexer/util"
 )
 
 func Test_GetIndexedPackages(t *testing.T) {

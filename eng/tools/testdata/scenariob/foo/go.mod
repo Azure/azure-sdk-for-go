@@ -1,5 +1,5 @@
-module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariob/foo
+module github.com/Azure/azure-sdk-for-go/eng/tools/testdata/scenariob/foo
 
 go 1.12
 
-replace github.com/Azure/azure-sdk-for-go/tools/internal => ../../../../eng/tools/internal
+replace github.com/Azure/azure-sdk-for-go/eng/tools/internal => ../internal

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/tools/deprecate
+module github.com/Azure/azure-sdk-for-go/eng/tools/deprecate
 
 go 1.13
 
@@ -7,4 +7,4 @@ require (
 	github.com/spf13/cobra v1.1.3
 )
 
-replace github.com/Azure/azure-sdk-for-go/tools/internal => ../../eng/tools/internal
+replace github.com/Azure/azure-sdk-for-go/eng/tools/internal => ../internal

@@ -6,7 +6,7 @@ package config
 import (
 	"encoding/json"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 )
 
 type Config struct {

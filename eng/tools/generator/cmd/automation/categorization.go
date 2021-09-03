@@ -3,7 +3,7 @@
 
 package automation
 
-import "github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+import "github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
 
 // existingPackageMap is a map with readme relative path as keys
 type existingPackageMap map[string]packagesForReadme

@@ -7,8 +7,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue/link"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue/query"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 )
 
 func handleSuccess(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {

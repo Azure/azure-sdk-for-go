@@ -17,7 +17,7 @@ const (
 	BlockBlobMaxUploadBlobBytes = 256 * 1024 * 1024 // 256MB
 
 	// BlockBlobMaxStageBlockBytes indicates the maximum number of bytes that can be sent in a call to StageBlock.
-	BlockBlobMaxStageBlockBytes = 100 * 1024 * 1024 // 100MB
+	BlockBlobMaxStageBlockBytes = 4000 * 1024 * 1024 // 4GB
 
 	// BlockBlobMaxBlocks indicates the maximum number of blocks allowed in a block blob.
 	BlockBlobMaxBlocks = 50000

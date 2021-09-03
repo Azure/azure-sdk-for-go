@@ -34,8 +34,10 @@ and error instances to its caller.
 
 Template for implementing a stateless Policy:
 
-   func NewMyStatelessPolicy() azcore.Policy {
-      return azcore.PolicyFunc(func(req *azcore.Request) (*http.Response, error) {
+   type policyFunc func(*azcore.Request) (*http.Response, error)
+
+   func NewMyStatelessPolicy() policy.Policy {
+      return policyFunc(func(req *azcore.Request) (*http.Response, error) {
          // TODO: mutate/process Request here
 
          // forward Request to next Policy & get Response/error
@@ -55,7 +57,7 @@ Template for implementing a stateful Policy:
    }
 
    // TODO: add initialization args to NewMyStatefulPolicy()
-   func NewMyStatefulPolicy() azcore.Policy {
+   func NewMyStatefulPolicy() policy.Policy {
       return &MyStatefulPolicy{
          // TODO: initialize configuration/setting fields here
       }

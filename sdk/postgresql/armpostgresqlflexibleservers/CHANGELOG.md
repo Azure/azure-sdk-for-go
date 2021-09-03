@@ -1,3 +1,245 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*ConfigurationsClient.ListByServer` return value(s) have been changed from `(ConfigurationsListByServerPager)` to `(*ConfigurationsListByServerPager)`
+- Function `NewConfigurationsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewLocationBasedCapabilitiesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewCheckNameAvailabilityClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewDatabasesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*LocationBasedCapabilitiesClient.Execute` return value(s) have been changed from `(LocationBasedCapabilitiesExecutePager)` to `(*LocationBasedCapabilitiesExecutePager)`
+- Function `NewServersClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewFirewallRulesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*FirewallRulesClient.ListByServer` return value(s) have been changed from `(FirewallRulesListByServerPager)` to `(*FirewallRulesListByServerPager)`
+- Function `NewGetPrivateDNSZoneSuffixClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*DatabasesClient.ListByServer` return value(s) have been changed from `(DatabasesListByServerPager)` to `(*DatabasesListByServerPager)`
+- Function `*ServersClient.ListByResourceGroup` return value(s) have been changed from `(ServersListByResourceGroupPager)` to `(*ServersListByResourceGroupPager)`
+- Function `*ServersClient.List` return value(s) have been changed from `(ServersListPager)` to `(*ServersListPager)`
+- Function `NewVirtualNetworkSubnetUsageClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Type of `ConfigurationsPutPollerResponse.Poller` has been changed from `ConfigurationsPutPoller` to `*ConfigurationsPutPoller`
+- Type of `ServersStopPollerResponse.Poller` has been changed from `ServersStopPoller` to `*ServersStopPoller`
+- Type of `ServersDeletePollerResponse.Poller` has been changed from `ServersDeletePoller` to `*ServersDeletePoller`
+- Type of `FirewallRulesCreateOrUpdatePollerResponse.Poller` has been changed from `FirewallRulesCreateOrUpdatePoller` to `*FirewallRulesCreateOrUpdatePoller`
+- Type of `ServersRestartPollerResponse.Poller` has been changed from `ServersRestartPoller` to `*ServersRestartPoller`
+- Type of `ConfigurationsUpdatePollerResponse.Poller` has been changed from `ConfigurationsUpdatePoller` to `*ConfigurationsUpdatePoller`
+- Type of `ServersCreatePollerResponse.Poller` has been changed from `ServersCreatePoller` to `*ServersCreatePoller`
+- Type of `DatabasesDeletePollerResponse.Poller` has been changed from `DatabasesDeletePoller` to `*DatabasesDeletePoller`
+- Type of `ServersUpdatePollerResponse.Poller` has been changed from `ServersUpdatePoller` to `*ServersUpdatePoller`
+- Type of `RestartParameter.FailoverMode` has been changed from `*string` to `*FailoverMode`
+- Type of `ServersStartPollerResponse.Poller` has been changed from `ServersStartPoller` to `*ServersStartPoller`
+- Type of `FirewallRulesDeletePollerResponse.Poller` has been changed from `FirewallRulesDeletePoller` to `*FirewallRulesDeletePoller`
+- Type of `DatabasesCreatePollerResponse.Poller` has been changed from `DatabasesCreatePoller` to `*DatabasesCreatePoller`
+- Function `*serversListByResourceGroupPager.NextPage` has been removed
+- Function `*locationBasedCapabilitiesExecutePager.NextPage` has been removed
+- Function `*FirewallRulesClient.ResumeDelete` has been removed
+- Function `*serversUpdatePoller.Done` has been removed
+- Function `*serversDeletePoller.FinalResponse` has been removed
+- Function `*configurationsPutPoller.Done` has been removed
+- Function `*serversStopPoller.ResumeToken` has been removed
+- Function `*serversCreatePoller.ResumeToken` has been removed
+- Function `*DatabasesClient.ResumeCreate` has been removed
+- Function `*serversUpdatePoller.Poll` has been removed
+- Function `*locationBasedCapabilitiesExecutePager.PageResponse` has been removed
+- Function `*serversCreatePoller.Done` has been removed
+- Function `*firewallRulesListByServerPager.PageResponse` has been removed
+- Function `*configurationsPutPoller.FinalResponse` has been removed
+- Function `*databasesDeletePoller.FinalResponse` has been removed
+- Function `*ConfigurationsClient.ResumeUpdate` has been removed
+- Function `*serversStopPoller.Poll` has been removed
+- Function `*firewallRulesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*configurationsListByServerPager.PageResponse` has been removed
+- Function `*configurationsUpdatePoller.Done` has been removed
+- Function `*configurationsUpdatePoller.FinalResponse` has been removed
+- Function `*locationBasedCapabilitiesExecutePager.Err` has been removed
+- Function `*serversRestartPoller.ResumeToken` has been removed
+- Function `*firewallRulesListByServerPager.NextPage` has been removed
+- Function `*ServersClient.ResumeUpdate` has been removed
+- Function `*serversRestartPoller.Done` has been removed
+- Function `*serversStartPoller.Done` has been removed
+- Function `*serversRestartPoller.FinalResponse` has been removed
+- Function `*serversDeletePoller.ResumeToken` has been removed
+- Function `*serversCreatePoller.FinalResponse` has been removed
+- Function `*databasesCreatePoller.ResumeToken` has been removed
+- Function `*ServersClient.ResumeStart` has been removed
+- Function `*firewallRulesDeletePoller.Poll` has been removed
+- Function `*serversUpdatePoller.ResumeToken` has been removed
+- Function `*configurationsUpdatePoller.ResumeToken` has been removed
+- Function `*databasesCreatePoller.Done` has been removed
+- Function `*ServersClient.ResumeDelete` has been removed
+- Function `*configurationsPutPoller.ResumeToken` has been removed
+- Function `*FirewallRulesClient.ResumeCreateOrUpdate` has been removed
+- Function `*serversListByResourceGroupPager.Err` has been removed
+- Function `*databasesListByServerPager.Err` has been removed
+- Function `*firewallRulesListByServerPager.Err` has been removed
+- Function `*databasesListByServerPager.PageResponse` has been removed
+- Function `*databasesDeletePoller.Done` has been removed
+- Function `*ServersClient.ResumeRestart` has been removed
+- Function `*serversStartPoller.ResumeToken` has been removed
+- Function `*ServersClient.ResumeStop` has been removed
+- Function `*databasesDeletePoller.ResumeToken` has been removed
+- Function `*firewallRulesCreateOrUpdatePoller.Done` has been removed
+- Function `*configurationsListByServerPager.Err` has been removed
+- Function `*serversDeletePoller.Poll` has been removed
+- Function `*serversDeletePoller.Done` has been removed
+- Function `*serversRestartPoller.Poll` has been removed
+- Function `*databasesCreatePoller.FinalResponse` has been removed
+- Function `*serversStartPoller.FinalResponse` has been removed
+- Function `*serversListPager.NextPage` has been removed
+- Function `*serversListPager.Err` has been removed
+- Function `*firewallRulesDeletePoller.Done` has been removed
+- Function `*databasesDeletePoller.Poll` has been removed
+- Function `*serversCreatePoller.Poll` has been removed
+- Function `*firewallRulesDeletePoller.FinalResponse` has been removed
+- Function `*serversUpdatePoller.FinalResponse` has been removed
+- Function `*ServersClient.ResumeCreate` has been removed
+- Function `*configurationsListByServerPager.NextPage` has been removed
+- Function `*serversStopPoller.Done` has been removed
+- Function `*firewallRulesDeletePoller.ResumeToken` has been removed
+- Function `*serversListPager.PageResponse` has been removed
+- Function `*firewallRulesCreateOrUpdatePoller.Poll` has been removed
+- Function `*databasesListByServerPager.NextPage` has been removed
+- Function `*databasesCreatePoller.Poll` has been removed
+- Function `*serversListByResourceGroupPager.PageResponse` has been removed
+- Function `*ConfigurationsClient.ResumePut` has been removed
+- Function `*serversStartPoller.Poll` has been removed
+- Function `*configurationsPutPoller.Poll` has been removed
+- Function `*serversStopPoller.FinalResponse` has been removed
+- Function `*DatabasesClient.ResumeDelete` has been removed
+- Function `*configurationsUpdatePoller.Poll` has been removed
+- Function `*firewallRulesCreateOrUpdatePoller.FinalResponse` has been removed
+- Field `PollUntilDone` of struct `ServersUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ServersStopPollerResponse` has been removed
+- Field `PollUntilDone` of struct `DatabasesDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ConfigurationsUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ServersCreatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `DatabasesCreatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ServersStartPollerResponse` has been removed
+- Field `PollUntilDone` of struct `ConfigurationsPutPollerResponse` has been removed
+- Field `PollUntilDone` of struct `FirewallRulesCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ServersRestartPollerResponse` has been removed
+- Field `PollUntilDone` of struct `ServersDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `FirewallRulesDeletePollerResponse` has been removed
+
+### New Content
+
+- New const `FailoverModeForcedSwitchover`
+- New const `FailoverModePlannedFailover`
+- New const `FailoverModeForcedFailover`
+- New const `FailoverModePlannedSwitchover`
+- New function `ConfigurationsUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationsUpdateResponse, error)`
+- New function `*ServersUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServersStopPoller.Done() bool`
+- New function `*DatabasesCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ServersStartPollerResponse.PollUntilDone(context.Context, time.Duration) (ServersStartResponse, error)`
+- New function `ServersUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersUpdateResponse, error)`
+- New function `PossibleFailoverModeValues() []FailoverMode`
+- New function `*ConfigurationsPutPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServersRestartPollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*FirewallRulesDeletePollerResponse.Resume(context.Context, *FirewallRulesClient, string) error`
+- New function `*ConfigurationsUpdatePoller.ResumeToken() (string, error)`
+- New function `*DatabasesListByServerPager.Err() error`
+- New function `*FirewallRulesDeletePoller.ResumeToken() (string, error)`
+- New function `*ConfigurationsUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesDeletePoller.Done() bool`
+- New function `*FirewallRulesCreateOrUpdatePoller.Done() bool`
+- New function `*ServersStartPoller.Done() bool`
+- New function `*ServersStartPollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*FirewallRulesCreateOrUpdatePoller.FinalResponse(context.Context) (FirewallRulesCreateOrUpdateResponse, error)`
+- New function `ServersDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersDeleteResponse, error)`
+- New function `*ConfigurationsPutPoller.FinalResponse(context.Context) (ConfigurationsPutResponse, error)`
+- New function `*DatabasesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FirewallRulesCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ConfigurationsPutPoller.Done() bool`
+- New function `*ServersStopPollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `ServersRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (ServersRestartResponse, error)`
+- New function `*ServersDeletePoller.FinalResponse(context.Context) (ServersDeleteResponse, error)`
+- New function `FirewallRulesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (FirewallRulesDeleteResponse, error)`
+- New function `*ConfigurationsUpdatePoller.FinalResponse(context.Context) (ConfigurationsUpdateResponse, error)`
+- New function `*ServersCreatePoller.ResumeToken() (string, error)`
+- New function `FirewallRulesCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (FirewallRulesCreateOrUpdateResponse, error)`
+- New function `*LocationBasedCapabilitiesExecutePager.PageResponse() LocationBasedCapabilitiesExecuteResponse`
+- New function `*ServersListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ServersStartPoller.FinalResponse(context.Context) (ServersStartResponse, error)`
+- New function `*FirewallRulesCreateOrUpdatePollerResponse.Resume(context.Context, *FirewallRulesClient, string) error`
+- New function `*ServersListByResourceGroupPager.PageResponse() ServersListByResourceGroupResponse`
+- New function `*ServersStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FirewallRulesCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ServersCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersCreateResponse, error)`
+- New function `*ServersUpdatePoller.Done() bool`
+- New function `*DatabasesDeletePoller.FinalResponse(context.Context) (DatabasesDeleteResponse, error)`
+- New function `*ConfigurationsUpdatePoller.Done() bool`
+- New function `*ServersDeletePoller.Done() bool`
+- New function `*ConfigurationsPutPoller.ResumeToken() (string, error)`
+- New function `*FirewallRulesListByServerPager.NextPage(context.Context) bool`
+- New function `*ServersUpdatePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*DatabasesCreatePollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `DatabasesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesDeleteResponse, error)`
+- New function `*FirewallRulesDeletePoller.FinalResponse(context.Context) (FirewallRulesDeleteResponse, error)`
+- New function `*ServersListByResourceGroupPager.Err() error`
+- New function `*ServersUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServersListPager.NextPage(context.Context) bool`
+- New function `*DatabasesCreatePoller.FinalResponse(context.Context) (DatabasesCreateResponse, error)`
+- New function `ConfigurationsPutPollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationsPutResponse, error)`
+- New function `*DatabasesListByServerPager.NextPage(context.Context) bool`
+- New function `*ServersCreatePoller.Done() bool`
+- New function `DatabasesCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (DatabasesCreateResponse, error)`
+- New function `*ConfigurationsListByServerPager.Err() error`
+- New function `*ServersCreatePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*ConfigurationsListByServerPager.PageResponse() ConfigurationsListByServerResponse`
+- New function `*FirewallRulesListByServerPager.PageResponse() FirewallRulesListByServerResponse`
+- New function `ServersStopPollerResponse.PollUntilDone(context.Context, time.Duration) (ServersStopResponse, error)`
+- New function `*ConfigurationsPutPollerResponse.Resume(context.Context, *ConfigurationsClient, string) error`
+- New function `*ServersCreatePoller.FinalResponse(context.Context) (ServersCreateResponse, error)`
+- New function `*ServersDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesListByServerPager.PageResponse() DatabasesListByServerResponse`
+- New function `*ServersRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServersStopPoller.FinalResponse(context.Context) (ServersStopResponse, error)`
+- New function `*ServersDeletePoller.ResumeToken() (string, error)`
+- New function `*ServersCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FirewallRulesListByServerPager.Err() error`
+- New function `*FirewallRulesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigurationsUpdatePollerResponse.Resume(context.Context, *ConfigurationsClient, string) error`
+- New function `*ServersUpdatePoller.FinalResponse(context.Context) (ServersUpdateResponse, error)`
+- New function `*DatabasesCreatePoller.ResumeToken() (string, error)`
+- New function `*ConfigurationsListByServerPager.NextPage(context.Context) bool`
+- New function `*ServersListPager.PageResponse() ServersListResponse`
+- New function `*DatabasesDeletePoller.ResumeToken() (string, error)`
+- New function `*ServersStartPoller.ResumeToken() (string, error)`
+- New function `*FirewallRulesDeletePoller.Done() bool`
+- New function `*LocationBasedCapabilitiesExecutePager.Err() error`
+- New function `*ServersDeletePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*ServersStopPoller.ResumeToken() (string, error)`
+- New function `*ServersRestartPoller.ResumeToken() (string, error)`
+- New function `*ServersStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DatabasesCreatePoller.Done() bool`
+- New function `*LocationBasedCapabilitiesExecutePager.NextPage(context.Context) bool`
+- New function `*ServersListPager.Err() error`
+- New function `*DatabasesDeletePollerResponse.Resume(context.Context, *DatabasesClient, string) error`
+- New function `*ServersRestartPoller.Done() bool`
+- New function `*ServersRestartPoller.FinalResponse(context.Context) (ServersRestartResponse, error)`
+- New function `FailoverMode.ToPtr() *FailoverMode`
+- New struct `ConfigurationsListByServerPager`
+- New struct `ConfigurationsPutPoller`
+- New struct `ConfigurationsUpdatePoller`
+- New struct `DatabasesCreatePoller`
+- New struct `DatabasesDeletePoller`
+- New struct `DatabasesListByServerPager`
+- New struct `FirewallRulesCreateOrUpdatePoller`
+- New struct `FirewallRulesDeletePoller`
+- New struct `FirewallRulesListByServerPager`
+- New struct `LocationBasedCapabilitiesExecutePager`
+- New struct `ServersCreatePoller`
+- New struct `ServersDeletePoller`
+- New struct `ServersListByResourceGroupPager`
+- New struct `ServersListPager`
+- New struct `ServersRestartPoller`
+- New struct `ServersStartPoller`
+- New struct `ServersStopPoller`
+- New struct `ServersUpdatePoller`
+
+Total 136 breaking change(s), 132 additive change(s).
+
+
 ## v0.1.0 (released)

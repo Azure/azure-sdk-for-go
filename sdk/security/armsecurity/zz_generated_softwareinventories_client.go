@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SoftwareInventoriesClient contains the methods for the SoftwareInventories group.
 // Don't use this type directly, use NewSoftwareInventoriesClient() instead.
 type SoftwareInventoriesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSoftwareInventoriesClient creates a new instance of SoftwareInventoriesClient with the specified values.
-func NewSoftwareInventoriesClient(con *armcore.Connection, subscriptionID string) *SoftwareInventoriesClient {
-	return &SoftwareInventoriesClient{con: con, subscriptionID: subscriptionID}
+func NewSoftwareInventoriesClient(con *arm.Connection, subscriptionID string) *SoftwareInventoriesClient {
+	return &SoftwareInventoriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a single software data of the virtual machine.
@@ -37,18 +41,18 @@ func (client *SoftwareInventoriesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SoftwareInventoriesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SoftwareInventoriesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SoftwareInventoriesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SoftwareInventoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, softwareName string, options *SoftwareInventoriesGetOptions) (*azcore.Request, error) {
+func (client *SoftwareInventoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, softwareName string, options *SoftwareInventoriesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories/{softwareName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,56 +78,55 @@ func (client *SoftwareInventoriesClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter softwareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{softwareName}", url.PathEscape(softwareName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SoftwareInventoriesClient) getHandleResponse(resp *azcore.Response) (SoftwareInventoriesGetResponse, error) {
-	result := SoftwareInventoriesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Software); err != nil {
+func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) (SoftwareInventoriesGetResponse, error) {
+	result := SoftwareInventoriesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Software); err != nil {
 		return SoftwareInventoriesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *SoftwareInventoriesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SoftwareInventoriesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByExtendedResource - Gets the software inventory of the virtual machine.
 // If the operation fails it returns the *CloudError error type.
-func (client *SoftwareInventoriesClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesListByExtendedResourceOptions) SoftwareInventoriesListByExtendedResourcePager {
-	return &softwareInventoriesListByExtendedResourcePager{
+func (client *SoftwareInventoriesClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesListByExtendedResourceOptions) *SoftwareInventoriesListByExtendedResourcePager {
+	return &SoftwareInventoriesListByExtendedResourcePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByExtendedResourceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, options)
 		},
-		advancer: func(ctx context.Context, resp SoftwareInventoriesListByExtendedResourceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SoftwaresList.NextLink)
+		advancer: func(ctx context.Context, resp SoftwareInventoriesListByExtendedResourceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SoftwaresList.NextLink)
 		},
 	}
 }
 
 // listByExtendedResourceCreateRequest creates the ListByExtendedResource request.
-func (client *SoftwareInventoriesClient) listByExtendedResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesListByExtendedResourceOptions) (*azcore.Request, error) {
+func (client *SoftwareInventoriesClient) listByExtendedResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesListByExtendedResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -145,91 +148,89 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceCreateRequest(ctx
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByExtendedResourceHandleResponse handles the ListByExtendedResource response.
-func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(resp *azcore.Response) (SoftwareInventoriesListByExtendedResourceResponse, error) {
-	result := SoftwareInventoriesListByExtendedResourceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SoftwaresList); err != nil {
+func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(resp *http.Response) (SoftwareInventoriesListByExtendedResourceResponse, error) {
+	result := SoftwareInventoriesListByExtendedResourceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwaresList); err != nil {
 		return SoftwareInventoriesListByExtendedResourceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByExtendedResourceHandleError handles the ListByExtendedResource error response.
-func (client *SoftwareInventoriesClient) listByExtendedResourceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SoftwareInventoriesClient) listByExtendedResourceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListBySubscription - Gets the software inventory of all virtual machines in the subscriptions.
 // If the operation fails it returns the *CloudError error type.
-func (client *SoftwareInventoriesClient) ListBySubscription(options *SoftwareInventoriesListBySubscriptionOptions) SoftwareInventoriesListBySubscriptionPager {
-	return &softwareInventoriesListBySubscriptionPager{
+func (client *SoftwareInventoriesClient) ListBySubscription(options *SoftwareInventoriesListBySubscriptionOptions) *SoftwareInventoriesListBySubscriptionPager {
+	return &SoftwareInventoriesListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SoftwareInventoriesListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SoftwaresList.NextLink)
+		advancer: func(ctx context.Context, resp SoftwareInventoriesListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SoftwaresList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SoftwareInventoriesClient) listBySubscriptionCreateRequest(ctx context.Context, options *SoftwareInventoriesListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *SoftwareInventoriesClient) listBySubscriptionCreateRequest(ctx context.Context, options *SoftwareInventoriesListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/softwareInventories"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SoftwareInventoriesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (SoftwareInventoriesListBySubscriptionResponse, error) {
-	result := SoftwareInventoriesListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SoftwaresList); err != nil {
+func (client *SoftwareInventoriesClient) listBySubscriptionHandleResponse(resp *http.Response) (SoftwareInventoriesListBySubscriptionResponse, error) {
+	result := SoftwareInventoriesListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwaresList); err != nil {
 		return SoftwareInventoriesListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SoftwareInventoriesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SoftwareInventoriesClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

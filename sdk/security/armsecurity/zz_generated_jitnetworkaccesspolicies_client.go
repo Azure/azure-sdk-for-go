@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JitNetworkAccessPoliciesClient contains the methods for the JitNetworkAccessPolicies group.
 // Don't use this type directly, use NewJitNetworkAccessPoliciesClient() instead.
 type JitNetworkAccessPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 	ascLocation    string
 }
 
 // NewJitNetworkAccessPoliciesClient creates a new instance of JitNetworkAccessPoliciesClient with the specified values.
-func NewJitNetworkAccessPoliciesClient(con *armcore.Connection, subscriptionID string, ascLocation string) *JitNetworkAccessPoliciesClient {
-	return &JitNetworkAccessPoliciesClient{con: con, subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewJitNetworkAccessPoliciesClient(con *arm.Connection, subscriptionID string, ascLocation string) *JitNetworkAccessPoliciesClient {
+	return &JitNetworkAccessPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
 }
 
 // CreateOrUpdate - Create a policy for protecting resources using Just-in-Time access control
@@ -38,18 +42,18 @@ func (client *JitNetworkAccessPoliciesClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return JitNetworkAccessPoliciesCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JitNetworkAccessPoliciesCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JitNetworkAccessPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicy, options *JitNetworkAccessPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicy, options *JitNetworkAccessPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,38 +71,37 @@ func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter jitNetworkAccessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyName}", url.PathEscape(jitNetworkAccessPolicyName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(body)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesCreateOrUpdateResponse, error) {
-	result := JitNetworkAccessPoliciesCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessPolicy); err != nil {
+func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesCreateOrUpdateResponse, error) {
+	result := JitNetworkAccessPoliciesCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPolicy); err != nil {
 		return JitNetworkAccessPoliciesCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Delete a Just-in-Time access control policy.
@@ -108,18 +111,18 @@ func (client *JitNetworkAccessPoliciesClient) Delete(ctx context.Context, resour
 	if err != nil {
 		return JitNetworkAccessPoliciesDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JitNetworkAccessPoliciesDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JitNetworkAccessPoliciesDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return JitNetworkAccessPoliciesDeleteResponse{RawResponse: resp.Response}, nil
+	return JitNetworkAccessPoliciesDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JitNetworkAccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, options *JitNetworkAccessPoliciesDeleteOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, options *JitNetworkAccessPoliciesDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,29 +140,28 @@ func (client *JitNetworkAccessPoliciesClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter jitNetworkAccessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyName}", url.PathEscape(jitNetworkAccessPolicyName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *JitNetworkAccessPoliciesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Policies for protecting resources using Just-in-Time access control for the subscription, location
@@ -169,18 +171,18 @@ func (client *JitNetworkAccessPoliciesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return JitNetworkAccessPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JitNetworkAccessPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JitNetworkAccessPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, options *JitNetworkAccessPoliciesGetOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, options *JitNetworkAccessPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,38 +200,37 @@ func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter jitNetworkAccessPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyName}", url.PathEscape(jitNetworkAccessPolicyName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JitNetworkAccessPoliciesClient) getHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesGetResponse, error) {
-	result := JitNetworkAccessPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessPolicy); err != nil {
+func (client *JitNetworkAccessPoliciesClient) getHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesGetResponse, error) {
+	result := JitNetworkAccessPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPolicy); err != nil {
 		return JitNetworkAccessPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *JitNetworkAccessPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Initiate - Initiate a JIT access from a specific Just-in-Time policy configuration.
@@ -239,18 +240,18 @@ func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, reso
 	if err != nil {
 		return JitNetworkAccessPoliciesInitiateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JitNetworkAccessPoliciesInitiateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return JitNetworkAccessPoliciesInitiateResponse{}, client.initiateHandleError(resp)
 	}
 	return client.initiateHandleResponse(resp)
 }
 
 // initiateCreateRequest creates the Initiate request.
-func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesInitiateOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, options *JitNetworkAccessPoliciesInitiateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}/{jitNetworkAccessPolicyInitiateType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,111 +270,109 @@ func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyName}", url.PathEscape(jitNetworkAccessPolicyName))
 	urlPath = strings.ReplaceAll(urlPath, "{jitNetworkAccessPolicyInitiateType}", url.PathEscape("initiate"))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(body)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // initiateHandleResponse handles the Initiate response.
-func (client *JitNetworkAccessPoliciesClient) initiateHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesInitiateResponse, error) {
-	result := JitNetworkAccessPoliciesInitiateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessRequest); err != nil {
+func (client *JitNetworkAccessPoliciesClient) initiateHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesInitiateResponse, error) {
+	result := JitNetworkAccessPoliciesInitiateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessRequest); err != nil {
 		return JitNetworkAccessPoliciesInitiateResponse{}, err
 	}
 	return result, nil
 }
 
 // initiateHandleError handles the Initiate error response.
-func (client *JitNetworkAccessPoliciesClient) initiateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) initiateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Policies for protecting resources using Just-in-Time access control.
 // If the operation fails it returns the *CloudError error type.
-func (client *JitNetworkAccessPoliciesClient) List(options *JitNetworkAccessPoliciesListOptions) JitNetworkAccessPoliciesListPager {
-	return &jitNetworkAccessPoliciesListPager{
+func (client *JitNetworkAccessPoliciesClient) List(options *JitNetworkAccessPoliciesListOptions) *JitNetworkAccessPoliciesListPager {
+	return &JitNetworkAccessPoliciesListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
+		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Context, options *JitNetworkAccessPoliciesListOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Context, options *JitNetworkAccessPoliciesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *JitNetworkAccessPoliciesClient) listHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesListResponse, error) {
-	result := JitNetworkAccessPoliciesListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessPoliciesList); err != nil {
+func (client *JitNetworkAccessPoliciesClient) listHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListResponse, error) {
+	result := JitNetworkAccessPoliciesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
 		return JitNetworkAccessPoliciesListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *JitNetworkAccessPoliciesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByRegion - Policies for protecting resources using Just-in-Time access control for the subscription, location
 // If the operation fails it returns the *CloudError error type.
-func (client *JitNetworkAccessPoliciesClient) ListByRegion(options *JitNetworkAccessPoliciesListByRegionOptions) JitNetworkAccessPoliciesListByRegionPager {
-	return &jitNetworkAccessPoliciesListByRegionPager{
+func (client *JitNetworkAccessPoliciesClient) ListByRegion(options *JitNetworkAccessPoliciesListByRegionOptions) *JitNetworkAccessPoliciesListByRegionPager {
+	return &JitNetworkAccessPoliciesListByRegionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByRegionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListByRegionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
+		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListByRegionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
 		},
 	}
 }
 
 // listByRegionCreateRequest creates the ListByRegion request.
-func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx context.Context, options *JitNetworkAccessPoliciesListByRegionOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx context.Context, options *JitNetworkAccessPoliciesListByRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -383,56 +382,55 @@ func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx cont
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByRegionHandleResponse handles the ListByRegion response.
-func (client *JitNetworkAccessPoliciesClient) listByRegionHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesListByRegionResponse, error) {
-	result := JitNetworkAccessPoliciesListByRegionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessPoliciesList); err != nil {
+func (client *JitNetworkAccessPoliciesClient) listByRegionHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListByRegionResponse, error) {
+	result := JitNetworkAccessPoliciesListByRegionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
 		return JitNetworkAccessPoliciesListByRegionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByRegionHandleError handles the ListByRegion error response.
-func (client *JitNetworkAccessPoliciesClient) listByRegionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) listByRegionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Policies for protecting resources using Just-in-Time access control for the subscription, location
 // If the operation fails it returns the *CloudError error type.
-func (client *JitNetworkAccessPoliciesClient) ListByResourceGroup(resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupOptions) JitNetworkAccessPoliciesListByResourceGroupPager {
-	return &jitNetworkAccessPoliciesListByResourceGroupPager{
+func (client *JitNetworkAccessPoliciesClient) ListByResourceGroup(resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupOptions) *JitNetworkAccessPoliciesListByResourceGroupPager {
+	return &JitNetworkAccessPoliciesListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
+		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -442,56 +440,55 @@ func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesListByResourceGroupResponse, error) {
-	result := JitNetworkAccessPoliciesListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessPoliciesList); err != nil {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListByResourceGroupResponse, error) {
+	result := JitNetworkAccessPoliciesListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
 		return JitNetworkAccessPoliciesListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroupAndRegion - Policies for protecting resources using Just-in-Time access control for the subscription, location
 // If the operation fails it returns the *CloudError error type.
-func (client *JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegion(resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupAndRegionOptions) JitNetworkAccessPoliciesListByResourceGroupAndRegionPager {
-	return &jitNetworkAccessPoliciesListByResourceGroupAndRegionPager{
+func (client *JitNetworkAccessPoliciesClient) ListByResourceGroupAndRegion(resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupAndRegionOptions) *JitNetworkAccessPoliciesListByResourceGroupAndRegionPager {
+	return &JitNetworkAccessPoliciesListByResourceGroupAndRegionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupAndRegionCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
+		advancer: func(ctx context.Context, resp JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JitNetworkAccessPoliciesList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupAndRegionCreateRequest creates the ListByResourceGroupAndRegion request.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreateRequest(ctx context.Context, resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupAndRegionOptions) (*azcore.Request, error) {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreateRequest(ctx context.Context, resourceGroupName string, options *JitNetworkAccessPoliciesListByResourceGroupAndRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -505,36 +502,35 @@ func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreate
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupAndRegionHandleResponse handles the ListByResourceGroupAndRegion response.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleResponse(resp *azcore.Response) (JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse, error) {
-	result := JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JitNetworkAccessPoliciesList); err != nil {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse, error) {
+	result := JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
 		return JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupAndRegionHandleError handles the ListByResourceGroupAndRegion error response.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

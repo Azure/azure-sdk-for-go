@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armsecurity
 
-const telemetryInfo = "azsdk-go-armsecurity/v0.1.0"
+const (
+	module  = "armsecurity"
+	version = "v0.1.0"
+)
 
 // AADConnectivityState - The connectivity state of the external AAD solution
 type AADConnectivityState string
@@ -716,27 +720,27 @@ func (c Enum15) ToPtr() *Enum15 {
 	return &c
 }
 
-type Enum69 string
+type Enum71 string
 
 const (
-	Enum69MCAS                           Enum69 = "MCAS"
-	Enum69Sentinel                       Enum69 = "Sentinel"
-	Enum69WDATP                          Enum69 = "WDATP"
-	Enum69WDATPEXCLUDELINUXPUBLICPREVIEW Enum69 = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+	Enum71MCAS                           Enum71 = "MCAS"
+	Enum71Sentinel                       Enum71 = "Sentinel"
+	Enum71WDATP                          Enum71 = "WDATP"
+	Enum71WDATPEXCLUDELINUXPUBLICPREVIEW Enum71 = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
 )
 
-// PossibleEnum69Values returns the possible values for the Enum69 const type.
-func PossibleEnum69Values() []Enum69 {
-	return []Enum69{
-		Enum69MCAS,
-		Enum69Sentinel,
-		Enum69WDATP,
-		Enum69WDATPEXCLUDELINUXPUBLICPREVIEW,
+// PossibleEnum71Values returns the possible values for the Enum71 const type.
+func PossibleEnum71Values() []Enum71 {
+	return []Enum71{
+		Enum71MCAS,
+		Enum71Sentinel,
+		Enum71WDATP,
+		Enum71WDATPEXCLUDELINUXPUBLICPREVIEW,
 	}
 }
 
-// ToPtr returns a *Enum69 pointing to the current value.
-func (c Enum69) ToPtr() *Enum69 {
+// ToPtr returns a *Enum71 pointing to the current value.
+func (c Enum71) ToPtr() *Enum71 {
 	return &c
 }
 
@@ -1855,6 +1859,278 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 
 // ToPtr returns a *SubAssessmentStatusCode pointing to the current value.
 func (c SubAssessmentStatusCode) ToPtr() *SubAssessmentStatusCode {
+	return &c
+}
+
+// Tactics - Tactic of the assessment
+type Tactics string
+
+const (
+	TacticsCollection          Tactics = "Collection"
+	TacticsCommandAndControl   Tactics = "Command and Control"
+	TacticsCredentialAccess    Tactics = "Credential Access"
+	TacticsDefenseEvasion      Tactics = "Defense Evasion"
+	TacticsDiscovery           Tactics = "Discovery"
+	TacticsExecution           Tactics = "Execution"
+	TacticsExfiltration        Tactics = "Exfiltration"
+	TacticsImpact              Tactics = "Impact"
+	TacticsInitialAccess       Tactics = "Initial Access"
+	TacticsLateralMovement     Tactics = "Lateral Movement"
+	TacticsPersistence         Tactics = "Persistence"
+	TacticsPrivilegeEscalation Tactics = "Privilege Escalation"
+	TacticsReconnaissance      Tactics = "Reconnaissance"
+	TacticsResourceDevelopment Tactics = "Resource Development"
+)
+
+// PossibleTacticsValues returns the possible values for the Tactics const type.
+func PossibleTacticsValues() []Tactics {
+	return []Tactics{
+		TacticsCollection,
+		TacticsCommandAndControl,
+		TacticsCredentialAccess,
+		TacticsDefenseEvasion,
+		TacticsDiscovery,
+		TacticsExecution,
+		TacticsExfiltration,
+		TacticsImpact,
+		TacticsInitialAccess,
+		TacticsLateralMovement,
+		TacticsPersistence,
+		TacticsPrivilegeEscalation,
+		TacticsReconnaissance,
+		TacticsResourceDevelopment,
+	}
+}
+
+// ToPtr returns a *Tactics pointing to the current value.
+func (c Tactics) ToPtr() *Tactics {
+	return &c
+}
+
+// Techniques - Techniques of the assessment
+type Techniques string
+
+const (
+	TechniquesAbuseElevationControlMechanism          Techniques = "Abuse Elevation Control Mechanism"
+	TechniquesAccessTokenManipulation                 Techniques = "Access Token Manipulation"
+	TechniquesAccountDiscovery                        Techniques = "Account Discovery"
+	TechniquesAccountManipulation                     Techniques = "Account Manipulation"
+	TechniquesActiveScanning                          Techniques = "Active Scanning"
+	TechniquesApplicationLayerProtocol                Techniques = "Application Layer Protocol"
+	TechniquesAudioCapture                            Techniques = "Audio Capture"
+	TechniquesBootOrLogonAutostartExecution           Techniques = "Boot or Logon Autostart Execution"
+	TechniquesBootOrLogonInitializationScripts        Techniques = "Boot or Logon Initialization Scripts"
+	TechniquesBruteForce                              Techniques = "Brute Force"
+	TechniquesCloudInfrastructureDiscovery            Techniques = "Cloud Infrastructure Discovery"
+	TechniquesCloudServiceDashboard                   Techniques = "Cloud Service Dashboard"
+	TechniquesCloudServiceDiscovery                   Techniques = "Cloud Service Discovery"
+	TechniquesCommandAndScriptingInterpreter          Techniques = "Command and Scripting Interpreter"
+	TechniquesCompromiseClientSoftwareBinary          Techniques = "Compromise Client Software Binary"
+	TechniquesCompromiseInfrastructure                Techniques = "Compromise Infrastructure"
+	TechniquesContainerAndResourceDiscovery           Techniques = "Container and Resource Discovery"
+	TechniquesCreateAccount                           Techniques = "Create Account"
+	TechniquesCreateOrModifySystemProcess             Techniques = "Create or Modify System Process"
+	TechniquesCredentialsFromPasswordStores           Techniques = "Credentials from Password Stores"
+	TechniquesDataDestruction                         Techniques = "Data Destruction"
+	TechniquesDataEncryptedForImpact                  Techniques = "Data Encrypted for Impact"
+	TechniquesDataFromCloudStorageObject              Techniques = "Data from Cloud Storage Object"
+	TechniquesDataFromConfigurationRepository         Techniques = "Data from Configuration Repository"
+	TechniquesDataFromInformationRepositories         Techniques = "Data from Information Repositories"
+	TechniquesDataFromLocalSystem                     Techniques = "Data from Local System"
+	TechniquesDataManipulation                        Techniques = "Data Manipulation"
+	TechniquesDataStaged                              Techniques = "Data Staged"
+	TechniquesDefacement                              Techniques = "Defacement"
+	TechniquesDeobfuscateDecodeFilesOrInformation     Techniques = "Deobfuscate/Decode Files or Information"
+	TechniquesDiskWipe                                Techniques = "Disk Wipe"
+	TechniquesDomainTrustDiscovery                    Techniques = "Domain Trust Discovery"
+	TechniquesDriveByCompromise                       Techniques = "Drive-by Compromise"
+	TechniquesDynamicResolution                       Techniques = "Dynamic Resolution"
+	TechniquesEndpointDenialOfService                 Techniques = "Endpoint Denial of Service"
+	TechniquesEventTriggeredExecution                 Techniques = "Event Triggered Execution"
+	TechniquesExfiltrationOverAlternativeProtocol     Techniques = "Exfiltration Over Alternative Protocol"
+	TechniquesExploitPublicFacingApplication          Techniques = "Exploit Public-Facing Application"
+	TechniquesExploitationForClientExecution          Techniques = "Exploitation for Client Execution"
+	TechniquesExploitationForCredentialAccess         Techniques = "Exploitation for Credential Access"
+	TechniquesExploitationForDefenseEvasion           Techniques = "Exploitation for Defense Evasion"
+	TechniquesExploitationForPrivilegeEscalation      Techniques = "Exploitation for Privilege Escalation"
+	TechniquesExploitationOfRemoteServices            Techniques = "Exploitation of Remote Services"
+	TechniquesExternalRemoteServices                  Techniques = "External Remote Services"
+	TechniquesFallbackChannels                        Techniques = "Fallback Channels"
+	TechniquesFileAndDirectoryDiscovery               Techniques = "File and Directory Discovery"
+	TechniquesFileAndDirectoryPermissionsModification Techniques = "File and Directory Permissions Modification"
+	TechniquesGatherVictimNetworkInformation          Techniques = "Gather Victim Network Information"
+	TechniquesHideArtifacts                           Techniques = "Hide Artifacts"
+	TechniquesHijackExecutionFlow                     Techniques = "Hijack Execution Flow"
+	TechniquesImpairDefenses                          Techniques = "Impair Defenses"
+	TechniquesImplantContainerImage                   Techniques = "Implant Container Image"
+	TechniquesIndicatorRemovalOnHost                  Techniques = "Indicator Removal on Host"
+	TechniquesIndirectCommandExecution                Techniques = "Indirect Command Execution"
+	TechniquesIngressToolTransfer                     Techniques = "Ingress Tool Transfer"
+	TechniquesInputCapture                            Techniques = "Input Capture"
+	TechniquesInterProcessCommunication               Techniques = "Inter-Process Communication"
+	TechniquesLateralToolTransfer                     Techniques = "Lateral Tool Transfer"
+	TechniquesManInTheMiddle                          Techniques = "Man-in-the-Middle"
+	TechniquesMasquerading                            Techniques = "Masquerading"
+	TechniquesModifyAuthenticationProcess             Techniques = "Modify Authentication Process"
+	TechniquesModifyRegistry                          Techniques = "Modify Registry"
+	TechniquesNetworkDenialOfService                  Techniques = "Network Denial of Service"
+	TechniquesNetworkServiceScanning                  Techniques = "Network Service Scanning"
+	TechniquesNetworkSniffing                         Techniques = "Network Sniffing"
+	TechniquesNonApplicationLayerProtocol             Techniques = "Non-Application Layer Protocol"
+	TechniquesNonStandardPort                         Techniques = "Non-Standard Port"
+	TechniquesOSCredentialDumping                     Techniques = "OS Credential Dumping"
+	TechniquesObfuscatedFilesOrInformation            Techniques = "Obfuscated Files or Information"
+	TechniquesObtainCapabilities                      Techniques = "Obtain Capabilities"
+	TechniquesObuscatedFilesOrInformation             Techniques = "Obuscated Files or Information"
+	TechniquesOfficeApplicationStartup                Techniques = "Office Application Startup"
+	TechniquesPermissionGroupsDiscovery               Techniques = "Permission Groups Discovery"
+	TechniquesPhishing                                Techniques = "Phishing"
+	TechniquesPreOSBoot                               Techniques = "Pre-OS Boot"
+	TechniquesProcessDiscovery                        Techniques = "Process Discovery"
+	TechniquesProcessInjection                        Techniques = "Process Injection"
+	TechniquesProtocolTunneling                       Techniques = "Protocol Tunneling"
+	TechniquesProxy                                   Techniques = "Proxy"
+	TechniquesQueryRegistry                           Techniques = "Query Registry"
+	TechniquesRemoteAccessSoftware                    Techniques = "Remote Access Software"
+	TechniquesRemoteServiceSessionHijacking           Techniques = "Remote Service Session Hijacking"
+	TechniquesRemoteServices                          Techniques = "Remote Services"
+	TechniquesRemoteSystemDiscovery                   Techniques = "Remote System Discovery"
+	TechniquesResourceHijacking                       Techniques = "Resource Hijacking"
+	TechniquesSQLStoredProcedures                     Techniques = "SQL Stored Procedures"
+	TechniquesScheduledTaskJob                        Techniques = "Scheduled Task/Job"
+	TechniquesScreenCapture                           Techniques = "Screen Capture"
+	TechniquesSearchVictimOwnedWebsites               Techniques = "Search Victim-Owned Websites"
+	TechniquesServerSoftwareComponent                 Techniques = "Server Software Component"
+	TechniquesServiceStop                             Techniques = "Service Stop"
+	TechniquesSignedBinaryProxyExecution              Techniques = "Signed Binary Proxy Execution"
+	TechniquesSoftwareDeploymentTools                 Techniques = "Software Deployment Tools"
+	TechniquesStealOrForgeKerberosTickets             Techniques = "Steal or Forge Kerberos Tickets"
+	TechniquesSubvertTrustControls                    Techniques = "Subvert Trust Controls"
+	TechniquesSupplyChainCompromise                   Techniques = "Supply Chain Compromise"
+	TechniquesSystemInformationDiscovery              Techniques = "System Information Discovery"
+	TechniquesTaintSharedContent                      Techniques = "Taint Shared Content"
+	TechniquesTrafficSignaling                        Techniques = "Traffic Signaling"
+	TechniquesTransferDataToCloudAccount              Techniques = "Transfer Data to Cloud Account"
+	TechniquesTrustedRelationship                     Techniques = "Trusted Relationship"
+	TechniquesUnsecuredCredentials                    Techniques = "Unsecured Credentials"
+	TechniquesUserExecution                           Techniques = "User Execution"
+	TechniquesValidAccounts                           Techniques = "Valid Accounts"
+	TechniquesWindowsManagementInstrumentation        Techniques = "Windows Management Instrumentation"
+)
+
+// PossibleTechniquesValues returns the possible values for the Techniques const type.
+func PossibleTechniquesValues() []Techniques {
+	return []Techniques{
+		TechniquesAbuseElevationControlMechanism,
+		TechniquesAccessTokenManipulation,
+		TechniquesAccountDiscovery,
+		TechniquesAccountManipulation,
+		TechniquesActiveScanning,
+		TechniquesApplicationLayerProtocol,
+		TechniquesAudioCapture,
+		TechniquesBootOrLogonAutostartExecution,
+		TechniquesBootOrLogonInitializationScripts,
+		TechniquesBruteForce,
+		TechniquesCloudInfrastructureDiscovery,
+		TechniquesCloudServiceDashboard,
+		TechniquesCloudServiceDiscovery,
+		TechniquesCommandAndScriptingInterpreter,
+		TechniquesCompromiseClientSoftwareBinary,
+		TechniquesCompromiseInfrastructure,
+		TechniquesContainerAndResourceDiscovery,
+		TechniquesCreateAccount,
+		TechniquesCreateOrModifySystemProcess,
+		TechniquesCredentialsFromPasswordStores,
+		TechniquesDataDestruction,
+		TechniquesDataEncryptedForImpact,
+		TechniquesDataFromCloudStorageObject,
+		TechniquesDataFromConfigurationRepository,
+		TechniquesDataFromInformationRepositories,
+		TechniquesDataFromLocalSystem,
+		TechniquesDataManipulation,
+		TechniquesDataStaged,
+		TechniquesDefacement,
+		TechniquesDeobfuscateDecodeFilesOrInformation,
+		TechniquesDiskWipe,
+		TechniquesDomainTrustDiscovery,
+		TechniquesDriveByCompromise,
+		TechniquesDynamicResolution,
+		TechniquesEndpointDenialOfService,
+		TechniquesEventTriggeredExecution,
+		TechniquesExfiltrationOverAlternativeProtocol,
+		TechniquesExploitPublicFacingApplication,
+		TechniquesExploitationForClientExecution,
+		TechniquesExploitationForCredentialAccess,
+		TechniquesExploitationForDefenseEvasion,
+		TechniquesExploitationForPrivilegeEscalation,
+		TechniquesExploitationOfRemoteServices,
+		TechniquesExternalRemoteServices,
+		TechniquesFallbackChannels,
+		TechniquesFileAndDirectoryDiscovery,
+		TechniquesFileAndDirectoryPermissionsModification,
+		TechniquesGatherVictimNetworkInformation,
+		TechniquesHideArtifacts,
+		TechniquesHijackExecutionFlow,
+		TechniquesImpairDefenses,
+		TechniquesImplantContainerImage,
+		TechniquesIndicatorRemovalOnHost,
+		TechniquesIndirectCommandExecution,
+		TechniquesIngressToolTransfer,
+		TechniquesInputCapture,
+		TechniquesInterProcessCommunication,
+		TechniquesLateralToolTransfer,
+		TechniquesManInTheMiddle,
+		TechniquesMasquerading,
+		TechniquesModifyAuthenticationProcess,
+		TechniquesModifyRegistry,
+		TechniquesNetworkDenialOfService,
+		TechniquesNetworkServiceScanning,
+		TechniquesNetworkSniffing,
+		TechniquesNonApplicationLayerProtocol,
+		TechniquesNonStandardPort,
+		TechniquesOSCredentialDumping,
+		TechniquesObfuscatedFilesOrInformation,
+		TechniquesObtainCapabilities,
+		TechniquesObuscatedFilesOrInformation,
+		TechniquesOfficeApplicationStartup,
+		TechniquesPermissionGroupsDiscovery,
+		TechniquesPhishing,
+		TechniquesPreOSBoot,
+		TechniquesProcessDiscovery,
+		TechniquesProcessInjection,
+		TechniquesProtocolTunneling,
+		TechniquesProxy,
+		TechniquesQueryRegistry,
+		TechniquesRemoteAccessSoftware,
+		TechniquesRemoteServiceSessionHijacking,
+		TechniquesRemoteServices,
+		TechniquesRemoteSystemDiscovery,
+		TechniquesResourceHijacking,
+		TechniquesSQLStoredProcedures,
+		TechniquesScheduledTaskJob,
+		TechniquesScreenCapture,
+		TechniquesSearchVictimOwnedWebsites,
+		TechniquesServerSoftwareComponent,
+		TechniquesServiceStop,
+		TechniquesSignedBinaryProxyExecution,
+		TechniquesSoftwareDeploymentTools,
+		TechniquesStealOrForgeKerberosTickets,
+		TechniquesSubvertTrustControls,
+		TechniquesSupplyChainCompromise,
+		TechniquesSystemInformationDiscovery,
+		TechniquesTaintSharedContent,
+		TechniquesTrafficSignaling,
+		TechniquesTransferDataToCloudAccount,
+		TechniquesTrustedRelationship,
+		TechniquesUnsecuredCredentials,
+		TechniquesUserExecution,
+		TechniquesValidAccounts,
+		TechniquesWindowsManagementInstrumentation,
+	}
+}
+
+// ToPtr returns a *Techniques pointing to the current value.
+func (c Techniques) ToPtr() *Techniques {
 	return &c
 }
 

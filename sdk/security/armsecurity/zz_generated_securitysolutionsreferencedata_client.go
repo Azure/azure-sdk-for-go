@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecuritySolutionsReferenceDataClient contains the methods for the SecuritySolutionsReferenceData group.
 // Don't use this type directly, use NewSecuritySolutionsReferenceDataClient() instead.
 type SecuritySolutionsReferenceDataClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 	ascLocation    string
 }
 
 // NewSecuritySolutionsReferenceDataClient creates a new instance of SecuritySolutionsReferenceDataClient with the specified values.
-func NewSecuritySolutionsReferenceDataClient(con *armcore.Connection, subscriptionID string, ascLocation string) *SecuritySolutionsReferenceDataClient {
-	return &SecuritySolutionsReferenceDataClient{con: con, subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewSecuritySolutionsReferenceDataClient(con *arm.Connection, subscriptionID string, ascLocation string) *SecuritySolutionsReferenceDataClient {
+	return &SecuritySolutionsReferenceDataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
 }
 
 // List - Gets a list of all supported Security Solutions for the subscription.
@@ -38,55 +42,54 @@ func (client *SecuritySolutionsReferenceDataClient) List(ctx context.Context, op
 	if err != nil {
 		return SecuritySolutionsReferenceDataListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SecuritySolutionsReferenceDataListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SecuritySolutionsReferenceDataListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SecuritySolutionsReferenceDataClient) listCreateRequest(ctx context.Context, options *SecuritySolutionsReferenceDataListOptions) (*azcore.Request, error) {
+func (client *SecuritySolutionsReferenceDataClient) listCreateRequest(ctx context.Context, options *SecuritySolutionsReferenceDataListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecuritySolutionsReferenceDataClient) listHandleResponse(resp *azcore.Response) (SecuritySolutionsReferenceDataListResponse, error) {
-	result := SecuritySolutionsReferenceDataListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecuritySolutionsReferenceDataList); err != nil {
+func (client *SecuritySolutionsReferenceDataClient) listHandleResponse(resp *http.Response) (SecuritySolutionsReferenceDataListResponse, error) {
+	result := SecuritySolutionsReferenceDataListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySolutionsReferenceDataList); err != nil {
 		return SecuritySolutionsReferenceDataListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *SecuritySolutionsReferenceDataClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecuritySolutionsReferenceDataClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByHomeRegion - Gets list of all supported Security Solutions for subscription and location.
@@ -96,18 +99,18 @@ func (client *SecuritySolutionsReferenceDataClient) ListByHomeRegion(ctx context
 	if err != nil {
 		return SecuritySolutionsReferenceDataListByHomeRegionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SecuritySolutionsReferenceDataListByHomeRegionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SecuritySolutionsReferenceDataListByHomeRegionResponse{}, client.listByHomeRegionHandleError(resp)
 	}
 	return client.listByHomeRegionHandleResponse(resp)
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, options *SecuritySolutionsReferenceDataListByHomeRegionOptions) (*azcore.Request, error) {
+func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, options *SecuritySolutionsReferenceDataListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,36 +120,35 @@ func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionCreateReques
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionHandleResponse(resp *azcore.Response) (SecuritySolutionsReferenceDataListByHomeRegionResponse, error) {
-	result := SecuritySolutionsReferenceDataListByHomeRegionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecuritySolutionsReferenceDataList); err != nil {
+func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionHandleResponse(resp *http.Response) (SecuritySolutionsReferenceDataListByHomeRegionResponse, error) {
+	result := SecuritySolutionsReferenceDataListByHomeRegionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySolutionsReferenceDataList); err != nil {
 		return SecuritySolutionsReferenceDataListByHomeRegionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByHomeRegionHandleError handles the ListByHomeRegion error response.
-func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

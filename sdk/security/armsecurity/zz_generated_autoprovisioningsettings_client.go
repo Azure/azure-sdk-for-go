@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutoProvisioningSettingsClient contains the methods for the AutoProvisioningSettings group.
 // Don't use this type directly, use NewAutoProvisioningSettingsClient() instead.
 type AutoProvisioningSettingsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAutoProvisioningSettingsClient creates a new instance of AutoProvisioningSettingsClient with the specified values.
-func NewAutoProvisioningSettingsClient(con *armcore.Connection, subscriptionID string) *AutoProvisioningSettingsClient {
-	return &AutoProvisioningSettingsClient{con: con, subscriptionID: subscriptionID}
+func NewAutoProvisioningSettingsClient(con *arm.Connection, subscriptionID string) *AutoProvisioningSettingsClient {
+	return &AutoProvisioningSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Create - Details of a specific setting
@@ -37,18 +41,18 @@ func (client *AutoProvisioningSettingsClient) Create(ctx context.Context, settin
 	if err != nil {
 		return AutoProvisioningSettingsCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AutoProvisioningSettingsCreateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AutoProvisioningSettingsCreateResponse{}, client.createHandleError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsCreateOptions) (*azcore.Request, error) {
+func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Context, settingName string, setting AutoProvisioningSetting, options *AutoProvisioningSettingsCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -58,38 +62,37 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(settingName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(setting)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, setting)
 }
 
 // createHandleResponse handles the Create response.
-func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *azcore.Response) (AutoProvisioningSettingsCreateResponse, error) {
-	result := AutoProvisioningSettingsCreateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AutoProvisioningSetting); err != nil {
+func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Response) (AutoProvisioningSettingsCreateResponse, error) {
+	result := AutoProvisioningSettingsCreateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
 		return AutoProvisioningSettingsCreateResponse{}, err
 	}
 	return result, nil
 }
 
 // createHandleError handles the Create error response.
-func (client *AutoProvisioningSettingsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoProvisioningSettingsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Details of a specific setting
@@ -99,18 +102,18 @@ func (client *AutoProvisioningSettingsClient) Get(ctx context.Context, settingNa
 	if err != nil {
 		return AutoProvisioningSettingsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AutoProvisioningSettingsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AutoProvisioningSettingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Context, settingName string, options *AutoProvisioningSettingsGetOptions) (*azcore.Request, error) {
+func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Context, settingName string, options *AutoProvisioningSettingsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -120,91 +123,89 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(settingName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *azcore.Response) (AutoProvisioningSettingsGetResponse, error) {
-	result := AutoProvisioningSettingsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AutoProvisioningSetting); err != nil {
+func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Response) (AutoProvisioningSettingsGetResponse, error) {
+	result := AutoProvisioningSettingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
 		return AutoProvisioningSettingsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AutoProvisioningSettingsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoProvisioningSettingsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Exposes the auto provisioning settings of the subscriptions
 // If the operation fails it returns the *CloudError error type.
-func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsListOptions) AutoProvisioningSettingsListPager {
-	return &autoProvisioningSettingsListPager{
+func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsListOptions) *AutoProvisioningSettingsListPager {
+	return &AutoProvisioningSettingsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AutoProvisioningSettingsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutoProvisioningSettingList.NextLink)
+		advancer: func(ctx context.Context, resp AutoProvisioningSettingsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoProvisioningSettingList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Context, options *AutoProvisioningSettingsListOptions) (*azcore.Request, error) {
+func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Context, options *AutoProvisioningSettingsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AutoProvisioningSettingsClient) listHandleResponse(resp *azcore.Response) (AutoProvisioningSettingsListResponse, error) {
-	result := AutoProvisioningSettingsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AutoProvisioningSettingList); err != nil {
+func (client *AutoProvisioningSettingsClient) listHandleResponse(resp *http.Response) (AutoProvisioningSettingsListResponse, error) {
+	result := AutoProvisioningSettingsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSettingList); err != nil {
 		return AutoProvisioningSettingsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *AutoProvisioningSettingsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoProvisioningSettingsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

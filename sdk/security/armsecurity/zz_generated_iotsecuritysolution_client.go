@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IotSecuritySolutionClient contains the methods for the IotSecuritySolution group.
 // Don't use this type directly, use NewIotSecuritySolutionClient() instead.
 type IotSecuritySolutionClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIotSecuritySolutionClient creates a new instance of IotSecuritySolutionClient with the specified values.
-func NewIotSecuritySolutionClient(con *armcore.Connection, subscriptionID string) *IotSecuritySolutionClient {
-	return &IotSecuritySolutionClient{con: con, subscriptionID: subscriptionID}
+func NewIotSecuritySolutionClient(con *arm.Connection, subscriptionID string) *IotSecuritySolutionClient {
+	return &IotSecuritySolutionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Use this method to create or update yours IoT Security solution
@@ -37,18 +41,18 @@ func (client *IotSecuritySolutionClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return IotSecuritySolutionCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return IotSecuritySolutionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel, options *IotSecuritySolutionCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,38 +66,37 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(iotSecuritySolutionData)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, iotSecuritySolutionData)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *azcore.Response) (IotSecuritySolutionCreateOrUpdateResponse, error) {
-	result := IotSecuritySolutionCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionModel); err != nil {
+func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *http.Response) (IotSecuritySolutionCreateOrUpdateResponse, error) {
+	result := IotSecuritySolutionCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
 		return IotSecuritySolutionCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IotSecuritySolutionClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Use this method to delete yours IoT Security solution
@@ -103,18 +106,18 @@ func (client *IotSecuritySolutionClient) Delete(ctx context.Context, resourceGro
 	if err != nil {
 		return IotSecuritySolutionDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IotSecuritySolutionDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return IotSecuritySolutionDeleteResponse{RawResponse: resp.Response}, nil
+	return IotSecuritySolutionDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionDeleteOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -128,29 +131,28 @@ func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *IotSecuritySolutionClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - User this method to get details of a specific IoT Security solution based on solution name
@@ -160,18 +162,18 @@ func (client *IotSecuritySolutionClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return IotSecuritySolutionGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IotSecuritySolutionGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionGetOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -185,56 +187,55 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionClient) getHandleResponse(resp *azcore.Response) (IotSecuritySolutionGetResponse, error) {
-	result := IotSecuritySolutionGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionModel); err != nil {
+func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionGetResponse, error) {
+	result := IotSecuritySolutionGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
 		return IotSecuritySolutionGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IotSecuritySolutionClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Use this method to get the list IoT Security solutions organized by resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionListByResourceGroupOptions) IotSecuritySolutionListByResourceGroupPager {
-	return &iotSecuritySolutionListByResourceGroupPager{
+func (client *IotSecuritySolutionClient) ListByResourceGroup(resourceGroupName string, options *IotSecuritySolutionListByResourceGroupOptions) *IotSecuritySolutionListByResourceGroupPager {
+	return &IotSecuritySolutionListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
+		advancer: func(ctx context.Context, resp IotSecuritySolutionListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IotSecuritySolutionListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *IotSecuritySolutionListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -244,99 +245,97 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp *azcore.Response) (IotSecuritySolutionListByResourceGroupResponse, error) {
-	result := IotSecuritySolutionListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionsList); err != nil {
+func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp *http.Response) (IotSecuritySolutionListByResourceGroupResponse, error) {
+	result := IotSecuritySolutionListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
 		return IotSecuritySolutionListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *IotSecuritySolutionClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListBySubscription - Use this method to get the list of IoT Security solutions by subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionListBySubscriptionOptions) IotSecuritySolutionListBySubscriptionPager {
-	return &iotSecuritySolutionListBySubscriptionPager{
+func (client *IotSecuritySolutionClient) ListBySubscription(options *IotSecuritySolutionListBySubscriptionOptions) *IotSecuritySolutionListBySubscriptionPager {
+	return &IotSecuritySolutionListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
+		advancer: func(ctx context.Context, resp IotSecuritySolutionListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecuritySolutionsList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx context.Context, options *IotSecuritySolutionListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx context.Context, options *IotSecuritySolutionListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotSecuritySolutions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *azcore.Response) (IotSecuritySolutionListBySubscriptionResponse, error) {
-	result := IotSecuritySolutionListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionsList); err != nil {
+func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *http.Response) (IotSecuritySolutionListBySubscriptionResponse, error) {
+	result := IotSecuritySolutionListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
 		return IotSecuritySolutionListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *IotSecuritySolutionClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Use this method to update existing IoT Security solution tags or user defined resources. To update other fields use the CreateOrUpdate method.
@@ -346,18 +345,18 @@ func (client *IotSecuritySolutionClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return IotSecuritySolutionUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IotSecuritySolutionUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionUpdateOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData, options *IotSecuritySolutionUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -371,36 +370,35 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(updateIotSecuritySolutionData)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, updateIotSecuritySolutionData)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IotSecuritySolutionClient) updateHandleResponse(resp *azcore.Response) (IotSecuritySolutionUpdateResponse, error) {
-	result := IotSecuritySolutionUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionModel); err != nil {
+func (client *IotSecuritySolutionClient) updateHandleResponse(resp *http.Response) (IotSecuritySolutionUpdateResponse, error) {
+	result := IotSecuritySolutionUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
 		return IotSecuritySolutionUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *IotSecuritySolutionClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

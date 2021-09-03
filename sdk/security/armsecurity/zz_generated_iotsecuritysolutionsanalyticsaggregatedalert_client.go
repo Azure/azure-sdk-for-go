@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IotSecuritySolutionsAnalyticsAggregatedAlertClient contains the methods for the IotSecuritySolutionsAnalyticsAggregatedAlert group.
 // Don't use this type directly, use NewIotSecuritySolutionsAnalyticsAggregatedAlertClient() instead.
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIotSecuritySolutionsAnalyticsAggregatedAlertClient creates a new instance of IotSecuritySolutionsAnalyticsAggregatedAlertClient with the specified values.
-func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(con *armcore.Connection, subscriptionID string) *IotSecuritySolutionsAnalyticsAggregatedAlertClient {
-	return &IotSecuritySolutionsAnalyticsAggregatedAlertClient{con: con, subscriptionID: subscriptionID}
+func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(con *arm.Connection, subscriptionID string) *IotSecuritySolutionsAnalyticsAggregatedAlertClient {
+	return &IotSecuritySolutionsAnalyticsAggregatedAlertClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Dismiss - Use this method to dismiss an aggregated IoT Security Solution Alert.
@@ -38,18 +42,18 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx co
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse{}, client.dismissHandleError(resp)
 	}
-	return IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse{RawResponse: resp.Response}, nil
+	return IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse{RawResponse: resp}, nil
 }
 
 // dismissCreateRequest creates the Dismiss request.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertDismissOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts/{aggregatedAlertName}/dismiss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,29 +71,28 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateR
 		return nil, errors.New("parameter aggregatedAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{aggregatedAlertName}", url.PathEscape(aggregatedAlertName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // dismissHandleError handles the Dismiss error response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is performed by alert name.
@@ -99,18 +102,18 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx contex
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertGetOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts/{aggregatedAlertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -128,56 +131,55 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateReque
 		return nil, errors.New("parameter aggregatedAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{aggregatedAlertName}", url.PathEscape(aggregatedAlertName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleResponse(resp *azcore.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse, error) {
-	result := IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecurityAggregatedAlert); err != nil {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse, error) {
+	result := IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedAlert); err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Use this method to get the aggregated alert list of yours IoT Security solution.
 // If the operation fails it returns the *CloudError error type.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertListOptions) IotSecuritySolutionsAnalyticsAggregatedAlertListPager {
-	return &iotSecuritySolutionsAnalyticsAggregatedAlertListPager{
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertListOptions) *IotSecuritySolutionsAnalyticsAggregatedAlertListPager {
+	return &IotSecuritySolutionsAnalyticsAggregatedAlertListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, solutionName, options)
 		},
-		advancer: func(ctx context.Context, resp IotSecuritySolutionsAnalyticsAggregatedAlertListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.IoTSecurityAggregatedAlertList.NextLink)
+		advancer: func(ctx context.Context, resp IotSecuritySolutionsAnalyticsAggregatedAlertListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.IoTSecurityAggregatedAlertList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertListOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -191,39 +193,38 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequ
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleResponse(resp *azcore.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertListResponse, error) {
-	result := IotSecuritySolutionsAnalyticsAggregatedAlertListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecurityAggregatedAlertList); err != nil {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertListResponse, error) {
+	result := IotSecuritySolutionsAnalyticsAggregatedAlertListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedAlertList); err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

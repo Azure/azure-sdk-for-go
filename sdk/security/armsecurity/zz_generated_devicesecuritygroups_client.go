@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,22 +12,25 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DeviceSecurityGroupsClient contains the methods for the DeviceSecurityGroups group.
 // Don't use this type directly, use NewDeviceSecurityGroupsClient() instead.
 type DeviceSecurityGroupsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewDeviceSecurityGroupsClient creates a new instance of DeviceSecurityGroupsClient with the specified values.
-func NewDeviceSecurityGroupsClient(con *armcore.Connection) *DeviceSecurityGroupsClient {
-	return &DeviceSecurityGroupsClient{con: con}
+func NewDeviceSecurityGroupsClient(con *arm.Connection) *DeviceSecurityGroupsClient {
+	return &DeviceSecurityGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // CreateOrUpdate - Use this method to creates or updates the device security group on a specified IoT Hub resource.
@@ -36,18 +40,18 @@ func (client *DeviceSecurityGroupsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return DeviceSecurityGroupsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DeviceSecurityGroupsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return DeviceSecurityGroupsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup DeviceSecurityGroup, options *DeviceSecurityGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup DeviceSecurityGroup, options *DeviceSecurityGroupsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
@@ -57,38 +61,37 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter deviceSecurityGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceSecurityGroupName}", url.PathEscape(deviceSecurityGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(deviceSecurityGroup)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, deviceSecurityGroup)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (DeviceSecurityGroupsCreateOrUpdateResponse, error) {
-	result := DeviceSecurityGroupsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeviceSecurityGroup); err != nil {
+func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceSecurityGroupsCreateOrUpdateResponse, error) {
+	result := DeviceSecurityGroupsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
 		return DeviceSecurityGroupsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DeviceSecurityGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeviceSecurityGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - User this method to deletes the device security group.
@@ -98,18 +101,18 @@ func (client *DeviceSecurityGroupsClient) Delete(ctx context.Context, resourceID
 	if err != nil {
 		return DeviceSecurityGroupsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DeviceSecurityGroupsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DeviceSecurityGroupsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return DeviceSecurityGroupsDeleteResponse{RawResponse: resp.Response}, nil
+	return DeviceSecurityGroupsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsDeleteOptions) (*azcore.Request, error) {
+func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
@@ -119,29 +122,28 @@ func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter deviceSecurityGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceSecurityGroupName}", url.PathEscape(deviceSecurityGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DeviceSecurityGroupsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeviceSecurityGroupsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Use this method to get the device security group for the specified IoT Hub resource.
@@ -151,18 +153,18 @@ func (client *DeviceSecurityGroupsClient) Get(ctx context.Context, resourceID st
 	if err != nil {
 		return DeviceSecurityGroupsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DeviceSecurityGroupsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DeviceSecurityGroupsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsGetOptions) (*azcore.Request, error) {
+func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
@@ -172,91 +174,89 @@ func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter deviceSecurityGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceSecurityGroupName}", url.PathEscape(deviceSecurityGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *azcore.Response) (DeviceSecurityGroupsGetResponse, error) {
-	result := DeviceSecurityGroupsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeviceSecurityGroup); err != nil {
+func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response) (DeviceSecurityGroupsGetResponse, error) {
+	result := DeviceSecurityGroupsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
 		return DeviceSecurityGroupsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DeviceSecurityGroupsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeviceSecurityGroupsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Use this method get the list of device security groups for the specified IoT Hub resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *DeviceSecurityGroupsClient) List(resourceID string, options *DeviceSecurityGroupsListOptions) DeviceSecurityGroupsListPager {
-	return &deviceSecurityGroupsListPager{
+func (client *DeviceSecurityGroupsClient) List(resourceID string, options *DeviceSecurityGroupsListOptions) *DeviceSecurityGroupsListPager {
+	return &DeviceSecurityGroupsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceID, options)
 		},
-		advancer: func(ctx context.Context, resp DeviceSecurityGroupsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeviceSecurityGroupList.NextLink)
+		advancer: func(ctx context.Context, resp DeviceSecurityGroupsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceSecurityGroupList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, options *DeviceSecurityGroupsListOptions) (*azcore.Request, error) {
+func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, options *DeviceSecurityGroupsListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DeviceSecurityGroupsClient) listHandleResponse(resp *azcore.Response) (DeviceSecurityGroupsListResponse, error) {
-	result := DeviceSecurityGroupsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeviceSecurityGroupList); err != nil {
+func (client *DeviceSecurityGroupsClient) listHandleResponse(resp *http.Response) (DeviceSecurityGroupsListResponse, error) {
+	result := DeviceSecurityGroupsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroupList); err != nil {
 		return DeviceSecurityGroupsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *DeviceSecurityGroupsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeviceSecurityGroupsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

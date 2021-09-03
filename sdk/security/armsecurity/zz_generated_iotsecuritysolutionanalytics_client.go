@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IotSecuritySolutionAnalyticsClient contains the methods for the IotSecuritySolutionAnalytics group.
 // Don't use this type directly, use NewIotSecuritySolutionAnalyticsClient() instead.
 type IotSecuritySolutionAnalyticsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIotSecuritySolutionAnalyticsClient creates a new instance of IotSecuritySolutionAnalyticsClient with the specified values.
-func NewIotSecuritySolutionAnalyticsClient(con *armcore.Connection, subscriptionID string) *IotSecuritySolutionAnalyticsClient {
-	return &IotSecuritySolutionAnalyticsClient{con: con, subscriptionID: subscriptionID}
+func NewIotSecuritySolutionAnalyticsClient(con *arm.Connection, subscriptionID string) *IotSecuritySolutionAnalyticsClient {
+	return &IotSecuritySolutionAnalyticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Use this method to get IoT Security Analytics metrics.
@@ -37,18 +41,18 @@ func (client *IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return IotSecuritySolutionAnalyticsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionAnalyticsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IotSecuritySolutionAnalyticsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsGetOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,38 +66,37 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *azcore.Response) (IotSecuritySolutionAnalyticsGetResponse, error) {
-	result := IotSecuritySolutionAnalyticsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionAnalyticsModel); err != nil {
+func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionAnalyticsGetResponse, error) {
+	result := IotSecuritySolutionAnalyticsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionAnalyticsModel); err != nil {
 		return IotSecuritySolutionAnalyticsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IotSecuritySolutionAnalyticsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionAnalyticsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Use this method to get IoT security Analytics metrics in an array.
@@ -103,18 +106,18 @@ func (client *IotSecuritySolutionAnalyticsClient) List(ctx context.Context, reso
 	if err != nil {
 		return IotSecuritySolutionAnalyticsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IotSecuritySolutionAnalyticsListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IotSecuritySolutionAnalyticsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsListOptions) (*azcore.Request, error) {
+func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionAnalyticsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -128,36 +131,35 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter solutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IotSecuritySolutionAnalyticsClient) listHandleResponse(resp *azcore.Response) (IotSecuritySolutionAnalyticsListResponse, error) {
-	result := IotSecuritySolutionAnalyticsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IoTSecuritySolutionAnalyticsModelList); err != nil {
+func (client *IotSecuritySolutionAnalyticsClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionAnalyticsListResponse, error) {
+	result := IotSecuritySolutionAnalyticsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionAnalyticsModelList); err != nil {
 		return IotSecuritySolutionAnalyticsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *IotSecuritySolutionAnalyticsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IotSecuritySolutionAnalyticsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

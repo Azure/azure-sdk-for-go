@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,6 +12,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AdaptiveApplicationControlsDeleteResponse contains the response from method AdaptiveApplicationControls.Delete.
@@ -57,14 +60,40 @@ type AdaptiveApplicationControlsPutResult struct {
 
 // AdaptiveNetworkHardeningsEnforcePollerResponse contains the response from method AdaptiveNetworkHardenings.Enforce.
 type AdaptiveNetworkHardeningsEnforcePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AdaptiveNetworkHardeningsEnforceResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AdaptiveNetworkHardeningsEnforcePoller
+	Poller *AdaptiveNetworkHardeningsEnforcePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AdaptiveNetworkHardeningsEnforcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AdaptiveNetworkHardeningsEnforceResponse, error) {
+	respType := AdaptiveNetworkHardeningsEnforceResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AdaptiveNetworkHardeningsEnforcePollerResponse from the provided client and resume token.
+func (l *AdaptiveNetworkHardeningsEnforcePollerResponse) Resume(ctx context.Context, client *AdaptiveNetworkHardeningsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AdaptiveNetworkHardeningsClient.Enforce", token, client.pl, client.enforceHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AdaptiveNetworkHardeningsEnforcePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AdaptiveNetworkHardeningsEnforceResponse contains the response from method AdaptiveNetworkHardenings.Enforce.
@@ -195,14 +224,40 @@ type AlertsListSubscriptionLevelByRegionResult struct {
 
 // AlertsSimulatePollerResponse contains the response from method Alerts.Simulate.
 type AlertsSimulatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AlertsSimulateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AlertsSimulatePoller
+	Poller *AlertsSimulatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AlertsSimulatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AlertsSimulateResponse, error) {
+	respType := AlertsSimulateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AlertsSimulatePollerResponse from the provided client and resume token.
+func (l *AlertsSimulatePollerResponse) Resume(ctx context.Context, client *AlertsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AlertsClient.Simulate", token, client.pl, client.simulateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AlertsSimulatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AlertsSimulateResponse contains the response from method Alerts.Simulate.
@@ -334,7 +389,7 @@ type AssessmentsCreateOrUpdateResponse struct {
 
 // AssessmentsCreateOrUpdateResult contains the result from method Assessments.CreateOrUpdate.
 type AssessmentsCreateOrUpdateResult struct {
-	SecurityAssessment
+	SecurityAssessmentResponse
 }
 
 // AssessmentsDeleteResponse contains the response from method Assessments.Delete.
@@ -352,7 +407,7 @@ type AssessmentsGetResponse struct {
 
 // AssessmentsGetResult contains the result from method Assessments.Get.
 type AssessmentsGetResult struct {
-	SecurityAssessment
+	SecurityAssessmentResponse
 }
 
 // AssessmentsListResponse contains the response from method Assessments.List.
@@ -376,7 +431,7 @@ type AssessmentsMetadataCreateInSubscriptionResponse struct {
 
 // AssessmentsMetadataCreateInSubscriptionResult contains the result from method AssessmentsMetadata.CreateInSubscription.
 type AssessmentsMetadataCreateInSubscriptionResult struct {
-	SecurityAssessmentMetadata
+	SecurityAssessmentMetadataResponse
 }
 
 // AssessmentsMetadataDeleteInSubscriptionResponse contains the response from method AssessmentsMetadata.DeleteInSubscription.
@@ -394,7 +449,7 @@ type AssessmentsMetadataGetInSubscriptionResponse struct {
 
 // AssessmentsMetadataGetInSubscriptionResult contains the result from method AssessmentsMetadata.GetInSubscription.
 type AssessmentsMetadataGetInSubscriptionResult struct {
-	SecurityAssessmentMetadata
+	SecurityAssessmentMetadataResponse
 }
 
 // AssessmentsMetadataGetResponse contains the response from method AssessmentsMetadata.Get.
@@ -406,7 +461,7 @@ type AssessmentsMetadataGetResponse struct {
 
 // AssessmentsMetadataGetResult contains the result from method AssessmentsMetadata.Get.
 type AssessmentsMetadataGetResult struct {
-	SecurityAssessmentMetadata
+	SecurityAssessmentMetadataResponse
 }
 
 // AssessmentsMetadataListBySubscriptionResponse contains the response from method AssessmentsMetadata.ListBySubscription.
@@ -418,7 +473,7 @@ type AssessmentsMetadataListBySubscriptionResponse struct {
 
 // AssessmentsMetadataListBySubscriptionResult contains the result from method AssessmentsMetadata.ListBySubscription.
 type AssessmentsMetadataListBySubscriptionResult struct {
-	SecurityAssessmentMetadataList
+	SecurityAssessmentMetadataResponseList
 }
 
 // AssessmentsMetadataListResponse contains the response from method AssessmentsMetadata.List.
@@ -430,7 +485,7 @@ type AssessmentsMetadataListResponse struct {
 
 // AssessmentsMetadataListResult contains the result from method AssessmentsMetadata.List.
 type AssessmentsMetadataListResult struct {
-	SecurityAssessmentMetadataList
+	SecurityAssessmentMetadataResponseList
 }
 
 // AutoProvisioningSettingsCreateResponse contains the response from method AutoProvisioningSettings.Create.
@@ -1509,14 +1564,40 @@ type ServerVulnerabilityAssessmentCreateOrUpdateResult struct {
 
 // ServerVulnerabilityAssessmentDeletePollerResponse contains the response from method ServerVulnerabilityAssessment.Delete.
 type ServerVulnerabilityAssessmentDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ServerVulnerabilityAssessmentDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller ServerVulnerabilityAssessmentDeletePoller
+	Poller *ServerVulnerabilityAssessmentDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l ServerVulnerabilityAssessmentDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerVulnerabilityAssessmentDeleteResponse, error) {
+	respType := ServerVulnerabilityAssessmentDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServerVulnerabilityAssessmentDeletePollerResponse from the provided client and resume token.
+func (l *ServerVulnerabilityAssessmentDeletePollerResponse) Resume(ctx context.Context, client *ServerVulnerabilityAssessmentClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServerVulnerabilityAssessmentClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ServerVulnerabilityAssessmentDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // ServerVulnerabilityAssessmentDeleteResponse contains the response from method ServerVulnerabilityAssessment.Delete.

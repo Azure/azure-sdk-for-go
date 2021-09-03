@@ -1,3 +1,3 @@
 # Release History
 
-## v0.1.0 (released)
+## v0.1.0 (2021-09-04)

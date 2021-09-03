@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PricingsClient contains the methods for the Pricings group.
 // Don't use this type directly, use NewPricingsClient() instead.
 type PricingsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPricingsClient creates a new instance of PricingsClient with the specified values.
-func NewPricingsClient(con *armcore.Connection, subscriptionID string) *PricingsClient {
-	return &PricingsClient{con: con, subscriptionID: subscriptionID}
+func NewPricingsClient(con *arm.Connection, subscriptionID string) *PricingsClient {
+	return &PricingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a provided Security Center pricing configuration in the subscription.
@@ -37,18 +41,18 @@ func (client *PricingsClient) Get(ctx context.Context, pricingName string, optio
 	if err != nil {
 		return PricingsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PricingsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PricingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName string, options *PricingsGetOptions) (*azcore.Request, error) {
+func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName string, options *PricingsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -58,38 +62,37 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName 
 		return nil, errors.New("parameter pricingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pricingName}", url.PathEscape(pricingName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PricingsClient) getHandleResponse(resp *azcore.Response) (PricingsGetResponse, error) {
-	result := PricingsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Pricing); err != nil {
+func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsGetResponse, error) {
+	result := PricingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Pricing); err != nil {
 		return PricingsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PricingsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PricingsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists Security Center pricing configurations in the subscription.
@@ -99,55 +102,54 @@ func (client *PricingsClient) List(ctx context.Context, options *PricingsListOpt
 	if err != nil {
 		return PricingsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PricingsListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PricingsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *PricingsClient) listCreateRequest(ctx context.Context, options *PricingsListOptions) (*azcore.Request, error) {
+func (client *PricingsClient) listCreateRequest(ctx context.Context, options *PricingsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PricingsClient) listHandleResponse(resp *azcore.Response) (PricingsListResponse, error) {
-	result := PricingsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PricingList); err != nil {
+func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsListResponse, error) {
+	result := PricingsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PricingList); err != nil {
 		return PricingsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *PricingsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PricingsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates a provided Security Center pricing configuration in the subscription.
@@ -157,18 +159,18 @@ func (client *PricingsClient) Update(ctx context.Context, pricingName string, pr
 	if err != nil {
 		return PricingsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PricingsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PricingsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingName string, pricing Pricing, options *PricingsUpdateOptions) (*azcore.Request, error) {
+func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingName string, pricing Pricing, options *PricingsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,36 +180,35 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingNa
 		return nil, errors.New("parameter pricingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pricingName}", url.PathEscape(pricingName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(pricing)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, pricing)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PricingsClient) updateHandleResponse(resp *azcore.Response) (PricingsUpdateResponse, error) {
-	result := PricingsUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Pricing); err != nil {
+func (client *PricingsClient) updateHandleResponse(resp *http.Response) (PricingsUpdateResponse, error) {
+	result := PricingsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Pricing); err != nil {
 		return PricingsUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *PricingsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PricingsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

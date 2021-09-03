@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TasksClient contains the methods for the Tasks group.
 // Don't use this type directly, use NewTasksClient() instead.
 type TasksClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 	ascLocation    string
 }
 
 // NewTasksClient creates a new instance of TasksClient with the specified values.
-func NewTasksClient(con *armcore.Connection, subscriptionID string, ascLocation string) *TasksClient {
-	return &TasksClient{con: con, subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewTasksClient(con *arm.Connection, subscriptionID string, ascLocation string) *TasksClient {
+	return &TasksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
 }
 
 // GetResourceGroupLevelTask - Recommended tasks that will help improve the security of the subscription proactively
@@ -38,18 +42,18 @@ func (client *TasksClient) GetResourceGroupLevelTask(ctx context.Context, resour
 	if err != nil {
 		return TasksGetResourceGroupLevelTaskResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TasksGetResourceGroupLevelTaskResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TasksGetResourceGroupLevelTaskResponse{}, client.getResourceGroupLevelTaskHandleError(resp)
 	}
 	return client.getResourceGroupLevelTaskHandleResponse(resp)
 }
 
 // getResourceGroupLevelTaskCreateRequest creates the GetResourceGroupLevelTask request.
-func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Context, resourceGroupName string, taskName string, options *TasksGetResourceGroupLevelTaskOptions) (*azcore.Request, error) {
+func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Context, resourceGroupName string, taskName string, options *TasksGetResourceGroupLevelTaskOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,38 +71,37 @@ func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Co
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getResourceGroupLevelTaskHandleResponse handles the GetResourceGroupLevelTask response.
-func (client *TasksClient) getResourceGroupLevelTaskHandleResponse(resp *azcore.Response) (TasksGetResourceGroupLevelTaskResponse, error) {
-	result := TasksGetResourceGroupLevelTaskResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityTask); err != nil {
+func (client *TasksClient) getResourceGroupLevelTaskHandleResponse(resp *http.Response) (TasksGetResourceGroupLevelTaskResponse, error) {
+	result := TasksGetResourceGroupLevelTaskResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityTask); err != nil {
 		return TasksGetResourceGroupLevelTaskResponse{}, err
 	}
 	return result, nil
 }
 
 // getResourceGroupLevelTaskHandleError handles the GetResourceGroupLevelTask error response.
-func (client *TasksClient) getResourceGroupLevelTaskHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) getResourceGroupLevelTaskHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetSubscriptionLevelTask - Recommended tasks that will help improve the security of the subscription proactively
@@ -108,18 +111,18 @@ func (client *TasksClient) GetSubscriptionLevelTask(ctx context.Context, taskNam
 	if err != nil {
 		return TasksGetSubscriptionLevelTaskResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TasksGetSubscriptionLevelTaskResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TasksGetSubscriptionLevelTaskResponse{}, client.getSubscriptionLevelTaskHandleError(resp)
 	}
 	return client.getSubscriptionLevelTaskHandleResponse(resp)
 }
 
 // getSubscriptionLevelTaskCreateRequest creates the GetSubscriptionLevelTask request.
-func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Context, taskName string, options *TasksGetSubscriptionLevelTaskOptions) (*azcore.Request, error) {
+func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Context, taskName string, options *TasksGetSubscriptionLevelTaskOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,114 +136,112 @@ func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Con
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSubscriptionLevelTaskHandleResponse handles the GetSubscriptionLevelTask response.
-func (client *TasksClient) getSubscriptionLevelTaskHandleResponse(resp *azcore.Response) (TasksGetSubscriptionLevelTaskResponse, error) {
-	result := TasksGetSubscriptionLevelTaskResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityTask); err != nil {
+func (client *TasksClient) getSubscriptionLevelTaskHandleResponse(resp *http.Response) (TasksGetSubscriptionLevelTaskResponse, error) {
+	result := TasksGetSubscriptionLevelTaskResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityTask); err != nil {
 		return TasksGetSubscriptionLevelTaskResponse{}, err
 	}
 	return result, nil
 }
 
 // getSubscriptionLevelTaskHandleError handles the GetSubscriptionLevelTask error response.
-func (client *TasksClient) getSubscriptionLevelTaskHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) getSubscriptionLevelTaskHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns the *CloudError error type.
-func (client *TasksClient) List(options *TasksListOptions) TasksListPager {
-	return &tasksListPager{
+func (client *TasksClient) List(options *TasksListOptions) *TasksListPager {
+	return &TasksListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp TasksListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityTaskList.NextLink)
+		advancer: func(ctx context.Context, resp TasksListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityTaskList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TasksClient) listCreateRequest(ctx context.Context, options *TasksListOptions) (*azcore.Request, error) {
+func (client *TasksClient) listCreateRequest(ctx context.Context, options *TasksListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TasksClient) listHandleResponse(resp *azcore.Response) (TasksListResponse, error) {
-	result := TasksListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityTaskList); err != nil {
+func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksListResponse, error) {
+	result := TasksListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityTaskList); err != nil {
 		return TasksListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *TasksClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByHomeRegion - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns the *CloudError error type.
-func (client *TasksClient) ListByHomeRegion(options *TasksListByHomeRegionOptions) TasksListByHomeRegionPager {
-	return &tasksListByHomeRegionPager{
+func (client *TasksClient) ListByHomeRegion(options *TasksListByHomeRegionOptions) *TasksListByHomeRegionPager {
+	return &TasksListByHomeRegionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByHomeRegionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp TasksListByHomeRegionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityTaskList.NextLink)
+		advancer: func(ctx context.Context, resp TasksListByHomeRegionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityTaskList.NextLink)
 		},
 	}
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, options *TasksListByHomeRegionOptions) (*azcore.Request, error) {
+func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, options *TasksListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,59 +251,58 @@ func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, op
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *TasksClient) listByHomeRegionHandleResponse(resp *azcore.Response) (TasksListByHomeRegionResponse, error) {
-	result := TasksListByHomeRegionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityTaskList); err != nil {
+func (client *TasksClient) listByHomeRegionHandleResponse(resp *http.Response) (TasksListByHomeRegionResponse, error) {
+	result := TasksListByHomeRegionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityTaskList); err != nil {
 		return TasksListByHomeRegionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByHomeRegionHandleError handles the ListByHomeRegion error response.
-func (client *TasksClient) listByHomeRegionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) listByHomeRegionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns the *CloudError error type.
-func (client *TasksClient) ListByResourceGroup(resourceGroupName string, options *TasksListByResourceGroupOptions) TasksListByResourceGroupPager {
-	return &tasksListByResourceGroupPager{
+func (client *TasksClient) ListByResourceGroup(resourceGroupName string, options *TasksListByResourceGroupOptions) *TasksListByResourceGroupPager {
+	return &TasksListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp TasksListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityTaskList.NextLink)
+		advancer: func(ctx context.Context, resp TasksListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityTaskList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *TasksListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *TasksListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -316,41 +316,40 @@ func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *TasksClient) listByResourceGroupHandleResponse(resp *azcore.Response) (TasksListByResourceGroupResponse, error) {
-	result := TasksListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityTaskList); err != nil {
+func (client *TasksClient) listByResourceGroupHandleResponse(resp *http.Response) (TasksListByResourceGroupResponse, error) {
+	result := TasksListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityTaskList); err != nil {
 		return TasksListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *TasksClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateResourceGroupLevelTaskState - Recommended tasks that will help improve the security of the subscription proactively
@@ -360,18 +359,18 @@ func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context
 	if err != nil {
 		return TasksUpdateResourceGroupLevelTaskStateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TasksUpdateResourceGroupLevelTaskStateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TasksUpdateResourceGroupLevelTaskStateResponse{}, client.updateResourceGroupLevelTaskStateHandleError(resp)
 	}
-	return TasksUpdateResourceGroupLevelTaskStateResponse{RawResponse: resp.Response}, nil
+	return TasksUpdateResourceGroupLevelTaskStateResponse{RawResponse: resp}, nil
 }
 
 // updateResourceGroupLevelTaskStateCreateRequest creates the UpdateResourceGroupLevelTaskState request.
-func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum13, options *TasksUpdateResourceGroupLevelTaskStateOptions) (*azcore.Request, error) {
+func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum13, options *TasksUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -393,29 +392,28 @@ func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx co
 		return nil, errors.New("parameter taskUpdateActionType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskUpdateActionType}", url.PathEscape(string(taskUpdateActionType)))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // updateResourceGroupLevelTaskStateHandleError handles the UpdateResourceGroupLevelTaskState error response.
-func (client *TasksClient) updateResourceGroupLevelTaskStateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) updateResourceGroupLevelTaskStateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateSubscriptionLevelTaskState - Recommended tasks that will help improve the security of the subscription proactively
@@ -425,18 +423,18 @@ func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context,
 	if err != nil {
 		return TasksUpdateSubscriptionLevelTaskStateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TasksUpdateSubscriptionLevelTaskStateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return TasksUpdateSubscriptionLevelTaskStateResponse{}, client.updateSubscriptionLevelTaskStateHandleError(resp)
 	}
-	return TasksUpdateSubscriptionLevelTaskStateResponse{RawResponse: resp.Response}, nil
+	return TasksUpdateSubscriptionLevelTaskStateResponse{RawResponse: resp}, nil
 }
 
 // updateSubscriptionLevelTaskStateCreateRequest creates the UpdateSubscriptionLevelTaskState request.
-func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, taskName string, taskUpdateActionType Enum13, options *TasksUpdateSubscriptionLevelTaskStateOptions) (*azcore.Request, error) {
+func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, taskName string, taskUpdateActionType Enum13, options *TasksUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -454,27 +452,26 @@ func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx con
 		return nil, errors.New("parameter taskUpdateActionType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskUpdateActionType}", url.PathEscape(string(taskUpdateActionType)))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // updateSubscriptionLevelTaskStateHandleError handles the UpdateSubscriptionLevelTaskState error response.
-func (client *TasksClient) updateSubscriptionLevelTaskStateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) updateSubscriptionLevelTaskStateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

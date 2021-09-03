@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,22 +12,25 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SubAssessmentsClient contains the methods for the SubAssessments group.
 // Don't use this type directly, use NewSubAssessmentsClient() instead.
 type SubAssessmentsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewSubAssessmentsClient creates a new instance of SubAssessmentsClient with the specified values.
-func NewSubAssessmentsClient(con *armcore.Connection) *SubAssessmentsClient {
-	return &SubAssessmentsClient{con: con}
+func NewSubAssessmentsClient(con *arm.Connection) *SubAssessmentsClient {
+	return &SubAssessmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // Get - Get a security sub-assessment on your scanned resource
@@ -36,18 +40,18 @@ func (client *SubAssessmentsClient) Get(ctx context.Context, scope string, asses
 	if err != nil {
 		return SubAssessmentsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SubAssessmentsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SubAssessmentsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, subAssessmentName string, options *SubAssessmentsGetOptions) (*azcore.Request, error) {
+func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, subAssessmentName string, options *SubAssessmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments/{subAssessmentName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -61,56 +65,55 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 		return nil, errors.New("parameter subAssessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAssessmentName}", url.PathEscape(subAssessmentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubAssessmentsClient) getHandleResponse(resp *azcore.Response) (SubAssessmentsGetResponse, error) {
-	result := SubAssessmentsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecuritySubAssessment); err != nil {
+func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubAssessmentsGetResponse, error) {
+	result := SubAssessmentsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySubAssessment); err != nil {
 		return SubAssessmentsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *SubAssessmentsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SubAssessmentsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Get security sub-assessments on all your scanned resources inside a scope
 // If the operation fails it returns the *CloudError error type.
-func (client *SubAssessmentsClient) List(scope string, assessmentName string, options *SubAssessmentsListOptions) SubAssessmentsListPager {
-	return &subAssessmentsListPager{
+func (client *SubAssessmentsClient) List(scope string, assessmentName string, options *SubAssessmentsListOptions) *SubAssessmentsListPager {
+	return &SubAssessmentsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, assessmentName, options)
 		},
-		advancer: func(ctx context.Context, resp SubAssessmentsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecuritySubAssessmentList.NextLink)
+		advancer: func(ctx context.Context, resp SubAssessmentsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecuritySubAssessmentList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, options *SubAssessmentsListOptions) (*azcore.Request, error) {
+func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, options *SubAssessmentsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -120,91 +123,89 @@ func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SubAssessmentsClient) listHandleResponse(resp *azcore.Response) (SubAssessmentsListResponse, error) {
-	result := SubAssessmentsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecuritySubAssessmentList); err != nil {
+func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (SubAssessmentsListResponse, error) {
+	result := SubAssessmentsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySubAssessmentList); err != nil {
 		return SubAssessmentsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *SubAssessmentsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SubAssessmentsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListAll - Get security sub-assessments on all your scanned resources inside a subscription scope
 // If the operation fails it returns the *CloudError error type.
-func (client *SubAssessmentsClient) ListAll(scope string, options *SubAssessmentsListAllOptions) SubAssessmentsListAllPager {
-	return &subAssessmentsListAllPager{
+func (client *SubAssessmentsClient) ListAll(scope string, options *SubAssessmentsListAllOptions) *SubAssessmentsListAllPager {
+	return &SubAssessmentsListAllPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp SubAssessmentsListAllResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecuritySubAssessmentList.NextLink)
+		advancer: func(ctx context.Context, resp SubAssessmentsListAllResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecuritySubAssessmentList.NextLink)
 		},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, options *SubAssessmentsListAllOptions) (*azcore.Request, error) {
+func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, options *SubAssessmentsListAllOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/subAssessments"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *SubAssessmentsClient) listAllHandleResponse(resp *azcore.Response) (SubAssessmentsListAllResponse, error) {
-	result := SubAssessmentsListAllResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecuritySubAssessmentList); err != nil {
+func (client *SubAssessmentsClient) listAllHandleResponse(resp *http.Response) (SubAssessmentsListAllResponse, error) {
+	result := SubAssessmentsListAllResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySubAssessmentList); err != nil {
 		return SubAssessmentsListAllResponse{}, err
 	}
 	return result, nil
 }
 
 // listAllHandleError handles the ListAll error response.
-func (client *SubAssessmentsClient) listAllHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SubAssessmentsClient) listAllHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

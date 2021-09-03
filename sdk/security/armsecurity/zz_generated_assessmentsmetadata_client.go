@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AssessmentsMetadataClient contains the methods for the AssessmentsMetadata group.
 // Don't use this type directly, use NewAssessmentsMetadataClient() instead.
 type AssessmentsMetadataClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAssessmentsMetadataClient creates a new instance of AssessmentsMetadataClient with the specified values.
-func NewAssessmentsMetadataClient(con *armcore.Connection, subscriptionID string) *AssessmentsMetadataClient {
-	return &AssessmentsMetadataClient{con: con, subscriptionID: subscriptionID}
+func NewAssessmentsMetadataClient(con *arm.Connection, subscriptionID string) *AssessmentsMetadataClient {
+	return &AssessmentsMetadataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateInSubscription - Create metadata information on an assessment type in a specific subscription
 // If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsMetadataClient) CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata SecurityAssessmentMetadata, options *AssessmentsMetadataCreateInSubscriptionOptions) (AssessmentsMetadataCreateInSubscriptionResponse, error) {
+func (client *AssessmentsMetadataClient) CreateInSubscription(ctx context.Context, assessmentMetadataName string, assessmentMetadata SecurityAssessmentMetadataResponse, options *AssessmentsMetadataCreateInSubscriptionOptions) (AssessmentsMetadataCreateInSubscriptionResponse, error) {
 	req, err := client.createInSubscriptionCreateRequest(ctx, assessmentMetadataName, assessmentMetadata, options)
 	if err != nil {
 		return AssessmentsMetadataCreateInSubscriptionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AssessmentsMetadataCreateInSubscriptionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AssessmentsMetadataCreateInSubscriptionResponse{}, client.createInSubscriptionHandleError(resp)
 	}
 	return client.createInSubscriptionHandleResponse(resp)
 }
 
 // createInSubscriptionCreateRequest creates the CreateInSubscription request.
-func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, assessmentMetadata SecurityAssessmentMetadata, options *AssessmentsMetadataCreateInSubscriptionOptions) (*azcore.Request, error) {
+func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, assessmentMetadata SecurityAssessmentMetadataResponse, options *AssessmentsMetadataCreateInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if assessmentMetadataName == "" {
 		return nil, errors.New("parameter assessmentMetadataName cannot be empty")
@@ -58,38 +62,37 @@ func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(assessmentMetadata)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, assessmentMetadata)
 }
 
 // createInSubscriptionHandleResponse handles the CreateInSubscription response.
-func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp *azcore.Response) (AssessmentsMetadataCreateInSubscriptionResponse, error) {
-	result := AssessmentsMetadataCreateInSubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityAssessmentMetadata); err != nil {
+func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataCreateInSubscriptionResponse, error) {
+	result := AssessmentsMetadataCreateInSubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataCreateInSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // createInSubscriptionHandleError handles the CreateInSubscription error response.
-func (client *AssessmentsMetadataClient) createInSubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AssessmentsMetadataClient) createInSubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DeleteInSubscription - Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the assessments of
@@ -100,18 +103,18 @@ func (client *AssessmentsMetadataClient) DeleteInSubscription(ctx context.Contex
 	if err != nil {
 		return AssessmentsMetadataDeleteInSubscriptionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AssessmentsMetadataDeleteInSubscriptionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AssessmentsMetadataDeleteInSubscriptionResponse{}, client.deleteInSubscriptionHandleError(resp)
 	}
-	return AssessmentsMetadataDeleteInSubscriptionResponse{RawResponse: resp.Response}, nil
+	return AssessmentsMetadataDeleteInSubscriptionResponse{RawResponse: resp}, nil
 }
 
 // deleteInSubscriptionCreateRequest creates the DeleteInSubscription request.
-func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataDeleteInSubscriptionOptions) (*azcore.Request, error) {
+func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataDeleteInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if assessmentMetadataName == "" {
 		return nil, errors.New("parameter assessmentMetadataName cannot be empty")
@@ -121,29 +124,28 @@ func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteInSubscriptionHandleError handles the DeleteInSubscription error response.
-func (client *AssessmentsMetadataClient) deleteInSubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AssessmentsMetadataClient) deleteInSubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get metadata information on an assessment type
@@ -153,55 +155,54 @@ func (client *AssessmentsMetadataClient) Get(ctx context.Context, assessmentMeta
 	if err != nil {
 		return AssessmentsMetadataGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AssessmentsMetadataGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AssessmentsMetadataGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataGetOptions) (*azcore.Request, error) {
+func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if assessmentMetadataName == "" {
 		return nil, errors.New("parameter assessmentMetadataName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentMetadataName}", url.PathEscape(assessmentMetadataName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssessmentsMetadataClient) getHandleResponse(resp *azcore.Response) (AssessmentsMetadataGetResponse, error) {
-	result := AssessmentsMetadataGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityAssessmentMetadata); err != nil {
+func (client *AssessmentsMetadataClient) getHandleResponse(resp *http.Response) (AssessmentsMetadataGetResponse, error) {
+	result := AssessmentsMetadataGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AssessmentsMetadataClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AssessmentsMetadataClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetInSubscription - Get metadata information on an assessment type in a specific subscription
@@ -211,18 +212,18 @@ func (client *AssessmentsMetadataClient) GetInSubscription(ctx context.Context, 
 	if err != nil {
 		return AssessmentsMetadataGetInSubscriptionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AssessmentsMetadataGetInSubscriptionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AssessmentsMetadataGetInSubscriptionResponse{}, client.getInSubscriptionHandleError(resp)
 	}
 	return client.getInSubscriptionHandleResponse(resp)
 }
 
 // getInSubscriptionCreateRequest creates the GetInSubscription request.
-func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataGetInSubscriptionOptions) (*azcore.Request, error) {
+func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, options *AssessmentsMetadataGetInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if assessmentMetadataName == "" {
 		return nil, errors.New("parameter assessmentMetadataName cannot be empty")
@@ -232,142 +233,139 @@ func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getInSubscriptionHandleResponse handles the GetInSubscription response.
-func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *azcore.Response) (AssessmentsMetadataGetInSubscriptionResponse, error) {
-	result := AssessmentsMetadataGetInSubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityAssessmentMetadata); err != nil {
+func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataGetInSubscriptionResponse, error) {
+	result := AssessmentsMetadataGetInSubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataGetInSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // getInSubscriptionHandleError handles the GetInSubscription error response.
-func (client *AssessmentsMetadataClient) getInSubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AssessmentsMetadataClient) getInSubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Get metadata information on all assessment types
 // If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsMetadataClient) List(options *AssessmentsMetadataListOptions) AssessmentsMetadataListPager {
-	return &assessmentsMetadataListPager{
+func (client *AssessmentsMetadataClient) List(options *AssessmentsMetadataListOptions) *AssessmentsMetadataListPager {
+	return &AssessmentsMetadataListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AssessmentsMetadataListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityAssessmentMetadataList.NextLink)
+		advancer: func(ctx context.Context, resp AssessmentsMetadataListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityAssessmentMetadataResponseList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, options *AssessmentsMetadataListOptions) (*azcore.Request, error) {
+func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, options *AssessmentsMetadataListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Security/assessmentMetadata"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AssessmentsMetadataClient) listHandleResponse(resp *azcore.Response) (AssessmentsMetadataListResponse, error) {
-	result := AssessmentsMetadataListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityAssessmentMetadataList); err != nil {
+func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response) (AssessmentsMetadataListResponse, error) {
+	result := AssessmentsMetadataListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponseList); err != nil {
 		return AssessmentsMetadataListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *AssessmentsMetadataClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AssessmentsMetadataClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListBySubscription - Get metadata information on all assessment types in a specific subscription
 // If the operation fails it returns the *CloudError error type.
-func (client *AssessmentsMetadataClient) ListBySubscription(options *AssessmentsMetadataListBySubscriptionOptions) AssessmentsMetadataListBySubscriptionPager {
-	return &assessmentsMetadataListBySubscriptionPager{
+func (client *AssessmentsMetadataClient) ListBySubscription(options *AssessmentsMetadataListBySubscriptionOptions) *AssessmentsMetadataListBySubscriptionPager {
+	return &AssessmentsMetadataListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AssessmentsMetadataListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityAssessmentMetadataList.NextLink)
+		advancer: func(ctx context.Context, resp AssessmentsMetadataListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityAssessmentMetadataResponseList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx context.Context, options *AssessmentsMetadataListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx context.Context, options *AssessmentsMetadataListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AssessmentsMetadataClient) listBySubscriptionHandleResponse(resp *azcore.Response) (AssessmentsMetadataListBySubscriptionResponse, error) {
-	result := AssessmentsMetadataListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityAssessmentMetadataList); err != nil {
+func (client *AssessmentsMetadataClient) listBySubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataListBySubscriptionResponse, error) {
+	result := AssessmentsMetadataListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponseList); err != nil {
 		return AssessmentsMetadataListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *AssessmentsMetadataClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AssessmentsMetadataClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

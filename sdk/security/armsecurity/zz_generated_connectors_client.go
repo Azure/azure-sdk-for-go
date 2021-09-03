@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConnectorsClient contains the methods for the Connectors group.
 // Don't use this type directly, use NewConnectorsClient() instead.
 type ConnectorsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewConnectorsClient creates a new instance of ConnectorsClient with the specified values.
-func NewConnectorsClient(con *armcore.Connection, subscriptionID string) *ConnectorsClient {
-	return &ConnectorsClient{con: con, subscriptionID: subscriptionID}
+func NewConnectorsClient(con *arm.Connection, subscriptionID string) *ConnectorsClient {
+	return &ConnectorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either account credentials or
@@ -39,18 +43,18 @@ func (client *ConnectorsClient) CreateOrUpdate(ctx context.Context, connectorNam
 	if err != nil {
 		return ConnectorsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConnectorsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ConnectorsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, connectorSetting ConnectorSetting, options *ConnectorsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, connectorSetting ConnectorSetting, options *ConnectorsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -60,38 +64,37 @@ func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter connectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(connectorSetting)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, connectorSetting)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *azcore.Response) (ConnectorsCreateOrUpdateResponse, error) {
-	result := ConnectorsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ConnectorSetting); err != nil {
+func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectorsCreateOrUpdateResponse, error) {
+	result := ConnectorsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
 		return ConnectorsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ConnectorsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConnectorsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Delete a cloud account connector from a subscription
@@ -101,18 +104,18 @@ func (client *ConnectorsClient) Delete(ctx context.Context, connectorName string
 	if err != nil {
 		return ConnectorsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConnectorsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ConnectorsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return ConnectorsDeleteResponse{RawResponse: resp.Response}, nil
+	return ConnectorsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, connectorName string, options *ConnectorsDeleteOptions) (*azcore.Request, error) {
+func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, connectorName string, options *ConnectorsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -122,29 +125,28 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, connect
 		return nil, errors.New("parameter connectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ConnectorsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConnectorsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Details of a specific cloud account connector
@@ -154,18 +156,18 @@ func (client *ConnectorsClient) Get(ctx context.Context, connectorName string, o
 	if err != nil {
 		return ConnectorsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConnectorsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ConnectorsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorName string, options *ConnectorsGetOptions) (*azcore.Request, error) {
+func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorName string, options *ConnectorsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -175,91 +177,89 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorN
 		return nil, errors.New("parameter connectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectorsClient) getHandleResponse(resp *azcore.Response) (ConnectorsGetResponse, error) {
-	result := ConnectorsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ConnectorSetting); err != nil {
+func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsGetResponse, error) {
+	result := ConnectorsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
 		return ConnectorsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ConnectorsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConnectorsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Cloud accounts connectors of a subscription
 // If the operation fails it returns the *CloudError error type.
-func (client *ConnectorsClient) List(options *ConnectorsListOptions) ConnectorsListPager {
-	return &connectorsListPager{
+func (client *ConnectorsClient) List(options *ConnectorsListOptions) *ConnectorsListPager {
+	return &ConnectorsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ConnectorsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ConnectorSettingList.NextLink)
+		advancer: func(ctx context.Context, resp ConnectorsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConnectorSettingList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *ConnectorsListOptions) (*azcore.Request, error) {
+func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *ConnectorsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConnectorsClient) listHandleResponse(resp *azcore.Response) (ConnectorsListResponse, error) {
-	result := ConnectorsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ConnectorSettingList); err != nil {
+func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (ConnectorsListResponse, error) {
+	result := ConnectorsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSettingList); err != nil {
 		return ConnectorsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *ConnectorsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConnectorsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

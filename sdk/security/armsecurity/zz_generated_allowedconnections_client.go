@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AllowedConnectionsClient contains the methods for the AllowedConnections group.
 // Don't use this type directly, use NewAllowedConnectionsClient() instead.
 type AllowedConnectionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 	ascLocation    string
 }
 
 // NewAllowedConnectionsClient creates a new instance of AllowedConnectionsClient with the specified values.
-func NewAllowedConnectionsClient(con *armcore.Connection, subscriptionID string, ascLocation string) *AllowedConnectionsClient {
-	return &AllowedConnectionsClient{con: con, subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewAllowedConnectionsClient(con *arm.Connection, subscriptionID string, ascLocation string) *AllowedConnectionsClient {
+	return &AllowedConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
 }
 
 // Get - Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
@@ -38,18 +42,18 @@ func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AllowedConnectionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AllowedConnectionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AllowedConnectionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, connectionType ConnectionType, options *AllowedConnectionsGetOptions) (*azcore.Request, error) {
+func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, connectionType ConnectionType, options *AllowedConnectionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections/{connectionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,111 +71,109 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter connectionType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectionType}", url.PathEscape(string(connectionType)))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AllowedConnectionsClient) getHandleResponse(resp *azcore.Response) (AllowedConnectionsGetResponse, error) {
-	result := AllowedConnectionsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AllowedConnectionsResource); err != nil {
+func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (AllowedConnectionsGetResponse, error) {
+	result := AllowedConnectionsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsResource); err != nil {
 		return AllowedConnectionsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AllowedConnectionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AllowedConnectionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets the list of all possible traffic between resources for the subscription
 // If the operation fails it returns the *CloudError error type.
-func (client *AllowedConnectionsClient) List(options *AllowedConnectionsListOptions) AllowedConnectionsListPager {
-	return &allowedConnectionsListPager{
+func (client *AllowedConnectionsClient) List(options *AllowedConnectionsListOptions) *AllowedConnectionsListPager {
+	return &AllowedConnectionsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AllowedConnectionsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AllowedConnectionsList.NextLink)
+		advancer: func(ctx context.Context, resp AllowedConnectionsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AllowedConnectionsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, options *AllowedConnectionsListOptions) (*azcore.Request, error) {
+func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, options *AllowedConnectionsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AllowedConnectionsClient) listHandleResponse(resp *azcore.Response) (AllowedConnectionsListResponse, error) {
-	result := AllowedConnectionsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AllowedConnectionsList); err != nil {
+func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) (AllowedConnectionsListResponse, error) {
+	result := AllowedConnectionsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
 		return AllowedConnectionsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *AllowedConnectionsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AllowedConnectionsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByHomeRegion - Gets the list of all possible traffic between resources for the subscription and location.
 // If the operation fails it returns the *CloudError error type.
-func (client *AllowedConnectionsClient) ListByHomeRegion(options *AllowedConnectionsListByHomeRegionOptions) AllowedConnectionsListByHomeRegionPager {
-	return &allowedConnectionsListByHomeRegionPager{
+func (client *AllowedConnectionsClient) ListByHomeRegion(options *AllowedConnectionsListByHomeRegionOptions) *AllowedConnectionsListByHomeRegionPager {
+	return &AllowedConnectionsListByHomeRegionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByHomeRegionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AllowedConnectionsListByHomeRegionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AllowedConnectionsList.NextLink)
+		advancer: func(ctx context.Context, resp AllowedConnectionsListByHomeRegionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AllowedConnectionsList.NextLink)
 		},
 	}
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, options *AllowedConnectionsListByHomeRegionOptions) (*azcore.Request, error) {
+func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, options *AllowedConnectionsListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -181,36 +183,35 @@ func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx contex
 		return nil, errors.New("parameter client.ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *AllowedConnectionsClient) listByHomeRegionHandleResponse(resp *azcore.Response) (AllowedConnectionsListByHomeRegionResponse, error) {
-	result := AllowedConnectionsListByHomeRegionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AllowedConnectionsList); err != nil {
+func (client *AllowedConnectionsClient) listByHomeRegionHandleResponse(resp *http.Response) (AllowedConnectionsListByHomeRegionResponse, error) {
+	result := AllowedConnectionsListByHomeRegionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
 		return AllowedConnectionsListByHomeRegionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByHomeRegionHandleError handles the ListByHomeRegion error response.
-func (client *AllowedConnectionsClient) listByHomeRegionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AllowedConnectionsClient) listByHomeRegionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

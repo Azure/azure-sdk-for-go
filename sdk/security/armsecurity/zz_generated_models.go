@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,10 @@ package armsecurity
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AADConnectivityStateDummy - Describes an Azure resource with kind
@@ -1394,6 +1396,95 @@ type AssessmentStatus struct {
 
 	// Human readable description of the assessment status
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssessmentStatus.
+func (a AssessmentStatus) MarshalJSON() ([]byte, error) {
+	objectMap := a.marshalInternal()
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssessmentStatus.
+func (a *AssessmentStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return a.unmarshalInternal(rawMsg)
+}
+
+func (a AssessmentStatus) marshalInternal() map[string]interface{} {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "cause", a.Cause)
+	populate(objectMap, "code", a.Code)
+	populate(objectMap, "description", a.Description)
+	return objectMap
+}
+
+func (a *AssessmentStatus) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "cause":
+			err = unpopulate(val, &a.Cause)
+			delete(rawMsg, key)
+		case "code":
+			err = unpopulate(val, &a.Code)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &a.Description)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AssessmentStatusResponse - The result of the assessment
+type AssessmentStatusResponse struct {
+	AssessmentStatus
+	// READ-ONLY; The time that the assessment was created and first evaluated. Returned as UTC time in ISO 8601 format
+	FirstEvaluationDate *time.Time `json:"firstEvaluationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time that the status of the assessment last changed. Returned as UTC time in ISO 8601 format
+	StatusChangeDate *time.Time `json:"statusChangeDate,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssessmentStatusResponse.
+func (a AssessmentStatusResponse) MarshalJSON() ([]byte, error) {
+	objectMap := a.AssessmentStatus.marshalInternal()
+	populate(objectMap, "firstEvaluationDate", (*timeRFC3339)(a.FirstEvaluationDate))
+	populate(objectMap, "statusChangeDate", (*timeRFC3339)(a.StatusChangeDate))
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssessmentStatusResponse.
+func (a *AssessmentStatusResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "firstEvaluationDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.FirstEvaluationDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "statusChangeDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.StatusChangeDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.AssessmentStatus.unmarshalInternal(rawMsg)
 }
 
 // AssessmentsCreateOrUpdateOptions contains the optional parameters for the Assessments.CreateOrUpdate method.
@@ -6873,7 +6964,7 @@ type SecurityAssessmentList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; Collection of security assessments in this page
-	Value []*SecurityAssessment `json:"value,omitempty" azure:"ro"`
+	Value []*SecurityAssessmentResponse `json:"value,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentList.
@@ -6916,23 +7007,6 @@ func (s *SecurityAssessmentMetadata) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return s.Resource.unmarshalInternal(rawMsg)
-}
-
-// SecurityAssessmentMetadataList - List of security assessment metadata
-type SecurityAssessmentMetadataList struct {
-	// READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	Value []*SecurityAssessmentMetadata `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataList.
-func (s SecurityAssessmentMetadataList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SecurityAssessmentMetadataPartnerData - Describes the partner that created the assessment
@@ -6984,6 +7058,11 @@ type SecurityAssessmentMetadataProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataProperties.
 func (s SecurityAssessmentMetadataProperties) MarshalJSON() ([]byte, error) {
+	objectMap := s.marshalInternal()
+	return json.Marshal(objectMap)
+}
+
+func (s SecurityAssessmentMetadataProperties) marshalInternal() map[string]interface{} {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "assessmentType", s.AssessmentType)
 	populate(objectMap, "categories", s.Categories)
@@ -6997,6 +7076,82 @@ func (s SecurityAssessmentMetadataProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "severity", s.Severity)
 	populate(objectMap, "threats", s.Threats)
 	populate(objectMap, "userImpact", s.UserImpact)
+	return objectMap
+}
+
+// SecurityAssessmentMetadataPropertiesResponse - Describes properties of an assessment metadata response.
+type SecurityAssessmentMetadataPropertiesResponse struct {
+	SecurityAssessmentMetadataProperties
+	PlannedDeprecationDate *string                                                   `json:"plannedDeprecationDate,omitempty"`
+	PublishDates           *SecurityAssessmentMetadataPropertiesResponsePublishDates `json:"publishDates,omitempty"`
+	Tactics                []*Tactics                                                `json:"tactics,omitempty"`
+	Techniques             []*Techniques                                             `json:"techniques,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataPropertiesResponse.
+func (s SecurityAssessmentMetadataPropertiesResponse) MarshalJSON() ([]byte, error) {
+	objectMap := s.SecurityAssessmentMetadataProperties.marshalInternal()
+	populate(objectMap, "plannedDeprecationDate", s.PlannedDeprecationDate)
+	populate(objectMap, "publishDates", s.PublishDates)
+	populate(objectMap, "tactics", s.Tactics)
+	populate(objectMap, "techniques", s.Techniques)
+	return json.Marshal(objectMap)
+}
+
+type SecurityAssessmentMetadataPropertiesResponsePublishDates struct {
+	// REQUIRED
+	Public *string `json:"public,omitempty"`
+	GA     *string `json:"GA,omitempty"`
+}
+
+// SecurityAssessmentMetadataResponse - Security assessment metadata response
+type SecurityAssessmentMetadataResponse struct {
+	Resource
+	// Describes properties of an assessment metadata response.
+	Properties *SecurityAssessmentMetadataPropertiesResponse `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataResponse.
+func (s SecurityAssessmentMetadataResponse) MarshalJSON() ([]byte, error) {
+	objectMap := s.Resource.marshalInternal()
+	populate(objectMap, "properties", s.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAssessmentMetadataResponse.
+func (s *SecurityAssessmentMetadataResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &s.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return s.Resource.unmarshalInternal(rawMsg)
+}
+
+// SecurityAssessmentMetadataResponseList - List of security assessment metadata
+type SecurityAssessmentMetadataResponseList struct {
+	// READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	Value []*SecurityAssessmentMetadataResponse `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataResponseList.
+func (s SecurityAssessmentMetadataResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -7011,11 +7166,42 @@ type SecurityAssessmentPartnerData struct {
 
 // SecurityAssessmentProperties - Describes properties of an assessment.
 type SecurityAssessmentProperties struct {
-	// REQUIRED; Details of the resource that was assessed
-	ResourceDetails ResourceDetailsClassification `json:"resourceDetails,omitempty"`
-
+	SecurityAssessmentPropertiesBase
 	// REQUIRED; The result of the assessment
 	Status *AssessmentStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentProperties.
+func (s SecurityAssessmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := s.SecurityAssessmentPropertiesBase.marshalInternal()
+	populate(objectMap, "status", s.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAssessmentProperties.
+func (s *SecurityAssessmentProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "status":
+			err = unpopulate(val, &s.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return s.SecurityAssessmentPropertiesBase.unmarshalInternal(rawMsg)
+}
+
+// SecurityAssessmentPropertiesBase - Describes properties of an assessment.
+type SecurityAssessmentPropertiesBase struct {
+	// REQUIRED; Details of the resource that was assessed
+	ResourceDetails ResourceDetailsClassification `json:"resourceDetails,omitempty"`
 
 	// Additional data regarding the assessment
 	AdditionalData map[string]*string `json:"additionalData,omitempty"`
@@ -7033,8 +7219,22 @@ type SecurityAssessmentProperties struct {
 	Links *AssessmentLinks `json:"links,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentProperties.
-func (s SecurityAssessmentProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentPropertiesBase.
+func (s SecurityAssessmentPropertiesBase) MarshalJSON() ([]byte, error) {
+	objectMap := s.marshalInternal()
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAssessmentPropertiesBase.
+func (s *SecurityAssessmentPropertiesBase) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return s.unmarshalInternal(rawMsg)
+}
+
+func (s SecurityAssessmentPropertiesBase) marshalInternal() map[string]interface{} {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "additionalData", s.AdditionalData)
 	populate(objectMap, "displayName", s.DisplayName)
@@ -7042,16 +7242,10 @@ func (s SecurityAssessmentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "metadata", s.Metadata)
 	populate(objectMap, "partnersData", s.PartnersData)
 	populate(objectMap, "resourceDetails", s.ResourceDetails)
-	populate(objectMap, "status", s.Status)
-	return json.Marshal(objectMap)
+	return objectMap
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAssessmentProperties.
-func (s *SecurityAssessmentProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
+func (s *SecurityAssessmentPropertiesBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -7073,6 +7267,37 @@ func (s *SecurityAssessmentProperties) UnmarshalJSON(data []byte) error {
 		case "resourceDetails":
 			s.ResourceDetails, err = unmarshalResourceDetailsClassification(val)
 			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SecurityAssessmentPropertiesResponse - Describes properties of an assessment.
+type SecurityAssessmentPropertiesResponse struct {
+	SecurityAssessmentPropertiesBase
+	// REQUIRED; The result of the assessment
+	Status *AssessmentStatusResponse `json:"status,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentPropertiesResponse.
+func (s SecurityAssessmentPropertiesResponse) MarshalJSON() ([]byte, error) {
+	objectMap := s.SecurityAssessmentPropertiesBase.marshalInternal()
+	populate(objectMap, "status", s.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAssessmentPropertiesResponse.
+func (s *SecurityAssessmentPropertiesResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
 		case "status":
 			err = unpopulate(val, &s.Status)
 			delete(rawMsg, key)
@@ -7081,7 +7306,41 @@ func (s *SecurityAssessmentProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return nil
+	return s.SecurityAssessmentPropertiesBase.unmarshalInternal(rawMsg)
+}
+
+// SecurityAssessmentResponse - Security assessment on a resource - response format
+type SecurityAssessmentResponse struct {
+	Resource
+	// Describes properties of an assessment.
+	Properties *SecurityAssessmentPropertiesResponse `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentResponse.
+func (s SecurityAssessmentResponse) MarshalJSON() ([]byte, error) {
+	objectMap := s.Resource.marshalInternal()
+	populate(objectMap, "properties", s.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityAssessmentResponse.
+func (s *SecurityAssessmentResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &s.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return s.Resource.unmarshalInternal(rawMsg)
 }
 
 // SecurityContact - Contact details for security issues

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutomationsClient contains the methods for the Automations group.
 // Don't use this type directly, use NewAutomationsClient() instead.
 type AutomationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAutomationsClient creates a new instance of AutomationsClient with the specified values.
-func NewAutomationsClient(con *armcore.Connection, subscriptionID string) *AutomationsClient {
-	return &AutomationsClient{con: con, subscriptionID: subscriptionID}
+func NewAutomationsClient(con *arm.Connection, subscriptionID string) *AutomationsClient {
+	return &AutomationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a security automation. If a security automation is already created and a subsequent request is issued for the same
@@ -38,18 +42,18 @@ func (client *AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return AutomationsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AutomationsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return AutomationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -63,38 +67,37 @@ func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(automation)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, automation)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AutomationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (AutomationsCreateOrUpdateResponse, error) {
-	result := AutomationsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Automation); err != nil {
+func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationsCreateOrUpdateResponse, error) {
+	result := AutomationsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AutomationsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutomationsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a security automation.
@@ -104,18 +107,18 @@ func (client *AutomationsClient) Delete(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AutomationsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AutomationsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AutomationsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return AutomationsDeleteResponse{RawResponse: resp.Response}, nil
+	return AutomationsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsDeleteOptions) (*azcore.Request, error) {
+func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -129,29 +132,28 @@ func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AutomationsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutomationsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Retrieves information about the model of a security automation.
@@ -161,18 +163,18 @@ func (client *AutomationsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return AutomationsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AutomationsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AutomationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsGetOptions) (*azcore.Request, error) {
+func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -186,113 +188,111 @@ func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutomationsClient) getHandleResponse(resp *azcore.Response) (AutomationsGetResponse, error) {
-	result := AutomationsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Automation); err != nil {
+func (client *AutomationsClient) getHandleResponse(resp *http.Response) (AutomationsGetResponse, error) {
+	result := AutomationsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AutomationsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutomationsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to get the next page of security
 // automations for the specified subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) List(options *AutomationsListOptions) AutomationsListPager {
-	return &automationsListPager{
+func (client *AutomationsClient) List(options *AutomationsListOptions) *AutomationsListPager {
+	return &AutomationsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AutomationsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
+		advancer: func(ctx context.Context, resp AutomationsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AutomationsClient) listCreateRequest(ctx context.Context, options *AutomationsListOptions) (*azcore.Request, error) {
+func (client *AutomationsClient) listCreateRequest(ctx context.Context, options *AutomationsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AutomationsClient) listHandleResponse(resp *azcore.Response) (AutomationsListResponse, error) {
-	result := AutomationsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AutomationList); err != nil {
+func (client *AutomationsClient) listHandleResponse(resp *http.Response) (AutomationsListResponse, error) {
+	result := AutomationsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
 		return AutomationsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *AutomationsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutomationsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Lists all the security automations in the specified resource group. Use the 'nextLink' property in the response to get the next
 // page of security automations for the specified resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) ListByResourceGroup(resourceGroupName string, options *AutomationsListByResourceGroupOptions) AutomationsListByResourceGroupPager {
-	return &automationsListByResourceGroupPager{
+func (client *AutomationsClient) ListByResourceGroup(resourceGroupName string, options *AutomationsListByResourceGroupOptions) *AutomationsListByResourceGroupPager {
+	return &AutomationsListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AutomationsListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
+		advancer: func(ctx context.Context, resp AutomationsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutomationsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutomationsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -302,38 +302,37 @@ func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AutomationsListByResourceGroupResponse, error) {
-	result := AutomationsListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AutomationList); err != nil {
+func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationsListByResourceGroupResponse, error) {
+	result := AutomationsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
 		return AutomationsListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AutomationsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutomationsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Validate - Validates the security automation model before create or update. Any validation errors are returned to the client.
@@ -343,18 +342,18 @@ func (client *AutomationsClient) Validate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AutomationsValidateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AutomationsValidateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AutomationsValidateResponse{}, client.validateHandleError(resp)
 	}
 	return client.validateHandleResponse(resp)
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsValidateOptions) (*azcore.Request, error) {
+func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}/validate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -368,36 +367,35 @@ func (client *AutomationsClient) validateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(automation)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, automation)
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *AutomationsClient) validateHandleResponse(resp *azcore.Response) (AutomationsValidateResponse, error) {
-	result := AutomationsValidateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AutomationValidationStatus); err != nil {
+func (client *AutomationsClient) validateHandleResponse(resp *http.Response) (AutomationsValidateResponse, error) {
+	result := AutomationsValidateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationValidationStatus); err != nil {
 		return AutomationsValidateResponse{}, err
 	}
 	return result, nil
 }
 
 // validateHandleError handles the Validate error response.
-func (client *AutomationsClient) validateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutomationsClient) validateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

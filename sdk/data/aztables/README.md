@@ -333,7 +333,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [source_code]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/data/aztables
 [Tables_gopackage]:https://aka.ms/azsdk/go/tables
 [Tables_ref_docs]:https://aka.ms/azsdk/go/tables
-<!-- [Tables_ref_docs]:https://docs.microsoft.com/python/api/overview/azure/data-tables-readme-pre?view=azure-python-preview -->
 [Tables_product_doc]:https://docs.microsoft.com/azure/cosmos-db/table-introduction
 [Tables_samples]:https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples
 [migration_guide]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/migration_guide.md
@@ -375,4 +374,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [get_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L52-L55
 [upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120 -->
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/tables/azure-data-tables/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

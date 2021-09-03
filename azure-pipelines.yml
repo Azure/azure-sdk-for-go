@@ -17,10 +17,10 @@ jobs:
     strategy:
       matrix:
         Linux_Go116:
-          pool.name: azsdk-pool-mms-ubuntu-1804-general
+          pool.name: azsdk-pool-mms-ubuntu-2004-general
           go.version: '1.16.7'
         Linux_Go117:
-          pool.name: azsdk-pool-mms-ubuntu-1804-general
+          pool.name: azsdk-pool-mms-ubuntu-2004-general
           go.version: '1.17'
 
     pool:

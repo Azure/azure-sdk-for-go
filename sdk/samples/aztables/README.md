@@ -4,7 +4,7 @@ languages:
   - go
 products:
   - azure
-  - aztable
+  - aztables
 urlFragment: tables-samples
 ---
 

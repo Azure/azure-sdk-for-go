@@ -3,12 +3,7 @@
 ## v0.20.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bug Fixes
-
-### Other Changes
+* Updating Documentation
 
 
 ## v0.19.0 (2021-08-25)

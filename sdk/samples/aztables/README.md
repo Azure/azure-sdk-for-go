@@ -4,7 +4,7 @@ languages:
   - go
 products:
   - azure
-  - aztables
+  - azure-table-storage
 urlFragment: tables-samples
 ---
 
@@ -28,7 +28,7 @@ These sample programs show common scenarios for the Tables client's offerings.
 
 
 ### Prerequisites
-* Go 1.14 or later is required to use this package.
+* Go 1.16 or later is required to use this package.
 * You must have an [Azure subscription](https://azure.microsoft.com/free/) and either an
 [Azure storage account](https://docs.microsoft.com/azure/storage/common/storage-account-overview) or an [Azure Cosmos Account](https://docs.microsoft.com/azure/cosmos-db/account-overview) to use this package.
 

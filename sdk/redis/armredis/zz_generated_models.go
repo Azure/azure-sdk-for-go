@@ -10,9 +10,10 @@ package armredis
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // CheckNameAvailabilityParameters - Parameters body to pass for resource name availability check.

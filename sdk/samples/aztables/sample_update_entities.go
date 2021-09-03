@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package main
 
 import (
@@ -89,6 +92,7 @@ func MergeEntities() {
 	}
 
 	marshalled, err := json.Marshal(myAdvancedEntity)
+	check(err)
 	_, err = client.AddEntity(context.Background(), marshalled, nil)
 	check(err)
 
@@ -96,6 +100,7 @@ func MergeEntities() {
 	delete(myAdvancedEntity.Properties, "Guid")
 	delete(myAdvancedEntity.Properties, "String")
 	marshalled, err = json.Marshal(myAdvancedEntity)
+	check(err)
 	_, err = client.UpdateEntity(context.Background(), marshalled, &aztables.UpdateEntityOptions{UpdateMode: aztables.ReplaceEntity})
 	check(err)
 }

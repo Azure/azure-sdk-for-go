@@ -269,21 +269,42 @@ func PossibleDirectionValues() []Direction {
 	return []Direction{Inbound, Outbound}
 }
 
+// EndOfSupportStatus enumerates the values for end of support status.
+type EndOfSupportStatus string
+
+const (
+	// NoLongerSupported ...
+	NoLongerSupported EndOfSupportStatus = "noLongerSupported"
+	// None ...
+	None EndOfSupportStatus = "None"
+	// UpcomingNoLongerSupported ...
+	UpcomingNoLongerSupported EndOfSupportStatus = "upcomingNoLongerSupported"
+	// UpcomingVersionNoLongerSupported ...
+	UpcomingVersionNoLongerSupported EndOfSupportStatus = "upcomingVersionNoLongerSupported"
+	// VersionNoLongerSupported ...
+	VersionNoLongerSupported EndOfSupportStatus = "versionNoLongerSupported"
+)
+
+// PossibleEndOfSupportStatusValues returns an array of possible values for the EndOfSupportStatus const type.
+func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
+	return []EndOfSupportStatus{NoLongerSupported, None, UpcomingNoLongerSupported, UpcomingVersionNoLongerSupported, VersionNoLongerSupported}
+}
+
 // EnforcementMode enumerates the values for enforcement mode.
 type EnforcementMode string
 
 const (
-	// Audit ...
-	Audit EnforcementMode = "Audit"
-	// Enforce ...
-	Enforce EnforcementMode = "Enforce"
-	// None ...
-	None EnforcementMode = "None"
+	// EnforcementModeAudit ...
+	EnforcementModeAudit EnforcementMode = "Audit"
+	// EnforcementModeEnforce ...
+	EnforcementModeEnforce EnforcementMode = "Enforce"
+	// EnforcementModeNone ...
+	EnforcementModeNone EnforcementMode = "None"
 )
 
 // PossibleEnforcementModeValues returns an array of possible values for the EnforcementMode const type.
 func PossibleEnforcementModeValues() []EnforcementMode {
-	return []EnforcementMode{Audit, Enforce, None}
+	return []EnforcementMode{EnforcementModeAudit, EnforcementModeEnforce, EnforcementModeNone}
 }
 
 // EnforcementMode1 enumerates the values for enforcement mode 1.
@@ -324,21 +345,29 @@ func PossibleEnforcementSupportValues() []EnforcementSupport {
 type EventSource string
 
 const (
-	// Alerts ...
-	Alerts EventSource = "Alerts"
-	// Assessments ...
-	Assessments EventSource = "Assessments"
-	// SecureScoreControls ...
-	SecureScoreControls EventSource = "SecureScoreControls"
-	// SecureScores ...
-	SecureScores EventSource = "SecureScores"
-	// SubAssessments ...
-	SubAssessments EventSource = "SubAssessments"
+	// EventSourceAlerts ...
+	EventSourceAlerts EventSource = "Alerts"
+	// EventSourceAssessments ...
+	EventSourceAssessments EventSource = "Assessments"
+	// EventSourceRegulatoryComplianceAssessment ...
+	EventSourceRegulatoryComplianceAssessment EventSource = "RegulatoryComplianceAssessment"
+	// EventSourceRegulatoryComplianceAssessmentSnapshot ...
+	EventSourceRegulatoryComplianceAssessmentSnapshot EventSource = "RegulatoryComplianceAssessmentSnapshot"
+	// EventSourceSecureScoreControls ...
+	EventSourceSecureScoreControls EventSource = "SecureScoreControls"
+	// EventSourceSecureScoreControlsSnapshot ...
+	EventSourceSecureScoreControlsSnapshot EventSource = "SecureScoreControlsSnapshot"
+	// EventSourceSecureScores ...
+	EventSourceSecureScores EventSource = "SecureScores"
+	// EventSourceSecureScoresSnapshot ...
+	EventSourceSecureScoresSnapshot EventSource = "SecureScoresSnapshot"
+	// EventSourceSubAssessments ...
+	EventSourceSubAssessments EventSource = "SubAssessments"
 )
 
 // PossibleEventSourceValues returns an array of possible values for the EventSource const type.
 func PossibleEventSourceValues() []EventSource {
-	return []EventSource{Alerts, Assessments, SecureScoreControls, SecureScores, SubAssessments}
+	return []EventSource{EventSourceAlerts, EventSourceAssessments, EventSourceRegulatoryComplianceAssessment, EventSourceRegulatoryComplianceAssessmentSnapshot, EventSourceSecureScoreControls, EventSourceSecureScoreControlsSnapshot, EventSourceSecureScores, EventSourceSecureScoresSnapshot, EventSourceSubAssessments}
 }
 
 // Exe enumerates the values for exe.
@@ -491,19 +520,34 @@ func PossibleIssueValues() []Issue {
 type KindEnum string
 
 const (
-	// KindAAD ...
-	KindAAD KindEnum = "AAD"
-	// KindATA ...
-	KindATA KindEnum = "ATA"
-	// KindCEF ...
-	KindCEF KindEnum = "CEF"
-	// KindExternalSecuritySolution ...
-	KindExternalSecuritySolution KindEnum = "ExternalSecuritySolution"
+	// KindDataExportSetting ...
+	KindDataExportSetting KindEnum = "DataExportSetting"
+	// KindSetting ...
+	KindSetting KindEnum = "Setting"
 )
 
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
-	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
+	return []KindEnum{KindDataExportSetting, KindSetting}
+}
+
+// KindEnum1 enumerates the values for kind enum 1.
+type KindEnum1 string
+
+const (
+	// KindAAD ...
+	KindAAD KindEnum1 = "AAD"
+	// KindATA ...
+	KindATA KindEnum1 = "ATA"
+	// KindCEF ...
+	KindCEF KindEnum1 = "CEF"
+	// KindExternalSecuritySolution ...
+	KindExternalSecuritySolution KindEnum1 = "ExternalSecuritySolution"
+)
+
+// PossibleKindEnum1Values returns an array of possible values for the KindEnum1 const type.
+func PossibleKindEnum1Values() []KindEnum1 {
+	return []KindEnum1{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
 // Msi enumerates the values for msi.
@@ -527,23 +571,23 @@ func PossibleMsiValues() []Msi {
 type Operator string
 
 const (
-	// Contains ...
+	// Contains Applies only for non-decimal operands
 	Contains Operator = "Contains"
-	// EndsWith ...
+	// EndsWith Applies only for non-decimal operands
 	EndsWith Operator = "EndsWith"
-	// Equals ...
+	// Equals Applies for decimal and non-decimal operands
 	Equals Operator = "Equals"
-	// GreaterThan ...
+	// GreaterThan Applies only for decimal operands
 	GreaterThan Operator = "GreaterThan"
-	// GreaterThanOrEqualTo ...
+	// GreaterThanOrEqualTo Applies only for decimal operands
 	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
-	// LesserThan ...
+	// LesserThan Applies only for decimal operands
 	LesserThan Operator = "LesserThan"
-	// LesserThanOrEqualTo ...
+	// LesserThanOrEqualTo Applies only for decimal operands
 	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
-	// NotEquals ...
+	// NotEquals Applies  for decimal and non-decimal operands
 	NotEquals Operator = "NotEquals"
-	// StartsWith ...
+	// StartsWith Applies only for non-decimal operands
 	StartsWith Operator = "StartsWith"
 )
 
@@ -900,21 +944,6 @@ const (
 // PossibleScriptValues returns an array of possible values for the Script const type.
 func PossibleScriptValues() []Script {
 	return []Script{ScriptAudit, ScriptEnforce, ScriptNone}
-}
-
-// SettingKind enumerates the values for setting kind.
-type SettingKind string
-
-const (
-	// SettingKindAlertSuppressionSetting ...
-	SettingKindAlertSuppressionSetting SettingKind = "AlertSuppressionSetting"
-	// SettingKindDataExportSetting ...
-	SettingKindDataExportSetting SettingKind = "DataExportSetting"
-)
-
-// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
-func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
 }
 
 // Severity enumerates the values for severity.

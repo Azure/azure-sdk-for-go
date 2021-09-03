@@ -778,13 +778,16 @@ func PossibleJobStateValues() []JobState {
 type LiveEventEncodingType string
 
 const (
-	// LiveEventEncodingTypeNone A contribution live encoder sends a multiple bitrate stream. The ingested
-	// stream passes through the live event without any further processing. It is also called the pass-through
-	// mode.
+	// LiveEventEncodingTypeNone This is the same as PassthroughStandard, please see description below. This
+	// enumeration value is being deprecated.
 	LiveEventEncodingTypeNone LiveEventEncodingType = "None"
-	// LiveEventEncodingTypePassthroughBasic Pending update...
+	// LiveEventEncodingTypePassthroughBasic The ingested stream passes through the live event from the
+	// contribution encoder without any further processing. In the PassthroughBasic mode, ingestion is limited
+	// to up to 5Mbps and only 1 concurrent live output is allowed. Live transcription is not available.
 	LiveEventEncodingTypePassthroughBasic LiveEventEncodingType = "PassthroughBasic"
-	// LiveEventEncodingTypePassthroughStandard Pending update...
+	// LiveEventEncodingTypePassthroughStandard The ingested stream passes through the live event from the
+	// contribution encoder without any further processing. Live transcription is available. Ingestion bitrate
+	// limits are much higher and up to 3 concurrent live outputs are allowed.
 	LiveEventEncodingTypePassthroughStandard LiveEventEncodingType = "PassthroughStandard"
 	// LiveEventEncodingTypePremium1080p A contribution live encoder sends a single bitrate stream to the live
 	// event and Media Services creates multiple bitrate streams. The output cannot exceed 1080p in resolution.

@@ -1,3 +1,883 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `*ProductSubscriptionsClient.List` return value(s) have been changed from `(ProductSubscriptionsListPager)` to `(*ProductSubscriptionsListPager)`
+- Function `*GroupClient.ListByService` return value(s) have been changed from `(GroupListByServicePager)` to `(*GroupListByServicePager)`
+- Function `*GatewayAPIClient.ListByService` return value(s) have been changed from `(GatewayAPIListByServicePager)` to `(*GatewayAPIListByServicePager)`
+- Function `*CacheClient.ListByService` return value(s) have been changed from `(CacheListByServicePager)` to `(*CacheListByServicePager)`
+- Function `NewGroupUserClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewUserConfirmationPasswordClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIIssueAttachmentClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TagClient.ListByAPI` return value(s) have been changed from `(TagListByAPIPager)` to `(*TagListByAPIPager)`
+- Function `NewAPIIssueClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ReportsClient.ListByGeo` return value(s) have been changed from `(ReportsListByGeoPager)` to `(*ReportsListByGeoPager)`
+- Function `*PortalRevisionClient.ListByService` return value(s) have been changed from `(PortalRevisionListByServicePager)` to `(*PortalRevisionListByServicePager)`
+- Function `NewAPIOperationPolicyClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewNamedValueClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIDiagnosticClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewGatewayClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewUserIdentitiesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APITagDescriptionClient.ListByService` return value(s) have been changed from `(APITagDescriptionListByServicePager)` to `(*APITagDescriptionListByServicePager)`
+- Function `NewGatewayAPIClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewPolicyClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TagClient.ListByService` return value(s) have been changed from `(TagListByServicePager)` to `(*TagListByServicePager)`
+- Function `*ContentItemClient.ListByService` return value(s) have been changed from `(ContentItemListByServicePager)` to `(*ContentItemListByServicePager)`
+- Function `NewContentTypeClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*OpenIDConnectProviderClient.ListByService` return value(s) have been changed from `(OpenIDConnectProviderListByServicePager)` to `(*OpenIDConnectProviderListByServicePager)`
+- Function `NewBackendClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewCacheClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*UserClient.ListByService` return value(s) have been changed from `(UserListByServicePager)` to `(*UserListByServicePager)`
+- Function `NewAPIExportClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*UserGroupClient.List` return value(s) have been changed from `(UserGroupListPager)` to `(*UserGroupListPager)`
+- Function `*NamedValueClient.ListByService` return value(s) have been changed from `(NamedValueListByServicePager)` to `(*NamedValueListByServicePager)`
+- Function `*ProductClient.ListByService` return value(s) have been changed from `(ProductListByServicePager)` to `(*ProductListByServicePager)`
+- Function `*OperationClient.ListByTags` return value(s) have been changed from `(OperationListByTagsPager)` to `(*OperationListByTagsPager)`
+- Function `*APIReleaseClient.ListByService` return value(s) have been changed from `(APIReleaseListByServicePager)` to `(*APIReleaseListByServicePager)`
+- Function `*UserIdentitiesClient.List` return value(s) have been changed from `(UserIdentitiesListPager)` to `(*UserIdentitiesListPager)`
+- Function `*RegionClient.ListByService` return value(s) have been changed from `(RegionListByServicePager)` to `(*RegionListByServicePager)`
+- Function `*TagResourceClient.ListByService` return value(s) have been changed from `(TagResourceListByServicePager)` to `(*TagResourceListByServicePager)`
+- Function `*UserSubscriptionClient.List` return value(s) have been changed from `(UserSubscriptionListPager)` to `(*UserSubscriptionListPager)`
+- Function `NewGatewayCertificateAuthorityClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewUserGroupClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIClient.ListByTags` return value(s) have been changed from `(APIListByTagsPager)` to `(*APIListByTagsPager)`
+- Function `NewContentItemClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIRevisionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TagClient.ListByProduct` return value(s) have been changed from `(TagListByProductPager)` to `(*TagListByProductPager)`
+- Function `*ProductAPIClient.ListByProduct` return value(s) have been changed from `(ProductAPIListByProductPager)` to `(*ProductAPIListByProductPager)`
+- Function `NewSubscriptionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewOpenIDConnectProviderClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIVersionSetClient.ListByService` return value(s) have been changed from `(APIVersionSetListByServicePager)` to `(*APIVersionSetListByServicePager)`
+- Function `*TagClient.ListByOperation` return value(s) have been changed from `(TagListByOperationPager)` to `(*TagListByOperationPager)`
+- Function `NewTenantAccessGitClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewUserSubscriptionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIPolicyClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*TenantSettingsClient.ListByService` return value(s) have been changed from `(TenantSettingsListByServicePager)` to `(*TenantSettingsListByServicePager)`
+- Function `NewEmailTemplateClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*GroupUserClient.List` return value(s) have been changed from `(GroupUserListPager)` to `(*GroupUserListPager)`
+- Function `NewNotificationClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIOperationClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIManagementOperationsClient.List` return value(s) have been changed from `(APIManagementOperationsListPager)` to `(*APIManagementOperationsListPager)`
+- Function `NewPolicyDescriptionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ReportsClient.ListByAPI` return value(s) have been changed from `(ReportsListByAPIPager)` to `(*ReportsListByAPIPager)`
+- Function `NewAuthorizationServerClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewTagResourceClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewUserClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPISchemaClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewProductGroupClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewSignInSettingsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIManagementSKUsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewQuotaByPeriodKeysClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewDiagnosticClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*NotificationClient.ListByService` return value(s) have been changed from `(NotificationListByServicePager)` to `(*NotificationListByServicePager)`
+- Function `*GatewayCertificateAuthorityClient.ListByService` return value(s) have been changed from `(GatewayCertificateAuthorityListByServicePager)` to `(*GatewayCertificateAuthorityListByServicePager)`
+- Function `*TenantAccessClient.ListByService` return value(s) have been changed from `(TenantAccessListByServicePager)` to `(*TenantAccessListByServicePager)`
+- Function `NewDelegationSettingsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewNotificationRecipientUserClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewNetworkStatusClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIIssueCommentClient.ListByService` return value(s) have been changed from `(APIIssueCommentListByServicePager)` to `(*APIIssueCommentListByServicePager)`
+- Function `*DeletedServicesClient.ListBySubscription` return value(s) have been changed from `(DeletedServicesListBySubscriptionPager)` to `(*DeletedServicesListBySubscriptionPager)`
+- Function `*LoggerClient.ListByService` return value(s) have been changed from `(LoggerListByServicePager)` to `(*LoggerListByServicePager)`
+- Function `NewProductSubscriptionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIProductClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewOperationClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APISchemaClient.ListByAPI` return value(s) have been changed from `(APISchemaListByAPIPager)` to `(*APISchemaListByAPIPager)`
+- Function `*APIManagementServiceClient.ListByResourceGroup` return value(s) have been changed from `(APIManagementServiceListByResourceGroupPager)` to `(*APIManagementServiceListByResourceGroupPager)`
+- Function `*ReportsClient.ListByOperation` return value(s) have been changed from `(ReportsListByOperationPager)` to `(*ReportsListByOperationPager)`
+- Function `NewAPIIssueCommentClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewGatewayHostnameConfigurationClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewNotificationRecipientEmailClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewTenantSettingsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*SubscriptionClient.List` return value(s) have been changed from `(SubscriptionListPager)` to `(*SubscriptionListPager)`
+- Function `NewTagClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*IdentityProviderClient.ListByService` return value(s) have been changed from `(IdentityProviderListByServicePager)` to `(*IdentityProviderListByServicePager)`
+- Function `NewLoggerClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewTenantAccessClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPITagDescriptionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIDiagnosticClient.ListByService` return value(s) have been changed from `(APIDiagnosticListByServicePager)` to `(*APIDiagnosticListByServicePager)`
+- Function `*IssueClient.ListByService` return value(s) have been changed from `(IssueListByServicePager)` to `(*IssueListByServicePager)`
+- Function `*ReportsClient.ListByTime` return value(s) have been changed from `(ReportsListByTimePager)` to `(*ReportsListByTimePager)`
+- Function `NewCertificateClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIManagementSKUsClient.List` return value(s) have been changed from `(APIManagementSKUsListPager)` to `(*APIManagementSKUsListPager)`
+- Function `*APIOperationClient.ListByAPI` return value(s) have been changed from `(APIOperationListByAPIPager)` to `(*APIOperationListByAPIPager)`
+- Function `NewQuotaByCounterKeysClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewGroupClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewRegionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ReportsClient.ListBySubscription` return value(s) have been changed from `(ReportsListBySubscriptionPager)` to `(*ReportsListBySubscriptionPager)`
+- Function `NewAPIManagementServiceClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ContentTypeClient.ListByService` return value(s) have been changed from `(ContentTypeListByServicePager)` to `(*ContentTypeListByServicePager)`
+- Function `NewAPIManagementOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*ReportsClient.ListByUser` return value(s) have been changed from `(ReportsListByUserPager)` to `(*ReportsListByUserPager)`
+- Function `NewIdentityProviderClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIClient.ListByService` return value(s) have been changed from `(APIListByServicePager)` to `(*APIListByServicePager)`
+- Function `NewPortalRevisionClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ReportsClient.ListByProduct` return value(s) have been changed from `(ReportsListByProductPager)` to `(*ReportsListByProductPager)`
+- Function `*DiagnosticClient.ListByService` return value(s) have been changed from `(DiagnosticListByServicePager)` to `(*DiagnosticListByServicePager)`
+- Function `*APIIssueClient.ListByService` return value(s) have been changed from `(APIIssueListByServicePager)` to `(*APIIssueListByServicePager)`
+- Function `NewTenantConfigurationClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewProductAPIClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ProductClient.ListByTags` return value(s) have been changed from `(ProductListByTagsPager)` to `(*ProductListByTagsPager)`
+- Function `*CertificateClient.ListByService` return value(s) have been changed from `(CertificateListByServicePager)` to `(*CertificateListByServicePager)`
+- Function `*APIProductClient.ListByApis` return value(s) have been changed from `(APIProductListByApisPager)` to `(*APIProductListByApisPager)`
+- Function `*BackendClient.ListByService` return value(s) have been changed from `(BackendListByServicePager)` to `(*BackendListByServicePager)`
+- Function `*GatewayHostnameConfigurationClient.ListByService` return value(s) have been changed from `(GatewayHostnameConfigurationListByServicePager)` to `(*GatewayHostnameConfigurationListByServicePager)`
+- Function `NewSignUpSettingsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIVersionSetClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*APIIssueAttachmentClient.ListByService` return value(s) have been changed from `(APIIssueAttachmentListByServicePager)` to `(*APIIssueAttachmentListByServicePager)`
+- Function `*EmailTemplateClient.ListByService` return value(s) have been changed from `(EmailTemplateListByServicePager)` to `(*EmailTemplateListByServicePager)`
+- Function `*APIManagementServiceClient.List` return value(s) have been changed from `(APIManagementServiceListPager)` to `(*APIManagementServiceListPager)`
+- Function `*APIManagementServiceSKUsClient.ListAvailableServiceSKUs` return value(s) have been changed from `(APIManagementServiceSKUsListAvailableServiceSKUsPager)` to `(*APIManagementServiceSKUsListAvailableServiceSKUsPager)`
+- Function `NewProductClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIReleaseClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewDeletedServicesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*AuthorizationServerClient.ListByService` return value(s) have been changed from `(AuthorizationServerListByServicePager)` to `(*AuthorizationServerListByServicePager)`
+- Function `NewReportsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewAPIManagementServiceSKUsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewPortalSettingsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ProductGroupClient.ListByProduct` return value(s) have been changed from `(ProductGroupListByProductPager)` to `(*ProductGroupListByProductPager)`
+- Function `*APIRevisionClient.ListByService` return value(s) have been changed from `(APIRevisionListByServicePager)` to `(*APIRevisionListByServicePager)`
+- Function `NewIssueClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*GatewayClient.ListByService` return value(s) have been changed from `(GatewayListByServicePager)` to `(*GatewayListByServicePager)`
+- Function `NewProductPolicyClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Type of `DeletedServicesPurgePollerResponse.Poller` has been changed from `DeletedServicesPurgePoller` to `*DeletedServicesPurgePoller`
+- Type of `APIManagementServiceRestorePollerResponse.Poller` has been changed from `APIManagementServiceRestorePoller` to `*APIManagementServiceRestorePoller`
+- Type of `APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse.Poller` has been changed from `APIManagementServiceApplyNetworkConfigurationUpdatesPoller` to `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller`
+- Type of `TenantConfigurationSavePollerResponse.Poller` has been changed from `TenantConfigurationSavePoller` to `*TenantConfigurationSavePoller`
+- Type of `PortalRevisionUpdatePollerResponse.Poller` has been changed from `PortalRevisionUpdatePoller` to `*PortalRevisionUpdatePoller`
+- Type of `APIManagementServiceUpdatePollerResponse.Poller` has been changed from `APIManagementServiceUpdatePoller` to `*APIManagementServiceUpdatePoller`
+- Type of `PortalRevisionCreateOrUpdatePollerResponse.Poller` has been changed from `PortalRevisionCreateOrUpdatePoller` to `*PortalRevisionCreateOrUpdatePoller`
+- Type of `APIManagementServiceBackupPollerResponse.Poller` has been changed from `APIManagementServiceBackupPoller` to `*APIManagementServiceBackupPoller`
+- Type of `APIManagementServiceCreateOrUpdatePollerResponse.Poller` has been changed from `APIManagementServiceCreateOrUpdatePoller` to `*APIManagementServiceCreateOrUpdatePoller`
+- Type of `NamedValueCreateOrUpdatePollerResponse.Poller` has been changed from `NamedValueCreateOrUpdatePoller` to `*NamedValueCreateOrUpdatePoller`
+- Type of `TenantConfigurationValidatePollerResponse.Poller` has been changed from `TenantConfigurationValidatePoller` to `*TenantConfigurationValidatePoller`
+- Type of `NamedValueRefreshSecretPollerResponse.Poller` has been changed from `NamedValueRefreshSecretPoller` to `*NamedValueRefreshSecretPoller`
+- Type of `APICreateOrUpdatePollerResponse.Poller` has been changed from `APICreateOrUpdatePoller` to `*APICreateOrUpdatePoller`
+- Type of `APIManagementServiceDeletePollerResponse.Poller` has been changed from `APIManagementServiceDeletePoller` to `*APIManagementServiceDeletePoller`
+- Type of `SchemaContractProperties.Document` has been changed from `*SchemaDocumentProperties` to `map[string]interface{}`
+- Type of `NamedValueUpdatePollerResponse.Poller` has been changed from `NamedValueUpdatePoller` to `*NamedValueUpdatePoller`
+- Type of `APISchemaCreateOrUpdatePollerResponse.Poller` has been changed from `APISchemaCreateOrUpdatePoller` to `*APISchemaCreateOrUpdatePoller`
+- Type of `TenantConfigurationDeployPollerResponse.Poller` has been changed from `TenantConfigurationDeployPoller` to `*TenantConfigurationDeployPoller`
+- Function `*apiManagementServiceUpdatePoller.Poll` has been removed
+- Function `*reportsListByTimePager.PageResponse` has been removed
+- Function `*userListByServicePager.PageResponse` has been removed
+- Function `*apiVersionSetListByServicePager.PageResponse` has been removed
+- Function `*apiListByServicePager.PageResponse` has been removed
+- Function `*subscriptionListPager.PageResponse` has been removed
+- Function `*tenantConfigurationSavePoller.Poll` has been removed
+- Function `*tenantConfigurationSavePoller.FinalResponse` has been removed
+- Function `*userGroupListPager.Err` has been removed
+- Function `*openIDConnectProviderListByServicePager.NextPage` has been removed
+- Function `*productGroupListByProductPager.Err` has been removed
+- Function `*tenantConfigurationSavePoller.ResumeToken` has been removed
+- Function `*productListByTagsPager.PageResponse` has been removed
+- Function `*subscriptionListPager.Err` has been removed
+- Function `*apiManagementServiceCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*tagListByServicePager.Err` has been removed
+- Function `*apiManagementServiceSKUsListAvailableServiceSKUsPager.PageResponse` has been removed
+- Function `*emailTemplateListByServicePager.PageResponse` has been removed
+- Function `*reportsListByGeoPager.Err` has been removed
+- Function `*apiIssueAttachmentListByServicePager.NextPage` has been removed
+- Function `*contentItemListByServicePager.NextPage` has been removed
+- Function `*apiManagementServiceBackupPoller.Poll` has been removed
+- Function `*cacheListByServicePager.PageResponse` has been removed
+- Function `*groupUserListPager.PageResponse` has been removed
+- Function `*reportsListByGeoPager.NextPage` has been removed
+- Function `*subscriptionListPager.NextPage` has been removed
+- Function `*namedValueUpdatePoller.Poll` has been removed
+- Function `*userSubscriptionListPager.NextPage` has been removed
+- Function `*apiManagementServiceCreateOrUpdatePoller.Poll` has been removed
+- Function `*apiOperationListByAPIPager.PageResponse` has been removed
+- Function `*notificationListByServicePager.NextPage` has been removed
+- Function `*reportsListBySubscriptionPager.Err` has been removed
+- Function `*regionListByServicePager.NextPage` has been removed
+- Function `*tagListByAPIPager.Err` has been removed
+- Function `*tenantConfigurationDeployPoller.ResumeToken` has been removed
+- Function `*certificateListByServicePager.NextPage` has been removed
+- Function `*apiProductListByApisPager.PageResponse` has been removed
+- Function `*reportsListByAPIPager.PageResponse` has been removed
+- Function `*groupListByServicePager.Err` has been removed
+- Function `*tenantAccessListByServicePager.Err` has been removed
+- Function `*openIDConnectProviderListByServicePager.Err` has been removed
+- Function `*apiManagementServiceApplyNetworkConfigurationUpdatesPoller.ResumeToken` has been removed
+- Function `*portalRevisionListByServicePager.PageResponse` has been removed
+- Function `*apiProductListByApisPager.Err` has been removed
+- Function `*reportsListByUserPager.Err` has been removed
+- Function `*apiManagementServiceListByResourceGroupPager.NextPage` has been removed
+- Function `*apiListByTagsPager.NextPage` has been removed
+- Function `*portalRevisionUpdatePoller.FinalResponse` has been removed
+- Function `*apiTagDescriptionListByServicePager.Err` has been removed
+- Function `*portalRevisionCreateOrUpdatePoller.Done` has been removed
+- Function `*deletedServicesPurgePoller.ResumeToken` has been removed
+- Function `*apiRevisionListByServicePager.NextPage` has been removed
+- Function `*tenantConfigurationDeployPoller.FinalResponse` has been removed
+- Function `*apiDiagnosticListByServicePager.PageResponse` has been removed
+- Function `*productSubscriptionsListPager.Err` has been removed
+- Function `*reportsListByOperationPager.Err` has been removed
+- Function `*contentTypeListByServicePager.Err` has been removed
+- Function `*apiManagementServiceRestorePoller.FinalResponse` has been removed
+- Function `*productAPIListByProductPager.Err` has been removed
+- Function `*userIdentitiesListPager.PageResponse` has been removed
+- Function `*apiManagementServiceCreateOrUpdatePoller.Done` has been removed
+- Function `*reportsListByOperationPager.NextPage` has been removed
+- Function `*tenantSettingsListByServicePager.NextPage` has been removed
+- Function `*apiListByTagsPager.Err` has been removed
+- Function `*apiDiagnosticListByServicePager.NextPage` has been removed
+- Function `*apiManagementServiceCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*reportsListByTimePager.NextPage` has been removed
+- Function `*productListByTagsPager.Err` has been removed
+- Function `*apiManagementServiceListByResourceGroupPager.Err` has been removed
+- Function `*apiManagementServiceRestorePoller.Poll` has been removed
+- Function `*backendListByServicePager.PageResponse` has been removed
+- Function `*tenantConfigurationValidatePoller.Done` has been removed
+- Function `*PortalRevisionClient.ResumeCreateOrUpdate` has been removed
+- Function `*productListByTagsPager.NextPage` has been removed
+- Function `*portalRevisionCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*apiListByServicePager.NextPage` has been removed
+- Function `*tenantAccessListByServicePager.NextPage` has been removed
+- Function `*gatewayHostnameConfigurationListByServicePager.Err` has been removed
+- Function `*namedValueUpdatePoller.FinalResponse` has been removed
+- Function `*gatewayAPIListByServicePager.NextPage` has been removed
+- Function `*authorizationServerListByServicePager.PageResponse` has been removed
+- Function `*apiManagementServiceDeletePoller.Done` has been removed
+- Function `*reportsListByTimePager.Err` has been removed
+- Function `*namedValueCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*apiSchemaCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*apiIssueCommentListByServicePager.Err` has been removed
+- Function `*apiManagementServiceRestorePoller.Done` has been removed
+- Function `*userSubscriptionListPager.Err` has been removed
+- Function `*operationListByTagsPager.NextPage` has been removed
+- Function `*userIdentitiesListPager.NextPage` has been removed
+- Function `*gatewayAPIListByServicePager.Err` has been removed
+- Function `*tenantConfigurationDeployPoller.Poll` has been removed
+- Function `*reportsListBySubscriptionPager.NextPage` has been removed
+- Function `*NamedValueClient.ResumeCreateOrUpdate` has been removed
+- Function `*apiCreateOrUpdatePoller.Done` has been removed
+- Function `*apiTagDescriptionListByServicePager.NextPage` has been removed
+- Function `*tagListByAPIPager.NextPage` has been removed
+- Function `*apiManagementServiceBackupPoller.FinalResponse` has been removed
+- Function `*groupUserListPager.Err` has been removed
+- Function `*tagListByProductPager.PageResponse` has been removed
+- Function `*apiSchemaListByAPIPager.Err` has been removed
+- Function `*regionListByServicePager.Err` has been removed
+- Function `*tagResourceListByServicePager.Err` has been removed
+- Function `*apiReleaseListByServicePager.Err` has been removed
+- Function `*TenantConfigurationClient.ResumeValidate` has been removed
+- Function `*portalRevisionUpdatePoller.Done` has been removed
+- Function `*apiManagementServiceSKUsListAvailableServiceSKUsPager.NextPage` has been removed
+- Function `*issueListByServicePager.Err` has been removed
+- Function `*openIDConnectProviderListByServicePager.PageResponse` has been removed
+- Function `*diagnosticListByServicePager.NextPage` has been removed
+- Function `*tagListByProductPager.NextPage` has been removed
+- Function `*deletedServicesPurgePoller.Poll` has been removed
+- Function `*apiManagementServiceListPager.Err` has been removed
+- Function `*contentItemListByServicePager.Err` has been removed
+- Function `*gatewayHostnameConfigurationListByServicePager.NextPage` has been removed
+- Function `*apiManagementServiceBackupPoller.Done` has been removed
+- Function `*deletedServicesListBySubscriptionPager.PageResponse` has been removed
+- Function `*reportsListByGeoPager.PageResponse` has been removed
+- Function `*apiIssueAttachmentListByServicePager.Err` has been removed
+- Function `*tagListByOperationPager.PageResponse` has been removed
+- Function `*issueListByServicePager.NextPage` has been removed
+- Function `*apiSchemaListByAPIPager.NextPage` has been removed
+- Function `*apiManagementOperationsListPager.PageResponse` has been removed
+- Function `*tagListByOperationPager.NextPage` has been removed
+- Function `*issueListByServicePager.PageResponse` has been removed
+- Function `*apiManagementServiceDeletePoller.ResumeToken` has been removed
+- Function `*operationListByTagsPager.PageResponse` has been removed
+- Function `*certificateListByServicePager.PageResponse` has been removed
+- Function `*apiManagementServiceApplyNetworkConfigurationUpdatesPoller.Done` has been removed
+- Function `*gatewayCertificateAuthorityListByServicePager.NextPage` has been removed
+- Function `*cacheListByServicePager.NextPage` has been removed
+- Function `*apiManagementServiceUpdatePoller.ResumeToken` has been removed
+- Function `*tenantConfigurationValidatePoller.FinalResponse` has been removed
+- Function `*deletedServicesListBySubscriptionPager.Err` has been removed
+- Function `*apiListByTagsPager.PageResponse` has been removed
+- Function `*reportsListByProductPager.PageResponse` has been removed
+- Function `*namedValueRefreshSecretPoller.Poll` has been removed
+- Function `*apiManagementServiceUpdatePoller.FinalResponse` has been removed
+- Function `*APISchemaClient.ResumeCreateOrUpdate` has been removed
+- Function `*APIManagementServiceClient.ResumeDelete` has been removed
+- Function `*apiIssueListByServicePager.Err` has been removed
+- Function `*apiReleaseListByServicePager.NextPage` has been removed
+- Function `*tagListByServicePager.PageResponse` has been removed
+- Function `*NamedValueClient.ResumeRefreshSecret` has been removed
+- Function `*APIManagementServiceClient.ResumeUpdate` has been removed
+- Function `*namedValueRefreshSecretPoller.FinalResponse` has been removed
+- Function `*diagnosticListByServicePager.Err` has been removed
+- Function `*reportsListByAPIPager.Err` has been removed
+- Function `*portalRevisionCreateOrUpdatePoller.Poll` has been removed
+- Function `*productListByServicePager.NextPage` has been removed
+- Function `*tenantConfigurationValidatePoller.Poll` has been removed
+- Function `*userListByServicePager.NextPage` has been removed
+- Function `*certificateListByServicePager.Err` has been removed
+- Function `*APIManagementServiceClient.ResumeCreateOrUpdate` has been removed
+- Function `*emailTemplateListByServicePager.Err` has been removed
+- Function `*deletedServicesPurgePoller.Done` has been removed
+- Function `*authorizationServerListByServicePager.Err` has been removed
+- Function `*reportsListByAPIPager.NextPage` has been removed
+- Function `*reportsListByUserPager.NextPage` has been removed
+- Function `*groupListByServicePager.NextPage` has been removed
+- Function `*apiManagementServiceSKUsListAvailableServiceSKUsPager.Err` has been removed
+- Function `*namedValueRefreshSecretPoller.ResumeToken` has been removed
+- Function `*tenantAccessListByServicePager.PageResponse` has been removed
+- Function `*emailTemplateListByServicePager.NextPage` has been removed
+- Function `*TenantConfigurationClient.ResumeSave` has been removed
+- Function `*loggerListByServicePager.Err` has been removed
+- Function `*apiListByServicePager.Err` has been removed
+- Function `*reportsListBySubscriptionPager.PageResponse` has been removed
+- Function `*apiManagementServiceListByResourceGroupPager.PageResponse` has been removed
+- Function `*apiRevisionListByServicePager.Err` has been removed
+- Function `*gatewayListByServicePager.PageResponse` has been removed
+- Function `*portalRevisionCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*portalRevisionUpdatePoller.Poll` has been removed
+- Function `*tenantConfigurationValidatePoller.ResumeToken` has been removed
+- Function `*contentTypeListByServicePager.PageResponse` has been removed
+- Function `*apiManagementServiceRestorePoller.ResumeToken` has been removed
+- Function `*namedValueListByServicePager.Err` has been removed
+- Function `*apiSchemaListByAPIPager.PageResponse` has been removed
+- Function `*operationListByTagsPager.Err` has been removed
+- Function `*gatewayAPIListByServicePager.PageResponse` has been removed
+- Function `*apiManagementSKUsListPager.Err` has been removed
+- Function `*apiIssueListByServicePager.PageResponse` has been removed
+- Function `*gatewayListByServicePager.NextPage` has been removed
+- Function `*apiManagementServiceListPager.NextPage` has been removed
+- Function `*userGroupListPager.PageResponse` has been removed
+- Function `*reportsListByUserPager.PageResponse` has been removed
+- Function `*namedValueCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*groupUserListPager.NextPage` has been removed
+- Function `*contentTypeListByServicePager.NextPage` has been removed
+- Function `*diagnosticListByServicePager.PageResponse` has been removed
+- Function `*gatewayCertificateAuthorityListByServicePager.PageResponse` has been removed
+- Function `*identityProviderListByServicePager.PageResponse` has been removed
+- Function `*tagListByProductPager.Err` has been removed
+- Function `*productSubscriptionsListPager.PageResponse` has been removed
+- Function `*apiManagementSKUsListPager.PageResponse` has been removed
+- Function `*productGroupListByProductPager.NextPage` has been removed
+- Function `*apiManagementServiceListPager.PageResponse` has been removed
+- Function `*apiVersionSetListByServicePager.Err` has been removed
+- Function `*NamedValueClient.ResumeUpdate` has been removed
+- Function `*namedValueListByServicePager.PageResponse` has been removed
+- Function `*productGroupListByProductPager.PageResponse` has been removed
+- Function `*identityProviderListByServicePager.NextPage` has been removed
+- Function `*notificationListByServicePager.PageResponse` has been removed
+- Function `*regionListByServicePager.PageResponse` has been removed
+- Function `*namedValueUpdatePoller.Done` has been removed
+- Function `*productListByServicePager.Err` has been removed
+- Function `*tagListByOperationPager.Err` has been removed
+- Function `*PortalRevisionClient.ResumeUpdate` has been removed
+- Function `*portalRevisionListByServicePager.Err` has been removed
+- Function `*productSubscriptionsListPager.NextPage` has been removed
+- Function `*productAPIListByProductPager.PageResponse` has been removed
+- Function `*apiVersionSetListByServicePager.NextPage` has been removed
+- Function `*reportsListByProductPager.Err` has been removed
+- Function `*loggerListByServicePager.PageResponse` has been removed
+- Function `*backendListByServicePager.Err` has been removed
+- Function `*apiRevisionListByServicePager.PageResponse` has been removed
+- Function `*namedValueCreateOrUpdatePoller.Done` has been removed
+- Function `*productListByServicePager.PageResponse` has been removed
+- Function `*tagListByAPIPager.PageResponse` has been removed
+- Function `*apiOperationListByAPIPager.NextPage` has been removed
+- Function `*identityProviderListByServicePager.Err` has been removed
+- Function `*APIManagementServiceClient.ResumeRestore` has been removed
+- Function `*userListByServicePager.Err` has been removed
+- Function `*apiManagementServiceDeletePoller.Poll` has been removed
+- Function `*apiIssueCommentListByServicePager.PageResponse` has been removed
+- Function `*cacheListByServicePager.Err` has been removed
+- Function `*portalRevisionUpdatePoller.ResumeToken` has been removed
+- Function `*apiCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*tagResourceListByServicePager.PageResponse` has been removed
+- Function `*apiDiagnosticListByServicePager.Err` has been removed
+- Function `*apiManagementServiceBackupPoller.ResumeToken` has been removed
+- Function `*gatewayListByServicePager.Err` has been removed
+- Function `*backendListByServicePager.NextPage` has been removed
+- Function `*tagResourceListByServicePager.NextPage` has been removed
+- Function `*reportsListByProductPager.NextPage` has been removed
+- Function `*notificationListByServicePager.Err` has been removed
+- Function `*contentItemListByServicePager.PageResponse` has been removed
+- Function `*apiCreateOrUpdatePoller.Poll` has been removed
+- Function `*apiSchemaCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*apiSchemaCreateOrUpdatePoller.Poll` has been removed
+- Function `*deletedServicesListBySubscriptionPager.NextPage` has been removed
+- Function `*portalRevisionListByServicePager.NextPage` has been removed
+- Function `*deletedServicesPurgePoller.FinalResponse` has been removed
+- Function `*userSubscriptionListPager.PageResponse` has been removed
+- Function `*apiManagementServiceUpdatePoller.Done` has been removed
+- Function `*tenantConfigurationDeployPoller.Done` has been removed
+- Function `*APIClient.ResumeCreateOrUpdate` has been removed
+- Function `*namedValueRefreshSecretPoller.Done` has been removed
+- Function `*apiIssueListByServicePager.NextPage` has been removed
+- Function `*loggerListByServicePager.NextPage` has been removed
+- Function `*reportsListByOperationPager.PageResponse` has been removed
+- Function `*apiProductListByApisPager.NextPage` has been removed
+- Function `*apiSchemaCreateOrUpdatePoller.Done` has been removed
+- Function `*productAPIListByProductPager.NextPage` has been removed
+- Function `*TenantConfigurationClient.ResumeDeploy` has been removed
+- Function `*namedValueUpdatePoller.ResumeToken` has been removed
+- Function `*APIManagementServiceClient.ResumeBackup` has been removed
+- Function `*namedValueCreateOrUpdatePoller.Poll` has been removed
+- Function `*apiTagDescriptionListByServicePager.PageResponse` has been removed
+- Function `*apiManagementServiceApplyNetworkConfigurationUpdatesPoller.Poll` has been removed
+- Function `*tenantSettingsListByServicePager.Err` has been removed
+- Function `*apiManagementServiceDeletePoller.FinalResponse` has been removed
+- Function `*apiManagementOperationsListPager.NextPage` has been removed
+- Function `*gatewayCertificateAuthorityListByServicePager.Err` has been removed
+- Function `*apiManagementOperationsListPager.Err` has been removed
+- Function `*apiOperationListByAPIPager.Err` has been removed
+- Function `*namedValueListByServicePager.NextPage` has been removed
+- Function `*gatewayHostnameConfigurationListByServicePager.PageResponse` has been removed
+- Function `*tagListByServicePager.NextPage` has been removed
+- Function `*userIdentitiesListPager.Err` has been removed
+- Function `*apiManagementSKUsListPager.NextPage` has been removed
+- Function `*apiIssueAttachmentListByServicePager.PageResponse` has been removed
+- Function `*userGroupListPager.NextPage` has been removed
+- Function `*DeletedServicesClient.ResumePurge` has been removed
+- Function `*groupListByServicePager.PageResponse` has been removed
+- Function `*apiManagementServiceApplyNetworkConfigurationUpdatesPoller.FinalResponse` has been removed
+- Function `*apiReleaseListByServicePager.PageResponse` has been removed
+- Function `*tenantConfigurationSavePoller.Done` has been removed
+- Function `*apiCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*APIManagementServiceClient.ResumeApplyNetworkConfigurationUpdates` has been removed
+- Function `*apiIssueCommentListByServicePager.NextPage` has been removed
+- Function `*authorizationServerListByServicePager.NextPage` has been removed
+- Function `*tenantSettingsListByServicePager.PageResponse` has been removed
+- Struct `SchemaDocumentProperties` has been removed
+- Field `PollUntilDone` of struct `NamedValueCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `APIManagementServiceCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `TenantConfigurationValidatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `PortalRevisionCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `NamedValueUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `APICreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `APIManagementServiceDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `PortalRevisionUpdatePollerResponse` has been removed
+- Field `Sample` of struct `RepresentationContract` has been removed
+- Field `PollUntilDone` of struct `APIManagementServiceBackupPollerResponse` has been removed
+- Field `PollUntilDone` of struct `TenantConfigurationSavePollerResponse` has been removed
+- Field `PollUntilDone` of struct `APIManagementServiceUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `TenantConfigurationDeployPollerResponse` has been removed
+- Field `PollUntilDone` of struct `APISchemaCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse` has been removed
+- Field `PollUntilDone` of struct `DeletedServicesPurgePollerResponse` has been removed
+- Field `PollUntilDone` of struct `APIManagementServiceRestorePollerResponse` has been removed
+- Field `PollUntilDone` of struct `NamedValueRefreshSecretPollerResponse` has been removed
+
+### New Content
+
+- New const `APITypeWebsocket`
+- New const `CertificateSourceBuiltIn`
+- New const `ProtocolWs`
+- New const `CertificateSourceKeyVault`
+- New const `SoapAPITypeWebSocket`
+- New const `CertificateStatusFailed`
+- New const `CertificateSourceCustom`
+- New const `CertificateStatusInProgress`
+- New const `CertificateSourceManaged`
+- New const `ProtocolWss`
+- New const `CertificateStatusCompleted`
+- New function `*TenantConfigurationDeployPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TenantConfigurationSavePoller.Poll(context.Context) (*http.Response, error)`
+- New function `TenantConfigurationValidatePollerResponse.PollUntilDone(context.Context, time.Duration) (TenantConfigurationValidateResponse, error)`
+- New function `*APIReleaseListByServicePager.NextPage(context.Context) bool`
+- New function `*GatewayCertificateAuthorityListByServicePager.PageResponse() GatewayCertificateAuthorityListByServiceResponse`
+- New function `*SubscriptionListPager.PageResponse() SubscriptionListResponse`
+- New function `*ReportsListByUserPager.Err() error`
+- New function `*DeletedServicesPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EmailTemplateListByServicePager.PageResponse() EmailTemplateListByServiceResponse`
+- New function `*DeletedServicesPurgePoller.FinalResponse(context.Context) (DeletedServicesPurgeResponse, error)`
+- New function `*ProductListByServicePager.NextPage(context.Context) bool`
+- New function `TenantConfigurationDeployPollerResponse.PollUntilDone(context.Context, time.Duration) (TenantConfigurationDeployResponse, error)`
+- New function `*APIOperationListByAPIPager.Err() error`
+- New function `*APICreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*NamedValueCreateOrUpdatePoller.FinalResponse(context.Context) (NamedValueCreateOrUpdateResponse, error)`
+- New function `*NotificationListByServicePager.PageResponse() NotificationListByServiceResponse`
+- New function `*DeletedServicesPurgePoller.ResumeToken() (string, error)`
+- New function `*ContentTypeListByServicePager.Err() error`
+- New function `NamedValueCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamedValueCreateOrUpdateResponse, error)`
+- New function `*TenantConfigurationDeployPoller.FinalResponse(context.Context) (TenantConfigurationDeployResponse, error)`
+- New function `*APIManagementServiceUpdatePoller.ResumeToken() (string, error)`
+- New function `*APIIssueAttachmentListByServicePager.PageResponse() APIIssueAttachmentListByServiceResponse`
+- New function `*GroupUserListPager.PageResponse() GroupUserListResponse`
+- New function `TenantConfigurationSavePollerResponse.PollUntilDone(context.Context, time.Duration) (TenantConfigurationSaveResponse, error)`
+- New function `*TenantConfigurationValidatePoller.Done() bool`
+- New function `*ReportsListByGeoPager.PageResponse() ReportsListByGeoResponse`
+- New function `*GroupUserListPager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceDeletePollerResponse.Resume(context.Context, *APIManagementServiceClient, string) error`
+- New function `*PortalRevisionListByServicePager.Err() error`
+- New function `*TagListByProductPager.PageResponse() TagListByProductResponse`
+- New function `*LoggerListByServicePager.PageResponse() LoggerListByServiceResponse`
+- New function `*APIManagementServiceSKUsListAvailableServiceSKUsPager.NextPage(context.Context) bool`
+- New function `*APICreateOrUpdatePollerResponse.Resume(context.Context, *APIClient, string) error`
+- New function `*GatewayAPIListByServicePager.PageResponse() GatewayAPIListByServiceResponse`
+- New function `*DiagnosticListByServicePager.Err() error`
+- New function `*EmailTemplateListByServicePager.NextPage(context.Context) bool`
+- New function `*NotificationListByServicePager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceCreateOrUpdatePoller.FinalResponse(context.Context) (APIManagementServiceCreateOrUpdateResponse, error)`
+- New function `*GatewayAPIListByServicePager.Err() error`
+- New function `*GatewayListByServicePager.NextPage(context.Context) bool`
+- New function `*ReportsListByTimePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationDeployPoller.Done() bool`
+- New function `*ProductGroupListByProductPager.NextPage(context.Context) bool`
+- New function `*PortalRevisionCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*APIManagementOperationsListPager.Err() error`
+- New function `*ReportsListByProductPager.Err() error`
+- New function `*APIManagementSKUsListPager.NextPage(context.Context) bool`
+- New function `NamedValueUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamedValueUpdateResponse, error)`
+- New function `*ReportsListByOperationPager.NextPage(context.Context) bool`
+- New function `*CertificateListByServicePager.PageResponse() CertificateListByServiceResponse`
+- New function `*APIManagementServiceCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AuthorizationServerListByServicePager.PageResponse() AuthorizationServerListByServiceResponse`
+- New function `*TenantAccessListByServicePager.Err() error`
+- New function `*APIManagementServiceCreateOrUpdatePoller.Done() bool`
+- New function `*APIManagementServiceUpdatePollerResponse.Resume(context.Context, *APIManagementServiceClient, string) error`
+- New function `*ReportsListByOperationPager.Err() error`
+- New function `*ContentItemListByServicePager.NextPage(context.Context) bool`
+- New function `*ReportsListByUserPager.PageResponse() ReportsListByUserResponse`
+- New function `*APIManagementServiceUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIIssueListByServicePager.NextPage(context.Context) bool`
+- New function `*ProductAPIListByProductPager.NextPage(context.Context) bool`
+- New function `*GatewayListByServicePager.PageResponse() GatewayListByServiceResponse`
+- New function `*APIManagementSKUsListPager.PageResponse() APIManagementSKUsListResponse`
+- New function `*UserSubscriptionListPager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationSavePollerResponse.Resume(context.Context, *TenantConfigurationClient, string) error`
+- New function `NamedValueRefreshSecretPollerResponse.PollUntilDone(context.Context, time.Duration) (NamedValueRefreshSecretResponse, error)`
+- New function `*APIManagementServiceDeletePoller.ResumeToken() (string, error)`
+- New function `*APIManagementServiceBackupPollerResponse.Resume(context.Context, *APIManagementServiceClient, string) error`
+- New function `*APIManagementSKUsListPager.Err() error`
+- New function `*UserSubscriptionListPager.PageResponse() UserSubscriptionListResponse`
+- New function `*ProductListByTagsPager.NextPage(context.Context) bool`
+- New function `*GroupListByServicePager.PageResponse() GroupListByServiceResponse`
+- New function `*PortalRevisionListByServicePager.NextPage(context.Context) bool`
+- New function `*SubscriptionListPager.Err() error`
+- New function `*ProductListByServicePager.PageResponse() ProductListByServiceResponse`
+- New function `PossibleCertificateStatusValues() []CertificateStatus`
+- New function `*APIIssueCommentListByServicePager.Err() error`
+- New function `*BackendListByServicePager.PageResponse() BackendListByServiceResponse`
+- New function `*ReportsListByTimePager.PageResponse() ReportsListByTimeResponse`
+- New function `*TagListByOperationPager.PageResponse() TagListByOperationResponse`
+- New function `APIManagementServiceUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APIManagementServiceUpdateResponse, error)`
+- New function `*APIManagementServiceListByResourceGroupPager.PageResponse() APIManagementServiceListByResourceGroupResponse`
+- New function `APIManagementServiceDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (APIManagementServiceDeleteResponse, error)`
+- New function `*ProductSubscriptionsListPager.PageResponse() ProductSubscriptionsListResponse`
+- New function `*TagListByAPIPager.PageResponse() TagListByAPIResponse`
+- New function `*APITagDescriptionListByServicePager.NextPage(context.Context) bool`
+- New function `*ReportsListByGeoPager.NextPage(context.Context) bool`
+- New function `*APIProductListByApisPager.Err() error`
+- New function `*DiagnosticListByServicePager.NextPage(context.Context) bool`
+- New function `*UserIdentitiesListPager.PageResponse() UserIdentitiesListResponse`
+- New function `*APIManagementServiceBackupPoller.Done() bool`
+- New function `*UserListByServicePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationSavePoller.Done() bool`
+- New function `*APIManagementServiceRestorePollerResponse.Resume(context.Context, *APIManagementServiceClient, string) error`
+- New function `*IssueListByServicePager.Err() error`
+- New function `*APIManagementServiceCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*APISchemaListByAPIPager.PageResponse() APISchemaListByAPIResponse`
+- New function `*ProductAPIListByProductPager.Err() error`
+- New function `*RegionListByServicePager.NextPage(context.Context) bool`
+- New function `*TagResourceListByServicePager.NextPage(context.Context) bool`
+- New function `*OpenIDConnectProviderListByServicePager.NextPage(context.Context) bool`
+- New function `*GatewayHostnameConfigurationListByServicePager.PageResponse() GatewayHostnameConfigurationListByServiceResponse`
+- New function `*ReportsListByAPIPager.Err() error`
+- New function `*TagListByOperationPager.Err() error`
+- New function `*TenantConfigurationSavePoller.FinalResponse(context.Context) (TenantConfigurationSaveResponse, error)`
+- New function `*ContentTypeListByServicePager.PageResponse() ContentTypeListByServiceResponse`
+- New function `*APIRevisionListByServicePager.NextPage(context.Context) bool`
+- New function `*NamedValueUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GroupListByServicePager.NextPage(context.Context) bool`
+- New function `*NamedValueRefreshSecretPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CacheListByServicePager.PageResponse() CacheListByServiceResponse`
+- New function `*TagResourceListByServicePager.Err() error`
+- New function `*NamedValueRefreshSecretPoller.FinalResponse(context.Context) (NamedValueRefreshSecretResponse, error)`
+- New function `*DeletedServicesListBySubscriptionPager.Err() error`
+- New function `*APICreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TenantSettingsListByServicePager.Err() error`
+- New function `*NamedValueCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `APICreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APICreateOrUpdateResponse, error)`
+- New function `*BackendListByServicePager.NextPage(context.Context) bool`
+- New function `*PortalRevisionCreateOrUpdatePoller.Done() bool`
+- New function `*AuthorizationServerListByServicePager.NextPage(context.Context) bool`
+- New function `*OpenIDConnectProviderListByServicePager.Err() error`
+- New function `*APIRevisionListByServicePager.Err() error`
+- New function `*APIVersionSetListByServicePager.PageResponse() APIVersionSetListByServiceResponse`
+- New function `*DiagnosticListByServicePager.PageResponse() DiagnosticListByServiceResponse`
+- New function `*PortalRevisionUpdatePoller.FinalResponse(context.Context) (PortalRevisionUpdateResponse, error)`
+- New function `*APICreateOrUpdatePoller.Done() bool`
+- New function `*ContentTypeListByServicePager.NextPage(context.Context) bool`
+- New function `*APIReleaseListByServicePager.PageResponse() APIReleaseListByServiceResponse`
+- New function `*APIListByServicePager.Err() error`
+- New function `*LoggerListByServicePager.Err() error`
+- New function `*IdentityProviderListByServicePager.PageResponse() IdentityProviderListByServiceResponse`
+- New function `*TagListByServicePager.PageResponse() TagListByServiceResponse`
+- New function `*ReportsListBySubscriptionPager.Err() error`
+- New function `*APIManagementServiceDeletePoller.Done() bool`
+- New function `APISchemaCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APISchemaCreateOrUpdateResponse, error)`
+- New function `*PortalRevisionListByServicePager.PageResponse() PortalRevisionListByServiceResponse`
+- New function `*APIOperationListByAPIPager.PageResponse() APIOperationListByAPIResponse`
+- New function `*NamedValueRefreshSecretPoller.ResumeToken() (string, error)`
+- New function `*APIReleaseListByServicePager.Err() error`
+- New function `APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse.PollUntilDone(context.Context, time.Duration) (APIManagementServiceApplyNetworkConfigurationUpdatesResponse, error)`
+- New function `*BackendListByServicePager.Err() error`
+- New function `*OperationListByTagsPager.PageResponse() OperationListByTagsResponse`
+- New function `*ProductListByTagsPager.Err() error`
+- New function `*OperationListByTagsPager.Err() error`
+- New function `*TagListByAPIPager.NextPage(context.Context) bool`
+- New function `*APISchemaCreateOrUpdatePoller.Done() bool`
+- New function `*APIManagementServiceUpdatePoller.FinalResponse(context.Context) (APIManagementServiceUpdateResponse, error)`
+- New function `*NamedValueListByServicePager.Err() error`
+- New function `*AuthorizationServerListByServicePager.Err() error`
+- New function `*APISchemaCreateOrUpdatePollerResponse.Resume(context.Context, *APISchemaClient, string) error`
+- New function `*IssueListByServicePager.NextPage(context.Context) bool`
+- New function `*APISchemaCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIListByTagsPager.Err() error`
+- New function `PossibleCertificateSourceValues() []CertificateSource`
+- New function `*GatewayCertificateAuthorityListByServicePager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceBackupPoller.ResumeToken() (string, error)`
+- New function `*NotificationListByServicePager.Err() error`
+- New function `*ProductAPIListByProductPager.PageResponse() ProductAPIListByProductResponse`
+- New function `*CacheListByServicePager.NextPage(context.Context) bool`
+- New function `*IdentityProviderListByServicePager.NextPage(context.Context) bool`
+- New function `*UserGroupListPager.Err() error`
+- New function `*ProductSubscriptionsListPager.Err() error`
+- New function `*DeletedServicesPurgePollerResponse.Resume(context.Context, *DeletedServicesClient, string) error`
+- New function `*TenantConfigurationValidatePoller.ResumeToken() (string, error)`
+- New function `*GatewayAPIListByServicePager.NextPage(context.Context) bool`
+- New function `*PortalRevisionCreateOrUpdatePollerResponse.Resume(context.Context, *PortalRevisionClient, string) error`
+- New function `*APIListByServicePager.PageResponse() APIListByServiceResponse`
+- New function `*ReportsListByUserPager.NextPage(context.Context) bool`
+- New function `*ReportsListByTimePager.Err() error`
+- New function `*GatewayCertificateAuthorityListByServicePager.Err() error`
+- New function `*NamedValueRefreshSecretPollerResponse.Resume(context.Context, *NamedValueClient, string) error`
+- New function `*APIListByTagsPager.NextPage(context.Context) bool`
+- New function `*UserGroupListPager.PageResponse() UserGroupListResponse`
+- New function `*ContentItemListByServicePager.PageResponse() ContentItemListByServiceResponse`
+- New function `*NamedValueListByServicePager.PageResponse() NamedValueListByServiceResponse`
+- New function `*GroupListByServicePager.Err() error`
+- New function `*APIOperationListByAPIPager.NextPage(context.Context) bool`
+- New function `*DeletedServicesListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceSKUsListAvailableServiceSKUsPager.PageResponse() APIManagementServiceSKUsListAvailableServiceSKUsResponse`
+- New function `*TenantAccessListByServicePager.PageResponse() TenantAccessListByServiceResponse`
+- New function `*APIManagementServiceListPager.Err() error`
+- New function `*IssueListByServicePager.PageResponse() IssueListByServiceResponse`
+- New function `*GatewayHostnameConfigurationListByServicePager.Err() error`
+- New function `*APIListByTagsPager.PageResponse() APIListByTagsResponse`
+- New function `*TenantConfigurationValidatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegionListByServicePager.PageResponse() RegionListByServiceResponse`
+- New function `*UserListByServicePager.Err() error`
+- New function `*APIManagementServiceCreateOrUpdatePollerResponse.Resume(context.Context, *APIManagementServiceClient, string) error`
+- New function `APIManagementServiceCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APIManagementServiceCreateOrUpdateResponse, error)`
+- New function `*APIManagementServiceRestorePoller.ResumeToken() (string, error)`
+- New function `*ProductGroupListByProductPager.PageResponse() ProductGroupListByProductResponse`
+- New function `*TenantSettingsListByServicePager.PageResponse() TenantSettingsListByServiceResponse`
+- New function `*SubscriptionListPager.NextPage(context.Context) bool`
+- New function `*NamedValueUpdatePoller.Done() bool`
+- New function `*GroupUserListPager.Err() error`
+- New function `*APIIssueCommentListByServicePager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceDeletePoller.FinalResponse(context.Context) (APIManagementServiceDeleteResponse, error)`
+- New function `*APIManagementServiceListByResourceGroupPager.Err() error`
+- New function `CertificateSource.ToPtr() *CertificateSource`
+- New function `*APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse.Resume(context.Context, *APIManagementServiceClient, string) error`
+- New function `*DeletedServicesListBySubscriptionPager.PageResponse() DeletedServicesListBySubscriptionResponse`
+- New function `*NamedValueCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GatewayHostnameConfigurationListByServicePager.NextPage(context.Context) bool`
+- New function `*APITagDescriptionListByServicePager.Err() error`
+- New function `*OpenIDConnectProviderListByServicePager.PageResponse() OpenIDConnectProviderListByServiceResponse`
+- New function `*GatewayListByServicePager.Err() error`
+- New function `*CertificateListByServicePager.Err() error`
+- New function `*PortalRevisionUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReportsListByOperationPager.PageResponse() ReportsListByOperationResponse`
+- New function `*TagListByProductPager.NextPage(context.Context) bool`
+- New function `*TagListByAPIPager.Err() error`
+- New function `*RegionListByServicePager.Err() error`
+- New function `*NamedValueCreateOrUpdatePollerResponse.Resume(context.Context, *NamedValueClient, string) error`
+- New function `*TagListByOperationPager.NextPage(context.Context) bool`
+- New function `CertificateStatus.ToPtr() *CertificateStatus`
+- New function `*APIIssueAttachmentListByServicePager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceListPager.NextPage(context.Context) bool`
+- New function `*APIIssueListByServicePager.Err() error`
+- New function `*NamedValueUpdatePollerResponse.Resume(context.Context, *NamedValueClient, string) error`
+- New function `*APIManagementServiceListPager.PageResponse() APIManagementServiceListResponse`
+- New function `*ReportsListByProductPager.NextPage(context.Context) bool`
+- New function `*APIIssueListByServicePager.PageResponse() APIIssueListByServiceResponse`
+- New function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeletedServicesPurgePoller.Done() bool`
+- New function `*APIManagementServiceSKUsListAvailableServiceSKUsPager.Err() error`
+- New function `*ReportsListByGeoPager.Err() error`
+- New function `*IdentityProviderListByServicePager.Err() error`
+- New function `*APIManagementServiceBackupPoller.FinalResponse(context.Context) (APIManagementServiceBackupResponse, error)`
+- New function `*PortalRevisionUpdatePollerResponse.Resume(context.Context, *PortalRevisionClient, string) error`
+- New function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.ResumeToken() (string, error)`
+- New function `*APIProductListByApisPager.NextPage(context.Context) bool`
+- New function `*ProductListByServicePager.Err() error`
+- New function `APIManagementServiceRestorePollerResponse.PollUntilDone(context.Context, time.Duration) (APIManagementServiceRestoreResponse, error)`
+- New function `*APIManagementServiceListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ProductListByTagsPager.PageResponse() ProductListByTagsResponse`
+- New function `*APICreateOrUpdatePoller.FinalResponse(context.Context) (APICreateOrUpdateResponse, error)`
+- New function `*APIDiagnosticListByServicePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationSavePoller.ResumeToken() (string, error)`
+- New function `*LoggerListByServicePager.NextPage(context.Context) bool`
+- New function `*ProductGroupListByProductPager.Err() error`
+- New function `*TenantConfigurationValidatePoller.FinalResponse(context.Context) (TenantConfigurationValidateResponse, error)`
+- New function `*OperationListByTagsPager.NextPage(context.Context) bool`
+- New function `*TagListByProductPager.Err() error`
+- New function `*NamedValueCreateOrUpdatePoller.Done() bool`
+- New function `*APITagDescriptionListByServicePager.PageResponse() APITagDescriptionListByServiceResponse`
+- New function `*PortalRevisionUpdatePoller.ResumeToken() (string, error)`
+- New function `*ReportsListByAPIPager.PageResponse() ReportsListByAPIResponse`
+- New function `DeletedServicesPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (DeletedServicesPurgeResponse, error)`
+- New function `*UserListByServicePager.PageResponse() UserListByServiceResponse`
+- New function `*NamedValueUpdatePoller.FinalResponse(context.Context) (NamedValueUpdateResponse, error)`
+- New function `*APIManagementServiceDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIVersionSetListByServicePager.Err() error`
+- New function `*APISchemaListByAPIPager.NextPage(context.Context) bool`
+- New function `*APIManagementOperationsListPager.PageResponse() APIManagementOperationsListResponse`
+- New function `*NamedValueListByServicePager.NextPage(context.Context) bool`
+- New function `*APISchemaListByAPIPager.Err() error`
+- New function `*TagListByServicePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationValidatePollerResponse.Resume(context.Context, *TenantConfigurationClient, string) error`
+- New function `*CacheListByServicePager.Err() error`
+- New function `*UserGroupListPager.NextPage(context.Context) bool`
+- New function `PortalRevisionUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PortalRevisionUpdateResponse, error)`
+- New function `*APIManagementServiceRestorePoller.FinalResponse(context.Context) (APIManagementServiceRestoreResponse, error)`
+- New function `*ReportsListByProductPager.PageResponse() ReportsListByProductResponse`
+- New function `*TagListByServicePager.Err() error`
+- New function `*ContentItemListByServicePager.Err() error`
+- New function `*NamedValueRefreshSecretPoller.Done() bool`
+- New function `*TenantConfigurationDeployPoller.ResumeToken() (string, error)`
+- New function `*APIListByServicePager.NextPage(context.Context) bool`
+- New function `*UserSubscriptionListPager.Err() error`
+- New function `*APISchemaCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ProductSubscriptionsListPager.NextPage(context.Context) bool`
+- New function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.Done() bool`
+- New function `*APIDiagnosticListByServicePager.PageResponse() APIDiagnosticListByServiceResponse`
+- New function `*PortalRevisionCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIRevisionListByServicePager.PageResponse() APIRevisionListByServiceResponse`
+- New function `*TenantSettingsListByServicePager.NextPage(context.Context) bool`
+- New function `*APIVersionSetListByServicePager.NextPage(context.Context) bool`
+- New function `*PortalRevisionUpdatePoller.Done() bool`
+- New function `*APIManagementServiceRestorePoller.Done() bool`
+- New function `*APIManagementServiceBackupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIIssueCommentListByServicePager.PageResponse() APIIssueCommentListByServiceResponse`
+- New function `*TenantConfigurationDeployPollerResponse.Resume(context.Context, *TenantConfigurationClient, string) error`
+- New function `*APIManagementServiceRestorePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIProductListByApisPager.PageResponse() APIProductListByApisResponse`
+- New function `*UserIdentitiesListPager.NextPage(context.Context) bool`
+- New function `*APISchemaCreateOrUpdatePoller.FinalResponse(context.Context) (APISchemaCreateOrUpdateResponse, error)`
+- New function `*TenantAccessListByServicePager.NextPage(context.Context) bool`
+- New function `*EmailTemplateListByServicePager.Err() error`
+- New function `*APIManagementServiceUpdatePoller.Done() bool`
+- New function `*UserIdentitiesListPager.Err() error`
+- New function `*ReportsListBySubscriptionPager.PageResponse() ReportsListBySubscriptionResponse`
+- New function `APIManagementServiceBackupPollerResponse.PollUntilDone(context.Context, time.Duration) (APIManagementServiceBackupResponse, error)`
+- New function `*PortalRevisionCreateOrUpdatePoller.FinalResponse(context.Context) (PortalRevisionCreateOrUpdateResponse, error)`
+- New function `*CertificateListByServicePager.NextPage(context.Context) bool`
+- New function `*ReportsListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*APIManagementOperationsListPager.NextPage(context.Context) bool`
+- New function `*APIIssueAttachmentListByServicePager.Err() error`
+- New function `*APIDiagnosticListByServicePager.Err() error`
+- New function `*ReportsListByAPIPager.NextPage(context.Context) bool`
+- New function `*NamedValueUpdatePoller.ResumeToken() (string, error)`
+- New function `PortalRevisionCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PortalRevisionCreateOrUpdateResponse, error)`
+- New function `*TagResourceListByServicePager.PageResponse() TagResourceListByServiceResponse`
+- New function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.FinalResponse(context.Context) (APIManagementServiceApplyNetworkConfigurationUpdatesResponse, error)`
+- New struct `APIContactInformation`
+- New struct `APICreateOrUpdatePoller`
+- New struct `APIDiagnosticListByServicePager`
+- New struct `APIIssueAttachmentListByServicePager`
+- New struct `APIIssueCommentListByServicePager`
+- New struct `APIIssueListByServicePager`
+- New struct `APILicenseInformation`
+- New struct `APIListByServicePager`
+- New struct `APIListByTagsPager`
+- New struct `APIManagementOperationsListPager`
+- New struct `APIManagementSKUsListPager`
+- New struct `APIManagementServiceApplyNetworkConfigurationUpdatesPoller`
+- New struct `APIManagementServiceBackupPoller`
+- New struct `APIManagementServiceCreateOrUpdatePoller`
+- New struct `APIManagementServiceDeletePoller`
+- New struct `APIManagementServiceListByResourceGroupPager`
+- New struct `APIManagementServiceListPager`
+- New struct `APIManagementServiceRestorePoller`
+- New struct `APIManagementServiceSKUsListAvailableServiceSKUsPager`
+- New struct `APIManagementServiceUpdatePoller`
+- New struct `APIOperationListByAPIPager`
+- New struct `APIProductListByApisPager`
+- New struct `APIReleaseListByServicePager`
+- New struct `APIRevisionListByServicePager`
+- New struct `APISchemaCreateOrUpdatePoller`
+- New struct `APISchemaListByAPIPager`
+- New struct `APITagDescriptionListByServicePager`
+- New struct `APIVersionSetListByServicePager`
+- New struct `AuthorizationServerListByServicePager`
+- New struct `BackendListByServicePager`
+- New struct `CacheListByServicePager`
+- New struct `CertificateListByServicePager`
+- New struct `ContentItemListByServicePager`
+- New struct `ContentTypeListByServicePager`
+- New struct `DeletedServicesListBySubscriptionPager`
+- New struct `DeletedServicesPurgePoller`
+- New struct `DiagnosticListByServicePager`
+- New struct `EmailTemplateListByServicePager`
+- New struct `GatewayAPIListByServicePager`
+- New struct `GatewayCertificateAuthorityListByServicePager`
+- New struct `GatewayHostnameConfigurationListByServicePager`
+- New struct `GatewayListByServicePager`
+- New struct `GroupListByServicePager`
+- New struct `GroupUserListPager`
+- New struct `IdentityProviderListByServicePager`
+- New struct `IssueListByServicePager`
+- New struct `LoggerListByServicePager`
+- New struct `NamedValueCreateOrUpdatePoller`
+- New struct `NamedValueListByServicePager`
+- New struct `NamedValueRefreshSecretPoller`
+- New struct `NamedValueUpdatePoller`
+- New struct `NotificationListByServicePager`
+- New struct `OpenIDConnectProviderListByServicePager`
+- New struct `OperationListByTagsPager`
+- New struct `ParameterExampleContract`
+- New struct `PortalRevisionCreateOrUpdatePoller`
+- New struct `PortalRevisionListByServicePager`
+- New struct `PortalRevisionUpdatePoller`
+- New struct `ProductAPIListByProductPager`
+- New struct `ProductGroupListByProductPager`
+- New struct `ProductListByServicePager`
+- New struct `ProductListByTagsPager`
+- New struct `ProductSubscriptionsListPager`
+- New struct `RegionListByServicePager`
+- New struct `ReportsListByAPIPager`
+- New struct `ReportsListByGeoPager`
+- New struct `ReportsListByOperationPager`
+- New struct `ReportsListByProductPager`
+- New struct `ReportsListBySubscriptionPager`
+- New struct `ReportsListByTimePager`
+- New struct `ReportsListByUserPager`
+- New struct `SubscriptionListPager`
+- New struct `TagListByAPIPager`
+- New struct `TagListByOperationPager`
+- New struct `TagListByProductPager`
+- New struct `TagListByServicePager`
+- New struct `TagResourceListByServicePager`
+- New struct `TenantAccessListByServicePager`
+- New struct `TenantConfigurationDeployPoller`
+- New struct `TenantConfigurationSavePoller`
+- New struct `TenantConfigurationValidatePoller`
+- New struct `TenantSettingsListByServicePager`
+- New struct `UserGroupListPager`
+- New struct `UserIdentitiesListPager`
+- New struct `UserListByServicePager`
+- New struct `UserSubscriptionListPager`
+- New field `TermsOfServiceURL` in struct `APIEntityBaseContract`
+- New field `Contact` in struct `APIEntityBaseContract`
+- New field `License` in struct `APIEntityBaseContract`
+- New field `Examples` in struct `ParameterContract`
+- New field `SchemaID` in struct `ParameterContract`
+- New field `TypeName` in struct `ParameterContract`
+- New field `CertificateSource` in struct `HostnameConfiguration`
+- New field `CertificateStatus` in struct `HostnameConfiguration`
+- New field `PublicIPAddressID` in struct `APIManagementServiceBaseProperties`
+- New field `Zones` in struct `APIManagementServiceUpdateParameters`
+- New field `PublicIPAddressID` in struct `AdditionalLocation`
+
+Total 542 breaking change(s), 493 additive change(s).
+
+
 ## v0.1.0 (released)

@@ -69,7 +69,7 @@ func (client EventHubConnectionsClient) CreateOrUpdate(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +105,7 @@ func (client EventHubConnectionsClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client EventHubConnectionsClient) CreateOrUpdateSender(req *http.Request) (future EventHubConnectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -153,7 +154,7 @@ func (client EventHubConnectionsClient) Delete(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -187,6 +188,7 @@ func (client EventHubConnectionsClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client EventHubConnectionsClient) DeleteSender(req *http.Request) (future EventHubConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -483,7 +485,7 @@ func (client EventHubConnectionsClient) Update(ctx context.Context, resourceGrou
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.EventHubConnectionsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -519,6 +521,7 @@ func (client EventHubConnectionsClient) UpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client EventHubConnectionsClient) UpdateSender(req *http.Request) (future EventHubConnectionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

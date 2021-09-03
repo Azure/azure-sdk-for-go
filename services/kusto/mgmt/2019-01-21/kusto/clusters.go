@@ -147,7 +147,7 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -181,6 +181,7 @@ func (client ClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future ClustersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -227,7 +228,7 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -259,6 +260,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ClustersClient) DeleteSender(req *http.Request) (future ClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -672,7 +674,7 @@ func (client ClustersClient) Start(ctx context.Context, resourceGroupName string
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -704,6 +706,7 @@ func (client ClustersClient) StartPreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ClustersClient) StartSender(req *http.Request) (future ClustersStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -749,7 +752,7 @@ func (client ClustersClient) Stop(ctx context.Context, resourceGroupName string,
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -781,6 +784,7 @@ func (client ClustersClient) StopPreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client ClustersClient) StopSender(req *http.Request) (future ClustersStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -827,7 +831,7 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -861,6 +865,7 @@ func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ClustersClient) UpdateSender(req *http.Request) (future ClustersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

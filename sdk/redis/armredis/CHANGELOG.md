@@ -1,3 +1,160 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `*RedisClient.ListUpgradeNotifications` return value(s) have been changed from `(RedisListUpgradeNotificationsPager)` to `(*RedisListUpgradeNotificationsPager)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListPager)` to `(*OperationsListPager)`
+- Function `*RedisClient.ListByResourceGroup` return value(s) have been changed from `(RedisListByResourceGroupPager)` to `(*RedisListByResourceGroupPager)`
+- Function `NewRedisClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*FirewallRulesClient.List` return value(s) have been changed from `(FirewallRulesListPager)` to `(*FirewallRulesListPager)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `NewFirewallRulesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewPrivateLinkResourcesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*LinkedServerClient.List` return value(s) have been changed from `(LinkedServerListPager)` to `(*LinkedServerListPager)`
+- Function `*PatchSchedulesClient.ListByRedisResource` return value(s) have been changed from `(PatchSchedulesListByRedisResourcePager)` to `(*PatchSchedulesListByRedisResourcePager)`
+- Function `NewLinkedServerClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*RedisClient.ListBySubscription` return value(s) have been changed from `(RedisListBySubscriptionPager)` to `(*RedisListBySubscriptionPager)`
+- Function `NewPatchSchedulesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Type of `PrivateEndpointConnectionsPutPollerResponse.Poller` has been changed from `PrivateEndpointConnectionsPutPoller` to `*PrivateEndpointConnectionsPutPoller`
+- Type of `RedisExportDataPollerResponse.Poller` has been changed from `RedisExportDataPoller` to `*RedisExportDataPoller`
+- Type of `RedisCreatePollerResponse.Poller` has been changed from `RedisCreatePoller` to `*RedisCreatePoller`
+- Type of `RedisDeletePollerResponse.Poller` has been changed from `RedisDeletePoller` to `*RedisDeletePoller`
+- Type of `LinkedServerCreatePollerResponse.Poller` has been changed from `LinkedServerCreatePoller` to `*LinkedServerCreatePoller`
+- Type of `RedisImportDataPollerResponse.Poller` has been changed from `RedisImportDataPoller` to `*RedisImportDataPoller`
+- Function `*redisDeletePoller.ResumeToken` has been removed
+- Function `*redisListUpgradeNotificationsPager.PageResponse` has been removed
+- Function `*redisImportDataPoller.ResumeToken` has been removed
+- Function `*redisExportDataPoller.FinalResponse` has been removed
+- Function `*redisDeletePoller.Poll` has been removed
+- Function `*linkedServerCreatePoller.Poll` has been removed
+- Function `*redisListBySubscriptionPager.PageResponse` has been removed
+- Function `*redisListByResourceGroupPager.NextPage` has been removed
+- Function `*patchSchedulesListByRedisResourcePager.Err` has been removed
+- Function `*redisListByResourceGroupPager.Err` has been removed
+- Function `*LinkedServerClient.ResumeCreate` has been removed
+- Function `*RedisClient.ResumeExportData` has been removed
+- Function `*linkedServerCreatePoller.Done` has been removed
+- Function `*privateEndpointConnectionsPutPoller.Done` has been removed
+- Function `*RedisClient.ResumeImportData` has been removed
+- Function `*firewallRulesListPager.Err` has been removed
+- Function `*linkedServerCreatePoller.ResumeToken` has been removed
+- Function `*redisCreatePoller.Done` has been removed
+- Function `*linkedServerListPager.PageResponse` has been removed
+- Function `*redisListUpgradeNotificationsPager.Err` has been removed
+- Function `*operationsListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumePut` has been removed
+- Function `*RedisClient.ResumeDelete` has been removed
+- Function `*RedisClient.ResumeCreate` has been removed
+- Function `*privateEndpointConnectionsPutPoller.Poll` has been removed
+- Function `*redisExportDataPoller.ResumeToken` has been removed
+- Function `*firewallRulesListPager.NextPage` has been removed
+- Function `*redisExportDataPoller.Done` has been removed
+- Function `*linkedServerListPager.NextPage` has been removed
+- Function `*redisCreatePoller.ResumeToken` has been removed
+- Function `*operationsListPager.PageResponse` has been removed
+- Function `*redisExportDataPoller.Poll` has been removed
+- Function `*redisListUpgradeNotificationsPager.NextPage` has been removed
+- Function `*patchSchedulesListByRedisResourcePager.PageResponse` has been removed
+- Function `*redisDeletePoller.FinalResponse` has been removed
+- Function `*redisListBySubscriptionPager.NextPage` has been removed
+- Function `*redisCreatePoller.FinalResponse` has been removed
+- Function `*redisImportDataPoller.Poll` has been removed
+- Function `*linkedServerListPager.Err` has been removed
+- Function `*privateEndpointConnectionsPutPoller.ResumeToken` has been removed
+- Function `*redisDeletePoller.Done` has been removed
+- Function `*redisImportDataPoller.FinalResponse` has been removed
+- Function `*patchSchedulesListByRedisResourcePager.NextPage` has been removed
+- Function `*linkedServerCreatePoller.FinalResponse` has been removed
+- Function `*privateEndpointConnectionsPutPoller.FinalResponse` has been removed
+- Function `*operationsListPager.NextPage` has been removed
+- Function `*redisListBySubscriptionPager.Err` has been removed
+- Function `*firewallRulesListPager.PageResponse` has been removed
+- Function `*redisImportDataPoller.Done` has been removed
+- Function `*redisCreatePoller.Poll` has been removed
+- Function `*redisListByResourceGroupPager.PageResponse` has been removed
+- Field `PollUntilDone` of struct `RedisImportDataPollerResponse` has been removed
+- Field `PollUntilDone` of struct `RedisCreatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `RedisExportDataPollerResponse` has been removed
+- Field `PollUntilDone` of struct `LinkedServerCreatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `RedisDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `PrivateEndpointConnectionsPutPollerResponse` has been removed
+
+### New Content
+
+- New function `*RedisExportDataPollerResponse.Resume(context.Context, *RedisClient, string) error`
+- New function `*PatchSchedulesListByRedisResourcePager.Err() error`
+- New function `*RedisDeletePoller.Done() bool`
+- New function `*RedisDeletePollerResponse.Resume(context.Context, *RedisClient, string) error`
+- New function `*RedisCreatePoller.ResumeToken() (string, error)`
+- New function `*RedisDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `RedisExportDataPollerResponse.PollUntilDone(context.Context, time.Duration) (RedisExportDataResponse, error)`
+- New function `*OperationsListPager.Err() error`
+- New function `PrivateEndpointConnectionsPutPollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsPutResponse, error)`
+- New function `*RedisImportDataPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RedisImportDataPoller.FinalResponse(context.Context) (RedisImportDataResponse, error)`
+- New function `*RedisExportDataPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RedisListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*RedisListBySubscriptionPager.PageResponse() RedisListBySubscriptionResponse`
+- New function `*RedisDeletePoller.ResumeToken() (string, error)`
+- New function `*FirewallRulesListPager.Err() error`
+- New function `*RedisListByResourceGroupPager.PageResponse() RedisListByResourceGroupResponse`
+- New function `*RedisExportDataPoller.FinalResponse(context.Context) (RedisExportDataResponse, error)`
+- New function `*LinkedServerCreatePoller.ResumeToken() (string, error)`
+- New function `*OperationsListPager.NextPage(context.Context) bool`
+- New function `*RedisListUpgradeNotificationsPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsPutPoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsPutPollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*RedisExportDataPoller.ResumeToken() (string, error)`
+- New function `*RedisImportDataPollerResponse.Resume(context.Context, *RedisClient, string) error`
+- New function `*RedisListUpgradeNotificationsPager.PageResponse() RedisListUpgradeNotificationsResponse`
+- New function `*LinkedServerListPager.NextPage(context.Context) bool`
+- New function `LinkedServerCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkedServerCreateResponse, error)`
+- New function `*RedisImportDataPoller.ResumeToken() (string, error)`
+- New function `*RedisListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PatchSchedulesListByRedisResourcePager.PageResponse() PatchSchedulesListByRedisResourceResponse`
+- New function `*RedisListByResourceGroupPager.Err() error`
+- New function `RedisDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RedisDeleteResponse, error)`
+- New function `*LinkedServerCreatePoller.FinalResponse(context.Context) (LinkedServerCreateResponse, error)`
+- New function `*RedisCreatePoller.FinalResponse(context.Context) (RedisCreateResponse, error)`
+- New function `*LinkedServerCreatePollerResponse.Resume(context.Context, *LinkedServerClient, string) error`
+- New function `*PrivateEndpointConnectionsPutPoller.FinalResponse(context.Context) (PrivateEndpointConnectionsPutResponse, error)`
+- New function `*LinkedServerCreatePoller.Done() bool`
+- New function `*RedisListUpgradeNotificationsPager.Err() error`
+- New function `*PrivateEndpointConnectionsPutPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RedisDeletePoller.FinalResponse(context.Context) (RedisDeleteResponse, error)`
+- New function `*LinkedServerListPager.Err() error`
+- New function `RedisCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (RedisCreateResponse, error)`
+- New function `*RedisCreatePollerResponse.Resume(context.Context, *RedisClient, string) error`
+- New function `*PrivateEndpointConnectionsPutPoller.Done() bool`
+- New function `*FirewallRulesListPager.PageResponse() FirewallRulesListResponse`
+- New function `RedisImportDataPollerResponse.PollUntilDone(context.Context, time.Duration) (RedisImportDataResponse, error)`
+- New function `*OperationsListPager.PageResponse() OperationsListResponse`
+- New function `*RedisImportDataPoller.Done() bool`
+- New function `*RedisExportDataPoller.Done() bool`
+- New function `*PatchSchedulesListByRedisResourcePager.NextPage(context.Context) bool`
+- New function `*RedisCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LinkedServerListPager.PageResponse() LinkedServerListResponse`
+- New function `*RedisCreatePoller.Done() bool`
+- New function `*RedisListBySubscriptionPager.Err() error`
+- New function `*FirewallRulesListPager.NextPage(context.Context) bool`
+- New function `*LinkedServerCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New struct `FirewallRulesListPager`
+- New struct `LinkedServerCreatePoller`
+- New struct `LinkedServerListPager`
+- New struct `OperationsListPager`
+- New struct `PatchSchedulesListByRedisResourcePager`
+- New struct `PrivateEndpointConnectionsPutPoller`
+- New struct `RedisCreatePoller`
+- New struct `RedisDeletePoller`
+- New struct `RedisExportDataPoller`
+- New struct `RedisImportDataPoller`
+- New struct `RedisListByResourceGroupPager`
+- New struct `RedisListBySubscriptionPager`
+- New struct `RedisListUpgradeNotificationsPager`
+
+Total 90 breaking change(s), 83 additive change(s).
+
+
 ## v0.1.0 (released)

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armredis
 
-const telemetryInfo = "azsdk-go-armredis/v0.1.0"
+const (
+	module  = "armredis"
+	version = "v0.2.0"
+)
 
 // DayOfWeek - Day of the week when a cache can be patched.
 type DayOfWeek string

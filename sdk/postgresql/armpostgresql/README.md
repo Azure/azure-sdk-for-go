@@ -1,8 +1,8 @@
-# Azure Azure Database for PostgreSQL Module for Go
+# Azure Database for PostgreSQL Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/postgresql/armpostgresql)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/postgresql/armpostgresql)
 
-The `armpostgresql` module provides operations for working with Azure Azure Database for PostgreSQL.
+The `armpostgresql` module provides operations for working with Azure Database for PostgreSQL.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/postgresql/armpostgresql)
 
@@ -17,7 +17,7 @@ The `armpostgresql` module provides operations for working with Azure Azure Data
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Azure Database for PostgreSQL module:
+Install the Azure Database for PostgreSQL module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/postgresql/armpostgresql
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/postgresql/armpostgresql
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Azure Database for PostgreSQL.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Database for PostgreSQL.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,19 +33,19 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Azure Database for PostgreSQL
+## Connecting to Azure Database for PostgreSQL
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ## Clients
 
-Azure Azure Database for PostgreSQL modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure Database for PostgreSQL modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
 
 ```go
 client := armpostgresql.NewDatabasesClient(con, "<subscription ID>")
@@ -54,7 +54,7 @@ client := armpostgresql.NewDatabasesClient(con, "<subscription ID>")
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure Database for PostgreSQL` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Database for PostgreSQL` label.
 
 # Contributing
 

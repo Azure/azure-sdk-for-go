@@ -14,29 +14,28 @@ import (
 	"net/http"
 )
 
-// CalculateExchangeClient is the client for the CalculateExchange methods of the Reservations service.
-type CalculateExchangeClient struct {
+// ExchangeClient is the client for the Exchange methods of the Reservations service.
+type ExchangeClient struct {
 	BaseClient
 }
 
-// NewCalculateExchangeClient creates an instance of the CalculateExchangeClient client.
-func NewCalculateExchangeClient() CalculateExchangeClient {
-	return NewCalculateExchangeClientWithBaseURI(DefaultBaseURI)
+// NewExchangeClient creates an instance of the ExchangeClient client.
+func NewExchangeClient() ExchangeClient {
+	return NewExchangeClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewCalculateExchangeClientWithBaseURI creates an instance of the CalculateExchangeClient client using a custom
-// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
-// stack).
-func NewCalculateExchangeClientWithBaseURI(baseURI string) CalculateExchangeClient {
-	return CalculateExchangeClient{NewWithBaseURI(baseURI)}
+// NewExchangeClientWithBaseURI creates an instance of the ExchangeClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewExchangeClientWithBaseURI(baseURI string) ExchangeClient {
+	return ExchangeClient{NewWithBaseURI(baseURI)}
 }
 
-// Post calculates price for exchanging `Reservations` if there are no policy errors.
+// Post returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
 // Parameters:
-// body - request containing purchases and refunds that need to be executed.
-func (client CalculateExchangeClient) Post(ctx context.Context, body CalculateExchangeRequest) (result CalculateExchangePostFuture, err error) {
+// body - request containing the refunds and purchases that need to be executed.
+func (client ExchangeClient) Post(ctx context.Context, body ExchangeRequest) (result ExchangePostFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CalculateExchangeClient.Post")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExchangeClient.Post")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -47,13 +46,13 @@ func (client CalculateExchangeClient) Post(ctx context.Context, body CalculateEx
 	}
 	req, err := client.PostPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.CalculateExchangeClient", "Post", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "reservations.ExchangeClient", "Post", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PostSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.CalculateExchangeClient", "Post", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.ExchangeClient", "Post", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -61,8 +60,8 @@ func (client CalculateExchangeClient) Post(ctx context.Context, body CalculateEx
 }
 
 // PostPreparer prepares the Post request.
-func (client CalculateExchangeClient) PostPreparer(ctx context.Context, body CalculateExchangeRequest) (*http.Request, error) {
-	const APIVersion = "2020-10-01-preview"
+func (client ExchangeClient) PostPreparer(ctx context.Context, body ExchangeRequest) (*http.Request, error) {
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -71,7 +70,7 @@ func (client CalculateExchangeClient) PostPreparer(ctx context.Context, body Cal
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Capacity/calculateExchange"),
+		autorest.WithPath("/providers/Microsoft.Capacity/exchange"),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -79,7 +78,7 @@ func (client CalculateExchangeClient) PostPreparer(ctx context.Context, body Cal
 
 // PostSender sends the Post request. The method will close the
 // http.Response Body if it receives an error.
-func (client CalculateExchangeClient) PostSender(req *http.Request) (future CalculateExchangePostFuture, err error) {
+func (client ExchangeClient) PostSender(req *http.Request) (future ExchangePostFuture, err error) {
 	var resp *http.Response
 	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -95,7 +94,7 @@ func (client CalculateExchangeClient) PostSender(req *http.Request) (future Calc
 
 // PostResponder handles the response to the Post request. The method always
 // closes the http.Response Body.
-func (client CalculateExchangeClient) PostResponder(resp *http.Response) (result CalculateExchangeOperationResultResponse, err error) {
+func (client ExchangeClient) PostResponder(resp *http.Response) (result ExchangeOperationResultResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),

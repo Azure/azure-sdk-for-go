@@ -68,7 +68,7 @@ func (client OrderClient) Calculate(ctx context.Context, body PurchaseRequest) (
 
 // CalculatePreparer prepares the Calculate request.
 func (client OrderClient) CalculatePreparer(ctx context.Context, body PurchaseRequest) (*http.Request, error) {
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -92,6 +92,83 @@ func (client OrderClient) CalculateSender(req *http.Request) (*http.Response, er
 // CalculateResponder handles the response to the Calculate request. The method always
 // closes the http.Response Body.
 func (client OrderClient) CalculateResponder(resp *http.Response) (result CalculatePriceResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ChangeDirectory change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant
+// id
+// Parameters:
+// reservationOrderID - order Id of the reservation
+// body - information needed to change directory of reservation order
+func (client OrderClient) ChangeDirectory(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest) (result ChangeDirectoryResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OrderClient.ChangeDirectory")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ChangeDirectoryPreparer(ctx, reservationOrderID, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "ChangeDirectory", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ChangeDirectorySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "ChangeDirectory", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ChangeDirectoryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "ChangeDirectory", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ChangeDirectoryPreparer prepares the ChangeDirectory request.
+func (client OrderClient) ChangeDirectoryPreparer(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"reservationOrderId": autorest.Encode("path", reservationOrderID),
+	}
+
+	const APIVersion = "2021-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/changeDirectory", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ChangeDirectorySender sends the ChangeDirectory request. The method will close the
+// http.Response Body if it receives an error.
+func (client OrderClient) ChangeDirectorySender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ChangeDirectoryResponder handles the response to the ChangeDirectory request. The method always
+// closes the http.Response Body.
+func (client OrderClient) ChangeDirectoryResponder(resp *http.Response) (result ChangeDirectoryResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -144,7 +221,7 @@ func (client OrderClient) GetPreparer(ctx context.Context, reservationOrderID st
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -219,7 +296,7 @@ func (client OrderClient) List(ctx context.Context) (result OrderListPage, err e
 
 // ListPreparer prepares the List request.
 func (client OrderClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -323,7 +400,7 @@ func (client OrderClient) PurchasePreparer(ctx context.Context, reservationOrder
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

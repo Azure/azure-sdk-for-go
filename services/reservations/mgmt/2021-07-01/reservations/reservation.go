@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// Client is the this API describe Azure Reservation
+// Client is the client for the Reservation methods of the Reservations service.
 type Client struct {
 	BaseClient
 }
@@ -30,85 +30,10 @@ func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
 
-// Archive archiving a `Reservation` moves it to `Archived` state.
-// Parameters:
-// reservationOrderID - order Id of the reservation
-// reservationID - id of the Reservation Item
-func (client Client) Archive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Archive")
-		defer func() {
-			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.ArchivePreparer(ctx, reservationOrderID, reservationID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ArchiveSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ArchiveResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Archive", resp, "Failure responding to request")
-		return
-	}
-
-	return
-}
-
-// ArchivePreparer prepares the Archive request.
-func (client Client) ArchivePreparer(ctx context.Context, reservationOrderID string, reservationID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"reservationId":      autorest.Encode("path", reservationID),
-		"reservationOrderId": autorest.Encode("path", reservationOrderID),
-	}
-
-	const APIVersion = "2019-04-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/archive", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ArchiveSender sends the Archive request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ArchiveSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ArchiveResponder handles the response to the Archive request. The method always
-// closes the http.Response Body.
-func (client Client) ArchiveResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // AvailableScopes get Available Scopes for `Reservation`.
 // Parameters:
 // reservationOrderID - order Id of the reservation
 // reservationID - id of the Reservation Item
-// body - parameter for listing the available scopes
 func (client Client) AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest) (result ReservationAvailableScopesFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AvailableScopes")
@@ -142,7 +67,7 @@ func (client Client) AvailableScopesPreparer(ctx context.Context, reservationOrd
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -175,7 +100,7 @@ func (client Client) AvailableScopesSender(req *http.Request) (future Reservatio
 
 // AvailableScopesResponder handles the response to the AvailableScopes request. The method always
 // closes the http.Response Body.
-func (client Client) AvailableScopesResponder(resp *http.Response) (result Properties, err error) {
+func (client Client) AvailableScopesResponder(resp *http.Response) (result AvailableScopeProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -230,7 +155,7 @@ func (client Client) GetPreparer(ctx context.Context, reservationID string, rese
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -311,7 +236,7 @@ func (client Client) ListPreparer(ctx context.Context, reservationOrderID string
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -379,6 +304,146 @@ func (client Client) ListComplete(ctx context.Context, reservationOrderID string
 	return
 }
 
+// ListAll list the reservations and the roll up counts of reservations group by provisioning states that the user has
+// access to in the current tenant.
+// Parameters:
+// filter - may be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
+// not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+// properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime,
+// expiryDate, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+// userFriendlyRenewState}
+// orderby - may be used to sort order by reservation properties.
+// refreshSummary - to indicate whether to refresh the roll up counts of the reservations group by provisioning
+// states
+// skiptoken - the number of reservations to skip from the list before returning results
+// selectedState - the selected provisioning state
+// take - to number of reservations to return
+func (client Client) ListAll(ctx context.Context, filter string, orderby string, refreshSummary string, skiptoken *float64, selectedState string, take *float64) (result ListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListAll")
+		defer func() {
+			sc := -1
+			if result.lr.Response.Response != nil {
+				sc = result.lr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listAllNextResults
+	req, err := client.ListAllPreparer(ctx, filter, orderby, refreshSummary, skiptoken, selectedState, take)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "ListAll", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.lr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "reservations.Client", "ListAll", resp, "Failure sending request")
+		return
+	}
+
+	result.lr, err = client.ListAllResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "ListAll", resp, "Failure responding to request")
+		return
+	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListAllPreparer prepares the ListAll request.
+func (client Client) ListAllPreparer(ctx context.Context, filter string, orderby string, refreshSummary string, skiptoken *float64, selectedState string, take *float64) (*http.Request, error) {
+	const APIVersion = "2021-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if len(refreshSummary) > 0 {
+		queryParameters["refreshSummary"] = autorest.Encode("query", refreshSummary)
+	}
+	if skiptoken != nil {
+		queryParameters["$skiptoken"] = autorest.Encode("query", *skiptoken)
+	}
+	if len(selectedState) > 0 {
+		queryParameters["selectedState"] = autorest.Encode("query", selectedState)
+	}
+	if take != nil {
+		queryParameters["take"] = autorest.Encode("query", *take)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.Capacity/reservations"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAllSender sends the ListAll request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ListAllSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAllResponder handles the response to the ListAll request. The method always
+// closes the http.Response Body.
+func (client Client) ListAllResponder(resp *http.Response) (result ListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAllNextResults retrieves the next set of results, if any.
+func (client Client) listAllNextResults(ctx context.Context, lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "reservations.Client", "listAllNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "reservations.Client", "listAllNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.Client", "listAllNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAllComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListAllComplete(ctx context.Context, filter string, orderby string, refreshSummary string, skiptoken *float64, selectedState string, take *float64) (result ListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListAll")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListAll(ctx, filter, orderby, refreshSummary, skiptoken, selectedState, take)
+	return
+}
+
 // ListRevisions list of all the revisions for the `Reservation`.
 // Parameters:
 // reservationID - id of the Reservation Item
@@ -428,7 +493,7 @@ func (client Client) ListRevisionsPreparer(ctx context.Context, reservationID st
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -533,7 +598,7 @@ func (client Client) MergePreparer(ctx context.Context, reservationOrderID strin
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -612,7 +677,7 @@ func (client Client) SplitPreparer(ctx context.Context, reservationOrderID strin
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -655,80 +720,6 @@ func (client Client) SplitResponder(resp *http.Response) (result ListResponse, e
 	return
 }
 
-// Unarchive unarchiving a `Reservation` moves it to the state it was before archiving.
-// Parameters:
-// reservationOrderID - order Id of the reservation
-// reservationID - id of the Reservation Item
-func (client Client) Unarchive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Unarchive")
-		defer func() {
-			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.UnarchivePreparer(ctx, reservationOrderID, reservationID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UnarchiveSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UnarchiveResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Unarchive", resp, "Failure responding to request")
-		return
-	}
-
-	return
-}
-
-// UnarchivePreparer prepares the Unarchive request.
-func (client Client) UnarchivePreparer(ctx context.Context, reservationOrderID string, reservationID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"reservationId":      autorest.Encode("path", reservationID),
-		"reservationOrderId": autorest.Encode("path", reservationOrderID),
-	}
-
-	const APIVersion = "2019-04-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/unarchive", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UnarchiveSender sends the Unarchive request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) UnarchiveSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// UnarchiveResponder handles the response to the Unarchive request. The method always
-// closes the http.Response Body.
-func (client Client) UnarchiveResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // Update updates the applied scopes of the `Reservation`.
 // Parameters:
 // reservationOrderID - order Id of the reservation
@@ -767,7 +758,7 @@ func (client Client) UpdatePreparer(ctx context.Context, reservationOrderID stri
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2019-04-01"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

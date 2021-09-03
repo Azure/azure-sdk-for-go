@@ -125,6 +125,12 @@ type CalculatePriceResponse struct {
 type CalculatePriceResponseProperties struct {
 	// BillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency. Tax is not included.
 	BillingCurrencyTotal *CalculatePriceResponsePropertiesBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
+	// NetTotal - Net total
+	NetTotal *float64 `json:"netTotal,omitempty"`
+	// TaxTotal - Tax total
+	TaxTotal *float64 `json:"taxTotal,omitempty"`
+	// GrandTotal - Grand Total
+	GrandTotal *float64 `json:"grandTotal,omitempty"`
 	// IsBillingPartnerManaged - True if billing is managed by Microsoft Partner. Used only for CSP accounts.
 	IsBillingPartnerManaged *bool `json:"isBillingPartnerManaged,omitempty"`
 	// ReservationOrderID - GUID that represents reservation order that can be placed after calculating price.
@@ -1034,6 +1040,10 @@ type PropertiesType struct {
 	RenewProperties  *RenewPropertiesResponse `json:"renewProperties,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
 	Term ReservationTerm `json:"term,omitempty"`
+	// Archived - Property to determine if a reservation is archived or not
+	Archived *bool `json:"archived,omitempty"`
+	// Capabilities - List the Capabilities of a reservation
+	Capabilities *string `json:"capabilities,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PropertiesType.
@@ -1098,6 +1108,12 @@ func (pt PropertiesType) MarshalJSON() ([]byte, error) {
 	}
 	if pt.Term != "" {
 		objectMap["term"] = pt.Term
+	}
+	if pt.Archived != nil {
+		objectMap["archived"] = pt.Archived
+	}
+	if pt.Capabilities != nil {
+		objectMap["capabilities"] = pt.Capabilities
 	}
 	return json.Marshal(objectMap)
 }
@@ -1171,7 +1187,9 @@ func (pr *PurchaseRequest) UnmarshalJSON(body []byte) error {
 type PurchaseRequestProperties struct {
 	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
-	BillingScopeID       *string              `json:"billingScopeId,omitempty"`
+	// InstanceFlexibility - Possible values include: 'On', 'Off'
+	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
+	BillingScopeID      *string             `json:"billingScopeId,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
 	Term ReservationTerm `json:"term,omitempty"`
 	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
@@ -1379,8 +1397,9 @@ func (r Response) MarshalJSON() ([]byte, error) {
 
 // ScopeProperties ...
 type ScopeProperties struct {
-	Scope *string `json:"scope,omitempty"`
-	Valid *bool   `json:"valid,omitempty"`
+	Scope  *string `json:"scope,omitempty"`
+	Valid  *bool   `json:"valid,omitempty"`
+	Reason *string `json:"reason,omitempty"`
 }
 
 // SkuName ...

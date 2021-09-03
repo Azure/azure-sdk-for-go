@@ -62,7 +62,7 @@ func (client CalculateExchangeClient) Post(ctx context.Context, body CalculateEx
 
 // PostPreparer prepares the Post request.
 func (client CalculateExchangeClient) PostPreparer(ctx context.Context, body CalculateExchangeRequest) (*http.Request, error) {
-	const APIVersion = "2020-10-01-preview"
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

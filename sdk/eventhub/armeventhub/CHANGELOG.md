@@ -1,3 +1,219 @@
 # Release History
 
+## v0.2.0 (released)
+### Breaking Changes
+
+- Function `*EventHubsClient.ListByNamespace` return value(s) have been changed from `(EventHubsListByNamespacePager)` to `(*EventHubsListByNamespacePager)`
+- Function `*NamespacesClient.ListByResourceGroup` return value(s) have been changed from `(NamespacesListByResourceGroupPager)` to `(*NamespacesListByResourceGroupPager)`
+- Function `*NamespacesClient.ListIPFilterRules` return value(s) have been changed from `(NamespacesListIPFilterRulesPager)` to `(*NamespacesListIPFilterRulesPager)`
+- Function `*RegionsClient.ListBySKU` return value(s) have been changed from `(RegionsListBySKUPager)` to `(*RegionsListBySKUPager)`
+- Function `*EventHubsClient.ListAuthorizationRules` return value(s) have been changed from `(EventHubsListAuthorizationRulesPager)` to `(*EventHubsListAuthorizationRulesPager)`
+- Function `NewDisasterRecoveryConfigsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(NamespacesListAuthorizationRulesPager)` to `(*NamespacesListAuthorizationRulesPager)`
+- Function `NewRegionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*armcore.Connection)` to `(*arm.Connection)`
+- Function `*DisasterRecoveryConfigsClient.List` return value(s) have been changed from `(DisasterRecoveryConfigsListPager)` to `(*DisasterRecoveryConfigsListPager)`
+- Function `NewNamespacesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*NamespacesClient.ListVirtualNetworkRules` return value(s) have been changed from `(NamespacesListVirtualNetworkRulesPager)` to `(*NamespacesListVirtualNetworkRulesPager)`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(NamespacesListPager)` to `(*NamespacesListPager)`
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` return value(s) have been changed from `(DisasterRecoveryConfigsListAuthorizationRulesPager)` to `(*DisasterRecoveryConfigsListAuthorizationRulesPager)`
+- Function `*ConsumerGroupsClient.ListByEventHub` return value(s) have been changed from `(ConsumerGroupsListByEventHubPager)` to `(*ConsumerGroupsListByEventHubPager)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListPager)` to `(*PrivateEndpointConnectionsListPager)`
+- Function `NewEventHubsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewPrivateLinkResourcesClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewClustersClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `NewConfigurationClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListPager)` to `(*OperationsListPager)`
+- Function `NewConsumerGroupsClient` parameter(s) have been changed from `(*armcore.Connection, string)` to `(*arm.Connection, string)`
+- Function `*ClustersClient.ListByResourceGroup` return value(s) have been changed from `(ClustersListByResourceGroupPager)` to `(*ClustersListByResourceGroupPager)`
+- Type of `PrivateEndpointConnectionsDeletePollerResponse.Poller` has been changed from `PrivateEndpointConnectionsDeletePoller` to `*PrivateEndpointConnectionsDeletePoller`
+- Type of `NamespacesCreateOrUpdatePollerResponse.Poller` has been changed from `NamespacesCreateOrUpdatePoller` to `*NamespacesCreateOrUpdatePoller`
+- Type of `ClustersUpdatePollerResponse.Poller` has been changed from `ClustersUpdatePoller` to `*ClustersUpdatePoller`
+- Type of `NamespacesDeletePollerResponse.Poller` has been changed from `NamespacesDeletePoller` to `*NamespacesDeletePoller`
+- Type of `ClustersCreateOrUpdatePollerResponse.Poller` has been changed from `ClustersCreateOrUpdatePoller` to `*ClustersCreateOrUpdatePoller`
+- Type of `ClustersDeletePollerResponse.Poller` has been changed from `ClustersDeletePoller` to `*ClustersDeletePoller`
+- Function `*clustersCreateOrUpdatePoller.Poll` has been removed
+- Function `*NamespacesClient.ResumeDelete` has been removed
+- Function `*namespacesListPager.Err` has been removed
+- Function `*eventHubsListByNamespacePager.PageResponse` has been removed
+- Function `*privateEndpointConnectionsListPager.Err` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*regionsListBySKUPager.Err` has been removed
+- Function `*disasterRecoveryConfigsListPager.Err` has been removed
+- Function `*clustersDeletePoller.ResumeToken` has been removed
+- Function `*disasterRecoveryConfigsListPager.NextPage` has been removed
+- Function `*clustersListByResourceGroupPager.PageResponse` has been removed
+- Function `*namespacesListVirtualNetworkRulesPager.Err` has been removed
+- Function `*clustersListByResourceGroupPager.Err` has been removed
+- Function `*regionsListBySKUPager.PageResponse` has been removed
+- Function `*namespacesListPager.NextPage` has been removed
+- Function `*eventHubsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*clustersUpdatePoller.ResumeToken` has been removed
+- Function `*namespacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*clustersUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsClient.ResumeDelete` has been removed
+- Function `*clustersUpdatePoller.Poll` has been removed
+- Function `*namespacesDeletePoller.Done` has been removed
+- Function `*namespacesDeletePoller.FinalResponse` has been removed
+- Function `*clustersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*clustersDeletePoller.Poll` has been removed
+- Function `*namespacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*ClustersClient.ResumeDelete` has been removed
+- Function `*namespacesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*namespacesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*namespacesListByResourceGroupPager.NextPage` has been removed
+- Function `*privateEndpointConnectionsListPager.NextPage` has been removed
+- Function `*namespacesListByResourceGroupPager.Err` has been removed
+- Function `*namespacesListIPFilterRulesPager.PageResponse` has been removed
+- Function `*eventHubsListByNamespacePager.Err` has been removed
+- Function `*clustersDeletePoller.FinalResponse` has been removed
+- Function `*eventHubsListByNamespacePager.NextPage` has been removed
+- Function `*namespacesListPager.PageResponse` has been removed
+- Function `*namespacesListIPFilterRulesPager.Err` has been removed
+- Function `*clustersCreateOrUpdatePoller.Done` has been removed
+- Function `*namespacesListIPFilterRulesPager.NextPage` has been removed
+- Function `*NamespacesClient.ResumeCreateOrUpdate` has been removed
+- Function `*namespacesDeletePoller.ResumeToken` has been removed
+- Function `*consumerGroupsListByEventHubPager.PageResponse` has been removed
+- Function `*disasterRecoveryConfigsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*clustersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*operationsListPager.PageResponse` has been removed
+- Function `*eventHubsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*namespacesDeletePoller.Poll` has been removed
+- Function `*namespacesListAuthorizationRulesPager.Err` has been removed
+- Function `*disasterRecoveryConfigsListAuthorizationRulesPager.Err` has been removed
+- Function `*ClustersClient.ResumeUpdate` has been removed
+- Function `*operationsListPager.NextPage` has been removed
+- Function `*ClustersClient.ResumeCreateOrUpdate` has been removed
+- Function `*privateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*eventHubsListAuthorizationRulesPager.Err` has been removed
+- Function `*operationsListPager.Err` has been removed
+- Function `*regionsListBySKUPager.NextPage` has been removed
+- Function `*privateEndpointConnectionsListPager.PageResponse` has been removed
+- Function `*namespacesListVirtualNetworkRulesPager.NextPage` has been removed
+- Function `*namespacesCreateOrUpdatePoller.Done` has been removed
+- Function `*namespacesListVirtualNetworkRulesPager.PageResponse` has been removed
+- Function `*clustersDeletePoller.Done` has been removed
+- Function `*namespacesCreateOrUpdatePoller.Poll` has been removed
+- Function `*disasterRecoveryConfigsListPager.PageResponse` has been removed
+- Function `*clustersListByResourceGroupPager.NextPage` has been removed
+- Function `*namespacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*consumerGroupsListByEventHubPager.NextPage` has been removed
+- Function `*clustersUpdatePoller.Done` has been removed
+- Function `*consumerGroupsListByEventHubPager.Err` has been removed
+- Function `*disasterRecoveryConfigsListAuthorizationRulesPager.NextPage` has been removed
+- Field `PollUntilDone` of struct `ClustersCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ClustersUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `ClustersDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `NamespacesCreateOrUpdatePollerResponse` has been removed
+- Field `PollUntilDone` of struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Field `PollUntilDone` of struct `NamespacesDeletePollerResponse` has been removed
+
+### New Content
+
+- New function `*ClustersDeletePoller.Done() bool`
+- New function `*NamespacesDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsListPager.PageResponse() PrivateEndpointConnectionsListResponse`
+- New function `*NamespacesListAuthorizationRulesPager.PageResponse() NamespacesListAuthorizationRulesResponse`
+- New function `*ClustersCreateOrUpdatePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `*NamespacesListByResourceGroupPager.PageResponse() NamespacesListByResourceGroupResponse`
+- New function `*ClustersCreateOrUpdatePoller.FinalResponse(context.Context) (ClustersCreateOrUpdateResponse, error)`
+- New function `*ClustersDeletePoller.ResumeToken() (string, error)`
+- New function `*RegionsListBySKUPager.Err() error`
+- New function `NamespacesCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesCreateOrUpdateResponse, error)`
+- New function `*NamespacesDeletePoller.FinalResponse(context.Context) (NamespacesDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsDeletePoller.ResumeToken() (string, error)`
+- New function `*NamespacesDeletePoller.ResumeToken() (string, error)`
+- New function `*OperationsListPager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsListAuthorizationRulesPager.Err() error`
+- New function `*ClustersListByResourceGroupPager.Err() error`
+- New function `*NamespacesListVirtualNetworkRulesPager.PageResponse() NamespacesListVirtualNetworkRulesResponse`
+- New function `*NamespacesCreateOrUpdatePoller.Done() bool`
+- New function `*NamespacesListIPFilterRulesPager.NextPage(context.Context) bool`
+- New function `ClustersCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersCreateOrUpdateResponse, error)`
+- New function `*ClustersCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `NamespacesDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesDeleteResponse, error)`
+- New function `ClustersDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersDeleteResponse, error)`
+- New function `*RegionsListBySKUPager.PageResponse() RegionsListBySKUResponse`
+- New function `*ClustersDeletePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `*ClustersCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersUpdatePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `*OperationsListPager.PageResponse() OperationsListResponse`
+- New function `*NamespacesListPager.NextPage(context.Context) bool`
+- New function `*NamespacesCreateOrUpdatePoller.FinalResponse(context.Context) (NamespacesCreateOrUpdateResponse, error)`
+- New function `*NamespacesDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventHubsListByNamespacePager.Err() error`
+- New function `*OperationsListPager.Err() error`
+- New function `*DisasterRecoveryConfigsListPager.PageResponse() DisasterRecoveryConfigsListResponse`
+- New function `*NamespacesListIPFilterRulesPager.Err() error`
+- New function `*ConsumerGroupsListByEventHubPager.Err() error`
+- New function `*NamespacesListVirtualNetworkRulesPager.Err() error`
+- New function `*NamespacesCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*NamespacesListPager.PageResponse() NamespacesListResponse`
+- New function `*DisasterRecoveryConfigsListAuthorizationRulesPager.PageResponse() DisasterRecoveryConfigsListAuthorizationRulesResponse`
+- New function `*NamespacesListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsListPager.NextPage(context.Context) bool`
+- New function `*EventHubsListAuthorizationRulesPager.PageResponse() EventHubsListAuthorizationRulesResponse`
+- New function `*ClustersUpdatePoller.ResumeToken() (string, error)`
+- New function `*ClustersListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ClustersUpdatePoller.FinalResponse(context.Context) (ClustersUpdateResponse, error)`
+- New function `*NamespacesDeletePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*ClustersUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventHubsListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsListPager.NextPage(context.Context) bool`
+- New function `*ClustersListByResourceGroupPager.PageResponse() ClustersListByResourceGroupResponse`
+- New function `ClustersUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersUpdateResponse, error)`
+- New function `*ClustersDeletePoller.FinalResponse(context.Context) (ClustersDeleteResponse, error)`
+- New function `*NamespacesListIPFilterRulesPager.PageResponse() NamespacesListIPFilterRulesResponse`
+- New function `*ClustersCreateOrUpdatePoller.Done() bool`
+- New function `*ConsumerGroupsListByEventHubPager.PageResponse() ConsumerGroupsListByEventHubResponse`
+- New function `*PrivateEndpointConnectionsDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*NamespacesCreateOrUpdatePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*EventHubsListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*RegionsListBySKUPager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsListPager.Err() error`
+- New function `*PrivateEndpointConnectionsDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ClustersDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamespacesCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamespacesListAuthorizationRulesPager.Err() error`
+- New function `*PrivateEndpointConnectionsListPager.Err() error`
+- New function `*PrivateEndpointConnectionsDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersUpdatePoller.Done() bool`
+- New function `*NamespacesListByResourceGroupPager.Err() error`
+- New function `*ConsumerGroupsListByEventHubPager.NextPage(context.Context) bool`
+- New function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)`
+- New function `*EventHubsListByNamespacePager.NextPage(context.Context) bool`
+- New function `*NamespacesListVirtualNetworkRulesPager.NextPage(context.Context) bool`
+- New function `*NamespacesListPager.Err() error`
+- New function `*EventHubsListByNamespacePager.PageResponse() EventHubsListByNamespaceResponse`
+- New struct `ClustersCreateOrUpdatePoller`
+- New struct `ClustersDeletePoller`
+- New struct `ClustersListByResourceGroupPager`
+- New struct `ClustersUpdatePoller`
+- New struct `ConsumerGroupsListByEventHubPager`
+- New struct `DisasterRecoveryConfigsListAuthorizationRulesPager`
+- New struct `DisasterRecoveryConfigsListPager`
+- New struct `EventHubsListAuthorizationRulesPager`
+- New struct `EventHubsListByNamespacePager`
+- New struct `NamespacesCreateOrUpdatePoller`
+- New struct `NamespacesDeletePoller`
+- New struct `NamespacesListAuthorizationRulesPager`
+- New struct `NamespacesListByResourceGroupPager`
+- New struct `NamespacesListIPFilterRulesPager`
+- New struct `NamespacesListPager`
+- New struct `NamespacesListVirtualNetworkRulesPager`
+- New struct `OperationsListPager`
+- New struct `PrivateEndpointConnectionsDeletePoller`
+- New struct `PrivateEndpointConnectionsListPager`
+- New struct `RegionsListBySKUPager`
+
+Total 128 breaking change(s), 118 additive change(s).
+
+
 ## v0.1.0 (released)

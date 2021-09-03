@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,31 +22,32 @@ import (
 // OperationsHealthClient contains the methods for the OperationsHealth group.
 // Don't use this type directly, use NewOperationsHealthClient() instead.
 type OperationsHealthClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewOperationsHealthClient creates a new instance of OperationsHealthClient with the specified values.
-func NewOperationsHealthClient(con *armcore.Connection, subscriptionID string) *OperationsHealthClient {
-	return &OperationsHealthClient{con: con, subscriptionID: subscriptionID}
+func NewOperationsHealthClient(con *arm.Connection, subscriptionID string) *OperationsHealthClient {
+	return &OperationsHealthClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByLocation - Gets a service operation health status.
 // If the operation fails it returns a generic error.
-func (client *OperationsHealthClient) ListByLocation(locationName string, options *OperationsHealthListByLocationOptions) OperationsHealthListByLocationPager {
-	return &operationsHealthListByLocationPager{
+func (client *OperationsHealthClient) ListByLocation(locationName string, options *OperationsHealthListByLocationOptions) *OperationsHealthListByLocationPager {
+	return &OperationsHealthListByLocationPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp OperationsHealthListByLocationResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationsHealthListResult.NextLink)
+		advancer: func(ctx context.Context, resp OperationsHealthListByLocationResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationsHealthListResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *OperationsHealthClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *OperationsHealthListByLocationOptions) (*azcore.Request, error) {
+func (client *OperationsHealthClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *OperationsHealthListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/operationsHealth"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -54,35 +57,34 @@ func (client *OperationsHealthClient) listByLocationCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *OperationsHealthClient) listByLocationHandleResponse(resp *azcore.Response) (OperationsHealthListByLocationResponse, error) {
-	result := OperationsHealthListByLocationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.OperationsHealthListResult); err != nil {
+func (client *OperationsHealthClient) listByLocationHandleResponse(resp *http.Response) (OperationsHealthListByLocationResponse, error) {
+	result := OperationsHealthListByLocationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsHealthListResult); err != nil {
 		return OperationsHealthListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByLocationHandleError handles the ListByLocation error response.
-func (client *OperationsHealthClient) listByLocationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *OperationsHealthClient) listByLocationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

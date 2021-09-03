@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // RecoverableManagedDatabasesClient contains the methods for the RecoverableManagedDatabases group.
 // Don't use this type directly, use NewRecoverableManagedDatabasesClient() instead.
 type RecoverableManagedDatabasesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecoverableManagedDatabasesClient creates a new instance of RecoverableManagedDatabasesClient with the specified values.
-func NewRecoverableManagedDatabasesClient(con *armcore.Connection, subscriptionID string) *RecoverableManagedDatabasesClient {
-	return &RecoverableManagedDatabasesClient{con: con, subscriptionID: subscriptionID}
+func NewRecoverableManagedDatabasesClient(con *arm.Connection, subscriptionID string) *RecoverableManagedDatabasesClient {
+	return &RecoverableManagedDatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a recoverable managed database.
@@ -36,18 +39,18 @@ func (client *RecoverableManagedDatabasesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return RecoverableManagedDatabasesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoverableManagedDatabasesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecoverableManagedDatabasesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string, options *RecoverableManagedDatabasesGetOptions) (*azcore.Request, error) {
+func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, recoverableDatabaseName string, options *RecoverableManagedDatabasesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -65,55 +68,54 @@ func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoverableManagedDatabasesClient) getHandleResponse(resp *azcore.Response) (RecoverableManagedDatabasesGetResponse, error) {
-	result := RecoverableManagedDatabasesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecoverableManagedDatabase); err != nil {
+func (client *RecoverableManagedDatabasesClient) getHandleResponse(resp *http.Response) (RecoverableManagedDatabasesGetResponse, error) {
+	result := RecoverableManagedDatabasesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableManagedDatabase); err != nil {
 		return RecoverableManagedDatabasesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RecoverableManagedDatabasesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoverableManagedDatabasesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByInstance - Gets a list of recoverable managed databases.
 // If the operation fails it returns a generic error.
-func (client *RecoverableManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesListByInstanceOptions) RecoverableManagedDatabasesListByInstancePager {
-	return &recoverableManagedDatabasesListByInstancePager{
+func (client *RecoverableManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesListByInstanceOptions) *RecoverableManagedDatabasesListByInstancePager {
+	return &RecoverableManagedDatabasesListByInstancePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp RecoverableManagedDatabasesListByInstanceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecoverableManagedDatabaseListResult.NextLink)
+		advancer: func(ctx context.Context, resp RecoverableManagedDatabasesListByInstanceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoverableManagedDatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesListByInstanceOptions) (*azcore.Request, error) {
+func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *RecoverableManagedDatabasesListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -127,35 +129,34 @@ func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *RecoverableManagedDatabasesClient) listByInstanceHandleResponse(resp *azcore.Response) (RecoverableManagedDatabasesListByInstanceResponse, error) {
-	result := RecoverableManagedDatabasesListByInstanceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecoverableManagedDatabaseListResult); err != nil {
+func (client *RecoverableManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (RecoverableManagedDatabasesListByInstanceResponse, error) {
+	result := RecoverableManagedDatabasesListByInstanceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableManagedDatabaseListResult); err != nil {
 		return RecoverableManagedDatabasesListByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByInstanceHandleError handles the ListByInstance error response.
-func (client *RecoverableManagedDatabasesClient) listByInstanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoverableManagedDatabasesClient) listByInstanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

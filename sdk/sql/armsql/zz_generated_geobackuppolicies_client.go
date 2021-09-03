@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // GeoBackupPoliciesClient contains the methods for the GeoBackupPolicies group.
 // Don't use this type directly, use NewGeoBackupPoliciesClient() instead.
 type GeoBackupPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewGeoBackupPoliciesClient creates a new instance of GeoBackupPoliciesClient with the specified values.
-func NewGeoBackupPoliciesClient(con *armcore.Connection, subscriptionID string) *GeoBackupPoliciesClient {
-	return &GeoBackupPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewGeoBackupPoliciesClient(con *arm.Connection, subscriptionID string) *GeoBackupPoliciesClient {
+	return &GeoBackupPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Updates a database geo backup policy.
@@ -36,18 +39,18 @@ func (client *GeoBackupPoliciesClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return GeoBackupPoliciesCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GeoBackupPoliciesCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return GeoBackupPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *GeoBackupPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *GeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *GeoBackupPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/geoBackupPolicies/{geoBackupPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -69,37 +72,36 @@ func (client *GeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter geoBackupPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{geoBackupPolicyName}", url.PathEscape(string(geoBackupPolicyName)))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (GeoBackupPoliciesCreateOrUpdateResponse, error) {
-	result := GeoBackupPoliciesCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.GeoBackupPolicy); err != nil {
+func (client *GeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (GeoBackupPoliciesCreateOrUpdateResponse, error) {
+	result := GeoBackupPoliciesCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicy); err != nil {
 		return GeoBackupPoliciesCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *GeoBackupPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GeoBackupPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a geo backup policy.
@@ -109,18 +111,18 @@ func (client *GeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return GeoBackupPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GeoBackupPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return GeoBackupPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GeoBackupPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName GeoBackupPolicyName, options *GeoBackupPoliciesGetOptions) (*azcore.Request, error) {
+func (client *GeoBackupPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName GeoBackupPolicyName, options *GeoBackupPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/geoBackupPolicies/{geoBackupPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,37 +144,36 @@ func (client *GeoBackupPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter geoBackupPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{geoBackupPolicyName}", url.PathEscape(string(geoBackupPolicyName)))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GeoBackupPoliciesClient) getHandleResponse(resp *azcore.Response) (GeoBackupPoliciesGetResponse, error) {
-	result := GeoBackupPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.GeoBackupPolicy); err != nil {
+func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (GeoBackupPoliciesGetResponse, error) {
+	result := GeoBackupPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicy); err != nil {
 		return GeoBackupPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *GeoBackupPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GeoBackupPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Returns a list of geo backup policies.
@@ -182,18 +183,18 @@ func (client *GeoBackupPoliciesClient) ListByDatabase(ctx context.Context, resou
 	if err != nil {
 		return GeoBackupPoliciesListByDatabaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GeoBackupPoliciesListByDatabaseResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return GeoBackupPoliciesListByDatabaseResponse{}, client.listByDatabaseHandleError(resp)
 	}
 	return client.listByDatabaseHandleResponse(resp)
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *GeoBackupPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesListByDatabaseOptions) (*azcore.Request, error) {
+func (client *GeoBackupPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/geoBackupPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -211,35 +212,34 @@ func (client *GeoBackupPoliciesClient) listByDatabaseCreateRequest(ctx context.C
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *GeoBackupPoliciesClient) listByDatabaseHandleResponse(resp *azcore.Response) (GeoBackupPoliciesListByDatabaseResponse, error) {
-	result := GeoBackupPoliciesListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.GeoBackupPolicyListResult); err != nil {
+func (client *GeoBackupPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (GeoBackupPoliciesListByDatabaseResponse, error) {
+	result := GeoBackupPoliciesListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicyListResult); err != nil {
 		return GeoBackupPoliciesListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *GeoBackupPoliciesClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GeoBackupPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

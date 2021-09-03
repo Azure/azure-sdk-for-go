@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ManagedInstanceEncryptionProtectorsClient contains the methods for the ManagedInstanceEncryptionProtectors group.
 // Don't use this type directly, use NewManagedInstanceEncryptionProtectorsClient() instead.
 type ManagedInstanceEncryptionProtectorsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedInstanceEncryptionProtectorsClient creates a new instance of ManagedInstanceEncryptionProtectorsClient with the specified values.
-func NewManagedInstanceEncryptionProtectorsClient(con *armcore.Connection, subscriptionID string) *ManagedInstanceEncryptionProtectorsClient {
-	return &ManagedInstanceEncryptionProtectorsClient{con: con, subscriptionID: subscriptionID}
+func NewManagedInstanceEncryptionProtectorsClient(con *arm.Connection, subscriptionID string) *ManagedInstanceEncryptionProtectorsClient {
+	return &ManagedInstanceEncryptionProtectorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Updates an existing encryption protector.
@@ -38,65 +41,37 @@ func (client *ManagedInstanceEncryptionProtectorsClient) BeginCreateOrUpdate(ctx
 		return ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{}, err
 	}
 	result := ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedInstanceEncryptionProtectorsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &managedInstanceEncryptionProtectorsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstanceEncryptionProtectorsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new ManagedInstanceEncryptionProtectorsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedInstanceEncryptionProtectorsCreateOrUpdatePoller.ResumeToken().
-func (client *ManagedInstanceEncryptionProtectorsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedInstanceEncryptionProtectorsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &managedInstanceEncryptionProtectorsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{}, err
-	}
-	result := ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstanceEncryptionProtectorsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedInstanceEncryptionProtectorsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return ManagedInstanceEncryptionProtectorsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &ManagedInstanceEncryptionProtectorsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Updates an existing encryption protector.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, parameters ManagedInstanceEncryptionProtector, options *ManagedInstanceEncryptionProtectorsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, parameters ManagedInstanceEncryptionProtector, options *ManagedInstanceEncryptionProtectorsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, encryptionProtectorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, parameters ManagedInstanceEncryptionProtector, options *ManagedInstanceEncryptionProtectorsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, parameters ManagedInstanceEncryptionProtector, options *ManagedInstanceEncryptionProtectorsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a managed instance encryption protector.
@@ -145,18 +119,18 @@ func (client *ManagedInstanceEncryptionProtectorsClient) Get(ctx context.Context
 	if err != nil {
 		return ManagedInstanceEncryptionProtectorsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedInstanceEncryptionProtectorsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedInstanceEncryptionProtectorsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstanceEncryptionProtectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsGetOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -174,55 +148,54 @@ func (client *ManagedInstanceEncryptionProtectorsClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp *azcore.Response) (ManagedInstanceEncryptionProtectorsGetResponse, error) {
-	result := ManagedInstanceEncryptionProtectorsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstanceEncryptionProtector); err != nil {
+func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp *http.Response) (ManagedInstanceEncryptionProtectorsGetResponse, error) {
+	result := ManagedInstanceEncryptionProtectorsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceEncryptionProtector); err != nil {
 		return ManagedInstanceEncryptionProtectorsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedInstanceEncryptionProtectorsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceEncryptionProtectorsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByInstance - Gets a list of managed instance encryption protectors
 // If the operation fails it returns a generic error.
-func (client *ManagedInstanceEncryptionProtectorsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsListByInstanceOptions) ManagedInstanceEncryptionProtectorsListByInstancePager {
-	return &managedInstanceEncryptionProtectorsListByInstancePager{
+func (client *ManagedInstanceEncryptionProtectorsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsListByInstanceOptions) *ManagedInstanceEncryptionProtectorsListByInstancePager {
+	return &ManagedInstanceEncryptionProtectorsListByInstancePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstanceEncryptionProtectorsListByInstanceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceEncryptionProtectorListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedInstanceEncryptionProtectorsListByInstanceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceEncryptionProtectorListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsListByInstanceOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -236,37 +209,36 @@ func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleResponse(resp *azcore.Response) (ManagedInstanceEncryptionProtectorsListByInstanceResponse, error) {
-	result := ManagedInstanceEncryptionProtectorsListByInstanceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstanceEncryptionProtectorListResult); err != nil {
+func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceEncryptionProtectorsListByInstanceResponse, error) {
+	result := ManagedInstanceEncryptionProtectorsListByInstanceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceEncryptionProtectorListResult); err != nil {
 		return ManagedInstanceEncryptionProtectorsListByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByInstanceHandleError handles the ListByInstance error response.
-func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRevalidate - Revalidates an existing encryption protector.
@@ -277,65 +249,37 @@ func (client *ManagedInstanceEncryptionProtectorsClient) BeginRevalidate(ctx con
 		return ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{}, err
 	}
 	result := ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedInstanceEncryptionProtectorsClient.Revalidate", "", resp, client.con.Pipeline(), client.revalidateHandleError)
-	if err != nil {
-		return ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{}, err
-	}
-	poller := &managedInstanceEncryptionProtectorsRevalidatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstanceEncryptionProtectorsRevalidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRevalidate creates a new ManagedInstanceEncryptionProtectorsRevalidatePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedInstanceEncryptionProtectorsRevalidatePoller.ResumeToken().
-func (client *ManagedInstanceEncryptionProtectorsClient) ResumeRevalidate(ctx context.Context, token string) (ManagedInstanceEncryptionProtectorsRevalidatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedInstanceEncryptionProtectorsClient.Revalidate", token, client.con.Pipeline(), client.revalidateHandleError)
-	if err != nil {
-		return ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{}, err
-	}
-	poller := &managedInstanceEncryptionProtectorsRevalidatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{}, err
-	}
-	result := ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstanceEncryptionProtectorsRevalidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedInstanceEncryptionProtectorsClient.Revalidate", "", resp, client.pl, client.revalidateHandleError)
+	if err != nil {
+		return ManagedInstanceEncryptionProtectorsRevalidatePollerResponse{}, err
+	}
+	result.Poller = &ManagedInstanceEncryptionProtectorsRevalidatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Revalidate - Revalidates an existing encryption protector.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstanceEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsBeginRevalidateOptions) (*azcore.Response, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsBeginRevalidateOptions) (*http.Response, error) {
 	req, err := client.revalidateCreateRequest(ctx, resourceGroupName, managedInstanceName, encryptionProtectorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.revalidateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // revalidateCreateRequest creates the Revalidate request.
-func (client *ManagedInstanceEncryptionProtectorsClient) revalidateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsBeginRevalidateOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) revalidateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsBeginRevalidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -353,25 +297,24 @@ func (client *ManagedInstanceEncryptionProtectorsClient) revalidateCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // revalidateHandleError handles the Revalidate error response.
-func (client *ManagedInstanceEncryptionProtectorsClient) revalidateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceEncryptionProtectorsClient) revalidateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient contains the methods for the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies group.
 // Don't use this type directly, use NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient() instead.
 type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient creates a new instance of ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient with the specified values.
-func NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient(con *armcore.Connection, subscriptionID string) *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
-	return &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient(con *arm.Connection, subscriptionID string) *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
+	return &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Sets a database's short term retention policy.
@@ -38,65 +41,37 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
 	}
 	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &managedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePoller.ResumeToken().
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &managedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Sets a database's short term retention policy.
 // If the operation fails it returns a generic error.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, policyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,28 +93,27 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a dropped database's short term retention policy.
@@ -149,18 +123,18 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 	if err != nil {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetOptions) (*azcore.Request, error) {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -182,55 +156,54 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getHandleResponse(resp *azcore.Response) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse, error) {
-	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedBackupShortTermRetentionPolicy); err != nil {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse, error) {
+	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedBackupShortTermRetentionPolicy); err != nil {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByRestorableDroppedDatabase - Gets a dropped database's short term retention policy list.
 // If the operation fails it returns a generic error.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) ListByRestorableDroppedDatabase(resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseOptions) ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabasePager {
-	return &managedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabasePager{
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) ListByRestorableDroppedDatabase(resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseOptions) *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabasePager {
+	return &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByRestorableDroppedDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedBackupShortTermRetentionPolicyListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedBackupShortTermRetentionPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByRestorableDroppedDatabaseCreateRequest creates the ListByRestorableDroppedDatabase request.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseOptions) (*azcore.Request, error) {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -248,37 +221,36 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByRestorableDroppedDatabaseHandleResponse handles the ListByRestorableDroppedDatabase response.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseHandleResponse(resp *azcore.Response) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse, error) {
-	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedBackupShortTermRetentionPolicyListResult); err != nil {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseHandleResponse(resp *http.Response) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse, error) {
+	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedBackupShortTermRetentionPolicyListResult); err != nil {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByRestorableDroppedDatabaseHandleError handles the ListByRestorableDroppedDatabase error response.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Sets a database's short term retention policy.
@@ -289,65 +261,37 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{}, err
 	}
 	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{}, err
-	}
-	poller := &managedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePoller.ResumeToken().
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) ResumeUpdate(ctx context.Context, token string) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{}, err
-	}
-	poller := &managedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{}, err
-	}
-	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePollerResponse{}, err
+	}
+	result.Poller = &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Sets a database's short term retention policy.
 // If the operation fails it returns a generic error.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, policyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -369,26 +313,25 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

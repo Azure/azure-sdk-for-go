@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // JobTargetGroupsClient contains the methods for the JobTargetGroups group.
 // Don't use this type directly, use NewJobTargetGroupsClient() instead.
 type JobTargetGroupsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewJobTargetGroupsClient creates a new instance of JobTargetGroupsClient with the specified values.
-func NewJobTargetGroupsClient(con *armcore.Connection, subscriptionID string) *JobTargetGroupsClient {
-	return &JobTargetGroupsClient{con: con, subscriptionID: subscriptionID}
+func NewJobTargetGroupsClient(con *arm.Connection, subscriptionID string) *JobTargetGroupsClient {
+	return &JobTargetGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a target group.
@@ -36,18 +39,18 @@ func (client *JobTargetGroupsClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return JobTargetGroupsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobTargetGroupsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return JobTargetGroupsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobTargetGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, parameters JobTargetGroup, options *JobTargetGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *JobTargetGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, parameters JobTargetGroup, options *JobTargetGroupsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -69,37 +72,36 @@ func (client *JobTargetGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JobTargetGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response) (JobTargetGroupsCreateOrUpdateResponse, error) {
-	result := JobTargetGroupsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobTargetGroup); err != nil {
+func (client *JobTargetGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (JobTargetGroupsCreateOrUpdateResponse, error) {
+	result := JobTargetGroupsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobTargetGroup); err != nil {
 		return JobTargetGroupsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JobTargetGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes a target group.
@@ -109,18 +111,18 @@ func (client *JobTargetGroupsClient) Delete(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return JobTargetGroupsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobTargetGroupsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JobTargetGroupsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return JobTargetGroupsDeleteResponse{RawResponse: resp.Response}, nil
+	return JobTargetGroupsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobTargetGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, options *JobTargetGroupsDeleteOptions) (*azcore.Request, error) {
+func (client *JobTargetGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, options *JobTargetGroupsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,27 +144,26 @@ func (client *JobTargetGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *JobTargetGroupsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetGroupsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a target group.
@@ -172,18 +173,18 @@ func (client *JobTargetGroupsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return JobTargetGroupsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobTargetGroupsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobTargetGroupsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobTargetGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, options *JobTargetGroupsGetOptions) (*azcore.Request, error) {
+func (client *JobTargetGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, options *JobTargetGroupsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -205,55 +206,54 @@ func (client *JobTargetGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobTargetGroupsClient) getHandleResponse(resp *azcore.Response) (JobTargetGroupsGetResponse, error) {
-	result := JobTargetGroupsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobTargetGroup); err != nil {
+func (client *JobTargetGroupsClient) getHandleResponse(resp *http.Response) (JobTargetGroupsGetResponse, error) {
+	result := JobTargetGroupsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobTargetGroup); err != nil {
 		return JobTargetGroupsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *JobTargetGroupsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetGroupsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByAgent - Gets all target groups in an agent.
 // If the operation fails it returns a generic error.
-func (client *JobTargetGroupsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsListByAgentOptions) JobTargetGroupsListByAgentPager {
-	return &jobTargetGroupsListByAgentPager{
+func (client *JobTargetGroupsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsListByAgentOptions) *JobTargetGroupsListByAgentPager {
+	return &JobTargetGroupsListByAgentPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
 		},
-		advancer: func(ctx context.Context, resp JobTargetGroupsListByAgentResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobTargetGroupListResult.NextLink)
+		advancer: func(ctx context.Context, resp JobTargetGroupsListByAgentResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobTargetGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByAgentCreateRequest creates the ListByAgent request.
-func (client *JobTargetGroupsClient) listByAgentCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsListByAgentOptions) (*azcore.Request, error) {
+func (client *JobTargetGroupsClient) listByAgentCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsListByAgentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -271,35 +271,34 @@ func (client *JobTargetGroupsClient) listByAgentCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByAgentHandleResponse handles the ListByAgent response.
-func (client *JobTargetGroupsClient) listByAgentHandleResponse(resp *azcore.Response) (JobTargetGroupsListByAgentResponse, error) {
-	result := JobTargetGroupsListByAgentResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobTargetGroupListResult); err != nil {
+func (client *JobTargetGroupsClient) listByAgentHandleResponse(resp *http.Response) (JobTargetGroupsListByAgentResponse, error) {
+	result := JobTargetGroupsListByAgentResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobTargetGroupListResult); err != nil {
 		return JobTargetGroupsListByAgentResponse{}, err
 	}
 	return result, nil
 }
 
 // listByAgentHandleError handles the ListByAgent error response.
-func (client *JobTargetGroupsClient) listByAgentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetGroupsClient) listByAgentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

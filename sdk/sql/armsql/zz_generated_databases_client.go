@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // DatabasesClient contains the methods for the Databases group.
 // Don't use this type directly, use NewDatabasesClient() instead.
 type DatabasesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
-func NewDatabasesClient(con *armcore.Connection, subscriptionID string) *DatabasesClient {
-	return &DatabasesClient{con: con, subscriptionID: subscriptionID}
+func NewDatabasesClient(con *arm.Connection, subscriptionID string) *DatabasesClient {
+	return &DatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates a new database or updates an existing database.
@@ -38,65 +41,37 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 		return DatabasesCreateOrUpdatePollerResponse{}, err
 	}
 	result := DatabasesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DatabasesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &databasesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new DatabasesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesCreateOrUpdatePoller.ResumeToken().
-func (client *DatabasesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DatabasesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DatabasesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &databasesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesCreateOrUpdatePollerResponse{}, err
-	}
-	result := DatabasesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return DatabasesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &DatabasesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a new database or updates an existing database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *DatabasesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatabasesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes the database.
@@ -146,65 +120,37 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 		return DatabasesDeletePollerResponse{}, err
 	}
 	result := DatabasesDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return DatabasesDeletePollerResponse{}, err
-	}
-	poller := &databasesDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new DatabasesDeletePoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesDeletePoller.ResumeToken().
-func (client *DatabasesClient) ResumeDelete(ctx context.Context, token string) (DatabasesDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return DatabasesDeletePollerResponse{}, err
-	}
-	poller := &databasesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesDeletePollerResponse{}, err
-	}
-	result := DatabasesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return DatabasesDeletePollerResponse{}, err
+	}
+	result.Poller = &DatabasesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,27 +168,26 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DatabasesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginExport - Exports a database.
@@ -253,65 +198,37 @@ func (client *DatabasesClient) BeginExport(ctx context.Context, resourceGroupNam
 		return DatabasesExportPollerResponse{}, err
 	}
 	result := DatabasesExportPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Export", "", resp, client.con.Pipeline(), client.exportHandleError)
-	if err != nil {
-		return DatabasesExportPollerResponse{}, err
-	}
-	poller := &databasesExportPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesExportResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeExport creates a new DatabasesExportPoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesExportPoller.ResumeToken().
-func (client *DatabasesClient) ResumeExport(ctx context.Context, token string) (DatabasesExportPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Export", token, client.con.Pipeline(), client.exportHandleError)
-	if err != nil {
-		return DatabasesExportPollerResponse{}, err
-	}
-	poller := &databasesExportPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesExportPollerResponse{}, err
-	}
-	result := DatabasesExportPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesExportResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Export", "", resp, client.pl, client.exportHandleError)
+	if err != nil {
+		return DatabasesExportPollerResponse{}, err
+	}
+	result.Poller = &DatabasesExportPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Export - Exports a database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) export(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, options *DatabasesBeginExportOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) export(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, options *DatabasesBeginExportOptions) (*http.Response, error) {
 	req, err := client.exportCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.exportHandleError(resp)
 	}
 	return resp, nil
 }
 
 // exportCreateRequest creates the Export request.
-func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, options *DatabasesBeginExportOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, options *DatabasesBeginExportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -329,28 +246,27 @@ func (client *DatabasesClient) exportCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // exportHandleError handles the Export error response.
-func (client *DatabasesClient) exportHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) exportHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginFailover - Failovers a database.
@@ -361,65 +277,37 @@ func (client *DatabasesClient) BeginFailover(ctx context.Context, resourceGroupN
 		return DatabasesFailoverPollerResponse{}, err
 	}
 	result := DatabasesFailoverPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Failover", "", resp, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return DatabasesFailoverPollerResponse{}, err
-	}
-	poller := &databasesFailoverPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesFailoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeFailover creates a new DatabasesFailoverPoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesFailoverPoller.ResumeToken().
-func (client *DatabasesClient) ResumeFailover(ctx context.Context, token string) (DatabasesFailoverPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Failover", token, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return DatabasesFailoverPollerResponse{}, err
-	}
-	poller := &databasesFailoverPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesFailoverPollerResponse{}, err
-	}
-	result := DatabasesFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesFailoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Failover", "", resp, client.pl, client.failoverHandleError)
+	if err != nil {
+		return DatabasesFailoverPollerResponse{}, err
+	}
+	result.Poller = &DatabasesFailoverPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Failover - Failovers a database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginFailoverOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.failoverHandleError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginFailoverOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -437,30 +325,29 @@ func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.ReplicaType != nil {
 		reqQP.Set("replicaType", string(*options.ReplicaType))
 	}
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // failoverHandleError handles the Failover error response.
-func (client *DatabasesClient) failoverHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) failoverHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a database.
@@ -470,18 +357,18 @@ func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DatabasesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabasesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabasesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesGetOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -499,37 +386,36 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabasesClient) getHandleResponse(resp *azcore.Response) (DatabasesGetResponse, error) {
-	result := DatabasesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Database); err != nil {
+func (client *DatabasesClient) getHandleResponse(resp *http.Response) (DatabasesGetResponse, error) {
+	result := DatabasesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Database); err != nil {
 		return DatabasesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DatabasesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginImport - Imports a bacpac into a new database.
@@ -540,65 +426,37 @@ func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupNam
 		return DatabasesImportPollerResponse{}, err
 	}
 	result := DatabasesImportPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Import", "", resp, client.con.Pipeline(), client.importHandleError)
-	if err != nil {
-		return DatabasesImportPollerResponse{}, err
-	}
-	poller := &databasesImportPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesImportResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeImport creates a new DatabasesImportPoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesImportPoller.ResumeToken().
-func (client *DatabasesClient) ResumeImport(ctx context.Context, token string) (DatabasesImportPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Import", token, client.con.Pipeline(), client.importHandleError)
-	if err != nil {
-		return DatabasesImportPollerResponse{}, err
-	}
-	poller := &databasesImportPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesImportPollerResponse{}, err
-	}
-	result := DatabasesImportPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesImportResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Import", "", resp, client.pl, client.importHandleError)
+	if err != nil {
+		return DatabasesImportPollerResponse{}, err
+	}
+	result.Poller = &DatabasesImportPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Import - Imports a bacpac into a new database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) importOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesBeginImportOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) importOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesBeginImportOptions) (*http.Response, error) {
 	req, err := client.importCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.importHandleError(resp)
 	}
 	return resp, nil
 }
 
 // importCreateRequest creates the Import request.
-func (client *DatabasesClient) importCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesBeginImportOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) importCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesBeginImportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/import"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -616,46 +474,45 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // importHandleError handles the Import error response.
-func (client *DatabasesClient) importHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) importHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByElasticPool - Gets a list of databases in an elastic pool.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesListByElasticPoolOptions) DatabasesListByElasticPoolPager {
-	return &databasesListByElasticPoolPager{
+func (client *DatabasesClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesListByElasticPoolOptions) *DatabasesListByElasticPoolPager {
+	return &DatabasesListByElasticPoolPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabasesListByElasticPoolResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabasesListByElasticPoolResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listByElasticPoolCreateRequest creates the ListByElasticPool request.
-func (client *DatabasesClient) listByElasticPoolCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesListByElasticPoolOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) listByElasticPoolCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesListByElasticPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -673,55 +530,54 @@ func (client *DatabasesClient) listByElasticPoolCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByElasticPoolHandleResponse handles the ListByElasticPool response.
-func (client *DatabasesClient) listByElasticPoolHandleResponse(resp *azcore.Response) (DatabasesListByElasticPoolResponse, error) {
-	result := DatabasesListByElasticPoolResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseListResult); err != nil {
+func (client *DatabasesClient) listByElasticPoolHandleResponse(resp *http.Response) (DatabasesListByElasticPoolResponse, error) {
+	result := DatabasesListByElasticPoolResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
 		return DatabasesListByElasticPoolResponse{}, err
 	}
 	return result, nil
 }
 
 // listByElasticPoolHandleError handles the ListByElasticPool error response.
-func (client *DatabasesClient) listByElasticPoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) listByElasticPoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Gets a list of databases.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) ListByServer(resourceGroupName string, serverName string, options *DatabasesListByServerOptions) DatabasesListByServerPager {
-	return &databasesListByServerPager{
+func (client *DatabasesClient) ListByServer(resourceGroupName string, serverName string, options *DatabasesListByServerOptions) *DatabasesListByServerPager {
+	return &DatabasesListByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabasesListByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabasesListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *DatabasesListByServerOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *DatabasesListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -735,58 +591,57 @@ func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *DatabasesClient) listByServerHandleResponse(resp *azcore.Response) (DatabasesListByServerResponse, error) {
-	result := DatabasesListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseListResult); err != nil {
+func (client *DatabasesClient) listByServerHandleResponse(resp *http.Response) (DatabasesListByServerResponse, error) {
+	result := DatabasesListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
 		return DatabasesListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *DatabasesClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListInaccessibleByServer - Gets a list of inaccessible databases in a logical server
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) ListInaccessibleByServer(resourceGroupName string, serverName string, options *DatabasesListInaccessibleByServerOptions) DatabasesListInaccessibleByServerPager {
-	return &databasesListInaccessibleByServerPager{
+func (client *DatabasesClient) ListInaccessibleByServer(resourceGroupName string, serverName string, options *DatabasesListInaccessibleByServerOptions) *DatabasesListInaccessibleByServerPager {
+	return &DatabasesListInaccessibleByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listInaccessibleByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabasesListInaccessibleByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabasesListInaccessibleByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listInaccessibleByServerCreateRequest creates the ListInaccessibleByServer request.
-func (client *DatabasesClient) listInaccessibleByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *DatabasesListInaccessibleByServerOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) listInaccessibleByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *DatabasesListInaccessibleByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/inaccessibleDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -800,37 +655,36 @@ func (client *DatabasesClient) listInaccessibleByServerCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listInaccessibleByServerHandleResponse handles the ListInaccessibleByServer response.
-func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *azcore.Response) (DatabasesListInaccessibleByServerResponse, error) {
-	result := DatabasesListInaccessibleByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseListResult); err != nil {
+func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *http.Response) (DatabasesListInaccessibleByServerResponse, error) {
+	result := DatabasesListInaccessibleByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
 		return DatabasesListInaccessibleByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listInaccessibleByServerHandleError handles the ListInaccessibleByServer error response.
-func (client *DatabasesClient) listInaccessibleByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) listInaccessibleByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListMetricDefinitions - Returns database metric definitions.
@@ -840,18 +694,18 @@ func (client *DatabasesClient) ListMetricDefinitions(ctx context.Context, resour
 	if err != nil {
 		return DatabasesListMetricDefinitionsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabasesListMetricDefinitionsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabasesListMetricDefinitionsResponse{}, client.listMetricDefinitionsHandleError(resp)
 	}
 	return client.listMetricDefinitionsHandleResponse(resp)
 }
 
 // listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
-func (client *DatabasesClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesListMetricDefinitionsOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesListMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/metricDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -869,37 +723,36 @@ func (client *DatabasesClient) listMetricDefinitionsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
-func (client *DatabasesClient) listMetricDefinitionsHandleResponse(resp *azcore.Response) (DatabasesListMetricDefinitionsResponse, error) {
-	result := DatabasesListMetricDefinitionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MetricDefinitionListResult); err != nil {
+func (client *DatabasesClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabasesListMetricDefinitionsResponse, error) {
+	result := DatabasesListMetricDefinitionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionListResult); err != nil {
 		return DatabasesListMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMetricDefinitionsHandleError handles the ListMetricDefinitions error response.
-func (client *DatabasesClient) listMetricDefinitionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) listMetricDefinitionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListMetrics - Returns database metrics.
@@ -909,18 +762,18 @@ func (client *DatabasesClient) ListMetrics(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return DatabasesListMetricsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabasesListMetricsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabasesListMetricsResponse{}, client.listMetricsHandleError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *DatabasesClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string, options *DatabasesListMetricsOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string, options *DatabasesListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -938,38 +791,37 @@ func (client *DatabasesClient) listMetricsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	reqQP.Set("$filter", filter)
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *DatabasesClient) listMetricsHandleResponse(resp *azcore.Response) (DatabasesListMetricsResponse, error) {
-	result := DatabasesListMetricsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MetricListResult); err != nil {
+func (client *DatabasesClient) listMetricsHandleResponse(resp *http.Response) (DatabasesListMetricsResponse, error) {
+	result := DatabasesListMetricsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
 		return DatabasesListMetricsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMetricsHandleError handles the ListMetrics error response.
-func (client *DatabasesClient) listMetricsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) listMetricsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginPause - Pauses a database.
@@ -980,65 +832,37 @@ func (client *DatabasesClient) BeginPause(ctx context.Context, resourceGroupName
 		return DatabasesPausePollerResponse{}, err
 	}
 	result := DatabasesPausePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Pause", "", resp, client.con.Pipeline(), client.pauseHandleError)
-	if err != nil {
-		return DatabasesPausePollerResponse{}, err
-	}
-	poller := &databasesPausePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesPauseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumePause creates a new DatabasesPausePoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesPausePoller.ResumeToken().
-func (client *DatabasesClient) ResumePause(ctx context.Context, token string) (DatabasesPausePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Pause", token, client.con.Pipeline(), client.pauseHandleError)
-	if err != nil {
-		return DatabasesPausePollerResponse{}, err
-	}
-	poller := &databasesPausePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesPausePollerResponse{}, err
-	}
-	result := DatabasesPausePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesPauseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Pause", "", resp, client.pl, client.pauseHandleError)
+	if err != nil {
+		return DatabasesPausePollerResponse{}, err
+	}
+	result.Poller = &DatabasesPausePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Pause - Pauses a database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginPauseOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginPauseOptions) (*http.Response, error) {
 	req, err := client.pauseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.pauseHandleError(resp)
 	}
 	return resp, nil
 }
 
 // pauseCreateRequest creates the Pause request.
-func (client *DatabasesClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginPauseOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginPauseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1056,28 +880,27 @@ func (client *DatabasesClient) pauseCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // pauseHandleError handles the Pause error response.
-func (client *DatabasesClient) pauseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) pauseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Rename - Renames a database.
@@ -1087,18 +910,18 @@ func (client *DatabasesClient) Rename(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DatabasesRenameResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabasesRenameResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabasesRenameResponse{}, client.renameHandleError(resp)
 	}
-	return DatabasesRenameResponse{RawResponse: resp.Response}, nil
+	return DatabasesRenameResponse{RawResponse: resp}, nil
 }
 
 // renameCreateRequest creates the Rename request.
-func (client *DatabasesClient) renameCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ResourceMoveDefinition, options *DatabasesRenameOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) renameCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ResourceMoveDefinition, options *DatabasesRenameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1116,27 +939,26 @@ func (client *DatabasesClient) renameCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // renameHandleError handles the Rename error response.
-func (client *DatabasesClient) renameHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) renameHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginResume - Resumes a database.
@@ -1147,65 +969,37 @@ func (client *DatabasesClient) BeginResume(ctx context.Context, resourceGroupNam
 		return DatabasesResumePollerResponse{}, err
 	}
 	result := DatabasesResumePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Resume", "", resp, client.con.Pipeline(), client.resumeHandleError)
-	if err != nil {
-		return DatabasesResumePollerResponse{}, err
-	}
-	poller := &databasesResumePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesResumeResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeResume creates a new DatabasesResumePoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesResumePoller.ResumeToken().
-func (client *DatabasesClient) ResumeResume(ctx context.Context, token string) (DatabasesResumePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Resume", token, client.con.Pipeline(), client.resumeHandleError)
-	if err != nil {
-		return DatabasesResumePollerResponse{}, err
-	}
-	poller := &databasesResumePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesResumePollerResponse{}, err
-	}
-	result := DatabasesResumePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesResumeResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Resume", "", resp, client.pl, client.resumeHandleError)
+	if err != nil {
+		return DatabasesResumePollerResponse{}, err
+	}
+	result.Poller = &DatabasesResumePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Resume - Resumes a database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginResumeOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.resumeHandleError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *DatabasesClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginResumeOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1223,28 +1017,27 @@ func (client *DatabasesClient) resumeCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // resumeHandleError handles the Resume error response.
-func (client *DatabasesClient) resumeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) resumeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Updates an existing database.
@@ -1255,65 +1048,37 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		return DatabasesUpdatePollerResponse{}, err
 	}
 	result := DatabasesUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return DatabasesUpdatePollerResponse{}, err
-	}
-	poller := &databasesUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new DatabasesUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesUpdatePoller.ResumeToken().
-func (client *DatabasesClient) ResumeUpdate(ctx context.Context, token string) (DatabasesUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return DatabasesUpdatePollerResponse{}, err
-	}
-	poller := &databasesUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesUpdatePollerResponse{}, err
-	}
-	result := DatabasesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return DatabasesUpdatePollerResponse{}, err
+	}
+	result.Poller = &DatabasesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an existing database.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1331,28 +1096,27 @@ func (client *DatabasesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *DatabasesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpgradeDataWarehouse - Upgrades a data warehouse.
@@ -1363,65 +1127,37 @@ func (client *DatabasesClient) BeginUpgradeDataWarehouse(ctx context.Context, re
 		return DatabasesUpgradeDataWarehousePollerResponse{}, err
 	}
 	result := DatabasesUpgradeDataWarehousePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabasesClient.UpgradeDataWarehouse", "", resp, client.con.Pipeline(), client.upgradeDataWarehouseHandleError)
-	if err != nil {
-		return DatabasesUpgradeDataWarehousePollerResponse{}, err
-	}
-	poller := &databasesUpgradeDataWarehousePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesUpgradeDataWarehouseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpgradeDataWarehouse creates a new DatabasesUpgradeDataWarehousePoller from the specified resume token.
-// token - The value must come from a previous call to DatabasesUpgradeDataWarehousePoller.ResumeToken().
-func (client *DatabasesClient) ResumeUpgradeDataWarehouse(ctx context.Context, token string) (DatabasesUpgradeDataWarehousePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabasesClient.UpgradeDataWarehouse", token, client.con.Pipeline(), client.upgradeDataWarehouseHandleError)
-	if err != nil {
-		return DatabasesUpgradeDataWarehousePollerResponse{}, err
-	}
-	poller := &databasesUpgradeDataWarehousePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabasesUpgradeDataWarehousePollerResponse{}, err
-	}
-	result := DatabasesUpgradeDataWarehousePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabasesUpgradeDataWarehouseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabasesClient.UpgradeDataWarehouse", "", resp, client.pl, client.upgradeDataWarehouseHandleError)
+	if err != nil {
+		return DatabasesUpgradeDataWarehousePollerResponse{}, err
+	}
+	result.Poller = &DatabasesUpgradeDataWarehousePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpgradeDataWarehouse - Upgrades a data warehouse.
 // If the operation fails it returns a generic error.
-func (client *DatabasesClient) upgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginUpgradeDataWarehouseOptions) (*azcore.Response, error) {
+func (client *DatabasesClient) upgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginUpgradeDataWarehouseOptions) (*http.Response, error) {
 	req, err := client.upgradeDataWarehouseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.upgradeDataWarehouseHandleError(resp)
 	}
 	return resp, nil
 }
 
 // upgradeDataWarehouseCreateRequest creates the UpgradeDataWarehouse request.
-func (client *DatabasesClient) upgradeDataWarehouseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginUpgradeDataWarehouseOptions) (*azcore.Request, error) {
+func (client *DatabasesClient) upgradeDataWarehouseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesBeginUpgradeDataWarehouseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/upgradeDataWarehouse"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1439,25 +1175,24 @@ func (client *DatabasesClient) upgradeDataWarehouseCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // upgradeDataWarehouseHandleError handles the UpgradeDataWarehouse error response.
-func (client *DatabasesClient) upgradeDataWarehouseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabasesClient) upgradeDataWarehouseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

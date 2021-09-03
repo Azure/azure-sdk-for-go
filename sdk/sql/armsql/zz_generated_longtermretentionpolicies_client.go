@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // LongTermRetentionPoliciesClient contains the methods for the LongTermRetentionPolicies group.
 // Don't use this type directly, use NewLongTermRetentionPoliciesClient() instead.
 type LongTermRetentionPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLongTermRetentionPoliciesClient creates a new instance of LongTermRetentionPoliciesClient with the specified values.
-func NewLongTermRetentionPoliciesClient(con *armcore.Connection, subscriptionID string) *LongTermRetentionPoliciesClient {
-	return &LongTermRetentionPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewLongTermRetentionPoliciesClient(con *arm.Connection, subscriptionID string) *LongTermRetentionPoliciesClient {
+	return &LongTermRetentionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Sets a database's long term retention policy.
@@ -38,65 +41,37 @@ func (client *LongTermRetentionPoliciesClient) BeginCreateOrUpdate(ctx context.C
 		return LongTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
 	}
 	result := LongTermRetentionPoliciesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("LongTermRetentionPoliciesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return LongTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &longTermRetentionPoliciesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LongTermRetentionPoliciesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new LongTermRetentionPoliciesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to LongTermRetentionPoliciesCreateOrUpdatePoller.ResumeToken().
-func (client *LongTermRetentionPoliciesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (LongTermRetentionPoliciesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("LongTermRetentionPoliciesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return LongTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &longTermRetentionPoliciesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return LongTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	result := LongTermRetentionPoliciesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LongTermRetentionPoliciesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("LongTermRetentionPoliciesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return LongTermRetentionPoliciesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &LongTermRetentionPoliciesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Sets a database's long term retention policy.
 // If the operation fails it returns a generic error.
-func (client *LongTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName LongTermRetentionPolicyName, parameters LongTermRetentionPolicy, options *LongTermRetentionPoliciesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *LongTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName LongTermRetentionPolicyName, parameters LongTermRetentionPolicy, options *LongTermRetentionPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, policyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LongTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName LongTermRetentionPolicyName, parameters LongTermRetentionPolicy, options *LongTermRetentionPoliciesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *LongTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName LongTermRetentionPolicyName, parameters LongTermRetentionPolicy, options *LongTermRetentionPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,28 +93,27 @@ func (client *LongTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LongTermRetentionPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LongTermRetentionPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a database's long term retention policy.
@@ -149,18 +123,18 @@ func (client *LongTermRetentionPoliciesClient) Get(ctx context.Context, resource
 	if err != nil {
 		return LongTermRetentionPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LongTermRetentionPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LongTermRetentionPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LongTermRetentionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName LongTermRetentionPolicyName, options *LongTermRetentionPoliciesGetOptions) (*azcore.Request, error) {
+func (client *LongTermRetentionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, policyName LongTermRetentionPolicyName, options *LongTermRetentionPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -182,55 +156,54 @@ func (client *LongTermRetentionPoliciesClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LongTermRetentionPoliciesClient) getHandleResponse(resp *azcore.Response) (LongTermRetentionPoliciesGetResponse, error) {
-	result := LongTermRetentionPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LongTermRetentionPolicy); err != nil {
+func (client *LongTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (LongTermRetentionPoliciesGetResponse, error) {
+	result := LongTermRetentionPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionPolicy); err != nil {
 		return LongTermRetentionPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *LongTermRetentionPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LongTermRetentionPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Gets a database's long term retention policy.
 // If the operation fails it returns a generic error.
-func (client *LongTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesListByDatabaseOptions) LongTermRetentionPoliciesListByDatabasePager {
-	return &longTermRetentionPoliciesListByDatabasePager{
+func (client *LongTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesListByDatabaseOptions) *LongTermRetentionPoliciesListByDatabasePager {
+	return &LongTermRetentionPoliciesListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionPoliciesListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.LongTermRetentionPolicyListResult.NextLink)
+		advancer: func(ctx context.Context, resp LongTermRetentionPoliciesListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.LongTermRetentionPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *LongTermRetentionPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesListByDatabaseOptions) (*azcore.Request, error) {
+func (client *LongTermRetentionPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *LongTermRetentionPoliciesListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -248,35 +221,34 @@ func (client *LongTermRetentionPoliciesClient) listByDatabaseCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *LongTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *azcore.Response) (LongTermRetentionPoliciesListByDatabaseResponse, error) {
-	result := LongTermRetentionPoliciesListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LongTermRetentionPolicyListResult); err != nil {
+func (client *LongTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (LongTermRetentionPoliciesListByDatabaseResponse, error) {
+	result := LongTermRetentionPoliciesListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionPolicyListResult); err != nil {
 		return LongTermRetentionPoliciesListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *LongTermRetentionPoliciesClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LongTermRetentionPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

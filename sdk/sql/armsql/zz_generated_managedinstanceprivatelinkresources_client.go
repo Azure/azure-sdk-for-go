@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // ManagedInstancePrivateLinkResourcesClient contains the methods for the ManagedInstancePrivateLinkResources group.
 // Don't use this type directly, use NewManagedInstancePrivateLinkResourcesClient() instead.
 type ManagedInstancePrivateLinkResourcesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedInstancePrivateLinkResourcesClient creates a new instance of ManagedInstancePrivateLinkResourcesClient with the specified values.
-func NewManagedInstancePrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) *ManagedInstancePrivateLinkResourcesClient {
-	return &ManagedInstancePrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewManagedInstancePrivateLinkResourcesClient(con *arm.Connection, subscriptionID string) *ManagedInstancePrivateLinkResourcesClient {
+	return &ManagedInstancePrivateLinkResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a private link resource for SQL server.
@@ -36,18 +39,18 @@ func (client *ManagedInstancePrivateLinkResourcesClient) Get(ctx context.Context
 	if err != nil {
 		return ManagedInstancePrivateLinkResourcesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedInstancePrivateLinkResourcesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedInstancePrivateLinkResourcesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, groupName string, options *ManagedInstancePrivateLinkResourcesGetOptions) (*azcore.Request, error) {
+func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, groupName string, options *ManagedInstancePrivateLinkResourcesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources/{groupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -65,55 +68,54 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp *azcore.Response) (ManagedInstancePrivateLinkResourcesGetResponse, error) {
-	result := ManagedInstancePrivateLinkResourcesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstancePrivateLink); err != nil {
+func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesGetResponse, error) {
+	result := ManagedInstancePrivateLinkResourcesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateLink); err != nil {
 		return ManagedInstancePrivateLinkResourcesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedInstancePrivateLinkResourcesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstancePrivateLinkResourcesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByManagedInstance - Gets the private link resources for SQL server.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesListByManagedInstanceOptions) ManagedInstancePrivateLinkResourcesListByManagedInstancePager {
-	return &managedInstancePrivateLinkResourcesListByManagedInstancePager{
+func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesListByManagedInstanceOptions) *ManagedInstancePrivateLinkResourcesListByManagedInstancePager {
+	return &ManagedInstancePrivateLinkResourcesListByManagedInstancePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedInstancePrivateLinkListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstancePrivateLinkListResult.NextLink)
 		},
 	}
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
-func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesListByManagedInstanceOptions) (*azcore.Request, error) {
+func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesListByManagedInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -127,35 +129,34 @@ func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
-func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleResponse(resp *azcore.Response) (ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse, error) {
-	result := ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstancePrivateLinkListResult); err != nil {
+func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse, error) {
+	result := ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateLinkListResult); err != nil {
 		return ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByManagedInstanceHandleError handles the ListByManagedInstance error response.
-func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

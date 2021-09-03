@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ManagedInstanceTdeCertificatesClient contains the methods for the ManagedInstanceTdeCertificates group.
 // Don't use this type directly, use NewManagedInstanceTdeCertificatesClient() instead.
 type ManagedInstanceTdeCertificatesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedInstanceTdeCertificatesClient creates a new instance of ManagedInstanceTdeCertificatesClient with the specified values.
-func NewManagedInstanceTdeCertificatesClient(con *armcore.Connection, subscriptionID string) *ManagedInstanceTdeCertificatesClient {
-	return &ManagedInstanceTdeCertificatesClient{con: con, subscriptionID: subscriptionID}
+func NewManagedInstanceTdeCertificatesClient(con *arm.Connection, subscriptionID string) *ManagedInstanceTdeCertificatesClient {
+	return &ManagedInstanceTdeCertificatesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a TDE certificate for a given server.
@@ -38,65 +41,37 @@ func (client *ManagedInstanceTdeCertificatesClient) BeginCreate(ctx context.Cont
 		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
 	}
 	result := ManagedInstanceTdeCertificatesCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedInstanceTdeCertificatesClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
-	}
-	poller := &managedInstanceTdeCertificatesCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstanceTdeCertificatesCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new ManagedInstanceTdeCertificatesCreatePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedInstanceTdeCertificatesCreatePoller.ResumeToken().
-func (client *ManagedInstanceTdeCertificatesClient) ResumeCreate(ctx context.Context, token string) (ManagedInstanceTdeCertificatesCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedInstanceTdeCertificatesClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
-	}
-	poller := &managedInstanceTdeCertificatesCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
-	}
-	result := ManagedInstanceTdeCertificatesCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstanceTdeCertificatesCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedInstanceTdeCertificatesClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
+	}
+	result.Poller = &ManagedInstanceTdeCertificatesCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a TDE certificate for a given server.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (*azcore.Response, error) {
+func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/tdeCertificates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -110,25 +85,24 @@ func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createHandleError handles the Create error response.
-func (client *ManagedInstanceTdeCertificatesClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceTdeCertificatesClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

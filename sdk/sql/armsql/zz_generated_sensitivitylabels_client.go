@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -21,13 +23,14 @@ import (
 // SensitivityLabelsClient contains the methods for the SensitivityLabels group.
 // Don't use this type directly, use NewSensitivityLabelsClient() instead.
 type SensitivityLabelsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSensitivityLabelsClient creates a new instance of SensitivityLabelsClient with the specified values.
-func NewSensitivityLabelsClient(con *armcore.Connection, subscriptionID string) *SensitivityLabelsClient {
-	return &SensitivityLabelsClient{con: con, subscriptionID: subscriptionID}
+func NewSensitivityLabelsClient(con *arm.Connection, subscriptionID string) *SensitivityLabelsClient {
+	return &SensitivityLabelsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column
@@ -37,18 +40,18 @@ func (client *SensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return SensitivityLabelsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SensitivityLabelsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return SensitivityLabelsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,37 +82,36 @@ func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SensitivityLabelsClient) createOrUpdateHandleResponse(resp *azcore.Response) (SensitivityLabelsCreateOrUpdateResponse, error) {
-	result := SensitivityLabelsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SensitivityLabel); err != nil {
+func (client *SensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (SensitivityLabelsCreateOrUpdateResponse, error) {
+	result := SensitivityLabelsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return SensitivityLabelsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SensitivityLabelsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes the sensitivity label of a given column
@@ -119,18 +121,18 @@ func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroup
 	if err != nil {
 		return SensitivityLabelsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SensitivityLabelsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return SensitivityLabelsDeleteResponse{RawResponse: resp.Response}, nil
+	return SensitivityLabelsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDeleteOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -161,27 +163,26 @@ func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *SensitivityLabelsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // DisableRecommendation - Disables sensitivity recommendations on a given column
@@ -191,18 +192,18 @@ func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context
 	if err != nil {
 		return SensitivityLabelsDisableRecommendationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SensitivityLabelsDisableRecommendationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsDisableRecommendationResponse{}, client.disableRecommendationHandleError(resp)
 	}
-	return SensitivityLabelsDisableRecommendationResponse{RawResponse: resp.Response}, nil
+	return SensitivityLabelsDisableRecommendationResponse{RawResponse: resp}, nil
 }
 
 // disableRecommendationCreateRequest creates the DisableRecommendation request.
-func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDisableRecommendationOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsDisableRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -233,27 +234,26 @@ func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // disableRecommendationHandleError handles the DisableRecommendation error response.
-func (client *SensitivityLabelsClient) disableRecommendationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) disableRecommendationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // EnableRecommendation - Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns)
@@ -263,18 +263,18 @@ func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context,
 	if err != nil {
 		return SensitivityLabelsEnableRecommendationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SensitivityLabelsEnableRecommendationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsEnableRecommendationResponse{}, client.enableRecommendationHandleError(resp)
 	}
-	return SensitivityLabelsEnableRecommendationResponse{RawResponse: resp.Response}, nil
+	return SensitivityLabelsEnableRecommendationResponse{RawResponse: resp}, nil
 }
 
 // enableRecommendationCreateRequest creates the EnableRecommendation request.
-func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsEnableRecommendationOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsEnableRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -305,27 +305,26 @@ func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // enableRecommendationHandleError handles the EnableRecommendation error response.
-func (client *SensitivityLabelsClient) enableRecommendationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) enableRecommendationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets the sensitivity label of a given column
@@ -335,18 +334,18 @@ func (client *SensitivityLabelsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SensitivityLabelsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SensitivityLabelsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsGetOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -380,55 +379,54 @@ func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SensitivityLabelsClient) getHandleResponse(resp *azcore.Response) (SensitivityLabelsGetResponse, error) {
-	result := SensitivityLabelsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SensitivityLabel); err != nil {
+func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (SensitivityLabelsGetResponse, error) {
+	result := SensitivityLabelsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return SensitivityLabelsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *SensitivityLabelsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListCurrentByDatabase - Gets the sensitivity labels of a given database
 // If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListCurrentByDatabaseOptions) SensitivityLabelsListCurrentByDatabasePager {
-	return &sensitivityLabelsListCurrentByDatabasePager{
+func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListCurrentByDatabaseOptions) *SensitivityLabelsListCurrentByDatabasePager {
+	return &SensitivityLabelsListCurrentByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp SensitivityLabelsListCurrentByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
+		advancer: func(ctx context.Context, resp SensitivityLabelsListCurrentByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
 		},
 	}
 }
 
 // listCurrentByDatabaseCreateRequest creates the ListCurrentByDatabase request.
-func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListCurrentByDatabaseOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListCurrentByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -446,12 +444,11 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
@@ -462,48 +459,48 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listCurrentByDatabaseHandleResponse handles the ListCurrentByDatabase response.
-func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *azcore.Response) (SensitivityLabelsListCurrentByDatabaseResponse, error) {
-	result := SensitivityLabelsListCurrentByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SensitivityLabelListResult); err != nil {
+func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsListCurrentByDatabaseResponse, error) {
+	result := SensitivityLabelsListCurrentByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return SensitivityLabelsListCurrentByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listCurrentByDatabaseHandleError handles the ListCurrentByDatabase error response.
-func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListRecommendedByDatabase - Gets the sensitivity labels of a given database
 // If the operation fails it returns a generic error.
-func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListRecommendedByDatabaseOptions) SensitivityLabelsListRecommendedByDatabasePager {
-	return &sensitivityLabelsListRecommendedByDatabasePager{
+func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListRecommendedByDatabaseOptions) *SensitivityLabelsListRecommendedByDatabasePager {
+	return &SensitivityLabelsListRecommendedByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp SensitivityLabelsListRecommendedByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
+		advancer: func(ctx context.Context, resp SensitivityLabelsListRecommendedByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SensitivityLabelListResult.NextLink)
 		},
 	}
 }
 
 // listRecommendedByDatabaseCreateRequest creates the ListRecommendedByDatabase request.
-func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListRecommendedByDatabaseOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsListRecommendedByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -521,12 +518,11 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
@@ -537,30 +533,30 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listRecommendedByDatabaseHandleResponse handles the ListRecommendedByDatabase response.
-func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *azcore.Response) (SensitivityLabelsListRecommendedByDatabaseResponse, error) {
-	result := SensitivityLabelsListRecommendedByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SensitivityLabelListResult); err != nil {
+func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response) (SensitivityLabelsListRecommendedByDatabaseResponse, error) {
+	result := SensitivityLabelsListRecommendedByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return SensitivityLabelsListRecommendedByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listRecommendedByDatabaseHandleError handles the ListRecommendedByDatabase error response.
-func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Update - Update sensitivity labels of a given database using an operations batch.
@@ -570,18 +566,18 @@ func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return SensitivityLabelsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SensitivityLabelsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SensitivityLabelsUpdateResponse{}, client.updateHandleError(resp)
 	}
-	return SensitivityLabelsUpdateResponse{RawResponse: resp.Response}, nil
+	return SensitivityLabelsUpdateResponse{RawResponse: resp}, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsUpdateOptions) (*azcore.Request, error) {
+func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -599,25 +595,24 @@ func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *SensitivityLabelsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SensitivityLabelsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ReplicationLinksClient contains the methods for the ReplicationLinks group.
 // Don't use this type directly, use NewReplicationLinksClient() instead.
 type ReplicationLinksClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewReplicationLinksClient creates a new instance of ReplicationLinksClient with the specified values.
-func NewReplicationLinksClient(con *armcore.Connection, subscriptionID string) *ReplicationLinksClient {
-	return &ReplicationLinksClient{con: con, subscriptionID: subscriptionID}
+func NewReplicationLinksClient(con *arm.Connection, subscriptionID string) *ReplicationLinksClient {
+	return &ReplicationLinksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Delete - Deletes a database replication link. Cannot be done during failover.
@@ -37,18 +40,18 @@ func (client *ReplicationLinksClient) Delete(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ReplicationLinksDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ReplicationLinksDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ReplicationLinksDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return ReplicationLinksDeleteResponse{RawResponse: resp.Response}, nil
+	return ReplicationLinksDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksDeleteOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,27 +73,26 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter linkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ReplicationLinksClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginFailover - Sets which replica database is primary by failing over from the current primary replica database.
@@ -101,65 +103,37 @@ func (client *ReplicationLinksClient) BeginFailover(ctx context.Context, resourc
 		return ReplicationLinksFailoverPollerResponse{}, err
 	}
 	result := ReplicationLinksFailoverPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ReplicationLinksClient.Failover", "", resp, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return ReplicationLinksFailoverPollerResponse{}, err
-	}
-	poller := &replicationLinksFailoverPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ReplicationLinksFailoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeFailover creates a new ReplicationLinksFailoverPoller from the specified resume token.
-// token - The value must come from a previous call to ReplicationLinksFailoverPoller.ResumeToken().
-func (client *ReplicationLinksClient) ResumeFailover(ctx context.Context, token string) (ReplicationLinksFailoverPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ReplicationLinksClient.Failover", token, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return ReplicationLinksFailoverPollerResponse{}, err
-	}
-	poller := &replicationLinksFailoverPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ReplicationLinksFailoverPollerResponse{}, err
-	}
-	result := ReplicationLinksFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ReplicationLinksFailoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ReplicationLinksClient.Failover", "", resp, client.pl, client.failoverHandleError)
+	if err != nil {
+		return ReplicationLinksFailoverPollerResponse{}, err
+	}
+	result.Poller = &ReplicationLinksFailoverPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Failover - Sets which replica database is primary by failing over from the current primary replica database.
 // If the operation fails it returns a generic error.
-func (client *ReplicationLinksClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverOptions) (*azcore.Response, error) {
+func (client *ReplicationLinksClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.failoverHandleError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -181,27 +155,26 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter linkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // failoverHandleError handles the Failover error response.
-func (client *ReplicationLinksClient) failoverHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) failoverHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginFailoverAllowDataLoss - Sets which replica database is primary by failing over from the current primary replica database. This operation might result
@@ -213,42 +186,14 @@ func (client *ReplicationLinksClient) BeginFailoverAllowDataLoss(ctx context.Con
 		return ReplicationLinksFailoverAllowDataLossPollerResponse{}, err
 	}
 	result := ReplicationLinksFailoverAllowDataLossPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ReplicationLinksClient.FailoverAllowDataLoss", "", resp, client.con.Pipeline(), client.failoverAllowDataLossHandleError)
-	if err != nil {
-		return ReplicationLinksFailoverAllowDataLossPollerResponse{}, err
-	}
-	poller := &replicationLinksFailoverAllowDataLossPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ReplicationLinksFailoverAllowDataLossResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeFailoverAllowDataLoss creates a new ReplicationLinksFailoverAllowDataLossPoller from the specified resume token.
-// token - The value must come from a previous call to ReplicationLinksFailoverAllowDataLossPoller.ResumeToken().
-func (client *ReplicationLinksClient) ResumeFailoverAllowDataLoss(ctx context.Context, token string) (ReplicationLinksFailoverAllowDataLossPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ReplicationLinksClient.FailoverAllowDataLoss", token, client.con.Pipeline(), client.failoverAllowDataLossHandleError)
-	if err != nil {
-		return ReplicationLinksFailoverAllowDataLossPollerResponse{}, err
-	}
-	poller := &replicationLinksFailoverAllowDataLossPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ReplicationLinksFailoverAllowDataLossPollerResponse{}, err
-	}
-	result := ReplicationLinksFailoverAllowDataLossPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ReplicationLinksFailoverAllowDataLossResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ReplicationLinksClient.FailoverAllowDataLoss", "", resp, client.pl, client.failoverAllowDataLossHandleError)
+	if err != nil {
+		return ReplicationLinksFailoverAllowDataLossPollerResponse{}, err
+	}
+	result.Poller = &ReplicationLinksFailoverAllowDataLossPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -256,23 +201,23 @@ func (client *ReplicationLinksClient) ResumeFailoverAllowDataLoss(ctx context.Co
 // FailoverAllowDataLoss - Sets which replica database is primary by failing over from the current primary replica database. This operation might result
 // in data loss.
 // If the operation fails it returns a generic error.
-func (client *ReplicationLinksClient) failoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverAllowDataLossOptions) (*azcore.Response, error) {
+func (client *ReplicationLinksClient) failoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverAllowDataLossOptions) (*http.Response, error) {
 	req, err := client.failoverAllowDataLossCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.failoverAllowDataLossHandleError(resp)
 	}
 	return resp, nil
 }
 
 // failoverAllowDataLossCreateRequest creates the FailoverAllowDataLoss request.
-func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverAllowDataLossOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksBeginFailoverAllowDataLossOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -294,27 +239,26 @@ func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx con
 		return nil, errors.New("parameter linkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // failoverAllowDataLossHandleError handles the FailoverAllowDataLoss error response.
-func (client *ReplicationLinksClient) failoverAllowDataLossHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) failoverAllowDataLossHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a replication link.
@@ -324,18 +268,18 @@ func (client *ReplicationLinksClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ReplicationLinksGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ReplicationLinksGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ReplicationLinksGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksGetOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -357,55 +301,54 @@ func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationLinksClient) getHandleResponse(resp *azcore.Response) (ReplicationLinksGetResponse, error) {
-	result := ReplicationLinksGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ReplicationLink); err != nil {
+func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (ReplicationLinksGetResponse, error) {
+	result := ReplicationLinksGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLink); err != nil {
 		return ReplicationLinksGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ReplicationLinksClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Gets a list of replication links on database.
 // If the operation fails it returns a generic error.
-func (client *ReplicationLinksClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksListByDatabaseOptions) ReplicationLinksListByDatabasePager {
-	return &replicationLinksListByDatabasePager{
+func (client *ReplicationLinksClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksListByDatabaseOptions) *ReplicationLinksListByDatabasePager {
+	return &ReplicationLinksListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationLinksListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ReplicationLinkListResult.NextLink)
+		advancer: func(ctx context.Context, resp ReplicationLinksListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationLinkListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksListByDatabaseOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -423,55 +366,54 @@ func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *azcore.Response) (ReplicationLinksListByDatabaseResponse, error) {
-	result := ReplicationLinksListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ReplicationLinkListResult); err != nil {
+func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Response) (ReplicationLinksListByDatabaseResponse, error) {
+	result := ReplicationLinksListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLinkListResult); err != nil {
 		return ReplicationLinksListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *ReplicationLinksClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Gets a list of replication links.
 // If the operation fails it returns a generic error.
-func (client *ReplicationLinksClient) ListByServer(resourceGroupName string, serverName string, options *ReplicationLinksListByServerOptions) ReplicationLinksListByServerPager {
-	return &replicationLinksListByServerPager{
+func (client *ReplicationLinksClient) ListByServer(resourceGroupName string, serverName string, options *ReplicationLinksListByServerOptions) *ReplicationLinksListByServerPager {
+	return &ReplicationLinksListByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationLinksListByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ReplicationLinkListResult.NextLink)
+		advancer: func(ctx context.Context, resp ReplicationLinksListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReplicationLinkListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ReplicationLinksListByServerOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ReplicationLinksListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/replicationLinks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -485,37 +427,36 @@ func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ReplicationLinksClient) listByServerHandleResponse(resp *azcore.Response) (ReplicationLinksListByServerResponse, error) {
-	result := ReplicationLinksListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ReplicationLinkListResult); err != nil {
+func (client *ReplicationLinksClient) listByServerHandleResponse(resp *http.Response) (ReplicationLinksListByServerResponse, error) {
+	result := ReplicationLinksListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLinkListResult); err != nil {
 		return ReplicationLinksListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *ReplicationLinksClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUnlink - Deletes a database replication link in forced or friendly way.
@@ -526,65 +467,37 @@ func (client *ReplicationLinksClient) BeginUnlink(ctx context.Context, resourceG
 		return ReplicationLinksUnlinkPollerResponse{}, err
 	}
 	result := ReplicationLinksUnlinkPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ReplicationLinksClient.Unlink", "", resp, client.con.Pipeline(), client.unlinkHandleError)
-	if err != nil {
-		return ReplicationLinksUnlinkPollerResponse{}, err
-	}
-	poller := &replicationLinksUnlinkPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ReplicationLinksUnlinkResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUnlink creates a new ReplicationLinksUnlinkPoller from the specified resume token.
-// token - The value must come from a previous call to ReplicationLinksUnlinkPoller.ResumeToken().
-func (client *ReplicationLinksClient) ResumeUnlink(ctx context.Context, token string) (ReplicationLinksUnlinkPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ReplicationLinksClient.Unlink", token, client.con.Pipeline(), client.unlinkHandleError)
-	if err != nil {
-		return ReplicationLinksUnlinkPollerResponse{}, err
-	}
-	poller := &replicationLinksUnlinkPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ReplicationLinksUnlinkPollerResponse{}, err
-	}
-	result := ReplicationLinksUnlinkPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ReplicationLinksUnlinkResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ReplicationLinksClient.Unlink", "", resp, client.pl, client.unlinkHandleError)
+	if err != nil {
+		return ReplicationLinksUnlinkPollerResponse{}, err
+	}
+	result.Poller = &ReplicationLinksUnlinkPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Unlink - Deletes a database replication link in forced or friendly way.
 // If the operation fails it returns a generic error.
-func (client *ReplicationLinksClient) unlink(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters UnlinkParameters, options *ReplicationLinksBeginUnlinkOptions) (*azcore.Response, error) {
+func (client *ReplicationLinksClient) unlink(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters UnlinkParameters, options *ReplicationLinksBeginUnlinkOptions) (*http.Response, error) {
 	req, err := client.unlinkCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.unlinkHandleError(resp)
 	}
 	return resp, nil
 }
 
 // unlinkCreateRequest creates the Unlink request.
-func (client *ReplicationLinksClient) unlinkCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters UnlinkParameters, options *ReplicationLinksBeginUnlinkOptions) (*azcore.Request, error) {
+func (client *ReplicationLinksClient) unlinkCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters UnlinkParameters, options *ReplicationLinksBeginUnlinkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/unlink"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -606,25 +519,24 @@ func (client *ReplicationLinksClient) unlinkCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter linkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // unlinkHandleError handles the Unlink error response.
-func (client *ReplicationLinksClient) unlinkHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationLinksClient) unlinkHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

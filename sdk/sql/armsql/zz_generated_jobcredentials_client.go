@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // JobCredentialsClient contains the methods for the JobCredentials group.
 // Don't use this type directly, use NewJobCredentialsClient() instead.
 type JobCredentialsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewJobCredentialsClient creates a new instance of JobCredentialsClient with the specified values.
-func NewJobCredentialsClient(con *armcore.Connection, subscriptionID string) *JobCredentialsClient {
-	return &JobCredentialsClient{con: con, subscriptionID: subscriptionID}
+func NewJobCredentialsClient(con *arm.Connection, subscriptionID string) *JobCredentialsClient {
+	return &JobCredentialsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a job credential.
@@ -36,18 +39,18 @@ func (client *JobCredentialsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return JobCredentialsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobCredentialsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return JobCredentialsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, parameters JobCredential, options *JobCredentialsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, parameters JobCredential, options *JobCredentialsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -69,37 +72,36 @@ func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JobCredentialsClient) createOrUpdateHandleResponse(resp *azcore.Response) (JobCredentialsCreateOrUpdateResponse, error) {
-	result := JobCredentialsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobCredential); err != nil {
+func (client *JobCredentialsClient) createOrUpdateHandleResponse(resp *http.Response) (JobCredentialsCreateOrUpdateResponse, error) {
+	result := JobCredentialsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredential); err != nil {
 		return JobCredentialsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JobCredentialsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobCredentialsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes a job credential.
@@ -109,18 +111,18 @@ func (client *JobCredentialsClient) Delete(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobCredentialsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobCredentialsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JobCredentialsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return JobCredentialsDeleteResponse{RawResponse: resp.Response}, nil
+	return JobCredentialsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsDeleteOptions) (*azcore.Request, error) {
+func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,27 +144,26 @@ func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *JobCredentialsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobCredentialsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a jobs credential.
@@ -172,18 +173,18 @@ func (client *JobCredentialsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return JobCredentialsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobCredentialsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobCredentialsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsGetOptions) (*azcore.Request, error) {
+func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -205,55 +206,54 @@ func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobCredentialsClient) getHandleResponse(resp *azcore.Response) (JobCredentialsGetResponse, error) {
-	result := JobCredentialsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobCredential); err != nil {
+func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobCredentialsGetResponse, error) {
+	result := JobCredentialsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredential); err != nil {
 		return JobCredentialsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *JobCredentialsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobCredentialsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByAgent - Gets a list of jobs credentials.
 // If the operation fails it returns a generic error.
-func (client *JobCredentialsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsListByAgentOptions) JobCredentialsListByAgentPager {
-	return &jobCredentialsListByAgentPager{
+func (client *JobCredentialsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsListByAgentOptions) *JobCredentialsListByAgentPager {
+	return &JobCredentialsListByAgentPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
 		},
-		advancer: func(ctx context.Context, resp JobCredentialsListByAgentResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobCredentialListResult.NextLink)
+		advancer: func(ctx context.Context, resp JobCredentialsListByAgentResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobCredentialListResult.NextLink)
 		},
 	}
 }
 
 // listByAgentCreateRequest creates the ListByAgent request.
-func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsListByAgentOptions) (*azcore.Request, error) {
+func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsListByAgentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -271,35 +271,34 @@ func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByAgentHandleResponse handles the ListByAgent response.
-func (client *JobCredentialsClient) listByAgentHandleResponse(resp *azcore.Response) (JobCredentialsListByAgentResponse, error) {
-	result := JobCredentialsListByAgentResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobCredentialListResult); err != nil {
+func (client *JobCredentialsClient) listByAgentHandleResponse(resp *http.Response) (JobCredentialsListByAgentResponse, error) {
+	result := JobCredentialsListByAgentResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredentialListResult); err != nil {
 		return JobCredentialsListByAgentResponse{}, err
 	}
 	return result, nil
 }
 
 // listByAgentHandleError handles the ListByAgent error response.
-func (client *JobCredentialsClient) listByAgentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobCredentialsClient) listByAgentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

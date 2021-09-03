@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -22,13 +24,14 @@ import (
 // JobTargetExecutionsClient contains the methods for the JobTargetExecutions group.
 // Don't use this type directly, use NewJobTargetExecutionsClient() instead.
 type JobTargetExecutionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewJobTargetExecutionsClient creates a new instance of JobTargetExecutionsClient with the specified values.
-func NewJobTargetExecutionsClient(con *armcore.Connection, subscriptionID string) *JobTargetExecutionsClient {
-	return &JobTargetExecutionsClient{con: con, subscriptionID: subscriptionID}
+func NewJobTargetExecutionsClient(con *arm.Connection, subscriptionID string) *JobTargetExecutionsClient {
+	return &JobTargetExecutionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a target execution.
@@ -38,18 +41,18 @@ func (client *JobTargetExecutionsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobTargetExecutionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobTargetExecutionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobTargetExecutionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, targetID string, options *JobTargetExecutionsGetOptions) (*azcore.Request, error) {
+func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, targetID string, options *JobTargetExecutionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets/{targetId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,55 +80,54 @@ func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobTargetExecutionsClient) getHandleResponse(resp *azcore.Response) (JobTargetExecutionsGetResponse, error) {
-	result := JobTargetExecutionsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobExecution); err != nil {
+func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) (JobTargetExecutionsGetResponse, error) {
+	result := JobTargetExecutionsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return JobTargetExecutionsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *JobTargetExecutionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetExecutionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByJobExecution - Lists target executions for all steps of a job execution.
 // If the operation fails it returns a generic error.
-func (client *JobTargetExecutionsClient) ListByJobExecution(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsListByJobExecutionOptions) JobTargetExecutionsListByJobExecutionPager {
-	return &jobTargetExecutionsListByJobExecutionPager{
+func (client *JobTargetExecutionsClient) ListByJobExecution(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsListByJobExecutionOptions) *JobTargetExecutionsListByJobExecutionPager {
+	return &JobTargetExecutionsListByJobExecutionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
 		},
-		advancer: func(ctx context.Context, resp JobTargetExecutionsListByJobExecutionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
+		advancer: func(ctx context.Context, resp JobTargetExecutionsListByJobExecutionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
 		},
 	}
 }
 
 // listByJobExecutionCreateRequest creates the ListByJobExecution request.
-func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsListByJobExecutionOptions) (*azcore.Request, error) {
+func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsListByJobExecutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -148,12 +150,11 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.CreateTimeMin != nil {
 		reqQP.Set("createTimeMin", options.CreateTimeMin.Format(time.RFC3339Nano))
 	}
@@ -176,48 +177,48 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByJobExecutionHandleResponse handles the ListByJobExecution response.
-func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *azcore.Response) (JobTargetExecutionsListByJobExecutionResponse, error) {
-	result := JobTargetExecutionsListByJobExecutionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobExecutionListResult); err != nil {
+func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response) (JobTargetExecutionsListByJobExecutionResponse, error) {
+	result := JobTargetExecutionsListByJobExecutionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobTargetExecutionsListByJobExecutionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByJobExecutionHandleError handles the ListByJobExecution error response.
-func (client *JobTargetExecutionsClient) listByJobExecutionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetExecutionsClient) listByJobExecutionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByStep - Lists the target executions of a job step execution.
 // If the operation fails it returns a generic error.
-func (client *JobTargetExecutionsClient) ListByStep(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsListByStepOptions) JobTargetExecutionsListByStepPager {
-	return &jobTargetExecutionsListByStepPager{
+func (client *JobTargetExecutionsClient) ListByStep(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsListByStepOptions) *JobTargetExecutionsListByStepPager {
+	return &JobTargetExecutionsListByStepPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByStepCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, stepName, options)
 		},
-		advancer: func(ctx context.Context, resp JobTargetExecutionsListByStepResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
+		advancer: func(ctx context.Context, resp JobTargetExecutionsListByStepResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobExecutionListResult.NextLink)
 		},
 	}
 }
 
 // listByStepCreateRequest creates the ListByStep request.
-func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsListByStepOptions) (*azcore.Request, error) {
+func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsListByStepOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -244,12 +245,11 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.CreateTimeMin != nil {
 		reqQP.Set("createTimeMin", options.CreateTimeMin.Format(time.RFC3339Nano))
 	}
@@ -272,28 +272,28 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByStepHandleResponse handles the ListByStep response.
-func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *azcore.Response) (JobTargetExecutionsListByStepResponse, error) {
-	result := JobTargetExecutionsListByStepResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobExecutionListResult); err != nil {
+func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *http.Response) (JobTargetExecutionsListByStepResponse, error) {
+	result := JobTargetExecutionsListByStepResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobTargetExecutionsListByStepResponse{}, err
 	}
 	return result, nil
 }
 
 // listByStepHandleError handles the ListByStep error response.
-func (client *JobTargetExecutionsClient) listByStepHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobTargetExecutionsClient) listByStepHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

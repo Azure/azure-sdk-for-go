@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -21,13 +23,14 @@ import (
 // JobStepsClient contains the methods for the JobSteps group.
 // Don't use this type directly, use NewJobStepsClient() instead.
 type JobStepsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewJobStepsClient creates a new instance of JobStepsClient with the specified values.
-func NewJobStepsClient(con *armcore.Connection, subscriptionID string) *JobStepsClient {
-	return &JobStepsClient{con: con, subscriptionID: subscriptionID}
+func NewJobStepsClient(con *arm.Connection, subscriptionID string) *JobStepsClient {
+	return &JobStepsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a job step. This will implicitly create a new job version.
@@ -37,18 +40,18 @@ func (client *JobStepsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobStepsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobStepsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return JobStepsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, parameters JobStep, options *JobStepsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, parameters JobStep, options *JobStepsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,37 +77,36 @@ func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JobStepsClient) createOrUpdateHandleResponse(resp *azcore.Response) (JobStepsCreateOrUpdateResponse, error) {
-	result := JobStepsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStep); err != nil {
+func (client *JobStepsClient) createOrUpdateHandleResponse(resp *http.Response) (JobStepsCreateOrUpdateResponse, error) {
+	result := JobStepsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
 		return JobStepsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JobStepsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobStepsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes a job step. This will implicitly create a new job version.
@@ -114,18 +116,18 @@ func (client *JobStepsClient) Delete(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return JobStepsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobStepsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return JobStepsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return JobStepsDeleteResponse{RawResponse: resp.Response}, nil
+	return JobStepsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobStepsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, options *JobStepsDeleteOptions) (*azcore.Request, error) {
+func (client *JobStepsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, options *JobStepsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,27 +153,26 @@ func (client *JobStepsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *JobStepsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobStepsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a job step in a job's current version.
@@ -181,18 +182,18 @@ func (client *JobStepsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return JobStepsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobStepsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobStepsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobStepsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, options *JobStepsGetOptions) (*azcore.Request, error) {
+func (client *JobStepsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, options *JobStepsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,37 +219,36 @@ func (client *JobStepsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobStepsClient) getHandleResponse(resp *azcore.Response) (JobStepsGetResponse, error) {
-	result := JobStepsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStep); err != nil {
+func (client *JobStepsClient) getHandleResponse(resp *http.Response) (JobStepsGetResponse, error) {
+	result := JobStepsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
 		return JobStepsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *JobStepsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobStepsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetByVersion - Gets the specified version of a job step.
@@ -258,18 +258,18 @@ func (client *JobStepsClient) GetByVersion(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobStepsGetByVersionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return JobStepsGetByVersionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return JobStepsGetByVersionResponse{}, client.getByVersionHandleError(resp)
 	}
 	return client.getByVersionHandleResponse(resp)
 }
 
 // getByVersionCreateRequest creates the GetByVersion request.
-func (client *JobStepsClient) getByVersionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, stepName string, options *JobStepsGetByVersionOptions) (*azcore.Request, error) {
+func (client *JobStepsClient) getByVersionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, stepName string, options *JobStepsGetByVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps/{stepName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -296,55 +296,54 @@ func (client *JobStepsClient) getByVersionCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByVersionHandleResponse handles the GetByVersion response.
-func (client *JobStepsClient) getByVersionHandleResponse(resp *azcore.Response) (JobStepsGetByVersionResponse, error) {
-	result := JobStepsGetByVersionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStep); err != nil {
+func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (JobStepsGetByVersionResponse, error) {
+	result := JobStepsGetByVersionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
 		return JobStepsGetByVersionResponse{}, err
 	}
 	return result, nil
 }
 
 // getByVersionHandleError handles the GetByVersion error response.
-func (client *JobStepsClient) getByVersionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobStepsClient) getByVersionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByJob - Gets all job steps for a job's current version.
 // If the operation fails it returns a generic error.
-func (client *JobStepsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsListByJobOptions) JobStepsListByJobPager {
-	return &jobStepsListByJobPager{
+func (client *JobStepsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsListByJobOptions) *JobStepsListByJobPager {
+	return &JobStepsListByJobPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
 		},
-		advancer: func(ctx context.Context, resp JobStepsListByJobResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobStepListResult.NextLink)
+		advancer: func(ctx context.Context, resp JobStepsListByJobResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStepListResult.NextLink)
 		},
 	}
 }
 
 // listByJobCreateRequest creates the ListByJob request.
-func (client *JobStepsClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsListByJobOptions) (*azcore.Request, error) {
+func (client *JobStepsClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsListByJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -366,55 +365,54 @@ func (client *JobStepsClient) listByJobCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByJobHandleResponse handles the ListByJob response.
-func (client *JobStepsClient) listByJobHandleResponse(resp *azcore.Response) (JobStepsListByJobResponse, error) {
-	result := JobStepsListByJobResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStepListResult); err != nil {
+func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobStepsListByJobResponse, error) {
+	result := JobStepsListByJobResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStepListResult); err != nil {
 		return JobStepsListByJobResponse{}, err
 	}
 	return result, nil
 }
 
 // listByJobHandleError handles the ListByJob error response.
-func (client *JobStepsClient) listByJobHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobStepsClient) listByJobHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByVersion - Gets all job steps in the specified job version.
 // If the operation fails it returns a generic error.
-func (client *JobStepsClient) ListByVersion(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsListByVersionOptions) JobStepsListByVersionPager {
-	return &jobStepsListByVersionPager{
+func (client *JobStepsClient) ListByVersion(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsListByVersionOptions) *JobStepsListByVersionPager {
+	return &JobStepsListByVersionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByVersionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, options)
 		},
-		advancer: func(ctx context.Context, resp JobStepsListByVersionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobStepListResult.NextLink)
+		advancer: func(ctx context.Context, resp JobStepsListByVersionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStepListResult.NextLink)
 		},
 	}
 }
 
 // listByVersionCreateRequest creates the ListByVersion request.
-func (client *JobStepsClient) listByVersionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsListByVersionOptions) (*azcore.Request, error) {
+func (client *JobStepsClient) listByVersionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsListByVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -437,35 +435,34 @@ func (client *JobStepsClient) listByVersionCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByVersionHandleResponse handles the ListByVersion response.
-func (client *JobStepsClient) listByVersionHandleResponse(resp *azcore.Response) (JobStepsListByVersionResponse, error) {
-	result := JobStepsListByVersionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStepListResult); err != nil {
+func (client *JobStepsClient) listByVersionHandleResponse(resp *http.Response) (JobStepsListByVersionResponse, error) {
+	result := JobStepsListByVersionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStepListResult); err != nil {
 		return JobStepsListByVersionResponse{}, err
 	}
 	return result, nil
 }
 
 // listByVersionHandleError handles the ListByVersion error response.
-func (client *JobStepsClient) listByVersionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *JobStepsClient) listByVersionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

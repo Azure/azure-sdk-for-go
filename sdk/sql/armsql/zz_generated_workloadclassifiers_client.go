@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // WorkloadClassifiersClient contains the methods for the WorkloadClassifiers group.
 // Don't use this type directly, use NewWorkloadClassifiersClient() instead.
 type WorkloadClassifiersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewWorkloadClassifiersClient creates a new instance of WorkloadClassifiersClient with the specified values.
-func NewWorkloadClassifiersClient(con *armcore.Connection, subscriptionID string) *WorkloadClassifiersClient {
-	return &WorkloadClassifiersClient{con: con, subscriptionID: subscriptionID}
+func NewWorkloadClassifiersClient(con *arm.Connection, subscriptionID string) *WorkloadClassifiersClient {
+	return &WorkloadClassifiersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a workload classifier.
@@ -38,65 +41,37 @@ func (client *WorkloadClassifiersClient) BeginCreateOrUpdate(ctx context.Context
 		return WorkloadClassifiersCreateOrUpdatePollerResponse{}, err
 	}
 	result := WorkloadClassifiersCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("WorkloadClassifiersClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return WorkloadClassifiersCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &workloadClassifiersCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkloadClassifiersCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new WorkloadClassifiersCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to WorkloadClassifiersCreateOrUpdatePoller.ResumeToken().
-func (client *WorkloadClassifiersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (WorkloadClassifiersCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("WorkloadClassifiersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return WorkloadClassifiersCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &workloadClassifiersCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return WorkloadClassifiersCreateOrUpdatePollerResponse{}, err
-	}
-	result := WorkloadClassifiersCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkloadClassifiersCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("WorkloadClassifiersClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return WorkloadClassifiersCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &WorkloadClassifiersCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a workload classifier.
 // If the operation fails it returns a generic error.
-func (client *WorkloadClassifiersClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *WorkloadClassifiersClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -122,28 +97,27 @@ func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WorkloadClassifiersClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkloadClassifiersClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes a workload classifier.
@@ -154,65 +128,37 @@ func (client *WorkloadClassifiersClient) BeginDelete(ctx context.Context, resour
 		return WorkloadClassifiersDeletePollerResponse{}, err
 	}
 	result := WorkloadClassifiersDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("WorkloadClassifiersClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return WorkloadClassifiersDeletePollerResponse{}, err
-	}
-	poller := &workloadClassifiersDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkloadClassifiersDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new WorkloadClassifiersDeletePoller from the specified resume token.
-// token - The value must come from a previous call to WorkloadClassifiersDeletePoller.ResumeToken().
-func (client *WorkloadClassifiersClient) ResumeDelete(ctx context.Context, token string) (WorkloadClassifiersDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("WorkloadClassifiersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return WorkloadClassifiersDeletePollerResponse{}, err
-	}
-	poller := &workloadClassifiersDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return WorkloadClassifiersDeletePollerResponse{}, err
-	}
-	result := WorkloadClassifiersDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WorkloadClassifiersDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("WorkloadClassifiersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return WorkloadClassifiersDeletePollerResponse{}, err
+	}
+	result.Poller = &WorkloadClassifiersDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a workload classifier.
 // If the operation fails it returns a generic error.
-func (client *WorkloadClassifiersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersBeginDeleteOptions) (*azcore.Response, error) {
+func (client *WorkloadClassifiersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkloadClassifiersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersBeginDeleteOptions) (*azcore.Request, error) {
+func (client *WorkloadClassifiersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,27 +184,26 @@ func (client *WorkloadClassifiersClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *WorkloadClassifiersClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkloadClassifiersClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a workload classifier
@@ -268,18 +213,18 @@ func (client *WorkloadClassifiersClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WorkloadClassifiersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkloadClassifiersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkloadClassifiersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkloadClassifiersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersGetOptions) (*azcore.Request, error) {
+func (client *WorkloadClassifiersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -305,55 +250,54 @@ func (client *WorkloadClassifiersClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkloadClassifiersClient) getHandleResponse(resp *azcore.Response) (WorkloadClassifiersGetResponse, error) {
-	result := WorkloadClassifiersGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkloadClassifier); err != nil {
+func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) (WorkloadClassifiersGetResponse, error) {
+	result := WorkloadClassifiersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadClassifier); err != nil {
 		return WorkloadClassifiersGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *WorkloadClassifiersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkloadClassifiersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByWorkloadGroup - Gets the list of workload classifiers for a workload group
 // If the operation fails it returns a generic error.
-func (client *WorkloadClassifiersClient) ListByWorkloadGroup(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersListByWorkloadGroupOptions) WorkloadClassifiersListByWorkloadGroupPager {
-	return &workloadClassifiersListByWorkloadGroupPager{
+func (client *WorkloadClassifiersClient) ListByWorkloadGroup(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersListByWorkloadGroupOptions) *WorkloadClassifiersListByWorkloadGroupPager {
+	return &WorkloadClassifiersListByWorkloadGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkloadGroupCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkloadClassifiersListByWorkloadGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkloadClassifierListResult.NextLink)
+		advancer: func(ctx context.Context, resp WorkloadClassifiersListByWorkloadGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadClassifierListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkloadGroupCreateRequest creates the ListByWorkloadGroup request.
-func (client *WorkloadClassifiersClient) listByWorkloadGroupCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersListByWorkloadGroupOptions) (*azcore.Request, error) {
+func (client *WorkloadClassifiersClient) listByWorkloadGroupCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersListByWorkloadGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -375,35 +319,34 @@ func (client *WorkloadClassifiersClient) listByWorkloadGroupCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByWorkloadGroupHandleResponse handles the ListByWorkloadGroup response.
-func (client *WorkloadClassifiersClient) listByWorkloadGroupHandleResponse(resp *azcore.Response) (WorkloadClassifiersListByWorkloadGroupResponse, error) {
-	result := WorkloadClassifiersListByWorkloadGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkloadClassifierListResult); err != nil {
+func (client *WorkloadClassifiersClient) listByWorkloadGroupHandleResponse(resp *http.Response) (WorkloadClassifiersListByWorkloadGroupResponse, error) {
+	result := WorkloadClassifiersListByWorkloadGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadClassifierListResult); err != nil {
 		return WorkloadClassifiersListByWorkloadGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByWorkloadGroupHandleError handles the ListByWorkloadGroup error response.
-func (client *WorkloadClassifiersClient) listByWorkloadGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkloadClassifiersClient) listByWorkloadGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

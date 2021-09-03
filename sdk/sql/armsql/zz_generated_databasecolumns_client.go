@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // DatabaseColumnsClient contains the methods for the DatabaseColumns group.
 // Don't use this type directly, use NewDatabaseColumnsClient() instead.
 type DatabaseColumnsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDatabaseColumnsClient creates a new instance of DatabaseColumnsClient with the specified values.
-func NewDatabaseColumnsClient(con *armcore.Connection, subscriptionID string) *DatabaseColumnsClient {
-	return &DatabaseColumnsClient{con: con, subscriptionID: subscriptionID}
+func NewDatabaseColumnsClient(con *arm.Connection, subscriptionID string) *DatabaseColumnsClient {
+	return &DatabaseColumnsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get database column
@@ -36,18 +39,18 @@ func (client *DatabaseColumnsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DatabaseColumnsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabaseColumnsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabaseColumnsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseColumnsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *DatabaseColumnsGetOptions) (*azcore.Request, error) {
+func (client *DatabaseColumnsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *DatabaseColumnsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,55 +80,54 @@ func (client *DatabaseColumnsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseColumnsClient) getHandleResponse(resp *azcore.Response) (DatabaseColumnsGetResponse, error) {
-	result := DatabaseColumnsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseColumn); err != nil {
+func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (DatabaseColumnsGetResponse, error) {
+	result := DatabaseColumnsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumn); err != nil {
 		return DatabaseColumnsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DatabaseColumnsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseColumnsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - List database columns
 // If the operation fails it returns a generic error.
-func (client *DatabaseColumnsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsListByDatabaseOptions) DatabaseColumnsListByDatabasePager {
-	return &databaseColumnsListByDatabasePager{
+func (client *DatabaseColumnsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsListByDatabaseOptions) *DatabaseColumnsListByDatabasePager {
+	return &DatabaseColumnsListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseColumnsListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseColumnListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabaseColumnsListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseColumnListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsListByDatabaseOptions) (*azcore.Request, error) {
+func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseColumnsListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/columns"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,12 +145,11 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Schema != nil {
 		for _, qv := range options.Schema {
 			reqQP.Add("schema", qv)
@@ -173,48 +174,48 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *azcore.Response) (DatabaseColumnsListByDatabaseResponse, error) {
-	result := DatabaseColumnsListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseColumnListResult); err != nil {
+func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseColumnsListByDatabaseResponse, error) {
+	result := DatabaseColumnsListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
 		return DatabaseColumnsListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseColumnsClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseColumnsClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByTable - List database columns
 // If the operation fails it returns a generic error.
-func (client *DatabaseColumnsClient) ListByTable(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsListByTableOptions) DatabaseColumnsListByTablePager {
-	return &databaseColumnsListByTablePager{
+func (client *DatabaseColumnsClient) ListByTable(resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsListByTableOptions) *DatabaseColumnsListByTablePager {
+	return &DatabaseColumnsListByTablePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTableCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseColumnsListByTableResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseColumnListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabaseColumnsListByTableResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseColumnListResult.NextLink)
 		},
 	}
 }
 
 // listByTableCreateRequest creates the ListByTable request.
-func (client *DatabaseColumnsClient) listByTableCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsListByTableOptions) (*azcore.Request, error) {
+func (client *DatabaseColumnsClient) listByTableCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseColumnsListByTableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -240,38 +241,37 @@ func (client *DatabaseColumnsClient) listByTableCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByTableHandleResponse handles the ListByTable response.
-func (client *DatabaseColumnsClient) listByTableHandleResponse(resp *azcore.Response) (DatabaseColumnsListByTableResponse, error) {
-	result := DatabaseColumnsListByTableResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseColumnListResult); err != nil {
+func (client *DatabaseColumnsClient) listByTableHandleResponse(resp *http.Response) (DatabaseColumnsListByTableResponse, error) {
+	result := DatabaseColumnsListByTableResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
 		return DatabaseColumnsListByTableResponse{}, err
 	}
 	return result, nil
 }
 
 // listByTableHandleError handles the ListByTable error response.
-func (client *DatabaseColumnsClient) listByTableHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseColumnsClient) listByTableHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // FailoverGroupsClient contains the methods for the FailoverGroups group.
 // Don't use this type directly, use NewFailoverGroupsClient() instead.
 type FailoverGroupsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewFailoverGroupsClient creates a new instance of FailoverGroupsClient with the specified values.
-func NewFailoverGroupsClient(con *armcore.Connection, subscriptionID string) *FailoverGroupsClient {
-	return &FailoverGroupsClient{con: con, subscriptionID: subscriptionID}
+func NewFailoverGroupsClient(con *arm.Connection, subscriptionID string) *FailoverGroupsClient {
+	return &FailoverGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
@@ -38,65 +41,37 @@ func (client *FailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, res
 		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
 	}
 	result := FailoverGroupsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("FailoverGroupsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &failoverGroupsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new FailoverGroupsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to FailoverGroupsCreateOrUpdatePoller.ResumeToken().
-func (client *FailoverGroupsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (FailoverGroupsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("FailoverGroupsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &failoverGroupsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
-	}
-	result := FailoverGroupsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return FailoverGroupsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &FailoverGroupsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FailoverGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes a failover group.
@@ -146,65 +120,37 @@ func (client *FailoverGroupsClient) BeginDelete(ctx context.Context, resourceGro
 		return FailoverGroupsDeletePollerResponse{}, err
 	}
 	result := FailoverGroupsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("FailoverGroupsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return FailoverGroupsDeletePollerResponse{}, err
-	}
-	poller := &failoverGroupsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new FailoverGroupsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to FailoverGroupsDeletePoller.ResumeToken().
-func (client *FailoverGroupsClient) ResumeDelete(ctx context.Context, token string) (FailoverGroupsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("FailoverGroupsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return FailoverGroupsDeletePollerResponse{}, err
-	}
-	poller := &failoverGroupsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return FailoverGroupsDeletePollerResponse{}, err
-	}
-	result := FailoverGroupsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return FailoverGroupsDeletePollerResponse{}, err
+	}
+	result.Poller = &FailoverGroupsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a failover group.
 // If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,27 +168,26 @@ func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *FailoverGroupsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginFailover - Fails over from the current primary server to this server.
@@ -253,65 +198,37 @@ func (client *FailoverGroupsClient) BeginFailover(ctx context.Context, resourceG
 		return FailoverGroupsFailoverPollerResponse{}, err
 	}
 	result := FailoverGroupsFailoverPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("FailoverGroupsClient.Failover", "", resp, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return FailoverGroupsFailoverPollerResponse{}, err
-	}
-	poller := &failoverGroupsFailoverPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsFailoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeFailover creates a new FailoverGroupsFailoverPoller from the specified resume token.
-// token - The value must come from a previous call to FailoverGroupsFailoverPoller.ResumeToken().
-func (client *FailoverGroupsClient) ResumeFailover(ctx context.Context, token string) (FailoverGroupsFailoverPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("FailoverGroupsClient.Failover", token, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return FailoverGroupsFailoverPollerResponse{}, err
-	}
-	poller := &failoverGroupsFailoverPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return FailoverGroupsFailoverPollerResponse{}, err
-	}
-	result := FailoverGroupsFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsFailoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.Failover", "", resp, client.pl, client.failoverHandleError)
+	if err != nil {
+		return FailoverGroupsFailoverPollerResponse{}, err
+	}
+	result.Poller = &FailoverGroupsFailoverPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Failover - Fails over from the current primary server to this server.
 // If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (*azcore.Response, error) {
+func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.failoverHandleError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -329,28 +246,27 @@ func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // failoverHandleError handles the Failover error response.
-func (client *FailoverGroupsClient) failoverHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) failoverHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in data loss.
@@ -361,65 +277,37 @@ func (client *FailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.
 		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
 	}
 	result := FailoverGroupsForceFailoverAllowDataLossPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("FailoverGroupsClient.ForceFailoverAllowDataLoss", "", resp, client.con.Pipeline(), client.forceFailoverAllowDataLossHandleError)
-	if err != nil {
-		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
-	}
-	poller := &failoverGroupsForceFailoverAllowDataLossPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsForceFailoverAllowDataLossResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeForceFailoverAllowDataLoss creates a new FailoverGroupsForceFailoverAllowDataLossPoller from the specified resume token.
-// token - The value must come from a previous call to FailoverGroupsForceFailoverAllowDataLossPoller.ResumeToken().
-func (client *FailoverGroupsClient) ResumeForceFailoverAllowDataLoss(ctx context.Context, token string) (FailoverGroupsForceFailoverAllowDataLossPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("FailoverGroupsClient.ForceFailoverAllowDataLoss", token, client.con.Pipeline(), client.forceFailoverAllowDataLossHandleError)
-	if err != nil {
-		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
-	}
-	poller := &failoverGroupsForceFailoverAllowDataLossPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
-	}
-	result := FailoverGroupsForceFailoverAllowDataLossPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsForceFailoverAllowDataLossResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.ForceFailoverAllowDataLoss", "", resp, client.pl, client.forceFailoverAllowDataLossHandleError)
+	if err != nil {
+		return FailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
+	}
+	result.Poller = &FailoverGroupsForceFailoverAllowDataLossPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in data loss.
 // If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (*azcore.Response, error) {
+func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	req, err := client.forceFailoverAllowDataLossCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.forceFailoverAllowDataLossHandleError(resp)
 	}
 	return resp, nil
 }
 
 // forceFailoverAllowDataLossCreateRequest creates the ForceFailoverAllowDataLoss request.
-func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsBeginForceFailoverAllowDataLossOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -437,28 +325,27 @@ func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // forceFailoverAllowDataLossHandleError handles the ForceFailoverAllowDataLoss error response.
-func (client *FailoverGroupsClient) forceFailoverAllowDataLossHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) forceFailoverAllowDataLossHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a failover group.
@@ -468,18 +355,18 @@ func (client *FailoverGroupsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return FailoverGroupsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FailoverGroupsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FailoverGroupsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsGetOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -497,55 +384,54 @@ func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FailoverGroupsClient) getHandleResponse(resp *azcore.Response) (FailoverGroupsGetResponse, error) {
-	result := FailoverGroupsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.FailoverGroup); err != nil {
+func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (FailoverGroupsGetResponse, error) {
+	result := FailoverGroupsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroup); err != nil {
 		return FailoverGroupsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *FailoverGroupsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Lists the failover groups in a server.
 // If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsListByServerOptions) FailoverGroupsListByServerPager {
-	return &failoverGroupsListByServerPager{
+func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsListByServerOptions) *FailoverGroupsListByServerPager {
+	return &FailoverGroupsListByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp FailoverGroupsListByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.FailoverGroupListResult.NextLink)
+		advancer: func(ctx context.Context, resp FailoverGroupsListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.FailoverGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *FailoverGroupsListByServerOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *FailoverGroupsListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -559,37 +445,36 @@ func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *FailoverGroupsClient) listByServerHandleResponse(resp *azcore.Response) (FailoverGroupsListByServerResponse, error) {
-	result := FailoverGroupsListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.FailoverGroupListResult); err != nil {
+func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Response) (FailoverGroupsListByServerResponse, error) {
+	result := FailoverGroupsListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroupListResult); err != nil {
 		return FailoverGroupsListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *FailoverGroupsClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Updates a failover group.
@@ -600,65 +485,37 @@ func (client *FailoverGroupsClient) BeginUpdate(ctx context.Context, resourceGro
 		return FailoverGroupsUpdatePollerResponse{}, err
 	}
 	result := FailoverGroupsUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("FailoverGroupsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return FailoverGroupsUpdatePollerResponse{}, err
-	}
-	poller := &failoverGroupsUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new FailoverGroupsUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to FailoverGroupsUpdatePoller.ResumeToken().
-func (client *FailoverGroupsClient) ResumeUpdate(ctx context.Context, token string) (FailoverGroupsUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("FailoverGroupsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return FailoverGroupsUpdatePollerResponse{}, err
-	}
-	poller := &failoverGroupsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return FailoverGroupsUpdatePollerResponse{}, err
-	}
-	result := FailoverGroupsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FailoverGroupsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("FailoverGroupsClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return FailoverGroupsUpdatePollerResponse{}, err
+	}
+	result.Poller = &FailoverGroupsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a failover group.
 // If the operation fails it returns a generic error.
-func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, failoverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -676,26 +533,25 @@ func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *FailoverGroupsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FailoverGroupsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

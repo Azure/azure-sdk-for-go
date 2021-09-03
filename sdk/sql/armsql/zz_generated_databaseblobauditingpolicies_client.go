@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // DatabaseBlobAuditingPoliciesClient contains the methods for the DatabaseBlobAuditingPolicies group.
 // Don't use this type directly, use NewDatabaseBlobAuditingPoliciesClient() instead.
 type DatabaseBlobAuditingPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDatabaseBlobAuditingPoliciesClient creates a new instance of DatabaseBlobAuditingPoliciesClient with the specified values.
-func NewDatabaseBlobAuditingPoliciesClient(con *armcore.Connection, subscriptionID string) *DatabaseBlobAuditingPoliciesClient {
-	return &DatabaseBlobAuditingPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewDatabaseBlobAuditingPoliciesClient(con *arm.Connection, subscriptionID string) *DatabaseBlobAuditingPoliciesClient {
+	return &DatabaseBlobAuditingPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a database's blob auditing policy.
@@ -36,18 +39,18 @@ func (client *DatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -66,37 +69,36 @@ func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (DatabaseBlobAuditingPoliciesCreateOrUpdateResponse, error) {
-	result := DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseBlobAuditingPolicy); err != nil {
+func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DatabaseBlobAuditingPoliciesCreateOrUpdateResponse, error) {
+	result := DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseBlobAuditingPolicy); err != nil {
 		return DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a database's blob auditing policy.
@@ -106,18 +108,18 @@ func (client *DatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabaseBlobAuditingPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesGetOptions) (*azcore.Request, error) {
+func (client *DatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -136,55 +138,54 @@ func (client *DatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseBlobAuditingPoliciesClient) getHandleResponse(resp *azcore.Response) (DatabaseBlobAuditingPoliciesGetResponse, error) {
-	result := DatabaseBlobAuditingPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseBlobAuditingPolicy); err != nil {
+func (client *DatabaseBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (DatabaseBlobAuditingPoliciesGetResponse, error) {
+	result := DatabaseBlobAuditingPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseBlobAuditingPolicy); err != nil {
 		return DatabaseBlobAuditingPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DatabaseBlobAuditingPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseBlobAuditingPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Lists auditing settings of a database.
 // If the operation fails it returns a generic error.
-func (client *DatabaseBlobAuditingPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesListByDatabaseOptions) DatabaseBlobAuditingPoliciesListByDatabasePager {
-	return &databaseBlobAuditingPoliciesListByDatabasePager{
+func (client *DatabaseBlobAuditingPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesListByDatabaseOptions) *DatabaseBlobAuditingPoliciesListByDatabasePager {
+	return &DatabaseBlobAuditingPoliciesListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseBlobAuditingPoliciesListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseBlobAuditingPolicyListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabaseBlobAuditingPoliciesListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseBlobAuditingPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesListByDatabaseOptions) (*azcore.Request, error) {
+func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -202,35 +203,34 @@ func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseHandleResponse(resp *azcore.Response) (DatabaseBlobAuditingPoliciesListByDatabaseResponse, error) {
-	result := DatabaseBlobAuditingPoliciesListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseBlobAuditingPolicyListResult); err != nil {
+func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseBlobAuditingPoliciesListByDatabaseResponse, error) {
+	result := DatabaseBlobAuditingPoliciesListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseBlobAuditingPolicyListResult); err != nil {
 		return DatabaseBlobAuditingPoliciesListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseBlobAuditingPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

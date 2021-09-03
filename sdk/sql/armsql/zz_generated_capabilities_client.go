@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
 type CapabilitiesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCapabilitiesClient creates a new instance of CapabilitiesClient with the specified values.
-func NewCapabilitiesClient(con *armcore.Connection, subscriptionID string) *CapabilitiesClient {
-	return &CapabilitiesClient{con: con, subscriptionID: subscriptionID}
+func NewCapabilitiesClient(con *arm.Connection, subscriptionID string) *CapabilitiesClient {
+	return &CapabilitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByLocation - Gets the subscription capabilities available for the specified location.
@@ -36,18 +39,18 @@ func (client *CapabilitiesClient) ListByLocation(ctx context.Context, locationNa
 	if err != nil {
 		return CapabilitiesListByLocationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CapabilitiesListByLocationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CapabilitiesListByLocationResponse{}, client.listByLocationHandleError(resp)
 	}
 	return client.listByLocationHandleResponse(resp)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *CapabilitiesListByLocationOptions) (*azcore.Request, error) {
+func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *CapabilitiesListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -57,38 +60,37 @@ func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Include != nil {
 		reqQP.Set("include", string(*options.Include))
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *CapabilitiesClient) listByLocationHandleResponse(resp *azcore.Response) (CapabilitiesListByLocationResponse, error) {
-	result := CapabilitiesListByLocationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LocationCapabilities); err != nil {
+func (client *CapabilitiesClient) listByLocationHandleResponse(resp *http.Response) (CapabilitiesListByLocationResponse, error) {
+	result := CapabilitiesListByLocationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LocationCapabilities); err != nil {
 		return CapabilitiesListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByLocationHandleError handles the ListByLocation error response.
-func (client *CapabilitiesClient) listByLocationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CapabilitiesClient) listByLocationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

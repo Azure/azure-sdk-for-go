@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ManagedInstancePrivateEndpointConnectionsClient contains the methods for the ManagedInstancePrivateEndpointConnections group.
 // Don't use this type directly, use NewManagedInstancePrivateEndpointConnectionsClient() instead.
 type ManagedInstancePrivateEndpointConnectionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedInstancePrivateEndpointConnectionsClient creates a new instance of ManagedInstancePrivateEndpointConnectionsClient with the specified values.
-func NewManagedInstancePrivateEndpointConnectionsClient(con *armcore.Connection, subscriptionID string) *ManagedInstancePrivateEndpointConnectionsClient {
-	return &ManagedInstancePrivateEndpointConnectionsClient{con: con, subscriptionID: subscriptionID}
+func NewManagedInstancePrivateEndpointConnectionsClient(con *arm.Connection, subscriptionID string) *ManagedInstancePrivateEndpointConnectionsClient {
+	return &ManagedInstancePrivateEndpointConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
@@ -38,65 +41,37 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginCreateOrUpda
 		return ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{}, err
 	}
 	result := ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedInstancePrivateEndpointConnectionsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &managedInstancePrivateEndpointConnectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstancePrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken().
-func (client *ManagedInstancePrivateEndpointConnectionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedInstancePrivateEndpointConnectionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &managedInstancePrivateEndpointConnectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{}, err
-	}
-	result := ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstancePrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedInstancePrivateEndpointConnectionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &ManagedInstancePrivateEndpointConnectionsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCre
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes a private endpoint connection with a given name.
@@ -146,65 +120,37 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginDelete(ctx c
 		return ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{}, err
 	}
 	result := ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ManagedInstancePrivateEndpointConnectionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{}, err
-	}
-	poller := &managedInstancePrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstancePrivateEndpointConnectionsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new ManagedInstancePrivateEndpointConnectionsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to ManagedInstancePrivateEndpointConnectionsDeletePoller.ResumeToken().
-func (client *ManagedInstancePrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (ManagedInstancePrivateEndpointConnectionsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ManagedInstancePrivateEndpointConnectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{}, err
-	}
-	poller := &managedInstancePrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{}, err
-	}
-	result := ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedInstancePrivateEndpointConnectionsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ManagedInstancePrivateEndpointConnectionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return ManagedInstancePrivateEndpointConnectionsDeletePollerResponse{}, err
+	}
+	result.Poller = &ManagedInstancePrivateEndpointConnectionsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,27 +168,26 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a private endpoint connection.
@@ -252,18 +197,18 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) Get(ctx context.C
 	if err != nil {
 		return ManagedInstancePrivateEndpointConnectionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedInstancePrivateEndpointConnectionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedInstancePrivateEndpointConnectionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsGetOptions) (*azcore.Request, error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -281,55 +226,54 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (ManagedInstancePrivateEndpointConnectionsGetResponse, error) {
-	result := ManagedInstancePrivateEndpointConnectionsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstancePrivateEndpointConnection); err != nil {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (ManagedInstancePrivateEndpointConnectionsGetResponse, error) {
+	result := ManagedInstancePrivateEndpointConnectionsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateEndpointConnection); err != nil {
 		return ManagedInstancePrivateEndpointConnectionsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByManagedInstance - Gets all private endpoint connections on a server.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsListByManagedInstanceOptions) ManagedInstancePrivateEndpointConnectionsListByManagedInstancePager {
-	return &managedInstancePrivateEndpointConnectionsListByManagedInstancePager{
+func (client *ManagedInstancePrivateEndpointConnectionsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsListByManagedInstanceOptions) *ManagedInstancePrivateEndpointConnectionsListByManagedInstancePager {
+	return &ManagedInstancePrivateEndpointConnectionsListByManagedInstancePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedInstancePrivateEndpointConnectionListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstancePrivateEndpointConnectionListResult.NextLink)
 		},
 	}
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsListByManagedInstanceOptions) (*azcore.Request, error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsListByManagedInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -343,35 +287,34 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInst
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInstanceHandleResponse(resp *azcore.Response) (ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse, error) {
-	result := ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstancePrivateEndpointConnectionListResult); err != nil {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse, error) {
+	result := ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateEndpointConnectionListResult); err != nil {
 		return ManagedInstancePrivateEndpointConnectionsListByManagedInstanceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByManagedInstanceHandleError handles the ListByManagedInstance error response.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInstanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInstanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

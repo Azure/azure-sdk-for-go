@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // RecoverableDatabasesClient contains the methods for the RecoverableDatabases group.
 // Don't use this type directly, use NewRecoverableDatabasesClient() instead.
 type RecoverableDatabasesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecoverableDatabasesClient creates a new instance of RecoverableDatabasesClient with the specified values.
-func NewRecoverableDatabasesClient(con *armcore.Connection, subscriptionID string) *RecoverableDatabasesClient {
-	return &RecoverableDatabasesClient{con: con, subscriptionID: subscriptionID}
+func NewRecoverableDatabasesClient(con *arm.Connection, subscriptionID string) *RecoverableDatabasesClient {
+	return &RecoverableDatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a recoverable database, which is a resource representing a database's geo backup
@@ -36,18 +39,18 @@ func (client *RecoverableDatabasesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return RecoverableDatabasesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoverableDatabasesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecoverableDatabasesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *RecoverableDatabasesGetOptions) (*azcore.Request, error) {
+func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *RecoverableDatabasesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -65,37 +68,36 @@ func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoverableDatabasesClient) getHandleResponse(resp *azcore.Response) (RecoverableDatabasesGetResponse, error) {
-	result := RecoverableDatabasesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecoverableDatabase); err != nil {
+func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response) (RecoverableDatabasesGetResponse, error) {
+	result := RecoverableDatabasesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableDatabase); err != nil {
 		return RecoverableDatabasesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RecoverableDatabasesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoverableDatabasesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Gets a list of recoverable databases
@@ -105,18 +107,18 @@ func (client *RecoverableDatabasesClient) ListByServer(ctx context.Context, reso
 	if err != nil {
 		return RecoverableDatabasesListByServerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoverableDatabasesListByServerResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecoverableDatabasesListByServerResponse{}, client.listByServerHandleError(resp)
 	}
 	return client.listByServerHandleResponse(resp)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *RecoverableDatabasesListByServerOptions) (*azcore.Request, error) {
+func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *RecoverableDatabasesListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -130,35 +132,34 @@ func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *RecoverableDatabasesClient) listByServerHandleResponse(resp *azcore.Response) (RecoverableDatabasesListByServerResponse, error) {
-	result := RecoverableDatabasesListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecoverableDatabaseListResult); err != nil {
+func (client *RecoverableDatabasesClient) listByServerHandleResponse(resp *http.Response) (RecoverableDatabasesListByServerResponse, error) {
+	result := RecoverableDatabasesListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableDatabaseListResult); err != nil {
 		return RecoverableDatabasesListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *RecoverableDatabasesClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoverableDatabasesClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

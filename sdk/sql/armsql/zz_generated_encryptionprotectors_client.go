@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // EncryptionProtectorsClient contains the methods for the EncryptionProtectors group.
 // Don't use this type directly, use NewEncryptionProtectorsClient() instead.
 type EncryptionProtectorsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewEncryptionProtectorsClient creates a new instance of EncryptionProtectorsClient with the specified values.
-func NewEncryptionProtectorsClient(con *armcore.Connection, subscriptionID string) *EncryptionProtectorsClient {
-	return &EncryptionProtectorsClient{con: con, subscriptionID: subscriptionID}
+func NewEncryptionProtectorsClient(con *arm.Connection, subscriptionID string) *EncryptionProtectorsClient {
+	return &EncryptionProtectorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Updates an existing encryption protector.
@@ -38,65 +41,37 @@ func (client *EncryptionProtectorsClient) BeginCreateOrUpdate(ctx context.Contex
 		return EncryptionProtectorsCreateOrUpdatePollerResponse{}, err
 	}
 	result := EncryptionProtectorsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("EncryptionProtectorsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return EncryptionProtectorsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &encryptionProtectorsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EncryptionProtectorsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new EncryptionProtectorsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to EncryptionProtectorsCreateOrUpdatePoller.ResumeToken().
-func (client *EncryptionProtectorsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (EncryptionProtectorsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("EncryptionProtectorsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return EncryptionProtectorsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &encryptionProtectorsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return EncryptionProtectorsCreateOrUpdatePollerResponse{}, err
-	}
-	result := EncryptionProtectorsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EncryptionProtectorsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("EncryptionProtectorsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return EncryptionProtectorsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &EncryptionProtectorsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Updates an existing encryption protector.
 // If the operation fails it returns a generic error.
-func (client *EncryptionProtectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *EncryptionProtectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, encryptionProtectorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EncryptionProtectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *EncryptionProtectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector/{encryptionProtectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *EncryptionProtectorsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *EncryptionProtectorsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EncryptionProtectorsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a server encryption protector.
@@ -145,18 +119,18 @@ func (client *EncryptionProtectorsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return EncryptionProtectorsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return EncryptionProtectorsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return EncryptionProtectorsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EncryptionProtectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsGetOptions) (*azcore.Request, error) {
+func (client *EncryptionProtectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector/{encryptionProtectorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -174,55 +148,54 @@ func (client *EncryptionProtectorsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EncryptionProtectorsClient) getHandleResponse(resp *azcore.Response) (EncryptionProtectorsGetResponse, error) {
-	result := EncryptionProtectorsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EncryptionProtector); err != nil {
+func (client *EncryptionProtectorsClient) getHandleResponse(resp *http.Response) (EncryptionProtectorsGetResponse, error) {
+	result := EncryptionProtectorsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtector); err != nil {
 		return EncryptionProtectorsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *EncryptionProtectorsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EncryptionProtectorsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Gets a list of server encryption protectors
 // If the operation fails it returns a generic error.
-func (client *EncryptionProtectorsClient) ListByServer(resourceGroupName string, serverName string, options *EncryptionProtectorsListByServerOptions) EncryptionProtectorsListByServerPager {
-	return &encryptionProtectorsListByServerPager{
+func (client *EncryptionProtectorsClient) ListByServer(resourceGroupName string, serverName string, options *EncryptionProtectorsListByServerOptions) *EncryptionProtectorsListByServerPager {
+	return &EncryptionProtectorsListByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp EncryptionProtectorsListByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.EncryptionProtectorListResult.NextLink)
+		advancer: func(ctx context.Context, resp EncryptionProtectorsListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.EncryptionProtectorListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *EncryptionProtectorsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *EncryptionProtectorsListByServerOptions) (*azcore.Request, error) {
+func (client *EncryptionProtectorsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *EncryptionProtectorsListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -236,37 +209,36 @@ func (client *EncryptionProtectorsClient) listByServerCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *EncryptionProtectorsClient) listByServerHandleResponse(resp *azcore.Response) (EncryptionProtectorsListByServerResponse, error) {
-	result := EncryptionProtectorsListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EncryptionProtectorListResult); err != nil {
+func (client *EncryptionProtectorsClient) listByServerHandleResponse(resp *http.Response) (EncryptionProtectorsListByServerResponse, error) {
+	result := EncryptionProtectorsListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtectorListResult); err != nil {
 		return EncryptionProtectorsListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *EncryptionProtectorsClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EncryptionProtectorsClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRevalidate - Revalidates an existing encryption protector.
@@ -277,65 +249,37 @@ func (client *EncryptionProtectorsClient) BeginRevalidate(ctx context.Context, r
 		return EncryptionProtectorsRevalidatePollerResponse{}, err
 	}
 	result := EncryptionProtectorsRevalidatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("EncryptionProtectorsClient.Revalidate", "", resp, client.con.Pipeline(), client.revalidateHandleError)
-	if err != nil {
-		return EncryptionProtectorsRevalidatePollerResponse{}, err
-	}
-	poller := &encryptionProtectorsRevalidatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EncryptionProtectorsRevalidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRevalidate creates a new EncryptionProtectorsRevalidatePoller from the specified resume token.
-// token - The value must come from a previous call to EncryptionProtectorsRevalidatePoller.ResumeToken().
-func (client *EncryptionProtectorsClient) ResumeRevalidate(ctx context.Context, token string) (EncryptionProtectorsRevalidatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("EncryptionProtectorsClient.Revalidate", token, client.con.Pipeline(), client.revalidateHandleError)
-	if err != nil {
-		return EncryptionProtectorsRevalidatePollerResponse{}, err
-	}
-	poller := &encryptionProtectorsRevalidatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return EncryptionProtectorsRevalidatePollerResponse{}, err
-	}
-	result := EncryptionProtectorsRevalidatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EncryptionProtectorsRevalidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("EncryptionProtectorsClient.Revalidate", "", resp, client.pl, client.revalidateHandleError)
+	if err != nil {
+		return EncryptionProtectorsRevalidatePollerResponse{}, err
+	}
+	result.Poller = &EncryptionProtectorsRevalidatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Revalidate - Revalidates an existing encryption protector.
 // If the operation fails it returns a generic error.
-func (client *EncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsBeginRevalidateOptions) (*azcore.Response, error) {
+func (client *EncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsBeginRevalidateOptions) (*http.Response, error) {
 	req, err := client.revalidateCreateRequest(ctx, resourceGroupName, serverName, encryptionProtectorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.revalidateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // revalidateCreateRequest creates the Revalidate request.
-func (client *EncryptionProtectorsClient) revalidateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsBeginRevalidateOptions) (*azcore.Request, error) {
+func (client *EncryptionProtectorsClient) revalidateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsBeginRevalidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector/{encryptionProtectorName}/revalidate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -353,25 +297,24 @@ func (client *EncryptionProtectorsClient) revalidateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // revalidateHandleError handles the Revalidate error response.
-func (client *EncryptionProtectorsClient) revalidateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EncryptionProtectorsClient) revalidateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

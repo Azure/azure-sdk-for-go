@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // RestorePointsClient contains the methods for the RestorePoints group.
 // Don't use this type directly, use NewRestorePointsClient() instead.
 type RestorePointsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRestorePointsClient creates a new instance of RestorePointsClient with the specified values.
-func NewRestorePointsClient(con *armcore.Connection, subscriptionID string) *RestorePointsClient {
-	return &RestorePointsClient{con: con, subscriptionID: subscriptionID}
+func NewRestorePointsClient(con *arm.Connection, subscriptionID string) *RestorePointsClient {
+	return &RestorePointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a restore point for a data warehouse.
@@ -38,65 +41,37 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 		return RestorePointsCreatePollerResponse{}, err
 	}
 	result := RestorePointsCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RestorePointsClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return RestorePointsCreatePollerResponse{}, err
-	}
-	poller := &restorePointsCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new RestorePointsCreatePoller from the specified resume token.
-// token - The value must come from a previous call to RestorePointsCreatePoller.ResumeToken().
-func (client *RestorePointsClient) ResumeCreate(ctx context.Context, token string) (RestorePointsCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RestorePointsClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return RestorePointsCreatePollerResponse{}, err
-	}
-	poller := &restorePointsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return RestorePointsCreatePollerResponse{}, err
-	}
-	result := RestorePointsCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RestorePointsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RestorePointsClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return RestorePointsCreatePollerResponse{}, err
+	}
+	result.Poller = &RestorePointsCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a restore point for a data warehouse.
 // If the operation fails it returns a generic error.
-func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, options *RestorePointsBeginCreateOptions) (*azcore.Response, error) {
+func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, options *RestorePointsBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, options *RestorePointsBeginCreateOptions) (*azcore.Request, error) {
+func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, options *RestorePointsBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createHandleError handles the Create error response.
-func (client *RestorePointsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorePointsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes a restore point.
@@ -145,18 +119,18 @@ func (client *RestorePointsClient) Delete(ctx context.Context, resourceGroupName
 	if err != nil {
 		return RestorePointsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RestorePointsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RestorePointsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return RestorePointsDeleteResponse{RawResponse: resp.Response}, nil
+	return RestorePointsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, restorePointName string, options *RestorePointsDeleteOptions) (*azcore.Request, error) {
+func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, restorePointName string, options *RestorePointsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,27 +152,26 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *RestorePointsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorePointsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a restore point.
@@ -208,18 +181,18 @@ func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RestorePointsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RestorePointsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RestorePointsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, restorePointName string, options *RestorePointsGetOptions) (*azcore.Request, error) {
+func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, restorePointName string, options *RestorePointsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -241,55 +214,54 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RestorePointsClient) getHandleResponse(resp *azcore.Response) (RestorePointsGetResponse, error) {
-	result := RestorePointsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RestorePoint); err != nil {
+func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (RestorePointsGetResponse, error) {
+	result := RestorePointsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePoint); err != nil {
 		return RestorePointsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RestorePointsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorePointsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Gets a list of database restore points.
 // If the operation fails it returns a generic error.
-func (client *RestorePointsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *RestorePointsListByDatabaseOptions) RestorePointsListByDatabasePager {
-	return &restorePointsListByDatabasePager{
+func (client *RestorePointsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *RestorePointsListByDatabaseOptions) *RestorePointsListByDatabasePager {
+	return &RestorePointsListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp RestorePointsListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RestorePointListResult.NextLink)
+		advancer: func(ctx context.Context, resp RestorePointsListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RestorePointListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *RestorePointsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *RestorePointsListByDatabaseOptions) (*azcore.Request, error) {
+func (client *RestorePointsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *RestorePointsListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -307,35 +279,34 @@ func (client *RestorePointsClient) listByDatabaseCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *RestorePointsClient) listByDatabaseHandleResponse(resp *azcore.Response) (RestorePointsListByDatabaseResponse, error) {
-	result := RestorePointsListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RestorePointListResult); err != nil {
+func (client *RestorePointsClient) listByDatabaseHandleResponse(resp *http.Response) (RestorePointsListByDatabaseResponse, error) {
+	result := RestorePointsListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointListResult); err != nil {
 		return RestorePointsListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *RestorePointsClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorePointsClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

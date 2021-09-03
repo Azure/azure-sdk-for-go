@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // ServiceObjectivesClient contains the methods for the ServiceObjectives group.
 // Don't use this type directly, use NewServiceObjectivesClient() instead.
 type ServiceObjectivesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServiceObjectivesClient creates a new instance of ServiceObjectivesClient with the specified values.
-func NewServiceObjectivesClient(con *armcore.Connection, subscriptionID string) *ServiceObjectivesClient {
-	return &ServiceObjectivesClient{con: con, subscriptionID: subscriptionID}
+func NewServiceObjectivesClient(con *arm.Connection, subscriptionID string) *ServiceObjectivesClient {
+	return &ServiceObjectivesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a database service objective.
@@ -36,18 +39,18 @@ func (client *ServiceObjectivesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ServiceObjectivesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServiceObjectivesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServiceObjectivesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesGetOptions) (*azcore.Request, error) {
+func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives/{serviceObjectiveName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -65,37 +68,36 @@ func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serviceObjectiveName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceObjectiveName}", url.PathEscape(serviceObjectiveName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceObjectivesClient) getHandleResponse(resp *azcore.Response) (ServiceObjectivesGetResponse, error) {
-	result := ServiceObjectivesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServiceObjective); err != nil {
+func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (ServiceObjectivesGetResponse, error) {
+	result := ServiceObjectivesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceObjective); err != nil {
 		return ServiceObjectivesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ServiceObjectivesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServiceObjectivesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Returns database service objectives.
@@ -105,18 +107,18 @@ func (client *ServiceObjectivesClient) ListByServer(ctx context.Context, resourc
 	if err != nil {
 		return ServiceObjectivesListByServerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServiceObjectivesListByServerResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServiceObjectivesListByServerResponse{}, client.listByServerHandleError(resp)
 	}
 	return client.listByServerHandleResponse(resp)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServiceObjectivesListByServerOptions) (*azcore.Request, error) {
+func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServiceObjectivesListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -130,35 +132,34 @@ func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Con
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServiceObjectivesClient) listByServerHandleResponse(resp *azcore.Response) (ServiceObjectivesListByServerResponse, error) {
-	result := ServiceObjectivesListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServiceObjectiveListResult); err != nil {
+func (client *ServiceObjectivesClient) listByServerHandleResponse(resp *http.Response) (ServiceObjectivesListByServerResponse, error) {
+	result := ServiceObjectivesListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceObjectiveListResult); err != nil {
 		return ServiceObjectivesListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *ServiceObjectivesClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServiceObjectivesClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // DeletedServersClient contains the methods for the DeletedServers group.
 // Don't use this type directly, use NewDeletedServersClient() instead.
 type DeletedServersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDeletedServersClient creates a new instance of DeletedServersClient with the specified values.
-func NewDeletedServersClient(con *armcore.Connection, subscriptionID string) *DeletedServersClient {
-	return &DeletedServersClient{con: con, subscriptionID: subscriptionID}
+func NewDeletedServersClient(con *arm.Connection, subscriptionID string) *DeletedServersClient {
+	return &DeletedServersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a deleted server.
@@ -37,18 +40,18 @@ func (client *DeletedServersClient) Get(ctx context.Context, locationName string
 	if err != nil {
 		return DeletedServersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DeletedServersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DeletedServersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DeletedServersClient) getCreateRequest(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersGetOptions) (*azcore.Request, error) {
+func (client *DeletedServersClient) getCreateRequest(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -62,109 +65,107 @@ func (client *DeletedServersClient) getCreateRequest(ctx context.Context, locati
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeletedServersClient) getHandleResponse(resp *azcore.Response) (DeletedServersGetResponse, error) {
-	result := DeletedServersGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeletedServer); err != nil {
+func (client *DeletedServersClient) getHandleResponse(resp *http.Response) (DeletedServersGetResponse, error) {
+	result := DeletedServersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServer); err != nil {
 		return DeletedServersGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DeletedServersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeletedServersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - Gets a list of all deleted servers in a subscription.
 // If the operation fails it returns a generic error.
-func (client *DeletedServersClient) List(options *DeletedServersListOptions) DeletedServersListPager {
-	return &deletedServersListPager{
+func (client *DeletedServersClient) List(options *DeletedServersListOptions) *DeletedServersListPager {
+	return &DeletedServersListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DeletedServersListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeletedServerListResult.NextLink)
+		advancer: func(ctx context.Context, resp DeletedServersListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedServerListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DeletedServersClient) listCreateRequest(ctx context.Context, options *DeletedServersListOptions) (*azcore.Request, error) {
+func (client *DeletedServersClient) listCreateRequest(ctx context.Context, options *DeletedServersListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DeletedServersClient) listHandleResponse(resp *azcore.Response) (DeletedServersListResponse, error) {
-	result := DeletedServersListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeletedServerListResult); err != nil {
+func (client *DeletedServersClient) listHandleResponse(resp *http.Response) (DeletedServersListResponse, error) {
+	result := DeletedServersListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServerListResult); err != nil {
 		return DeletedServersListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *DeletedServersClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeletedServersClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByLocation - Gets a list of deleted servers for a location.
 // If the operation fails it returns a generic error.
-func (client *DeletedServersClient) ListByLocation(locationName string, options *DeletedServersListByLocationOptions) DeletedServersListByLocationPager {
-	return &deletedServersListByLocationPager{
+func (client *DeletedServersClient) ListByLocation(locationName string, options *DeletedServersListByLocationOptions) *DeletedServersListByLocationPager {
+	return &DeletedServersListByLocationPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp DeletedServersListByLocationResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeletedServerListResult.NextLink)
+		advancer: func(ctx context.Context, resp DeletedServersListByLocationResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedServerListResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *DeletedServersClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *DeletedServersListByLocationOptions) (*azcore.Request, error) {
+func (client *DeletedServersClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *DeletedServersListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -174,37 +175,36 @@ func (client *DeletedServersClient) listByLocationCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *DeletedServersClient) listByLocationHandleResponse(resp *azcore.Response) (DeletedServersListByLocationResponse, error) {
-	result := DeletedServersListByLocationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeletedServerListResult); err != nil {
+func (client *DeletedServersClient) listByLocationHandleResponse(resp *http.Response) (DeletedServersListByLocationResponse, error) {
+	result := DeletedServersListByLocationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServerListResult); err != nil {
 		return DeletedServersListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByLocationHandleError handles the ListByLocation error response.
-func (client *DeletedServersClient) listByLocationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeletedServersClient) listByLocationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRecover - Recovers a deleted server.
@@ -215,65 +215,37 @@ func (client *DeletedServersClient) BeginRecover(ctx context.Context, locationNa
 		return DeletedServersRecoverPollerResponse{}, err
 	}
 	result := DeletedServersRecoverPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DeletedServersClient.Recover", "", resp, client.con.Pipeline(), client.recoverHandleError)
-	if err != nil {
-		return DeletedServersRecoverPollerResponse{}, err
-	}
-	poller := &deletedServersRecoverPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeletedServersRecoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRecover creates a new DeletedServersRecoverPoller from the specified resume token.
-// token - The value must come from a previous call to DeletedServersRecoverPoller.ResumeToken().
-func (client *DeletedServersClient) ResumeRecover(ctx context.Context, token string) (DeletedServersRecoverPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DeletedServersClient.Recover", token, client.con.Pipeline(), client.recoverHandleError)
-	if err != nil {
-		return DeletedServersRecoverPollerResponse{}, err
-	}
-	poller := &deletedServersRecoverPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DeletedServersRecoverPollerResponse{}, err
-	}
-	result := DeletedServersRecoverPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeletedServersRecoverResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DeletedServersClient.Recover", "", resp, client.pl, client.recoverHandleError)
+	if err != nil {
+		return DeletedServersRecoverPollerResponse{}, err
+	}
+	result.Poller = &DeletedServersRecoverPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Recover - Recovers a deleted server.
 // If the operation fails it returns a generic error.
-func (client *DeletedServersClient) recoverOperation(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersBeginRecoverOptions) (*azcore.Response, error) {
+func (client *DeletedServersClient) recoverOperation(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersBeginRecoverOptions) (*http.Response, error) {
 	req, err := client.recoverCreateRequest(ctx, locationName, deletedServerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.recoverHandleError(resp)
 	}
 	return resp, nil
 }
 
 // recoverCreateRequest creates the Recover request.
-func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersBeginRecoverOptions) (*azcore.Request, error) {
+func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, locationName string, deletedServerName string, options *DeletedServersBeginRecoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}/recover"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -287,26 +259,25 @@ func (client *DeletedServersClient) recoverCreateRequest(ctx context.Context, lo
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // recoverHandleError handles the Recover error response.
-func (client *DeletedServersClient) recoverHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeletedServersClient) recoverHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

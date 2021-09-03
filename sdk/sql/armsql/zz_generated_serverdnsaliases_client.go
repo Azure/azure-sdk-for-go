@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ServerDNSAliasesClient contains the methods for the ServerDNSAliases group.
 // Don't use this type directly, use NewServerDNSAliasesClient() instead.
 type ServerDNSAliasesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServerDNSAliasesClient creates a new instance of ServerDNSAliasesClient with the specified values.
-func NewServerDNSAliasesClient(con *armcore.Connection, subscriptionID string) *ServerDNSAliasesClient {
-	return &ServerDNSAliasesClient{con: con, subscriptionID: subscriptionID}
+func NewServerDNSAliasesClient(con *arm.Connection, subscriptionID string) *ServerDNSAliasesClient {
+	return &ServerDNSAliasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginAcquire - Acquires server DNS alias from another server.
@@ -38,65 +41,37 @@ func (client *ServerDNSAliasesClient) BeginAcquire(ctx context.Context, resource
 		return ServerDNSAliasesAcquirePollerResponse{}, err
 	}
 	result := ServerDNSAliasesAcquirePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ServerDNSAliasesClient.Acquire", "", resp, client.con.Pipeline(), client.acquireHandleError)
-	if err != nil {
-		return ServerDNSAliasesAcquirePollerResponse{}, err
-	}
-	poller := &serverDNSAliasesAcquirePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServerDNSAliasesAcquireResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeAcquire creates a new ServerDNSAliasesAcquirePoller from the specified resume token.
-// token - The value must come from a previous call to ServerDNSAliasesAcquirePoller.ResumeToken().
-func (client *ServerDNSAliasesClient) ResumeAcquire(ctx context.Context, token string) (ServerDNSAliasesAcquirePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ServerDNSAliasesClient.Acquire", token, client.con.Pipeline(), client.acquireHandleError)
-	if err != nil {
-		return ServerDNSAliasesAcquirePollerResponse{}, err
-	}
-	poller := &serverDNSAliasesAcquirePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ServerDNSAliasesAcquirePollerResponse{}, err
-	}
-	result := ServerDNSAliasesAcquirePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServerDNSAliasesAcquireResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ServerDNSAliasesClient.Acquire", "", resp, client.pl, client.acquireHandleError)
+	if err != nil {
+		return ServerDNSAliasesAcquirePollerResponse{}, err
+	}
+	result.Poller = &ServerDNSAliasesAcquirePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Acquire - Acquires server DNS alias from another server.
 // If the operation fails it returns a generic error.
-func (client *ServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesBeginAcquireOptions) (*azcore.Response, error) {
+func (client *ServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesBeginAcquireOptions) (*http.Response, error) {
 	req, err := client.acquireCreateRequest(ctx, resourceGroupName, serverName, dnsAliasName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.acquireHandleError(resp)
 	}
 	return resp, nil
 }
 
 // acquireCreateRequest creates the Acquire request.
-func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesBeginAcquireOptions) (*azcore.Request, error) {
+func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesBeginAcquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}/acquire"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -114,28 +89,27 @@ func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // acquireHandleError handles the Acquire error response.
-func (client *ServerDNSAliasesClient) acquireHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServerDNSAliasesClient) acquireHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginCreateOrUpdate - Creates a server DNS alias.
@@ -146,65 +120,37 @@ func (client *ServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Context, r
 		return ServerDNSAliasesCreateOrUpdatePollerResponse{}, err
 	}
 	result := ServerDNSAliasesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ServerDNSAliasesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ServerDNSAliasesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &serverDNSAliasesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServerDNSAliasesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new ServerDNSAliasesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ServerDNSAliasesCreateOrUpdatePoller.ResumeToken().
-func (client *ServerDNSAliasesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ServerDNSAliasesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ServerDNSAliasesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ServerDNSAliasesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &serverDNSAliasesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ServerDNSAliasesCreateOrUpdatePollerResponse{}, err
-	}
-	result := ServerDNSAliasesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServerDNSAliasesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ServerDNSAliasesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return ServerDNSAliasesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &ServerDNSAliasesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a server DNS alias.
 // If the operation fails it returns a generic error.
-func (client *ServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *ServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, dnsAliasName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,28 +168,27 @@ func (client *ServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerDNSAliasesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServerDNSAliasesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes the server DNS alias with the given name.
@@ -254,65 +199,37 @@ func (client *ServerDNSAliasesClient) BeginDelete(ctx context.Context, resourceG
 		return ServerDNSAliasesDeletePollerResponse{}, err
 	}
 	result := ServerDNSAliasesDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ServerDNSAliasesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return ServerDNSAliasesDeletePollerResponse{}, err
-	}
-	poller := &serverDNSAliasesDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServerDNSAliasesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new ServerDNSAliasesDeletePoller from the specified resume token.
-// token - The value must come from a previous call to ServerDNSAliasesDeletePoller.ResumeToken().
-func (client *ServerDNSAliasesClient) ResumeDelete(ctx context.Context, token string) (ServerDNSAliasesDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ServerDNSAliasesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return ServerDNSAliasesDeletePollerResponse{}, err
-	}
-	poller := &serverDNSAliasesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ServerDNSAliasesDeletePollerResponse{}, err
-	}
-	result := ServerDNSAliasesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServerDNSAliasesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ServerDNSAliasesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return ServerDNSAliasesDeletePollerResponse{}, err
+	}
+	result.Poller = &ServerDNSAliasesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the server DNS alias with the given name.
 // If the operation fails it returns a generic error.
-func (client *ServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, dnsAliasName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *ServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -330,27 +247,26 @@ func (client *ServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ServerDNSAliasesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServerDNSAliasesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a server DNS alias.
@@ -360,18 +276,18 @@ func (client *ServerDNSAliasesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ServerDNSAliasesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServerDNSAliasesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServerDNSAliasesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerDNSAliasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesGetOptions) (*azcore.Request, error) {
+func (client *ServerDNSAliasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -389,55 +305,54 @@ func (client *ServerDNSAliasesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerDNSAliasesClient) getHandleResponse(resp *azcore.Response) (ServerDNSAliasesGetResponse, error) {
-	result := ServerDNSAliasesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServerDNSAlias); err != nil {
+func (client *ServerDNSAliasesClient) getHandleResponse(resp *http.Response) (ServerDNSAliasesGetResponse, error) {
+	result := ServerDNSAliasesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDNSAlias); err != nil {
 		return ServerDNSAliasesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ServerDNSAliasesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServerDNSAliasesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByServer - Gets a list of server DNS aliases for a server.
 // If the operation fails it returns a generic error.
-func (client *ServerDNSAliasesClient) ListByServer(resourceGroupName string, serverName string, options *ServerDNSAliasesListByServerOptions) ServerDNSAliasesListByServerPager {
-	return &serverDNSAliasesListByServerPager{
+func (client *ServerDNSAliasesClient) ListByServer(resourceGroupName string, serverName string, options *ServerDNSAliasesListByServerOptions) *ServerDNSAliasesListByServerPager {
+	return &ServerDNSAliasesListByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerDNSAliasesListByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServerDNSAliasListResult.NextLink)
+		advancer: func(ctx context.Context, resp ServerDNSAliasesListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerDNSAliasListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerDNSAliasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerDNSAliasesListByServerOptions) (*azcore.Request, error) {
+func (client *ServerDNSAliasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerDNSAliasesListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -451,35 +366,34 @@ func (client *ServerDNSAliasesClient) listByServerCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerDNSAliasesClient) listByServerHandleResponse(resp *azcore.Response) (ServerDNSAliasesListByServerResponse, error) {
-	result := ServerDNSAliasesListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServerDNSAliasListResult); err != nil {
+func (client *ServerDNSAliasesClient) listByServerHandleResponse(resp *http.Response) (ServerDNSAliasesListByServerResponse, error) {
+	result := ServerDNSAliasesListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDNSAliasListResult); err != nil {
 		return ServerDNSAliasesListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *ServerDNSAliasesClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServerDNSAliasesClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

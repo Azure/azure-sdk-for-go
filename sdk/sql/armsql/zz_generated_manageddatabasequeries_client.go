@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // ManagedDatabaseQueriesClient contains the methods for the ManagedDatabaseQueries group.
 // Don't use this type directly, use NewManagedDatabaseQueriesClient() instead.
 type ManagedDatabaseQueriesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedDatabaseQueriesClient creates a new instance of ManagedDatabaseQueriesClient with the specified values.
-func NewManagedDatabaseQueriesClient(con *armcore.Connection, subscriptionID string) *ManagedDatabaseQueriesClient {
-	return &ManagedDatabaseQueriesClient{con: con, subscriptionID: subscriptionID}
+func NewManagedDatabaseQueriesClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseQueriesClient {
+	return &ManagedDatabaseQueriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get query by query id.
@@ -36,18 +39,18 @@ func (client *ManagedDatabaseQueriesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedDatabaseQueriesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedDatabaseQueriesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedDatabaseQueriesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesGetOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -69,55 +72,54 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *azcore.Response) (ManagedDatabaseQueriesGetResponse, error) {
-	result := ManagedDatabaseQueriesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstanceQuery); err != nil {
+func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseQueriesGetResponse, error) {
+	result := ManagedDatabaseQueriesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQuery); err != nil {
 		return ManagedDatabaseQueriesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedDatabaseQueriesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseQueriesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByQuery - Get query execution statistics by query id.
 // If the operation fails it returns a generic error.
-func (client *ManagedDatabaseQueriesClient) ListByQuery(resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesListByQueryOptions) ManagedDatabaseQueriesListByQueryPager {
-	return &managedDatabaseQueriesListByQueryPager{
+func (client *ManagedDatabaseQueriesClient) ListByQuery(resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesListByQueryOptions) *ManagedDatabaseQueriesListByQueryPager {
+	return &ManagedDatabaseQueriesListByQueryPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByQueryCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseQueriesListByQueryResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceQueryStatistics.NextLink)
+		advancer: func(ctx context.Context, resp ManagedDatabaseQueriesListByQueryResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceQueryStatistics.NextLink)
 		},
 	}
 }
 
 // listByQueryCreateRequest creates the ListByQuery request.
-func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesListByQueryOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesListByQueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}/statistics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -139,12 +141,11 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}
@@ -155,28 +156,28 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 		reqQP.Set("interval", string(*options.Interval))
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByQueryHandleResponse handles the ListByQuery response.
-func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *azcore.Response) (ManagedDatabaseQueriesListByQueryResponse, error) {
-	result := ManagedDatabaseQueriesListByQueryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstanceQueryStatistics); err != nil {
+func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *http.Response) (ManagedDatabaseQueriesListByQueryResponse, error) {
+	result := ManagedDatabaseQueriesListByQueryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQueryStatistics); err != nil {
 		return ManagedDatabaseQueriesListByQueryResponse{}, err
 	}
 	return result, nil
 }
 
 // listByQueryHandleError handles the ListByQuery error response.
-func (client *ManagedDatabaseQueriesClient) listByQueryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseQueriesClient) listByQueryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

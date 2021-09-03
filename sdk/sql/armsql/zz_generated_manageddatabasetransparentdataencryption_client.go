@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // ManagedDatabaseTransparentDataEncryptionClient contains the methods for the ManagedDatabaseTransparentDataEncryption group.
 // Don't use this type directly, use NewManagedDatabaseTransparentDataEncryptionClient() instead.
 type ManagedDatabaseTransparentDataEncryptionClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedDatabaseTransparentDataEncryptionClient creates a new instance of ManagedDatabaseTransparentDataEncryptionClient with the specified values.
-func NewManagedDatabaseTransparentDataEncryptionClient(con *armcore.Connection, subscriptionID string) *ManagedDatabaseTransparentDataEncryptionClient {
-	return &ManagedDatabaseTransparentDataEncryptionClient{con: con, subscriptionID: subscriptionID}
+func NewManagedDatabaseTransparentDataEncryptionClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseTransparentDataEncryptionClient {
+	return &ManagedDatabaseTransparentDataEncryptionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Updates a database's transparent data encryption configuration.
@@ -36,18 +39,18 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption/{tdeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -69,37 +72,36 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *azcore.Response) (ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedTransparentDataEncryption); err != nil {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse, error) {
+	result := ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a managed database's transparent data encryption.
@@ -109,18 +111,18 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) Get(ctx context.Co
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionGetOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption/{tdeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,55 +144,54 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *azcore.Response) (ManagedDatabaseTransparentDataEncryptionGetResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedTransparentDataEncryption); err != nil {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionGetResponse, error) {
+	result := ManagedDatabaseTransparentDataEncryptionGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Gets a list of managed database's transparent data encryptions.
 // If the operation fails it returns a generic error.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionListByDatabaseOptions) ManagedDatabaseTransparentDataEncryptionListByDatabasePager {
-	return &managedDatabaseTransparentDataEncryptionListByDatabasePager{
+func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionListByDatabaseOptions) *ManagedDatabaseTransparentDataEncryptionListByDatabasePager {
+	return &ManagedDatabaseTransparentDataEncryptionListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedTransparentDataEncryptionListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedTransparentDataEncryptionListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionListByDatabaseOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -208,35 +209,34 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *azcore.Response) (ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse, error) {
-	result := ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedTransparentDataEncryptionListResult); err != nil {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse, error) {
+	result := ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryptionListResult); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

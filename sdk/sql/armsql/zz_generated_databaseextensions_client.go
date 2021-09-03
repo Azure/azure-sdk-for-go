@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,26 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // DatabaseExtensionsClient contains the methods for the DatabaseExtensions group.
 // Don't use this type directly, use NewDatabaseExtensionsClient() instead.
 type DatabaseExtensionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDatabaseExtensionsClient creates a new instance of DatabaseExtensionsClient with the specified values.
-func NewDatabaseExtensionsClient(con *armcore.Connection, subscriptionID string) *DatabaseExtensionsClient {
-	return &DatabaseExtensionsClient{con: con, subscriptionID: subscriptionID}
+func NewDatabaseExtensionsClient(con *arm.Connection, subscriptionID string) *DatabaseExtensionsClient {
+	return &DatabaseExtensionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Perform a database extension operation, like polybase import
@@ -38,65 +41,37 @@ func (client *DatabaseExtensionsClient) BeginCreateOrUpdate(ctx context.Context,
 		return DatabaseExtensionsCreateOrUpdatePollerResponse{}, err
 	}
 	result := DatabaseExtensionsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DatabaseExtensionsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DatabaseExtensionsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &databaseExtensionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabaseExtensionsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new DatabaseExtensionsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to DatabaseExtensionsCreateOrUpdatePoller.ResumeToken().
-func (client *DatabaseExtensionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DatabaseExtensionsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DatabaseExtensionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DatabaseExtensionsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &databaseExtensionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DatabaseExtensionsCreateOrUpdatePollerResponse{}, err
-	}
-	result := DatabaseExtensionsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DatabaseExtensionsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DatabaseExtensionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return DatabaseExtensionsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &DatabaseExtensionsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Perform a database extension operation, like polybase import
 // If the operation fails it returns a generic error.
-func (client *DatabaseExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, extensionName string, parameters DatabaseExtensions, options *DatabaseExtensionsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *DatabaseExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, extensionName string, parameters DatabaseExtensions, options *DatabaseExtensionsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, extensionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabaseExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, extensionName string, parameters DatabaseExtensions, options *DatabaseExtensionsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DatabaseExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, extensionName string, parameters DatabaseExtensions, options *DatabaseExtensionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/{extensionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,28 +93,27 @@ func (client *DatabaseExtensionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatabaseExtensionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseExtensionsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a database extension. This will return resource not found as it is not supported.
@@ -149,18 +123,18 @@ func (client *DatabaseExtensionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DatabaseExtensionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabaseExtensionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabaseExtensionsGetResponse{}, client.getHandleError(resp)
 	}
-	return DatabaseExtensionsGetResponse{RawResponse: resp.Response}, nil
+	return DatabaseExtensionsGetResponse{RawResponse: resp}, nil
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, extensionName string, options *DatabaseExtensionsGetOptions) (*azcore.Request, error) {
+func (client *DatabaseExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, extensionName string, options *DatabaseExtensionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/{extensionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -182,45 +156,44 @@ func (client *DatabaseExtensionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DatabaseExtensionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseExtensionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - List database extension. This will return an empty list as it is not supported.
 // If the operation fails it returns a generic error.
-func (client *DatabaseExtensionsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsListByDatabaseOptions) DatabaseExtensionsListByDatabasePager {
-	return &databaseExtensionsListByDatabasePager{
+func (client *DatabaseExtensionsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsListByDatabaseOptions) *DatabaseExtensionsListByDatabasePager {
+	return &DatabaseExtensionsListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseExtensionsListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ImportExportExtensionsOperationListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabaseExtensionsListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ImportExportExtensionsOperationListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseExtensionsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsListByDatabaseOptions) (*azcore.Request, error) {
+func (client *DatabaseExtensionsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,35 +211,34 @@ func (client *DatabaseExtensionsClient) listByDatabaseCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseExtensionsClient) listByDatabaseHandleResponse(resp *azcore.Response) (DatabaseExtensionsListByDatabaseResponse, error) {
-	result := DatabaseExtensionsListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ImportExportExtensionsOperationListResult); err != nil {
+func (client *DatabaseExtensionsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseExtensionsListByDatabaseResponse, error) {
+	result := DatabaseExtensionsListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ImportExportExtensionsOperationListResult); err != nil {
 		return DatabaseExtensionsListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseExtensionsClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseExtensionsClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

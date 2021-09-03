@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // ManagedDatabaseTablesClient contains the methods for the ManagedDatabaseTables group.
 // Don't use this type directly, use NewManagedDatabaseTablesClient() instead.
 type ManagedDatabaseTablesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedDatabaseTablesClient creates a new instance of ManagedDatabaseTablesClient with the specified values.
-func NewManagedDatabaseTablesClient(con *armcore.Connection, subscriptionID string) *ManagedDatabaseTablesClient {
-	return &ManagedDatabaseTablesClient{con: con, subscriptionID: subscriptionID}
+func NewManagedDatabaseTablesClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseTablesClient {
+	return &ManagedDatabaseTablesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get managed database table
@@ -36,18 +39,18 @@ func (client *ManagedDatabaseTablesClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return ManagedDatabaseTablesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedDatabaseTablesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedDatabaseTablesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseTablesGetOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseTablesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,55 +76,54 @@ func (client *ManagedDatabaseTablesClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseTablesClient) getHandleResponse(resp *azcore.Response) (ManagedDatabaseTablesGetResponse, error) {
-	result := ManagedDatabaseTablesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseTable); err != nil {
+func (client *ManagedDatabaseTablesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTablesGetResponse, error) {
+	result := ManagedDatabaseTablesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTable); err != nil {
 		return ManagedDatabaseTablesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedDatabaseTablesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseTablesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListBySchema - List managed database tables
 // If the operation fails it returns a generic error.
-func (client *ManagedDatabaseTablesClient) ListBySchema(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, options *ManagedDatabaseTablesListBySchemaOptions) ManagedDatabaseTablesListBySchemaPager {
-	return &managedDatabaseTablesListBySchemaPager{
+func (client *ManagedDatabaseTablesClient) ListBySchema(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, options *ManagedDatabaseTablesListBySchemaOptions) *ManagedDatabaseTablesListBySchemaPager {
+	return &ManagedDatabaseTablesListBySchemaPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySchemaCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseTablesListBySchemaResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseTableListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedDatabaseTablesListBySchemaResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseTableListResult.NextLink)
 		},
 	}
 }
 
 // listBySchemaCreateRequest creates the ListBySchema request.
-func (client *ManagedDatabaseTablesClient) listBySchemaCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, options *ManagedDatabaseTablesListBySchemaOptions) (*azcore.Request, error) {
+func (client *ManagedDatabaseTablesClient) listBySchemaCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, options *ManagedDatabaseTablesListBySchemaOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,38 +145,37 @@ func (client *ManagedDatabaseTablesClient) listBySchemaCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySchemaHandleResponse handles the ListBySchema response.
-func (client *ManagedDatabaseTablesClient) listBySchemaHandleResponse(resp *azcore.Response) (ManagedDatabaseTablesListBySchemaResponse, error) {
-	result := ManagedDatabaseTablesListBySchemaResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseTableListResult); err != nil {
+func (client *ManagedDatabaseTablesClient) listBySchemaHandleResponse(resp *http.Response) (ManagedDatabaseTablesListBySchemaResponse, error) {
+	result := ManagedDatabaseTablesListBySchemaResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTableListResult); err != nil {
 		return ManagedDatabaseTablesListBySchemaResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySchemaHandleError handles the ListBySchema error response.
-func (client *ManagedDatabaseTablesClient) listBySchemaHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedDatabaseTablesClient) listBySchemaHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

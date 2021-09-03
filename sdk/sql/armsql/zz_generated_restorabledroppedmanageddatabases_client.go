@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // RestorableDroppedManagedDatabasesClient contains the methods for the RestorableDroppedManagedDatabases group.
 // Don't use this type directly, use NewRestorableDroppedManagedDatabasesClient() instead.
 type RestorableDroppedManagedDatabasesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRestorableDroppedManagedDatabasesClient creates a new instance of RestorableDroppedManagedDatabasesClient with the specified values.
-func NewRestorableDroppedManagedDatabasesClient(con *armcore.Connection, subscriptionID string) *RestorableDroppedManagedDatabasesClient {
-	return &RestorableDroppedManagedDatabasesClient{con: con, subscriptionID: subscriptionID}
+func NewRestorableDroppedManagedDatabasesClient(con *arm.Connection, subscriptionID string) *RestorableDroppedManagedDatabasesClient {
+	return &RestorableDroppedManagedDatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a restorable dropped managed database.
@@ -36,18 +39,18 @@ func (client *RestorableDroppedManagedDatabasesClient) Get(ctx context.Context, 
 	if err != nil {
 		return RestorableDroppedManagedDatabasesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RestorableDroppedManagedDatabasesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RestorableDroppedManagedDatabasesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RestorableDroppedManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, options *RestorableDroppedManagedDatabasesGetOptions) (*azcore.Request, error) {
+func (client *RestorableDroppedManagedDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, options *RestorableDroppedManagedDatabasesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -65,55 +68,54 @@ func (client *RestorableDroppedManagedDatabasesClient) getCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *azcore.Response) (RestorableDroppedManagedDatabasesGetResponse, error) {
-	result := RestorableDroppedManagedDatabasesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RestorableDroppedManagedDatabase); err != nil {
+func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *http.Response) (RestorableDroppedManagedDatabasesGetResponse, error) {
+	result := RestorableDroppedManagedDatabasesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedManagedDatabase); err != nil {
 		return RestorableDroppedManagedDatabasesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RestorableDroppedManagedDatabasesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorableDroppedManagedDatabasesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByInstance - Gets a list of restorable dropped managed databases.
 // If the operation fails it returns a generic error.
-func (client *RestorableDroppedManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesListByInstanceOptions) RestorableDroppedManagedDatabasesListByInstancePager {
-	return &restorableDroppedManagedDatabasesListByInstancePager{
+func (client *RestorableDroppedManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesListByInstanceOptions) *RestorableDroppedManagedDatabasesListByInstancePager {
+	return &RestorableDroppedManagedDatabasesListByInstancePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp RestorableDroppedManagedDatabasesListByInstanceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RestorableDroppedManagedDatabaseListResult.NextLink)
+		advancer: func(ctx context.Context, resp RestorableDroppedManagedDatabasesListByInstanceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RestorableDroppedManagedDatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *RestorableDroppedManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesListByInstanceOptions) (*azcore.Request, error) {
+func (client *RestorableDroppedManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *RestorableDroppedManagedDatabasesListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -127,35 +129,34 @@ func (client *RestorableDroppedManagedDatabasesClient) listByInstanceCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleResponse(resp *azcore.Response) (RestorableDroppedManagedDatabasesListByInstanceResponse, error) {
-	result := RestorableDroppedManagedDatabasesListByInstanceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RestorableDroppedManagedDatabaseListResult); err != nil {
+func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (RestorableDroppedManagedDatabasesListByInstanceResponse, error) {
+	result := RestorableDroppedManagedDatabasesListByInstanceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedManagedDatabaseListResult); err != nil {
 		return RestorableDroppedManagedDatabasesListByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByInstanceHandleError handles the ListByInstance error response.
-func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

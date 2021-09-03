@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // ManagedInstanceOperationsClient contains the methods for the ManagedInstanceOperations group.
 // Don't use this type directly, use NewManagedInstanceOperationsClient() instead.
 type ManagedInstanceOperationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedInstanceOperationsClient creates a new instance of ManagedInstanceOperationsClient with the specified values.
-func NewManagedInstanceOperationsClient(con *armcore.Connection, subscriptionID string) *ManagedInstanceOperationsClient {
-	return &ManagedInstanceOperationsClient{con: con, subscriptionID: subscriptionID}
+func NewManagedInstanceOperationsClient(con *arm.Connection, subscriptionID string) *ManagedInstanceOperationsClient {
+	return &ManagedInstanceOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Cancel - Cancels the asynchronous operation on the managed instance.
@@ -36,18 +39,18 @@ func (client *ManagedInstanceOperationsClient) Cancel(ctx context.Context, resou
 	if err != nil {
 		return ManagedInstanceOperationsCancelResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedInstanceOperationsCancelResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedInstanceOperationsCancelResponse{}, client.cancelHandleError(resp)
 	}
-	return ManagedInstanceOperationsCancelResponse{RawResponse: resp.Response}, nil
+	return ManagedInstanceOperationsCancelResponse{RawResponse: resp}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsCancelOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations/{operationId}/cancel"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -62,27 +65,26 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // cancelHandleError handles the Cancel error response.
-func (client *ManagedInstanceOperationsClient) cancelHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceOperationsClient) cancelHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a management operation on a managed instance.
@@ -92,18 +94,18 @@ func (client *ManagedInstanceOperationsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ManagedInstanceOperationsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedInstanceOperationsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedInstanceOperationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsGetOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,55 +120,54 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *azcore.Response) (ManagedInstanceOperationsGetResponse, error) {
-	result := ManagedInstanceOperationsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstanceOperation); err != nil {
+func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Response) (ManagedInstanceOperationsGetResponse, error) {
+	result := ManagedInstanceOperationsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperation); err != nil {
 		return ManagedInstanceOperationsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedInstanceOperationsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceOperationsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByManagedInstance - Gets a list of operations performed on the managed instance.
 // If the operation fails it returns a generic error.
-func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsListByManagedInstanceOptions) ManagedInstanceOperationsListByManagedInstancePager {
-	return &managedInstanceOperationsListByManagedInstancePager{
+func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsListByManagedInstanceOptions) *ManagedInstanceOperationsListByManagedInstancePager {
+	return &ManagedInstanceOperationsListByManagedInstancePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstanceOperationsListByManagedInstanceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceOperationListResult.NextLink)
+		advancer: func(ctx context.Context, resp ManagedInstanceOperationsListByManagedInstanceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceOperationListResult.NextLink)
 		},
 	}
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
-func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsListByManagedInstanceOptions) (*azcore.Request, error) {
+func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsListByManagedInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/operations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -180,35 +181,34 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
-func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleResponse(resp *azcore.Response) (ManagedInstanceOperationsListByManagedInstanceResponse, error) {
-	result := ManagedInstanceOperationsListByManagedInstanceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedInstanceOperationListResult); err != nil {
+func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstanceOperationsListByManagedInstanceResponse, error) {
+	result := ManagedInstanceOperationsListByManagedInstanceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperationListResult); err != nil {
 		return ManagedInstanceOperationsListByManagedInstanceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByManagedInstanceHandleError handles the ListByManagedInstance error response.
-func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

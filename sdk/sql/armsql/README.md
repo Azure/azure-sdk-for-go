@@ -1,8 +1,8 @@
-# Azure Azure SQL Database Module for Go
+# Azure SQL Database Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/sql/armsql)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/sql/armsql)
 
-The `armsql` module provides operations for working with Azure Azure SQL Database.
+The `armsql` module provides operations for working with Azure SQL Database.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/sql/armsql)
 
@@ -17,7 +17,7 @@ The `armsql` module provides operations for working with Azure Azure SQL Databas
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Azure SQL Database module:
+Install the Azure SQL Database module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/sql/armsql
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/sql/armsql
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Azure SQL Database.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure SQL Database.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,19 +33,19 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Azure SQL Database
+## Connecting to Azure SQL Database
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ## Clients
 
-Azure Azure SQL Database modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure SQL Database modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
 
 ```go
 client := armsql.NewDatabasesClient(con, "<subscription ID>")
@@ -54,7 +54,7 @@ client := armsql.NewDatabasesClient(con, "<subscription ID>")
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure SQL Database` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `SQL Database` label.
 
 # Contributing
 

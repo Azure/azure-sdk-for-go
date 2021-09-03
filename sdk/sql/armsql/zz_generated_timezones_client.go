@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // TimeZonesClient contains the methods for the TimeZones group.
 // Don't use this type directly, use NewTimeZonesClient() instead.
 type TimeZonesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTimeZonesClient creates a new instance of TimeZonesClient with the specified values.
-func NewTimeZonesClient(con *armcore.Connection, subscriptionID string) *TimeZonesClient {
-	return &TimeZonesClient{con: con, subscriptionID: subscriptionID}
+func NewTimeZonesClient(con *arm.Connection, subscriptionID string) *TimeZonesClient {
+	return &TimeZonesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a managed instance time zone.
@@ -36,18 +39,18 @@ func (client *TimeZonesClient) Get(ctx context.Context, locationName string, tim
 	if err != nil {
 		return TimeZonesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TimeZonesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TimeZonesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TimeZonesClient) getCreateRequest(ctx context.Context, locationName string, timeZoneID string, options *TimeZonesGetOptions) (*azcore.Request, error) {
+func (client *TimeZonesClient) getCreateRequest(ctx context.Context, locationName string, timeZoneID string, options *TimeZonesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/timeZones/{timeZoneId}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -61,55 +64,54 @@ func (client *TimeZonesClient) getCreateRequest(ctx context.Context, locationNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TimeZonesClient) getHandleResponse(resp *azcore.Response) (TimeZonesGetResponse, error) {
-	result := TimeZonesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TimeZone); err != nil {
+func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZonesGetResponse, error) {
+	result := TimeZonesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TimeZone); err != nil {
 		return TimeZonesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TimeZonesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TimeZonesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByLocation - Gets a list of managed instance time zones by location.
 // If the operation fails it returns a generic error.
-func (client *TimeZonesClient) ListByLocation(locationName string, options *TimeZonesListByLocationOptions) TimeZonesListByLocationPager {
-	return &timeZonesListByLocationPager{
+func (client *TimeZonesClient) ListByLocation(locationName string, options *TimeZonesListByLocationOptions) *TimeZonesListByLocationPager {
+	return &TimeZonesListByLocationPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp TimeZonesListByLocationResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TimeZoneListResult.NextLink)
+		advancer: func(ctx context.Context, resp TimeZonesListByLocationResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TimeZoneListResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *TimeZonesListByLocationOptions) (*azcore.Request, error) {
+func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *TimeZonesListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/timeZones"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -119,35 +121,34 @@ func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *TimeZonesClient) listByLocationHandleResponse(resp *azcore.Response) (TimeZonesListByLocationResponse, error) {
-	result := TimeZonesListByLocationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TimeZoneListResult); err != nil {
+func (client *TimeZonesClient) listByLocationHandleResponse(resp *http.Response) (TimeZonesListByLocationResponse, error) {
+	result := TimeZonesListByLocationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TimeZoneListResult); err != nil {
 		return TimeZonesListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByLocationHandleError handles the ListByLocation error response.
-func (client *TimeZonesClient) listByLocationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TimeZonesClient) listByLocationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

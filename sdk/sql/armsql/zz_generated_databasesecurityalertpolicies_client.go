@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,8 +11,9 @@ package armsql
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,13 +22,14 @@ import (
 // DatabaseSecurityAlertPoliciesClient contains the methods for the DatabaseSecurityAlertPolicies group.
 // Don't use this type directly, use NewDatabaseSecurityAlertPoliciesClient() instead.
 type DatabaseSecurityAlertPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDatabaseSecurityAlertPoliciesClient creates a new instance of DatabaseSecurityAlertPoliciesClient with the specified values.
-func NewDatabaseSecurityAlertPoliciesClient(con *armcore.Connection, subscriptionID string) *DatabaseSecurityAlertPoliciesClient {
-	return &DatabaseSecurityAlertPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewDatabaseSecurityAlertPoliciesClient(con *arm.Connection, subscriptionID string) *DatabaseSecurityAlertPoliciesClient {
+	return &DatabaseSecurityAlertPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a database's security alert policy.
@@ -36,18 +39,18 @@ func (client *DatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Co
 	if err != nil {
 		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters DatabaseSecurityAlertPolicy, options *DatabaseSecurityAlertPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters DatabaseSecurityAlertPolicy, options *DatabaseSecurityAlertPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -69,37 +72,36 @@ func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (DatabaseSecurityAlertPoliciesCreateOrUpdateResponse, error) {
-	result := DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseSecurityAlertPolicy); err != nil {
+func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesCreateOrUpdateResponse, error) {
+	result := DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSecurityAlertPolicy); err != nil {
 		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a database's security alert policy.
@@ -109,18 +111,18 @@ func (client *DatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return DatabaseSecurityAlertPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DatabaseSecurityAlertPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DatabaseSecurityAlertPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *DatabaseSecurityAlertPoliciesGetOptions) (*azcore.Request, error) {
+func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *DatabaseSecurityAlertPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,55 +144,54 @@ func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *azcore.Response) (DatabaseSecurityAlertPoliciesGetResponse, error) {
-	result := DatabaseSecurityAlertPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseSecurityAlertPolicy); err != nil {
+func (client *DatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesGetResponse, error) {
+	result := DatabaseSecurityAlertPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSecurityAlertPolicy); err != nil {
 		return DatabaseSecurityAlertPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DatabaseSecurityAlertPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseSecurityAlertPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByDatabase - Gets a list of database's security alert policies.
 // If the operation fails it returns a generic error.
-func (client *DatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesListByDatabaseOptions) DatabaseSecurityAlertPoliciesListByDatabasePager {
-	return &databaseSecurityAlertPoliciesListByDatabasePager{
+func (client *DatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesListByDatabaseOptions) *DatabaseSecurityAlertPoliciesListByDatabasePager {
+	return &DatabaseSecurityAlertPoliciesListByDatabasePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseSecurityAlertPoliciesListByDatabaseResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DatabaseSecurityAlertListResult.NextLink)
+		advancer: func(ctx context.Context, resp DatabaseSecurityAlertPoliciesListByDatabaseResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseSecurityAlertListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesListByDatabaseOptions) (*azcore.Request, error) {
+func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -208,35 +209,34 @@ func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *azcore.Response) (DatabaseSecurityAlertPoliciesListByDatabaseResponse, error) {
-	result := DatabaseSecurityAlertPoliciesListByDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DatabaseSecurityAlertListResult); err != nil {
+func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesListByDatabaseResponse, error) {
+	result := DatabaseSecurityAlertPoliciesListByDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSecurityAlertListResult); err != nil {
 		return DatabaseSecurityAlertPoliciesListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -25,7 +25,7 @@ URL and a credential that allows you to access the account.
 
 	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	handle(err)
-	serviceClient, err := NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
+	serviceClient, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
 	handle(err)
 
 
@@ -44,7 +44,7 @@ Use the key as the credential parameter to authenticate the client:
 
 	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	handle(err)
-	serviceClient, err := NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
+	serviceClient, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
 	handle(err)
 
 Using a Connection String
@@ -52,7 +52,7 @@ Depending on your use case and authorization method, you may prefer to initializ
 connection string to the client's `from_connection_string` class method. The connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or with the following Azure CLI command:
 
 	connStr := "DefaultEndpointsProtocol=https;AccountName=<my_account_name>;AccountKey=<my_account_key>;EndpointSuffix=core.windows.net"
-	serviceClient, err := NewServiceClientFromConnectionString(connStr, nil)
+	serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil)
 
 Using a Shared Access Signature
 To use a shared access signature (SAS) token, provide the token at the end of your service URL.
@@ -61,7 +61,7 @@ ServiceClient.GetAccountSASToken or Client.GetTableSASToken() functions.
 
 	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	handle(err)
-	service, err := NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+	service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
 	handle(err)
 
 	resources := aztables.AccountSASResourceTypes{Service: true}
@@ -71,7 +71,7 @@ ServiceClient.GetAccountSASToken or Client.GetTableSASToken() functions.
 	sasUrl, err := service.GetAccountSASToken(resources, permission, start, expiry)
 	handle(err)
 
-	sasService, err := NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
+	sasService, err := aztables.NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
 	handle(err)
 
 
@@ -88,7 +88,7 @@ The following components make up the Azure Data Tables Service:
 * A table within the account, which contains a set of entities
 * An entity within a table, as a dictionary
 
-The Azure Data Tables client library for Python allows you to interact with each of these components
+The Azure Data Tables client library for Go allows you to interact with each of these components
 through the use of a dedicated client object.
 
 Two different clients are provided to interact with the various components of the Table Service:
@@ -137,7 +137,7 @@ Create a table in your account and get a `Client` to perform operations on the n
 
 	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	handle(err)
-	service, err := NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+	service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
 	handle(err)
 	resp, err := service.CreateTable("myTable")
 
@@ -145,7 +145,7 @@ Creating Entities
 
 	cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 	handle(err)
-	service, err := NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+	service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
 	handle(err)
 
 	myEntity := aztables.EDMEntity{

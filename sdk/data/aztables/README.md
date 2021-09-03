@@ -20,7 +20,7 @@ The Azure Data Tables SDK can access an Azure Storage or CosmosDB account.
 * To create a new cosmos storage account, you can use the [Azure CLI][azure_cli_create_cosmos] or [Azure Portal][azure_portal_create_cosmos].
 
 ### Install the package
-Install the Azure Data Tables client library for Python with `go get`:
+Install the Azure Data Tables client library for Go with `go get`:
 ```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 ```
@@ -40,7 +40,7 @@ Once you have the account URL, it can be used to create the service client:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-serviceClient, err := NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
+serviceClient, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
 handle(err)
 ```
 
@@ -62,7 +62,7 @@ Use AAD authentication as the credential parameter to authenticate the client:
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
 handle(err)
-serviceClient, err := NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
+serviceClient, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
 handle(err)
 ```
 
@@ -76,7 +76,7 @@ az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
 
 ```golang
 connStr := "DefaultEndpointsProtocol=https;AccountName=<my_account_name>;AccountKey=<my_account_key>;EndpointSuffix=core.windows.net"
-serviceClient, err := NewServiceClientFromConnectionString(connStr, nil)
+serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil)
 ```
 
 ##### Creating the client from a SAS token
@@ -85,7 +85,7 @@ To use a [shared access signature (SAS) token][azure_sas_token], provide the tok
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-service, err := NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
 
 resources := aztables.AccountSASResourceTypes{Service: true}
 permission := aztables.AccountSASPermissions{Read: true}
@@ -94,7 +94,7 @@ expiry := time.Date(2022, time.August, 21, 1, 1, 0, 0, time.UTC)
 sasUrl, err := service.GetAccountSASToken(resources, permission, start, expiry)
 handle(err)
 
-sasService, err := NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
+sasService, err := aztables.NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
 handle(err)
 ```
 
@@ -111,7 +111,7 @@ The following components make up the Azure Data Tables Service:
 * A table within the account, which contains a set of entities
 * An entity within a table, as a dictionary
 
-The Azure Data Tables client library for Python allows you to interact with each of these components through the
+The Azure Data Tables client library for Go allows you to interact with each of these components through the
 use of a dedicated client object.
 
 ### Clients
@@ -148,7 +148,7 @@ aztables.EDMEntity{
 * **[update_entity][update_entity]** - Update an entity's information by either merging or replacing the existing entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
     * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
-* **[query_entities][query_entities]** - Query existing entities in a table using [OData filters][odata_syntax].
+* **[query_entities][query_entities]** - Query existing entities in a table using OData filters
 * **[get_entity][get_entity]** - Get a specific entity from a table by partition and row key.
 * **[upsert_entity][upsert_entity]** - Merge or replace an entity in a table, or if the entity does not exist, inserts the entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
@@ -169,7 +169,7 @@ Create a table in your account and get a `Client` to perform operations on the n
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-service, err := NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
 handle(err)
 resp, err := service.CreateTable("myTable")
 ```
@@ -180,7 +180,7 @@ Create entities in the table:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-service, err := NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
 handle(err)
 
 myEntity := aztables.EDMEntity{
@@ -279,7 +279,7 @@ azlog.SetClassifications(azidentity.LogCredential)
 
 Get started with our [Table samples][tables_samples].
 
-Several Azure Data Tables Python SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Tables.
+Several Azure Data Tables Go SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Tables.
 
 ## Provide Feedback
 
@@ -307,7 +307,7 @@ additional questions or comments.
 
 
 ### Common Scenarios
-These code samples show common scenario operations with the Azure Data tables client library. The async versions of the samples (the python sample files appended with _async) show asynchronous operations with Tables and require Python 3.5 or later.
+These code samples show common scenario operations with the Azure Data tables client library.
 
 * Create and delete tables: [sample_create_delete_table.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_create_delete_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_create_delete_table_async.py))
 * List and query tables: [sample_query_tables.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_query_tables.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_query_tables_async.py))
@@ -357,12 +357,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [azure_sas_token]:https://docs.microsoft.com/azure/storage/common/storage-sas-overview
 [azure_shared_key]:https://docs.microsoft.com/rest/api/storageservices/authorize-with-shared-key
 
-[odata_syntax]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/README.md#writing-filters
-
 [azure_core_ref_docs]:https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore
 [azure_core_readme]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore/README.md
 
-[python_logging]: https://docs.python.org/3/library/logging.html
 [tables_error_codes]: https://docs.microsoft.com/rest/api/storageservices/table-service-error-codes
 
 [msft_oss_coc]:https://opensource.microsoft.com/codeofconduct/

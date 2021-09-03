@@ -75,16 +75,6 @@ func (t *transactionError) Error() string {
 	return fmt.Sprintf("Code: %s, Message: %s", t.odataError.Code, t.odataError.Message.Value)
 }
 
-type ResponseError interface {
-	error
-
-	StatusCode() int
-
-	ErrorCode() string
-
-	RawResponse() *http.Response
-}
-
 type TransactionAction struct {
 	ActionType TransactionType
 	Entity     []byte
@@ -233,8 +223,8 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 				retError := newTableTransactionError(errorBody, resp)
 				ret := retError.(*transactionError)
 				ret.statusCode = r.StatusCode
-				return &result, ret
-				// return &result, azcore.NewResponseError(ErrFailedBatch, resp) //newTableTransactionError(errorBody)
+				// return &result, ret
+				return &result, runtime.NewResponseError(retError, resp) //newTableTransactionError(errorBody)
 			}
 		}
 		innerResponses[i] = *r

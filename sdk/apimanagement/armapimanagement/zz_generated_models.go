@@ -10,9 +10,10 @@ package armapimanagement
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // APIBeginCreateOrUpdateOptions contains the optional parameters for the API.BeginCreateOrUpdate method.

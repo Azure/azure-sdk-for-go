@@ -41,6 +41,7 @@ func AuthenticateWithTokenCredential() *aztables.ServiceClient {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	check(err)
 	client, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	check(err)
 	return client
 }
 

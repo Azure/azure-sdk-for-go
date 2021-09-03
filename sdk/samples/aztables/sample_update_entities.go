@@ -109,10 +109,11 @@ func UpsertEntity() {
 	if !ok {
 		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	serviceURL := accountName + ".table.core.windows.net"
-
-	cred := aztables.SharedKeyCredential(accountName, accountKey)
-	client := aztables.NewTableClient("myTable", serviceURL, cred, nil)
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTable")
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	client, err := aztables.NewClient(serviceURL, cred, nil)
+	check(err)
 
 	// 1. First add an entity
 	myEntity := MyEntity{
@@ -128,16 +129,16 @@ func UpsertEntity() {
 	marshalled, err := json.Marshal(myEntity)
 	check(err)
 
-	_, err = client.UpsertEntity(context.Background(), marshalled, nil, aztables.Merge)
+	_, err = client.InsertEntity(context.Background(), marshalled, &aztables.InsertEntityOptions{UpdateMode: aztables.MergeEntity})
 	check(err)
 
 	// 2. Update the entity object
 	myEntity.OnSale = false
 
-	// 3. Upsert the entity on the service
+	// 3. Insert the entity on the service
 	marshalled, err = json.Marshal(myEntity)
 	check(err)
-	_, err = client.UpsertEntity(context.Background(), marshalled, nil, aztables.Merge)
+	_, err = client.InsertEntity(context.Background(), marshalled, &aztables.InsertEntityOptions{UpdateMode: aztables.MergeEntity})
 	check(err)
 
 }

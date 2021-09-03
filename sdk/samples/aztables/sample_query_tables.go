@@ -31,9 +31,9 @@ func Sample_QueryTables() {
 	pageCount := 1
 	for pager.NextPage(context.Background()) {
 		response := pager.PageResponse()
-		fmt.Println("There are %d tables in page #%d", len(response.Tables), pageCount)
+		fmt.Printf("There are %d tables in page #%d\n", len(response.Tables), pageCount)
 		for _, table := range response.Tables {
-			fmt.Printf("\tTableName: %s\n", table)
+			fmt.Printf("\tTableName: %s\n", *table.TableName)
 		}
 		pageCount += 1
 	}

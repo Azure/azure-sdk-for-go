@@ -17,29 +17,31 @@ func Sample_QueryTable() {
 	if !ok {
 		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	serviceURL := accountName + ".table.core.windows.net"
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTable")
 
-	cred := aztables.SharedKeyCredential(accountName, accountKey)
-	client := aztables.NewTableClient("myTable", serviceURL, cred, nil)
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	check(err)
+	client, err := aztables.NewClient(serviceURL, cred, nil)
+	check(err)
 
 	filter := fmt.Sprintf("PartitionKey eq '%v' or PartitionKey eq '%v'", "pk001", "pk002")
-	pager := client.Query(&aztables.QueryOptions{Filter: &filter})
+	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
 	for pager.NextPage(context.Background()) {
 		response := pager.PageResponse()
-		fmt.Println("There are %d entities in page #%d", len(response.TableEntityQueryResponse.Value), pageCount)
+		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
 	}
-	check(pager.Error())
+	check(pager.Err())
 
 	// To list all entities in a table, provide nil to Query()
-	listPager := client.Query(nil)
+	listPager := client.List(nil)
 	pageCount = 1
 	for listPager.NextPage(context.Background()) {
 		response := listPager.PageResponse()
-		fmt.Println("There are %d entities in page #%d", len(response.TableEntityQueryResponse.Value), pageCount)
+		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
 	}
-	check(pager.Error())
+	check(pager.Err())
 }

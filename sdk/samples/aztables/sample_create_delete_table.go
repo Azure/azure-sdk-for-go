@@ -33,6 +33,7 @@ func CreateFromTableClient() {
 	}
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "fromTableClient")
 	client, err := aztables.NewClient(serviceURL, cred, nil)
+	check(err)
 	_, err = client.Create(context.Background(), nil)
 	check(err)
 }
@@ -61,6 +62,7 @@ func DeleteFromTableClient() {
 	}
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "fromTableClient")
 	client, err := aztables.NewClient(serviceURL, cred, nil)
+	check(err)
 	_, err = client.Delete(context.Background(), nil)
 	check(err)
 }

@@ -10,9 +10,10 @@ package armoperationalinsights
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AssociatedWorkspace - The list of Log Analytics workspaces associated with the cluster.

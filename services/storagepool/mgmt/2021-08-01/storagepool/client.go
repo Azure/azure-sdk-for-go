@@ -1,4 +1,4 @@
-// Package storagepool implements the Azure ARM Storagepool service API version 2020-03-15-preview.
+// Package storagepool implements the Azure ARM Storagepool service API version 2021-08-01.
 //
 //
 package storagepool

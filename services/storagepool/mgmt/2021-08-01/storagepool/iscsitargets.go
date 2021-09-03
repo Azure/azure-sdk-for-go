@@ -31,13 +31,13 @@ func NewIscsiTargetsClientWithBaseURI(baseURI string, subscriptionID string) Isc
 	return IscsiTargetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or Update an iSCSI target.
+// CreateOrUpdate create or Update an iSCSI Target.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
-// iscsiTargetName - the name of the iSCSI target.
-// iscsiTargetPayload - request payload for iSCSI target operations.
-func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string, iscsiTargetPayload IscsiTarget) (result IscsiTargetsCreateOrUpdateFuture, err error) {
+// iscsiTargetName - the name of the iSCSI Target.
+// iscsiTargetCreatePayload - request payload for iSCSI Target create operation.
+func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string, iscsiTargetCreatePayload IscsiTargetCreate) (result IscsiTargetsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiTargetsClient.CreateOrUpdate")
 		defer func() {
@@ -55,19 +55,12 @@ func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
-		{TargetValue: iscsiTargetPayload,
-			Constraints: []validation.Constraint{{Target: "iscsiTargetPayload.IscsiTargetProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "iscsiTargetPayload.IscsiTargetProperties.Tpgs", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "iscsiTargetPayload.IscsiTargetProperties.TargetIqn", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+		{TargetValue: iscsiTargetCreatePayload,
+			Constraints: []validation.Constraint{{Target: "iscsiTargetCreatePayload.IscsiTargetCreateProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.IscsiTargetsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetPayload)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -75,7 +68,7 @@ func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -83,7 +76,7 @@ func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IscsiTargetsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string, iscsiTargetPayload IscsiTarget) (*http.Request, error) {
+func (client IscsiTargetsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string, iscsiTargetCreatePayload IscsiTargetCreate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"diskPoolName":      autorest.Encode("path", diskPoolName),
 		"iscsiTargetName":   autorest.Encode("path", iscsiTargetName),
@@ -91,7 +84,7 @@ func (client IscsiTargetsClient) CreateOrUpdatePreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -101,7 +94,7 @@ func (client IscsiTargetsClient) CreateOrUpdatePreparer(ctx context.Context, res
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}", pathParameters),
-		autorest.WithJSON(iscsiTargetPayload),
+		autorest.WithJSON(iscsiTargetCreatePayload),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -110,6 +103,7 @@ func (client IscsiTargetsClient) CreateOrUpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client IscsiTargetsClient) CreateOrUpdateSender(req *http.Request) (future IscsiTargetsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -126,18 +120,18 @@ func (client IscsiTargetsClient) CreateOrUpdateSender(req *http.Request) (future
 func (client IscsiTargetsClient) CreateOrUpdateResponder(resp *http.Response) (result IscsiTarget, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete deletes an iSCSI Target
+// Delete delete an iSCSI Target.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
-// iscsiTargetName - the name of the iSCSI target.
+// iscsiTargetName - the name of the iSCSI Target.
 func (client IscsiTargetsClient) Delete(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string) (result IscsiTargetsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiTargetsClient.Delete")
@@ -155,11 +149,7 @@ func (client IscsiTargetsClient) Delete(ctx context.Context, resourceGroupName s
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.IscsiTargetsClient", "Delete", err.Error())
 	}
 
@@ -171,7 +161,7 @@ func (client IscsiTargetsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -187,7 +177,7 @@ func (client IscsiTargetsClient) DeletePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -204,6 +194,7 @@ func (client IscsiTargetsClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client IscsiTargetsClient) DeleteSender(req *http.Request) (future IscsiTargetsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -226,11 +217,11 @@ func (client IscsiTargetsClient) DeleteResponder(resp *http.Response) (result au
 	return
 }
 
-// Get gets an iSCSI Target.
+// Get get an iSCSI Target.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
-// iscsiTargetName - the name of the iSCSI target.
+// iscsiTargetName - the name of the iSCSI Target.
 func (client IscsiTargetsClient) Get(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string) (result IscsiTarget, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiTargetsClient.Get")
@@ -248,11 +239,7 @@ func (client IscsiTargetsClient) Get(ctx context.Context, resourceGroupName stri
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.IscsiTargetsClient", "Get", err.Error())
 	}
 
@@ -287,7 +274,7 @@ func (client IscsiTargetsClient) GetPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -318,7 +305,7 @@ func (client IscsiTargetsClient) GetResponder(resp *http.Response) (result Iscsi
 	return
 }
 
-// ListByDiskPool get iSCSI Targets within a Disk Pool
+// ListByDiskPool get iSCSI Targets in a Disk pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
@@ -339,11 +326,7 @@ func (client IscsiTargetsClient) ListByDiskPool(ctx context.Context, resourceGro
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.IscsiTargetsClient", "ListByDiskPool", err.Error())
 	}
 
@@ -382,7 +365,7 @@ func (client IscsiTargetsClient) ListByDiskPoolPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -447,5 +430,99 @@ func (client IscsiTargetsClient) ListByDiskPoolComplete(ctx context.Context, res
 		}()
 	}
 	result.page, err = client.ListByDiskPool(ctx, resourceGroupName, diskPoolName)
+	return
+}
+
+// Update update an iSCSI Target.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// diskPoolName - the name of the Disk Pool.
+// iscsiTargetName - the name of the iSCSI Target.
+// iscsiTargetUpdatePayload - request payload for iSCSI Target update operation.
+func (client IscsiTargetsClient) Update(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string, iscsiTargetUpdatePayload IscsiTargetUpdate) (result IscsiTargetsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiTargetsClient.Update")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagepool.IscsiTargetsClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Update", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client IscsiTargetsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, iscsiTargetName string, iscsiTargetUpdatePayload IscsiTargetUpdate) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"diskPoolName":      autorest.Encode("path", diskPoolName),
+		"iscsiTargetName":   autorest.Encode("path", iscsiTargetName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}", pathParameters),
+		autorest.WithJSON(iscsiTargetUpdatePayload),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client IscsiTargetsClient) UpdateSender(req *http.Request) (future IscsiTargetsUpdateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client IscsiTargetsClient) UpdateResponder(resp *http.Response) (result IscsiTarget, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

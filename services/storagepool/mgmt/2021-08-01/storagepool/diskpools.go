@@ -31,12 +31,13 @@ func NewDiskPoolsClientWithBaseURI(baseURI string, subscriptionID string) DiskPo
 	return DiskPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create a new Disk Pool.
+// CreateOrUpdate create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is
+// expected service behavior.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
-// diskPoolPayload - request payload for Disk Pool operations.
-func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolPayload DiskPool) (result DiskPoolsCreateOrUpdateFuture, err error) {
+// diskPoolCreatePayload - request payload for Disk Pool create operation
+func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate) (result DiskPoolsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.CreateOrUpdate")
 		defer func() {
@@ -54,21 +55,16 @@ func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
-		{TargetValue: diskPoolPayload,
-			Constraints: []validation.Constraint{{Target: "diskPoolPayload.DiskPoolProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "diskPoolPayload.DiskPoolProperties.AvailabilityZones", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "diskPoolPayload.DiskPoolProperties.SubnetID", Name: validation.Null, Rule: true, Chain: nil},
-				}},
-				{Target: "diskPoolPayload.Sku", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "diskPoolPayload.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		{TargetValue: diskPoolCreatePayload,
+			Constraints: []validation.Constraint{{Target: "diskPoolCreatePayload.Sku", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "diskPoolCreatePayload.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "diskPoolCreatePayload.DiskPoolCreateProperties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "diskPoolCreatePayload.DiskPoolCreateProperties.SubnetID", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "diskPoolCreatePayload.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.DiskPoolsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, diskPoolName, diskPoolPayload)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, diskPoolName, diskPoolCreatePayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -76,7 +72,7 @@ func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -84,25 +80,27 @@ func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DiskPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolPayload DiskPool) (*http.Request, error) {
+func (client DiskPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"diskPoolName":      autorest.Encode("path", diskPoolName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	diskPoolPayload.SystemData = nil
+	diskPoolCreatePayload.ID = nil
+	diskPoolCreatePayload.Name = nil
+	diskPoolCreatePayload.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}", pathParameters),
-		autorest.WithJSON(diskPoolPayload),
+		autorest.WithJSON(diskPoolCreatePayload),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -111,6 +109,7 @@ func (client DiskPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) CreateOrUpdateSender(req *http.Request) (future DiskPoolsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -127,14 +126,104 @@ func (client DiskPoolsClient) CreateOrUpdateSender(req *http.Request) (future Di
 func (client DiskPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result DiskPool, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete delete a Disk Pool.
+// Deallocate shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources
+// that this Disk Pool uses. This operation can take 10 minutes to complete. This is expected service behavior.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// diskPoolName - the name of the Disk Pool.
+func (client DiskPoolsClient) Deallocate(ctx context.Context, resourceGroupName string, diskPoolName string) (result DiskPoolsDeallocateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.Deallocate")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagepool.DiskPoolsClient", "Deallocate", err.Error())
+	}
+
+	req, err := client.DeallocatePreparer(ctx, resourceGroupName, diskPoolName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Deallocate", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeallocateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Deallocate", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeallocatePreparer prepares the Deallocate request.
+func (client DiskPoolsClient) DeallocatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"diskPoolName":      autorest.Encode("path", diskPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/deallocate", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeallocateSender sends the Deallocate request. The method will close the
+// http.Response Body if it receives an error.
+func (client DiskPoolsClient) DeallocateSender(req *http.Request) (future DiskPoolsDeallocateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// DeallocateResponder handles the response to the Deallocate request. The method always
+// closes the http.Response Body.
+func (client DiskPoolsClient) DeallocateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Delete delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete.
+// This is expected service behavior.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
@@ -155,11 +244,7 @@ func (client DiskPoolsClient) Delete(ctx context.Context, resourceGroupName stri
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.DiskPoolsClient", "Delete", err.Error())
 	}
 
@@ -171,7 +256,7 @@ func (client DiskPoolsClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -186,7 +271,7 @@ func (client DiskPoolsClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -203,6 +288,7 @@ func (client DiskPoolsClient) DeletePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) DeleteSender(req *http.Request) (future DiskPoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -225,7 +311,7 @@ func (client DiskPoolsClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
-// Get get a Disk Pool.
+// Get get a Disk pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
@@ -246,11 +332,7 @@ func (client DiskPoolsClient) Get(ctx context.Context, resourceGroupName string,
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.DiskPoolsClient", "Get", err.Error())
 	}
 
@@ -284,7 +366,7 @@ func (client DiskPoolsClient) GetPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -315,7 +397,7 @@ func (client DiskPoolsClient) GetResponder(resp *http.Response) (result DiskPool
 	return
 }
 
-// ListByResourceGroup gets a list of DiskPools.
+// ListByResourceGroup gets a list of DiskPools in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client DiskPoolsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DiskPoolListResultPage, err error) {
@@ -373,7 +455,7 @@ func (client DiskPoolsClient) ListByResourceGroupPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -492,7 +574,7 @@ func (client DiskPoolsClient) ListBySubscriptionPreparer(ctx context.Context) (*
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -560,18 +642,17 @@ func (client DiskPoolsClient) ListBySubscriptionComplete(ctx context.Context) (r
 	return
 }
 
-// Update update a Storage Pool.
+// ListOutboundNetworkDependenciesEndpoints gets the network endpoints of all outbound dependencies of a Disk Pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // diskPoolName - the name of the Disk Pool.
-// diskPoolPayload - request payload for Disk Pool operations.
-func (client DiskPoolsClient) Update(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolPayload DiskPool) (result DiskPool, err error) {
+func (client DiskPoolsClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, diskPoolName string) (result OutboundEnvironmentEndpointListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.ListOutboundNetworkDependenciesEndpoints")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.oeel.Response.Response != nil {
+				sc = result.oeel.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -582,30 +663,237 @@ func (client DiskPoolsClient) Update(ctx context.Context, resourceGroupName stri
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}},
-		{TargetValue: diskPoolName,
-			Constraints: []validation.Constraint{{Target: "diskPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "diskPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diskPoolName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagepool.DiskPoolsClient", "ListOutboundNetworkDependenciesEndpoints", err.Error())
+	}
+
+	result.fn = client.listOutboundNetworkDependenciesEndpointsNextResults
+	req, err := client.ListOutboundNetworkDependenciesEndpointsPreparer(ctx, resourceGroupName, diskPoolName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "ListOutboundNetworkDependenciesEndpoints", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListOutboundNetworkDependenciesEndpointsSender(req)
+	if err != nil {
+		result.oeel.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "ListOutboundNetworkDependenciesEndpoints", resp, "Failure sending request")
+		return
+	}
+
+	result.oeel, err = client.ListOutboundNetworkDependenciesEndpointsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "ListOutboundNetworkDependenciesEndpoints", resp, "Failure responding to request")
+		return
+	}
+	if result.oeel.hasNextLink() && result.oeel.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListOutboundNetworkDependenciesEndpointsPreparer prepares the ListOutboundNetworkDependenciesEndpoints request.
+func (client DiskPoolsClient) ListOutboundNetworkDependenciesEndpointsPreparer(ctx context.Context, resourceGroupName string, diskPoolName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"diskPoolName":      autorest.Encode("path", diskPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/outboundNetworkDependenciesEndpoints", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListOutboundNetworkDependenciesEndpointsSender sends the ListOutboundNetworkDependenciesEndpoints request. The method will close the
+// http.Response Body if it receives an error.
+func (client DiskPoolsClient) ListOutboundNetworkDependenciesEndpointsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListOutboundNetworkDependenciesEndpointsResponder handles the response to the ListOutboundNetworkDependenciesEndpoints request. The method always
+// closes the http.Response Body.
+func (client DiskPoolsClient) ListOutboundNetworkDependenciesEndpointsResponder(resp *http.Response) (result OutboundEnvironmentEndpointList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listOutboundNetworkDependenciesEndpointsNextResults retrieves the next set of results, if any.
+func (client DiskPoolsClient) listOutboundNetworkDependenciesEndpointsNextResults(ctx context.Context, lastResults OutboundEnvironmentEndpointList) (result OutboundEnvironmentEndpointList, err error) {
+	req, err := lastResults.outboundEnvironmentEndpointListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listOutboundNetworkDependenciesEndpointsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListOutboundNetworkDependenciesEndpointsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listOutboundNetworkDependenciesEndpointsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListOutboundNetworkDependenciesEndpointsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "listOutboundNetworkDependenciesEndpointsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListOutboundNetworkDependenciesEndpointsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DiskPoolsClient) ListOutboundNetworkDependenciesEndpointsComplete(ctx context.Context, resourceGroupName string, diskPoolName string) (result OutboundEnvironmentEndpointListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.ListOutboundNetworkDependenciesEndpoints")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListOutboundNetworkDependenciesEndpoints(ctx, resourceGroupName, diskPoolName)
+	return
+}
+
+// Start the operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
+// service behavior.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// diskPoolName - the name of the Disk Pool.
+func (client DiskPoolsClient) Start(ctx context.Context, resourceGroupName string, diskPoolName string) (result DiskPoolsStartFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.Start")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagepool.DiskPoolsClient", "Start", err.Error())
+	}
+
+	req, err := client.StartPreparer(ctx, resourceGroupName, diskPoolName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Start", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.StartSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Start", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// StartPreparer prepares the Start request.
+func (client DiskPoolsClient) StartPreparer(ctx context.Context, resourceGroupName string, diskPoolName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"diskPoolName":      autorest.Encode("path", diskPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/start", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartSender sends the Start request. The method will close the
+// http.Response Body if it receives an error.
+func (client DiskPoolsClient) StartSender(req *http.Request) (future DiskPoolsStartFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// StartResponder handles the response to the Start request. The method always
+// closes the http.Response Body.
+func (client DiskPoolsClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Update update a Disk pool.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// diskPoolName - the name of the Disk Pool.
+// diskPoolUpdatePayload - request payload for Disk Pool update operation.
+func (client DiskPoolsClient) Update(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate) (result DiskPoolsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.Update")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagepool.DiskPoolsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, diskPoolName, diskPoolPayload)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, diskPoolName, diskPoolUpdatePayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -613,33 +901,42 @@ func (client DiskPoolsClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DiskPoolsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolPayload DiskPool) (*http.Request, error) {
+func (client DiskPoolsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"diskPoolName":      autorest.Encode("path", diskPoolName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-15-preview"
+	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	diskPoolPayload.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}", pathParameters),
-		autorest.WithJSON(diskPoolPayload),
+		autorest.WithJSON(diskPoolUpdatePayload),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiskPoolsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client DiskPoolsClient) UpdateSender(req *http.Request) (future DiskPoolsUpdateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -647,9 +944,98 @@ func (client DiskPoolsClient) UpdateSender(req *http.Request) (*http.Response, e
 func (client DiskPoolsClient) UpdateResponder(resp *http.Response) (result DiskPool, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Upgrade upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes
+// to complete. This is expected service behavior.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// diskPoolName - the name of the Disk Pool.
+func (client DiskPoolsClient) Upgrade(ctx context.Context, resourceGroupName string, diskPoolName string) (result DiskPoolsUpgradeFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskPoolsClient.Upgrade")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]*[0-9A-Za-z]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagepool.DiskPoolsClient", "Upgrade", err.Error())
+	}
+
+	req, err := client.UpgradePreparer(ctx, resourceGroupName, diskPoolName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Upgrade", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpgradeSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Upgrade", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpgradePreparer prepares the Upgrade request.
+func (client DiskPoolsClient) UpgradePreparer(ctx context.Context, resourceGroupName string, diskPoolName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"diskPoolName":      autorest.Encode("path", diskPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/upgrade", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpgradeSender sends the Upgrade request. The method will close the
+// http.Response Body if it receives an error.
+func (client DiskPoolsClient) UpgradeSender(req *http.Request) (future DiskPoolsUpgradeFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// UpgradeResponder handles the response to the Upgrade request. The method always
+// closes the http.Response Body.
+func (client DiskPoolsClient) UpgradeResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

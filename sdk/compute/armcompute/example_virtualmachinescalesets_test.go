@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +12,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {
@@ -32,7 +33,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -120,7 +121,7 @@ func ExampleVirtualMachineScaleSetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -133,7 +134,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -163,7 +164,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginDeallocate(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -179,7 +180,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginStart(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -195,7 +196,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginRestart(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -211,7 +212,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPowerOff() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachineScaleSetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginPowerOff(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

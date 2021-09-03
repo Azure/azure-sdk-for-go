@@ -6,6 +6,5 @@
 require:
 - https://github.com/Azure/azure-rest-api-specs/blob/851fac2e61b195c3980992de0b837c3dfb8075a1/specification/eventgrid/resource-manager/readme.md
 - https://github.com/Azure/azure-rest-api-specs/blob/851fac2e61b195c3980992de0b837c3dfb8075a1/specification/eventgrid/resource-manager/readme.go.md
-module-version: 0.1.1
-
+module-version: 0.2.0
 ```

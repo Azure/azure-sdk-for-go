@@ -128,18 +128,18 @@ what you can do with the Azure Data Tables client library.
 
 [sample_authentication]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_authentication.go
 
-[create_client]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_create_client.go
+[create_client]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_create_client.go
 
-[create_delete_table]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_create_delete_table.go
+[create_delete_table]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_create_delete_table.go
 
-[insert_delete_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_insert_delete_entities.go
+[insert_delete_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_insert_delete_entities.go
 
-[query_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_query_table.go
+[query_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_query_table.go
 
-[query_tables]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_query_tables.go
+[query_tables]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_query_tables.go
 
-[update_upsert_merge]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_update_upsert_merge_entities.go
+[update_upsert_merge]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_update_entities.go
 
-[sample_batch]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztable/sample_batching.go
+[sample_batch]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_batch.go
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

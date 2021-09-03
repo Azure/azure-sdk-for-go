@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/tools/internal
+module github.com/Azure/azure-sdk-for-go/eng/tools/internal
 
 go 1.13
 

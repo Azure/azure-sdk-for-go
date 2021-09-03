@@ -120,7 +120,7 @@ func UpsertEntity() {
 	client, err := aztables.NewClient(serviceURL, cred, nil)
 	check(err)
 
-	// 1. First add an entity
+	// 1. First insert an entity
 	myEntity := MyEntity{
 		Entity: aztables.Entity{
 			PartitionKey: "pk001",
@@ -140,10 +140,9 @@ func UpsertEntity() {
 	// 2. Update the entity object
 	myEntity.OnSale = false
 
-	// 3. Insert the entity on the service
+	// 3. Insert the entity on the service. MergeEntity will merge entity properties, whereas ReplaceEntity will replace entity properties
 	marshalled, err = json.Marshal(myEntity)
 	check(err)
 	_, err = client.InsertEntity(context.Background(), marshalled, &aztables.InsertEntityOptions{UpdateMode: aztables.MergeEntity})
 	check(err)
-
 }

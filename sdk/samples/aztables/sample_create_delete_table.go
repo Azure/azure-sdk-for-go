@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
-func CreateFromServiceClient() {
+func CreateDeleteFromServiceClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	check(err)
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
@@ -23,40 +23,17 @@ func CreateFromServiceClient() {
 
 	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
 	check(err)
+
+	// Create a table
 	_, err = service.CreateTable(context.Background(), "fromServiceClient", nil)
 	check(err)
-}
 
-func CreateFromTableClient() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	check(err)
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "fromTableClient")
-	client, err := aztables.NewClient(serviceURL, cred, nil)
-	check(err)
-	_, err = client.Create(context.Background(), nil)
-	check(err)
-}
-
-func DeleteFromServiceClient() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	check(err)
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
-
-	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
-	check(err)
+	// Delete a table
 	_, err = service.DeleteTable(context.Background(), "fromServiceClient", nil)
 	check(err)
 }
 
-func DeleteFromTableClient() {
+func CreateDeleteFromTableClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	check(err)
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
@@ -66,6 +43,12 @@ func DeleteFromTableClient() {
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "fromTableClient")
 	client, err := aztables.NewClient(serviceURL, cred, nil)
 	check(err)
+
+	// Create a table
+	_, err = client.Create(context.Background(), nil)
+	check(err)
+
+	// Delete a table
 	_, err = client.Delete(context.Background(), nil)
 	check(err)
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
@@ -106,6 +107,12 @@ func Sample_Batching() {
 		Entity:     marshalled,
 	})
 
-	_, err = client.SubmitTransaction(context.Background(), batch, nil)
+	resp, err := client.SubmitTransaction(context.Background(), batch, nil)
 	check(err)
+
+	for _, subResp := range *resp.TransactionResponses {
+		if subResp.StatusCode != http.StatusAccepted {
+			fmt.Println(subResp.Body)
+		}
+	}
 }

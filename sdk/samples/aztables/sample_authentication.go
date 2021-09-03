@@ -60,10 +60,8 @@ func main() {
 	CreateServiceClient()
 
 	// sample_create_delete_table.go
-	CreateFromServiceClient()
-	CreateFromTableClient()
-	DeleteFromServiceClient()
-	DeleteFromTableClient()
+	CreateDeleteFromServiceClient()
+	CreateDeleteFromTableClient()
 
 	// sample_insert_delete_entities.go
 	InsertEntity()

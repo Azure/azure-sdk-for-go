@@ -199,7 +199,8 @@ Querying entities
 		}
 	}
 
-	err := pager.Err()
-	handle(err)
+	if pager.Err() != nil {
+		// handle error...
+	}
 */
 package aztables

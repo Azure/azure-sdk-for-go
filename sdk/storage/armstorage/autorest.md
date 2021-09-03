@@ -4,7 +4,10 @@
 
 ``` yaml
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/51b37b069ecbb9d2fcd300eabd4b10b7911b7d7d/specification/storage/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/51b37b069ecbb9d2fcd300eabd4b10b7911b7d7d/specification/storage/resource-manager/readme.go.md
-module-version: 0.1.0
+- https://github.com/Azure/azure-rest-api-specs/blob/87a56cc36600486d4ca312ecfbe09bf9b278fee4/specification/storage/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/87a56cc36600486d4ca312ecfbe09bf9b278fee4/specification/storage/resource-manager/readme.go.md
+module-version: 0.1.2
+
+modelerfour:
+  lenient-model-deduplication: true
 ```

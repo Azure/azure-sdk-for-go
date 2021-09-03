@@ -48,14 +48,9 @@ func AuthenticateWithTokenCredential() *aztables.ServiceClient {
 	return client
 }
 
-func AuthenticateWithSharedAccess() {
-	// TODO
-}
-
 func main() {
 	AuthenticateWithTokenCredential()
 	AuthenticateWithSharedKey()
-	AuthenticateWithSharedAccess()
 
 	// sample_batch.go
 	Sample_Batching()

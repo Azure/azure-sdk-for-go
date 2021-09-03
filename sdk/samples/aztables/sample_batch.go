@@ -36,7 +36,7 @@ func Sample_Batching() {
 	client, err := aztables.NewClient(serviceURL, cred, nil)
 	check(err)
 
-	batch := make([]aztables.TransactionAction, 4)
+	batch := []aztables.TransactionAction{}
 
 	entity1 := MyEntity{
 		Entity: aztables.Entity{
@@ -50,10 +50,10 @@ func Sample_Batching() {
 	}
 	marshalled, err := json.Marshal(entity1)
 	check(err)
-	batch[0] = aztables.TransactionAction{
+	batch = append(batch, aztables.TransactionAction{
 		ActionType: aztables.Add,
 		Entity:     marshalled,
-	}
+	})
 
 	entity2 := MyEntity{
 		Entity: aztables.Entity{
@@ -67,10 +67,10 @@ func Sample_Batching() {
 	}
 	marshalled, err = json.Marshal(entity2)
 	check(err)
-	batch[1] = aztables.TransactionAction{
+	batch = append(batch, aztables.TransactionAction{
 		ActionType: aztables.UpdateMerge,
 		Entity:     marshalled,
-	}
+	})
 
 	entity3 := MyEntity{
 		Entity: aztables.Entity{
@@ -84,10 +84,10 @@ func Sample_Batching() {
 	}
 	marshalled, err = json.Marshal(entity3)
 	check(err)
-	batch[2] = aztables.TransactionAction{
+	batch = append(batch, aztables.TransactionAction{
 		ActionType: aztables.InsertReplace,
 		Entity:     marshalled,
-	}
+	})
 
 	entity4 := MyEntity{
 		Entity: aztables.Entity{
@@ -101,10 +101,10 @@ func Sample_Batching() {
 	}
 	marshalled, err = json.Marshal(entity4)
 	check(err)
-	batch[3] = aztables.TransactionAction{
+	batch = append(batch, aztables.TransactionAction{
 		ActionType: aztables.Delete,
 		Entity:     marshalled,
-	}
+	})
 
 	_, err = client.SubmitTransaction(context.Background(), batch, nil)
 	check(err)

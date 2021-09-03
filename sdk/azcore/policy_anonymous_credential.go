@@ -1,15 +1,24 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package azcore
 
-func anonCredAuthPolicyFunc(AuthenticationOptions) Policy {
-	return PolicyFunc(anonCredPolicyFunc)
+import (
+	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+)
+
+func anonCredAuthPolicyFunc(runtime.AuthenticationOptions) policy.Policy {
+	return pipeline.PolicyFunc(anonCredPolicyFunc)
 }
 
-func anonCredPolicyFunc(req *Request) (*Response, error) {
+func anonCredPolicyFunc(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 

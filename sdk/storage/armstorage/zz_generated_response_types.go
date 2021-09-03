@@ -10,9 +10,10 @@ package armstorage
 
 import (
 	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // BlobContainersClearLegalHoldResponse contains the response from method BlobContainers.ClearLegalHold.

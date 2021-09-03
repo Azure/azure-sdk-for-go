@@ -15,6 +15,7 @@ The aztables package is capable of:
 	- Creating Shared Access Signatures for authentication
 
 Creating the Client
+
 The Azure Data Tables library allows you to interact with two types of resources:
 * the tables in your account
 * the entities within those tables.

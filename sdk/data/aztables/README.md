@@ -250,7 +250,8 @@ All I/O operations will return an `error` that can be investigated to discover m
 ```golang
 resp, err := client.CreateTable(context.Background(), nil)
 if err != nil {
-    fmt.Println(resp.RawResponse)
+    err = errors.As(err, azcore.HTTPResponse)
+    // handle err ...
 }
 ```
 

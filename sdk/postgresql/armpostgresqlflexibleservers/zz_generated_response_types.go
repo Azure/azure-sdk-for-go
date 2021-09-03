@@ -10,9 +10,10 @@ package armpostgresqlflexibleservers
 
 import (
 	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // CheckNameAvailabilityExecuteResponse contains the response from method CheckNameAvailability.Execute.

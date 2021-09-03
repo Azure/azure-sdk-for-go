@@ -47,7 +47,9 @@ handle(err)
 For more information about table service URL's and how to configure custom domain names for Azure Storage check out the [official documentation][azure_portal_account_url]
 
 #### Types of credentials
-The clients support different forms of authentication. The aztables library supports any of the `azcore.TokenCredential` interfaces, authorization via a Connection String, or authorization with a Shared Access Signature Token.
+The clients support different forms of authentication. Cosmos accounts can use a Shared Key Credential, Connection String, or an Shared Access Signature Token for authentication. Storage account can use the same credentials as a Cosmos account and can use the credentials in [`azidentity`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) like `azidentity.NewDefaultAzureCredential()`.
+
+The aztables library supports any of the `azcore.TokenCredential` interfaces, authorization via a Connection String, or authorization with a Shared Access Signature Token.
 
 ##### Creating the client from a shared key
 To use an account [shared key][azure_shared_key] (aka account key or access key), provide the key as a string. This can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
@@ -56,9 +58,9 @@ To use an account [shared key][azure_shared_key] (aka account key or access key)
 az storage account keys list -g MyResourceGroup -n MyStorageAccount
 ```
 
-Use the key as the credential parameter to authenticate the client:
+Use AAD authentication as the credential parameter to authenticate the client:
 ```golang
-cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
+cred, err := azidentity.NewDefaultAzureCredential(nil)
 handle(err)
 serviceClient, err := NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
 handle(err)
@@ -141,7 +143,7 @@ aztables.EDMEntity{
     }
 }
 ```
-* **[create_entity][create_entity]** - Add an entity to the table.
+<!-- * **[create_entity][create_entity]** - Add an entity to the table.
 * **[delete_entity][delete_entity]** - Delete an entity from the table.
 * **[update_entity][update_entity]** - Update an entity's information by either merging or replacing the existing entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
@@ -150,7 +152,7 @@ aztables.EDMEntity{
 * **[get_entity][get_entity]** - Get a specific entity from a table by partition and row key.
 * **[upsert_entity][upsert_entity]** - Merge or replace an entity in a table, or if the entity does not exist, inserts the entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
-    * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
+    * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity -->
 
 ## Examples
 
@@ -239,43 +241,6 @@ for pager.NextPage(context.Background()) {
 err := pager.Err()
 handle(err)
 ```
-<!--
-## Optional Configuration
-Optional keyword arguments can be passed in at the client and per-operation level. The azure-core [reference documentation][azure_core_ref_docs] describes available configurations for retries, logging, transport protocols, and more.
-
-
-### Retry Policy configuration
-
-Use the following keyword arguments when instantiating a client to configure the retry policy:
-
-* __retry_total__ (int): Total number of retries to allow. Takes precedence over other counts.
-Pass in `retry_total=0` if you do not want to retry on requests. Defaults to 10.
-* __retry_connect__ (int): How many connection-related errors to retry on. Defaults to 3.
-* __retry_read__ (int): How many times to retry on read errors. Defaults to 3.
-* __retry_status__ (int): How many times to retry on bad status codes. Defaults to 3.
-* __retry_to_secondary__ (bool): Whether the request should be retried to secondary, if able.
-This should only be enabled of RA-GRS accounts are used and potentially stale data can be handled.
-Defaults to `False`.
-
-### Other client / per-operation configuration
-
-Other optional configuration keyword arguments that can be specified on the client or per-operation.
-
-**Client keyword arguments:**
-
-* __connection_timeout__ (int): Optionally sets the connect and read timeout value, in seconds.
-* __transport__ (Any): User-provided transport to send the HTTP request.
-
-**Per-operation keyword arguments:**
-
-* __raw_response_hook__ (callable): The given callback uses the response returned from the service.
-* __raw_request_hook__ (callable): The given callback uses the request before being sent to service.
-* __client_request_id__ (str): Optional user specified identification of the request.
-* __user_agent__ (str): Appends the custom value to the user-agent header to be sent with the request.
-* __logging_enable__ (bool): Enables logging at the DEBUG level. Defaults to False. Can also be passed in at
-the client level to enable it for all requests.
-* __headers__ (dict): Pass in custom headers as key, value pairs. E.g. `headers={'CustomValue': value}` -->
-
 
 ## Troubleshooting
 
@@ -405,11 +370,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 
 [tables_rest]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
 
-[create_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L51-L57
+<!-- [create_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L51-L57
 [delete_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L73-L80
 [update_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L128-L129
 [query_entities]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_query_table.py#L63-L72
 [get_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L52-L55
-[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120
+[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120 -->
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python/sdk/tables/azure-data-tables/README.png)

@@ -167,5 +167,15 @@ Processing the Response
 
 When the HTTP response is received, the *http.Response is returned directly. Each Policy instance
 can inspect/mutate the *http.Response.
+
+Built-in Logging
+
+To enable logging, set environment variable AZURE_SDK_GO_LOGGING to "all" before executing your program.
+
+By default the logger writes to stderr.  This can be customized by calling log.SetListener, providing
+a callback that writes to the desired location.  Any custom logging implementation MUST provide its
+own synchronization to handle concurrent invocations.
+
+See the docs for the log package for further details.
 */
 package azcore

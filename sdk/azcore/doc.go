@@ -11,8 +11,8 @@ Package azcore implements an HTTP request/response middleware pipeline.
 The middleware consists of three components.
 
    - One or more Policy instances.
-   - A Transport instance.
-   - A Pipeline instance that combines the Policy and Transport instances.
+   - A Transporter instance.
+   - A Pipeline instance that combines the Policy and Transporter instances.
 
 Implementing the Policy Interface
 
@@ -34,8 +34,8 @@ and error instances to its caller.
 
 Template for implementing a stateless Policy:
 
-   func NewMyStatelessPolicy() Policy {
-      return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+   func NewMyStatelessPolicy() azcore.Policy {
+      return azcore.PolicyFunc(func(req *azcore.Request) (*http.Response, error) {
          // TODO: mutate/process Request here
 
          // forward Request to next Policy & get Response/error
@@ -55,13 +55,13 @@ Template for implementing a stateful Policy:
    }
 
    // TODO: add initialization args to NewMyStatefulPolicy()
-   func NewMyStatefulPolicy() Policy {
+   func NewMyStatefulPolicy() azcore.Policy {
       return &MyStatefulPolicy{
          // TODO: initialize configuration/setting fields here
       }
    }
 
-   func (p *MyStatefulPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+   func (p *MyStatefulPolicy) Do(req *azcore.Request) (resp *http.Response, err error) {
          // TODO: mutate/process Request here
 
          // forward Request to next Policy & get Response/error
@@ -73,30 +73,30 @@ Template for implementing a stateful Policy:
          return resp, err
    }
 
-Implementing the Transport Interface
+Implementing the Transporter Interface
 
-The Transport interface is responsible for sending the HTTP request and returning the corresponding
-HTTP response or error.  The Transport is invoked by the last Policy in the chain.  The default Transport
+The Transporter interface is responsible for sending the HTTP request and returning the corresponding
+HTTP response or error.  The Transporter is invoked by the last Policy in the chain.  The default Transporter
 implementation uses a shared http.Client from the standard library.
 
-The same stateful/stateless rules for Policy implementations apply to Transport implementations.
+The same stateful/stateless rules for Policy implementations apply to Transporter implementations.
 
-Using Policy and Transport Instances Via a Pipeline
+Using Policy and Transporter Instances Via a Pipeline
 
-To use the Policy and Transport instances, an application passes them to the NewPipeline function.
+To use the Policy and Transporter instances, an application passes them to the NewPipeline function.
 
-   func NewPipeline(transport Transport, policies ...Policy) Pipeline
+   func NewPipeline(transport Transporter, policies ...Policy) Pipeline
 
 The specified Policy instances form a chain and are invoked in the order provided to NewPipeline
-followed by the Transport.
+followed by the Transporter.
 
 Once the Pipeline has been created, create a Request instance and pass it to Pipeline's Do method.
 
    func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error)
 
-   func (p Pipeline) Do(req *Request) (*Response, error)
+   func (p Pipeline) Do(req *Request) (*http.Request, error)
 
-The Pipeline.Do method sends the specified Request through the chain of Policy and Transport
+The Pipeline.Do method sends the specified Request through the chain of Policy and Transporter
 instances.  The response/error is then sent through the same chain of Policy instances in reverse
 order.  For example, assuming there are Policy types PolicyA, PolicyB, and PolicyC along with
 TransportA.
@@ -158,11 +158,7 @@ This sends an explict "null" for Count, indicating that any current value for Co
 
 Processing the Response
 
-When the HTTP response is received, the underlying *http.Response is wrapped in a Response type.
-The Response type contains various convenience methods, like testing the HTTP response code and
-unmarshalling the response body in a particular format.
-
-The Response is returned through all the Policy instances. Each Policy instance can inspect/mutate the
-embedded *http.Response.
+When the HTTP response is received, the *http.Response is returned directly. Each Policy instance
+can inspect/mutate the *http.Response.
 */
 package azcore

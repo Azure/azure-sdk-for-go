@@ -10,9 +10,10 @@ package armeventhub
 
 import (
 	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // ClustersCreateOrUpdatePollerResponse contains the response from method Clusters.CreateOrUpdate.

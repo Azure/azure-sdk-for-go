@@ -19,7 +19,7 @@ func (m *MockedBuilder) ManagementPath() string {
 	return args.String(0)
 }
 
-func (m *MockedBuilder) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+func (m *MockedBuilder) NewReceiver(ctx context.Context, opts ...ReceiverOption) (LegacyReceiver, error) {
 	args := m.Called(ctx, opts)
 	return args.Get(0).(*Receiver), args.Error(1)
 }

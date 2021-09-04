@@ -2,7 +2,6 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -16,12 +15,7 @@ type processorConfig struct {
 	FullEntityPath string
 	ReceiveMode    ReceiveMode
 
-	Entity struct {
-		Subqueue     SubQueue
-		Queue        string
-		Topic        string
-		Subscription string
-	}
+	Entity entity
 
 	// determines if auto completion or abandonment of messages
 	// happens based on the return value of user's processMessage handler.
@@ -126,7 +120,7 @@ func ProcessorWithMaxConcurrentCalls(maxConcurrentCalls int) ProcessorOption {
 }
 
 type legacyNamespace interface {
-	NewReceiver(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (*internal.Receiver, error)
+	NewReceiver(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (internal.LegacyReceiver, error)
 }
 
 func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, error) {
@@ -158,7 +152,7 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 		}
 	}
 
-	entityPath, err := formatEntity(processor.config.Entity)
+	entityPath, err := processor.config.Entity.String()
 
 	if err != nil {
 		return nil, err
@@ -184,6 +178,12 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 // sent to your handleError function. The processor will retry and restart as needed -
 // no user intervention is required.
 func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
+	select {
+	case <-p.Done():
+		return ErrProcessorClosed
+	default:
+	}
+
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
@@ -194,9 +194,6 @@ func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, ha
 		for {
 			retry, _ := amqpCommon.Retry(p.config.RetryOptions.Times, p.config.RetryOptions.Delay, func() (interface{}, error) {
 				receiver, err := p.ns.NewReceiver(ctx, p.config.FullEntityPath,
-					// TODO: prefetch isn't _quite_ the right fit here (ie, we don't have a way to shut off the
-					// spigot that I'm aware of). But it's a pretty close approximation.
-					internal.ReceiverWithPrefetchCount(uint32(p.config.MaxConcurrentCalls)),
 					internal.ReceiverWithReceiveMode(internal.ReceiveMode(p.config.ReceiveMode)))
 
 				if err != nil {
@@ -206,6 +203,13 @@ func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, ha
 				}
 
 				defer receiver.Close(ctx)
+
+				if err := receiver.IssueCredit(uint32(p.config.MaxConcurrentCalls)); err != nil {
+					// notify the user but there's no reason to restart because this failure must be
+					// an internal error.
+					handleError(err)
+					return false, nil
+				}
 
 				// we retry infinitely, but do it in the pattern they specify via their retryOptions for each "round" of retries.
 				retry := p.subscribe(ctx, receiver, p.config.ShouldAutoComplete, handleMessage, handleError)
@@ -234,7 +238,6 @@ func (p *Processor) Done() <-chan struct{} {
 
 // Close will wait for any pending callbacks to complete.
 func (p *Processor) Close(ctx context.Context) error {
-
 	select {
 	case <-p.Done():
 		return nil
@@ -266,8 +269,6 @@ func subscribe(
 
 	const shouldRetry = true
 
-	// TODO: `listen` doesn't give you additional messages unless you've settled previous ones.
-	// In track 2 SDKs you should get a new message, regardless of settlement (ie: it's simply gated on the # of outstanding callbacks)
 	listenHandle := receiver.Listen(ctx, internal.HandlerFunc(func(ctx context.Context, legacyMessage *internal.Message) error {
 		// this shouldn't happen since we do a `select` above that prevents it.
 		// errors from their handler are sent to their error handler but do not terminate the
@@ -275,7 +276,14 @@ func subscribe(
 		activeCallbacksWg.Add(1)
 		defer activeCallbacksWg.Done()
 
-		return handleSingleMessage(handleMessage, notifyErrorAsync, shouldAutoComplete, receiver, legacyMessage)
+		handleSingleMessage(handleMessage, notifyErrorAsync, shouldAutoComplete, receiver, legacyMessage)
+
+		// user callback completes and they get a new credit
+		if err := receiver.IssueCredit(1); err != nil {
+			notifyErrorAsync(err)
+		}
+
+		return nil
 	}))
 
 	select {
@@ -292,7 +300,7 @@ func subscribe(
 	}
 }
 
-func handleSingleMessage(handleMessage func(message *ReceivedMessage) error, notifyErrorAsync func(err error), shouldAutoComplete bool, receiver internal.LegacyReceiver, legacyMessage *internal.Message) error {
+func handleSingleMessage(handleMessage func(message *ReceivedMessage) error, notifyErrorAsync func(err error), shouldAutoComplete bool, receiver internal.LegacyReceiver, legacyMessage *internal.Message) {
 	err := handleMessage(convertToReceivedMessage(legacyMessage))
 
 	if err != nil {
@@ -314,8 +322,6 @@ func handleSingleMessage(handleMessage func(message *ReceivedMessage) error, not
 			notifyErrorAsync(settleErr)
 		}
 	}
-
-	return nil
 }
 
 //
@@ -339,31 +345,6 @@ func (p *Processor) AbandonMessage(ctx context.Context, message *ReceivedMessage
 
 func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Defer(ctx)
-}
-
-func formatEntity(entity struct {
-	Subqueue     SubQueue
-	Queue        string
-	Topic        string
-	Subscription string
-}) (string, error) {
-	entityPath := ""
-
-	if entity.Queue != "" {
-		entityPath = entity.Queue
-	} else if entity.Topic != "" && entity.Subscription != "" {
-		entityPath = fmt.Sprintf("%s/Subscriptions/%s", entity.Topic, entity.Subscription)
-	} else {
-		return "", errors.New("a queue or subscription was not specified")
-	}
-
-	if entity.Subqueue == SubQueueDeadLetter {
-		entityPath += "/$DeadLetterQueue"
-	} else if entity.Subqueue == SubQueueTransfer {
-		entityPath += "/$Transfer/$DeadLetterQueue"
-	}
-
-	return entityPath, nil
 }
 
 func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage {

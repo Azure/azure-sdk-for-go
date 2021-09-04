@@ -70,7 +70,14 @@ type (
 
 	// Implemented by *Receiver
 	LegacyReceiver interface {
-		Close(ctx context.Context) error
+		ReceiveOner
+
+		Session() *amqp.Session
+		SessionID() *string
+		Client() *amqp.Client
+
+		IssueCredit(credit uint32) error
+		DrainCredit(ctx context.Context) error
 		Listen(ctx context.Context, handler Handler) ListenerHandle
 		CompleteMessage(ctx context.Context, message *Message) error
 		AbandonMessage(ctx context.Context, message *Message) error
@@ -110,7 +117,7 @@ func ReceiverWithPrefetchCount(prefetch uint32) ReceiverOption {
 }
 
 // NewReceiver creates a new Service Bus message listener given an AMQP client and an entity path
-func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ...ReceiverOption) (*Receiver, error) {
+func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ...ReceiverOption) (LegacyReceiver, error) {
 	ctx, span := ns.startSpanFromContext(ctx, "sb.Namespace.NewReceiver")
 	defer span.End()
 
@@ -218,6 +225,18 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	return nil
 }
 
+// AddCredit adds credits to the link that will be sent
+// in the next flow frame.
+func (r *Receiver) IssueCredit(credits uint32) error {
+	return r.receiver.IssueCredit(credits)
+}
+
+// Drain will cause the next flow frame to have drain set to
+// true, with the current credits in the link.
+func (r *Receiver) DrainCredit(ctx context.Context) error {
+	return r.receiver.DrainCredit(ctx)
+}
+
 // Listen start a listener for messages sent to the entity path
 func (r *Receiver) Listen(ctx context.Context, handler Handler) ListenerHandle {
 	ctx, done := context.WithCancel(ctx)
@@ -242,6 +261,18 @@ func (r *Receiver) CompleteMessage(ctx context.Context, message *Message) error 
 // NOTE: added to make mocking a bit simpler for the processor.
 func (r *Receiver) AbandonMessage(ctx context.Context, message *Message) error {
 	return message.Abandon(ctx)
+}
+
+func (r *Receiver) Session() *amqp.Session {
+	return r.session.Session
+}
+
+func (r *Receiver) Client() *amqp.Client {
+	return r.client
+}
+
+func (r *Receiver) SessionID() *string {
+	return r.sessionID
 }
 
 func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
@@ -423,7 +454,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
 		amqp.LinkReceiverSettle(receiveMode),
-		amqp.LinkCredit(r.prefetch),
+		amqp.LinkWithManualCredits(),
 	}
 
 	if r.mode == ReceiveAndDeleteMode {

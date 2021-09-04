@@ -43,7 +43,7 @@ type (
 	Queue struct {
 		*sendAndReceiveEntity
 		sender        *Sender
-		receiver      *Receiver
+		receiver      LegacyReceiver
 		receiverMu    sync.Mutex
 		senderMu      sync.Mutex
 		receiveMode   ReceiveMode
@@ -249,7 +249,7 @@ func (q *Queue) NewSession(sessionID *string) *QueueSession {
 }
 
 // NewReceiver will create a new Receiver for receiving messages off of a queue
-func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (LegacyReceiver, error) {
 	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
 	defer span.End()
 
@@ -358,7 +358,7 @@ func isConnectionClosed(err error) bool {
 	return err.Error() == "amqp: connection closed" || err.Error() == "failed to close WebSocket: failed to read frame header: EOF"
 }
 
-func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (LegacyReceiver, error) {
 	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
 	defer span.End()
 

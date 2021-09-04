@@ -88,6 +88,22 @@ func (client *ServiceBusClient) NewSender(queueOrTopic string, options ...Sender
 	return sender, nil
 }
 
+// NewReceiver creates a Receiver, which allows you to receive messages.
+func (client *ServiceBusClient) NewReceiver(options ...ReceiverOption) (*Receiver, error) {
+	receiver, err := newReceiver(client.namespace, options...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: clean up these links
+	client.linksMu.Lock()
+	client.links = append(client.links, receiver)
+	client.linksMu.Unlock()
+
+	return receiver, nil
+}
+
 // Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
 // using this client.
 func (client *ServiceBusClient) Close(ctx context.Context) error {

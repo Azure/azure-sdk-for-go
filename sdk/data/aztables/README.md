@@ -143,14 +143,13 @@ aztables.EDMEntity{
     }
 }
 ```
-* **[create_entity][create_entity]** - Add an entity to the table.
-* **[delete_entity][delete_entity]** - Delete an entity from the table.
-* **[update_entity][update_entity]** - Update an entity's information by either merging or replacing the existing entity.
+* **[create entity][create_entity]** - Add an entity to the table.
+* **[delete entity][delete_entity]** - Delete an entity from the table.
+* **[update entity][update_entity]** - Update an entity's information by either merging or replacing the existing entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
     * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
-* **[query_entities][query_entities]** - Query existing entities in a table using OData filters
-* **[get_entity][get_entity]** - Get a specific entity from a table by partition and row key.
-* **[upsert_entity][upsert_entity]** - Merge or replace an entity in a table, or if the entity does not exist, inserts the entity.
+* **[list entities][list_entities]** - Query existing entities in a table using OData filters
+* **[update entity][upsert_entity]** - Merge or replace an entity in a table, or if the entity does not exist, inserts the entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
     * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
 
@@ -160,7 +159,7 @@ The following sections provide several code snippets covering some of the most c
 
 * [Creating a table](#creating-a-table "Creating a table")
 * [Creating entities](#creating-entities "Creating entities")
-* [Querying entities](#querying-entities "Querying entities")
+* [Listing entities](#querying-entities "Listing entities")
 
 
 ### Creating a table
@@ -208,8 +207,8 @@ resp, err := client.AddEntity(context.Background(), marshalled, nil)
 handle(err)
 ```
 
-### Querying entities
-Querying entities in the table:
+### Listing entities
+List entities in the table:
 
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
@@ -224,7 +223,7 @@ options := &ListEntitiesOptions{
     Top: to.Int32Ptr(15),
 }
 
-pager := client.List(options)
+pager := client.List(options) // pass in "nil" if you want to list all entities
 for pager.NextPage(context.Background()) {
     resp := pager.PageResponse()
     fmt.Printf("Received: %v entities\n", len(resp.Entities))
@@ -370,8 +369,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [create_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_insert_delete_entities.go#L25-L79
 [delete_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_insert_delete_entities.go#L81-L100
 [update_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_update_entities.go#L16-L58
-[query_entities]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_query_table.go#L14-L50
-[get_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L52-L55
+[list_entities]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_query_table.go#L14-L50
 [upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

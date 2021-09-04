@@ -67,11 +67,11 @@ func main() {
 	InsertEntity()
 	DeleteEntity()
 
-	// sample_query_table.go
-	Sample_QueryTable()
+	// sampl_list_table.go
+	Sample_ListTable()
 
-	// sample_query_tables.go
-	Sample_QueryTables()
+	// sample_list_tables.go
+	Sample_ListTables()
 
 	// sample_update_entities.go
 	UpdateEntities()

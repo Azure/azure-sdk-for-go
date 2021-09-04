@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
-func Sample_QueryTable() {
+func Sample_ListTable() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")

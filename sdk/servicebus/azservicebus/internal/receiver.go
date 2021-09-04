@@ -70,6 +70,8 @@ type (
 
 	// Implemented by *Receiver
 	LegacyReceiver interface {
+		AddCredit(credit uint32) error
+		Drain(ctx context.Context) error
 		Close(ctx context.Context) error
 		Listen(ctx context.Context, handler Handler) ListenerHandle
 		CompleteMessage(ctx context.Context, message *Message) error
@@ -216,6 +218,18 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	}
 
 	return nil
+}
+
+// AddCredit adds credits to the link that will be sent
+// in the next flow frame.
+func (r *Receiver) AddCredit(credits uint32) error {
+	return r.receiver.AddCredit(credits)
+}
+
+// Drain will cause the next flow frame to have drain set to
+// true, with the current credits in the link.
+func (r *Receiver) Drain(ctx context.Context) error {
+	return r.receiver.Drain(ctx)
 }
 
 // Listen start a listener for messages sent to the entity path
@@ -423,7 +437,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
 		amqp.LinkReceiverSettle(receiveMode),
-		amqp.LinkCredit(r.prefetch),
+		amqp.LinkWithManualCredits(),
 	}
 
 	if r.mode == ReceiveAndDeleteMode {

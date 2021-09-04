@@ -362,6 +362,9 @@ type fakeLegacyReceiver struct {
 	abandonCalled  bool
 	completeCalled bool
 
+	drainCalled bool
+	credits     uint32
+
 	close           func(ctx context.Context) error
 	listen          func(ctx context.Context, handler internal.Handler) internal.ListenerHandle
 	abandonMessage  func(ctx context.Context, msg *internal.Message) error
@@ -417,6 +420,16 @@ func (r *fakeLegacyReceiver) CompleteMessage(ctx context.Context, msg *internal.
 	}
 
 	return r.completeMessage(ctx, msg)
+}
+
+func (r *fakeLegacyReceiver) AddCredit(credit uint32) error {
+	r.credits += credit
+	return nil
+}
+
+func (r *fakeLegacyReceiver) Drain(ctx context.Context) error {
+	r.drainCalled = true
+	return nil
 }
 
 type fakeListenerHandle struct {

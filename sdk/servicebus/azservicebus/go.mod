@@ -12,9 +12,11 @@ require (
 	github.com/Azure/go-autorest/autorest/to v0.4.0
 	github.com/devigned/tab v0.1.1
 	github.com/joho/godotenv v1.3.0
-	github.com/microsoft/ApplicationInsights-Go v0.4.4 // indirect
+	github.com/microsoft/ApplicationInsights-Go v0.4.4
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd // indirect
 	nhooyr.io/websocket v1.8.6
 )
+
+replace github.com/Azure/go-amqp v0.13.11 => D:/Dev/src/go/_/amqp-credit/amqp

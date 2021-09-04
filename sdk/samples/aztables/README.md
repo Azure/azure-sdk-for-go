@@ -22,7 +22,7 @@ These sample programs show common scenarios for the Tables client's offerings.
 |[sample_create_client.go][create_client]|Instantiate a table client|Authorizing a `ServiceClient` object and `Client` object |
 |[sample_create_delete_table.go][create_delete_table]|Creating and deleting a table in a storage account |
 |[sample_insert_delete_entities.go][insert_delete_entities]|Inserting and deleting individual entities in a table |
-|[sample_list_tables.go][list_tables]|Listing tables in a storage account |
+|[sample_query_tables.go][query_tables]|Querying tables in a storage account |
 |[sample_update_upsert_merge_entities.go][update_upsert_merge]| Updating, upserting, and merging entities |
 |[sample_batching.go][sample_batch]| Committing many requests in a single batch |
 
@@ -64,9 +64,9 @@ what you can do with the Azure Data Tables client library.
 
 [insert_delete_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_insert_delete_entities.go
 
-[list_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_list_table.go
+[query_entities]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_query_table.go
 
-[list_tables]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_list_tables.go
+[query_tables]:https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_query_tables.go
 
 [update_upsert_merge]: https://github.com/Azure/azure-sdk-for-go/blob/d90e7e99590c6b7b183b46e0ac69b06ced071158/sdk/samples/aztables/sample_update_entities.go
 

@@ -143,7 +143,7 @@ aztables.EDMEntity{
     }
 }
 ```
-<!-- * **[create_entity][create_entity]** - Add an entity to the table.
+* **[create_entity][create_entity]** - Add an entity to the table.
 * **[delete_entity][delete_entity]** - Delete an entity from the table.
 * **[update_entity][update_entity]** - Update an entity's information by either merging or replacing the existing entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
@@ -152,7 +152,7 @@ aztables.EDMEntity{
 * **[get_entity][get_entity]** - Get a specific entity from a table by partition and row key.
 * **[upsert_entity][upsert_entity]** - Merge or replace an entity in a table, or if the entity does not exist, inserts the entity.
     * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
-    * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity -->
+    * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
 
 ## Examples
 
@@ -367,11 +367,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 
 [tables_rest]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
 
-<!-- [create_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L51-L57
-[delete_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py#L73-L80
-[update_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L128-L129
-[query_entities]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_query_table.py#L63-L72
+[create_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_insert_delete_entities.go#L25-L79
+[delete_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_insert_delete_entities.go#L81-L100
+[update_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_update_entities.go#L16-L58
+[query_entities]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_query_table.go#L14-L50
 [get_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L52-L55
-[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120 -->
+[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

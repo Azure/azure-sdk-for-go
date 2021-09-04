@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MHSMPrivateLinkResourcesClient contains the methods for the MHSMPrivateLinkResources group.
 // Don't use this type directly, use NewMHSMPrivateLinkResourcesClient() instead.
 type MHSMPrivateLinkResourcesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewMHSMPrivateLinkResourcesClient creates a new instance of MHSMPrivateLinkResourcesClient with the specified values.
-func NewMHSMPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) *MHSMPrivateLinkResourcesClient {
-	return &MHSMPrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewMHSMPrivateLinkResourcesClient(con *arm.Connection, subscriptionID string) *MHSMPrivateLinkResourcesClient {
+	return &MHSMPrivateLinkResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByMHSMResource - Gets the private link resources supported for the managed hsm pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *MHSMPrivateLinkResourcesClient) ListByMHSMResource(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateLinkResourcesListByMHSMResourceOptions) (MHSMPrivateLinkResourceListResultResponse, error) {
+func (client *MHSMPrivateLinkResourcesClient) ListByMHSMResource(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateLinkResourcesListByMHSMResourceOptions) (MHSMPrivateLinkResourcesListByMHSMResourceResponse, error) {
 	req, err := client.listByMHSMResourceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return MHSMPrivateLinkResourceListResultResponse{}, err
+		return MHSMPrivateLinkResourcesListByMHSMResourceResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MHSMPrivateLinkResourceListResultResponse{}, err
+		return MHSMPrivateLinkResourcesListByMHSMResourceResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return MHSMPrivateLinkResourceListResultResponse{}, client.listByMHSMResourceHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return MHSMPrivateLinkResourcesListByMHSMResourceResponse{}, client.listByMHSMResourceHandleError(resp)
 	}
 	return client.listByMHSMResourceHandleResponse(resp)
 }
 
 // listByMHSMResourceCreateRequest creates the ListByMHSMResource request.
-func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateLinkResourcesListByMHSMResourceOptions) (*azcore.Request, error) {
+func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateLinkResourcesListByMHSMResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,36 +66,35 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ct
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByMHSMResourceHandleResponse handles the ListByMHSMResource response.
-func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleResponse(resp *azcore.Response) (MHSMPrivateLinkResourceListResultResponse, error) {
-	var val *MHSMPrivateLinkResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MHSMPrivateLinkResourceListResultResponse{}, err
+func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleResponse(resp *http.Response) (MHSMPrivateLinkResourcesListByMHSMResourceResponse, error) {
+	result := MHSMPrivateLinkResourcesListByMHSMResourceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateLinkResourceListResult); err != nil {
+		return MHSMPrivateLinkResourcesListByMHSMResourceResponse{}, err
 	}
-	return MHSMPrivateLinkResourceListResultResponse{RawResponse: resp.Response, MHSMPrivateLinkResourceListResult: val}, nil
+	return result, nil
 }
 
 // listByMHSMResourceHandleError handles the ListByMHSMResource error response.
-func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

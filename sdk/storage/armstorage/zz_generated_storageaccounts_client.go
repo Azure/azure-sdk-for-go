@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,81 +11,83 @@ package armstorage
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // StorageAccountsClient contains the methods for the StorageAccounts group.
 // Don't use this type directly, use NewStorageAccountsClient() instead.
 type StorageAccountsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewStorageAccountsClient creates a new instance of StorageAccountsClient with the specified values.
-func NewStorageAccountsClient(con *armcore.Connection, subscriptionID string) *StorageAccountsClient {
-	return &StorageAccountsClient{con: con, subscriptionID: subscriptionID}
+func NewStorageAccountsClient(con *arm.Connection, subscriptionID string) *StorageAccountsClient {
+	return &StorageAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckNameAvailability - Checks that the storage account name is valid and is not already in use.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) CheckNameAvailability(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters, options *StorageAccountsCheckNameAvailabilityOptions) (CheckNameAvailabilityResultResponse, error) {
+func (client *StorageAccountsClient) CheckNameAvailability(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters, options *StorageAccountsCheckNameAvailabilityOptions) (StorageAccountsCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, accountName, options)
 	if err != nil {
-		return CheckNameAvailabilityResultResponse{}, err
+		return StorageAccountsCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CheckNameAvailabilityResultResponse{}, err
+		return StorageAccountsCheckNameAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return CheckNameAvailabilityResultResponse{}, client.checkNameAvailabilityHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *StorageAccountsClient) checkNameAvailabilityCreateRequest(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters, options *StorageAccountsCheckNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) checkNameAvailabilityCreateRequest(ctx context.Context, accountName StorageAccountCheckNameAvailabilityParameters, options *StorageAccountsCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(accountName)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, accountName)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *StorageAccountsClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (CheckNameAvailabilityResultResponse, error) {
-	var val *CheckNameAvailabilityResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return CheckNameAvailabilityResultResponse{}, err
+func (client *StorageAccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (StorageAccountsCheckNameAvailabilityResponse, error) {
+	result := StorageAccountsCheckNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
+		return StorageAccountsCheckNameAvailabilityResponse{}, err
 	}
-	return CheckNameAvailabilityResultResponse{RawResponse: resp.Response, CheckNameAvailabilityResult: val}, nil
+	return result, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *StorageAccountsClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginCreate - Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request
@@ -92,48 +95,20 @@ func (client *StorageAccountsClient) checkNameAvailabilityHandleError(resp *azco
 // will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request
 // will succeed.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (StorageAccountPollerResponse, error) {
+func (client *StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (StorageAccountsCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return StorageAccountPollerResponse{}, err
+		return StorageAccountsCreatePollerResponse{}, err
 	}
-	result := StorageAccountPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("StorageAccountsClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return StorageAccountPollerResponse{}, err
-	}
-	poller := &storageAccountPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new StorageAccountPoller from the specified resume token.
-// token - The value must come from a previous call to StorageAccountPoller.ResumeToken().
-func (client *StorageAccountsClient) ResumeCreate(ctx context.Context, token string) (StorageAccountPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("StorageAccountsClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return StorageAccountPollerResponse{}, err
-	}
-	poller := &storageAccountPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return StorageAccountPollerResponse{}, err
-	}
-	result := StorageAccountPollerResponse{
+	result := StorageAccountsCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("StorageAccountsClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return StorageAccountsCreatePollerResponse{}, err
+	}
+	result.Poller = &StorageAccountsCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -143,23 +118,23 @@ func (client *StorageAccountsClient) ResumeCreate(ctx context.Context, token str
 // will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request
 // will succeed.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (*azcore.Response, error) {
+func (client *StorageAccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *StorageAccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters, options *StorageAccountsBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,49 +148,48 @@ func (client *StorageAccountsClient) createCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createHandleError handles the Create error response.
-func (client *StorageAccountsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes a storage account in Microsoft Azure.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsDeleteOptions) (*http.Response, error) {
+func (client *StorageAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsDeleteOptions) (StorageAccountsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return StorageAccountsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return StorageAccountsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsDeleteOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -229,75 +203,46 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *StorageAccountsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginFailover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's
 // primary cluster to secondary cluster for RA-GRS accounts. The
 // secondary cluster will become primary after failover.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (HTTPPollerResponse, error) {
+func (client *StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (StorageAccountsFailoverPollerResponse, error) {
 	resp, err := client.failover(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return StorageAccountsFailoverPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("StorageAccountsClient.Failover", "location", resp, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeFailover creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *StorageAccountsClient) ResumeFailover(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("StorageAccountsClient.Failover", token, client.con.Pipeline(), client.failoverHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := StorageAccountsFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("StorageAccountsClient.Failover", "location", resp, client.pl, client.failoverHandleError)
+	if err != nil {
+		return StorageAccountsFailoverPollerResponse{}, err
+	}
+	result.Poller = &StorageAccountsFailoverPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -306,23 +251,23 @@ func (client *StorageAccountsClient) ResumeFailover(ctx context.Context, token s
 // cluster to secondary cluster for RA-GRS accounts. The
 // secondary cluster will become primary after failover.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) failover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (*azcore.Response, error) {
+func (client *StorageAccountsClient) failover(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.failoverHandleError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *StorageAccountsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -336,49 +281,48 @@ func (client *StorageAccountsClient) failoverCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // failoverHandleError handles the Failover error response.
-func (client *StorageAccountsClient) failoverHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) failoverHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetProperties - Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The
 // ListKeys operation should be used to retrieve storage keys.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsGetPropertiesOptions) (StorageAccountResponse, error) {
+func (client *StorageAccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsGetPropertiesOptions) (StorageAccountsGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return StorageAccountResponse{}, err
+		return StorageAccountsGetPropertiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StorageAccountResponse{}, err
+		return StorageAccountsGetPropertiesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return StorageAccountResponse{}, client.getPropertiesHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *StorageAccountsClient) getPropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsGetPropertiesOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) getPropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsGetPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -392,118 +336,113 @@ func (client *StorageAccountsClient) getPropertiesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *StorageAccountsClient) getPropertiesHandleResponse(resp *azcore.Response) (StorageAccountResponse, error) {
-	var val *StorageAccount
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StorageAccountResponse{}, err
+func (client *StorageAccountsClient) getPropertiesHandleResponse(resp *http.Response) (StorageAccountsGetPropertiesResponse, error) {
+	result := StorageAccountsGetPropertiesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccount); err != nil {
+		return StorageAccountsGetPropertiesResponse{}, err
 	}
-	return StorageAccountResponse{RawResponse: resp.Response, StorageAccount: val}, nil
+	return result, nil
 }
 
 // getPropertiesHandleError handles the GetProperties error response.
-func (client *StorageAccountsClient) getPropertiesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) getPropertiesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) List(options *StorageAccountsListOptions) StorageAccountListResultPager {
-	return &storageAccountListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *StorageAccountsClient) List(options *StorageAccountsListOptions) *StorageAccountsListPager {
+	return &StorageAccountsListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp StorageAccountListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.StorageAccountListResult.NextLink)
+		advancer: func(ctx context.Context, resp StorageAccountsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageAccountListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *StorageAccountsClient) listCreateRequest(ctx context.Context, options *StorageAccountsListOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) listCreateRequest(ctx context.Context, options *StorageAccountsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *StorageAccountsClient) listHandleResponse(resp *azcore.Response) (StorageAccountListResultResponse, error) {
-	var val *StorageAccountListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StorageAccountListResultResponse{}, err
+func (client *StorageAccountsClient) listHandleResponse(resp *http.Response) (StorageAccountsListResponse, error) {
+	result := StorageAccountsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListResult); err != nil {
+		return StorageAccountsListResponse{}, err
 	}
-	return StorageAccountListResultResponse{RawResponse: resp.Response, StorageAccountListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *StorageAccountsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListAccountSAS - List SAS credentials of a storage account.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) ListAccountSAS(ctx context.Context, resourceGroupName string, accountName string, parameters AccountSasParameters, options *StorageAccountsListAccountSASOptions) (ListAccountSasResponseResponse, error) {
+func (client *StorageAccountsClient) ListAccountSAS(ctx context.Context, resourceGroupName string, accountName string, parameters AccountSasParameters, options *StorageAccountsListAccountSASOptions) (StorageAccountsListAccountSASResponse, error) {
 	req, err := client.listAccountSASCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return ListAccountSasResponseResponse{}, err
+		return StorageAccountsListAccountSASResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ListAccountSasResponseResponse{}, err
+		return StorageAccountsListAccountSASResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return ListAccountSasResponseResponse{}, client.listAccountSASHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsListAccountSASResponse{}, client.listAccountSASHandleError(resp)
 	}
 	return client.listAccountSASHandleResponse(resp)
 }
 
 // listAccountSASCreateRequest creates the ListAccountSAS request.
-func (client *StorageAccountsClient) listAccountSASCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters AccountSasParameters, options *StorageAccountsListAccountSASOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) listAccountSASCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters AccountSasParameters, options *StorageAccountsListAccountSASOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/ListAccountSas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -517,59 +456,55 @@ func (client *StorageAccountsClient) listAccountSASCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // listAccountSASHandleResponse handles the ListAccountSAS response.
-func (client *StorageAccountsClient) listAccountSASHandleResponse(resp *azcore.Response) (ListAccountSasResponseResponse, error) {
-	var val *ListAccountSasResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ListAccountSasResponseResponse{}, err
+func (client *StorageAccountsClient) listAccountSASHandleResponse(resp *http.Response) (StorageAccountsListAccountSASResponse, error) {
+	result := StorageAccountsListAccountSASResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListAccountSasResponse); err != nil {
+		return StorageAccountsListAccountSASResponse{}, err
 	}
-	return ListAccountSasResponseResponse{RawResponse: resp.Response, ListAccountSasResponse: val}, nil
+	return result, nil
 }
 
 // listAccountSASHandleError handles the ListAccountSAS error response.
-func (client *StorageAccountsClient) listAccountSASHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) listAccountSASHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResourceGroup - Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys
 // operation for this.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) ListByResourceGroup(resourceGroupName string, options *StorageAccountsListByResourceGroupOptions) StorageAccountListResultPager {
-	return &storageAccountListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *StorageAccountsClient) ListByResourceGroup(resourceGroupName string, options *StorageAccountsListByResourceGroupOptions) *StorageAccountsListByResourceGroupPager {
+	return &StorageAccountsListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp StorageAccountListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.StorageAccountListResult.NextLink)
+		advancer: func(ctx context.Context, resp StorageAccountsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageAccountListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *StorageAccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *StorageAccountsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *StorageAccountsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -579,58 +514,57 @@ func (client *StorageAccountsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *StorageAccountsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (StorageAccountListResultResponse, error) {
-	var val *StorageAccountListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StorageAccountListResultResponse{}, err
+func (client *StorageAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (StorageAccountsListByResourceGroupResponse, error) {
+	result := StorageAccountsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListResult); err != nil {
+		return StorageAccountsListByResourceGroupResponse{}, err
 	}
-	return StorageAccountListResultResponse{RawResponse: resp.Response, StorageAccountListResult: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *StorageAccountsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListKeys - Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsListKeysOptions) (StorageAccountListKeysResultResponse, error) {
+func (client *StorageAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsListKeysOptions) (StorageAccountsListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return StorageAccountListKeysResultResponse{}, err
+		return StorageAccountsListKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StorageAccountListKeysResultResponse{}, err
+		return StorageAccountsListKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return StorageAccountListKeysResultResponse{}, client.listKeysHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsListKeysResponse{}, client.listKeysHandleError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *StorageAccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsListKeysOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -644,61 +578,60 @@ func (client *StorageAccountsClient) listKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", "kerb")
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *StorageAccountsClient) listKeysHandleResponse(resp *azcore.Response) (StorageAccountListKeysResultResponse, error) {
-	var val *StorageAccountListKeysResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StorageAccountListKeysResultResponse{}, err
+func (client *StorageAccountsClient) listKeysHandleResponse(resp *http.Response) (StorageAccountsListKeysResponse, error) {
+	result := StorageAccountsListKeysResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListKeysResult); err != nil {
+		return StorageAccountsListKeysResponse{}, err
 	}
-	return StorageAccountListKeysResultResponse{RawResponse: resp.Response, StorageAccountListKeysResult: val}, nil
+	return result, nil
 }
 
 // listKeysHandleError handles the ListKeys error response.
-func (client *StorageAccountsClient) listKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) listKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListServiceSAS - List service SAS credentials of a specific resource.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) ListServiceSAS(ctx context.Context, resourceGroupName string, accountName string, parameters ServiceSasParameters, options *StorageAccountsListServiceSASOptions) (ListServiceSasResponseResponse, error) {
+func (client *StorageAccountsClient) ListServiceSAS(ctx context.Context, resourceGroupName string, accountName string, parameters ServiceSasParameters, options *StorageAccountsListServiceSASOptions) (StorageAccountsListServiceSASResponse, error) {
 	req, err := client.listServiceSASCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return ListServiceSasResponseResponse{}, err
+		return StorageAccountsListServiceSASResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ListServiceSasResponseResponse{}, err
+		return StorageAccountsListServiceSASResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return ListServiceSasResponseResponse{}, client.listServiceSASHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsListServiceSASResponse{}, client.listServiceSASHandleError(resp)
 	}
 	return client.listServiceSASHandleResponse(resp)
 }
 
 // listServiceSASCreateRequest creates the ListServiceSAS request.
-func (client *StorageAccountsClient) listServiceSASCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters ServiceSasParameters, options *StorageAccountsListServiceSASOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) listServiceSASCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters ServiceSasParameters, options *StorageAccountsListServiceSASOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/ListServiceSas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -712,58 +645,57 @@ func (client *StorageAccountsClient) listServiceSASCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // listServiceSASHandleResponse handles the ListServiceSAS response.
-func (client *StorageAccountsClient) listServiceSASHandleResponse(resp *azcore.Response) (ListServiceSasResponseResponse, error) {
-	var val *ListServiceSasResponse
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ListServiceSasResponseResponse{}, err
+func (client *StorageAccountsClient) listServiceSASHandleResponse(resp *http.Response) (StorageAccountsListServiceSASResponse, error) {
+	result := StorageAccountsListServiceSASResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListServiceSasResponse); err != nil {
+		return StorageAccountsListServiceSASResponse{}, err
 	}
-	return ListServiceSasResponseResponse{RawResponse: resp.Response, ListServiceSasResponse: val}, nil
+	return result, nil
 }
 
 // listServiceSASHandleError handles the ListServiceSAS error response.
-func (client *StorageAccountsClient) listServiceSASHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) listServiceSASHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // RegenerateKey - Regenerates one of the access keys or Kerberos keys for the specified storage account.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters, options *StorageAccountsRegenerateKeyOptions) (StorageAccountListKeysResultResponse, error) {
+func (client *StorageAccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters, options *StorageAccountsRegenerateKeyOptions) (StorageAccountsRegenerateKeyResponse, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, accountName, regenerateKey, options)
 	if err != nil {
-		return StorageAccountListKeysResultResponse{}, err
+		return StorageAccountsRegenerateKeyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StorageAccountListKeysResultResponse{}, err
+		return StorageAccountsRegenerateKeyResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return StorageAccountListKeysResultResponse{}, client.regenerateKeyHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsRegenerateKeyResponse{}, client.regenerateKeyHandleError(resp)
 	}
 	return client.regenerateKeyHandleResponse(resp)
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *StorageAccountsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters, options *StorageAccountsRegenerateKeyOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regenerateKey StorageAccountRegenerateKeyParameters, options *StorageAccountsRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/regenerateKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -777,106 +709,77 @@ func (client *StorageAccountsClient) regenerateKeyCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(regenerateKey)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, regenerateKey)
 }
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
-func (client *StorageAccountsClient) regenerateKeyHandleResponse(resp *azcore.Response) (StorageAccountListKeysResultResponse, error) {
-	var val *StorageAccountListKeysResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StorageAccountListKeysResultResponse{}, err
-	}
-	return StorageAccountListKeysResultResponse{RawResponse: resp.Response, StorageAccountListKeysResult: val}, nil
-}
-
-// regenerateKeyHandleError handles the RegenerateKey error response.
-func (client *StorageAccountsClient) regenerateKeyHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginRestoreBlobRanges - Restore blobs in the specified blob ranges
-// If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (BlobRestoreStatusPollerResponse, error) {
-	resp, err := client.restoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
-	if err != nil {
-		return BlobRestoreStatusPollerResponse{}, err
-	}
-	result := BlobRestoreStatusPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("StorageAccountsClient.RestoreBlobRanges", "location", resp, client.con.Pipeline(), client.restoreBlobRangesHandleError)
-	if err != nil {
-		return BlobRestoreStatusPollerResponse{}, err
-	}
-	poller := &blobRestoreStatusPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *StorageAccountsClient) regenerateKeyHandleResponse(resp *http.Response) (StorageAccountsRegenerateKeyResponse, error) {
+	result := StorageAccountsRegenerateKeyResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListKeysResult); err != nil {
+		return StorageAccountsRegenerateKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeRestoreBlobRanges creates a new BlobRestoreStatusPoller from the specified resume token.
-// token - The value must come from a previous call to BlobRestoreStatusPoller.ResumeToken().
-func (client *StorageAccountsClient) ResumeRestoreBlobRanges(ctx context.Context, token string) (BlobRestoreStatusPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("StorageAccountsClient.RestoreBlobRanges", token, client.con.Pipeline(), client.restoreBlobRangesHandleError)
+// regenerateKeyHandleError handles the RegenerateKey error response.
+func (client *StorageAccountsClient) regenerateKeyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return BlobRestoreStatusPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &blobRestoreStatusPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginRestoreBlobRanges - Restore blobs in the specified blob ranges
+// If the operation fails it returns a generic error.
+func (client *StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (StorageAccountsRestoreBlobRangesPollerResponse, error) {
+	resp, err := client.restoreBlobRanges(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return BlobRestoreStatusPollerResponse{}, err
+		return StorageAccountsRestoreBlobRangesPollerResponse{}, err
 	}
-	result := BlobRestoreStatusPollerResponse{
+	result := StorageAccountsRestoreBlobRangesPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("StorageAccountsClient.RestoreBlobRanges", "location", resp, client.pl, client.restoreBlobRangesHandleError)
+	if err != nil {
+		return StorageAccountsRestoreBlobRangesPollerResponse{}, err
+	}
+	result.Poller = &StorageAccountsRestoreBlobRangesPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // RestoreBlobRanges - Restore blobs in the specified blob ranges
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) restoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (*azcore.Response, error) {
+func (client *StorageAccountsClient) restoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (*http.Response, error) {
 	req, err := client.restoreBlobRangesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.restoreBlobRangesHandleError(resp)
 	}
 	return resp, nil
 }
 
 // restoreBlobRangesCreateRequest creates the RestoreBlobRanges request.
-func (client *StorageAccountsClient) restoreBlobRangesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) restoreBlobRangesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *StorageAccountsBeginRestoreBlobRangesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/restoreBlobRanges"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -890,49 +793,48 @@ func (client *StorageAccountsClient) restoreBlobRangesCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // restoreBlobRangesHandleError handles the RestoreBlobRanges error response.
-func (client *StorageAccountsClient) restoreBlobRangesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) restoreBlobRangesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // RevokeUserDelegationKeys - Revoke user delegation keys.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) RevokeUserDelegationKeys(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsRevokeUserDelegationKeysOptions) (*http.Response, error) {
+func (client *StorageAccountsClient) RevokeUserDelegationKeys(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsRevokeUserDelegationKeysOptions) (StorageAccountsRevokeUserDelegationKeysResponse, error) {
 	req, err := client.revokeUserDelegationKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return nil, err
+		return StorageAccountsRevokeUserDelegationKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return StorageAccountsRevokeUserDelegationKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.revokeUserDelegationKeysHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsRevokeUserDelegationKeysResponse{}, client.revokeUserDelegationKeysHandleError(resp)
 	}
-	return resp.Response, nil
+	return StorageAccountsRevokeUserDelegationKeysResponse{RawResponse: resp}, nil
 }
 
 // revokeUserDelegationKeysCreateRequest creates the RevokeUserDelegationKeys request.
-func (client *StorageAccountsClient) revokeUserDelegationKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsRevokeUserDelegationKeysOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) revokeUserDelegationKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *StorageAccountsRevokeUserDelegationKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/revokeUserDelegationKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -946,27 +848,26 @@ func (client *StorageAccountsClient) revokeUserDelegationKeysCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // revokeUserDelegationKeysHandleError handles the RevokeUserDelegationKeys error response.
-func (client *StorageAccountsClient) revokeUserDelegationKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) revokeUserDelegationKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Update - The update operation can be used to update the SKU, encryption, access tier, or tags for a storage account. It can also be used to map the account
@@ -977,23 +878,23 @@ func (client *StorageAccountsClient) revokeUserDelegationKeysHandleError(resp *a
 // keys, use the regenerate keys operation. The
 // location and name of the storage account cannot be changed after creation.
 // If the operation fails it returns a generic error.
-func (client *StorageAccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountUpdateParameters, options *StorageAccountsUpdateOptions) (StorageAccountResponse, error) {
+func (client *StorageAccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountUpdateParameters, options *StorageAccountsUpdateOptions) (StorageAccountsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return StorageAccountResponse{}, err
+		return StorageAccountsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StorageAccountResponse{}, err
+		return StorageAccountsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return StorageAccountResponse{}, client.updateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return StorageAccountsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *StorageAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountUpdateParameters, options *StorageAccountsUpdateOptions) (*azcore.Request, error) {
+func (client *StorageAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountUpdateParameters, options *StorageAccountsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1007,35 +908,34 @@ func (client *StorageAccountsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *StorageAccountsClient) updateHandleResponse(resp *azcore.Response) (StorageAccountResponse, error) {
-	var val *StorageAccount
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return StorageAccountResponse{}, err
+func (client *StorageAccountsClient) updateHandleResponse(resp *http.Response) (StorageAccountsUpdateResponse, error) {
+	result := StorageAccountsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccount); err != nil {
+		return StorageAccountsUpdateResponse{}, err
 	}
-	return StorageAccountResponse{RawResponse: resp.Response, StorageAccount: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *StorageAccountsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *StorageAccountsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

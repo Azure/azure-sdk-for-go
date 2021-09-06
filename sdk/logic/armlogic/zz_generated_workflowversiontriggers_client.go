@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkflowVersionTriggersClient contains the methods for the WorkflowVersionTriggers group.
 // Don't use this type directly, use NewWorkflowVersionTriggersClient() instead.
 type WorkflowVersionTriggersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewWorkflowVersionTriggersClient creates a new instance of WorkflowVersionTriggersClient with the specified values.
-func NewWorkflowVersionTriggersClient(con *armcore.Connection, subscriptionID string) *WorkflowVersionTriggersClient {
-	return &WorkflowVersionTriggersClient{con: con, subscriptionID: subscriptionID}
+func NewWorkflowVersionTriggersClient(con *arm.Connection, subscriptionID string) *WorkflowVersionTriggersClient {
+	return &WorkflowVersionTriggersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListCallbackURL - Get the callback url for a trigger of a workflow version.
@@ -38,18 +41,18 @@ func (client *WorkflowVersionTriggersClient) ListCallbackURL(ctx context.Context
 	if err != nil {
 		return WorkflowVersionTriggersListCallbackURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowVersionTriggersListCallbackURLResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowVersionTriggersListCallbackURLResponse{}, client.listCallbackURLHandleError(resp)
 	}
 	return client.listCallbackURLHandleResponse(resp)
 }
 
 // listCallbackURLCreateRequest creates the ListCallbackURL request.
-func (client *WorkflowVersionTriggersClient) listCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, versionID string, triggerName string, options *WorkflowVersionTriggersListCallbackURLOptions) (*azcore.Request, error) {
+func (client *WorkflowVersionTriggersClient) listCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, versionID string, triggerName string, options *WorkflowVersionTriggersListCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions/{versionId}/triggers/{triggerName}/listCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,39 +74,38 @@ func (client *WorkflowVersionTriggersClient) listCallbackURLCreateRequest(ctx co
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // listCallbackURLHandleResponse handles the ListCallbackURL response.
-func (client *WorkflowVersionTriggersClient) listCallbackURLHandleResponse(resp *azcore.Response) (WorkflowVersionTriggersListCallbackURLResponse, error) {
-	result := WorkflowVersionTriggersListCallbackURLResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowTriggerCallbackURL); err != nil {
+func (client *WorkflowVersionTriggersClient) listCallbackURLHandleResponse(resp *http.Response) (WorkflowVersionTriggersListCallbackURLResponse, error) {
+	result := WorkflowVersionTriggersListCallbackURLResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
 		return WorkflowVersionTriggersListCallbackURLResponse{}, err
 	}
 	return result, nil
 }
 
 // listCallbackURLHandleError handles the ListCallbackURL error response.
-func (client *WorkflowVersionTriggersClient) listCallbackURLHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowVersionTriggersClient) listCallbackURLHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

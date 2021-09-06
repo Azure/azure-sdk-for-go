@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,6 +12,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // IntegrationAccountAgreementsCreateOrUpdateResponse contains the response from method IntegrationAccountAgreements.CreateOrUpdate.
@@ -532,14 +534,40 @@ type IntegrationServiceEnvironmentManagedAPIOperationsListResult struct {
 
 // IntegrationServiceEnvironmentManagedApisDeletePollerResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Delete.
 type IntegrationServiceEnvironmentManagedApisDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (IntegrationServiceEnvironmentManagedApisDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller IntegrationServiceEnvironmentManagedApisDeletePoller
+	Poller *IntegrationServiceEnvironmentManagedApisDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l IntegrationServiceEnvironmentManagedApisDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentManagedApisDeleteResponse, error) {
+	respType := IntegrationServiceEnvironmentManagedApisDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a IntegrationServiceEnvironmentManagedApisDeletePollerResponse from the provided client and resume token.
+func (l *IntegrationServiceEnvironmentManagedApisDeletePollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentManagedApisClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentManagedApisClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &IntegrationServiceEnvironmentManagedApisDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // IntegrationServiceEnvironmentManagedApisDeleteResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Delete.
@@ -574,14 +602,40 @@ type IntegrationServiceEnvironmentManagedApisListResult struct {
 
 // IntegrationServiceEnvironmentManagedApisPutPollerResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Put.
 type IntegrationServiceEnvironmentManagedApisPutPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (IntegrationServiceEnvironmentManagedApisPutResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller IntegrationServiceEnvironmentManagedApisPutPoller
+	Poller *IntegrationServiceEnvironmentManagedApisPutPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l IntegrationServiceEnvironmentManagedApisPutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentManagedApisPutResponse, error) {
+	respType := IntegrationServiceEnvironmentManagedApisPutResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedAPI)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a IntegrationServiceEnvironmentManagedApisPutPollerResponse from the provided client and resume token.
+func (l *IntegrationServiceEnvironmentManagedApisPutPollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentManagedApisClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentManagedApisClient.Put", token, client.pl, client.putHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &IntegrationServiceEnvironmentManagedApisPutPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // IntegrationServiceEnvironmentManagedApisPutResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Put.
@@ -623,14 +677,40 @@ type IntegrationServiceEnvironmentSKUsListResult struct {
 
 // IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse contains the response from method IntegrationServiceEnvironments.CreateOrUpdate.
 type IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (IntegrationServiceEnvironmentsCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller IntegrationServiceEnvironmentsCreateOrUpdatePoller
+	Poller *IntegrationServiceEnvironmentsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentsCreateOrUpdateResponse, error) {
+	respType := IntegrationServiceEnvironmentsCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironment)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &IntegrationServiceEnvironmentsCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // IntegrationServiceEnvironmentsCreateOrUpdateResponse contains the response from method IntegrationServiceEnvironments.CreateOrUpdate.
@@ -695,14 +775,40 @@ type IntegrationServiceEnvironmentsRestartResponse struct {
 
 // IntegrationServiceEnvironmentsUpdatePollerResponse contains the response from method IntegrationServiceEnvironments.Update.
 type IntegrationServiceEnvironmentsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (IntegrationServiceEnvironmentsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller IntegrationServiceEnvironmentsUpdatePoller
+	Poller *IntegrationServiceEnvironmentsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l IntegrationServiceEnvironmentsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentsUpdateResponse, error) {
+	respType := IntegrationServiceEnvironmentsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironment)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a IntegrationServiceEnvironmentsUpdatePollerResponse from the provided client and resume token.
+func (l *IntegrationServiceEnvironmentsUpdatePollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &IntegrationServiceEnvironmentsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // IntegrationServiceEnvironmentsUpdateResponse contains the response from method IntegrationServiceEnvironments.Update.
@@ -1153,14 +1259,40 @@ type WorkflowsListSwaggerResult struct {
 
 // WorkflowsMovePollerResponse contains the response from method Workflows.Move.
 type WorkflowsMovePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WorkflowsMoveResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WorkflowsMovePoller
+	Poller *WorkflowsMovePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WorkflowsMovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkflowsMoveResponse, error) {
+	respType := WorkflowsMoveResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WorkflowsMovePollerResponse from the provided client and resume token.
+func (l *WorkflowsMovePollerResponse) Resume(ctx context.Context, client *WorkflowsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WorkflowsClient.Move", token, client.pl, client.moveHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WorkflowsMovePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WorkflowsMoveResponse contains the response from method Workflows.Move.

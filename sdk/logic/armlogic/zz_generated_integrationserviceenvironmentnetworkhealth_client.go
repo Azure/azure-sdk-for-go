@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationServiceEnvironmentNetworkHealthClient contains the methods for the IntegrationServiceEnvironmentNetworkHealth group.
 // Don't use this type directly, use NewIntegrationServiceEnvironmentNetworkHealthClient() instead.
 type IntegrationServiceEnvironmentNetworkHealthClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIntegrationServiceEnvironmentNetworkHealthClient creates a new instance of IntegrationServiceEnvironmentNetworkHealthClient with the specified values.
-func NewIntegrationServiceEnvironmentNetworkHealthClient(con *armcore.Connection, subscriptionID string) *IntegrationServiceEnvironmentNetworkHealthClient {
-	return &IntegrationServiceEnvironmentNetworkHealthClient{con: con, subscriptionID: subscriptionID}
+func NewIntegrationServiceEnvironmentNetworkHealthClient(con *arm.Connection, subscriptionID string) *IntegrationServiceEnvironmentNetworkHealthClient {
+	return &IntegrationServiceEnvironmentNetworkHealthClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets the integration service environment network health.
@@ -38,18 +41,18 @@ func (client *IntegrationServiceEnvironmentNetworkHealthClient) Get(ctx context.
 	if err != nil {
 		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentNetworkHealthGetOptions) (*azcore.Request, error) {
+func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentNetworkHealthGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/health/network"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -63,36 +66,35 @@ func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleResponse(resp *azcore.Response) (IntegrationServiceEnvironmentNetworkHealthGetResponse, error) {
-	result := IntegrationServiceEnvironmentNetworkHealthGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Value); err != nil {
+func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentNetworkHealthGetResponse, error) {
+	result := IntegrationServiceEnvironmentNetworkHealthGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

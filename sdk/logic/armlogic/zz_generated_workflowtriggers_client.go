@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkflowTriggersClient contains the methods for the WorkflowTriggers group.
 // Don't use this type directly, use NewWorkflowTriggersClient() instead.
 type WorkflowTriggersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewWorkflowTriggersClient creates a new instance of WorkflowTriggersClient with the specified values.
-func NewWorkflowTriggersClient(con *armcore.Connection, subscriptionID string) *WorkflowTriggersClient {
-	return &WorkflowTriggersClient{con: con, subscriptionID: subscriptionID}
+func NewWorkflowTriggersClient(con *arm.Connection, subscriptionID string) *WorkflowTriggersClient {
+	return &WorkflowTriggersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a workflow trigger.
@@ -39,18 +42,18 @@ func (client *WorkflowTriggersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowTriggersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowTriggersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersGetOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,38 +71,37 @@ func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowTriggersClient) getHandleResponse(resp *azcore.Response) (WorkflowTriggersGetResponse, error) {
-	result := WorkflowTriggersGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowTrigger); err != nil {
+func (client *WorkflowTriggersClient) getHandleResponse(resp *http.Response) (WorkflowTriggersGetResponse, error) {
+	result := WorkflowTriggersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTrigger); err != nil {
 		return WorkflowTriggersGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *WorkflowTriggersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetSchemaJSON - Get the trigger schema as JSON.
@@ -109,18 +111,18 @@ func (client *WorkflowTriggersClient) GetSchemaJSON(ctx context.Context, resourc
 	if err != nil {
 		return WorkflowTriggersGetSchemaJSONResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowTriggersGetSchemaJSONResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersGetSchemaJSONResponse{}, client.getSchemaJSONHandleError(resp)
 	}
 	return client.getSchemaJSONHandleResponse(resp)
 }
 
 // getSchemaJSONCreateRequest creates the GetSchemaJSON request.
-func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersGetSchemaJSONOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersGetSchemaJSONOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/schemas/json"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,56 +140,55 @@ func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Con
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSchemaJSONHandleResponse handles the GetSchemaJSON response.
-func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *azcore.Response) (WorkflowTriggersGetSchemaJSONResponse, error) {
-	result := WorkflowTriggersGetSchemaJSONResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JSONSchema); err != nil {
+func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Response) (WorkflowTriggersGetSchemaJSONResponse, error) {
+	result := WorkflowTriggersGetSchemaJSONResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JSONSchema); err != nil {
 		return WorkflowTriggersGetSchemaJSONResponse{}, err
 	}
 	return result, nil
 }
 
 // getSchemaJSONHandleError handles the GetSchemaJSON error response.
-func (client *WorkflowTriggersClient) getSchemaJSONHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) getSchemaJSONHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets a list of workflow triggers.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowTriggersClient) List(resourceGroupName string, workflowName string, options *WorkflowTriggersListOptions) WorkflowTriggersListPager {
-	return &workflowTriggersListPager{
+func (client *WorkflowTriggersClient) List(resourceGroupName string, workflowName string, options *WorkflowTriggersListOptions) *WorkflowTriggersListPager {
+	return &WorkflowTriggersListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workflowName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkflowTriggersListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkflowTriggerListResult.NextLink)
+		advancer: func(ctx context.Context, resp WorkflowTriggersListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowTriggerListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowTriggersListOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowTriggersListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,12 +202,11 @@ func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter workflowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -214,31 +214,31 @@ func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, res
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkflowTriggersClient) listHandleResponse(resp *azcore.Response) (WorkflowTriggersListResponse, error) {
-	result := WorkflowTriggersListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowTriggerListResult); err != nil {
+func (client *WorkflowTriggersClient) listHandleResponse(resp *http.Response) (WorkflowTriggersListResponse, error) {
+	result := WorkflowTriggersListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerListResult); err != nil {
 		return WorkflowTriggersListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *WorkflowTriggersClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListCallbackURL - Get the callback URL for a workflow trigger.
@@ -248,18 +248,18 @@ func (client *WorkflowTriggersClient) ListCallbackURL(ctx context.Context, resou
 	if err != nil {
 		return WorkflowTriggersListCallbackURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowTriggersListCallbackURLResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersListCallbackURLResponse{}, client.listCallbackURLHandleError(resp)
 	}
 	return client.listCallbackURLHandleResponse(resp)
 }
 
 // listCallbackURLCreateRequest creates the ListCallbackURL request.
-func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersListCallbackURLOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersListCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/listCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -277,38 +277,37 @@ func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.C
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listCallbackURLHandleResponse handles the ListCallbackURL response.
-func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *azcore.Response) (WorkflowTriggersListCallbackURLResponse, error) {
-	result := WorkflowTriggersListCallbackURLResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowTriggerCallbackURL); err != nil {
+func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.Response) (WorkflowTriggersListCallbackURLResponse, error) {
+	result := WorkflowTriggersListCallbackURLResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
 		return WorkflowTriggersListCallbackURLResponse{}, err
 	}
 	return result, nil
 }
 
 // listCallbackURLHandleError handles the ListCallbackURL error response.
-func (client *WorkflowTriggersClient) listCallbackURLHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) listCallbackURLHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Reset - Resets a workflow trigger.
@@ -318,18 +317,18 @@ func (client *WorkflowTriggersClient) Reset(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WorkflowTriggersResetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowTriggersResetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersResetResponse{}, client.resetHandleError(resp)
 	}
-	return WorkflowTriggersResetResponse{RawResponse: resp.Response}, nil
+	return WorkflowTriggersResetResponse{RawResponse: resp}, nil
 }
 
 // resetCreateRequest creates the Reset request.
-func (client *WorkflowTriggersClient) resetCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersResetOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) resetCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersResetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/reset"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -347,29 +346,28 @@ func (client *WorkflowTriggersClient) resetCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // resetHandleError handles the Reset error response.
-func (client *WorkflowTriggersClient) resetHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) resetHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Run - Runs a workflow trigger.
@@ -379,18 +377,18 @@ func (client *WorkflowTriggersClient) Run(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowTriggersRunResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowTriggersRunResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return WorkflowTriggersRunResponse{}, client.runHandleError(resp)
 	}
-	return WorkflowTriggersRunResponse{RawResponse: resp.Response}, nil
+	return WorkflowTriggersRunResponse{RawResponse: resp}, nil
 }
 
 // runCreateRequest creates the Run request.
-func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersRunOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, options *WorkflowTriggersRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/run"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -408,29 +406,28 @@ func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // runHandleError handles the Run error response.
-func (client *WorkflowTriggersClient) runHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) runHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // SetState - Sets the state of a workflow trigger.
@@ -440,18 +437,18 @@ func (client *WorkflowTriggersClient) SetState(ctx context.Context, resourceGrou
 	if err != nil {
 		return WorkflowTriggersSetStateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowTriggersSetStateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowTriggersSetStateResponse{}, client.setStateHandleError(resp)
 	}
-	return WorkflowTriggersSetStateResponse{RawResponse: resp.Response}, nil
+	return WorkflowTriggersSetStateResponse{RawResponse: resp}, nil
 }
 
 // setStateCreateRequest creates the SetState request.
-func (client *WorkflowTriggersClient) setStateCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, setState SetTriggerStateActionDefinition, options *WorkflowTriggersSetStateOptions) (*azcore.Request, error) {
+func (client *WorkflowTriggersClient) setStateCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, setState SetTriggerStateActionDefinition, options *WorkflowTriggersSetStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/setState"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -469,27 +466,26 @@ func (client *WorkflowTriggersClient) setStateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(setState)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, setState)
 }
 
 // setStateHandleError handles the SetState error response.
-func (client *WorkflowTriggersClient) setStateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowTriggersClient) setStateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

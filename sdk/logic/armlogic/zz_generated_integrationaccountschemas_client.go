@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountSchemasClient contains the methods for the IntegrationAccountSchemas group.
 // Don't use this type directly, use NewIntegrationAccountSchemasClient() instead.
 type IntegrationAccountSchemasClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIntegrationAccountSchemasClient creates a new instance of IntegrationAccountSchemasClient with the specified values.
-func NewIntegrationAccountSchemasClient(con *armcore.Connection, subscriptionID string) *IntegrationAccountSchemasClient {
-	return &IntegrationAccountSchemasClient{con: con, subscriptionID: subscriptionID}
+func NewIntegrationAccountSchemasClient(con *arm.Connection, subscriptionID string) *IntegrationAccountSchemasClient {
+	return &IntegrationAccountSchemasClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates an integration account schema.
@@ -39,18 +42,18 @@ func (client *IntegrationAccountSchemasClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return IntegrationAccountSchemasCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountSchemasCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return IntegrationAccountSchemasCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema, options *IntegrationAccountSchemasCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema, options *IntegrationAccountSchemasCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,38 +71,37 @@ func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(schema)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, schema)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountSchemasClient) createOrUpdateHandleResponse(resp *azcore.Response) (IntegrationAccountSchemasCreateOrUpdateResponse, error) {
-	result := IntegrationAccountSchemasCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IntegrationAccountSchema); err != nil {
+func (client *IntegrationAccountSchemasClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountSchemasCreateOrUpdateResponse, error) {
+	result := IntegrationAccountSchemasCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchema); err != nil {
 		return IntegrationAccountSchemasCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountSchemasClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountSchemasClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes an integration account schema.
@@ -109,18 +111,18 @@ func (client *IntegrationAccountSchemasClient) Delete(ctx context.Context, resou
 	if err != nil {
 		return IntegrationAccountSchemasDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountSchemasDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationAccountSchemasDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return IntegrationAccountSchemasDeleteResponse{RawResponse: resp.Response}, nil
+	return IntegrationAccountSchemasDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasDeleteOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,29 +140,28 @@ func (client *IntegrationAccountSchemasClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountSchemasClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountSchemasClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an integration account schema.
@@ -170,18 +171,18 @@ func (client *IntegrationAccountSchemasClient) Get(ctx context.Context, resource
 	if err != nil {
 		return IntegrationAccountSchemasGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountSchemasGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationAccountSchemasGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasGetOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, options *IntegrationAccountSchemasGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -199,56 +200,55 @@ func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *azcore.Response) (IntegrationAccountSchemasGetResponse, error) {
-	result := IntegrationAccountSchemasGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IntegrationAccountSchema); err != nil {
+func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *http.Response) (IntegrationAccountSchemasGetResponse, error) {
+	result := IntegrationAccountSchemasGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchema); err != nil {
 		return IntegrationAccountSchemasGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IntegrationAccountSchemasClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountSchemasClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets a list of integration account schemas.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountSchemasClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasListOptions) IntegrationAccountSchemasListPager {
-	return &integrationAccountSchemasListPager{
+func (client *IntegrationAccountSchemasClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasListOptions) *IntegrationAccountSchemasListPager {
+	return &IntegrationAccountSchemasListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountSchemasListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountSchemaListResult.NextLink)
+		advancer: func(ctx context.Context, resp IntegrationAccountSchemasListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountSchemaListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasListOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountSchemasListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -262,12 +262,11 @@ func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -275,31 +274,31 @@ func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountSchemasClient) listHandleResponse(resp *azcore.Response) (IntegrationAccountSchemasListResponse, error) {
-	result := IntegrationAccountSchemasListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IntegrationAccountSchemaListResult); err != nil {
+func (client *IntegrationAccountSchemasClient) listHandleResponse(resp *http.Response) (IntegrationAccountSchemasListResponse, error) {
+	result := IntegrationAccountSchemasListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchemaListResult); err != nil {
 		return IntegrationAccountSchemasListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *IntegrationAccountSchemasClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountSchemasClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListContentCallbackURL - Get the content callback url.
@@ -309,18 +308,18 @@ func (client *IntegrationAccountSchemasClient) ListContentCallbackURL(ctx contex
 	if err != nil {
 		return IntegrationAccountSchemasListContentCallbackURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountSchemasListContentCallbackURLResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationAccountSchemasListContentCallbackURLResponse{}, client.listContentCallbackURLHandleError(resp)
 	}
 	return client.listContentCallbackURLHandleResponse(resp)
 }
 
 // listContentCallbackURLCreateRequest creates the ListContentCallbackURL request.
-func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountSchemasListContentCallbackURLOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountSchemasListContentCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}/listContentCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,36 +337,35 @@ func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateReque
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(listContentCallbackURL)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, listContentCallbackURL)
 }
 
 // listContentCallbackURLHandleResponse handles the ListContentCallbackURL response.
-func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleResponse(resp *azcore.Response) (IntegrationAccountSchemasListContentCallbackURLResponse, error) {
-	result := IntegrationAccountSchemasListContentCallbackURLResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowTriggerCallbackURL); err != nil {
+func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountSchemasListContentCallbackURLResponse, error) {
+	result := IntegrationAccountSchemasListContentCallbackURLResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
 		return IntegrationAccountSchemasListContentCallbackURLResponse{}, err
 	}
 	return result, nil
 }
 
 // listContentCallbackURLHandleError handles the ListContentCallbackURL error response.
-func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

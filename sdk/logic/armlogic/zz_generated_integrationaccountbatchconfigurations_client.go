@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountBatchConfigurationsClient contains the methods for the IntegrationAccountBatchConfigurations group.
 // Don't use this type directly, use NewIntegrationAccountBatchConfigurationsClient() instead.
 type IntegrationAccountBatchConfigurationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIntegrationAccountBatchConfigurationsClient creates a new instance of IntegrationAccountBatchConfigurationsClient with the specified values.
-func NewIntegrationAccountBatchConfigurationsClient(con *armcore.Connection, subscriptionID string) *IntegrationAccountBatchConfigurationsClient {
-	return &IntegrationAccountBatchConfigurationsClient{con: con, subscriptionID: subscriptionID}
+func NewIntegrationAccountBatchConfigurationsClient(con *arm.Connection, subscriptionID string) *IntegrationAccountBatchConfigurationsClient {
+	return &IntegrationAccountBatchConfigurationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create or update a batch configuration for an integration account.
@@ -38,18 +41,18 @@ func (client *IntegrationAccountBatchConfigurationsClient) CreateOrUpdate(ctx co
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, batchConfiguration BatchConfiguration, options *IntegrationAccountBatchConfigurationsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, batchConfiguration BatchConfiguration, options *IntegrationAccountBatchConfigurationsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,38 +70,37 @@ func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateCreateR
 		return nil, errors.New("parameter batchConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{batchConfigurationName}", url.PathEscape(batchConfigurationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(batchConfiguration)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, batchConfiguration)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (IntegrationAccountBatchConfigurationsCreateOrUpdateResponse, error) {
-	result := IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.BatchConfiguration); err != nil {
+func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsCreateOrUpdateResponse, error) {
+	result := IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfiguration); err != nil {
 		return IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Delete a batch configuration for an integration account.
@@ -108,18 +110,18 @@ func (client *IntegrationAccountBatchConfigurationsClient) Delete(ctx context.Co
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationAccountBatchConfigurationsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return IntegrationAccountBatchConfigurationsDeleteResponse{RawResponse: resp.Response}, nil
+	return IntegrationAccountBatchConfigurationsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountBatchConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, options *IntegrationAccountBatchConfigurationsDeleteOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountBatchConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, options *IntegrationAccountBatchConfigurationsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,29 +139,28 @@ func (client *IntegrationAccountBatchConfigurationsClient) deleteCreateRequest(c
 		return nil, errors.New("parameter batchConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{batchConfigurationName}", url.PathEscape(batchConfigurationName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountBatchConfigurationsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountBatchConfigurationsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get a batch configuration for an integration account.
@@ -169,18 +170,18 @@ func (client *IntegrationAccountBatchConfigurationsClient) Get(ctx context.Conte
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationAccountBatchConfigurationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountBatchConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, options *IntegrationAccountBatchConfigurationsGetOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountBatchConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, options *IntegrationAccountBatchConfigurationsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,38 +199,37 @@ func (client *IntegrationAccountBatchConfigurationsClient) getCreateRequest(ctx 
 		return nil, errors.New("parameter batchConfigurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{batchConfigurationName}", url.PathEscape(batchConfigurationName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(resp *azcore.Response) (IntegrationAccountBatchConfigurationsGetResponse, error) {
-	result := IntegrationAccountBatchConfigurationsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.BatchConfiguration); err != nil {
+func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsGetResponse, error) {
+	result := IntegrationAccountBatchConfigurationsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfiguration); err != nil {
 		return IntegrationAccountBatchConfigurationsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IntegrationAccountBatchConfigurationsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountBatchConfigurationsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - List the batch configurations for an integration account.
@@ -239,18 +239,18 @@ func (client *IntegrationAccountBatchConfigurationsClient) List(ctx context.Cont
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationAccountBatchConfigurationsListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationAccountBatchConfigurationsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountBatchConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsListOptions) (*azcore.Request, error) {
+func (client *IntegrationAccountBatchConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -264,36 +264,35 @@ func (client *IntegrationAccountBatchConfigurationsClient) listCreateRequest(ctx
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountBatchConfigurationsClient) listHandleResponse(resp *azcore.Response) (IntegrationAccountBatchConfigurationsListResponse, error) {
-	result := IntegrationAccountBatchConfigurationsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.BatchConfigurationCollection); err != nil {
+func (client *IntegrationAccountBatchConfigurationsClient) listHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsListResponse, error) {
+	result := IntegrationAccountBatchConfigurationsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfigurationCollection); err != nil {
 		return IntegrationAccountBatchConfigurationsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *IntegrationAccountBatchConfigurationsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationAccountBatchConfigurationsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

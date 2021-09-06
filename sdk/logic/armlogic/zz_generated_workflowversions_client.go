@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkflowVersionsClient contains the methods for the WorkflowVersions group.
 // Don't use this type directly, use NewWorkflowVersionsClient() instead.
 type WorkflowVersionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewWorkflowVersionsClient creates a new instance of WorkflowVersionsClient with the specified values.
-func NewWorkflowVersionsClient(con *armcore.Connection, subscriptionID string) *WorkflowVersionsClient {
-	return &WorkflowVersionsClient{con: con, subscriptionID: subscriptionID}
+func NewWorkflowVersionsClient(con *arm.Connection, subscriptionID string) *WorkflowVersionsClient {
+	return &WorkflowVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a workflow version.
@@ -39,18 +42,18 @@ func (client *WorkflowVersionsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowVersionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WorkflowVersionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return WorkflowVersionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, versionID string, options *WorkflowVersionsGetOptions) (*azcore.Request, error) {
+func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, versionID string, options *WorkflowVersionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions/{versionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,56 +71,55 @@ func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter versionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionId}", url.PathEscape(versionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowVersionsClient) getHandleResponse(resp *azcore.Response) (WorkflowVersionsGetResponse, error) {
-	result := WorkflowVersionsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowVersion); err != nil {
+func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response) (WorkflowVersionsGetResponse, error) {
+	result := WorkflowVersionsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowVersion); err != nil {
 		return WorkflowVersionsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *WorkflowVersionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowVersionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets a list of workflow versions.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowVersionsClient) List(resourceGroupName string, workflowName string, options *WorkflowVersionsListOptions) WorkflowVersionsListPager {
-	return &workflowVersionsListPager{
+func (client *WorkflowVersionsClient) List(resourceGroupName string, workflowName string, options *WorkflowVersionsListOptions) *WorkflowVersionsListPager {
+	return &WorkflowVersionsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workflowName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkflowVersionsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkflowVersionListResult.NextLink)
+		advancer: func(ctx context.Context, resp WorkflowVersionsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowVersionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkflowVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowVersionsListOptions) (*azcore.Request, error) {
+func (client *WorkflowVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowVersionsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,39 +133,38 @@ func (client *WorkflowVersionsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter workflowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkflowVersionsClient) listHandleResponse(resp *azcore.Response) (WorkflowVersionsListResponse, error) {
-	result := WorkflowVersionsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkflowVersionListResult); err != nil {
+func (client *WorkflowVersionsClient) listHandleResponse(resp *http.Response) (WorkflowVersionsListResponse, error) {
+	result := WorkflowVersionsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowVersionListResult); err != nil {
 		return WorkflowVersionsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *WorkflowVersionsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *WorkflowVersionsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

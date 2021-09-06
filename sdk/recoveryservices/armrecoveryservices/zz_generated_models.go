@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,9 +10,11 @@ package armrecoveryservices
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CertificateRequest - Details of the certificate to be uploaded to the vault.
@@ -498,7 +500,7 @@ type RawCertificateData struct {
 func (r RawCertificateData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "authType", r.AuthType)
-	populateByteArray(objectMap, "certificate", r.Certificate, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
 	return json.Marshal(objectMap)
 }
 
@@ -515,7 +517,7 @@ func (r *RawCertificateData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &r.AuthType)
 			delete(rawMsg, key)
 		case "certificate":
-			err = azcore.DecodeByteArray(string(val), &r.Certificate, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -788,7 +790,7 @@ func (r ResourceCertificateDetails) marshalInternal(discValue string) map[string
 	objectMap := make(map[string]interface{})
 	r.AuthType = &discValue
 	objectMap["authType"] = r.AuthType
-	populateByteArray(objectMap, "certificate", r.Certificate, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
 	populate(objectMap, "friendlyName", r.FriendlyName)
 	populate(objectMap, "issuer", r.Issuer)
 	populate(objectMap, "resourceId", r.ResourceID)
@@ -807,7 +809,7 @@ func (r *ResourceCertificateDetails) unmarshalInternal(rawMsg map[string]json.Ra
 			err = unpopulate(val, &r.AuthType)
 			delete(rawMsg, key)
 		case "certificate":
-			err = azcore.DecodeByteArray(string(val), &r.Certificate, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, &r.FriendlyName)
@@ -1450,13 +1452,13 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func populateByteArray(m map[string]interface{}, k string, b []byte, f azcore.Base64Encoding) {
+func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
 		return
 	} else {
-		m[k] = azcore.EncodeByteArray(b, f)
+		m[k] = runtime.EncodeByteArray(b, f)
 	}
 }
 

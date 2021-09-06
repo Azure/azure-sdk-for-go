@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,7 +8,10 @@
 
 package armrecoveryservices
 
-const telemetryInfo = "azsdk-go-armrecoveryservices/v0.1.0"
+const (
+	module  = "armrecoveryservices"
+	version = "v0.1.0"
+)
 
 // AuthType - Specifies the authentication type.
 type AuthType string

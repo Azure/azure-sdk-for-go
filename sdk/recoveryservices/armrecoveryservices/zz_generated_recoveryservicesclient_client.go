@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecoveryServicesClient contains the methods for the RecoveryServicesClient group.
 // Don't use this type directly, use NewRecoveryServicesClient() instead.
 type RecoveryServicesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecoveryServicesClient creates a new instance of RecoveryServicesClient with the specified values.
-func NewRecoveryServicesClient(con *armcore.Connection, subscriptionID string) *RecoveryServicesClient {
-	return &RecoveryServicesClient{con: con, subscriptionID: subscriptionID}
+func NewRecoveryServicesClient(con *arm.Connection, subscriptionID string) *RecoveryServicesClient {
+	return &RecoveryServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetOperationResult - Gets the operation result for a resource.
@@ -38,18 +41,18 @@ func (client *RecoveryServicesClient) GetOperationResult(ctx context.Context, re
 	if err != nil {
 		return RecoveryServicesClientGetOperationResultResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoveryServicesClientGetOperationResultResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return RecoveryServicesClientGetOperationResultResponse{}, client.getOperationResultHandleError(resp)
 	}
 	return client.getOperationResultHandleResponse(resp)
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
-func (client *RecoveryServicesClient) getOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *RecoveryServicesClientGetOperationResultOptions) (*azcore.Request, error) {
+func (client *RecoveryServicesClient) getOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *RecoveryServicesClientGetOperationResultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,38 +70,37 @@ func (client *RecoveryServicesClient) getOperationResultCreateRequest(ctx contex
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOperationResultHandleResponse handles the GetOperationResult response.
-func (client *RecoveryServicesClient) getOperationResultHandleResponse(resp *azcore.Response) (RecoveryServicesClientGetOperationResultResponse, error) {
-	result := RecoveryServicesClientGetOperationResultResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Vault); err != nil {
+func (client *RecoveryServicesClient) getOperationResultHandleResponse(resp *http.Response) (RecoveryServicesClientGetOperationResultResponse, error) {
+	result := RecoveryServicesClientGetOperationResultResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Vault); err != nil {
 		return RecoveryServicesClientGetOperationResultResponse{}, err
 	}
 	return result, nil
 }
 
 // getOperationResultHandleError handles the GetOperationResult error response.
-func (client *RecoveryServicesClient) getOperationResultHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoveryServicesClient) getOperationResultHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetOperationStatus - Gets the operation status for a resource.
@@ -108,18 +110,18 @@ func (client *RecoveryServicesClient) GetOperationStatus(ctx context.Context, re
 	if err != nil {
 		return RecoveryServicesClientGetOperationStatusResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoveryServicesClientGetOperationStatusResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecoveryServicesClientGetOperationStatusResponse{}, client.getOperationStatusHandleError(resp)
 	}
 	return client.getOperationStatusHandleResponse(resp)
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.
-func (client *RecoveryServicesClient) getOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *RecoveryServicesClientGetOperationStatusOptions) (*azcore.Request, error) {
+func (client *RecoveryServicesClient) getOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *RecoveryServicesClientGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/operationStatus/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,36 +139,35 @@ func (client *RecoveryServicesClient) getOperationStatusCreateRequest(ctx contex
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOperationStatusHandleResponse handles the GetOperationStatus response.
-func (client *RecoveryServicesClient) getOperationStatusHandleResponse(resp *azcore.Response) (RecoveryServicesClientGetOperationStatusResponse, error) {
-	result := RecoveryServicesClientGetOperationStatusResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.OperationResource); err != nil {
+func (client *RecoveryServicesClient) getOperationStatusHandleResponse(resp *http.Response) (RecoveryServicesClientGetOperationStatusResponse, error) {
+	result := RecoveryServicesClientGetOperationStatusResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResource); err != nil {
 		return RecoveryServicesClientGetOperationStatusResponse{}, err
 	}
 	return result, nil
 }
 
 // getOperationStatusHandleError handles the GetOperationStatus error response.
-func (client *RecoveryServicesClient) getOperationStatusHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoveryServicesClient) getOperationStatusHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

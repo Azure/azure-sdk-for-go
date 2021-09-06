@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VaultExtendedInfoClient contains the methods for the VaultExtendedInfo group.
 // Don't use this type directly, use NewVaultExtendedInfoClient() instead.
 type VaultExtendedInfoClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewVaultExtendedInfoClient creates a new instance of VaultExtendedInfoClient with the specified values.
-func NewVaultExtendedInfoClient(con *armcore.Connection, subscriptionID string) *VaultExtendedInfoClient {
-	return &VaultExtendedInfoClient{con: con, subscriptionID: subscriptionID}
+func NewVaultExtendedInfoClient(con *arm.Connection, subscriptionID string) *VaultExtendedInfoClient {
+	return &VaultExtendedInfoClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create vault extended info.
@@ -38,18 +41,18 @@ func (client *VaultExtendedInfoClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return VaultExtendedInfoCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return VaultExtendedInfoCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return VaultExtendedInfoCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VaultExtendedInfoClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *VaultExtendedInfoClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -63,38 +66,37 @@ func (client *VaultExtendedInfoClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(resourceExtendedInfoDetails)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, resourceExtendedInfoDetails)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VaultExtendedInfoClient) createOrUpdateHandleResponse(resp *azcore.Response) (VaultExtendedInfoCreateOrUpdateResponse, error) {
-	result := VaultExtendedInfoCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VaultExtendedInfoResource); err != nil {
+func (client *VaultExtendedInfoClient) createOrUpdateHandleResponse(resp *http.Response) (VaultExtendedInfoCreateOrUpdateResponse, error) {
+	result := VaultExtendedInfoCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VaultExtendedInfoResource); err != nil {
 		return VaultExtendedInfoCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VaultExtendedInfoClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VaultExtendedInfoClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get the vault extended info.
@@ -104,18 +106,18 @@ func (client *VaultExtendedInfoClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return VaultExtendedInfoGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return VaultExtendedInfoGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return VaultExtendedInfoGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VaultExtendedInfoClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultExtendedInfoGetOptions) (*azcore.Request, error) {
+func (client *VaultExtendedInfoClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *VaultExtendedInfoGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -129,38 +131,37 @@ func (client *VaultExtendedInfoClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VaultExtendedInfoClient) getHandleResponse(resp *azcore.Response) (VaultExtendedInfoGetResponse, error) {
-	result := VaultExtendedInfoGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VaultExtendedInfoResource); err != nil {
+func (client *VaultExtendedInfoClient) getHandleResponse(resp *http.Response) (VaultExtendedInfoGetResponse, error) {
+	result := VaultExtendedInfoGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VaultExtendedInfoResource); err != nil {
 		return VaultExtendedInfoGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *VaultExtendedInfoClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VaultExtendedInfoClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Update vault extended info.
@@ -170,18 +171,18 @@ func (client *VaultExtendedInfoClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return VaultExtendedInfoUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return VaultExtendedInfoUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return VaultExtendedInfoUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VaultExtendedInfoClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoUpdateOptions) (*azcore.Request, error) {
+func (client *VaultExtendedInfoClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,36 +196,35 @@ func (client *VaultExtendedInfoClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(resourceExtendedInfoDetails)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, resourceExtendedInfoDetails)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *VaultExtendedInfoClient) updateHandleResponse(resp *azcore.Response) (VaultExtendedInfoUpdateResponse, error) {
-	result := VaultExtendedInfoUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VaultExtendedInfoResource); err != nil {
+func (client *VaultExtendedInfoClient) updateHandleResponse(resp *http.Response) (VaultExtendedInfoUpdateResponse, error) {
+	result := VaultExtendedInfoUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VaultExtendedInfoResource); err != nil {
 		return VaultExtendedInfoUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *VaultExtendedInfoClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VaultExtendedInfoClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

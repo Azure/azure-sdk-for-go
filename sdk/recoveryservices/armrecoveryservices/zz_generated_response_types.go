@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,6 +12,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // OperationsListResponse contains the response from method Operations.List.
@@ -166,14 +168,40 @@ type VaultExtendedInfoUpdateResult struct {
 
 // VaultsCreateOrUpdatePollerResponse contains the response from method Vaults.CreateOrUpdate.
 type VaultsCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VaultsCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller VaultsCreateOrUpdatePoller
+	Poller *VaultsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l VaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsCreateOrUpdateResponse, error) {
+	respType := VaultsCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a VaultsCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *VaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &VaultsCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // VaultsCreateOrUpdateResponse contains the response from method Vaults.CreateOrUpdate.
@@ -232,14 +260,40 @@ type VaultsListBySubscriptionIDResult struct {
 
 // VaultsUpdatePollerResponse contains the response from method Vaults.Update.
 type VaultsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VaultsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller VaultsUpdatePoller
+	Poller *VaultsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l VaultsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsUpdateResponse, error) {
+	respType := VaultsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a VaultsUpdatePollerResponse from the provided client and resume token.
+func (l *VaultsUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &VaultsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // VaultsUpdateResponse contains the response from method Vaults.Update.

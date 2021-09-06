@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +11,26 @@ package armrecoveryservices
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReplicationUsagesClient contains the methods for the ReplicationUsages group.
 // Don't use this type directly, use NewReplicationUsagesClient() instead.
 type ReplicationUsagesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewReplicationUsagesClient creates a new instance of ReplicationUsagesClient with the specified values.
-func NewReplicationUsagesClient(con *armcore.Connection, subscriptionID string) *ReplicationUsagesClient {
-	return &ReplicationUsagesClient{con: con, subscriptionID: subscriptionID}
+func NewReplicationUsagesClient(con *arm.Connection, subscriptionID string) *ReplicationUsagesClient {
+	return &ReplicationUsagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - Fetches the replication usages of the vault.
@@ -37,18 +40,18 @@ func (client *ReplicationUsagesClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ReplicationUsagesListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ReplicationUsagesListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ReplicationUsagesListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ReplicationUsagesListOptions) (*azcore.Request, error) {
+func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ReplicationUsagesListOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/replicationUsages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,35 +65,34 @@ func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationUsagesClient) listHandleResponse(resp *azcore.Response) (ReplicationUsagesListResponse, error) {
-	result := ReplicationUsagesListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ReplicationUsageList); err != nil {
+func (client *ReplicationUsagesClient) listHandleResponse(resp *http.Response) (ReplicationUsagesListResponse, error) {
+	result := ReplicationUsagesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationUsageList); err != nil {
 		return ReplicationUsagesListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *ReplicationUsagesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicationUsagesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

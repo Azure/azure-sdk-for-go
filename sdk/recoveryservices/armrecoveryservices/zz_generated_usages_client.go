@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +11,26 @@ package armrecoveryservices
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(con *armcore.Connection, subscriptionID string) *UsagesClient {
-	return &UsagesClient{con: con, subscriptionID: subscriptionID}
+func NewUsagesClient(con *arm.Connection, subscriptionID string) *UsagesClient {
+	return &UsagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByVaults - Fetches the usages of the vault.
@@ -37,18 +40,18 @@ func (client *UsagesClient) ListByVaults(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UsagesListByVaultsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UsagesListByVaultsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return UsagesListByVaultsResponse{}, client.listByVaultsHandleError(resp)
 	}
 	return client.listByVaultsHandleResponse(resp)
 }
 
 // listByVaultsCreateRequest creates the ListByVaults request.
-func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *UsagesListByVaultsOptions) (*azcore.Request, error) {
+func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *UsagesListByVaultsOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,35 +65,34 @@ func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByVaultsHandleResponse handles the ListByVaults response.
-func (client *UsagesClient) listByVaultsHandleResponse(resp *azcore.Response) (UsagesListByVaultsResponse, error) {
-	result := UsagesListByVaultsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VaultUsageList); err != nil {
+func (client *UsagesClient) listByVaultsHandleResponse(resp *http.Response) (UsagesListByVaultsResponse, error) {
+	result := UsagesListByVaultsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VaultUsageList); err != nil {
 		return UsagesListByVaultsResponse{}, err
 	}
 	return result, nil
 }
 
 // listByVaultsHandleError handles the ListByVaults error response.
-func (client *UsagesClient) listByVaultsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UsagesClient) listByVaultsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

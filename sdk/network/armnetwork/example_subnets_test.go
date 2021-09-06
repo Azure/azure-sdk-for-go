@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +11,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/network/armnetwork"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func ExampleSubnetsClient_BeginCreateOrUpdate() {
@@ -21,7 +22,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSubnetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSubnetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -52,7 +53,7 @@ func ExampleSubnetsClient_BeginCreateOrUpdate_withNetworkSecurityGroup() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSubnetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSubnetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -81,7 +82,7 @@ func ExampleSubnetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSubnetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSubnetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<virtual network name>", "<subnet name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource: %v", err)
@@ -94,7 +95,7 @@ func ExampleSubnetsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSubnetsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSubnetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.BeginDelete(context.Background(), "<resource group name>", "<virtual network name>", "<subnet name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
